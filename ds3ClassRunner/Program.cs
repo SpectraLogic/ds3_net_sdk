@@ -1,4 +1,5 @@
 ﻿using Ds3;
+using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,15 @@ namespace ds3ClassRunner
         {
             try
             {
-                Ds3Client client = new Ds3Client("http://hostname:8080", new Credentials("accessId", "key"));
+                Ds3Client client = new Ds3Client("http://10.1.19.180:8080", new Credentials("cnlhbg==", "VJ4sBGMu"));
 
-                System.Console.WriteLine(Ds3Client.FormatXml(client.GetService()));
+                GetServiceResponse response = client.GetService(new GetServiceRequest());
+                Console.WriteLine(response.Reponse());                
             }
             catch(Exception e) {
                 System.Console.WriteLine("Failed with exception:" + e.ToString());
-            }      
-
+            }
+            Console.ReadKey();
         }
     }
 }
