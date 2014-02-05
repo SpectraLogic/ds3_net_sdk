@@ -1,5 +1,7 @@
 ﻿using Ds3;
 using Ds3.Models;
+using Ds3.AwsModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,8 @@ namespace ds3ClassRunner
                 Ds3Client client = new Ds3Client("http://10.1.19.180:8080", new Credentials("cnlhbg==", "VJ4sBGMu"));
 
                 GetServiceResponse response = client.GetService(new GetServiceRequest());
-                Console.WriteLine(response.Reponse());                
+                Console.WriteLine(response.Owner.ToString());
+
             }
             catch(Exception e) {
                 System.Console.WriteLine("Failed with exception:" + e.ToString());

@@ -9,8 +9,7 @@ using System.Net;
 namespace Ds3.Models
 {
     public class Ds3Response : IDisposable
-    {
-        private bool disposed = false;
+    {        
         protected HttpWebResponse response;
 
         public Ds3Response(HttpWebResponse response)

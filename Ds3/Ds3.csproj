@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AwsModels\service_list.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Ds3Client.cs" />
     <Compile Include="Models\GetServiceRequest.cs" />
