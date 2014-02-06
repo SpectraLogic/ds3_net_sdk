@@ -27,7 +27,7 @@ namespace Ds3.Runtime
             httpRequest.Date = date;
             httpRequest.Host = endpoint.Host;
 
-            httpRequest.Headers.Add("Authorization", AuthField(creds, request.Verb, date.ToString("r"), "/"));
+            httpRequest.Headers.Add("Authorization", AuthField(creds, request.Verb, date.ToString("r"), request.Path));
             HttpWebResponse httpResponse = (HttpWebResponse) await httpRequest.GetResponseAsync();
 
             if (httpResponse.StatusCode.Equals(200))

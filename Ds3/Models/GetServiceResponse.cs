@@ -21,14 +21,21 @@ namespace Ds3.Models
             get { return _owner; }
         }
 
+        private List<Bucket> _buckets;
+
+        public List<Bucket> Buckets
+        {
+            get { return _buckets; }
+        }
+
         public GetServiceResponse(HttpWebResponse responseStream)
             : base(responseStream)
-        {
-            Console.WriteLine("Got content.");
+        {            
+            this._buckets = new List<Bucket>();
             processReponse();
         }
 
-        internal void processReponse()
+        private void processReponse()
         {
             using (Stream content = response.GetResponseStream())
             {
@@ -43,6 +50,7 @@ namespace Ds3.Models
                     else if (obj.GetType().Equals(typeof(ListAllMyBucketsResultBuckets)))
                     {
                         Console.WriteLine("I have buckets!");
+                        convertBuckets((ListAllMyBucketsResultBuckets)obj);
                     }
                     else {
                         Console.WriteLine("Unknown element");
@@ -50,8 +58,39 @@ namespace Ds3.Models
                 }
                 
                 Console.WriteLine(results.Items[1]);
-            }                                              
-        }            
+            }
+        }
+
+        private void convertBuckets(ListAllMyBucketsResultBuckets buckets)
+        {
+            foreach (ListAllMyBucketsResultBucketsBucket bucket in buckets.Bucket)
+            {
+                this._buckets.Add(new Bucket(bucket.Name, bucket.CreationDate));       
+            }
+        }
+
+    }
+
+    public class Bucket
+    {
+        private string _name;
+        private string _creationDate;
+
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        public string CreationDate
+        {
+            get { return _creationDate; }
+        }
+
+        public Bucket(string name, string creationDate)
+        {
+            this._name = name;
+            this._creationDate = creationDate;
+        }
     }
 
     public class Owner

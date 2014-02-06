@@ -14,11 +14,11 @@ namespace Ds3
     public class Ds3Client
     {
         private Credentials Creds;
-        private Uri Endpoint;        
+        private Uri Endpoint;
 
         public Ds3Client(string endpoint, Credentials creds) {
             this.Creds = creds;
-            this.Endpoint = new Uri(endpoint);            
+            this.Endpoint = new Uri(endpoint);
         }
         
         public GetServiceResponse GetService(GetServiceRequest request){
@@ -29,7 +29,19 @@ namespace Ds3
 
         public Task<GetServiceResponse> GetServiceAsync(GetServiceRequest request)
         {
-            return Network.Invoke<GetServiceResponse, GetServiceRequest>(request, this.Endpoint, this.Creds);            
-        }       
+            return Network.Invoke<GetServiceResponse, GetServiceRequest>(request, this.Endpoint, this.Creds);
+        }
+
+        public GetBucketResponse GetBucket(GetBucketRequest request)
+        {
+            Task<GetBucketResponse> response = GetBucketAsync(request);
+
+            return response.Result;
+        }
+
+        public Task<GetBucketResponse> GetBucketAsync(GetBucketRequest request)
+        {
+            return Network.Invoke<GetBucketResponse, GetBucketRequest>(request, this.Endpoint, this.Creds);
+        }
     }
 }

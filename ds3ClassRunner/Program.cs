@@ -21,6 +21,12 @@ namespace ds3ClassRunner
 
                 GetServiceResponse response = client.GetService(new GetServiceRequest());
                 Console.WriteLine(response.Owner.ToString());
+                foreach(Bucket bucket in response.Buckets) {
+                    Console.WriteLine(bucket.Name + ":" + bucket.CreationDate);
+                }
+
+                GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest("test"));
+                Console.WriteLine(bucketResponse.BucketName);
 
             }
             catch(Exception e) {
