@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ds3.Models
 {
-    public class GetObjectRequest : Ds3Request
+    public class DeleteObjectRequest : Ds3Request
     {
         private string _bucketName;
 
@@ -26,7 +26,7 @@ namespace Ds3.Models
         {
             get
             {
-                return HttpVerb.GET;
+                return HttpVerb.DELETE;
             }
         }
 
@@ -38,14 +38,15 @@ namespace Ds3.Models
             }
         }
 
-        public GetObjectRequest(Bucket bucket, Ds3Object ds3Object): this (bucket.Name, ds3Object.Name)
+        public DeleteObjectRequest(Bucket bucket, Ds3Object ds3Object): this (bucket.Name, ds3Object.Name)
         {
         }
 
-        public GetObjectRequest(string bucketName, string ds3ObjectName)
+        public DeleteObjectRequest(string bucketName, string ds3ObjectName)
         {
             this._bucketName = bucketName;
             this._objectName = ds3ObjectName;
         }
+
     }
 }

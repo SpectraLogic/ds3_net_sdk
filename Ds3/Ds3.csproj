@@ -45,6 +45,8 @@
     <Compile Include="AwsModels\service_list.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Ds3Client.cs" />
+    <Compile Include="Models\DeleteObjectRequest.cs" />
+    <Compile Include="Models\DeleteObjectResponse.cs" />
     <Compile Include="Models\GetBucketRequest.cs" />
     <Compile Include="Models\GetBucketResponse.cs" />
     <Compile Include="Models\GetObjectRequest.cs" />
@@ -57,7 +59,9 @@
     <Compile Include="Runtime\Network.cs" />
     <Compile Include="Runtime\S3Signer.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Runtime\Ds3RequestException.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

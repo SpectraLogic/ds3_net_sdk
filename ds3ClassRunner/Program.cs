@@ -34,6 +34,7 @@ namespace ds3ClassRunner
                     Console.WriteLine(objectName.Name + ": " + objectName.Size);
                 }
 
+                /*
                 GetObjectResponse objectResponse = client.GetObject(new GetObjectRequest("books3", "user/hduser/books/beowulf.txt"));
 
                 using (Stream objStream = objectResponse.Contents)
@@ -41,6 +42,10 @@ namespace ds3ClassRunner
                 {
                     objStream.CopyTo(writer);
                 }
+                */
+
+                DeleteObjectResponse deleteResponse = client.DeleteObject(new DeleteObjectRequest("books9", "user/hduser/books/beowulf.txt"));
+                
 
             }
             catch(Exception e) {

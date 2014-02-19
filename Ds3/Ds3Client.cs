@@ -55,5 +55,17 @@ namespace Ds3
         {
             return Network.Invoke<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
         }
+
+        public DeleteObjectResponse DeleteObject(DeleteObjectRequest request)
+        {
+            Task<DeleteObjectResponse> response = DeleteObjectAsync(request);
+
+            return response.Result;
+        }
+
+        public Task<DeleteObjectResponse> DeleteObjectAsync(DeleteObjectRequest request)
+        {
+            return Network.Invoke<DeleteObjectResponse, DeleteObjectRequest>(request, this.Endpoint, this.Creds);
+        }
     }
 }
