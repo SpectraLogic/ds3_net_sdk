@@ -22,7 +22,7 @@ namespace Ds3.Models
 
         public GetObjectResponse(HttpWebResponse responseStream) 
             : base(responseStream)
-        {
+        {            
             processResponse();   
         }
 

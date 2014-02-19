@@ -2,9 +2,9 @@
 
 namespace Ds3.Models
 {
-    public class DeleteObjectResponse : Ds3Response
+    public class DeleteBucketResponse : Ds3Response
     {
-        public DeleteObjectResponse(HttpWebResponse response)
+        public DeleteBucketResponse(HttpWebResponse response)
             : base(response)
         {            
         }

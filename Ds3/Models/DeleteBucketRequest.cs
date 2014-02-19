@@ -2,7 +2,7 @@
 
 namespace Ds3.Models
 {
-    public class GetBucketRequest : Ds3Request
+    public class DeleteBucketRequest : Ds3Request
     {
         private string _bucketName;
 
@@ -15,7 +15,7 @@ namespace Ds3.Models
         {
             get
             {
-                return HttpVerb.GET;
+                return HttpVerb.DELETE;
             }
         }
 
@@ -29,13 +29,12 @@ namespace Ds3.Models
 
         public override HttpStatusCode StatusCode
         {
-            get { return HttpStatusCode.OK; }
+            get { return HttpStatusCode.NoContent; }
         }
 
-        public GetBucketRequest(string bucketName)
+        public DeleteBucketRequest(string bucketName)
         {
             this._bucketName = bucketName;
         }
-
     }
 }

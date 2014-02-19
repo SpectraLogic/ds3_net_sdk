@@ -30,8 +30,8 @@ namespace Ds3.Models
 
         public GetServiceResponse(HttpWebResponse responseStream)
             : base(responseStream)
-        {            
-            this._buckets = new List<Bucket>();
+        {           
+            this._buckets = new List<Bucket>();            
             processReponse();
         }
 

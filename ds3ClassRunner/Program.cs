@@ -17,40 +17,29 @@ namespace ds3ClassRunner
     {
         static void Main(string[] args)
         {
-            try
-            {
-                Ds3Client client = new Ds3Client("http://10.1.18.8:8080", new Credentials("cnlhbg==", "T8NmDqUh"));
+            
+            Ds3Client client = new Ds3Client("http://10.1.18.8:8080", new Credentials("cnlhbg==", "T8NmDqUh"));
 
-                GetServiceResponse response = client.GetService(new GetServiceRequest());
-                Console.WriteLine(response.Owner.ToString());
-                foreach(Bucket bucket in response.Buckets) {
-                    Console.WriteLine(bucket.Name + ":" + bucket.CreationDate);
-                }
-
-                GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest("books3"));
-                Console.WriteLine(bucketResponse.Name);
-                foreach (Ds3Object objectName in bucketResponse.Objects)
-                {
-                    Console.WriteLine(objectName.Name + ": " + objectName.Size);
-                }
-
-                /*
-                GetObjectResponse objectResponse = client.GetObject(new GetObjectRequest("books3", "user/hduser/books/beowulf.txt"));
-
-                using (Stream objStream = objectResponse.Contents)
-                using (FileStream writer = new FileStream("text.txt", FileMode.Create))
-                {
-                    objStream.CopyTo(writer);
-                }
-                */
-
-                DeleteObjectResponse deleteResponse = client.DeleteObject(new DeleteObjectRequest("books9", "user/hduser/books/beowulf.txt"));
-                
-
+            /*
+            GetServiceResponse response = client.GetService(new GetServiceRequest());
+            Console.WriteLine(response.Owner.ToString());
+            foreach(Bucket bucket in response.Buckets) {
+                Console.WriteLine(bucket.Name + ":" + bucket.CreationDate);
             }
-            catch(Exception e) {
-                System.Console.WriteLine("Failed with exception:" + e.ToString());
+            */
+
+            GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest("books9"));
+            Console.WriteLine(bucketResponse.Name);
+            List<Ds3Object> objects = bucketResponse.Objects;
+            objects.Reverse();
+            foreach (Ds3Object objectName in objects)
+            {                    
+                DeleteObjectResponse deleteObjectResponse = client.DeleteObject(new DeleteObjectRequest("books9", objectName.Name));
             }
+
+            DeleteBucketResponse deleteBucketResponse = client.DeleteBucket(new DeleteBucketRequest("books9"));
+
+            
             Console.ReadKey();
         }
     }

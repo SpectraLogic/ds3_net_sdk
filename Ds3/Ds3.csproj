@@ -45,6 +45,8 @@
     <Compile Include="AwsModels\service_list.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Ds3Client.cs" />
+    <Compile Include="Models\DeleteBucketRequest.cs" />
+    <Compile Include="Models\DeleteBucketResponse.cs" />
     <Compile Include="Models\DeleteObjectRequest.cs" />
     <Compile Include="Models\DeleteObjectResponse.cs" />
     <Compile Include="Models\GetBucketRequest.cs" />

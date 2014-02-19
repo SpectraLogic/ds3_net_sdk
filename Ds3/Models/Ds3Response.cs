@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Net;
 
+using Ds3.Runtime;
 namespace Ds3.Models
 {
     public class Ds3Response : IDisposable
@@ -29,6 +30,8 @@ namespace Ds3.Models
                 return Xml;
             }
         }
+
+
 
         public void Dispose()
         {

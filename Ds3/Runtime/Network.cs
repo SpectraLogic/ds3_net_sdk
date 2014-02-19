@@ -28,20 +28,24 @@ namespace Ds3.Runtime
             httpRequest.Host = endpoint.Host;
 
             httpRequest.Headers.Add("Authorization", AuthField(creds, request.Verb, date.ToString("r"), request.Path));
-            HttpWebResponse httpResponse = (HttpWebResponse) await httpRequest.GetResponseAsync();
 
-            if (httpResponse.StatusCode.Equals(200))
+            try
             {
-                throw new Exception("Bad response code: " + httpResponse.StatusCode.ToString());
+                HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
+                handleStatusCode(request.StatusCode, httpResponse.StatusCode);
+                return CreateResponseInstance<T>(httpResponse);
             }
-
-            return CreateResponseInstance<T>(httpResponse);
+            catch (WebException e)
+            {
+                Console.WriteLine(e.ToString());
+                throw new Ds3RequestException(request.StatusCode, ((HttpWebResponse)e.Response).StatusCode);                
+            }            
         }
 
 
         private static T CreateResponseInstance<T>(HttpWebResponse content)
         {
-            Type type = typeof(T);
+            Type type = typeof(T);            
             return (T)Activator.CreateInstance(type, content);
         }
 
@@ -66,6 +70,15 @@ namespace Ds3.Runtime
             builder.Append(date).Append("\n");
             builder.Append(amzHeaders).Append(resourcePath);
             return builder.ToString();
+        }
+
+        private static void handleStatusCode(HttpStatusCode expectedStatusCode, HttpStatusCode actualStatusCode)
+        {
+            
+            if (!actualStatusCode.Equals(expectedStatusCode))
+            {
+                throw new Ds3RequestException(expectedStatusCode, actualStatusCode);
+            }
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace Ds3.Models
 {
@@ -36,6 +32,11 @@ namespace Ds3.Models
             {
                 return "/" + BucketName + "/" + ObjectName;
             }
+        }
+
+        public override HttpStatusCode StatusCode
+        {
+            get { return HttpStatusCode.OK; }
         }
 
         public GetObjectRequest(Bucket bucket, Ds3Object ds3Object): this (bucket.Name, ds3Object.Name)

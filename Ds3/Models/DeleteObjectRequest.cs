@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace Ds3.Models
 {
@@ -28,6 +24,11 @@ namespace Ds3.Models
             {
                 return HttpVerb.DELETE;
             }
+        }
+
+        public override HttpStatusCode StatusCode
+        {
+            get { return HttpStatusCode.NoContent; }
         }
 
         public override string Path

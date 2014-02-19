@@ -81,12 +81,12 @@ namespace Ds3.Models
         public GetBucketResponse(HttpWebResponse responseStream)
             : base(responseStream)
         {
-            _objects = new List<Ds3Object>();
+            _objects = new List<Ds3Object>();            
             processResponse();
         }
 
         private void processResponse()
-        {
+        {            
             using (Stream content = response.GetResponseStream())
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ListBucketResult));
@@ -101,11 +101,14 @@ namespace Ds3.Models
                 _isTruncated = bool.Parse(results.IsTruncated);
                 _creationDate = Convert.ToDateTime(results.CreationDate);
 
-                foreach (ListBucketResultContents contents in results.Contents)
+                if (results.Contents != null)
                 {
-                    Owner owner = new Owner(contents.Owner[0].ID, contents.Owner[0].DisplayName);
-                    Ds3Object ds3Object = new Ds3Object(contents.Key, int.Parse(contents.Size), owner);
-                    _objects.Add(ds3Object);
+                    foreach (ListBucketResultContents contents in results.Contents)
+                    {
+                        Owner owner = new Owner(contents.Owner[0].ID, contents.Owner[0].DisplayName);
+                        Ds3Object ds3Object = new Ds3Object(contents.Key, int.Parse(contents.Size), owner);
+                        _objects.Add(ds3Object);
+                    }
                 }
             }
         }
