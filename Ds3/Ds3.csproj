@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AwsModels\bucket_list.cs" />
+    <Compile Include="AwsModels\Owner.cs" />
     <Compile Include="AwsModels\service_list.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Ds3Client.cs" />

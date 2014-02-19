@@ -17,7 +17,7 @@ namespace ds3ClassRunner
         {
             try
             {
-                Ds3Client client = new Ds3Client("http://10.1.19.180:8080", new Credentials("cnlhbg==", "VJ4sBGMu"));
+                Ds3Client client = new Ds3Client("http://10.1.18.8:8080", new Credentials("cnlhbg==", "T8NmDqUh"));
 
                 GetServiceResponse response = client.GetService(new GetServiceRequest());
                 Console.WriteLine(response.Owner.ToString());
@@ -25,8 +25,12 @@ namespace ds3ClassRunner
                     Console.WriteLine(bucket.Name + ":" + bucket.CreationDate);
                 }
 
-                GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest("test"));
-                Console.WriteLine(bucketResponse.BucketName);
+                GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest("books3"));
+                Console.WriteLine(bucketResponse.Name);
+                foreach (Ds3Object objectName in bucketResponse.Objects)
+                {
+                    Console.WriteLine(objectName.Name + ": " + objectName.Size);
+                }
 
             }
             catch(Exception e) {

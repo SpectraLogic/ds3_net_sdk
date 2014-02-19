@@ -39,7 +39,7 @@ namespace Ds3.Models
         {
             using (Stream content = response.GetResponseStream())
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));
+                XmlSerializer serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));                
                 ListAllMyBucketsResult results = (ListAllMyBucketsResult)serializer.Deserialize(content);
                 foreach(object obj in results.Items) {
                     if (obj.GetType().Equals(typeof(ListAllMyBucketsResultOwner)))
@@ -90,31 +90,6 @@ namespace Ds3.Models
         {
             this._name = name;
             this._creationDate = creationDate;
-        }
-    }
-
-    public class Owner
-    {
-        private string _id;
-        private string _displayName;
-        public string Id
-        {
-            get {return _id;}
-        }
-        public string DisplayName
-        {
-            get {return _displayName;}
-        }
-
-        public Owner(string id, string displayName) 
-        {
-            this._id = id;
-            this._displayName = displayName;
-        }
-
-        public override string ToString()
-        {
-            return Id + ":" + DisplayName;
         }
     }
 
