@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.IO;
+
 
 namespace ds3ClassRunner
 {
@@ -30,6 +32,14 @@ namespace ds3ClassRunner
                 foreach (Ds3Object objectName in bucketResponse.Objects)
                 {
                     Console.WriteLine(objectName.Name + ": " + objectName.Size);
+                }
+
+                GetObjectResponse objectResponse = client.GetObject(new GetObjectRequest("books3", "user/hduser/books/beowulf.txt"));
+
+                using (Stream objStream = objectResponse.Contents)
+                using (FileStream writer = new FileStream("text.txt", FileMode.Create))
+                {
+                    objStream.CopyTo(writer);
                 }
 
             }

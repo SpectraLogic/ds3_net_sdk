@@ -47,6 +47,8 @@
     <Compile Include="Ds3Client.cs" />
     <Compile Include="Models\GetBucketRequest.cs" />
     <Compile Include="Models\GetBucketResponse.cs" />
+    <Compile Include="Models\GetObjectRequest.cs" />
+    <Compile Include="Models\GetObjectResponse.cs" />
     <Compile Include="Models\GetServiceRequest.cs" />
     <Compile Include="Models\GetServiceResponse.cs" />
     <Compile Include="Models\Ds3Request.cs" />

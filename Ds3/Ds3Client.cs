@@ -43,5 +43,17 @@ namespace Ds3
         {
             return Network.Invoke<GetBucketResponse, GetBucketRequest>(request, this.Endpoint, this.Creds);
         }
+
+        public GetObjectResponse GetObject(GetObjectRequest request)
+        {
+            Task<GetObjectResponse> response = GetObjectAsync(request);
+
+            return response.Result;
+        }
+
+        public Task<GetObjectResponse> GetObjectAsync(GetObjectRequest request)
+        {
+            return Network.Invoke<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
+        }
     }
 }
