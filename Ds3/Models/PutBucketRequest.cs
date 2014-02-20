@@ -1,21 +1,12 @@
-﻿using System.Net;
-
-namespace Ds3.Models
+﻿namespace Ds3.Models
 {
-    public class DeleteBucketRequest : Ds3Request
+    class PutBucketRequest : Ds3Request
     {
-        private string _bucketName;
-
-        public string BucketName
-        {
-            get { return _bucketName; }
-        }
-
         public override HttpVerb Verb
         {
             get
             {
-                return HttpVerb.DELETE;
+                return HttpVerb.PUT;
             }
         }
 
@@ -27,7 +18,14 @@ namespace Ds3.Models
             }
         }
 
-        public DeleteBucketRequest(string bucketName)
+        private string _bucketName;
+
+        public string BucketName
+        {
+            get { return _bucketName; }
+        }
+
+        public PutBucketRequest(string bucketName)
         {
             this._bucketName = bucketName;
         }

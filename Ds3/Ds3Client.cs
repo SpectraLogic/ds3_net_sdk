@@ -56,6 +56,18 @@ namespace Ds3
             return Network.Invoke<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
         }
 
+        public PutObjectResponse PutObject(PutObjectRequest request)
+        {
+            Task<PutObjectResponse> response = PutObjectAsync(request);
+
+            return response.Result;
+        }
+
+        public Task<PutObjectResponse> PutObjectAsync(PutObjectRequest request)
+        {
+            return Network.Invoke<PutObjectResponse, PutObjectRequest>(request, this.Endpoint, this.Creds);
+        }
+
         public DeleteObjectResponse DeleteObject(DeleteObjectRequest request)
         {
             Task<DeleteObjectResponse> response = DeleteObjectAsync(request);
@@ -78,6 +90,18 @@ namespace Ds3
         public Task<DeleteBucketResponse> DeleteBucketAsync(DeleteBucketRequest request)
         {
             return Network.Invoke<DeleteBucketResponse, DeleteBucketRequest>(request, this.Endpoint, this.Creds);
+        }
+
+        public PutBucketResponse PutBucket(PutBucketRequest request)
+        {
+            Task<PutBucketResponse> response = PutBucketAsync(request);
+
+            return response.Result;
+        }
+
+        public Task<PutBucketResponse> PutBucketAsync(PutBucketRequest request)
+        {
+            return Network.Invoke<PutBucketResponse, PutBucketRequest>(request, this.Endpoint, this.Creds);
         }
     }
 }

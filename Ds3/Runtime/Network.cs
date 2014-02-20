@@ -16,7 +16,6 @@ namespace Ds3.Runtime
     {
         public static async Task<T> Invoke<T, K>(K request, Uri endpoint, Credentials creds) where T: Ds3Response where K : Ds3Request
         {
-
             DateTime date = DateTime.UtcNow;
 
             UriBuilder uriBuilder = new UriBuilder(endpoint);
@@ -29,16 +28,27 @@ namespace Ds3.Runtime
 
             httpRequest.Headers.Add("Authorization", AuthField(creds, request.Verb, date.ToString("r"), request.Path));
 
+            if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
+            {
+                using (Stream content = request.Content)
+                using (Stream requestStream = httpRequest.GetRequestStream())
+                {
+                    if (content != Stream.Null)
+                    {
+                        content.CopyTo(requestStream);
+                    }                    
+                }
+            }
+            
             try
             {
-                HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
-                handleStatusCode(request.StatusCode, httpResponse.StatusCode);
+                HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();                
                 return CreateResponseInstance<T>(httpResponse);
             }
             catch (WebException e)
             {
-                Console.WriteLine(e.ToString());
-                throw new Ds3RequestException(request.StatusCode, ((HttpWebResponse)e.Response).StatusCode);                
+                //We want this response to go to the handlers so that they can perform any special actions that they need to.
+                return CreateResponseInstance<T>((HttpWebResponse)e.Response);
             }            
         }
 
@@ -70,15 +80,6 @@ namespace Ds3.Runtime
             builder.Append(date).Append("\n");
             builder.Append(amzHeaders).Append(resourcePath);
             return builder.ToString();
-        }
-
-        private static void handleStatusCode(HttpStatusCode expectedStatusCode, HttpStatusCode actualStatusCode)
-        {
-            
-            if (!actualStatusCode.Equals(expectedStatusCode))
-            {
-                throw new Ds3RequestException(expectedStatusCode, actualStatusCode);
-            }
         }
     }
 }

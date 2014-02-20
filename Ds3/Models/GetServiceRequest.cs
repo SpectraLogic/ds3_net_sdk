@@ -19,10 +19,5 @@ namespace Ds3.Models
                 return "/";
             }
         }
-
-        public override HttpStatusCode StatusCode
-        {
-            get { return HttpStatusCode.OK; }
-        }
     }
 }

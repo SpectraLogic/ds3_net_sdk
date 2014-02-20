@@ -27,11 +27,6 @@ namespace Ds3.Models
             }
         }
 
-        public override HttpStatusCode StatusCode
-        {
-            get { return HttpStatusCode.OK; }
-        }
-
         public GetBucketRequest(string bucketName)
         {
             this._bucketName = bucketName;

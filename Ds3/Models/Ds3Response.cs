@@ -31,6 +31,14 @@ namespace Ds3.Models
             }
         }
 
+        protected void handleStatusCode(HttpStatusCode expectedStatusCode)
+        {
+            HttpStatusCode actualStatusCode = response.StatusCode;
+            if (!actualStatusCode.Equals(expectedStatusCode))
+            {
+                throw new Ds3RequestException(expectedStatusCode, actualStatusCode);
+            }
+        }
 
 
         public void Dispose()

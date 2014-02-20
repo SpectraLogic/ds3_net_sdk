@@ -26,11 +26,6 @@ namespace Ds3.Models
             }
         }
 
-        public override HttpStatusCode StatusCode
-        {
-            get { return HttpStatusCode.NoContent; }
-        }
-
         public override string Path
         {
             get

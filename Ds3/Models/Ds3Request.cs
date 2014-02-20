@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.IO;
 
 namespace Ds3.Models
 {
@@ -14,11 +15,10 @@ namespace Ds3.Models
             get;   
         }
 
-        public abstract HttpStatusCode StatusCode
+        public virtual Stream Content
         {
-            get;
+            get { return Stream.Null; }
         }
-
     }
 
     public enum HttpVerb {GET, PUT, POST, DELETE, HEAD, PATCH};

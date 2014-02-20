@@ -6,7 +6,8 @@ namespace Ds3.Models
     {
         public DeleteObjectResponse(HttpWebResponse response)
             : base(response)
-        {            
+        {
+            handleStatusCode(HttpStatusCode.NoContent);
         }
     }
 }
