@@ -16,7 +16,6 @@ namespace Ds3.Runtime
         public static async Task<T> Invoke<T, K>(K request, Uri endpoint, Credentials creds) where T: Ds3Response where K : Ds3Request
         {
             DateTime date = DateTime.UtcNow;
-
             UriBuilder uriBuilder = new UriBuilder(endpoint);
             uriBuilder.Path = request.Path;
 
@@ -24,7 +23,6 @@ namespace Ds3.Runtime
             httpRequest.Method = request.Verb.ToString();
             httpRequest.Date = date;
             httpRequest.Host = endpoint.Host;
-
             httpRequest.Headers.Add("Authorization", AuthField(creds, request.Verb, date.ToString("r"), request.Path));
 
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
@@ -51,7 +49,6 @@ namespace Ds3.Runtime
             }            
         }
 
-
         private static T CreateResponseInstance<T>(HttpWebResponse content)
         {
             Type type = typeof(T);            
@@ -66,7 +63,6 @@ namespace Ds3.Runtime
         private static string AuthField(Credentials creds, HttpVerb verb, string date, string resourcePath, string _md5 = "", string _contentType = "", string _amzHeaders = "")
         {
             string signature = S3Signer.Signature(creds.Key, BuildPayload(verb, date, resourcePath, _md5, _contentType, _amzHeaders));
-            Console.WriteLine(signature);
             return "AWS " + creds.AccessId + ":" + signature;
         }
 

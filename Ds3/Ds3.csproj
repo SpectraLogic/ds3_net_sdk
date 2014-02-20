@@ -57,6 +57,10 @@
     <Compile Include="Models\GetServiceResponse.cs" />
     <Compile Include="Models\Ds3Request.cs" />
     <Compile Include="Models\Ds3Response.cs" />
+    <Compile Include="Models\PutBucketRequest.cs" />
+    <Compile Include="Models\PutBucketResponse.cs" />
+    <Compile Include="Models\PutObjectRequest.cs" />
+    <Compile Include="Models\PutObjectResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Network.cs" />
     <Compile Include="Runtime\S3Signer.cs" />

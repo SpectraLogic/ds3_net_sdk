@@ -1,6 +1,6 @@
 ﻿namespace Ds3.Models
 {
-    class PutBucketRequest : Ds3Request
+    public class PutBucketRequest : Ds3Request
     {
         public override HttpVerb Verb
         {

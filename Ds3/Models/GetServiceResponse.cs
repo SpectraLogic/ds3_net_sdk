@@ -46,15 +46,13 @@ namespace Ds3.Models
                     }
                     else if (obj.GetType().Equals(typeof(ListAllMyBucketsResultBuckets)))
                     {
-                        Console.WriteLine("I have buckets!");
                         convertBuckets((ListAllMyBucketsResultBuckets)obj);
                     }
-                    else {
+                    else {                        
+                        //TODO need to figure out what exception to throw here.
                         Console.WriteLine("Unknown element");
                     }
                 }
-                
-                Console.WriteLine(results.Items[1]);
             }
         }
 
@@ -65,7 +63,6 @@ namespace Ds3.Models
                 this._buckets.Add(new Bucket(bucket.Name, bucket.CreationDate));       
             }
         }
-
     }
 
     public class Bucket
