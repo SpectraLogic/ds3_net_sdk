@@ -122,6 +122,11 @@ namespace Ds3.Models
         private string _storageClass;
 
 
+        public Ds3Object(string name, int size)
+            : this(name, size, null)
+        {
+
+        }
 
         public Ds3Object(string name, int size, Owner owner) 
             : this (name,size, owner, "", "", Convert.ToDateTime(null))

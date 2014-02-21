@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 using System.Net;
@@ -16,8 +17,13 @@ namespace Ds3.Runtime
         public static async Task<T> Invoke<T, K>(K request, Uri endpoint, Credentials creds) where T: Ds3Response where K : Ds3Request
         {
             DateTime date = DateTime.UtcNow;
-            UriBuilder uriBuilder = new UriBuilder(endpoint);
+            UriBuilder uriBuilder = new UriBuilder(endpoint);            
             uriBuilder.Path = request.Path;
+
+            if (request.QueryParams.Count > 0)
+            {
+                uriBuilder.Query = buildQueryParams(request.QueryParams);
+            }
 
             HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.ToString());
             httpRequest.Method = request.Verb.ToString();
@@ -75,6 +81,12 @@ namespace Ds3.Runtime
             builder.Append(date).Append("\n");
             builder.Append(amzHeaders).Append(resourcePath);
             return builder.ToString();
+        }
+
+        private static string buildQueryParams(Dictionary<string, string> queryParams)
+        {
+            List<string> queryList = queryParams.Select(kvp => kvp.Key + "=" + kvp.Value).ToList();
+            return String.Join("&", queryList);            
         }
     }
 }

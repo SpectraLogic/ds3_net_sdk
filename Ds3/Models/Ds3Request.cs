@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -18,6 +19,11 @@ namespace Ds3.Models
         public virtual Stream Content
         {
             get { return Stream.Null; }
+        }
+
+        public virtual Dictionary<string,string> QueryParams
+        {
+            get { return new Dictionary<string,string>(); }
         }
     }
 

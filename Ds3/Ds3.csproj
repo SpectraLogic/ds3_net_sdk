@@ -41,10 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AwsModels\bucket_list.cs" />
+    <Compile Include="AwsModels\object_list.cs" />
     <Compile Include="AwsModels\Owner.cs" />
     <Compile Include="AwsModels\service_list.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Ds3Client.cs" />
+    <Compile Include="Models\BulkGetRequest.cs" />
+    <Compile Include="Models\BulkGetResponse.cs" />
+    <Compile Include="Models\BulkPutRequest.cs" />
+    <Compile Include="Models\BulkPutResponse.cs" />
     <Compile Include="Models\DeleteBucketRequest.cs" />
     <Compile Include="Models\DeleteBucketResponse.cs" />
     <Compile Include="Models\DeleteObjectRequest.cs" />
