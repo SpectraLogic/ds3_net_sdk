@@ -22,12 +22,9 @@ namespace Ds3.Models
 
         private Stream _content;
 
-        public override Stream Content
+        public override Stream getContentStream()
         {
-            get
-            {
-                return _content;
-            }
+            return _content;
         }
 
         private string _bucketName;

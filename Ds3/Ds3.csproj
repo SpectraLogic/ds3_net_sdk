@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AwsModels\bucket_list.cs" />
+    <Compile Include="AwsModels\Ds3Object.cs" />
+    <Compile Include="AwsModels\master_object_list.cs" />
     <Compile Include="AwsModels\object_list.cs" />
     <Compile Include="AwsModels\Owner.cs" />
     <Compile Include="AwsModels\service_list.cs" />
@@ -50,6 +52,7 @@
     <Compile Include="Models\BulkGetResponse.cs" />
     <Compile Include="Models\BulkPutRequest.cs" />
     <Compile Include="Models\BulkPutResponse.cs" />
+    <Compile Include="Models\BulkRequest.cs" />
     <Compile Include="Models\DeleteBucketRequest.cs" />
     <Compile Include="Models\DeleteBucketResponse.cs" />
     <Compile Include="Models\DeleteObjectRequest.cs" />

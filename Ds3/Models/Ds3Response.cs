@@ -38,7 +38,6 @@ namespace Ds3.Models
             }
         }
 
-
         public void Dispose()
         {
             Dispose(true);

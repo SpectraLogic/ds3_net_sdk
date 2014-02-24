@@ -1,5 +1,7 @@
 ﻿using System.Net;
 
+using Ds3.AwsModels;
+
 namespace Ds3.Models
 {
     public class GetObjectRequest : Ds3Request

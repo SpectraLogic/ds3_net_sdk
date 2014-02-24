@@ -99,5 +99,29 @@ namespace Ds3
         {
             return Network.Invoke<PutBucketResponse, PutBucketRequest>(request, this.Endpoint, this.Creds);
         }
+
+        public BulkGetResponse BulkGet(BulkGetRequest request)
+        {
+            Task<BulkGetResponse> response = BulkGetAsync(request);
+
+            return response.Result;
+        }
+
+        public Task<BulkGetResponse> BulkGetAsync(BulkGetRequest request)
+        {
+            return Network.Invoke<BulkGetResponse, BulkGetRequest>(request, this.Endpoint, this.Creds);
+        }
+
+        public BulkPutResponse BulkPut(BulkPutRequest request)
+        {
+            Task<BulkPutResponse> response = BulkPutAsync(request);
+
+            return response.Result;
+        }
+
+        public Task<BulkPutResponse> BulkPutAsync(BulkPutRequest request)
+        {
+            return Network.Invoke<BulkPutResponse, BulkPutRequest>(request, this.Endpoint, this.Creds);
+        }
     }
 }

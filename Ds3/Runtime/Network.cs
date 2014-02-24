@@ -33,13 +33,16 @@ namespace Ds3.Runtime
 
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
             {
-                using (Stream content = request.Content)
-                using (Stream requestStream = httpRequest.GetRequestStream())
-                {
-                    if (content != Stream.Null)
+                using (Stream content = request.getContentStream()) {
+                    httpRequest.ContentLength = content.Length;                    
+                    using (Stream requestStream = httpRequest.GetRequestStream())
                     {
-                        content.CopyTo(requestStream);
-                    }                    
+                        if (content != Stream.Null)
+                        {
+                            content.CopyTo(requestStream);
+                            requestStream.Flush();
+                        }                        
+                    }
                 }
             }
             
@@ -75,6 +78,7 @@ namespace Ds3.Runtime
         private static string BuildPayload(HttpVerb verb, string date, string resourcePath, string md5 = "", string contentType = "", string amzHeaders = "")
         {
             StringBuilder builder = new StringBuilder();
+
             builder.Append(verb).Append("\n");
             builder.Append(md5).Append("\n");
             builder.Append(contentType).Append("\n");

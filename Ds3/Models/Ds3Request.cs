@@ -16,14 +16,14 @@ namespace Ds3.Models
             get;   
         }
 
-        public virtual Stream Content
-        {
-            get { return Stream.Null; }
-        }
+        public virtual Stream getContentStream() {
+            return Stream.Null;
+        }            
 
+        private Dictionary<string, string> _queryParams = new Dictionary<string, string>();
         public virtual Dictionary<string,string> QueryParams
         {
-            get { return new Dictionary<string,string>(); }
+            get { return _queryParams; }
         }
     }
 
