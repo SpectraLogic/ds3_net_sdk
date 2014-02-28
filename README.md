@@ -10,7 +10,7 @@ A SDK conforming to the SD3 specification.
 
 The SDK is distributed as a DLL.  The DLL can be added as a Reference into Visual Studio.
 
-## DSK
+## SdK
 
 ---
 
@@ -26,7 +26,7 @@ using Ds3.Models;
 namespace Ds3Example
 {
 
-  class ListBuckets
+  class ListBucketsExample
   {
     static void Main(string[] args)
     {
@@ -44,7 +44,7 @@ namespace Ds3Example
 
 ```
 
-The SDK allows you to fully communicate with a DS3 appliance.  Each command has a Synchronous version and an Asynchronous version.  The following is a list of all the commands that can be used to communicate with a DS3 appliance.
+The SDK allows you to fully communicate with a DS3 appliance.  Each command has a Synchronous version and an Asynchronous version.  The following is a list of commands that can be used to communicate with a DS3 appliance:
 
 * `GetService`
     * Args: `GetServiceRequest`
@@ -115,3 +115,65 @@ The SDK allows you to fully communicate with a DS3 appliance.  Each command has 
     * Return: `BulkGetResponse`
         * Properties:
             * `ObjectLists`: `List<List<Ds3Object>>` - The list of lists of objects specifying the order that files should be put in        
+
+## Examples
+
+---
+
+The following are some examples of using the SDK.
+
+### Bulk Put
+
+```csharp
+
+using System;
+
+using Ds3;
+using Ds3.Models;
+
+namespace Ds3Example
+{
+
+  class BulkPutExample
+  {
+    static void Main(string[] args)
+    {
+      Ds3Client client = new Ds3Client("http://192.168.6.138:8080", new Credentials("cnlhbg==", "4iDEhFRV"));
+    
+      string bucketName = "bulkBucket";
+      PutBucketResponse bucketRequest = client.PutBucket(new PutBucketRequest(bucketName));
+
+      //Generate the list of files and their sizes.
+      string[] fileList = new string[3] {"beowulf.txt", "frankenstein.txt", "ulysses.txt"};
+      List<Ds3Object> objects = new List<Ds3Object>();
+    
+      foreach (string file in fileList)
+      {
+        FileInfo info = new FileInfo(file);
+        objects.Add(new Ds3Object(file, info.Length));
+      }                        
+    
+      // Create the bulk request.  The DS3 Appliance must first be primed with the Bulk command before
+      // individual files are Put.
+      BulkPutResponse response = client.BulkPut(new BulkPutRequest(bucketName, objects));            
+      foreach (List<Ds3Object> objList in response.ObjectLists)
+      {
+        foreach (Ds3Object obj in objList)
+        {
+          PutObjectResponse objResponse = client.PutObject(new PutObjectRequest(bucketName, obj.Name, new FileStream(obj.Name, FileMode.Open)));                          
+        }
+      }
+    
+      // Verify all objects were put to the DS3 appliance by listing all the objects in the bucket    
+      GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest(bucketName));
+    
+      foreach (Ds3Object obj in bucketResponse.Objects)
+      {
+        Console.WriteLine(obj.Name);
+      }
+    }
+  }
+}
+
+
+```
