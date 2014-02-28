@@ -10,7 +10,7 @@ A SDK conforming to the SD3 specification.
 
 The SDK is distributed as a DLL.  The DLL can be added as a Reference into Visual Studio.
 
-## SdK
+## SDK
 
 ---
 
@@ -133,7 +133,6 @@ using Ds3.Models;
 
 namespace Ds3Example
 {
-
   class BulkPutExample
   {
     static void Main(string[] args)
