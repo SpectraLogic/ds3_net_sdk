@@ -70,6 +70,12 @@ The SDK allows you to fully communicate with a DS3 appliance.  Each command has 
     * Args: `PutBucketRequest`
         * ConstructorArgs:
             * `BucketName`: `string`  - The name of the new bucket to create
+* `DeleteBucket`
+    * Args: `DeleteBucketRequest`
+        * ConstructorArgs:
+            * `BucketName`: `string` - The name of the bucket to delete
+    * Return: `DeleteBucketResponse`
+        * If the Delete fails a `Ds3RequestException` will be thrown.  Otherwise the object will be returned.  Thise could mean that not all the objects in the bucket have been deleted
 * `GetObject`
     * Args: `GetObjectRequest`
         * ConstructorArgs:
@@ -80,9 +86,32 @@ The SDK allows you to fully communicate with a DS3 appliance.  Each command has 
             * `Contents`: `Stream` - The data stream containing the requested object
 * `PutObject`
     * Args: `PutObjectRequest`
-        * ContructroArgs:
+        * ConstructorArgs:
             * `BucketName`: `string` - The name of the bucket to store the object into
             * `ObjectName`: `string` - The name of the new object
             * `Content`: `Stream` - A `Stream` containing the object to put to DS3
     * Return: `PutObjectResponse`
-        * If the Put failed a `Ds3RequestException` will be thrown.  Otherwise the object will be returned.        
+        * If the Put fails a `Ds3RequestException` will be thrown.  Otherwise the object will be returned.
+* `DeleteObject`
+    * Args: `DeleteObjectRequest`
+        * ConstructorArgs:
+            * `BucketName`: `string` - The name of the bucket the object is stored in
+            * `ObjectName`: `string` - The name of the object to delete
+    * Return: `DeleteObjectRequest`
+        * If the Delete fails a `Ds3RequestException` will be thrown.  Otherwise the object will be returned.
+* `BulkGet`
+    * Args: `BulkGetRequest`
+        * ConstructorArgs:
+            * `BucketName`: `string` - The name of the bucket to get objects from
+            * `Objects`: `List<Ds3Object>` - The list of objects that will be used to prime DS3
+    * Return: `BulkGetResponse`
+        * Properties:
+            * `ObjectLists`: `List<List<Ds3Object>>` - The list of lists of objects specifying the order that files should be retrieved in
+* `BulkPut`
+    * Args: `BulkPutRequest`
+        * ConstructorArgs:
+            * `BucketName`: `string` - The name of the bucket to get objects from
+            * `Objects`: `List<Ds3Object>` - The list of objects that will be used to prime DS3
+    * Return: `BulkGetResponse`
+        * Properties:
+            * `ObjectLists`: `List<List<Ds3Object>>` - The list of lists of objects specifying the order that files should be put in        
