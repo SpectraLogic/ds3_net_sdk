@@ -14,14 +14,14 @@ The SDK is distributed as a DLL.  The DLL can be added as a Reference into Visua
 
 ---
 
-The SDK provides an interface to communicate with a DS3 compliant appliance.  The primary class that is used to interact with DS3 is the `Ds3Client` class.  The `Ds3Client` class is located in the `Ds3` namespace and is used to communicate with DS3.  Here is an example that will list all the buckets on a remote DS3 appliance.
+The SDK provides an interface to communicate with a DS3 compliant appliance.  The primary class that is used to interact with DS3 is the `Ds3Client` class.  The `Ds3Client` class is located in the `Ds3` namespace and is used to communicate with DS3.  Here is an example using the Ds3Client class that lists all the buckets on a remote DS3 appliance.
 
 ```csharp
 
 using System;
 
 using Ds3;
-using ds3Models;
+using Ds3.Models;
 
 namespace Ds3Example
 {
@@ -32,9 +32,9 @@ namespace Ds3Example
     {
       Ds3Client client = new Ds3Client("http://ds3hostname:8080", new Credentials("accessKey", "secretKey"));
 
-      GetServiceResponse response = client.GetService(new GetService());
+      GetServiceResponse response = client.GetService(new GetServiceRequest());
 
-      foreach(Bucket bucket in response)
+      foreach(Bucket bucket in response.Buckets)
       {
         Console.WriteLine(bucket.Name);
       }
@@ -43,3 +43,4 @@ namespace Ds3Example
 }
 
 ```
+
