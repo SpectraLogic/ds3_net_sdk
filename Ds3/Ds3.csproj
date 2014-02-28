@@ -53,6 +53,7 @@
     <Compile Include="Models\BulkPutRequest.cs" />
     <Compile Include="Models\BulkPutResponse.cs" />
     <Compile Include="Models\BulkRequest.cs" />
+    <Compile Include="Models\BulkResponse.cs" />
     <Compile Include="Models\DeleteBucketRequest.cs" />
     <Compile Include="Models\DeleteBucketResponse.cs" />
     <Compile Include="Models\DeleteObjectRequest.cs" />

@@ -2,12 +2,12 @@
 
 namespace Ds3.Models
 {
-    public class BulkGetResponse : Ds3Response
+    public class BulkGetResponse : BulkResponse
     {
         public BulkGetResponse(HttpWebResponse response)
             : base(response)
         {
-
+            handleStatusCode(HttpStatusCode.OK);
         }
     }
 }

@@ -18,25 +18,35 @@ namespace ds3ClassRunner
             
             string bucketName = "bulkTest1";
 
-            Ds3Client client = new Ds3Client("http://10.1.18.8:8080", new Credentials("cnlhbg==", "T8NmDqUh"));
+            Ds3Client client = new Ds3Client("http://192.168.6.156:8080", new Credentials("cnlhbg==", "4iDEhFRV"));
 
-            PutBucketResponse bucketRequest = client.PutBucket(new PutBucketRequest(bucketName));
-            Console.WriteLine("Created bucket: " + bucketName);
+            //PutBucketResponse bucketRequest = client.PutBucket(new PutBucketRequest(bucketName));
+            //Console.WriteLine("Created bucket: " + bucketName);
 
             List<Ds3Object> objects = new List<Ds3Object>();
             objects.Add(new Ds3Object("beowulf.txt", 301063));
             objects.Add(new Ds3Object("frankenstein.txt", 448689));
-            objects.Add(new Ds3Object("ulysses.txt", 1573150));
+            objects.Add(new Ds3Object("ulysses.txt", 2547454));
 
-            BulkPutResponse response = client.BulkPut(new BulkPutRequest(bucketName, objects));
+            BulkGetResponse response = client.BulkGet(new BulkGetRequest(bucketName, objects));
+            //BulkPutResponse response = client.BulkPut(new BulkPutRequest(bucketName, objects));
 
-            Console.WriteLine("Bulk Prime came back.");
+            Console.WriteLine("Bulk Get Prime came back.");
 
             foreach (List<Ds3Object> objList in response.ObjectLists)
             {
                 foreach (Ds3Object obj in objList)
                 {
-                    PutObjectResponse objResponse = client.PutObject(new PutObjectRequest(bucketName, obj.Name, new FileStream(obj.Name, FileMode.Open)));
+                    //PutObjectResponse objResponse = client.PutObject(new PutObjectRequest(bucketName, obj.Name, new FileStream(obj.Name, FileMode.Open)));
+
+                    
+                    GetObjectResponse objResponse = client.GetObject(new GetObjectRequest(bucketName, obj.Name));
+                    using (FileStream outStream = new FileStream(obj.Name + ".copy", FileMode.Create))
+                    using (Stream inStream = objResponse.Contents)
+                    {
+                        inStream.CopyTo(outStream);
+                    }
+                     
                 }
             }
 
