@@ -165,8 +165,7 @@ namespace Ds3Example
       }
     
       // Verify all objects were put to the DS3 appliance by listing all the objects in the bucket    
-      GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest(bucketName));
-    
+      GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest(bucketName));    
       foreach (Ds3Object obj in bucketResponse.Objects)
       {
         Console.WriteLine(obj.Name);
