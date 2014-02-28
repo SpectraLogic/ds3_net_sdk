@@ -47,5 +47,5 @@ namespace Ds3Example
 The SDK allows you to fully communicate with a DS3 appliance.  Each command has a Synchronous version and an Asynchronous version.  The following is a list of all the commands that can be used to communicate with a DS3 appliance.
 
 * `GetService`
-  * Args: `GetServiceRequest` - Takes no arguments.
-  * Returns: `GetServiceResponse` - Contains a `Buckets` property which lists out all the buckets the current user has access to.
+    * Args: `GetServiceRequest` - Takes no arguments.
+    * Returns: `GetServiceResponse` - Contains a `Buckets` property which lists out all the buckets the current user has access to.
