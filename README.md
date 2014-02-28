@@ -47,5 +47,42 @@ namespace Ds3Example
 The SDK allows you to fully communicate with a DS3 appliance.  Each command has a Synchronous version and an Asynchronous version.  The following is a list of all the commands that can be used to communicate with a DS3 appliance.
 
 * `GetService`
-    * Args: `GetServiceRequest` - Takes no arguments.
-    * Returns: `GetServiceResponse` - Contains a `Buckets` property which lists out all the buckets the current user has access to.
+    * Args: `GetServiceRequest`
+    * Return: `GetServiceResponse`
+        * Properties:
+            * `Buckets`: `List<Bucket>` - List of Buckets the user has access to
+            * `Owner`: `Owner` - Details on the downer
+* `GetBucket`
+    * Args: `GetBucketRequest`
+        * ConstructorArgs:
+            * `BucketName`: `string` - The name of the bucket to get information on
+    * Return: `GetBucketResponse`
+        * Properties:
+            * `Name`: `string` - The name of the bucket
+            * `Prefix`: `string` - The prefix used to generate the list of objects
+            * `Marker`: `string` -
+            * `MaxKeys`: `int` - The maximum number of objects returned in the list
+            * `IsTruncated`: `bool` - `True` if the results were truncated
+            * `NextMarker`: `string` - Used in pagination
+            * `CreationDate`: `DateTime` - The `DateTime` that the bucket was created
+            * `Objects`: `List<Ds3Object>` - The list of objects that are contained in the bucket
+* `PutBucket`
+    * Args: `PutBucketRequest`
+        * ConstructorArgs:
+            * `BucketName`: `string`  - The name of the new bucket to create
+* `GetObject`
+    * Args: `GetObjectRequest`
+        * ConstructorArgs:
+            * `BucketName`: `string` - The name of the bucket
+            * `ObjectName`: `string` - The name of the object to retrieve
+    * Return: `GetObjectResponse`
+        * Properties:
+            * `Contents`: `Stream` - The data stream containing the requested object
+* `PutObject`
+    * Args: `PutObjectRequest`
+        * ContructroArgs:
+            * `BucketName`: `string` - The name of the bucket to store the object into
+            * `ObjectName`: `string` - The name of the new object
+            * `Content`: `Stream` - A `Stream` containing the object to put to DS3
+    * Return: `PutObjectResponse`
+        * If the Put failed a `Ds3RequestException` will be thrown.  Otherwise the object will be returned.        
