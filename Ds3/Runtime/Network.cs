@@ -48,7 +48,7 @@ namespace Ds3.Runtime
             
             try
             {
-                HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();                
+                HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync().ConfigureAwait(false);                
                 return CreateResponseInstance<T>(httpResponse);
             }
             catch (WebException e)

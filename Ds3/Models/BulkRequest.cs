@@ -77,10 +77,7 @@ namespace Ds3.Models
           
             serializer.Serialize(stream, convertToAwsModel(objects));
             StreamReader reader = new StreamReader(stream);
-            stream.Seek(0, SeekOrigin.Begin);
-
-            string result = reader.ReadToEnd();
-            Console.WriteLine(result);
+            
             stream.Seek(0, SeekOrigin.Begin);
             return stream;
         }
