@@ -10,8 +10,7 @@ namespace Ds3.Models
     public class BulkPutResponse : BulkResponse
     {
         public BulkPutResponse(HttpWebResponse response) : base(response)
-        {
-            handleStatusCode(HttpStatusCode.OK);            
+        {            
         }
     }
 }

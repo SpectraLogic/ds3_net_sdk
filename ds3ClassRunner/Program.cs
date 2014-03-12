@@ -16,11 +16,12 @@ namespace ds3ClassRunner
         static void Main(string[] args)
         {
            
-            Ds3Client client = new Ds3Client("http://192.168.6.138:8080", new Credentials("cnlhbg==", "4iDEhFRV"));
+            Ds3Client client = new Ds3Client("http://192.168.6.151:8080", new Credentials("cnlhbg==", "4iDEhFRV"));
 
-            string bucketName = "bulkBucket2";
-            PutBucketResponse bucketRequest = client.PutBucket(new PutBucketRequest(bucketName));
-
+            
+            string bucketName = "bulkBucket3";
+            //PutBucketResponse bucketRequest = client.PutBucket(new PutBucketRequest(bucketName));             
+ 
             string[] fileList = new string[3] {"beowulf.txt", "frankenstein.txt", "ulysses.txt"};
             List<Ds3Object> objects = new List<Ds3Object>();
 

@@ -20,6 +20,7 @@ namespace Ds3.Models
 
         public BulkResponse(HttpWebResponse response) : base(response)
         {
+            handleStatusCode(HttpStatusCode.OK);
             _objectLists = new List<List<Ds3Object>>();
             processRequest();
         }

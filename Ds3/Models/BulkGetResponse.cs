@@ -6,8 +6,7 @@ namespace Ds3.Models
     {
         public BulkGetResponse(HttpWebResponse response)
             : base(response)
-        {
-            handleStatusCode(HttpStatusCode.OK);
+        {            
         }
     }
 }
