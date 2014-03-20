@@ -1,4 +1,6 @@
-﻿namespace Ds3
+﻿using System.Net;
+
+namespace Ds3
 {
     public class Credentials
     {
@@ -7,6 +9,12 @@
         {
             _accessId = accessId;
             _key = key;
+        }
+
+        public Credentials(NetworkCredential credential)
+        {
+            _accessId = credential.UserName;
+            _key = credential.Password;
         }
 
         private string _key;

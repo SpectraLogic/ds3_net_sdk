@@ -14,7 +14,7 @@ namespace Ds3
 
         public Ds3Client(string endpoint, Credentials creds) {
             this.Creds = creds;
-            this.Endpoint = new Uri(endpoint);
+            this.Endpoint = new Uri(endpoint);         
         }
         
         public GetServiceResponse GetService(GetServiceRequest request){

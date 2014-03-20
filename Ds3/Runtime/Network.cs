@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -16,46 +17,65 @@ namespace Ds3.Runtime
     {
         public static async Task<T> Invoke<T, K>(K request, Uri endpoint, Credentials creds) where T: Ds3Response where K : Ds3Request
         {
-            DateTime date = DateTime.UtcNow;
-            UriBuilder uriBuilder = new UriBuilder(endpoint);            
-            uriBuilder.Path = request.Path;
+            bool redirect = false;
+            int redirectCount = 0;
+            int maxRedirects = 5;
 
-            if (request.QueryParams.Count > 0)
-            {
-                uriBuilder.Query = buildQueryParams(request.QueryParams);
-            }
+            do {
+                DateTime date = DateTime.UtcNow;
+                UriBuilder uriBuilder = new UriBuilder(endpoint);            
+                uriBuilder.Path = request.Path;
 
-            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.ToString());
-            httpRequest.Method = request.Verb.ToString();
-            httpRequest.Date = date;
-            httpRequest.Host = endpoint.Host;
-            httpRequest.Headers.Add("Authorization", AuthField(creds, request.Verb, date.ToString("r"), request.Path));
+                if (request.QueryParams.Count > 0)
+                {
+                    uriBuilder.Query = buildQueryParams(request.QueryParams);
+                }
 
-            if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
-            {
-                using (Stream content = request.getContentStream()) {
-                    httpRequest.ContentLength = content.Length;                    
-                    using (Stream requestStream = httpRequest.GetRequestStream())
-                    {
-                        if (content != Stream.Null)
+                HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.ToString());
+                httpRequest.Method = request.Verb.ToString();
+                httpRequest.Date = date;
+                httpRequest.Host = endpoint.Host;
+                httpRequest.AllowAutoRedirect = false;
+                httpRequest.Headers.Add("Authorization", S3Signer.AuthField(creds, request.Verb.ToString(), date.ToString("r"), request.Path));
+
+                if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
+                {
+                    using (Stream content = request.getContentStream()) {
+                        httpRequest.ContentLength = content.Length;                    
+                        using (Stream requestStream = httpRequest.GetRequestStream())
                         {
-                            content.CopyTo(requestStream);
-                            requestStream.Flush();
-                        }                        
+                            if (content != Stream.Null)
+                            {
+                                content.CopyTo(requestStream);
+                                requestStream.Flush();
+                            }                        
+                        }
                     }
                 }
-            }
             
-            try
-            {
-                HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync().ConfigureAwait(false);                
-                return CreateResponseInstance<T>(httpResponse);
-            }
-            catch (WebException e)
-            {
-                //We want this response to go to the handlers so that they can perform any special actions that they need to.
-                return CreateResponseInstance<T>((HttpWebResponse)e.Response);
-            }            
+                try
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync().ConfigureAwait(false);
+                    if (is307(httpResponse))
+                    {
+                        redirect = true;
+                        redirectCount++;
+                        continue;
+                    }
+                    return CreateResponseInstance<T>(httpResponse);
+                }
+                catch (WebException e)
+                {                   
+                    return CreateResponseInstance<T>((HttpWebResponse)e.Response);
+                }   
+            }while(redirect && redirectCount < maxRedirects);
+            
+            throw new Exception("Too many redirects.");            
+        }
+
+        private static bool is307(HttpWebResponse httpResponse)
+        {
+            return httpResponse.StatusCode.Equals(HttpStatusCode.TemporaryRedirect);
         }
 
         private static T CreateResponseInstance<T>(HttpWebResponse content)
@@ -67,24 +87,6 @@ namespace Ds3.Runtime
         private static string FormatedDateString()
         {
             return DateTime.Now.ToString("ddd, dd MMM yyyy HH:mm:ss K");
-        }
-
-        private static string AuthField(Credentials creds, HttpVerb verb, string date, string resourcePath, string _md5 = "", string _contentType = "", string _amzHeaders = "")
-        {
-            string signature = S3Signer.Signature(creds.Key, BuildPayload(verb, date, resourcePath, _md5, _contentType, _amzHeaders));
-            return "AWS " + creds.AccessId + ":" + signature;
-        }
-
-        private static string BuildPayload(HttpVerb verb, string date, string resourcePath, string md5 = "", string contentType = "", string amzHeaders = "")
-        {
-            StringBuilder builder = new StringBuilder();
-
-            builder.Append(verb).Append("\n");
-            builder.Append(md5).Append("\n");
-            builder.Append(contentType).Append("\n");
-            builder.Append(date).Append("\n");
-            builder.Append(amzHeaders).Append(resourcePath);
-            return builder.ToString();
         }
 
         private static string buildQueryParams(Dictionary<string, string> queryParams)
