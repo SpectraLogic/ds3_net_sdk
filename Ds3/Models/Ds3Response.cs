@@ -34,7 +34,7 @@ namespace Ds3.Models
             HttpStatusCode actualStatusCode = response.StatusCode;
             if (!actualStatusCode.Equals(expectedStatusCode))
             {
-                throw new Ds3RequestException(expectedStatusCode, actualStatusCode);
+                throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode);
             }
         }
 

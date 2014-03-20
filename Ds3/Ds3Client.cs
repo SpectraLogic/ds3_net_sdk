@@ -12,116 +12,99 @@ namespace Ds3
         private Credentials Creds;
         private Uri Endpoint;
 
+        //TODO Add in another constructor where the endpoint is a uri
         public Ds3Client(string endpoint, Credentials creds) {
             this.Creds = creds;
             this.Endpoint = new Uri(endpoint);         
         }
         
         public GetServiceResponse GetService(GetServiceRequest request){
-            Task<GetServiceResponse> response = GetServiceAsync(request);
-
-            return response.Result;
+            return Network.Invoke<GetServiceResponse, GetServiceRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<GetServiceResponse> GetServiceAsync(GetServiceRequest request)
         {
-            return Network.Invoke<GetServiceResponse, GetServiceRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<GetServiceResponse, GetServiceRequest>(request, this.Endpoint, this.Creds);
         }
 
         public GetBucketResponse GetBucket(GetBucketRequest request)
         {
-            Task<GetBucketResponse> response = GetBucketAsync(request);
-
-            return response.Result;
+            return Network.Invoke<GetBucketResponse, GetBucketRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<GetBucketResponse> GetBucketAsync(GetBucketRequest request)
         {
-            return Network.Invoke<GetBucketResponse, GetBucketRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<GetBucketResponse, GetBucketRequest>(request, this.Endpoint, this.Creds);
         }
 
         public GetObjectResponse GetObject(GetObjectRequest request)
         {
-            Task<GetObjectResponse> response = GetObjectAsync(request);
-
-            return response.Result;
+            return Network.Invoke<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<GetObjectResponse> GetObjectAsync(GetObjectRequest request)
         {
-            return Network.Invoke<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
         }
 
         public PutObjectResponse PutObject(PutObjectRequest request)
         {
-            Task<PutObjectResponse> response = PutObjectAsync(request);
-
-            return response.Result;
+            return Network.Invoke<PutObjectResponse, PutObjectRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<PutObjectResponse> PutObjectAsync(PutObjectRequest request)
         {
-            return Network.Invoke<PutObjectResponse, PutObjectRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<PutObjectResponse, PutObjectRequest>(request, this.Endpoint, this.Creds);
         }
 
         public DeleteObjectResponse DeleteObject(DeleteObjectRequest request)
         {
-            Task<DeleteObjectResponse> response = DeleteObjectAsync(request);
-
-            return response.Result;
+            return Network.Invoke<DeleteObjectResponse, DeleteObjectRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<DeleteObjectResponse> DeleteObjectAsync(DeleteObjectRequest request)
         {
-            return Network.Invoke<DeleteObjectResponse, DeleteObjectRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<DeleteObjectResponse, DeleteObjectRequest>(request, this.Endpoint, this.Creds);
         }
 
         public DeleteBucketResponse DeleteBucket(DeleteBucketRequest request)
         {
-            Task<DeleteBucketResponse> response = DeleteBucketAsync(request);
-
-            return response.Result;
+            return Network.Invoke<DeleteBucketResponse, DeleteBucketRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<DeleteBucketResponse> DeleteBucketAsync(DeleteBucketRequest request)
         {
-            return Network.Invoke<DeleteBucketResponse, DeleteBucketRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<DeleteBucketResponse, DeleteBucketRequest>(request, this.Endpoint, this.Creds);
         }
 
         public PutBucketResponse PutBucket(PutBucketRequest request)
         {
-            Task<PutBucketResponse> response = PutBucketAsync(request);
-
-            return response.Result;
+            return Network.Invoke<PutBucketResponse, PutBucketRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<PutBucketResponse> PutBucketAsync(PutBucketRequest request)
         {
-            return Network.Invoke<PutBucketResponse, PutBucketRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<PutBucketResponse, PutBucketRequest>(request, this.Endpoint, this.Creds);
         }
 
         public BulkGetResponse BulkGet(BulkGetRequest request)
         {
-            Task<BulkGetResponse> response = BulkGetAsync(request);
-
-            return response.Result;
+            return Network.Invoke<BulkGetResponse, BulkGetRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<BulkGetResponse> BulkGetAsync(BulkGetRequest request)
         {
-            return Network.Invoke<BulkGetResponse, BulkGetRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<BulkGetResponse, BulkGetRequest>(request, this.Endpoint, this.Creds);
         }
 
         public BulkPutResponse BulkPut(BulkPutRequest request)
         {
-            Task<BulkPutResponse> response = BulkPutAsync(request);
-
-            return response.Result;
+            return Network.Invoke<BulkPutResponse, BulkPutRequest>(request, this.Endpoint, this.Creds);
         }
 
         public Task<BulkPutResponse> BulkPutAsync(BulkPutRequest request)
         {
-            return Network.Invoke<BulkPutResponse, BulkPutRequest>(request, this.Endpoint, this.Creds);
+            return Network.InvokeAsync<BulkPutResponse, BulkPutRequest>(request, this.Endpoint, this.Creds);
         }
     }
 }
