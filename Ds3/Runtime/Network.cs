@@ -14,22 +14,34 @@ using Ds3.Models;
 
 namespace Ds3.Runtime
 {
-    class Network
+    internal class Network
     {
 
-        public static T Invoke<T, K>(K request, Uri endpoint, Credentials creds) where T: Ds3Response where K : Ds3Request
+        private Uri Endpoint;
+        private Credentials Creds;
+        private int MaxRedirects = 0;
+
+        internal Uri Proxy = null;
+
+        public Network(Uri endpoint, Credentials creds, int maxRedirects)
+        {
+            this.Endpoint = endpoint;
+            this.Creds = creds;
+            this.MaxRedirects = maxRedirects;
+        }
+
+        public T Invoke<T, K>(K request) where T: Ds3Response where K : Ds3Request
         {
             bool redirect = false;
-            int redirectCount = 0;
-            int maxRedirects = 5;
+            int redirectCount = 0;            
 
             do
             {
-                HttpWebRequest httpRequest = createRequest(request, endpoint, creds);
+                HttpWebRequest httpRequest = createRequest(request);
                 try
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                    if (is307(httpResponse))
+                    if (Is307(httpResponse))
                     {
                         redirect = true;
                         redirectCount++;
@@ -46,23 +58,22 @@ namespace Ds3.Runtime
                     }
                     return CreateResponseInstance<T>((HttpWebResponse)e.Response);
                 }
-            } while (redirect && redirectCount < maxRedirects);
+            } while (redirect && redirectCount < MaxRedirects);
 
-            throw new Ds3RequestException("Too many redirects.");      
+            throw new Ds3RedirectLimitException("Too many redirects.");      
         }
 
-        public static async Task<T> InvokeAsync<T, K>(K request, Uri endpoint, Credentials creds) where T: Ds3Response where K : Ds3Request
+        public async Task<T> InvokeAsync<T, K>(K request) where T: Ds3Response where K : Ds3Request
         {
             bool redirect = false;
-            int redirectCount = 0;
-            int maxRedirects = 5;
+            int redirectCount = 0;            
 
             do {
-                HttpWebRequest httpRequest = createRequest(request, endpoint, creds);
+                HttpWebRequest httpRequest = createRequest(request);
                 try
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync().ConfigureAwait(false);
-                    if (is307(httpResponse))
+                    if (Is307(httpResponse))
                     {
                         redirect = true;
                         redirectCount++;
@@ -79,28 +90,34 @@ namespace Ds3.Runtime
                     }
                     return CreateResponseInstance<T>((HttpWebResponse)e.Response);
                 }   
-            }while(redirect && redirectCount < maxRedirects);
-            
-            throw new Ds3RequestException("Too many redirects.");            
+            }while(redirect && redirectCount < MaxRedirects);
+
+            throw new Ds3RedirectLimitException("Too many redirects.");            
         }
 
-        private static HttpWebRequest createRequest<K>(K request, Uri endpoint, Credentials creds) where K : Ds3Request
+        private HttpWebRequest createRequest<K>(K request) where K : Ds3Request
         {
             DateTime date = DateTime.UtcNow;
-            UriBuilder uriBuilder = new UriBuilder(endpoint);
+            UriBuilder uriBuilder = new UriBuilder(Endpoint);
             uriBuilder.Path = request.Path;
 
             if (request.QueryParams.Count > 0)
             {
-                uriBuilder.Query = buildQueryParams(request.QueryParams);
+                uriBuilder.Query = BuildQueryParams(request.QueryParams);
             }
 
             HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.ToString());
             httpRequest.Method = request.Verb.ToString();
+            if (Proxy != null)
+            {
+                WebProxy webProxy = new WebProxy();
+                webProxy.Address = Proxy;
+                httpRequest.Proxy = webProxy;
+            }
             httpRequest.Date = date;
-            httpRequest.Host = endpoint.Host;
+            httpRequest.Host = CreateHostString(Endpoint);
             httpRequest.AllowAutoRedirect = false;
-            httpRequest.Headers.Add("Authorization", S3Signer.AuthField(creds, request.Verb.ToString(), date.ToString("r"), request.Path));
+            httpRequest.Headers.Add("Authorization", S3Signer.AuthField(Creds, request.Verb.ToString(), date.ToString("r"), request.Path));
 
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
             {
@@ -120,26 +137,35 @@ namespace Ds3.Runtime
             return httpRequest;
         }
 
-        private static bool is307(HttpWebResponse httpResponse)
+        private string CreateHostString(Uri endpoint)
+        {
+            if(endpoint.Port > 0) {
+                return endpoint.Host + ":" + endpoint.Port;
+            }
+            return endpoint.Host;
+        }
+
+        private bool Is307(HttpWebResponse httpResponse)
         {
             return httpResponse.StatusCode.Equals(HttpStatusCode.TemporaryRedirect);
         }
 
-        private static T CreateResponseInstance<T>(HttpWebResponse content)
+        private T CreateResponseInstance<T>(HttpWebResponse content)
         {
             Type type = typeof(T);            
             return (T)Activator.CreateInstance(type, content);
         }
 
-        private static string FormatedDateString()
+        private string FormatedDateString()
         {
             return DateTime.Now.ToString("ddd, dd MMM yyyy HH:mm:ss K");
         }
 
-        private static string buildQueryParams(Dictionary<string, string> queryParams)
+        private string BuildQueryParams(Dictionary<string, string> queryParams)
         {
             List<string> queryList = queryParams.Select(kvp => kvp.Key + "=" + kvp.Value).ToList();
             return String.Join("&", queryList);            
         }
+
     }
 }

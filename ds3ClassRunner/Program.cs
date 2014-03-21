@@ -16,12 +16,23 @@ namespace ds3ClassRunner
         static void Main(string[] args)
         {
            
-            Ds3Client client = new Ds3Client("http://192.168.6.151:8080", new Credentials("cnlhbg==", "4iDEhFRV"));
+            //Ds3Client client = new Ds3Builder("http://192.168.56.104:8088", new Credentials("cnlhbg==", "4iDEhFRV")).withRedirectRetries(3).build();
 
+            Ds3Client client = new Ds3Builder(new Uri("http://192.168.56.104:8088"), new Credentials("cnlhbg==", "4iDEhFRV")).withProxy(new Uri("http://192.168.56.104:8080")).build();
+            /*
+            GetServiceResponse response = client.GetService(new GetServiceRequest());
+
+            foreach(Bucket bucket in response.Buckets) {
+                Console.WriteLine(bucket.Name);
+            } 
+             */
+
+            client.GetObject(new GetObjectRequest("bucket", "file.txt"));
             
-            string bucketName = "bulkBucket3";
+            //string bucketName = "bulkBucket3";
             //PutBucketResponse bucketRequest = client.PutBucket(new PutBucketRequest(bucketName));             
  
+            /*
             string[] fileList = new string[3] {"beowulf.txt", "frankenstein.txt", "ulysses.txt"};
             List<Ds3Object> objects = new List<Ds3Object>();
 
@@ -31,6 +42,7 @@ namespace ds3ClassRunner
                 objects.Add(new Ds3Object(file, info.Length));
             }                        
 
+            /
             //BulkGetResponse response = client.BulkGet(new BulkGetRequest(bucketName, objects));
             BulkPutResponse response = client.BulkPut(new BulkPutRequest(bucketName, objects));            
 
@@ -47,10 +59,11 @@ namespace ds3ClassRunner
                     {
                         inStream.CopyTo(outStream);
                     }
-                     */                      
+                                          
                 }
             }
 
+    
             // Verify all objects were put to the DS3 appliance
 
             GetBucketResponse bucketResponse = client.GetBucket(new GetBucketRequest(bucketName));

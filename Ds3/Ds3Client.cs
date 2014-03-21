@@ -9,102 +9,99 @@ namespace Ds3
 {
     public class Ds3Client
     {
-        private Credentials Creds;
-        private Uri Endpoint;
-
-        //TODO Add in another constructor where the endpoint is a uri
-        public Ds3Client(string endpoint, Credentials creds) {
-            this.Creds = creds;
-            this.Endpoint = new Uri(endpoint);         
+        private Network NetLayer;
+        
+        internal Ds3Client(Network netLayer) {
+            this.NetLayer = netLayer;
         }
         
         public GetServiceResponse GetService(GetServiceRequest request){
-            return Network.Invoke<GetServiceResponse, GetServiceRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<GetServiceResponse, GetServiceRequest>(request);
         }
 
         public Task<GetServiceResponse> GetServiceAsync(GetServiceRequest request)
         {
-            return Network.InvokeAsync<GetServiceResponse, GetServiceRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<GetServiceResponse, GetServiceRequest>(request);
         }
 
         public GetBucketResponse GetBucket(GetBucketRequest request)
         {
-            return Network.Invoke<GetBucketResponse, GetBucketRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<GetBucketResponse, GetBucketRequest>(request);
         }
 
         public Task<GetBucketResponse> GetBucketAsync(GetBucketRequest request)
         {
-            return Network.InvokeAsync<GetBucketResponse, GetBucketRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<GetBucketResponse, GetBucketRequest>(request);
         }
 
         public GetObjectResponse GetObject(GetObjectRequest request)
         {
-            return Network.Invoke<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<GetObjectResponse, GetObjectRequest>(request);
         }
 
         public Task<GetObjectResponse> GetObjectAsync(GetObjectRequest request)
         {
-            return Network.InvokeAsync<GetObjectResponse, GetObjectRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<GetObjectResponse, GetObjectRequest>(request);
         }
 
         public PutObjectResponse PutObject(PutObjectRequest request)
         {
-            return Network.Invoke<PutObjectResponse, PutObjectRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<PutObjectResponse, PutObjectRequest>(request);
         }
 
         public Task<PutObjectResponse> PutObjectAsync(PutObjectRequest request)
         {
-            return Network.InvokeAsync<PutObjectResponse, PutObjectRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<PutObjectResponse, PutObjectRequest>(request);
         }
 
         public DeleteObjectResponse DeleteObject(DeleteObjectRequest request)
         {
-            return Network.Invoke<DeleteObjectResponse, DeleteObjectRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<DeleteObjectResponse, DeleteObjectRequest>(request);
         }
 
         public Task<DeleteObjectResponse> DeleteObjectAsync(DeleteObjectRequest request)
         {
-            return Network.InvokeAsync<DeleteObjectResponse, DeleteObjectRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<DeleteObjectResponse, DeleteObjectRequest>(request);
         }
 
         public DeleteBucketResponse DeleteBucket(DeleteBucketRequest request)
         {
-            return Network.Invoke<DeleteBucketResponse, DeleteBucketRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<DeleteBucketResponse, DeleteBucketRequest>(request);
         }
 
         public Task<DeleteBucketResponse> DeleteBucketAsync(DeleteBucketRequest request)
         {
-            return Network.InvokeAsync<DeleteBucketResponse, DeleteBucketRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<DeleteBucketResponse, DeleteBucketRequest>(request);
         }
 
         public PutBucketResponse PutBucket(PutBucketRequest request)
         {
-            return Network.Invoke<PutBucketResponse, PutBucketRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<PutBucketResponse, PutBucketRequest>(request);
         }
 
         public Task<PutBucketResponse> PutBucketAsync(PutBucketRequest request)
         {
-            return Network.InvokeAsync<PutBucketResponse, PutBucketRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<PutBucketResponse, PutBucketRequest>(request);
         }
 
         public BulkGetResponse BulkGet(BulkGetRequest request)
         {
-            return Network.Invoke<BulkGetResponse, BulkGetRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<BulkGetResponse, BulkGetRequest>(request);
         }
 
         public Task<BulkGetResponse> BulkGetAsync(BulkGetRequest request)
         {
-            return Network.InvokeAsync<BulkGetResponse, BulkGetRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<BulkGetResponse, BulkGetRequest>(request);
         }
 
         public BulkPutResponse BulkPut(BulkPutRequest request)
         {
-            return Network.Invoke<BulkPutResponse, BulkPutRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.Invoke<BulkPutResponse, BulkPutRequest>(request);
         }
 
         public Task<BulkPutResponse> BulkPutAsync(BulkPutRequest request)
         {
-            return Network.InvokeAsync<BulkPutResponse, BulkPutRequest>(request, this.Endpoint, this.Creds);
+            return NetLayer.InvokeAsync<BulkPutResponse, BulkPutRequest>(request);
         }
     }
 }
