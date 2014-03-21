@@ -2,7 +2,7 @@
 
 ---
 
-A SDK conforming to the SD3 specification.
+A SDK conforming to the DS3 specification.
 
 ## Installing
 
@@ -30,8 +30,8 @@ namespace Ds3Example
   {
     static void Main(string[] args)
     {
-      Ds3Client client = new Ds3Client("http://ds3hostname:8080",
-		new Credentials("accessKey", "secretKey"));
+      Ds3Client client = new Ds3Builder("http://ds3hostname:8080",
+		new Credentials("accessKey", "secretKey")).build();
 
       GetServiceResponse response = client.GetService(new GetServiceRequest());
 
@@ -138,8 +138,8 @@ namespace Ds3Example
   {
     static void Main(string[] args)
     {
-      Ds3Client client = new Ds3Client("http://192.168.6.138:8080",
-		new Credentials("cnlhbg==", "4iDEhFRV"));
+      Ds3Client client = new Ds3Builder("http://192.168.6.138:8080",
+		new Credentials("cnlhbg==", "4iDEhFRV")).build();
     
       string bucketName = "bulkBucket";
       PutBucketResponse bucketRequest = client.PutBucket(
