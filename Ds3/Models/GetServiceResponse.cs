@@ -11,7 +11,7 @@ namespace Ds3.Models
 {
     public class GetServiceResponse : Ds3Response
     {
-        private Owner _owner;
+        private Owner _owner = null;
         public Owner Owner
         {
             get { return _owner; }
@@ -38,6 +38,7 @@ namespace Ds3.Models
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));                
                 ListAllMyBucketsResult results = (ListAllMyBucketsResult)serializer.Deserialize(content);
+
                 foreach(object obj in results.Items) {
                     if (obj.GetType().Equals(typeof(ListAllMyBucketsResultOwner)))
                     {
@@ -52,12 +53,16 @@ namespace Ds3.Models
                         //TODO need to figure out what exception to throw here.
                         Console.WriteLine("Unknown element");
                     }
-                }
+                }                    
             }
         }
 
         private void convertBuckets(ListAllMyBucketsResultBuckets buckets)
         {
+            if (buckets.Bucket == null)
+            {
+                return;
+            }
             foreach (ListAllMyBucketsResultBucketsBucket bucket in buckets.Bucket)
             {
                 this._buckets.Add(new Bucket(bucket.Name, bucket.CreationDate));       
