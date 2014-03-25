@@ -22,19 +22,19 @@ namespace Ds3
             this.Endpoint = endpoint;
         }
 
-        public Ds3Builder withProxy(Uri proxy)
+        public Ds3Builder WithProxy(Uri proxy)
         {
             this.Proxy = proxy;
             return this;
         }
 
-        public Ds3Builder withRedirectRetries(int count)
+        public Ds3Builder WithRedirectRetries(int count)
         {
             this.RedirectRetryCount = count;
             return this;
         }
 
-        public Ds3Client build()
+        public Ds3Client Build()
         {
             Network netLayer = new Network(Endpoint, Creds, RedirectRetryCount);
             if (Proxy != null)
