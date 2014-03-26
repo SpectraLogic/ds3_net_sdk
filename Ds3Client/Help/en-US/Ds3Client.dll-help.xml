@@ -477,6 +477,10 @@
           <maml:name>KeyPrefix</maml:name>
           <command:parameterValue required="true">string</command:parameterValue>
         </command:parameter>
+        <command:parameter required="false" globbing="false" pipelineInput="false" position="1">
+          <maml:name>MaxKeys</maml:name>
+          <command:parameterValue required="true">int?</command:parameterValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
 
@@ -497,6 +501,14 @@
           <maml:para>Specifies the prefix of the keys of the objects to return info about.</maml:para>
         </maml:description>
         <command:parameterValue required="true">string</command:parameterValue>
+      </command:parameter>
+      
+      <command:parameter required="false" globbing="false" pipelineInput="false" position="1">
+        <maml:name>MaxKeys</maml:name>
+        <maml:description>
+          <maml:para>Specifies a limit of how many results to return.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">int?</command:parameterValue>
       </command:parameter>
       
     </command:parameters>
