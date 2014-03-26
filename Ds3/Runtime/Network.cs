@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using System.Net;
-using System.Net.Http;
+//using System.Net.Http;
 
 using Ds3.Models;
 
@@ -61,38 +61,6 @@ namespace Ds3.Runtime
             } while (redirect && redirectCount < MaxRedirects);
 
             throw new Ds3RedirectLimitException("Too many redirects.");      
-        }
-
-        public async Task<T> InvokeAsync<T, K>(K request) where T: Ds3Response where K : Ds3Request
-        {
-            bool redirect = false;
-            int redirectCount = 0;            
-
-            do {
-                HttpWebRequest httpRequest = createRequest(request);
-                try
-                {
-                    HttpWebResponse httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync().ConfigureAwait(false);
-                    if (Is307(httpResponse))
-                    {
-                        redirect = true;
-                        redirectCount++;
-                        Trace.Write("Encountered 307 number: " + redirectCount, "Ds3Network");
-                        continue;
-                    }
-                    return CreateResponseInstance<T>(httpResponse);
-                }
-                catch (WebException e)
-                {
-                    if (e.Response == null)
-                    {
-                        throw e;
-                    }
-                    return CreateResponseInstance<T>((HttpWebResponse)e.Response);
-                }   
-            }while(redirect && redirectCount < MaxRedirects);
-
-            throw new Ds3RedirectLimitException("Too many redirects.");            
         }
 
         private HttpWebRequest createRequest<K>(K request) where K : Ds3Request
