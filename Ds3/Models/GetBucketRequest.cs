@@ -11,9 +11,46 @@ namespace Ds3.Models
             get { return _bucketName; }
         }
 
+        private string _marker;
         public string Marker
         {
-            get { return this.QueryParams["marker"]; }
+            get { return _marker; }
+            set { WithMarker(value); }
+        }
+
+        public GetBucketRequest WithMarker(string marker)
+        {
+            this._marker = marker;
+            this.QueryParams.Add("marker", marker);
+            return this;
+        }
+
+        private int _maxKeys;
+        public int MaxKeys
+        {
+            get { return _maxKeys; }
+            set { WithMaxKeys(value); }
+        }
+
+        public GetBucketRequest WithMaxKeys(int maxKeys)
+        {
+            this._maxKeys = maxKeys;
+            this.QueryParams.Add("max-keys", maxKeys.ToString());
+            return this;
+        }
+
+        private string _prefix;
+        public string Prefix
+        {
+            get { return _prefix; }
+            set { WithPrefix(value); }
+        }
+
+        public GetBucketRequest WithPrefix(string prefix)
+        {
+            this._prefix = prefix;
+            this.QueryParams.Add("prefix", prefix);
+            return this;
         }
 
         public override HttpVerb Verb
@@ -33,22 +70,8 @@ namespace Ds3.Models
         }
 
         public GetBucketRequest(string bucketName)
-            : this(bucketName, null)
         {
-        }
-
-        public GetBucketRequest(string bucketName, string marker)
-            : this(bucketName, marker, 0)
-        {
-        }
-
-        public GetBucketRequest(string bucketName, string marker, int? maxKeys)
-        {
-            this._bucketName = bucketName;
-            if (marker != null)
-                this.QueryParams["marker"] = marker;
-            if (maxKeys.HasValue)
-                this.QueryParams["max-keys"] = maxKeys.Value.ToString("D");
+            this._bucketName = bucketName;            
         }
     }
 }
