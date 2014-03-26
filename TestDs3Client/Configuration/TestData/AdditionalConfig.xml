@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <Endpoint>http://the.other.end.point/the/path</Endpoint>
+  <AccessKey>bG9naWNhbA==</AccessKey>
+  <SecretKey>c3BlY3RydW1z</SecretKey>
+</Configuration>

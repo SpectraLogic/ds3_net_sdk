@@ -1,0 +1,99 @@
+﻿Introduction
+============
+
+The Ds3Client Windows PowerShell module provides a convenient way to interface with the DS3 protocol.
+
+
+Endpoint and Credential Configuration
+=====================================
+
+To connect to a specified DS3 server you'll need to create a configuration with
+the necessary endpoint and credentials. The easiest way to do this is with the
+New-DS3Configuration cmdlet. In addition to creating the configuration object
+the cmdlet will add the configuration to the current PowerShell session. The
+-MakeSelected flag ensures that the new configuration is the currently selected
+one.
+
+> New-DS3Configuration -MakeSelected
+
+cmdlet New-DS3Configuration at command pipeline position 1
+Supply values for the following parameters:
+Name: MyConfiguration
+Endpoint: http://my.endpoint
+AccessKey: TXlBY2Nlc3NLZXk=
+SecretKey: TXlTZWNyZXRLZXk=
+WARNING: Wrote configuration file to "C:\Users\*username*\Documents\SpectraLogic\BlackPearl\MyConfiguration.xml". Use -DontPersist to prevent this behvior.
+
+
+Name       : MyConfiguration
+Endpoint   : http://my.endpoint/
+AccessKey  : TXlBY2Nlc3NLZXk=
+SecretKey  : TXlTZWNyZXRLZXk=
+IsSelected : True
+
+
+New-DS3Configuration will also save the configuration to a file within the
+current user's documents directory by default, which you can later import into
+another PowerShell session using Import-DS3Configuration.
+
+> Import-DS3Configuration -MakeSelected "C:\Users\*username*\Documents\SpectraLogic\BlackPearl\MyConfiguration.xml"
+
+
+Cmdlets interacting with buckets and objects will use the current PowerShell
+session's currently selected configuration by default. Alternatively you may
+provide the -Configuration flag to override this behavior.
+
+
+Cmdlets at a Glance
+===================
+
+The module contains the following cmdlets:
+
+- Configuration
+    New-DS3Configuration
+    Import-DS3Configuration
+    Get-DS3Configuration
+    Select-DS3Configuration
+    Remove-DS3Configuration
+
+- Bucket
+    New-DS3Bucket
+    Get-DS3Bucket
+    Remove-DS3Bucket
+
+- Object
+    Read-DS3Object
+    Write-DS3Object
+    Remove-DS3Object
+
+For help regarding any of these cmdlets use the following command:
+> help -Detailed *cmdlet-name*
+
+
+Examples
+========
+
+These examples assume you've imported and selected a configuration for the
+current PowerShell session. See "Endpoint and Credential Configuration" for
+more information.
+
+List All Buckets
+----------------
+> Get-DS3Bucket
+TODO: output
+
+List All Objects in Bucket
+--------------------------
+> Get-DS3Object -BucketName "testBucket"
+TODO: output
+
+Write a File to an Object
+--------------------------
+> Write-DS3Object -BucketName "testBucket" -Key "objectName" -File "Filename.txt"
+TODO: output
+
+Read an Object to a File
+------------------------
+> Read-DS3Object -BucketName "testBucket" -Key "objectName" -File "Filename.txt"
+TODO: output
+

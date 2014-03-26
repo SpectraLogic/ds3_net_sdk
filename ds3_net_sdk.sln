@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ds3", "DS3\Ds3.csproj", "{00047EA6-0178-4ABD-B183-D1D73D222673}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ds3ClassRunner", "ds3ClassRunner\ds3ClassRunner.csproj", "{8417C1A2-7310-4282-973C-E6590E3B997C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ds3Client", "Ds3Client\Ds3Client.csproj", "{354C57FE-7738-4040-9726-59476513B06A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDs3Client", "TestDs3Client\TestDs3Client.csproj", "{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +25,14 @@ Global
 		{8417C1A2-7310-4282-973C-E6590E3B997C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8417C1A2-7310-4282-973C-E6590E3B997C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8417C1A2-7310-4282-973C-E6590E3B997C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{354C57FE-7738-4040-9726-59476513B06A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{354C57FE-7738-4040-9726-59476513B06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{354C57FE-7738-4040-9726-59476513B06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{354C57FE-7738-4040-9726-59476513B06A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
