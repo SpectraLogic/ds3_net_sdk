@@ -5,6 +5,7 @@ namespace Ds3Client.Commands.Api
     [Cmdlet(VerbsCommon.Remove, DS3Nouns.Bucket, SupportsShouldProcess = true)]
     public class RemoveBucketCommand : BaseApiCommand
     {
+        [Alias(new string[] { "Name" })]
         [Parameter(Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, Mandatory = true)]
         public string BucketName { get; set; }
 

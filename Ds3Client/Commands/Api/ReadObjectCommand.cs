@@ -19,6 +19,7 @@ namespace Ds3Client.Commands.Api
         [Parameter(Position = 0, Mandatory = true, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true)]
         public string BucketName { get; set; }
 
+        [Alias(new string[] { "Name" })]
         [Parameter(Position = 1, ParameterSetName = ToLocalFileParamSet, ValueFromPipelineByPropertyName = true, Mandatory = true)]
         public string Key { get; set; }
 

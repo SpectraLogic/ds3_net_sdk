@@ -20,16 +20,18 @@ namespace Ds3Client.Commands.Api
 
         protected override void ProcessRecord()
         {
-            if (KeyPrefix != null)
-                throw new NotImplementedException(Resources.KeyPrefixNotImplementedException);
-
             var client = CreateClient();
             var remainingKeys = MaxKeys.HasValue ? MaxKeys.Value : int.MaxValue;
             var isTruncated = false;
             string marker = null;
             do
             {
-                using (var response = client.GetBucket(new Ds3.Models.GetBucketRequest(BucketName, marker, Math.Min(remainingKeys, _defaultMaxKeys))))
+                var request = new Ds3.Models.GetBucketRequest(BucketName) {
+                    Marker = marker,
+                    MaxKeys = Math.Min(remainingKeys, _defaultMaxKeys),
+                    Prefix = KeyPrefix
+                };
+                using (var response = client.GetBucket(request))
                 {
                     isTruncated = response.IsTruncated;
                     marker = response.NextMarker;
