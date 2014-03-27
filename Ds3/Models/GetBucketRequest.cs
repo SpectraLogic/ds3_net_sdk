@@ -21,21 +21,35 @@ namespace Ds3.Models
         public GetBucketRequest WithMarker(string marker)
         {
             this._marker = marker;
-            this.QueryParams.Add("marker", marker);
+            if (marker == null)
+            {
+                this.QueryParams.Remove("marker");
+            }
+            else
+            {
+                this.QueryParams.Add("marker", marker);
+            }
             return this;
         }
 
-        private int _maxKeys;
-        public int MaxKeys
+        private int? _maxKeys;
+        public int? MaxKeys
         {
             get { return _maxKeys; }
             set { WithMaxKeys(value); }
         }
 
-        public GetBucketRequest WithMaxKeys(int maxKeys)
+        public GetBucketRequest WithMaxKeys(int? maxKeys)
         {
             this._maxKeys = maxKeys;
-            this.QueryParams.Add("max-keys", maxKeys.ToString());
+            if (maxKeys == null)
+            {
+                this.QueryParams.Add("max-keys", maxKeys.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max-keys");
+            }
             return this;
         }
 
@@ -49,7 +63,14 @@ namespace Ds3.Models
         public GetBucketRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
-            this.QueryParams.Add("prefix", prefix);
+            if (prefix == null)
+            {
+                this.QueryParams.Add("prefix", prefix);
+            }
+            else
+            {
+                this.QueryParams.Remove("prefix");
+            }
             return this;
         }
 
