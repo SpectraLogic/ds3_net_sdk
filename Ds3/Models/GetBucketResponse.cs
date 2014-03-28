@@ -79,10 +79,10 @@ namespace Ds3.Models
         {
             HandleStatusCode(HttpStatusCode.OK);
             _objects = new List<Ds3Object>();            
-            processResponse();
+            ProcessResponse();
         }
 
-        private void processResponse()
+        private void ProcessResponse()
         {            
             using (Stream content = response.GetResponseStream())
             {

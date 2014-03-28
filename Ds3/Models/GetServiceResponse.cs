@@ -29,10 +29,10 @@ namespace Ds3.Models
         {
             HandleStatusCode(HttpStatusCode.OK);
             this._buckets = new List<Bucket>();            
-            processReponse();
+            ProcessReponse();
         }
 
-        private void processReponse()
+        private void ProcessReponse()
         {
             using (Stream content = response.GetResponseStream())
             {
@@ -47,7 +47,7 @@ namespace Ds3.Models
                     }
                     else if (obj.GetType().Equals(typeof(ListAllMyBucketsResultBuckets)))
                     {
-                        convertBuckets((ListAllMyBucketsResultBuckets)obj);
+                        ConvertBuckets((ListAllMyBucketsResultBuckets)obj);
                     }
                     else {                        
                         //TODO need to figure out what exception to throw here.
@@ -57,7 +57,7 @@ namespace Ds3.Models
             }
         }
 
-        private void convertBuckets(ListAllMyBucketsResultBuckets buckets)
+        private void ConvertBuckets(ListAllMyBucketsResultBuckets buckets)
         {
             if (buckets.Bucket == null)
             {

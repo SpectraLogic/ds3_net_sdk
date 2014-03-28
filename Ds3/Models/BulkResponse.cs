@@ -22,10 +22,10 @@ namespace Ds3.Models
         {
             HandleStatusCode(HttpStatusCode.OK);
             _objectLists = new List<List<Ds3Object>>();
-            processRequest();
+            ProcessRequest();
         }
 
-        private void processRequest()
+        private void ProcessRequest()
         {
             using (Stream content = response.GetResponseStream())
             {

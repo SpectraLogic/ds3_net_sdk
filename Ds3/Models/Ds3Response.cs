@@ -28,7 +28,7 @@ namespace Ds3.Models
             }
             catch (XmlException e)
             {
-                Trace.WriteLine("Encountered an exception when formating xml string.", "DS3_Response");
+                Trace.WriteLine(Resources.FormatXmlException, "DS3_Response");
                 Trace.WriteLine(e, "DS3_Response");
                 return Xml;
             }

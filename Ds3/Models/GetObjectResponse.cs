@@ -18,10 +18,10 @@ namespace Ds3.Models
             : base(responseStream)
         {
             HandleStatusCode(HttpStatusCode.OK);
-            processResponse();   
+            ProcessResponse();   
         }
 
-        private void processResponse()
+        private void ProcessResponse()
         {
             _contents = response.GetResponseStream();
         }

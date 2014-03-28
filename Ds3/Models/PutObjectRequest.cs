@@ -22,7 +22,7 @@ namespace Ds3.Models
 
         private Stream _content;
 
-        public override Stream getContentStream()
+        public override Stream GetContentStream()
         {
             return _content;
         }

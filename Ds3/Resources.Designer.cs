@@ -68,5 +68,32 @@ namespace Ds3 {
                 return ResourceManager.GetString("BadStatusCodeException", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encountered 307 number: {0}.
+        /// </summary>
+        internal static string Encountered307NTimes {
+            get {
+                return ResourceManager.GetString("Encountered307NTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encountered an exception when formating xml string..
+        /// </summary>
+        internal static string FormatXmlException {
+            get {
+                return ResourceManager.GetString("FormatXmlException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many redirects..
+        /// </summary>
+        internal static string TooManyRedirectsException {
+            get {
+                return ResourceManager.GetString("TooManyRedirectsException", resourceCulture);
+            }
+        }
     }
 }

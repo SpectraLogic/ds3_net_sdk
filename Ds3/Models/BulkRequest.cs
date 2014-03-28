@@ -46,12 +46,12 @@ namespace Ds3.Models
             this._objects = objectList;
         }
 
-        public override Stream getContentStream()
+        public override Stream GetContentStream()
         {
-            return generateObjectStream(Objects);
+            return GenerateObjectStream(Objects);
         }
 
-        private objects convertToAwsModel(List<Ds3Object> objects)
+        private objects ConvertToAwsModel(List<Ds3Object> objects)
         {
             objects objs = new objects();            
 
@@ -70,12 +70,12 @@ namespace Ds3.Models
             return objs;
         }
 
-        protected Stream generateObjectStream(List<Ds3Object> objects)
+        protected Stream GenerateObjectStream(List<Ds3Object> objects)
         {           
             MemoryStream stream = new MemoryStream();            
             XmlSerializer serializer = new XmlSerializer(typeof(objects));
           
-            serializer.Serialize(stream, convertToAwsModel(objects));
+            serializer.Serialize(stream, ConvertToAwsModel(objects));
             StreamReader reader = new StreamReader(stream);
             
             stream.Seek(0, SeekOrigin.Begin);

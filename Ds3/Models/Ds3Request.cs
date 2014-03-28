@@ -16,7 +16,7 @@ namespace Ds3.Models
             get;   
         }
 
-        public virtual Stream getContentStream() {
+        public virtual Stream GetContentStream() {
             return Stream.Null;
         }            
 

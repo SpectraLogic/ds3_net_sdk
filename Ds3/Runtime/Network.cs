@@ -37,7 +37,7 @@ namespace Ds3.Runtime
 
             do
             {
-                HttpWebRequest httpRequest = createRequest(request);
+                HttpWebRequest httpRequest = CreateRequest(request);
                 try
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
@@ -45,7 +45,7 @@ namespace Ds3.Runtime
                     {
                         redirect = true;
                         redirectCount++;
-                        Trace.Write("Encountered 307 number: " + redirectCount, "Ds3Network");
+                        Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
                         continue;
                     }
                     return httpResponse;
@@ -60,10 +60,10 @@ namespace Ds3.Runtime
                 }
             } while (redirect && redirectCount < MaxRedirects);
 
-            throw new Ds3RedirectLimitException("Too many redirects.");      
+            throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException);
         }
 
-        private HttpWebRequest createRequest<K>(K request) where K : Ds3Request
+        private HttpWebRequest CreateRequest<K>(K request) where K : Ds3Request
         {
             DateTime date = DateTime.UtcNow;
             UriBuilder uriBuilder = new UriBuilder(Endpoint);
@@ -89,7 +89,7 @@ namespace Ds3.Runtime
 
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
             {
-                using (Stream content = request.getContentStream())
+                using (Stream content = request.GetContentStream())
                 {
                     httpRequest.ContentLength = content.Length;
                     using (Stream requestStream = httpRequest.GetRequestStream())
