@@ -11,6 +11,12 @@ mkdir $moduleDir > $null
 cp ($targetDir + "*.dll") $moduleDir
 cp ($targetDir + "Help\*") $moduleDir -Recurse -Force
 
+# Determine the module version and the minimum CLR version.
+$moduleAssembly = [Reflection.Assembly]::Loadfile($moduleDir + "\Ds3Client.dll")
+$moduleVersion = $moduleAssembly.GetName().Version.ToString()
+$clrVersionParts = $moduleAssembly.ImageRuntimeVersion.Substring(1).Split('.') | %{ [int32]::Parse($_) }
+$clrVersion = New-Object System.Version ($clrVersionParts[0], $clrVersionParts[1], 0, 0)
+
 # Create the module manifest.
 New-ModuleManifest `
 	($moduleDir + "\Ds3Client.psd1") `
@@ -24,4 +30,5 @@ New-ModuleManifest `
 	-FormatsToProcess @() `
 	-RequiredAssemblies @() `
 	-FileList @() `
-	-ModuleVersion ([Reflection.Assembly]::Loadfile($moduleDir + "\Ds3Client.dll").GetName().Version.ToString())
+	-ClrVersion $clrVersion `
+	-ModuleVersion $moduleVersion
