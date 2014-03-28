@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ds3.Runtime
 {
-    class Ds3RedirectLimitException : Ds3RequestException
+    public class Ds3RedirectLimitException : Ds3RequestException
     {
-        public Ds3RedirectLimitException(string message)
+        internal Ds3RedirectLimitException(string message)
             : base(message)
         {
         }

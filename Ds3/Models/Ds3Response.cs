@@ -39,20 +39,25 @@ namespace Ds3.Models
             HttpStatusCode actualStatusCode = response.StatusCode;
             if (!actualStatusCode.Equals(expectedStatusCode))
             {
-                using (var responseStream = response.GetResponseStream())
+                var responseContent = GetResponseContent(response);
+                Ds3Error error;
+                try
                 {
-                    Ds3Error error;
-                    try
-                    {
-                        error = MapErrorFromSerializationEntity((Error)new XmlSerializer(typeof(Error)).Deserialize(responseStream));
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        error = null;
-                    }
-                    throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode, error);
+                    error = MapErrorFromSerializationEntity((Error)new XmlSerializer(typeof(Error)).Deserialize(new StringReader(responseContent)));
                 }
+                catch (InvalidOperationException)
+                {
+                    error = null;
+                }
+                throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode, error, responseContent);
             }
+        }
+
+        private static string GetResponseContent(HttpWebResponse response)
+        {
+            using (var stream = response.GetResponseStream())
+            using (var reader = new StreamReader(stream))
+                return reader.ReadToEnd();
         }
 
         private static Ds3Error MapErrorFromSerializationEntity(Error error)
