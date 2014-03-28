@@ -8,7 +8,7 @@ A SDK conforming to the DS3 specification.
 
 ---
 
-The SDK is distributed as a DLL.  The DLL can be added as a Reference into Visual Studio.
+The SDK is distributed as a DLL.  The DLL can be added as a Reference into Visual Studio and supports .Net 4.0 and above.
 
 ## SDK
 
@@ -57,6 +57,10 @@ The SDK allows you to fully communicate with a DS3 appliance.  Each command has 
     * Args: `GetBucketRequest`
         * ConstructorArgs:
             * `BucketName`: `string` - The name of the bucket to get information on
+        * Properties:
+            * `MaxKeys`: Specifies how many objects are returned in a single HTTP request.
+            * `Marker`: The next marker used in pagination.
+            * `Prefix`: Allows for filtering based on what the prefix string is set to.
     * Return: `GetBucketResponse`
         * Properties:
             * `Name`: `string` - The name of the bucket
