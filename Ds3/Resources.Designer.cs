@@ -70,6 +70,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Received a status code of {0} when {1} was expected. Could not parse the response for additional information..
+        /// </summary>
+        internal static string BadStatusCodeInvalidErrorResponseException {
+            get {
+                return ResourceManager.GetString("BadStatusCodeInvalidErrorResponseException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered 307 number: {0}.
         /// </summary>
         internal static string Encountered307NTimes {

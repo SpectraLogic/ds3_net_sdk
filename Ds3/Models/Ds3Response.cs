@@ -41,8 +41,16 @@ namespace Ds3.Models
             {
                 using (var responseStream = response.GetResponseStream())
                 {
-                    var error = (Error)new XmlSerializer(typeof(Error)).Deserialize(responseStream);
-                    throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode, MapErrorFromSerializationEntity(error));
+                    Ds3Error error;
+                    try
+                    {
+                        error = MapErrorFromSerializationEntity((Error)new XmlSerializer(typeof(Error)).Deserialize(responseStream));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        error = null;
+                    }
+                    throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode, error);
                 }
             }
         }

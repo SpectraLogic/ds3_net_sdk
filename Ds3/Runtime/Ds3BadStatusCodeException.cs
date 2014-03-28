@@ -27,7 +27,14 @@ namespace Ds3.Runtime
 
         private static string StatusCodeMessage(HttpStatusCode expectedStatusCode, HttpStatusCode receivedStatusCode, Ds3Error error)
         {
-            return string.Format(Resources.BadStatusCodeException, receivedStatusCode, expectedStatusCode, error.Message);
+            if (error == null)
+            {
+                return string.Format(Resources.BadStatusCodeInvalidErrorResponseException, receivedStatusCode, expectedStatusCode);
+            }
+            else
+            {
+                return string.Format(Resources.BadStatusCodeException, receivedStatusCode, expectedStatusCode, error.Message);
+            }
         }
     }
 }
