@@ -57,18 +57,25 @@ namespace Ds3Client.Commands.Api
             if (Directory.Exists(Folder))
                 throw new ApiException(Resources.DirectoryAlreadyExistsException, Folder);
 
-            if (KeyPrefix != null)
-                throw new NotImplementedException(Resources.KeyPrefixNotImplementedException);
-
             var client = CreateClient();
-            using (var response = client.GetBucket(new Ds3.Models.GetBucketRequest(BucketName)))
+            using (var response = client.GetBucket(new Ds3.Models.GetBucketRequest(BucketName) { Prefix = KeyPrefix }))
             using (var bulkGet = client.BulkGet(new Ds3.Models.BulkGetRequest(BucketName, response.Objects)))
             {
-                Parallel.ForEach(bulkGet.ObjectLists, ds3ObjectList =>
+                try
                 {
-                    foreach (var key in from ds3Object in ds3ObjectList select MakeValidPath(ds3Object.Name))
-                        WriteObjectToFile(client, key, EnsureDirectoryForFileExists(Path.Combine(Folder, key)));
-                });
+                    Parallel.ForEach(bulkGet.ObjectLists, ds3ObjectList =>
+                    {
+                        foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
+                            WriteObjectToFile(client, key, EnsureDirectoryForFileExists(Path.Combine(Folder, MakeValidPath(key))));
+                    });
+                }
+                catch (AggregateException e)
+                {
+                    foreach (var innerException in e.InnerExceptions)
+	                {
+                        WriteError(new ErrorRecord(innerException, "GetFailed", ErrorCategory.ReadError, innerException));
+	                }
+                }
             }
         }
 

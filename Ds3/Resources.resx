@@ -129,6 +129,9 @@
   <data name="FormatXmlException" xml:space="preserve">
     <value>Encountered an exception when formating xml string.</value>
   </data>
+  <data name="ObjectsMissingSizeException" xml:space="preserve">
+    <value>Some or all of the objects to put are missing a size field.</value>
+  </data>
   <data name="TooManyRedirectsException" xml:space="preserve">
     <value>Too many redirects.</value>
   </data>

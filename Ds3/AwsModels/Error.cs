@@ -26,6 +26,8 @@ public partial class Error {
     
     private string codeField;
     
+    private string httpErrorCodeField;
+    
     private string messageField;
     
     private string resourceField;
@@ -40,6 +42,17 @@ public partial class Error {
         }
         set {
             this.codeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string HttpErrorCode {
+        get {
+            return this.httpErrorCodeField;
+        }
+        set {
+            this.httpErrorCodeField = value;
         }
     }
     

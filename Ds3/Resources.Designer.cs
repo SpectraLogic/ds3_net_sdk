@@ -97,6 +97,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some or all of the objects to put are missing a size field..
+        /// </summary>
+        internal static string ObjectsMissingSizeException {
+            get {
+                return ResourceManager.GetString("ObjectsMissingSizeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Too many redirects..
         /// </summary>
         internal static string TooManyRedirectsException {
