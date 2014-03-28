@@ -777,11 +777,11 @@
           <maml:name>BucketName</maml:name>
           <command:parameterValue required="true">string</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" globbing="false" pipelineInput="false" position="1">
+        <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
           <maml:name>Key</maml:name>
           <command:parameterValue required="true">string</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" globbing="false" pipelineInput="false" position="2">
+        <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
           <maml:name>File</maml:name>
           <command:parameterValue required="true">string</command:parameterValue>
         </command:parameter>
@@ -797,11 +797,11 @@
           <maml:name>BucketName</maml:name>
           <command:parameterValue required="true">string</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" globbing="false" pipelineInput="false" position="1">
+        <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
           <maml:name>KeyPrefix</maml:name>
           <command:parameterValue required="true">string</command:parameterValue>
         </command:parameter>
-        <command:parameter required="true" globbing="false" pipelineInput="false" position="2">
+        <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
           <maml:name>Folder</maml:name>
           <command:parameterValue required="true">string</command:parameterValue>
         </command:parameter>
@@ -830,7 +830,7 @@
         <command:parameterValue required="true">string</command:parameterValue>
       </command:parameter>
 
-      <command:parameter required="true" globbing="false" pipelineInput="false" position="1">
+      <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
         <maml:name>Key</maml:name>
         <maml:description>
           <maml:para>Specifies the key of the object to write.</maml:para>
@@ -838,7 +838,7 @@
         <command:parameterValue required="true">string</command:parameterValue>
       </command:parameter>
 
-      <command:parameter required="true" globbing="false" pipelineInput="false" position="2">
+      <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
         <maml:name>File</maml:name>
         <maml:description>
           <maml:para>Specifies the file from which the cmdlet will write the object's contents.</maml:para>
@@ -846,7 +846,7 @@
         <command:parameterValue required="true">string</command:parameterValue>
       </command:parameter>
 
-      <command:parameter required="true" globbing="false" pipelineInput="false" position="1">
+      <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
         <maml:name>KeyPrefix</maml:name>
         <maml:description>
           <maml:para>Specifies the prefix of the keys of the objects to write.</maml:para>
@@ -854,7 +854,7 @@
         <command:parameterValue required="true">string</command:parameterValue>
       </command:parameter>
 
-      <command:parameter required="true" globbing="false" pipelineInput="false" position="2">
+      <command:parameter required="true" globbing="false" pipelineInput="false" position="named">
         <maml:name>Folder</maml:name>
         <maml:description>
           <maml:para>Specifies the directory from which the cmdlet will write new objects.</maml:para>

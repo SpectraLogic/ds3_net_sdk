@@ -18,18 +18,18 @@ namespace Ds3Client.Commands.Api
         public string BucketName { get; set; }
 
         [Alias(new string[] { "Name" })]
-        [Parameter(Position = 1, ParameterSetName = FromLocalFileParamSet, Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = FromLocalFileParamSet, Mandatory = true, ValueFromPipelineByPropertyName = true)]
         public string Key { get; set; }
 
-        [Parameter(Position = 2, ParameterSetName = FromLocalFileParamSet, Mandatory = true)]
+        [Parameter(ParameterSetName = FromLocalFileParamSet, Mandatory = true)]
         public string File { get; set; }
 
         [Alias(new string[] { "Prefix" })]
-        [Parameter(Position = 1, ParameterSetName = FromLocalFolderParamSet, Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = FromLocalFolderParamSet, Mandatory = true, ValueFromPipelineByPropertyName = true)]
         public string KeyPrefix { get; set; }
 
         [Alias(new string[] { "Directory" })]
-        [Parameter(Position = 2, ParameterSetName = FromLocalFolderParamSet, Mandatory = true)]
+        [Parameter(ParameterSetName = FromLocalFolderParamSet, Mandatory = true)]
         public string Folder { get; set; }
 
         [Parameter(ParameterSetName = FromLocalFolderParamSet)]
