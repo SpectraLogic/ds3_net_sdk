@@ -30,7 +30,7 @@ namespace Ds3.Runtime
             this.MaxRedirects = maxRedirects;
         }
 
-        public T Invoke<T, K>(K request) where T: Ds3Response where K : Ds3Request
+        public HttpWebResponse Invoke<K>(K request) where K : Ds3Request
         {
             bool redirect = false;
             int redirectCount = 0;            
@@ -48,7 +48,7 @@ namespace Ds3.Runtime
                         Trace.Write("Encountered 307 number: " + redirectCount, "Ds3Network");
                         continue;
                     }
-                    return CreateResponseInstance<T>(httpResponse);
+                    return httpResponse;
                 }
                 catch (WebException e)
                 {
@@ -56,7 +56,7 @@ namespace Ds3.Runtime
                     {
                         throw e;
                     }
-                    return CreateResponseInstance<T>((HttpWebResponse)e.Response);
+                    return (HttpWebResponse)e.Response;
                 }
             } while (redirect && redirectCount < MaxRedirects);
 
@@ -116,12 +116,6 @@ namespace Ds3.Runtime
         private bool Is307(HttpWebResponse httpResponse)
         {
             return httpResponse.StatusCode.Equals(HttpStatusCode.TemporaryRedirect);
-        }
-
-        private T CreateResponseInstance<T>(HttpWebResponse content)
-        {
-            Type type = typeof(T);            
-            return (T)Activator.CreateInstance(type, content);
         }
 
         private string FormatedDateString()

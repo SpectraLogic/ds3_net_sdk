@@ -7,6 +7,7 @@ using System.Xml;
 
 using Ds3.Runtime;
 using System.Diagnostics;
+using System.Xml.Serialization;
 namespace Ds3.Models
 {
     public class Ds3Response : IDisposable
@@ -38,8 +39,17 @@ namespace Ds3.Models
             HttpStatusCode actualStatusCode = response.StatusCode;
             if (!actualStatusCode.Equals(expectedStatusCode))
             {
-                throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode);
+                using (var responseStream = response.GetResponseStream())
+                {
+                    var error = (Error)new XmlSerializer(typeof(Error)).Deserialize(responseStream);
+                    throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode, MapErrorFromSerializationEntity(error));
+                }
             }
+        }
+
+        private static Ds3Error MapErrorFromSerializationEntity(Error error)
+        {
+            return new Ds3Error(error.Code, error.Message, error.Resource, error.RequestId);
         }
 
         public void Dispose()
