@@ -77,23 +77,40 @@ These examples assume you've imported and selected a configuration for the
 current PowerShell session. See "Endpoint and Credential Configuration" for
 more information.
 
+
+Create a New Bucket
+-------------------
+> New-DS3Bucket ExampleBucket1
+
+
 List All Buckets
 ----------------
-> Get-DS3Bucket
-TODO: output
+    > Get-DS3Bucket
+    
+    Name                                                        CreationDate
+    ----                                                        ------------
+    AnotherExampleBucket                                        2014-03-28T15:24:47.000Z
+    ExampleBucket1                                              2014-03-28T15:24:36.000Z
+
+
+Write a File to an Object
+-------------
+> Write-DS3Object ExampleBucket1 -Key ExampleKey1 -File ExampleFile.txt
+
 
 List All Objects in Bucket
 --------------------------
-> Get-DS3Object -BucketName "testBucket"
-TODO: output
+> Get-DS3Object ExampleBucket1
 
-Write a File to an Object
---------------------------
-> Write-DS3Object -BucketName "testBucket" -Key "objectName" -File "Filename.txt"
-TODO: output
+Name         : ExampleKey1
+Etag         :
+LastModified : 1/1/0001 12:00:00 AM
+Owner        : hansk:hansk
+Size         : 28
+StorageClass :
+
 
 Read an Object to a File
 ------------------------
-> Read-DS3Object -BucketName "testBucket" -Key "objectName" -File "Filename.txt"
-TODO: output
+> Read-DS3Object ExampleBucket1 -Key ExampleKey1 -File ExampleOutputFile.txt
 

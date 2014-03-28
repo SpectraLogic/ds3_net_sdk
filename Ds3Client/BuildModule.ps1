@@ -23,4 +23,5 @@ New-ModuleManifest `
 	-TypesToProcess @() `
 	-FormatsToProcess @() `
 	-RequiredAssemblies @() `
-	-FileList @()
+	-FileList @() `
+	-ModuleVersion ([Reflection.Assembly]::Loadfile($moduleDir + "\Ds3Client.dll").GetName().Version.ToString())

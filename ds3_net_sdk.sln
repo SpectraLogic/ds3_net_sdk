@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ds3Client", "Ds3Client\Ds3C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDs3Client", "TestDs3Client\TestDs3Client.csproj", "{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CC8ED96-63BF-4CC0-853D-575B0BB50A7B}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		VersionInfo.cs = VersionInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

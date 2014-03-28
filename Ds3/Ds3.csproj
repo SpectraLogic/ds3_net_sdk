@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="AwsModels\bucket_list.cs" />
     <Compile Include="AwsModels\Ds3Object.cs" />
     <Compile Include="AwsModels\Error.cs" />

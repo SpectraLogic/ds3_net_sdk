@@ -44,6 +44,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Api\ApiException.cs" />
     <Compile Include="Commands\Api\BaseApiCommand.cs" />
     <Compile Include="Commands\Api\GetObjectCommand.cs" />
