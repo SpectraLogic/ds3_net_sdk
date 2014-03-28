@@ -7,7 +7,7 @@ namespace Ds3.Models
         public DeleteBucketResponse(HttpWebResponse response)
             : base(response)
         {
-            handleStatusCode(HttpStatusCode.NoContent);
+            HandleStatusCode(HttpStatusCode.NoContent);
         }
     }
 }

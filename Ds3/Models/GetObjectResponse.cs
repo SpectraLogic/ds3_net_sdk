@@ -17,7 +17,7 @@ namespace Ds3.Models
         public GetObjectResponse(HttpWebResponse responseStream) 
             : base(responseStream)
         {
-            handleStatusCode(HttpStatusCode.OK);
+            HandleStatusCode(HttpStatusCode.OK);
             processResponse();   
         }
 

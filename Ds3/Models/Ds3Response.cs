@@ -3,8 +3,10 @@ using System.IO;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Net;
+using System.Xml;
 
 using Ds3.Runtime;
+using System.Diagnostics;
 namespace Ds3.Models
 {
     public class Ds3Response : IDisposable
@@ -23,13 +25,15 @@ namespace Ds3.Models
                 XDocument doc = XDocument.Parse(Xml);
                 return doc.ToString();
             }
-            catch (Exception)
+            catch (XmlException e)
             {
+                Trace.WriteLine("Encountered an exception when formating xml string.", "DS3_Response");
+                Trace.WriteLine(e, "DS3_Response");
                 return Xml;
             }
         }
 
-        protected void handleStatusCode(HttpStatusCode expectedStatusCode)
+        protected void HandleStatusCode(HttpStatusCode expectedStatusCode)
         {
             HttpStatusCode actualStatusCode = response.StatusCode;
             if (!actualStatusCode.Equals(expectedStatusCode))

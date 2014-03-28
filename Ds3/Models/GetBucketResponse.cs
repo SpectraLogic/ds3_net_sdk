@@ -77,7 +77,7 @@ namespace Ds3.Models
         public GetBucketResponse(HttpWebResponse responseStream)
             : base(responseStream)
         {
-            handleStatusCode(HttpStatusCode.OK);
+            HandleStatusCode(HttpStatusCode.OK);
             _objects = new List<Ds3Object>();            
             processResponse();
         }

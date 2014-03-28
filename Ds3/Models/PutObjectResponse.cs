@@ -6,7 +6,7 @@ namespace Ds3.Models
     {
         public PutObjectResponse(HttpWebResponse response) : base(response)
         {
-            handleStatusCode(HttpStatusCode.OK);
+            HandleStatusCode(HttpStatusCode.OK);
         }
     }
 }

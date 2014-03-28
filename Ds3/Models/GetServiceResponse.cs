@@ -27,7 +27,7 @@ namespace Ds3.Models
         public GetServiceResponse(HttpWebResponse responseStream)
             : base(responseStream)
         {
-            handleStatusCode(HttpStatusCode.OK);
+            HandleStatusCode(HttpStatusCode.OK);
             this._buckets = new List<Bucket>();            
             processReponse();
         }

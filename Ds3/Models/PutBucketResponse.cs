@@ -7,7 +7,7 @@ namespace Ds3.Models
         public PutBucketResponse(HttpWebResponse response)
             : base(response)
         {
-            handleStatusCode(HttpStatusCode.OK);
+            HandleStatusCode(HttpStatusCode.OK);
         }
     }
 }
