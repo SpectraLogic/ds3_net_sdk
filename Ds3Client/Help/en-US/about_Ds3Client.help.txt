@@ -114,3 +114,13 @@ Read an Object to a File
 ------------------------
 > Read-DS3Object ExampleBucket1 -Key ExampleKey1 -File ExampleOutputFile.txt
 
+
+Recursively Write a Directory to a Group of Objects with a Common Prefix
+------------------------------------------------------------------------
+> Write-DS3Object ExampleBucket1 -Folder MyData -KeyPrefix MyPrefix -Recurse
+
+
+Read a Group of Objects with a Common Prefix to a Directory
+-----------------------------------------------------------
+> Read-DS3Object ExampleBucket1 -Folder MyData -KeyPrefix MyPrefix/
+
