@@ -21,13 +21,13 @@ namespace Ds3.Models
         public GetBucketRequest WithMarker(string marker)
         {
             this._marker = marker;
-            if (marker == null)
+            if (marker != null)
             {
-                this.QueryParams.Remove("marker");
+                this.QueryParams.Add("marker", marker);
             }
             else
             {
-                this.QueryParams.Add("marker", marker);
+                this.QueryParams.Remove("marker");
             }
             return this;
         }
@@ -42,7 +42,7 @@ namespace Ds3.Models
         public GetBucketRequest WithMaxKeys(int? maxKeys)
         {
             this._maxKeys = maxKeys;
-            if (maxKeys == null)
+            if (maxKeys != null)
             {
                 this.QueryParams.Add("max-keys", maxKeys.ToString());
             }
@@ -63,7 +63,7 @@ namespace Ds3.Models
         public GetBucketRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
-            if (prefix == null)
+            if (prefix != null)
             {
                 this.QueryParams.Add("prefix", prefix);
             }
@@ -92,7 +92,7 @@ namespace Ds3.Models
 
         public GetBucketRequest(string bucketName)
         {
-            this._bucketName = bucketName;            
+            this._bucketName = bucketName;
         }
     }
 }
