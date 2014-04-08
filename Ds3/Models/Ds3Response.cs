@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Net;
 using System.Xml;
-
-using Ds3.Runtime;
 using System.Diagnostics;
 using System.Xml.Serialization;
+
+using Ds3.Runtime;
+
 namespace Ds3.Models
 {
     public class Ds3Response : IDisposable
     {        
-        protected HttpWebResponse response;
+        internal IWebResponse response;
 
-        public Ds3Response(HttpWebResponse response)
+        internal Ds3Response(IWebResponse response)
         {
             this.response = response;
         }
@@ -53,7 +54,7 @@ namespace Ds3.Models
             }
         }
 
-        private static string GetResponseContent(HttpWebResponse response)
+        private static string GetResponseContent(IWebResponse response)
         {
             using (var stream = response.GetResponseStream())
             using (var reader = new StreamReader(stream))
@@ -68,8 +69,7 @@ namespace Ds3.Models
         public void Dispose()
         {
             Dispose(true);
-            response.Close();
-
+            response.Dispose();
             GC.SuppressFinalize(this);
         }
 

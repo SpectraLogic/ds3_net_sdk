@@ -1,10 +1,12 @@
 ﻿using System.Net;
 
+using Ds3.Runtime;
+
 namespace Ds3.Models
 {
     public class DeleteObjectResponse : Ds3Response
     {
-        public DeleteObjectResponse(HttpWebResponse response)
+        internal DeleteObjectResponse(IWebResponse response)
             : base(response)
         {
             HandleStatusCode(HttpStatusCode.NoContent);

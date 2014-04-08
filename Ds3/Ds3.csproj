@@ -86,8 +86,11 @@
     </Compile>
     <Compile Include="Runtime\Ds3BadStatusCodeException.cs" />
     <Compile Include="Runtime\Ds3RedirectLimitException.cs" />
+    <Compile Include="Runtime\INetwork.cs" />
+    <Compile Include="Runtime\IWebResponse.cs" />
     <Compile Include="Runtime\Network.cs" />
     <Compile Include="Runtime\S3Signer.cs" />
+    <Compile Include="Runtime\WebResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Runtime\Ds3RequestException.cs" />

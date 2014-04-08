@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-
+using System.Linq;
 using System.Net;
 using System.IO;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 using Ds3.AwsModels;
-using System.Xml.Serialization;
+using Ds3.Runtime;
 
 namespace Ds3.Models
 {
@@ -24,7 +25,7 @@ namespace Ds3.Models
             get { return _buckets; }
         }
 
-        public GetServiceResponse(HttpWebResponse responseStream)
+        internal GetServiceResponse(IWebResponse responseStream)
             : base(responseStream)
         {
             HandleStatusCode(HttpStatusCode.OK);
@@ -36,7 +37,7 @@ namespace Ds3.Models
         {
             using (Stream content = response.GetResponseStream())
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));                
+                XmlSerializer serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));
                 ListAllMyBucketsResult results = (ListAllMyBucketsResult)serializer.Deserialize(content);
 
                 foreach(object obj in results.Items) {

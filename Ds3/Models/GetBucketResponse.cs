@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Net;
 using System.Xml.Serialization;
 
 using Ds3.AwsModels;
+using Ds3.Runtime;
 
 namespace Ds3.Models
 {
@@ -74,11 +76,10 @@ namespace Ds3.Models
             get { return _objects; }
         }
 
-        public GetBucketResponse(HttpWebResponse responseStream)
+        internal GetBucketResponse(IWebResponse responseStream)
             : base(responseStream)
         {
             HandleStatusCode(HttpStatusCode.OK);
-            _objects = new List<Ds3Object>();            
             ProcessResponse();
         }
 
@@ -100,12 +101,14 @@ namespace Ds3.Models
 
                 if (results.Contents != null)
                 {
-                    foreach (ListBucketResultContents contents in results.Contents)
-                    {
-                        Owner owner = new Owner(contents.Owner[0].ID, contents.Owner[0].DisplayName);
-                        Ds3Object ds3Object = new Ds3Object(contents.Key, int.Parse(contents.Size), owner);
-                        _objects.Add(ds3Object);
-                    }
+                    _objects = results.Contents.Select(ds3Obj => new Ds3Object(
+                        ds3Obj.Key,
+                        int.Parse(ds3Obj.Size),
+                        new Owner(ds3Obj.Owner[0].ID, ds3Obj.Owner[0].DisplayName),
+                        ds3Obj.ETag,
+                        ds3Obj.StorageClass,
+                        Convert.ToDateTime(ds3Obj.LastModified)
+                    )).ToList();
                 }
             }
         }
