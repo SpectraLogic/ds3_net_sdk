@@ -18,12 +18,18 @@ namespace Ds3.Models
 
         public virtual Stream GetContentStream() {
             return Stream.Null;
-        }            
+        }
 
         private Dictionary<string, string> _queryParams = new Dictionary<string, string>();
         public virtual Dictionary<string,string> QueryParams
         {
             get { return _queryParams; }
+        }
+
+        private Dictionary<string, string> _headers = new Dictionary<string, string>();
+        public virtual Dictionary<string, string> Headers
+        {
+            get { return _headers; }
         }
     }
 
