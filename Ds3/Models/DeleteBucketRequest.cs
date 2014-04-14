@@ -4,14 +4,9 @@ namespace Ds3.Models
 {
     public class DeleteBucketRequest : Ds3Request
     {
-        private string _bucketName;
+        public string BucketName { get; private set; }
 
-        public string BucketName
-        {
-            get { return _bucketName; }
-        }
-
-        public override HttpVerb Verb
+        internal override HttpVerb Verb
         {
             get
             {
@@ -19,7 +14,7 @@ namespace Ds3.Models
             }
         }
 
-        public override string Path
+        internal override string Path
         {
             get
             {
@@ -29,7 +24,7 @@ namespace Ds3.Models
 
         public DeleteBucketRequest(string bucketName)
         {
-            this._bucketName = bucketName;
+            this.BucketName = bucketName;
         }
     }
 }

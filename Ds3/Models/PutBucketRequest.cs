@@ -2,7 +2,7 @@
 {
     public class PutBucketRequest : Ds3Request
     {
-        public override HttpVerb Verb
+        internal override HttpVerb Verb
         {
             get
             {
@@ -10,7 +10,7 @@
             }
         }
 
-        public override string Path
+        internal override string Path
         {
             get
             {
@@ -18,16 +18,11 @@
             }
         }
 
-        private string _bucketName;
-
-        public string BucketName
-        {
-            get { return _bucketName; }
-        }
+        public string BucketName { get; private set; }
 
         public PutBucketRequest(string bucketName)
         {
-            this._bucketName = bucketName;
+            this.BucketName = bucketName;
         }
     }
 }

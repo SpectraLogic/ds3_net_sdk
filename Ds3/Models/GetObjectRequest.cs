@@ -1,26 +1,16 @@
 ﻿using System.Net;
 
 using Ds3.AwsModels;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
     public class GetObjectRequest : Ds3Request
     {
-        private string _bucketName;
+        public string BucketName { get; private set; }
+        public string ObjectName { get; private set; }
 
-        public string BucketName
-        {
-            get { return _bucketName; }
-        }
-
-        public string _objectName;
-
-        public string ObjectName
-        {
-            get { return _objectName; }
-        }
-
-        public override HttpVerb Verb
+        internal override HttpVerb Verb
         {
             get
             {
@@ -28,7 +18,7 @@ namespace Ds3.Models
             }
         }
 
-        public override string Path
+        internal override string Path
         {
             get
             {
@@ -42,8 +32,8 @@ namespace Ds3.Models
 
         public GetObjectRequest(string bucketName, string ds3ObjectName)
         {
-            this._bucketName = bucketName;
-            this._objectName = ds3ObjectName;
+            this.BucketName = bucketName;
+            this.ObjectName = ds3ObjectName;
         }
     }
 }

@@ -83,6 +83,12 @@ namespace Ds3.Runtime
             httpRequest.Host = CreateHostString(Endpoint);
             httpRequest.AllowAutoRedirect = false;
             httpRequest.Headers.Add("Authorization", S3Signer.AuthField(Creds, request.Verb.ToString(), date.ToString("r"), request.Path));
+
+            var byteRange = request.GetByteRange();
+            if (byteRange != null)
+            {
+                httpRequest.AddRange(byteRange.Start, byteRange.End);
+            }
             
             foreach (var header in request.Headers)
             {
