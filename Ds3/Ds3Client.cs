@@ -9,56 +9,56 @@ namespace Ds3
 {
     public class Ds3Client
     {
-        private Network NetLayer;
+        private INetwork _netLayer;
 
-        internal Ds3Client(Network netLayer)
+        internal Ds3Client(INetwork netLayer)
         {
-            this.NetLayer = netLayer;
+            this._netLayer = netLayer;
         }
 
         public GetServiceResponse GetService(GetServiceRequest request)
         {
-            return new GetServiceResponse(NetLayer.Invoke<GetServiceRequest>(request));
+            return new GetServiceResponse(_netLayer.Invoke(request));
         }
 
         public GetBucketResponse GetBucket(GetBucketRequest request)
         {
-            return new GetBucketResponse(NetLayer.Invoke<GetBucketRequest>(request));
+            return new GetBucketResponse(_netLayer.Invoke(request));
         }
 
         public GetObjectResponse GetObject(GetObjectRequest request)
         {
-            return new GetObjectResponse(NetLayer.Invoke<GetObjectRequest>(request));
+            return new GetObjectResponse(_netLayer.Invoke(request));
         }
 
         public PutObjectResponse PutObject(PutObjectRequest request)
         {
-            return new PutObjectResponse(NetLayer.Invoke<PutObjectRequest>(request));
+            return new PutObjectResponse(_netLayer.Invoke(request));
         }
 
         public DeleteObjectResponse DeleteObject(DeleteObjectRequest request)
         {
-            return new DeleteObjectResponse(NetLayer.Invoke<DeleteObjectRequest>(request));
+            return new DeleteObjectResponse(_netLayer.Invoke(request));
         }
 
         public DeleteBucketResponse DeleteBucket(DeleteBucketRequest request)
         {
-            return new DeleteBucketResponse(NetLayer.Invoke<DeleteBucketRequest>(request));
+            return new DeleteBucketResponse(_netLayer.Invoke(request));
         }
 
         public PutBucketResponse PutBucket(PutBucketRequest request)
         {
-            return new PutBucketResponse(NetLayer.Invoke<PutBucketRequest>(request));
+            return new PutBucketResponse(_netLayer.Invoke(request));
         }
 
         public BulkGetResponse BulkGet(BulkGetRequest request)
         {
-            return new BulkGetResponse(NetLayer.Invoke<BulkGetRequest>(request));
+            return new BulkGetResponse(_netLayer.Invoke(request));
         }
 
         public BulkPutResponse BulkPut(BulkPutRequest request)
         {
-            return new BulkPutResponse(NetLayer.Invoke<BulkPutRequest>(request));
+            return new BulkPutResponse(_netLayer.Invoke(request));
         }
     }
 }

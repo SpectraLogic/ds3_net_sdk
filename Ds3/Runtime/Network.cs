@@ -6,17 +6,14 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
-
 using System.Net;
-//using System.Net.Http;
 
 using Ds3.Models;
 
 namespace Ds3.Runtime
 {
-    internal class Network
+    internal class Network : INetwork
     {
-
         private Uri Endpoint;
         private Credentials Creds;
         private int MaxRedirects = 0;
@@ -30,7 +27,7 @@ namespace Ds3.Runtime
             this.MaxRedirects = maxRedirects;
         }
 
-        public HttpWebResponse Invoke<K>(K request) where K : Ds3Request
+        public IWebResponse Invoke(Ds3Request request)
         {
             bool redirect = false;
             int redirectCount = 0;            
@@ -40,15 +37,15 @@ namespace Ds3.Runtime
                 HttpWebRequest httpRequest = CreateRequest(request);
                 try
                 {
-                    HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                    if (Is307(httpResponse))
+                    var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
+                    if (Is307(response))
                     {
                         redirect = true;
                         redirectCount++;
                         Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
                         continue;
                     }
-                    return httpResponse;
+                    return response;
                 }
                 catch (WebException e)
                 {
@@ -56,14 +53,14 @@ namespace Ds3.Runtime
                     {
                         throw e;
                     }
-                    return (HttpWebResponse)e.Response;
+                    return new WebResponse((HttpWebResponse)e.Response);
                 }
             } while (redirect && redirectCount < MaxRedirects);
 
             throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException);
         }
 
-        private HttpWebRequest CreateRequest<K>(K request) where K : Ds3Request
+        private HttpWebRequest CreateRequest(Ds3Request request)
         {
             DateTime date = DateTime.UtcNow;
             UriBuilder uriBuilder = new UriBuilder(Endpoint);
@@ -113,7 +110,7 @@ namespace Ds3.Runtime
             return endpoint.Host;
         }
 
-        private bool Is307(HttpWebResponse httpResponse)
+        private bool Is307(IWebResponse httpResponse)
         {
             return httpResponse.StatusCode.Equals(HttpStatusCode.TemporaryRedirect);
         }
@@ -128,6 +125,5 @@ namespace Ds3.Runtime
             List<string> queryList = queryParams.Select(kvp => kvp.Key + "=" + kvp.Value).ToList();
             return String.Join("&", queryList);            
         }
-
     }
 }
