@@ -36,39 +36,6 @@ namespace Ds3.Models
             }
         }
 
-        private string _prefix;        
-
-        public string Prefix {
-            get {
-                return _prefix;
-            }
-
-            set
-            {
-                WithPrefix(value);
-            }
-        }
-
-        public GetObjectRequest WithPrefix(string prefix)
-        {
-            this._prefix = prefix;
-            this.QueryParams.Add("prefix", prefix);
-            return this;
-        }
-
-        private string _nextMarker;
-        public string NextMarker {
-            get { return _nextMarker; }
-            set { WithNextMarker(value); }
-        }
-
-        public GetObjectRequest WithNextMarker(string nextMarker)
-        {
-            this._nextMarker = nextMarker;
-            this.QueryParams.Add("marker", nextMarker);
-            return this;
-        }
-
         public GetObjectRequest(Bucket bucket, Ds3Object ds3Object): this (bucket.Name, ds3Object.Name)
         {
         }
