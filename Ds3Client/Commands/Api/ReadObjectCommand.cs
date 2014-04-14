@@ -26,6 +26,12 @@ namespace Ds3Client.Commands.Api
         [Parameter(Position = 2, ParameterSetName = ToLocalFileParamSet, Mandatory = true)]
         public string File { get; set; }
 
+        [Parameter(ParameterSetName = ToLocalFileParamSet)]
+        public long? Start { get; set; }
+
+        [Parameter(ParameterSetName = ToLocalFileParamSet)]
+        public long? End { get; set; }
+
         [Alias(new string[] { "Prefix" })]
         [Parameter(Position = 1, ParameterSetName = ToLocalFolderParamSet, ValueFromPipelineByPropertyName = true)]
         public string KeyPrefix { get; set; }
@@ -94,7 +100,12 @@ namespace Ds3Client.Commands.Api
 
         private void WriteObjectToFile(Ds3.Ds3Client client, string key, string file)
         {
-            using (var response = client.GetObject(new Ds3.Models.GetObjectRequest(BucketName, key)))
+            var request = new Ds3.Models.GetObjectRequest(BucketName, key);
+            if (Start.HasValue && End.HasValue)
+            {
+                request.WithByteRange(new Ds3.Models.GetObjectRequest.Range(Start.Value, End.Value));
+            }
+            using (var response = client.GetObject(request))
             using (var outputStream = IOFile.OpenWrite(file))
                 response.Contents.CopyTo(outputStream);
         }

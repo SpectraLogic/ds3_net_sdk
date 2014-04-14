@@ -10,6 +10,24 @@ namespace Ds3.Models
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
 
+        private Range _byteRange;
+        public Range ByteRange
+        {
+            get { return _byteRange; }
+            set { WithByteRange(value); }
+        }
+
+        public GetObjectRequest WithByteRange(Range byteRange)
+        {
+            this._byteRange = byteRange;
+            return this;
+        }
+
+        internal override Range GetByteRange()
+        {
+            return this._byteRange;
+        }
+
         internal override HttpVerb Verb
         {
             get
