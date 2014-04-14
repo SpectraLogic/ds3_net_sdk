@@ -10,7 +10,9 @@ namespace TestDs3
         {
             using (var stream = request.GetContentStream())
             using (var reader = new StreamReader(stream))
+            {
                 return reader.ReadToEnd();
+            }
         }
 
         internal static Stream StringToStream(string responseString)
