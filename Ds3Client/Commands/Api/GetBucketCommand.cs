@@ -14,12 +14,16 @@ namespace Ds3Client.Commands.Api
         protected override void ProcessRecord()
         {
             if (BucketName != null)
+            {
                 throw new ApiException(Resources.BucketNameNotImplementedException);
+            }
 
             using (var response = CreateClient().GetService(new Ds3.Models.GetServiceRequest()))
             {
                 foreach (var bucket in response.Buckets)
+                {
                     WriteObject(bucket);
+                }
             }
         }
     }

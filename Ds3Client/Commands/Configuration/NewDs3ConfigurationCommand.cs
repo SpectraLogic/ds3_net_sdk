@@ -52,7 +52,9 @@ namespace Ds3Client.Commands.Configuration
             var session = SessionSingleton.Current;
             session.Import(config);
             if (MakeSelected)
+            {
                 session.Select(config.Name);
+            }
 
             // Save the config unless the user told us not to.
             if (!DontPersist)
@@ -60,7 +62,9 @@ namespace Ds3Client.Commands.Configuration
                 // Write the file.
                 var path = PreparePath();
                 using (var outFile = File.OpenWrite(path))
+                {
                     ConfigurationParser.Unparse(config, outFile);
+                }
 
                 // Warn the user that we've written a file since it may not be obvious otherwise.
                 WriteWarning(string.Format(Resources.WroteConfigFileWarning, path));
@@ -74,12 +78,16 @@ namespace Ds3Client.Commands.Configuration
         {
             // Use the path from the user if they specified it.
             if (Path != null)
+            {
                 return Path;
+            }
 
             // Create the directory if it doesn't exist.
             var defaultDirectory = IOPath.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"SpectraLogic\BlackPearl");
             if (!Directory.Exists(defaultDirectory))
+            {
                 Directory.CreateDirectory(defaultDirectory);
+            }
 
             // Build the path.
             return IOPath.Combine(defaultDirectory, Name + ".xml");

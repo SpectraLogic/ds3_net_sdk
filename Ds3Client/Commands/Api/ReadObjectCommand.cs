@@ -53,7 +53,9 @@ namespace Ds3Client.Commands.Api
         private void WriteToLocalFile()
         {
             if (IOFile.Exists(File))
+            {
                 throw new ApiException(Resources.FileAlreadyExistsException, File);
+            }
 
             WriteObjectToFile(CreateClient(), Key, MakeValidPath(File));
         }
@@ -61,7 +63,9 @@ namespace Ds3Client.Commands.Api
         private void WriteToLocalFolder()
         {
             if (Directory.Exists(Folder))
+            {
                 throw new ApiException(Resources.DirectoryAlreadyExistsException, Folder);
+            }
 
             var client = CreateClient();
             using (var response = client.GetBucket(new Ds3.Models.GetBucketRequest(BucketName) { Prefix = KeyPrefix }))
@@ -72,7 +76,9 @@ namespace Ds3Client.Commands.Api
                     Parallel.ForEach(bulkGet.ObjectLists, ds3ObjectList =>
                     {
                         foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
+                        {
                             WriteObjectToFile(client, key, EnsureDirectoryForFileExists(Path.Combine(Folder, MakeValidPath(key))));
+                        }
                     });
                 }
                 catch (AggregateException e)
@@ -93,7 +99,9 @@ namespace Ds3Client.Commands.Api
             lock(_ensureDirectoryLock)
             {
                 if (!Directory.Exists(destinationDirectory))
+                {
                     Directory.CreateDirectory(destinationDirectory);
+                }
             }
             return filePath;
         }
@@ -107,7 +115,9 @@ namespace Ds3Client.Commands.Api
             }
             using (var response = client.GetObject(request))
             using (var outputStream = IOFile.OpenWrite(file))
+            {
                 response.Contents.CopyTo(outputStream);
+            }
         }
 
         private static string MakeValidPath(string path)

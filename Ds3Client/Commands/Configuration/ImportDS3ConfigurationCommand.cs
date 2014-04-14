@@ -22,7 +22,9 @@ namespace Ds3Client.Commands.Configuration
             // Parse the config, set the name, and validate it.
             Config config;
             using (var configFile = File.OpenRead(Path))
+            {
                 config = ConfigurationParser.Parse(configFile);
+            }
             config.Name = Name ?? config.Name ?? System.IO.Path.GetFileNameWithoutExtension(Path);
             ConfigurationParser.ValidateConfiguration(config);
 
@@ -30,7 +32,9 @@ namespace Ds3Client.Commands.Configuration
             var session = SessionSingleton.Current;
             session.Import(config);
             if (MakeSelected.IsPresent)
+            {
                 session.Select(config.Name);
+            }
 
             // Send the new config to the output.
             WriteObject(config);

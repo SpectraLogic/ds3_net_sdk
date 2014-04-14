@@ -31,7 +31,9 @@ namespace Ds3Client.Commands.Configuration
             else
             {
                 foreach (var config in session.Get())
+                {
                     WriteObject(config);
+                }
             }
         }
     }

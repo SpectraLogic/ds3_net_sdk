@@ -55,7 +55,6 @@
     <Compile Include="Commands\Api\GetBucketCommand.cs" />
     <Compile Include="Commands\Api\ReadObjectCommand.cs" />
     <Compile Include="Commands\Api\NewBucketCommand.cs" />
-    <Compile Include="Api\StreamExtensions.cs" />
     <Compile Include="Commands\Api\WriteObjectCommand.cs" />
     <Compile Include="Commands\Configuration\GetDS3ConfigurationCommand.cs" />
     <Compile Include="Commands\Configuration\ImportDS3ConfigurationCommand.cs" />
