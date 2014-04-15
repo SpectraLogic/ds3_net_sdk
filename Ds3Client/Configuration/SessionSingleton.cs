@@ -33,7 +33,9 @@ namespace Ds3Client.Configuration
                     runspace.StateChanged += (object sender, RunspaceStateEventArgs e) =>
                     {
                         if (e.RunspaceStateInfo.State != RunspaceState.Opened)
+                        {
                             _sessions.Remove(instanceId);
+                        }
                     };
 
                     return session;

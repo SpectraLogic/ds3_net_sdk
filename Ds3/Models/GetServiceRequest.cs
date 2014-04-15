@@ -4,7 +4,7 @@ namespace Ds3.Models
 {
     public class GetServiceRequest : Ds3Request
     {
-        public override HttpVerb Verb
+        internal override HttpVerb Verb
         {
             get
             {
@@ -12,7 +12,7 @@ namespace Ds3.Models
             }
         }
 
-        public override string Path
+        internal override string Path
         {
             get
             {

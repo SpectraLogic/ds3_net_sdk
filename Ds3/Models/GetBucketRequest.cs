@@ -4,12 +4,7 @@ namespace Ds3.Models
 {
     public class GetBucketRequest : Ds3Request
     {
-        private string _bucketName;
-
-        public string BucketName
-        {
-            get { return _bucketName; }
-        }
+        public string BucketName { get; private set; }
 
         private string _marker;
         public string Marker
@@ -74,7 +69,7 @@ namespace Ds3.Models
             return this;
         }
 
-        public override HttpVerb Verb
+        internal override HttpVerb Verb
         {
             get
             {
@@ -82,7 +77,7 @@ namespace Ds3.Models
             }
         }
 
-        public override string Path
+        internal override string Path
         {
             get
             {
@@ -92,7 +87,7 @@ namespace Ds3.Models
 
         public GetBucketRequest(string bucketName)
         {
-            this._bucketName = bucketName;
+            this.BucketName = bucketName;
         }
     }
 }

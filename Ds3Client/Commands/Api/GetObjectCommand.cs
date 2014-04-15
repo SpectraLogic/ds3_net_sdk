@@ -37,7 +37,9 @@ namespace Ds3Client.Commands.Api
                     marker = response.NextMarker;
                     remainingKeys -= response.Objects.Count;
                     foreach (var ds3Object in response.Objects)
+                    {
                         WriteObject(ds3Object);
+                    }
                 }
             } while (isTruncated && remainingKeys > 0);
         }

@@ -1,26 +1,34 @@
 ﻿using System.Net;
 
 using Ds3.AwsModels;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
     public class GetObjectRequest : Ds3Request
     {
-        private string _bucketName;
+        public string BucketName { get; private set; }
+        public string ObjectName { get; private set; }
 
-        public string BucketName
+        private Range _byteRange;
+        public Range ByteRange
         {
-            get { return _bucketName; }
+            get { return _byteRange; }
+            set { WithByteRange(value); }
         }
 
-        public string _objectName;
-
-        public string ObjectName
+        public GetObjectRequest WithByteRange(Range byteRange)
         {
-            get { return _objectName; }
+            this._byteRange = byteRange;
+            return this;
         }
 
-        public override HttpVerb Verb
+        internal override Range GetByteRange()
+        {
+            return this._byteRange;
+        }
+
+        internal override HttpVerb Verb
         {
             get
             {
@@ -28,45 +36,12 @@ namespace Ds3.Models
             }
         }
 
-        public override string Path
+        internal override string Path
         {
             get
             {
                 return "/" + BucketName + "/" + ObjectName;
             }
-        }
-
-        private string _prefix;        
-
-        public string Prefix {
-            get {
-                return _prefix;
-            }
-
-            set
-            {
-                WithPrefix(value);
-            }
-        }
-
-        public GetObjectRequest WithPrefix(string prefix)
-        {
-            this._prefix = prefix;
-            this.QueryParams.Add("prefix", prefix);
-            return this;
-        }
-
-        private string _nextMarker;
-        public string NextMarker {
-            get { return _nextMarker; }
-            set { WithNextMarker(value); }
-        }
-
-        public GetObjectRequest WithNextMarker(string nextMarker)
-        {
-            this._nextMarker = nextMarker;
-            this.QueryParams.Add("marker", nextMarker);
-            return this;
         }
 
         public GetObjectRequest(Bucket bucket, Ds3Object ds3Object): this (bucket.Name, ds3Object.Name)
@@ -75,8 +50,8 @@ namespace Ds3.Models
 
         public GetObjectRequest(string bucketName, string ds3ObjectName)
         {
-            this._bucketName = bucketName;
-            this._objectName = ds3ObjectName;
+            this.BucketName = bucketName;
+            this.ObjectName = ds3ObjectName;
         }
     }
 }

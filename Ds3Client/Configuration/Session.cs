@@ -10,7 +10,9 @@ namespace Ds3Client.Configuration
         public void Import(Configuration configuration)
         {
             if (_configurations.ContainsKey(configuration.Name))
+            {
                 throw new ConfigurationException(Resources.SessionExistsException, configuration.Name);
+            }
             _configurations.Add(configuration.Name, configuration);
         }
 
@@ -27,10 +29,14 @@ namespace Ds3Client.Configuration
         public Configuration GetSelected()
         {
             if (_configurations.Count == 0)
+            {
                 throw new ConfigurationException(Resources.NoSelectedSessionException);
+            }
             var session = _configurations.Values.SingleOrDefault(config => config.IsSelected);
             if (session == null)
+            {
                 throw new ConfigurationException(Resources.NoSelectedSessionException);
+            }
             return session;
         }
 
@@ -42,9 +48,13 @@ namespace Ds3Client.Configuration
         public void Select(string name)
         {
             if (!_configurations.ContainsKey(name))
+            {
                 throw new ConfigurationException(Resources.NoSuchSessionException, name);
+            }
             foreach (var config in _configurations.Values)
+            {
                 config.IsSelected = config.Name == name;
+            }
         }
     }
 }

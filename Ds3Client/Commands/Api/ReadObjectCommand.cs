@@ -26,6 +26,12 @@ namespace Ds3Client.Commands.Api
         [Parameter(Position = 2, ParameterSetName = ToLocalFileParamSet, Mandatory = true)]
         public string File { get; set; }
 
+        [Parameter(ParameterSetName = ToLocalFileParamSet)]
+        public long? Start { get; set; }
+
+        [Parameter(ParameterSetName = ToLocalFileParamSet)]
+        public long? End { get; set; }
+
         [Alias(new string[] { "Prefix" })]
         [Parameter(Position = 1, ParameterSetName = ToLocalFolderParamSet, ValueFromPipelineByPropertyName = true)]
         public string KeyPrefix { get; set; }
@@ -47,7 +53,9 @@ namespace Ds3Client.Commands.Api
         private void WriteToLocalFile()
         {
             if (IOFile.Exists(File))
+            {
                 throw new ApiException(Resources.FileAlreadyExistsException, File);
+            }
 
             WriteObjectToFile(CreateClient(), Key, MakeValidPath(File));
         }
@@ -55,7 +63,9 @@ namespace Ds3Client.Commands.Api
         private void WriteToLocalFolder()
         {
             if (Directory.Exists(Folder))
+            {
                 throw new ApiException(Resources.DirectoryAlreadyExistsException, Folder);
+            }
 
             var client = CreateClient();
             using (var response = client.GetBucket(new Ds3.Models.GetBucketRequest(BucketName) { Prefix = KeyPrefix }))
@@ -66,7 +76,9 @@ namespace Ds3Client.Commands.Api
                     Parallel.ForEach(bulkGet.ObjectLists, ds3ObjectList =>
                     {
                         foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
+                        {
                             WriteObjectToFile(client, key, EnsureDirectoryForFileExists(Path.Combine(Folder, MakeValidPath(key))));
+                        }
                     });
                 }
                 catch (AggregateException e)
@@ -87,16 +99,25 @@ namespace Ds3Client.Commands.Api
             lock(_ensureDirectoryLock)
             {
                 if (!Directory.Exists(destinationDirectory))
+                {
                     Directory.CreateDirectory(destinationDirectory);
+                }
             }
             return filePath;
         }
 
         private void WriteObjectToFile(Ds3.Ds3Client client, string key, string file)
         {
-            using (var response = client.GetObject(new Ds3.Models.GetObjectRequest(BucketName, key)))
+            var request = new Ds3.Models.GetObjectRequest(BucketName, key);
+            if (Start.HasValue && End.HasValue)
+            {
+                request.WithByteRange(new Ds3.Models.GetObjectRequest.Range(Start.Value, End.Value));
+            }
+            using (var response = client.GetObject(request))
             using (var outputStream = IOFile.OpenWrite(file))
+            {
                 response.Contents.CopyTo(outputStream);
+            }
         }
 
         private static string MakeValidPath(string path)

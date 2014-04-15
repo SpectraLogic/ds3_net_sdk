@@ -10,7 +10,7 @@ namespace Ds3.Models
 {
     public abstract class BulkRequest : Ds3Request
     {
-        public override HttpVerb Verb
+        internal override HttpVerb Verb
         {
             get
             {
@@ -18,35 +18,24 @@ namespace Ds3.Models
             }
         }
 
-        public override string Path
+        internal override string Path
         {
             get
             {
                 return "/_rest_/buckets/" + BucketName;
             }
-        }        
-
-        private string _bucketName;
-
-        public string BucketName
-        {
-            get { return _bucketName; }
         }
 
-        private List<Ds3Object> _objects;
-
-        public List<Ds3Object> Objects
-        {
-            get { return _objects; }
-        }
+        public string BucketName { get; private set; }
+        public List<Ds3Object> Objects { get; private set; }
 
         public BulkRequest(string bucketName, List<Ds3Object> objectList)
         {
-            this._bucketName = bucketName;
-            this._objects = objectList;
+            this.BucketName = bucketName;
+            this.Objects = objectList;
         }
 
-        public override Stream GetContentStream()
+        internal override Stream GetContentStream()
         {
             return GenerateObjectStream(Objects);
         }
