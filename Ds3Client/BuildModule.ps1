@@ -32,3 +32,14 @@ New-ModuleManifest `
 	-FileList @() `
 	-ClrVersion $clrVersion `
 	-ModuleVersion $moduleVersion
+	
+# Write to zip.
+$zipfile = $moduleDir + ".zip"
+if ((Test-Path $zipFile) -eq $true) { rm $zipFile }
+[Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") > $null
+[System.IO.Compression.ZipFile]::CreateFromDirectory(
+	$moduleDir,
+	$zipFile,
+	[System.IO.Compression.CompressionLevel]::Optimal,
+	$false
+)
