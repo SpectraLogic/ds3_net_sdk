@@ -9,6 +9,9 @@ namespace Ds3.Models
     {
         private Stream _contents;
 
+        /// <summary>
+        /// The contents of the object. Disposing of GetObjectResponse will also dispose of this stream.
+        /// </summary>
         public Stream Contents
         {
             get { return _contents; }

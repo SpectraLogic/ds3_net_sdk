@@ -17,6 +17,11 @@ namespace Ds3.Models
             set { WithByteRange(value); }
         }
 
+        /// <summary>
+        /// Specifies a range of bytes within the object to retrieve.
+        /// </summary>
+        /// <param name="byteRange"></param>
+        /// <returns></returns>
         public GetObjectRequest WithByteRange(Range byteRange)
         {
             this._byteRange = byteRange;

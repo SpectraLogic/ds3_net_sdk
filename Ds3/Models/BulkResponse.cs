@@ -13,6 +13,10 @@ namespace Ds3.Models
     {
         private List<List<Ds3Object>> _objectLists;
 
+        /// <summary>
+        /// The ordered lists of objects to put or get.
+        /// Note that the inner lists may be processed concurrently.
+        /// </summary>
         public List<List<Ds3Object>> ObjectLists
         {
             get { return _objectLists; }
