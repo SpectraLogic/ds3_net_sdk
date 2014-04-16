@@ -10,6 +10,6 @@ You can download binaries from the [Releases](../../releases) page.
 
 [PowerShell DS3 Module](../../wiki/PowerShell-DS3-Module)
 
-[Running Tests](../../wiki/Running-Tests)
+[Running Unit Tests](../../wiki/Running-Unit-Tests)
 
 [Building from Source](../../wiki/Building-from-Source)
