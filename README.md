@@ -4,7 +4,7 @@
 
 An SDK conforming to the DS3 specification.
 
-You can download binaries from the [Releases](../releases) page.
+You can download binaries from the [Releases](./releases) page.
 
 [Using the SDK](./wiki/Using-the-SDK)
 
