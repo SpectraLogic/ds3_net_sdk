@@ -22,7 +22,8 @@ using System.Xml.Serialization;
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class Error {
+internal partial class Error
+{
     
     private string codeField;
     
@@ -97,7 +98,8 @@ public partial class Error {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class NewDataSet {
+internal partial class NewDataSet
+{
     
     private Error[] itemsField;
     

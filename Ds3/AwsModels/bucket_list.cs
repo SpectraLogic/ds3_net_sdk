@@ -23,7 +23,7 @@ namespace Ds3.AwsModels
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class ListBucketResult
+    internal partial class ListBucketResult
     {
 
         private string creationDateField;
@@ -177,7 +177,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class ListBucketResultContents
+    internal partial class ListBucketResultContents
     {
 
         private string eTagField;
@@ -283,7 +283,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class ListBucketResultContentsOwner
+    internal partial class ListBucketResultContentsOwner
     {
 
         private string displayNameField;
@@ -326,7 +326,7 @@ namespace Ds3.AwsModels
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class NewDataSet
+    internal partial class NewDataSet
     {
 
         private ListBucketResult[] itemsField;
