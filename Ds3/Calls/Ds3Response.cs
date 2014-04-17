@@ -8,8 +8,9 @@ using System.Diagnostics;
 using System.Xml.Serialization;
 
 using Ds3.Runtime;
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
     public class Ds3Response : IDisposable
     {        
@@ -26,15 +27,7 @@ namespace Ds3.Models
             if (!actualStatusCode.Equals(expectedStatusCode))
             {
                 var responseContent = GetResponseContent(response);
-                Ds3Error error;
-                try
-                {
-                    error = MapErrorFromSerializationEntity((Error)new XmlSerializer(typeof(Error)).Deserialize(new StringReader(responseContent)));
-                }
-                catch (InvalidOperationException)
-                {
-                    error = null;
-                }
+                var error = ParseError(responseContent);
                 throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode, error, responseContent);
             }
         }
@@ -46,9 +39,26 @@ namespace Ds3.Models
                 return reader.ReadToEnd();
         }
 
-        private static Ds3Error MapErrorFromSerializationEntity(Error error)
+        private static Ds3Error ParseError(string responseContent)
         {
-            return new Ds3Error(error.Code, error.Message, error.Resource, error.RequestId);
+            try
+            {
+                var root = XDocument.Parse(responseContent).ElementOrThrow("Error");
+                return new Ds3Error(
+                    root.TextOf("Code"),
+                    root.TextOf("Message"),
+                    root.TextOf("Resource"),
+                    root.TextOf("RequestId")
+                );
+            }
+            catch (XmlException)
+            {
+                return null;
+            }
+            catch (Ds3BadResponseException)
+            {
+                return null;
+            }
         }
 
         public void Dispose()

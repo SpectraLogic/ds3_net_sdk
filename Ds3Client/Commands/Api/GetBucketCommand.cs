@@ -18,7 +18,7 @@ namespace Ds3Client.Commands.Api
                 throw new ApiException(Resources.BucketNameNotImplementedException);
             }
 
-            using (var response = CreateClient().GetService(new Ds3.Models.GetServiceRequest()))
+            using (var response = CreateClient().GetService(new Ds3.Calls.GetServiceRequest()))
             {
                 foreach (var bucket in response.Buckets)
                 {

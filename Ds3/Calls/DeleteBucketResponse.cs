@@ -2,7 +2,7 @@
 
 using Ds3.Runtime;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
     public class DeleteBucketResponse : Ds3Response
     {

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
     public class DeleteBucketRequest : Ds3Request
     {

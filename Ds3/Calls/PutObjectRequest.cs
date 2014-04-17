@@ -1,6 +1,8 @@
 ﻿using System.IO;
 
-namespace Ds3.Models
+using Ds3.Models;
+
+namespace Ds3.Calls
 {
     public class PutObjectRequest : Ds3Request
     {

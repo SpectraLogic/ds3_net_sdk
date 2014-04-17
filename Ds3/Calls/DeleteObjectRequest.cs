@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-using Ds3.AwsModels;
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
     public class DeleteObjectRequest : Ds3Request
     {

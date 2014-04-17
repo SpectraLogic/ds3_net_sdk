@@ -1,4 +1,4 @@
-﻿namespace Ds3.Models
+﻿namespace Ds3.Calls
 {
     public class PutBucketRequest : Ds3Request
     {

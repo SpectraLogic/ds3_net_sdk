@@ -10,6 +10,7 @@ using NUnit.Framework;
 using Ds3;
 using Ds3.Models;
 using Ds3.Runtime;
+using Ds3.Calls;
 
 namespace TestDs3
 {

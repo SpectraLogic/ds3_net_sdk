@@ -9,5 +9,10 @@ namespace Ds3.Runtime
             : base(message)
         {
         }
+
+        internal Ds3RequestException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }

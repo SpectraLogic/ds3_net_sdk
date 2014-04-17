@@ -53,7 +53,7 @@ namespace Ds3Client.Commands.Api
         private void WriteFromLocalFile()
         {
             using (var fileStream = IOFile.OpenRead(File))
-            using (CreateClient().PutObject(new Ds3.Models.PutObjectRequest(BucketName, Key, fileStream)))
+            using (CreateClient().PutObject(new Ds3.Calls.PutObjectRequest(BucketName, Key, fileStream)))
             {
             }
         }
@@ -63,9 +63,9 @@ namespace Ds3Client.Commands.Api
             var keyToFileMapping = Directory
                 .GetFiles(Folder, SearchPattern ?? "*", Recurse.IsPresent ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly)
                 .ToDictionary(file => (KeyPrefix ?? "") + file.Substring(Folder.Length).Replace('\\', '/'));
-            var ds3ObjectsToQuery = keyToFileMapping.Select(item => new Ds3.AwsModels.Ds3Object(item.Key, new FileInfo(item.Value).Length)).ToList();
+            var ds3ObjectsToQuery = keyToFileMapping.Select(item => new Ds3.Models.Ds3Object(item.Key, new FileInfo(item.Value).Length)).ToList();
             var client = CreateClient();
-            using (var bulkPutResponse = client.BulkPut(new Ds3.Models.BulkPutRequest(BucketName, ds3ObjectsToQuery)))
+            using (var bulkPutResponse = client.BulkPut(new Ds3.Calls.BulkPutRequest(BucketName, ds3ObjectsToQuery)))
             {
                 try
                 {
@@ -74,7 +74,7 @@ namespace Ds3Client.Commands.Api
                         foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
                         {
                             using (var fileStream = IOFile.OpenRead(keyToFileMapping[key]))
-                            using (client.PutObject(new Ds3.Models.PutObjectRequest(BucketName, key, fileStream)))
+                            using (client.PutObject(new Ds3.Calls.PutObjectRequest(BucketName, key, fileStream)))
                             {
                             }
                         }

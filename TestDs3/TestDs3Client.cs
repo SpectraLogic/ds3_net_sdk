@@ -9,7 +9,7 @@ using Ds3.Runtime;
 using Ds3.Models;
 using System;
 using Ds3;
-using Ds3.AwsModels;
+using Ds3.Calls;
 
 namespace TestDs3
 {
@@ -21,7 +21,6 @@ namespace TestDs3
         [Test]
         public void TestGetService()
         {
-            //TODO: XmlSerializer really doesn't like xmlns="http://doc.s3.amazonaws.com/2006-03-01"
             var responseContent = "<ListAllMyBucketsResult><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner><Buckets><Bucket><Name>testBucket2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest1</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest3</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest4</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest5</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest6</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testBucket3</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testBucket1</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testbucket</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>";
             var expectedBuckets = new[] {
                 new { Key = "testBucket2",  CreationDate = "2013-12-11T23:20:09" },
@@ -62,6 +61,19 @@ namespace TestDs3
             using (MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.BadRequest, "")
+                .AsClient
+                .GetService(new GetServiceRequest()))
+            {
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3BadResponseException))]
+        public void TestGetWorseService()
+        {
+            using (MockNetwork
+                .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
+                .Returning(HttpStatusCode.OK, "")
                 .AsClient
                 .GetService(new GetServiceRequest()))
             {
@@ -232,7 +244,7 @@ namespace TestDs3
                 new { Key = "file3", Size = 2523 }
             };
 
-            var stringRequest = "<?xml version=\"1.0\"?>\r\n<objects xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n  <object name=\"file1\" size=\"256\" />\r\n  <object name=\"file2\" size=\"1202\" />\r\n  <object name=\"file3\" size=\"2523\" />\r\n</objects>";
+            var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<objects>\r\n  <object name=\"file1\" size=\"256\" />\r\n  <object name=\"file2\" size=\"1202\" />\r\n  <object name=\"file3\" size=\"2523\" />\r\n</objects>";
             var stringResponse = "<masterobjectlist><objects><object name='file2' size='1202'/><object name='file1' size='256'/><object name='file3' size='2523'/></objects></masterobjectlist>";
 
             var inputObjects = new List<Ds3Object> {
