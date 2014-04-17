@@ -29,6 +29,10 @@ namespace Ds3.Models
         public string BucketName { get; private set; }
         public List<Ds3Object> Objects { get; private set; }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="bucketName"></param>
+        /// <param name="objectList">Note that both the Name and Size fields must be set on each Ds3Object.</param>
         public BulkRequest(string bucketName, List<Ds3Object> objectList)
         {
             this.BucketName = bucketName;

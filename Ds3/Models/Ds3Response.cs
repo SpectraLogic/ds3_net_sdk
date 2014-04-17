@@ -20,21 +20,6 @@ namespace Ds3.Models
             this.response = response;
         }
 
-        public string FormatXml(String Xml)
-        {
-            try
-            {
-                XDocument doc = XDocument.Parse(Xml);
-                return doc.ToString();
-            }
-            catch (XmlException e)
-            {
-                Trace.WriteLine(Resources.FormatXmlException, "DS3_Response");
-                Trace.WriteLine(e, "DS3_Response");
-                return Xml;
-            }
-        }
-
         protected void HandleStatusCode(HttpStatusCode expectedStatusCode)
         {
             HttpStatusCode actualStatusCode = response.StatusCode;

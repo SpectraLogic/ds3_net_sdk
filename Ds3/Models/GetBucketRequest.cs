@@ -13,6 +13,13 @@ namespace Ds3.Models
             set { WithMarker(value); }
         }
 
+        /// <summary>
+        /// Specifies the name of the object to start with. Use
+        /// GetBucketResponse.NextMarker here if the last GetBucketResponse had
+        /// IsTruncated == true.
+        /// </summary>
+        /// <param name="marker"></param>
+        /// <returns></returns>
         public GetBucketRequest WithMarker(string marker)
         {
             this._marker = marker;
@@ -34,6 +41,11 @@ namespace Ds3.Models
             set { WithMaxKeys(value); }
         }
 
+        /// <summary>
+        /// Specifies the maximum number of keys you'd like to retrieve.
+        /// </summary>
+        /// <param name="maxKeys"></param>
+        /// <returns></returns>
         public GetBucketRequest WithMaxKeys(int? maxKeys)
         {
             this._maxKeys = maxKeys;
@@ -55,6 +67,11 @@ namespace Ds3.Models
             set { WithPrefix(value); }
         }
 
+        /// <summary>
+        /// Specifies a string that all retrieved object keys must start with.
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
         public GetBucketRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;

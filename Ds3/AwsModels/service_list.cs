@@ -23,7 +23,7 @@ namespace Ds3.AwsModels
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class ListAllMyBucketsResult
+    internal partial class ListAllMyBucketsResult
     {
 
         private object[] itemsField;
@@ -50,7 +50,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class ListAllMyBucketsResultBuckets
+    internal partial class ListAllMyBucketsResultBuckets
     {
 
         private ListAllMyBucketsResultBucketsBucket[] bucketField;
@@ -76,7 +76,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class ListAllMyBucketsResultBucketsBucket
+    internal partial class ListAllMyBucketsResultBucketsBucket
     {
 
         private string creationDateField;
@@ -118,7 +118,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class ListAllMyBucketsResultOwner
+    internal partial class ListAllMyBucketsResultOwner
     {
 
         private string displayNameField;

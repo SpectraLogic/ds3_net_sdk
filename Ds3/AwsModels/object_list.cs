@@ -23,7 +23,7 @@ namespace Ds3.AwsModels
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class objects
+    internal partial class objects
     {
 
         private objectsObject[] itemsField;
@@ -49,7 +49,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class objectsObject
+    internal partial class objectsObject
     {
 
         private string nameField;

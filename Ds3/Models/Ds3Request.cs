@@ -50,5 +50,5 @@ namespace Ds3.Models
         }
     }
 
-    public enum HttpVerb {GET, PUT, POST, DELETE, HEAD, PATCH};
+    internal enum HttpVerb {GET, PUT, POST, DELETE, HEAD, PATCH};
 }

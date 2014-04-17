@@ -23,7 +23,7 @@ namespace Ds3.AwsModels
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class masterobjectlist
+    internal partial class masterobjectlist
     {
 
         private masterobjectlistObjects[] itemsField;
@@ -49,7 +49,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class masterobjectlistObjects
+    internal partial class masterobjectlistObjects
     {
 
         private masterobjectlistObjectsObject[] objectField;
@@ -75,7 +75,7 @@ namespace Ds3.AwsModels
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class masterobjectlistObjectsObject
+    internal partial class masterobjectlistObjectsObject
     {
 
         private string nameField;
