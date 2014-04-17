@@ -22,6 +22,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\ds3_net_sdk.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,45 +47,42 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="AwsModels\bucket_list.cs" />
-    <Compile Include="AwsModels\Ds3Object.cs" />
-    <Compile Include="AwsModels\Error.cs" />
-    <Compile Include="AwsModels\master_object_list.cs" />
-    <Compile Include="AwsModels\object_list.cs" />
-    <Compile Include="AwsModels\Owner.cs" />
-    <Compile Include="AwsModels\service_list.cs" />
+    <Compile Include="Models\Ds3Object.cs" />
+    <Compile Include="Models\Owner.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Ds3Builder.cs" />
     <Compile Include="Ds3Client.cs" />
-    <Compile Include="Models\BulkGetRequest.cs" />
-    <Compile Include="Models\BulkGetResponse.cs" />
-    <Compile Include="Models\BulkPutRequest.cs" />
-    <Compile Include="Models\BulkPutResponse.cs" />
-    <Compile Include="Models\BulkRequest.cs" />
-    <Compile Include="Models\BulkResponse.cs" />
-    <Compile Include="Models\DeleteBucketRequest.cs" />
-    <Compile Include="Models\DeleteBucketResponse.cs" />
-    <Compile Include="Models\DeleteObjectRequest.cs" />
-    <Compile Include="Models\DeleteObjectResponse.cs" />
+    <Compile Include="Models\Bucket.cs" />
+    <Compile Include="Calls\BulkGetRequest.cs" />
+    <Compile Include="Calls\BulkGetResponse.cs" />
+    <Compile Include="Calls\BulkPutRequest.cs" />
+    <Compile Include="Calls\BulkPutResponse.cs" />
+    <Compile Include="Calls\BulkRequest.cs" />
+    <Compile Include="Calls\BulkResponse.cs" />
+    <Compile Include="Calls\DeleteBucketRequest.cs" />
+    <Compile Include="Calls\DeleteBucketResponse.cs" />
+    <Compile Include="Calls\DeleteObjectRequest.cs" />
+    <Compile Include="Calls\DeleteObjectResponse.cs" />
     <Compile Include="Models\Ds3Error.cs" />
-    <Compile Include="Models\GetBucketRequest.cs" />
-    <Compile Include="Models\GetBucketResponse.cs" />
-    <Compile Include="Models\GetObjectRequest.cs" />
-    <Compile Include="Models\GetObjectResponse.cs" />
-    <Compile Include="Models\GetServiceRequest.cs" />
-    <Compile Include="Models\GetServiceResponse.cs" />
-    <Compile Include="Models\Ds3Request.cs" />
-    <Compile Include="Models\Ds3Response.cs" />
-    <Compile Include="Models\PutBucketRequest.cs" />
-    <Compile Include="Models\PutBucketResponse.cs" />
-    <Compile Include="Models\PutObjectRequest.cs" />
-    <Compile Include="Models\PutObjectResponse.cs" />
+    <Compile Include="Calls\GetBucketRequest.cs" />
+    <Compile Include="Calls\GetBucketResponse.cs" />
+    <Compile Include="Calls\GetObjectRequest.cs" />
+    <Compile Include="Calls\GetObjectResponse.cs" />
+    <Compile Include="Calls\GetServiceRequest.cs" />
+    <Compile Include="Calls\GetServiceResponse.cs" />
+    <Compile Include="Calls\Ds3Request.cs" />
+    <Compile Include="Calls\Ds3Response.cs" />
+    <Compile Include="Calls\PutBucketRequest.cs" />
+    <Compile Include="Calls\PutBucketResponse.cs" />
+    <Compile Include="Calls\PutObjectRequest.cs" />
+    <Compile Include="Calls\PutObjectResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Runtime\Ds3BadResponseException.cs" />
     <Compile Include="Runtime\Ds3BadStatusCodeException.cs" />
     <Compile Include="Runtime\Ds3RedirectLimitException.cs" />
     <Compile Include="Runtime\INetwork.cs" />
@@ -91,6 +90,7 @@
     <Compile Include="Runtime\Network.cs" />
     <Compile Include="Runtime\S3Signer.cs" />
     <Compile Include="Runtime\WebResponse.cs" />
+    <Compile Include="Runtime\XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Runtime\Ds3RequestException.cs" />

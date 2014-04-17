@@ -10,7 +10,7 @@ namespace Ds3Client.Commands.Api
 
         protected override void ProcessRecord()
         {
-            using (CreateClient().PutBucket(new Ds3.Models.PutBucketRequest(BucketName)))
+            using (CreateClient().PutBucket(new Ds3.Calls.PutBucketRequest(BucketName)))
             {
             }
         }

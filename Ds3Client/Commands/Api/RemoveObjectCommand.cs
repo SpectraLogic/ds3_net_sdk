@@ -21,7 +21,7 @@ namespace Ds3Client.Commands.Api
             var confirmString = string.Format(Resources.ObjectDescription, Key, BucketName);
             if (Force.IsPresent || (ShouldProcess(confirmString) && ShouldContinue(Resources.RemoveObjectConfirmationMessage, confirmString)))
             {
-                using (CreateClient().DeleteObject(new Ds3.Models.DeleteObjectRequest(BucketName, Key)))
+                using (CreateClient().DeleteObject(new Ds3.Calls.DeleteObjectRequest(BucketName, Key)))
                 {
                 }
             }

@@ -68,8 +68,8 @@ namespace Ds3Client.Commands.Api
             }
 
             var client = CreateClient();
-            using (var response = client.GetBucket(new Ds3.Models.GetBucketRequest(BucketName) { Prefix = KeyPrefix }))
-            using (var bulkGet = client.BulkGet(new Ds3.Models.BulkGetRequest(BucketName, response.Objects)))
+            using (var response = client.GetBucket(new Ds3.Calls.GetBucketRequest(BucketName) { Prefix = KeyPrefix }))
+            using (var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, response.Objects)))
             {
                 try
                 {
@@ -108,10 +108,10 @@ namespace Ds3Client.Commands.Api
 
         private void WriteObjectToFile(Ds3.Ds3Client client, string key, string file)
         {
-            var request = new Ds3.Models.GetObjectRequest(BucketName, key);
+            var request = new Ds3.Calls.GetObjectRequest(BucketName, key);
             if (Start.HasValue && End.HasValue)
             {
-                request.WithByteRange(new Ds3.Models.GetObjectRequest.Range(Start.Value, End.Value));
+                request.WithByteRange(new Ds3.Calls.GetObjectRequest.Range(Start.Value, End.Value));
             }
             using (var response = client.GetObject(request))
             using (var outputStream = IOFile.OpenWrite(file))

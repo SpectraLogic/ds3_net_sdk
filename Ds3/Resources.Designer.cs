@@ -97,6 +97,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected an element called &quot;{0}&quot; but didn&apos;t find it..
+        /// </summary>
+        internal static string MissingElementException {
+            get {
+                return ResourceManager.GetString("MissingElementException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Some or all of the objects to put are missing a size field..
         /// </summary>
         internal static string ObjectsMissingSizeException {
@@ -111,6 +120,15 @@ namespace Ds3 {
         internal static string TooManyRedirectsException {
             get {
                 return ResourceManager.GetString("TooManyRedirectsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encountered an error while reading XML response: &quot;{0}&quot;.
+        /// </summary>
+        internal static string XmlResponseErrorException {
+            get {
+                return ResourceManager.GetString("XmlResponseErrorException", resourceCulture);
             }
         }
     }

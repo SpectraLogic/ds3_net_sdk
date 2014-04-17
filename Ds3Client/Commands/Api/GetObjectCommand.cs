@@ -26,7 +26,7 @@ namespace Ds3Client.Commands.Api
             string marker = null;
             do
             {
-                var request = new Ds3.Models.GetBucketRequest(BucketName) {
+                var request = new Ds3.Calls.GetBucketRequest(BucketName) {
                     Marker = marker,
                     MaxKeys = Math.Min(remainingKeys, _defaultMaxKeys),
                     Prefix = KeyPrefix

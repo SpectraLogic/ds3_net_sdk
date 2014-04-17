@@ -129,10 +129,16 @@
   <data name="FormatXmlException" xml:space="preserve">
     <value>Encountered an exception when formating xml string.</value>
   </data>
+  <data name="MissingElementException" xml:space="preserve">
+    <value>Expected an element called "{0}" but didn't find it.</value>
+  </data>
   <data name="ObjectsMissingSizeException" xml:space="preserve">
     <value>Some or all of the objects to put are missing a size field.</value>
   </data>
   <data name="TooManyRedirectsException" xml:space="preserve">
     <value>Too many redirects.</value>
+  </data>
+  <data name="XmlResponseErrorException" xml:space="preserve">
+    <value>Encountered an error while reading XML response: "{0}"</value>
   </data>
 </root>

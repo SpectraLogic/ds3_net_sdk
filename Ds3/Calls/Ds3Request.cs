@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
     public abstract class Ds3Request
     {

@@ -3,7 +3,7 @@ using System.IO;
 
 using Ds3.Runtime;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
     public class GetObjectResponse : Ds3Response
     {

@@ -2,11 +2,11 @@
 
 using Ds3.Runtime;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public class PutObjectResponse : Ds3Response
+    public class PutBucketResponse : Ds3Response
     {
-        internal PutObjectResponse(IWebResponse response)
+        internal PutBucketResponse(IWebResponse response)
             : base(response)
         {
             HandleStatusCode(HttpStatusCode.OK);

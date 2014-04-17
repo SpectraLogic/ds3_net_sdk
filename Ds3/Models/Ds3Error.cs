@@ -7,37 +7,17 @@ namespace Ds3.Models
 {
     public class Ds3Error
     {
-        public Ds3Error(string code, string message, string resource, string requestId)
-        {
-            this._code = code;
-            this._message = message;
-            this._resource = resource;
-            this._requestId = requestId;
-        }
+        public string Code { get; private set; }
+        public string Message { get; private set; }
+        public string Resource { get; private set; }
+        public string RequestId { get; private set; }
 
-        private readonly string _code;
-        private readonly string _message;
-        private readonly string _resource;
-        private readonly string _requestId;
-
-        public string Code
+        internal Ds3Error(string code, string message, string resource, string requestId)
         {
-            get { return _code; }
-        }
-
-        public string Message
-        {
-            get { return _message; }
-        }
-
-        public string Resource
-        {
-            get { return _resource; }
-        }
-
-        public string RequestId
-        {
-            get { return _requestId; }
+            this.Code = code;
+            this.Message = message;
+            this.Resource = resource;
+            this.RequestId = requestId;
         }
     }
 }

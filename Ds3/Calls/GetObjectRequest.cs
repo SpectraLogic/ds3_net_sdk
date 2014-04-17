@@ -1,9 +1,9 @@
 ﻿using System.Net;
-
-using Ds3.AwsModels;
 using System.Collections.Generic;
 
-namespace Ds3.Models
+using Ds3.Models;
+
+namespace Ds3.Calls
 {
     public class GetObjectRequest : Ds3Request
     {
