@@ -40,7 +40,7 @@ namespace Ds3.Calls
                 Delimiter = root.TextOfOrNull("Delimiter");
                 MaxKeys = int.Parse(root.TextOf("MaxKeys"));
                 IsTruncated = bool.Parse(root.TextOf("IsTruncated"));
-                CreationDate = Convert.ToDateTime(root.TextOfOrNull("CreationDate"));
+                CreationDate = ParseDateTime(root.TextOfOrNull("CreationDate"));
                 Objects = (
                     from obj in root.Elements("Contents")
                     let owner = obj.ElementOrThrow("Owner")
@@ -50,10 +50,16 @@ namespace Ds3.Calls
                         new Owner(owner.TextOf("ID"), owner.TextOf("DisplayName")),
                         obj.TextOf("ETag"),
                         obj.TextOf("StorageClass"),
-                        Convert.ToDateTime(obj.TextOf("LastModified"))
+                        ParseDateTime(obj.TextOf("LastModified"))
                     )
                 ).ToList();
             }
+        }
+
+        private static DateTime ParseDateTime(string dateTime)
+        {
+            DateTime result;
+            return DateTime.TryParse(dateTime, out result) ? result : DateTime.MinValue;
         }
     }
 }
