@@ -15,3 +15,5 @@ You can download binaries from the [Releases](../../releases) page.
 [Running Unit Tests](../../wiki/Running-Unit-Tests)
 
 [Building from Source](../../wiki/Building-from-Source)
+
+[How to Generate API Documentation](../../wiki/Documentation-Generation)
