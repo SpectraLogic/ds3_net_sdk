@@ -9,7 +9,12 @@ namespace Ds3Client.Commands.Api
     {
         private const int _defaultMaxKeys = 1000;
 
-        public static IEnumerable<Ds3Object> GetAllObjects(Ds3.Ds3Client client, string bucketName, string keyPrefix, int maxKeys = int.MaxValue)
+        public static IEnumerable<Ds3Object> GetAllObjects(Ds3.Ds3Client client, string bucketName, string keyPrefix)
+        {
+            return GetAllObjects(client, bucketName, keyPrefix, int.MaxValue);
+        }
+
+        public static IEnumerable<Ds3Object> GetAllObjects(Ds3.Ds3Client client, string bucketName, string keyPrefix, int maxKeys)
         {
             var remainingKeys = maxKeys;
             var isTruncated = false;
