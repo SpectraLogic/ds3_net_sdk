@@ -9,9 +9,9 @@ namespace Ds3Client.Commands.Api
     {
         private const int _defaultMaxKeys = 1000;
 
-        public static IEnumerable<Ds3Object> GetAllObjects(Ds3.Ds3Client client, string bucketName, string keyPrefix, int? maxKeys)
+        public static IEnumerable<Ds3Object> GetAllObjects(Ds3.Ds3Client client, string bucketName, string keyPrefix, int maxKeys = int.MaxValue)
         {
-            var remainingKeys = maxKeys.HasValue ? maxKeys.Value : int.MaxValue;
+            var remainingKeys = maxKeys;
             var isTruncated = false;
             string marker = null;
             do

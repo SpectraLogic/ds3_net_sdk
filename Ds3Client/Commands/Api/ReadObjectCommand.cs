@@ -68,7 +68,7 @@ namespace Ds3Client.Commands.Api
             }
 
             var client = CreateClient();
-            var resultObjects = GetAllObjectsHelper.GetAllObjects(client, BucketName, KeyPrefix, null).ToList();
+            var resultObjects = GetAllObjectsHelper.GetAllObjects(client, BucketName, KeyPrefix).ToList();
             using (var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, resultObjects)))
             {
                 try

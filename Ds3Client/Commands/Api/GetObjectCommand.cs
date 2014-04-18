@@ -18,7 +18,10 @@ namespace Ds3Client.Commands.Api
 
         protected override void ProcessRecord()
         {
-            foreach (var ds3Object in GetAllObjectsHelper.GetAllObjects(CreateClient(), BucketName, KeyPrefix, MaxKeys))
+            var ds3Objects = MaxKeys.HasValue
+                ? GetAllObjectsHelper.GetAllObjects(CreateClient(), BucketName, KeyPrefix, MaxKeys.Value)
+                : GetAllObjectsHelper.GetAllObjects(CreateClient(), BucketName, KeyPrefix);
+            foreach (var ds3Object in ds3Objects)
             {
                 WriteObject(ds3Object);
             }
