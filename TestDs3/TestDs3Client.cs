@@ -261,11 +261,13 @@ namespace TestDs3
 
             using (var response = makeCall(client, inputObjects))
             {
-                Assert.AreEqual(1, response.ObjectLists.Count);
+                var objectLists = response.ObjectLists.ToList();
+                Assert.AreEqual(1, objectLists.Count);
+                var firstObjectList = objectLists[0].ToList();
                 for (var i = 0; i < expected.Length; i++)
                 {
-                    Assert.AreEqual(expected[i].Key, response.ObjectLists[0][i].Name);
-                    Assert.AreEqual(expected[i].Size, response.ObjectLists[0][i].Size);
+                    Assert.AreEqual(expected[i].Key, firstObjectList[i].Name);
+                    Assert.AreEqual(expected[i].Size, firstObjectList[i].Size);
                 }
             }
         }

@@ -68,8 +68,8 @@ namespace Ds3Client.Commands.Api
             }
 
             var client = CreateClient();
-            using (var response = client.GetBucket(new Ds3.Calls.GetBucketRequest(BucketName) { Prefix = KeyPrefix }))
-            using (var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, response.Objects)))
+            var resultObjects = GetAllObjectsHelper.GetAllObjects(client, BucketName, KeyPrefix).ToList();
+            using (var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, resultObjects)))
             {
                 try
                 {
