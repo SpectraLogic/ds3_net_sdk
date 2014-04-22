@@ -18,7 +18,7 @@ using System.Security.Cryptography;
 
 namespace Ds3.Runtime
 {
-    class S3Signer
+    internal class S3Signer
     {
         
         public static string AuthField(Credentials creds, string verb, string date, string resourcePath, string _md5 = "", string _contentType = "", string _amzHeaders = "")

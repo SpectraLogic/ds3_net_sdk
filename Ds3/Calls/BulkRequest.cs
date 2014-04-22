@@ -60,7 +60,7 @@ namespace Ds3.Calls
             return GenerateObjectStream(this.Objects);
         }
 
-        protected Stream GenerateObjectStream(IEnumerable<Ds3Object> objects)
+        protected internal Stream GenerateObjectStream(IEnumerable<Ds3Object> objects)
         {
             return new XDocument()
                 .AddFluent(

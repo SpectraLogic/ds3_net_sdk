@@ -36,7 +36,7 @@ namespace Ds3.Calls
             this.response = response;
         }
 
-        protected void HandleStatusCode(HttpStatusCode expectedStatusCode)
+        protected internal void HandleStatusCode(HttpStatusCode expectedStatusCode)
         {
             HttpStatusCode actualStatusCode = response.StatusCode;
             if (!actualStatusCode.Equals(expectedStatusCode))
