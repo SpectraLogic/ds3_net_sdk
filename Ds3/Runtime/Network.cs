@@ -47,36 +47,39 @@ namespace Ds3.Runtime
         {
             bool redirect = false;
             int redirectCount = 0;            
-
-            do
+            
+            using (var content = request.GetContentStream())
             {
-                HttpWebRequest httpRequest = CreateRequest(request);
-                try
+                do
                 {
-                    var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
-                    if (Is307(response))
+                    HttpWebRequest httpRequest = CreateRequest(request, content);
+                    try
                     {
-                        redirect = true;
-                        redirectCount++;
-                        Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
-                        continue;
+                        var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
+                        if (Is307(response))
+                        {
+                            redirect = true;
+                            redirectCount++;
+                            Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
+                            continue;
+                        }
+                        return response;
                     }
-                    return response;
-                }
-                catch (WebException e)
-                {
-                    if (e.Response == null)
+                    catch (WebException e)
                     {
-                        throw e;
+                        if (e.Response == null)
+                        {
+                            throw e;
+                        }
+                        return new WebResponse((HttpWebResponse)e.Response);
                     }
-                    return new WebResponse((HttpWebResponse)e.Response);
-                }
-            } while (redirect && redirectCount < MaxRedirects);
+                } while (redirect && redirectCount < MaxRedirects);
+            }
 
             throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException);
         }
 
-        private HttpWebRequest CreateRequest(Ds3Request request)
+        private HttpWebRequest CreateRequest(Ds3Request request, Stream content)
         {
             DateTime date = DateTime.UtcNow;
             UriBuilder uriBuilder = new UriBuilder(Endpoint);
@@ -98,6 +101,7 @@ namespace Ds3.Runtime
             httpRequest.Date = date;
             httpRequest.Host = CreateHostString(Endpoint);
             httpRequest.AllowAutoRedirect = false;
+            httpRequest.AllowWriteStreamBuffering = false;
             httpRequest.Headers.Add("Authorization", S3Signer.AuthField(Creds, request.Verb.ToString(), date.ToString("r"), request.Path));
 
             var byteRange = request.GetByteRange();
@@ -113,16 +117,18 @@ namespace Ds3.Runtime
 
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
             {
-                using (Stream content = request.GetContentStream())
+                httpRequest.ContentLength = content.Length;
+                using (var requestStream = httpRequest.GetRequestStream())
                 {
-                    httpRequest.ContentLength = content.Length;
-                    using (Stream requestStream = httpRequest.GetRequestStream())
+                    if (content != Stream.Null)
                     {
-                        if (content != Stream.Null)
+                        if (!content.CanSeek || !content.CanRead)
                         {
-                            content.CopyTo(requestStream);
-                            requestStream.Flush();
+                            throw new Ds3.Runtime.Ds3RequestException(Resources.InvalidStreamException);
                         }
+                        content.Seek(0, SeekOrigin.Begin);
+                        content.CopyTo(requestStream);
+                        requestStream.Flush();
                     }
                 }
             }

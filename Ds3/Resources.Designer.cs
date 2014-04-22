@@ -97,6 +97,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PUT object streams must be both readable and seekable..
+        /// </summary>
+        internal static string InvalidStreamException {
+            get {
+                return ResourceManager.GetString("InvalidStreamException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expected an element called &quot;{0}&quot; but didn&apos;t find it..
         /// </summary>
         internal static string MissingElementException {
