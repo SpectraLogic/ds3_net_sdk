@@ -8,7 +8,7 @@ See the [PowerShell DS3 Module Documentation](../../wiki/PowerShell-DS3-Module) 
 
 The SDK is distributed as a DLL.  The DLL can be added as a Reference into Visual Studio and supports .Net 4.0 and above. You can download the latest ds3_net_sdk.dll from the [Releases](../../releases) page.
 
-The [`Ds3.Ds3Client`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_client.html) class provides the core functionality of the SDK. You can create a [`Ds3.Ds3Client`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_client.html) instance using the [`Ds3.Ds3Builder`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_builder.html) class. See the examples below for a starting point. More detailed documentation can be found in the [SDK API Reference](http://spectralogic.github.io/ds3_net_sdk/annotated.html).
+The [`Ds3.Ds3Client`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_client.html) class provides the core functionality of the SDK. You can create an instance of it using the [`Ds3.Ds3Builder`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_builder.html) class. See the examples below for a starting point. More detailed documentation can be found in the [SDK API Reference](http://spectralogic.github.io/ds3_net_sdk/annotated.html).
 
 ## Examples
 
