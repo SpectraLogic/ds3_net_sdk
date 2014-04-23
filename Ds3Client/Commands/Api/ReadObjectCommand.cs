@@ -72,7 +72,7 @@ namespace Ds3Client.Commands.Api
                 throw new ApiException(Resources.FileAlreadyExistsException, File);
             }
 
-            WriteObjectToFile(CreateClient(), Key, MakeValidPath(File));
+            WriteObjectToFile(CreateClient(), Key, File);
         }
 
         private void WriteToLocalFolder()
