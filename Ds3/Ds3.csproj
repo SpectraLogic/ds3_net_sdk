@@ -63,6 +63,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Models\Ds3Object.cs" />
+    <Compile Include="Models\Ds3ObjectList.cs" />
     <Compile Include="Models\Owner.cs" />
     <Compile Include="Credentials.cs" />
     <Compile Include="Ds3Builder.cs" />

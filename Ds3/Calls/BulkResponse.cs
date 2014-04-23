@@ -30,7 +30,7 @@ namespace Ds3.Calls
         /// The ordered lists of objects to put or get.
         /// Note that the inner lists may be processed concurrently.
         /// </summary>
-        public List<List<Ds3Object>> ObjectLists { get; private set; }
+        public IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
 
         internal BulkResponse(IWebResponse response)
             : base(response)
@@ -48,13 +48,13 @@ namespace Ds3.Calls
                         .ReadDocument(content)
                         .ElementOrThrow("masterobjectlist")
                         .Elements("objects")
-                    select (
+                    let objects =
                         from obj in objs.Elements("object")
                         select new Ds3Object(
                             obj.AttributeOrThrow("name").Value,
                             Convert.ToInt64(obj.AttributeOrThrow("size").Value)
                         )
-                    ).ToList()
+                    select new Ds3ObjectList(objects, objs.AttributeText("serverid"))
                 ).ToList();
             }
         }
