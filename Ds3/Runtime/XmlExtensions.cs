@@ -73,6 +73,12 @@ namespace Ds3.Runtime
             return element;
         }
 
+        public static string AttributeText(this XElement self, string attributeName)
+        {
+            var attribute = self.Attribute(attributeName);
+            return attribute == null ? null : attribute.Value;
+        }
+
         public static XElement ElementOrThrow(this XContainer self, string elementName)
         {
             var element = self.Element(elementName);
