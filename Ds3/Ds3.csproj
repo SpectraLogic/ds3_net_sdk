@@ -65,7 +65,8 @@
     <Compile Include="Helpers\BulkGetTransferrer.cs" />
     <Compile Include="Helpers\BulkPutTransferrer.cs" />
     <Compile Include="Helpers\BulkTransferExecutor.cs" />
-    <Compile Include="Helpers\Ds3ClientHelper.cs" />
+    <Compile Include="Helpers\Ds3ClientHelpers.cs" />
+    <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="IDs3Client.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectList.cs" />
