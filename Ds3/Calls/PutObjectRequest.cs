@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+using System;
 using System.IO;
 
 using Ds3.Models;
@@ -46,17 +47,29 @@ namespace Ds3.Calls
 
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
+        public Guid JobId { get; private set; }
 
+        [Obsolete]
         public PutObjectRequest(Bucket bucket, string objectName, Stream content)
             : this(bucket.Name, objectName, content)
         {
         }
 
+        [Obsolete]
         public PutObjectRequest(string bucketName, string objectName, Stream content)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this._content = content;
+        }
+
+        public PutObjectRequest(string bucketName, string objectName, Guid jobId, Stream content)
+        {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this._content = content;
+            this.JobId = jobId;
+            QueryParams.Add("job", jobId.ToString());
         }
     }
 }

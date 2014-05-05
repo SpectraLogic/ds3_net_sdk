@@ -26,6 +26,8 @@ namespace Ds3.Calls
 {
     public class BulkResponse : Ds3Response
     {
+        public Guid JobId { get; set; }
+
         /// <summary>
         /// The ordered lists of objects to put or get.
         /// Note that the inner lists may be processed concurrently.
@@ -42,11 +44,12 @@ namespace Ds3.Calls
             HandleStatusCode(HttpStatusCode.OK);
             using (Stream content = response.GetResponseStream())
             {
+                var masterObjectList = XmlExtensions
+                    .ReadDocument(content)
+                    .ElementOrThrow("masterobjectlist");
+                JobId = Guid.Parse(masterObjectList.AttributeOrThrow("jobid").Value);
                 ObjectLists = (
-                    from objs in XmlExtensions
-                        .ReadDocument(content)
-                        .ElementOrThrow("masterobjectlist")
-                        .Elements("objects")
+                    from objs in masterObjectList.Elements("objects")
                     let objects =
                         from obj in objs.Elements("object")
                         select new Ds3Object(

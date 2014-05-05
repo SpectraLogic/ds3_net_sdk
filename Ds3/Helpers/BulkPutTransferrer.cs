@@ -42,7 +42,7 @@ namespace Ds3.Helpers
 
         public void Transfer(Guid jobId, string bucket, Ds3Object ds3Object)
         {
-            using (this.client.PutObject(new PutObjectRequest(bucket, ds3Object.Name, putter(ds3Object))))
+            using (this.client.PutObject(new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object))))
             {
             }
         }

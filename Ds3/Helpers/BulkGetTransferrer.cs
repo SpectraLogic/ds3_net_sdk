@@ -42,7 +42,7 @@ namespace Ds3.Helpers
 
         public void Transfer(Guid jobId, string bucket, Ds3Object ds3Object)
         {
-            using (var response = this.client.GetObject(new GetObjectRequest(bucket, ds3Object.Name)))
+            using (var response = this.client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
             {
                 getter(ds3Object, response.Contents);
             }

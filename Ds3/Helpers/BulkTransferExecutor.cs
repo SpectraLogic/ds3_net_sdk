@@ -42,11 +42,10 @@ namespace Ds3.Helpers
         {
             using (var response = transferrer.Prime(bucket, ds3Objects))
             {
-                //TODO: use the job id instead of Guid.Empty
                 return response
                     .ObjectLists
                     .AsParallel()
-                    .Select(objects => objects.Objects.Foreach(obj => transferrer.Transfer(Guid.Empty, bucket, obj)))
+                    .Select(objects => objects.Objects.Foreach(obj => transferrer.Transfer(response.JobId, bucket, obj)))
                     .Sum();
             }
         }
