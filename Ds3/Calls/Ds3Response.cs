@@ -27,14 +27,17 @@ using Ds3.Models;
 
 namespace Ds3.Calls
 {
-    public class Ds3Response : IDisposable
+    public abstract class Ds3Response : IDisposable
     {        
         internal IWebResponse response;
 
         internal Ds3Response(IWebResponse response)
         {
             this.response = response;
+            ProcessResponse();
         }
+
+        protected abstract void ProcessResponse();
 
         protected internal void HandleStatusCode(HttpStatusCode expectedStatusCode)
         {

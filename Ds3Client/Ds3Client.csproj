@@ -63,7 +63,6 @@
     </Compile>
     <Compile Include="Api\ApiException.cs" />
     <Compile Include="Commands\Api\BaseApiCommand.cs" />
-    <Compile Include="Commands\Api\GetAllObjectsHelper.cs" />
     <Compile Include="Commands\Api\GetObjectCommand.cs" />
     <Compile Include="Commands\Api\RemoveBucketCommand.cs" />
     <Compile Include="Commands\Api\RemoveObjectCommand.cs" />

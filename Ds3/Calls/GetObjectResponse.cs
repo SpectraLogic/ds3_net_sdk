@@ -27,7 +27,7 @@ namespace Ds3.Calls
         /// <summary>
         /// The contents of the object. Disposing of GetObjectResponse will also dispose of this stream.
         /// </summary>
-        public Stream Contents
+        public virtual Stream Contents
         {
             get { return _contents; }
         }
@@ -35,12 +35,11 @@ namespace Ds3.Calls
         internal GetObjectResponse(IWebResponse responseStream) 
             : base(responseStream)
         {
-            HandleStatusCode(HttpStatusCode.OK);
-            ProcessResponse();   
         }
 
-        private void ProcessResponse()
+        protected override void ProcessResponse()
         {
+            HandleStatusCode(HttpStatusCode.OK);
             _contents = response.GetResponseStream();
         }
     }

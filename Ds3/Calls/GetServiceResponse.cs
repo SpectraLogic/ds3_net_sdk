@@ -32,12 +32,11 @@ namespace Ds3.Calls
         internal GetServiceResponse(IWebResponse responseStream)
             : base(responseStream)
         {
-            HandleStatusCode(HttpStatusCode.OK);
-            ProcessReponse();
         }
 
-        private void ProcessReponse()
+        protected override void ProcessResponse()
         {
+            HandleStatusCode(HttpStatusCode.OK);
             using (Stream content = response.GetResponseStream())
             {
                 var root = XmlExtensions.ReadDocument(content).ElementOrThrow("ListAllMyBucketsResult");

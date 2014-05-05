@@ -13,23 +13,57 @@
  * ****************************************************************************
  */
 
+using Ds3.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
-using Ds3.Models;
-
-namespace Ds3Client.Commands.Api
+namespace Ds3.Helpers
 {
-    internal static class GetAllObjectsHelper
+    public class Ds3ClientHelpers
     {
         private const int _defaultMaxKeys = 1000;
 
-        public static IEnumerable<Ds3Object> GetAllObjects(Ds3.Ds3Client client, string bucketName, string keyPrefix)
+        private readonly IDs3Client client;
+
+        public delegate Stream ObjectPutter(Ds3Object ds3Object);
+        public delegate void ObjectGetter(Ds3Object ds3Object, Stream inputStream);
+
+        public Ds3ClientHelpers(IDs3Client client)
         {
-            return GetAllObjects(client, bucketName, keyPrefix, int.MaxValue);
+            this.client = client;
         }
 
-        public static IEnumerable<Ds3Object> GetAllObjects(Ds3.Ds3Client client, string bucketName, string keyPrefix, int maxKeys)
+        public int ReadObjects(string bucket, IEnumerable<Ds3Object> objectsToGet, ObjectGetter getter)
+        {
+            return new BulkTransferExecutor(new BulkGetTransferrer(client, getter))
+                .Transfer(bucket, objectsToGet);
+        }
+
+        public int WriteObjects(string bucket, IEnumerable<Ds3Object> objectsToPut, ObjectPutter putter)
+        {
+            return new BulkTransferExecutor(new BulkPutTransferrer(client, putter))
+                .Transfer(bucket, objectsToPut);
+        }
+
+        public int ReadAllObjects(string bucket, ObjectGetter getter)
+        {
+            return ReadObjects(bucket, ListObjects(bucket), getter);
+        }
+
+        public IEnumerable<Ds3Object> ListObjects(string bucketName)
+        {
+            return ListObjects(bucketName, null, int.MaxValue);
+        }
+
+        public IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix)
+        {
+            return ListObjects(bucketName, keyPrefix, int.MaxValue);
+        }
+
+        public IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix, int maxKeys)
         {
             var remainingKeys = maxKeys;
             var isTruncated = false;

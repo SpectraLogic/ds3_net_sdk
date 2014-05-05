@@ -22,6 +22,7 @@ using IOFile = System.IO.File;
 using Ds3Client.Api;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using Ds3.Helpers;
 
 namespace Ds3Client.Commands.Api
 {
@@ -83,7 +84,7 @@ namespace Ds3Client.Commands.Api
             }
 
             var client = CreateClient();
-            var resultObjects = GetAllObjectsHelper.GetAllObjects(client, BucketName, KeyPrefix).ToList();
+            var resultObjects = new Ds3ClientHelpers(client).ListObjects(BucketName, KeyPrefix).ToList();
             using (var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, resultObjects)))
             {
                 try
@@ -121,7 +122,7 @@ namespace Ds3Client.Commands.Api
             return filePath;
         }
 
-        private void WriteObjectToFile(Ds3.Ds3Client client, string key, string file)
+        private void WriteObjectToFile(Ds3.IDs3Client client, string key, string file)
         {
             var request = new Ds3.Calls.GetObjectRequest(BucketName, key);
             if (Start.HasValue && End.HasValue)

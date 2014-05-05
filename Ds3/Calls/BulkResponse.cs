@@ -30,17 +30,16 @@ namespace Ds3.Calls
         /// The ordered lists of objects to put or get.
         /// Note that the inner lists may be processed concurrently.
         /// </summary>
-        public IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
+        public virtual IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
 
         internal BulkResponse(IWebResponse response)
             : base(response)
         {
-            HandleStatusCode(HttpStatusCode.OK);
-            ProcessRequest();
         }
 
-        private void ProcessRequest()
+        protected override void ProcessResponse()
         {
+            HandleStatusCode(HttpStatusCode.OK);
             using (Stream content = response.GetResponseStream())
             {
                 ObjectLists = (

@@ -18,14 +18,16 @@ using System.Text;
 
 using Ds3.Calls;
 using Ds3.Models;
+using Ds3.Runtime;
+using Moq;
 
 namespace TestDs3
 {
-    static class Helpers
+    static class HelpersForTest
     {
-        public static string ReadContentStream(Ds3Request request)
+        internal static string StringFromStream(Stream stream)
         {
-            using (var stream = request.GetContentStream())
+            using (stream)
             using (var reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();

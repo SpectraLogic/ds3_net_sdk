@@ -234,7 +234,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/bucketName/object", _emptyQueryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringRequest)
                 .AsClient
-                .PutObject(new PutObjectRequest("bucketName", "object", Helpers.StringToStream(stringRequest))))
+                .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest))))
             {
             }
         }
@@ -251,7 +251,7 @@ namespace TestDs3
             runBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucketName", objects)));
         }
 
-        private void runBulkTest(string operation, Func<Ds3Client, List<Ds3Object>, BulkResponse> makeCall)
+        private void runBulkTest(string operation, Func<IDs3Client, List<Ds3Object>, BulkResponse> makeCall)
         {
             var expected = new[] {
                 new { Key = "file2", Size = 1202 },

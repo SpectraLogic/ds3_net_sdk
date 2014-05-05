@@ -24,6 +24,10 @@ namespace Ds3.Calls
         internal DeleteObjectResponse(IWebResponse response)
             : base(response)
         {
+        }
+
+        protected override void ProcessResponse()
+        {
             HandleStatusCode(HttpStatusCode.NoContent);
         }
     }

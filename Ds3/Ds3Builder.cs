@@ -74,7 +74,7 @@ namespace Ds3
         /// Creates the Ds3Client using the specified parameters.
         /// </summary>
         /// <returns></returns>
-        public Ds3Client Build()
+        public IDs3Client Build()
         {
             Network netLayer = new Network(Endpoint, Creds, RedirectRetryCount);
             if (Proxy != null)

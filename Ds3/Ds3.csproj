@@ -62,6 +62,11 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Helpers\BulkGetTransferrer.cs" />
+    <Compile Include="Helpers\BulkPutTransferrer.cs" />
+    <Compile Include="Helpers\BulkTransferExecutor.cs" />
+    <Compile Include="Helpers\Ds3ClientHelper.cs" />
+    <Compile Include="IDs3Client.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectList.cs" />
     <Compile Include="Models\Owner.cs" />

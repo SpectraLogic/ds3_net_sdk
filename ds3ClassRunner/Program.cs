@@ -34,7 +34,7 @@ namespace ds3ClassRunner
            
             //Ds3Client client = new Ds3Builder("http://192.168.56.104:8088", new Credentials("cnlhbg==", "4iDEhFRV")).withRedirectRetries(3).build();
 
-            Ds3Client client = new Ds3Builder(new Uri("http://192.168.56.104:8088"), new Credentials("cnlhbg==", "4iDEhFRV")).WithProxy(new Uri("http://192.168.56.104:8080")).Build();
+            IDs3Client client = new Ds3Builder(new Uri("http://192.168.56.104:8088"), new Credentials("cnlhbg==", "4iDEhFRV")).WithProxy(new Uri("http://192.168.56.104:8080")).Build();
             /*
             GetServiceResponse response = client.GetService(new GetServiceRequest());
 
