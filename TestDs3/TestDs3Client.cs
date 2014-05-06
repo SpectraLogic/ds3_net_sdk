@@ -16,7 +16,6 @@
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -260,7 +259,7 @@ namespace TestDs3
             };
 
             var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<objects>\r\n  <object name=\"file1\" size=\"256\" />\r\n  <object name=\"file2\" size=\"1202\" />\r\n  <object name=\"file3\" size=\"2523\" />\r\n</objects>";
-            var stringResponse = "<masterobjectlist><objects><object name='file2' size='1202'/><object name='file1' size='256'/><object name='file3' size='2523'/></objects></masterobjectlist>";
+            var stringResponse = "<masterobjectlist jobid='00d3baf8-9e71-45dd-ba83-fb93eb793b04'><objects><object name='file2' size='1202'/><object name='file1' size='256'/><object name='file3' size='2523'/></objects></masterobjectlist>";
 
             var inputObjects = new List<Ds3Object> {
                 new Ds3Object("file1", 256),

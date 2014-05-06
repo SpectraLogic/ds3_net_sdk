@@ -15,37 +15,31 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 using Ds3.Calls;
 using Ds3.Models;
-using Transferrer = Ds3.Helpers.BulkTransferExecutor.Transferrer;
+using IReadJob = Ds3.Helpers.Ds3ClientHelpers.IReadJob;
 using ObjectGetter = Ds3.Helpers.Ds3ClientHelpers.ObjectGetter;
 
 namespace Ds3.Helpers
 {
-    class BulkGetTransferrer : Transferrer
+    class ReadJob : Job, IReadJob
     {
-        private readonly IDs3Client client;
-        private readonly ObjectGetter getter;
-
-        public BulkGetTransferrer(IDs3Client client, ObjectGetter getter)
+        public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
+            : base(clientFactory, jobId, bucketName, objectLists)
         {
-            this.client = client;
-            this.getter = getter;
         }
 
-        public BulkResponse Prime(string bucket, IEnumerable<Ds3Object> ds3Objects)
+        public void Read(ObjectGetter getter)
         {
-            return this.client.BulkGet(new BulkGetRequest(bucket, ds3Objects.ToList()));
-        }
-
-        public void Transfer(Guid jobId, string bucket, Ds3Object ds3Object)
-        {
-            using (var response = this.client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
+            this.TransferAll((client, jobId, bucket, ds3Object) =>
             {
-                getter(ds3Object, response.Contents);
-            }
+                using (var response = client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
+                {
+                    getter(ds3Object, response.Contents);
+                }
+            });
         }
     }
 }

@@ -15,36 +15,30 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 using Ds3.Calls;
 using Ds3.Models;
-using Transferrer = Ds3.Helpers.BulkTransferExecutor.Transferrer;
+using IWriteJob = Ds3.Helpers.Ds3ClientHelpers.IWriteJob;
 using ObjectPutter = Ds3.Helpers.Ds3ClientHelpers.ObjectPutter;
 
 namespace Ds3.Helpers
 {
-    class BulkPutTransferrer : Transferrer
+    class WriteJob : Job, IWriteJob
     {
-        private readonly IDs3Client client;
-        private readonly ObjectPutter putter;
-
-        public BulkPutTransferrer(IDs3Client client, ObjectPutter putter)
+        public WriteJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
+            : base(clientFactory, jobId, bucketName, objectLists)
         {
-            this.client = client;
-            this.putter = putter;
         }
 
-        public BulkResponse Prime(string bucket, IEnumerable<Ds3Object> ds3Objects)
+        public void Write(ObjectPutter putter)
         {
-            return this.client.BulkPut(new BulkPutRequest(bucket, ds3Objects.ToList()));
-        }
-
-        public void Transfer(Guid jobId, string bucket, Ds3Object ds3Object)
-        {
-            using (this.client.PutObject(new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object))))
+            this.TransferAll((client, jobId, bucket, ds3Object) =>
             {
-            }
+                using (client.PutObject(new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object))))
+                {
+                }
+            });
         }
     }
 }

@@ -18,12 +18,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using ObjectGetter = Ds3.Helpers.Ds3ClientHelpers.ObjectGetter;
 using ObjectPutter = Ds3.Helpers.Ds3ClientHelpers.ObjectPutter;
 
 namespace Ds3.Helpers
 {
-    public class FileHelpers
+    public static class FileHelpers
     {
         public static ObjectGetter BuildFileGetter(string root)
         {

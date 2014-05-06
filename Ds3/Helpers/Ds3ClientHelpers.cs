@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+using Ds3.Calls;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
@@ -26,32 +27,64 @@ namespace Ds3.Helpers
     {
         private const int _defaultMaxKeys = 1000;
 
-        private readonly IDs3Client client;
+        private readonly IDs3Client _client;
 
         public delegate Stream ObjectPutter(Ds3Object ds3Object);
         public delegate void ObjectGetter(Ds3Object ds3Object, Stream inputStream);
 
+        public interface IJob
+        {
+            Guid JobId { get; }
+            string BucketName { get; }
+        }
+
+        public interface IWriteJob : IJob
+        {
+            void Write(ObjectPutter putter);
+        }
+
+        public interface IReadJob : IJob
+        {
+            void Read(ObjectGetter getter);
+        }
+
         public Ds3ClientHelpers(IDs3Client client)
         {
-            this.client = client;
+            this._client = client;
         }
 
-        public int ReadObjects(string bucket, IEnumerable<Ds3Object> objectsToGet, ObjectGetter getter)
+        public IWriteJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
         {
-            return new BulkTransferExecutor(new BulkGetTransferrer(client, getter))
-                .Transfer(bucket, objectsToGet);
+            using (var prime = this._client.BulkPut(new BulkPutRequest(bucket, objectsToWrite.ToList())))
+            {
+                return new WriteJob(new Ds3ClientFactory(this._client), prime.JobId, bucket, prime.ObjectLists);
+            }
         }
 
-        public int WriteObjects(string bucket, IEnumerable<Ds3Object> objectsToPut, ObjectPutter putter)
+        //TODO: automatic job recovery needs to be implemented
+        //public IWriteJob RecoverWriteJob(Guid jobId)
+        //{
+        //    return null;
+        //}
+
+        public IReadJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
         {
-            return new BulkTransferExecutor(new BulkPutTransferrer(client, putter))
-                .Transfer(bucket, objectsToPut);
+            using (var prime = this._client.BulkGet(new BulkGetRequest(bucket, objectsToRead.ToList())))
+            {
+                return new ReadJob(new Ds3ClientFactory(this._client), prime.JobId, bucket, prime.ObjectLists);
+            }
         }
 
-        public int ReadAllObjects(string bucket, ObjectGetter getter)
+        public IReadJob StartReadAllJob(string bucket)
         {
-            return ReadObjects(bucket, ListObjects(bucket), getter);
+            return this.StartReadJob(bucket, this.ListObjects(bucket));
         }
+
+        //TODO: automatic job recovery needs to be implemented
+        //public IReadJob RecoverReadJob(Guid jobId)
+        //{
+        //    return null;
+        //}
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName)
         {
@@ -76,7 +109,7 @@ namespace Ds3.Helpers
                     MaxKeys = Math.Min(remainingKeys, _defaultMaxKeys),
                     Prefix = keyPrefix
                 };
-                using (var response = client.GetBucket(request))
+                using (var response = _client.GetBucket(request))
                 {
                     isTruncated = response.IsTruncated;
                     marker = response.NextMarker;

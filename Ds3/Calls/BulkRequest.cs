@@ -13,7 +13,6 @@
  * ****************************************************************************
  */
 
-using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -66,9 +65,10 @@ namespace Ds3.Calls
                 .AddFluent(
                     new XElement("objects").AddAllFluent(
                         from obj in objects
-                        select new XElement("object")
-                            .SetAttributeValueFluent("name", obj.Name)
-                            .SetAttributeValueFluent("size", obj.Size.Value.ToString("D"))
+                        let xmlObj = new XElement("object").SetAttributeValueFluent("name", obj.Name)
+                        select obj.Size.HasValue
+                            ? xmlObj.SetAttributeValueFluent("size", obj.Size.Value.ToString("D"))
+                            : xmlObj
                     )
                 )
                 .WriteToMemoryStream();

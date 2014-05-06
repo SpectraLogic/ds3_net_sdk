@@ -50,13 +50,12 @@ namespace TestDs3
                 new Ds3Object("bar"),
                 new Ds3Object("baz")
             };
-            var objectCount = new Ds3ClientHelpers(ds3ClientMock.Object)
-                .ReadObjects("mybucket", objectsToGet, (ds3Object, contents) => {
+            new Ds3ClientHelpers(ds3ClientMock.Object)
+                .StartReadJob("mybucket", objectsToGet)
+                .Read((ds3Object, contents) => {
                     Assert.AreEqual(ds3Object.Name + " contents", HelpersForTest.StringFromStream(contents));
                     objectsGotten.Add(ds3Object.Name);
                 });
-
-            Assert.AreEqual(3, objectCount);
 
             CollectionAssert.AreEqual(new[] { "baz", "foo", "bar" }, objectsGotten);
         }
@@ -84,10 +83,9 @@ namespace TestDs3
                 new Ds3Object("bar", 12),
                 new Ds3Object("baz", 12)
             };
-            var objectCount = new Ds3ClientHelpers(ds3ClientMock.Object)
-                .WriteObjects("mybucket", objectsToPut, ds3Object => HelpersForTest.StringToStream(ds3Object.Name + " contents"));
-
-            Assert.AreEqual(3, objectCount);
+            new Ds3ClientHelpers(ds3ClientMock.Object)
+                .StartWriteJob("mybucket", objectsToPut)
+                .Write(ds3Object => HelpersForTest.StringToStream(ds3Object.Name + " contents"));
 
             CollectionAssert.AreEqual(new[] { "baz", "foo", "bar" }, objectsPut);
             CollectionAssert.AreEqual(new[] { "baz contents", "foo contents", "bar contents" }, objectContentsPut);
