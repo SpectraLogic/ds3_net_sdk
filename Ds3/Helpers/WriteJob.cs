@@ -19,8 +19,6 @@ using System.IO;
 
 using Ds3.Calls;
 using Ds3.Models;
-using IWriteJob = Ds3.Helpers.Ds3ClientHelpers.IWriteJob;
-using ObjectPutter = Ds3.Helpers.Ds3ClientHelpers.ObjectPutter;
 
 namespace Ds3.Helpers
 {

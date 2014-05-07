@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Ds3.Models;
-using IJob = Ds3.Helpers.Ds3ClientHelpers.IJob;
 
 namespace Ds3.Helpers
 {

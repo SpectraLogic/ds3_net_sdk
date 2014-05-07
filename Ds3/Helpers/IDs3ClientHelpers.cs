@@ -15,29 +15,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Text;
 
-using Ds3.Calls;
 using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class ReadJob : Job, IReadJob
+    public interface IDs3ClientHelpers
     {
-        public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
-            : base(clientFactory, jobId, bucketName, objectLists)
-        {
-        }
+        IWriteJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite);
+        IReadJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead);
+        IReadJob StartReadAllJob(string bucket);
+        IEnumerable<Ds3Object> ListObjects(string bucketName);
+        IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix);
+        IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix, int maxKeys);
 
-        public void Read(ObjectGetter getter)
-        {
-            this.TransferAll((client, jobId, bucket, ds3Object) =>
-            {
-                using (var response = client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
-                {
-                    getter(ds3Object, response.Contents);
-                }
-            });
-        }
+        //TODO: automatic job recovery needs to be implemented
+        //IWriteJob RecoverWriteJob(Guid jobId);
+        //IReadJob RecoverReadJob(Guid jobId);
     }
 }
