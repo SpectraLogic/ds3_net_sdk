@@ -13,28 +13,32 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 using Ds3.Calls;
 using Ds3.Models;
+using IWriteJob = Ds3.Helpers.Ds3ClientHelpers.IWriteJob;
+using ObjectPutter = Ds3.Helpers.Ds3ClientHelpers.ObjectPutter;
 
-namespace TestDs3
+namespace Ds3.Helpers
 {
-    static class Helpers
+    class WriteJob : Job, IWriteJob
     {
-        public static string ReadContentStream(Ds3Request request)
+        public WriteJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
+            : base(clientFactory, jobId, bucketName, objectLists)
         {
-            using (var stream = request.GetContentStream())
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
         }
 
-        internal static Stream StringToStream(string responseString)
+        public void Write(ObjectPutter putter)
         {
-            return new MemoryStream(Encoding.UTF8.GetBytes(responseString));
+            this.TransferAll((client, jobId, bucket, ds3Object) =>
+            {
+                using (client.PutObject(new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object))))
+                {
+                }
+            });
         }
     }
 }

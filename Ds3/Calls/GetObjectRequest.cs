@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+using System;
 using System.Net;
 using System.Collections.Generic;
 
@@ -24,6 +25,7 @@ namespace Ds3.Calls
     {
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
+        public Guid JobId { get; private set; }
 
         private Range _byteRange;
         public Range ByteRange
@@ -64,14 +66,25 @@ namespace Ds3.Calls
             }
         }
 
-        public GetObjectRequest(Bucket bucket, Ds3Object ds3Object): this (bucket.Name, ds3Object.Name)
+        [Obsolete]
+        public GetObjectRequest(Bucket bucket, Ds3Object ds3Object)
+            : this(bucket.Name, ds3Object.Name)
         {
         }
 
+        [Obsolete]
         public GetObjectRequest(string bucketName, string ds3ObjectName)
         {
             this.BucketName = bucketName;
             this.ObjectName = ds3ObjectName;
+        }
+
+        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId)
+        {
+            this.BucketName = bucketName;
+            this.ObjectName = ds3ObjectName;
+            this.JobId = jobId;
+            QueryParams.Add("job", jobId.ToString());
         }
     }
 }

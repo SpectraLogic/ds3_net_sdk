@@ -13,22 +13,11 @@
  * ****************************************************************************
  */
 
-using System.Net;
-
-using Ds3.Runtime;
-
-namespace Ds3.Calls
+namespace Ds3.Helpers
 {
-    public class DeleteObjectResponse : Ds3Response
+    //TODO: where to put
+    interface IDs3ClientFactory
     {
-        internal DeleteObjectResponse(IWebResponse response)
-            : base(response)
-        {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.NoContent);
-        }
+        IDs3Client GetClientForServerId(string serverId);
     }
 }

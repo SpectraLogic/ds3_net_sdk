@@ -16,6 +16,7 @@
 using System.Management.Automation;
 using Ds3Client.Configuration;
 using Config = Ds3Client.Configuration.Configuration;
+using Ds3;
 
 namespace Ds3Client.Commands.Api
 {
@@ -24,7 +25,7 @@ namespace Ds3Client.Commands.Api
         [Parameter(ValueFromPipelineByPropertyName = true)]
         public Config Configuration { get; set; }
 
-        protected Ds3.Ds3Client CreateClient()
+        protected IDs3Client CreateClient()
         {
             var config = Configuration ?? SessionSingleton.Current.GetSelected();
             var builder = new Ds3.Ds3Builder(config.Endpoint.ToString(), new Ds3.Credentials(config.AccessKey, config.SecretKey));

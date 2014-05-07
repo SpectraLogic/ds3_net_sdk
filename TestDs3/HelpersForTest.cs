@@ -13,22 +13,30 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using System.IO;
+using System.Text;
 
+using Ds3.Calls;
+using Ds3.Models;
 using Ds3.Runtime;
+using Moq;
 
-namespace Ds3.Calls
+namespace TestDs3
 {
-    public class DeleteObjectResponse : Ds3Response
+    static class HelpersForTest
     {
-        internal DeleteObjectResponse(IWebResponse response)
-            : base(response)
+        internal static string StringFromStream(Stream stream)
         {
+            using (stream)
+            using (var reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
         }
 
-        protected override void ProcessResponse()
+        internal static Stream StringToStream(string responseString)
         {
-            HandleStatusCode(HttpStatusCode.NoContent);
+            return new MemoryStream(Encoding.UTF8.GetBytes(responseString));
         }
     }
 }

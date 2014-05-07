@@ -13,22 +13,33 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
-using Ds3.Runtime;
+using Ds3.Calls;
+using Ds3.Models;
+using IReadJob = Ds3.Helpers.Ds3ClientHelpers.IReadJob;
+using ObjectGetter = Ds3.Helpers.Ds3ClientHelpers.ObjectGetter;
 
-namespace Ds3.Calls
+namespace Ds3.Helpers
 {
-    public class DeleteObjectResponse : Ds3Response
+    class ReadJob : Job, IReadJob
     {
-        internal DeleteObjectResponse(IWebResponse response)
-            : base(response)
+        public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
+            : base(clientFactory, jobId, bucketName, objectLists)
         {
         }
 
-        protected override void ProcessResponse()
+        public void Read(ObjectGetter getter)
         {
-            HandleStatusCode(HttpStatusCode.NoContent);
+            this.TransferAll((client, jobId, bucket, ds3Object) =>
+            {
+                using (var response = client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
+                {
+                    getter(ds3Object, response.Contents);
+                }
+            });
         }
     }
 }

@@ -36,7 +36,7 @@ namespace TestDs3
 
     interface IMockNetworkWithReturn
     {
-        Ds3Client AsClient { get; }
+        IDs3Client AsClient { get; }
     }
 
     class MockNetwork : INetwork, IMockNetworkWithExpectation, IMockNetworkWithReturn
@@ -69,14 +69,14 @@ namespace TestDs3
             return this;
         }
 
-        Ds3Client IMockNetworkWithReturn.AsClient { get { return new Ds3Client(this); } }
+        IDs3Client IMockNetworkWithReturn.AsClient { get { return new Ds3Client(this); } }
 
         public IWebResponse Invoke(Ds3Request request)
         {
             Assert.AreEqual(_verb, request.Verb);
             Assert.AreEqual(_path, request.Path);
-            CollectionAssert.AreEquivalent(_queryParams, request.QueryParams);//TODO: make sure this works correctly.
-            Assert.AreEqual(_requestContent, Helpers.ReadContentStream(request));
+            CollectionAssert.AreEquivalent(_queryParams, request.QueryParams);
+            Assert.AreEqual(_requestContent, HelpersForTest.StringFromStream(request.GetContentStream()));
             return new MockWebResponse(_responseContent, _statusCode);
         }
     }
@@ -94,7 +94,7 @@ namespace TestDs3
 
         public Stream GetResponseStream()
         {
-            return Helpers.StringToStream(_responseString);
+            return HelpersForTest.StringToStream(_responseString);
         }
 
         public HttpStatusCode StatusCode

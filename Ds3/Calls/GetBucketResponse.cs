@@ -26,25 +26,24 @@ namespace Ds3.Calls
 {
     public class GetBucketResponse : Ds3Response
     {
-        public string Name { get; private set; }
-        public string Prefix { get; private set; }
-        public string Marker { get; private set; }
-        public int MaxKeys { get; private set; }
-        public bool IsTruncated { get; private set; }
-        public string Delimiter { get; private set; }
-        public string NextMarker { get; private set; }
-        public DateTime CreationDate { get; private set; }
-        public List<Ds3Object> Objects { get; private set; }
+        public virtual string Name { get; private set; }
+        public virtual string Prefix { get; private set; }
+        public virtual string Marker { get; private set; }
+        public virtual int MaxKeys { get; private set; }
+        public virtual bool IsTruncated { get; private set; }
+        public virtual string Delimiter { get; private set; }
+        public virtual string NextMarker { get; private set; }
+        public virtual DateTime CreationDate { get; private set; }
+        public virtual List<Ds3Object> Objects { get; private set; }
 
         internal GetBucketResponse(IWebResponse responseStream)
             : base(responseStream)
         {
-            HandleStatusCode(HttpStatusCode.OK);
-            ProcessResponse();
         }
 
-        private void ProcessResponse()
-        {            
+        protected override void ProcessResponse()
+        {
+            HandleStatusCode(HttpStatusCode.OK);            
             using (Stream content = response.GetResponseStream())
             {
                 var root = XmlExtensions.ReadDocument(content).ElementOrThrow("ListBucketResult");

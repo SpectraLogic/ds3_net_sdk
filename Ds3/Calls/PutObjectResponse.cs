@@ -24,6 +24,10 @@ namespace Ds3.Calls
         internal PutObjectResponse(IWebResponse response)
             : base(response)
         {
+        }
+
+        protected override void ProcessResponse()
+        {
             HandleStatusCode(HttpStatusCode.OK);
         }
     }
