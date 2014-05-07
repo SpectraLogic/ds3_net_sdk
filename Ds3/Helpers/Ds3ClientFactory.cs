@@ -15,7 +15,7 @@
 
 namespace Ds3.Helpers
 {
-    class Ds3ClientFactory : IDs3ClientFactory
+    internal class Ds3ClientFactory : IDs3ClientFactory
     {
         private readonly IDs3Client _client;
 

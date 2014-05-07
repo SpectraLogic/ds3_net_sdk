@@ -24,7 +24,7 @@ using ObjectGetter = Ds3.Helpers.Ds3ClientHelpers.ObjectGetter;
 
 namespace Ds3.Helpers
 {
-    class ReadJob : Job, IReadJob
+    internal class ReadJob : Job, IReadJob
     {
         public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
             : base(clientFactory, jobId, bucketName, objectLists)

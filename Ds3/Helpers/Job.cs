@@ -22,7 +22,7 @@ using IJob = Ds3.Helpers.Ds3ClientHelpers.IJob;
 
 namespace Ds3.Helpers
 {
-    abstract class Job : IJob
+    internal abstract class Job : IJob
     {
         private readonly IDs3ClientFactory _clientFactory;
         private readonly IEnumerable<Ds3ObjectList> _objectLists;

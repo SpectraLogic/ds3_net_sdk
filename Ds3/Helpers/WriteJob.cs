@@ -24,7 +24,7 @@ using ObjectPutter = Ds3.Helpers.Ds3ClientHelpers.ObjectPutter;
 
 namespace Ds3.Helpers
 {
-    class WriteJob : Job, IWriteJob
+    internal class WriteJob : Job, IWriteJob
     {
         public WriteJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
             : base(clientFactory, jobId, bucketName, objectLists)

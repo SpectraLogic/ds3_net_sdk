@@ -16,7 +16,7 @@
 namespace Ds3.Helpers
 {
     //TODO: where to put
-    interface IDs3ClientFactory
+    internal interface IDs3ClientFactory
     {
         IDs3Client GetClientForServerId(string serverId);
     }
