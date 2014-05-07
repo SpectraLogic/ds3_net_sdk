@@ -8,7 +8,7 @@ See the [PowerShell DS3 Module Documentation](../../wiki/PowerShell-DS3-Module) 
 
 The SDK is distributed as a DLL.  The DLL can be added as a Reference into Visual Studio and supports .Net 4.0 and above. You can download the latest ds3_net_sdk.dll from the [Releases](../../releases) page.
 
-The [`Ds3.Ds3Client`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_client.html) class provides the core functionality of the SDK. You can create an instance of it using the [`Ds3.Ds3Builder`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_builder.html) class. See the examples below for a starting point. More detailed documentation can be found in the [SDK API Reference](http://spectralogic.github.io/ds3_net_sdk/annotated.html).
+The [`Ds3.IDs3Client`](http://spectralogic.github.io/ds3_net_sdk/interface_ds3_1_1_i_ds3_client.html) interface provides the core functionality of the SDK. You can create an instance of it using the [`Ds3.Ds3Builder`](http://spectralogic.github.io/ds3_net_sdk/class_ds3_1_1_ds3_builder.html) class. See the examples below for a starting point. More detailed documentation can be found in the [SDK API Reference](http://spectralogic.github.io/ds3_net_sdk/annotated.html).
 
 ## Examples
 
@@ -28,7 +28,7 @@ namespace Ds3Example
     {
         static void Main(string[] args)
         {
-            Ds3Client client = new Ds3Builder("http://ds3hostname:8080",
+            IDs3Client client = new Ds3Builder("http://ds3hostname:8080",
               new Credentials("accessKey", "secretKey")).Build();
 
             GetServiceResponse response = client.GetService(new GetServiceRequest());
@@ -61,7 +61,7 @@ namespace Ds3Example
     {
         static void Main(string[] args)
         {
-            Ds3Client client = new Ds3Builder("http://192.168.6.138:8080",
+            IDs3Client client = new Ds3Builder("http://192.168.6.138:8080",
               new Credentials("cnlhbg==", "4iDEhFRV")).Build();
 
             string bucketName = "bulkBucket";
@@ -81,7 +81,7 @@ namespace Ds3Example
             // Create the bulk request.  The DS3 Appliance must first be primed
             // with the Bulk command before individual files are Put.
             BulkPutResponse response = client.BulkPut(new BulkPutRequest(bucketName, objects));
-            foreach (List<Ds3Object> objList in response.ObjectLists)
+            foreach (Ds3ObjectList objList in response.ObjectLists)
             {
                 foreach (Ds3Object obj in objList)
                 {
