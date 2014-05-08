@@ -61,7 +61,7 @@ namespace Ds3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Received a status code of {0} when {1} was expected. Error message: &quot;{2}&quot;.
+        ///   Looks up a localized string similar to Received a status code of {0} when one of {1} was expected. Error message: &quot;{2}&quot;.
         /// </summary>
         internal static string BadStatusCodeException {
             get {
@@ -70,7 +70,7 @@ namespace Ds3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Received a status code of {0} when {1} was expected. Could not parse the response for additional information..
+        ///   Looks up a localized string similar to Received a status code of {0} when one of {1} was expected. Could not parse the response for additional information..
         /// </summary>
         internal static string BadStatusCodeInvalidErrorResponseException {
             get {

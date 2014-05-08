@@ -75,6 +75,14 @@ namespace Ds3
         PutBucketResponse PutBucket(PutBucketRequest request);
 
         /// <summary>
+        /// Performs a HTTP HEAD for a bucket. The HEAD will return information about if
+        /// the bucket exists, or if the user has access to that bucket.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>The response containing the status of the bucket.</returns>
+        HeadBucketResponse HeadBucket(HeadBucketRequest request);
+
+        /// <summary>
         /// Primes a DS3 bulk get for better performance.
         /// Note that this request requires that each Ds3Object have both the
         /// name and the size set. Subsequent GetObject operations should be

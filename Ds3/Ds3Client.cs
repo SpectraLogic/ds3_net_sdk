@@ -67,6 +67,11 @@ namespace Ds3
             return new PutBucketResponse(_netLayer.Invoke(request));
         }
 
+        public HeadBucketResponse HeadBucket(HeadBucketRequest request)
+        {
+            return new HeadBucketResponse(_netLayer.Invoke(request));
+        }
+
         public BulkGetResponse BulkGet(BulkGetRequest request)
         {
             return new BulkGetResponse(_netLayer.Invoke(request));

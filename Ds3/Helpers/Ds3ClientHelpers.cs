@@ -102,5 +102,19 @@ namespace Ds3.Helpers
                 }
             } while (isTruncated && remainingKeys > 0);
         }
+
+
+        public void EnsureBucketExists(string bucketName)
+        {
+            using (var headResponse = _client.HeadBucket(new HeadBucketRequest(bucketName)))
+            {
+                if (headResponse.Status == HeadBucketResponse.StatusType.DoesntExist)
+                {
+                    using (_client.PutBucket(new PutBucketRequest(bucketName)))
+                    {
+                    }
+                }
+            }
+        }
     }
 }

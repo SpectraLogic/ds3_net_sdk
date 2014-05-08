@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BadStatusCodeException" xml:space="preserve">
-    <value>Received a status code of {0} when {1} was expected. Error message: "{2}"</value>
+    <value>Received a status code of {0} when one of {1} was expected. Error message: "{2}"</value>
   </data>
   <data name="BadStatusCodeInvalidErrorResponseException" xml:space="preserve">
-    <value>Received a status code of {0} when {1} was expected. Could not parse the response for additional information.</value>
+    <value>Received a status code of {0} when one of {1} was expected. Could not parse the response for additional information.</value>
   </data>
   <data name="Encountered307NTimes" xml:space="preserve">
     <value>Encountered 307 number: {0}</value>

@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -39,14 +40,14 @@ namespace Ds3.Calls
 
         protected abstract void ProcessResponse();
 
-        protected internal void HandleStatusCode(HttpStatusCode expectedStatusCode)
+        protected internal void HandleStatusCode(params HttpStatusCode[] expectedStatusCodes)
         {
             HttpStatusCode actualStatusCode = response.StatusCode;
-            if (!actualStatusCode.Equals(expectedStatusCode))
+            if (!expectedStatusCodes.Contains(actualStatusCode))
             {
                 var responseContent = GetResponseContent(response);
                 var error = ParseError(responseContent);
-                throw new Ds3BadStatusCodeException(expectedStatusCode, actualStatusCode, error, responseContent);
+                throw new Ds3BadStatusCodeException(expectedStatusCodes, actualStatusCode, error, responseContent);
             }
         }
 
