@@ -21,8 +21,6 @@ using System.Text;
 using System.Web;
 
 using Ds3.Models;
-using ObjectGetter = Ds3.Helpers.Ds3ClientHelpers.ObjectGetter;
-using ObjectPutter = Ds3.Helpers.Ds3ClientHelpers.ObjectPutter;
 
 namespace Ds3.Helpers
 {

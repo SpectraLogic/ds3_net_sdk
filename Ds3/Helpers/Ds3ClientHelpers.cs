@@ -23,30 +23,11 @@ using System.Text;
 
 namespace Ds3.Helpers
 {
-    public class Ds3ClientHelpers
+    public class Ds3ClientHelpers : IDs3ClientHelpers
     {
         private const int _defaultMaxKeys = 1000;
 
         private readonly IDs3Client _client;
-
-        public delegate Stream ObjectPutter(Ds3Object ds3Object);
-        public delegate void ObjectGetter(Ds3Object ds3Object, Stream inputStream);
-
-        public interface IJob
-        {
-            Guid JobId { get; }
-            string BucketName { get; }
-        }
-
-        public interface IWriteJob : IJob
-        {
-            void Write(ObjectPutter putter);
-        }
-
-        public interface IReadJob : IJob
-        {
-            void Read(ObjectGetter getter);
-        }
 
         public Ds3ClientHelpers(IDs3Client client)
         {
@@ -120,6 +101,20 @@ namespace Ds3.Helpers
                     }
                 }
             } while (isTruncated && remainingKeys > 0);
+        }
+
+
+        public void EnsureBucketExists(string bucketName)
+        {
+            using (var headResponse = _client.HeadBucket(new HeadBucketRequest(bucketName)))
+            {
+                if (headResponse.Status == HeadBucketResponse.StatusType.DoesntExist)
+                {
+                    using (_client.PutBucket(new PutBucketRequest(bucketName)))
+                    {
+                    }
+                }
+            }
         }
     }
 }

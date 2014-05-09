@@ -15,6 +15,7 @@
 
 using System.Net;
 using Ds3.Models;
+using System.Collections.Generic;
 
 namespace Ds3.Runtime
 {
@@ -39,23 +40,24 @@ namespace Ds3.Runtime
             get { return _responseBody; }
         }
 
-        internal Ds3BadStatusCodeException(HttpStatusCode expectedStatusCode, HttpStatusCode receivedStatusCode, Ds3Error error, string responseBody)
-            : base(StatusCodeMessage(expectedStatusCode, receivedStatusCode, error))
+        internal Ds3BadStatusCodeException(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Ds3Error error, string responseBody)
+            : base(StatusCodeMessage(expectedStatusCodes, receivedStatusCode, error))
         {
             this._statusCode = receivedStatusCode;
             this._error = error;
             this._responseBody = responseBody;
         }
 
-        private static string StatusCodeMessage(HttpStatusCode expectedStatusCode, HttpStatusCode receivedStatusCode, Ds3Error error)
+        private static string StatusCodeMessage(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Ds3Error error)
         {
+            var expectedCodesString = string.Join(", ", expectedStatusCodes);
             if (error == null)
             {
-                return string.Format(Resources.BadStatusCodeInvalidErrorResponseException, receivedStatusCode, expectedStatusCode);
+                return string.Format(Resources.BadStatusCodeInvalidErrorResponseException, receivedStatusCode, expectedCodesString);
             }
             else
             {
-                return string.Format(Resources.BadStatusCodeException, receivedStatusCode, expectedStatusCode, error.Message);
+                return string.Format(Resources.BadStatusCodeException, receivedStatusCode, expectedCodesString, error.Message);
             }
         }
     }

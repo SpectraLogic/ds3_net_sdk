@@ -14,30 +14,28 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 
-using Ds3.Calls;
 using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class ReadJob : Job, IReadJob
-    {
-        public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
-            : base(clientFactory, jobId, bucketName, objectLists)
-        {
-        }
+    public delegate Stream ObjectPutter(Ds3Object ds3Object);
+    public delegate void ObjectGetter(Ds3Object ds3Object, Stream inputStream);
 
-        public void Read(ObjectGetter getter)
-        {
-            this.TransferAll((client, jobId, bucket, ds3Object) =>
-            {
-                using (var response = client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
-                {
-                    getter(ds3Object, response.Contents);
-                }
-            });
-        }
+    public interface IJob
+    {
+        Guid JobId { get; }
+        string BucketName { get; }
+    }
+
+    public interface IWriteJob : IJob
+    {
+        void Write(ObjectPutter putter);
+    }
+
+    public interface IReadJob : IJob
+    {
+        void Read(ObjectGetter getter);
     }
 }

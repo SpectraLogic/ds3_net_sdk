@@ -13,31 +13,31 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-using Ds3.Calls;
-using Ds3.Models;
-
-namespace Ds3.Helpers
+namespace Ds3.Calls
 {
-    internal class ReadJob : Job, IReadJob
+    public class HeadBucketRequest : Ds3Request
     {
-        public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
-            : base(clientFactory, jobId, bucketName, objectLists)
+        internal override HttpVerb Verb
         {
+            get
+            {
+                return HttpVerb.HEAD;
+            }
         }
 
-        public void Read(ObjectGetter getter)
+        internal override string Path
         {
-            this.TransferAll((client, jobId, bucket, ds3Object) =>
+            get
             {
-                using (var response = client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
-                {
-                    getter(ds3Object, response.Contents);
-                }
-            });
+                return "/" + BucketName;
+            }
+        }
+
+        public string BucketName { get; private set; }
+
+        public HeadBucketRequest(string bucketName)
+        {
+            this.BucketName = bucketName;
         }
     }
 }
