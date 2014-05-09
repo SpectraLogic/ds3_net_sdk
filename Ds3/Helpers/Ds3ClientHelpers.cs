@@ -42,12 +42,6 @@ namespace Ds3.Helpers
             }
         }
 
-        //TODO: automatic job recovery needs to be implemented
-        //public IWriteJob RecoverWriteJob(Guid jobId)
-        //{
-        //    return null;
-        //}
-
         public IReadJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
         {
             using (var prime = this._client.BulkGet(new BulkGetRequest(bucket, objectsToRead.ToList())))
@@ -60,12 +54,6 @@ namespace Ds3.Helpers
         {
             return this.StartReadJob(bucket, this.ListObjects(bucket));
         }
-
-        //TODO: automatic job recovery needs to be implemented
-        //public IReadJob RecoverReadJob(Guid jobId)
-        //{
-        //    return null;
-        //}
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName)
         {
@@ -114,6 +102,22 @@ namespace Ds3.Helpers
                     {
                     }
                 }
+            }
+        }
+
+        public IWriteJob RecoverWriteJob(Guid jobId)
+        {
+            using (var job = this._client.GetJob(new GetJobRequest(jobId)))
+            {
+                return new WriteJob(new Ds3ClientFactory(this._client), jobId, job.Bucket.Name, job.ObjectLists);
+            }
+        }
+
+        public IReadJob RecoverReadJob(Guid jobId)
+        {
+            using (var job = this._client.GetJob(new GetJobRequest(jobId)))
+            {
+                return new ReadJob(new Ds3ClientFactory(this._client), jobId, job.Bucket.Name, job.ObjectLists);
             }
         }
     }

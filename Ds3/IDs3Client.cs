@@ -101,5 +101,12 @@ namespace Ds3
         /// <param name="request"></param>
         /// <returns></returns>
         BulkPutResponse BulkPut(BulkPutRequest request);
+
+        /// <summary>
+        /// Retrieves information about a job so it can be resumed.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        GetJobResponse GetJob(GetJobRequest request);
     }
 }

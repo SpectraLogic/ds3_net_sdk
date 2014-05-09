@@ -14,24 +14,26 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using Ds3.Models;
-
-namespace Ds3.Helpers
+namespace Ds3.Calls
 {
-    public interface IDs3ClientHelpers
+    public class GetJobRequest : Ds3Request
     {
-        IWriteJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite);
-        IReadJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead);
-        IReadJob StartReadAllJob(string bucket);
-        IEnumerable<Ds3Object> ListObjects(string bucketName);
-        IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix);
-        IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix, int maxKeys);
-        void EnsureBucketExists(string bucketName);
-        IWriteJob RecoverWriteJob(Guid jobId);
-        IReadJob RecoverReadJob(Guid jobId);
+        public Guid JobId { get; private set; }
+
+        public GetJobRequest(Guid jobId)
+        {
+            this.JobId = jobId;
+        }
+
+        internal override HttpVerb Verb
+        {
+            get { return HttpVerb.GET; }
+        }
+
+        internal override string Path
+        {
+            get { return "/_rest_/job/" + this.JobId.ToString(); }
+        }
     }
 }
