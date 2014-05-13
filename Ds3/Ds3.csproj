@@ -76,6 +76,7 @@
     <Compile Include="Helpers\WriteJob.cs" />
     <Compile Include="Helpers\ReadJob.cs" />
     <Compile Include="IDs3Client.cs" />
+    <Compile Include="Models\Checksum.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectList.cs" />
     <Compile Include="Models\Owner.cs" />

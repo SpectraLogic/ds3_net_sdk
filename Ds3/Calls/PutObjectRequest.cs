@@ -22,6 +22,9 @@ namespace Ds3.Calls
 {
     public class PutObjectRequest : Ds3Request
     {
+        private readonly Stream _content;
+        private Checksum _checksum = Checksum.None;
+
         internal override HttpVerb Verb
         {
             get
@@ -38,7 +41,22 @@ namespace Ds3.Calls
             }
         }
 
-        private Stream _content;
+        internal override Checksum Md5
+        {
+            get { return this._checksum; }
+        }
+
+        public Checksum Checksum
+        {
+            get { return this._checksum; }
+            set { this.WithChecksum(value); }
+        }
+
+        public PutObjectRequest WithChecksum(Checksum checksum)
+        {
+            this._checksum = checksum;
+            return this;
+        }
 
         internal override Stream GetContentStream()
         {

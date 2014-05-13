@@ -16,6 +16,7 @@
 using System.Net;
 using System.IO;
 using System.Collections.Generic;
+using Ds3.Models;
 
 namespace Ds3.Calls
 {
@@ -43,8 +44,14 @@ namespace Ds3.Calls
             get;   
         }
 
-        internal virtual Stream GetContentStream() {
+        internal virtual Stream GetContentStream()
+        {
             return Stream.Null;
+        }
+
+        internal virtual Checksum Md5
+        {
+            get { return Checksum.None; }
         }
 
         internal virtual Range GetByteRange()
