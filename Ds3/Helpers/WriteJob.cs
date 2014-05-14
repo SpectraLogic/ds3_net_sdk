@@ -24,6 +24,8 @@ namespace Ds3.Helpers
 {
     internal class WriteJob : Job, IWriteJob
     {
+        private ModifyPutRequest _modifier;
+
         public WriteJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
             : base(clientFactory, jobId, bucketName, objectLists)
         {
@@ -33,10 +35,21 @@ namespace Ds3.Helpers
         {
             this.TransferAll((client, jobId, bucket, ds3Object) =>
             {
-                using (client.PutObject(new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object))))
+                var request = new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object));
+                if (this._modifier != null)
+                {
+                    this._modifier(request);
+                }
+                using (client.PutObject(request))
                 {
                 }
             });
+        }
+
+        public IWriteJob WithRequestModifier(ModifyPutRequest modifier)
+        {
+            this._modifier = modifier;
+            return this;
         }
     }
 }
