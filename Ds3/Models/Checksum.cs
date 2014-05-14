@@ -41,34 +41,8 @@ namespace Ds3.Models
             return new ValueChecksum(hash);
         }
 
-        public T Match<T>(Func<T> none, Func<T> compute, Func<byte[], T> value)
-        {
-            T result = default(T);
-            Match(
-                delegate { result = none(); },
-                delegate { result = compute(); },
-                hash => { result = value(hash); }
-            );
-            return result;
-        }
-
-        public void Match(Action none, Action compute, Action<byte[]> value)
-        {
-            if (this == _none)
-            {
-                none();
-            }
-            else if (this == _compute)
-            {
-                compute();
-            }
-            else
-            {
-                var it = this as ValueChecksum;
-                Debug.Assert(it != null);
-                value(it.Hash);
-            }
-        }
+        public abstract void Match(Action none, Action compute, Action<byte[]> value);
+        public abstract T Match<T>(Func<T> none, Func<T> compute, Func<byte[], T> value);
 
         private Checksum()
         {
@@ -77,7 +51,7 @@ namespace Ds3.Models
 
         private class ValueChecksum : Checksum
         {
-            public byte[] Hash { get; private set; }
+            private readonly byte[] _hash;
 
             public ValueChecksum(byte[] hash)
             {
@@ -85,16 +59,44 @@ namespace Ds3.Models
                 {
                     throw new ArgumentException(string.Format("Parameter must be a 16-byte MD5 hash value."));
                 }
-                this.Hash = hash;
+                this._hash = hash;
+            }
+
+            public override void Match(Action none, Action compute, Action<byte[]> value)
+            {
+                value(_hash);
+            }
+
+            public override T Match<T>(Func<T> none, Func<T> compute, Func<byte[], T> value)
+            {
+                return value(_hash);
             }
         }
 
         private class ComputeChecksum : Checksum
         {
+            public override void Match(Action none, Action compute, Action<byte[]> value)
+            {
+                compute();
+            }
+
+            public override T Match<T>(Func<T> none, Func<T> compute, Func<byte[], T> value)
+            {
+                return compute();
+            }
         }
 
         private class NoneChecksum : Checksum
         {
+            public override void Match(Action none, Action compute, Action<byte[]> value)
+            {
+                none();
+            }
+
+            public override T Match<T>(Func<T> none, Func<T> compute, Func<byte[], T> value)
+            {
+                return none();
+            }
         }
     }
 }
