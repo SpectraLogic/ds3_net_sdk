@@ -37,7 +37,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/buckets/" + BucketName;
+                return "/_rest_/bucket/" + BucketName;
             }
         }
 

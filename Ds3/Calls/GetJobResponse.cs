@@ -48,9 +48,8 @@ namespace Ds3.Calls
                 this.ObjectLists = (
                     from objList in root.Elements("Streams")
                     let objects =
-                        from obj in objList.Elements("ObjectsNotInCache").Concat(objList.Elements("ObjectsInCache"))
-                        orderby Convert.ToInt32(obj.TextOf("OrderIndex"))
-                        select new Ds3Object(obj.TextOf("Key"), Convert.ToInt64(obj.TextOf("Size")))
+                        from obj in objList.Elements("ObjectsNotInCache")
+                        select new Ds3Object(obj.AttributeText("Name"), Convert.ToInt64(obj.AttributeText("Size")))
                     select new Ds3ObjectList(objects, objList.AttributeText("ServerId"))
                 ).ToList();
             }
