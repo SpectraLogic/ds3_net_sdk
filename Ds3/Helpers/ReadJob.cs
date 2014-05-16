@@ -24,6 +24,8 @@ namespace Ds3.Helpers
 {
     internal class ReadJob : Job, IReadJob
     {
+        private ModifyGetRequest _modifier;
+
         public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
             : base(clientFactory, jobId, bucketName, objectLists)
         {
@@ -33,11 +35,22 @@ namespace Ds3.Helpers
         {
             this.TransferAll((client, jobId, bucket, ds3Object) =>
             {
-                using (var response = client.GetObject(new GetObjectRequest(bucket, ds3Object.Name, jobId)))
+                var request = new GetObjectRequest(bucket, ds3Object.Name, jobId);
+                if (this._modifier != null)
+                {
+                    this._modifier(request);
+                }
+                using (var response = client.GetObject(request))
                 {
                     getter(ds3Object, response.Contents);
                 }
             });
+        }
+
+        public IReadJob WithRequestModifier(ModifyGetRequest modifier)
+        {
+            this._modifier = modifier;
+            return this;
         }
     }
 }

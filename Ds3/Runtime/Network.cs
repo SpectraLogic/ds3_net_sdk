@@ -102,7 +102,13 @@ namespace Ds3.Runtime
             httpRequest.Host = CreateHostString(Endpoint);
             httpRequest.AllowAutoRedirect = false;
             httpRequest.AllowWriteStreamBuffering = false;
-            httpRequest.Headers.Add("Authorization", S3Signer.AuthField(Creds, request.Verb.ToString(), date.ToString("r"), request.Path));
+            
+            var md5 = ComputeChecksum(request.Md5, content);
+            if (!string.IsNullOrEmpty(md5))
+            {
+                httpRequest.Headers.Add("Content-MD5", md5);
+            }
+            httpRequest.Headers.Add("Authorization", S3Signer.AuthField(Creds, request.Verb.ToString(), date.ToString("r"), request.Path, md5));
 
             var byteRange = request.GetByteRange();
             if (byteRange != null)
@@ -133,6 +139,15 @@ namespace Ds3.Runtime
                 }
             }
             return httpRequest;
+        }
+
+        private static string ComputeChecksum(Checksum checksum, Stream content)
+        {
+            return checksum.Match(
+                () => "",
+                () => Convert.ToBase64String(System.Security.Cryptography.MD5.Create().ComputeHash(content)),
+                hash => Convert.ToBase64String(hash)
+            );
         }
 
         private string CreateHostString(Uri endpoint)

@@ -31,9 +31,7 @@ namespace Ds3.Helpers
         IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix);
         IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix, int maxKeys);
         void EnsureBucketExists(string bucketName);
-
-        //TODO: automatic job recovery needs to be implemented
-        //IWriteJob RecoverWriteJob(Guid jobId);
-        //IReadJob RecoverReadJob(Guid jobId);
+        IWriteJob RecoverWriteJob(Guid jobId);
+        IReadJob RecoverReadJob(Guid jobId);
     }
 }

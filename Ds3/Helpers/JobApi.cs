@@ -17,6 +17,7 @@ using System;
 using System.IO;
 
 using Ds3.Models;
+using Ds3.Calls;
 
 namespace Ds3.Helpers
 {
@@ -32,10 +33,15 @@ namespace Ds3.Helpers
     public interface IWriteJob : IJob
     {
         void Write(ObjectPutter putter);
+        IWriteJob WithRequestModifier(ModifyPutRequest modifier);
     }
 
     public interface IReadJob : IJob
     {
         void Read(ObjectGetter getter);
+        IReadJob WithRequestModifier(ModifyGetRequest modifier);
     }
+
+    public delegate void ModifyGetRequest(GetObjectRequest request);
+    public delegate void ModifyPutRequest(PutObjectRequest request);
 }

@@ -62,8 +62,10 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Calls\GetJobRequest.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
+    <Compile Include="Calls\GetJobResponse.cs" />
     <Compile Include="Helpers\Ds3ClientHelpers.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Helpers\Ds3ClientFactory.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Helpers\WriteJob.cs" />
     <Compile Include="Helpers\ReadJob.cs" />
     <Compile Include="IDs3Client.cs" />
+    <Compile Include="Models\Checksum.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectList.cs" />
     <Compile Include="Models\Owner.cs" />

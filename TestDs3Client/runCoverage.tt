@@ -1,0 +1,20 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".bat" encoding="us-ascii" #>
+<#
+var versions = XDocument
+	.Load(Host.ResolvePath(@"..\.nuget\packages.config"))
+	.Element("packages")
+	.Elements("package")
+	.ToDictionary(
+		package => package.Attribute("id").Value,
+		package => package.Attribute("version").Value
+	);
+#>
+..\..\..\packages\OpenCover.<#=versions["OpenCover"]#>\OpenCover.Console.exe -target:runTests.bat -register:user -filter:+[Ds3Client]* 
+..\..\..\packages\ReportGenerator.<#=versions["ReportGenerator"]#>\reportgenerator.exe -reports:results.xml -targetdir:coverage
