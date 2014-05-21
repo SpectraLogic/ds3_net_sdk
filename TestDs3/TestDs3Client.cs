@@ -258,8 +258,8 @@ namespace TestDs3
                 new { Key = "file3", Size = 2523 }
             };
 
-            var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<objects>\r\n  <object name=\"file1\" size=\"256\" />\r\n  <object name=\"file2\" size=\"1202\" />\r\n  <object name=\"file3\" size=\"2523\" />\r\n</objects>";
-            var stringResponse = "<masterobjectlist jobid='00d3baf8-9e71-45dd-ba83-fb93eb793b04'><objects><object name='file2' size='1202'/><object name='file1' size='256'/><object name='file3' size='2523'/></objects></masterobjectlist>";
+            var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Objects>\r\n  <Object Name=\"file1\" Size=\"256\" />\r\n  <Object Name=\"file2\" Size=\"1202\" />\r\n  <Object Name=\"file3\" Size=\"2523\" />\r\n</Objects>";
+            var stringResponse = "<MasterObjectList JobId='00d3baf8-9e71-45dd-ba83-fb93eb793b04'><Objects><Object Name='file2' Size='1202'/><Object Name='file1' Size='256'/><Object Name='file3' Size='2523'/></Objects></MasterObjectList>";
 
             var inputObjects = new List<Ds3Object> {
                 new Ds3Object("file1", 256),
@@ -269,7 +269,7 @@ namespace TestDs3
 
             var queryParams = new Dictionary<string, string>() { { "operation", operation } };
             var client = MockNetwork
-                .Expecting(HttpVerb.PUT, "/_rest_/buckets/bucketName", queryParams, stringRequest)
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucketName", queryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringResponse)
                 .AsClient;
 

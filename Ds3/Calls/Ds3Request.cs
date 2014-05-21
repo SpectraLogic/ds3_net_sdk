@@ -65,7 +65,10 @@ namespace Ds3.Calls
             get { return _queryParams; }
         }
 
-        private Dictionary<string, string> _headers = new Dictionary<string, string>();
+        private Dictionary<string, string> _headers = new Dictionary<string, string>()
+        {
+             { "Naming-Convention", "s3" }
+        };
         internal virtual Dictionary<string, string> Headers
         {
             get { return _headers; }

@@ -46,17 +46,17 @@ namespace Ds3.Calls
             {
                 var masterObjectList = XmlExtensions
                     .ReadDocument(content)
-                    .ElementOrThrow("masterobjectlist");
-                JobId = Guid.Parse(masterObjectList.AttributeOrThrow("jobid").Value);
+                    .ElementOrThrow("MasterObjectList");
+                JobId = Guid.Parse(masterObjectList.AttributeOrThrow("JobId").Value);
                 ObjectLists = (
-                    from objs in masterObjectList.Elements("objects")
+                    from objs in masterObjectList.Elements("Objects")
                     let objects =
-                        from obj in objs.Elements("object")
+                        from obj in objs.Elements("Object")
                         select new Ds3Object(
-                            obj.AttributeOrThrow("name").Value,
-                            Convert.ToInt64(obj.AttributeOrThrow("size").Value)
+                            obj.AttributeOrThrow("Name").Value,
+                            Convert.ToInt64(obj.AttributeOrThrow("Size").Value)
                         )
-                    select new Ds3ObjectList(objects, objs.AttributeText("serverid"))
+                    select new Ds3ObjectList(objects, objs.AttributeText("ServerId"))
                 ).ToList();
             }
         }

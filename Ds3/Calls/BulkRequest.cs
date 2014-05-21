@@ -63,11 +63,11 @@ namespace Ds3.Calls
         {
             return new XDocument()
                 .AddFluent(
-                    new XElement("objects").AddAllFluent(
+                    new XElement("Objects").AddAllFluent(
                         from obj in objects
-                        let xmlObj = new XElement("object").SetAttributeValueFluent("name", obj.Name)
+                        let xmlObj = new XElement("Object").SetAttributeValueFluent("Name", obj.Name)
                         select obj.Size.HasValue
-                            ? xmlObj.SetAttributeValueFluent("size", obj.Size.Value.ToString("D"))
+                            ? xmlObj.SetAttributeValueFluent("Size", obj.Size.Value.ToString("D"))
                             : xmlObj
                     )
                 )
