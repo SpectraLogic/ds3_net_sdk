@@ -13,13 +13,12 @@
  * ****************************************************************************
  */
 
-using Ds3.Calls;
-using Ds3.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
+
+using Ds3.Calls;
+using Ds3.Models;
 
 namespace Ds3.Helpers
 {
@@ -109,7 +108,7 @@ namespace Ds3.Helpers
         {
             using (var job = this._client.GetJob(new GetJobRequest(jobId)))
             {
-                return new WriteJob(new Ds3ClientFactory(this._client), jobId, job.Bucket.Name, job.ObjectLists);
+                return new WriteJob(new Ds3ClientFactory(this._client), jobId, job.JobInfo.BucketName, job.ObjectLists);
             }
         }
 
@@ -117,7 +116,7 @@ namespace Ds3.Helpers
         {
             using (var job = this._client.GetJob(new GetJobRequest(jobId)))
             {
-                return new ReadJob(new Ds3ClientFactory(this._client), jobId, job.Bucket.Name, job.ObjectLists);
+                return new ReadJob(new Ds3ClientFactory(this._client), jobId, job.JobInfo.BucketName, job.ObjectLists);
             }
         }
     }

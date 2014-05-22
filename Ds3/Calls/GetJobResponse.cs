@@ -14,19 +14,18 @@
  */
 
 using System.Net;
+using System.Linq;
 using System.Collections.Generic;
 
 using Ds3.Runtime;
 using Ds3.Models;
-using System.Linq;
-using System;
 
 namespace Ds3.Calls
 {
     public class GetJobResponse : Ds3Response
     {
-        public Bucket Bucket { get; private set; }
-        public IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
+        public JobInfo JobInfo { get; private set; }
+        public IEnumerable<JobObjectList> ObjectLists { get; private set; }
 
         internal GetJobResponse(IWebResponse response)
             : base(response)
@@ -38,19 +37,19 @@ namespace Ds3.Calls
             HandleStatusCode(HttpStatusCode.OK);
             using (var stream = response.GetResponseStream())
             {
-                var root = XmlExtensions.ReadDocument(stream).ElementOrThrow("Data");
-
-                // Populate Bucket.
-                var bucketElement = root.ElementOrThrow("Job").ElementOrThrow("Bucket");
-                this.Bucket = new Bucket(bucketElement.TextOf("Name"), bucketElement.TextOf("CreationDate"));
-
-                // Populate ObjectLists.
+                var root = XmlExtensions.ReadDocument(stream).ElementOrThrow("Job");
+                this.JobInfo = ParseUtilities.ParseJobInfo(root);
                 this.ObjectLists = (
-                    from objList in root.Elements("Streams")
-                    let objects =
-                        from obj in objList.Elements("ObjectsNotInCache")
-                        select new Ds3Object(obj.AttributeText("Name"), Convert.ToInt64(obj.AttributeText("Size")))
-                    select new Ds3ObjectList(objects, objList.AttributeText("ServerId"))
+                    from objects in root.Elements("Objects")
+                    let groupedObjects = objects.Elements("Object").ToLookup(
+                        objElement => objElement.AttributeText("State"),
+                        ParseUtilities.ParseDs3Object
+                    )
+                    select new JobObjectList(
+                        objects.AttributeTextOrNull("ServerId"),
+                        groupedObjects["NOT_IN_CACHE"],
+                        groupedObjects["IN_CACHE"]
+                    )
                 ).ToList();
             }
         }

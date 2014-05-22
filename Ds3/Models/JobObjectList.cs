@@ -14,30 +14,18 @@
  */
 
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Ds3.Models
 {
-    public class Ds3ObjectList : IEnumerable<Ds3Object>
+    public class JobObjectList : Ds3ObjectList
     {
-        public string ServerId { get; private set; }
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> ObjectsInCache { get; private set; }
 
-        internal Ds3ObjectList(string serverId, IEnumerable<Ds3Object> objects)
+        public JobObjectList(string serverId, IEnumerable<Ds3Object> objects, IEnumerable<Ds3Object> objectsInCache)
+            : base(serverId, objects)
         {
-            ServerId = serverId;
-            Objects = objects.ToList();
-        }
-
-        public IEnumerator<Ds3Object> GetEnumerator()
-        {
-            return Objects.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Objects.GetEnumerator();
+            this.ObjectsInCache = objectsInCache.ToList();
         }
     }
 }

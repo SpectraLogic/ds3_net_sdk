@@ -285,5 +285,56 @@ namespace TestDs3
                 }
             }
         }
+
+        [Test]
+        public void TestGetJobList()
+        {
+            var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"/></Jobs>";
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
+                .Returning(HttpStatusCode.OK, responseContent)
+                .AsClient;
+
+            var jobs = client.GetJobList(new GetJobListRequest()).Jobs.ToList();
+            Assert.AreEqual(1, jobs.Count);
+            CheckJobInfo(jobs[0]);
+        }
+
+        [Test]
+        public void TestGetJob()
+        {
+            var responseContent = "<Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"><Objects ChunkNumber=\"0\" ServerId=\"FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS\"><Object Name=\"bar\" Size=\"12\" State=\"IN_CACHE\"/><Object Name=\"foo\" Size=\"12\" State=\"NOT_IN_CACHE\"/></Objects></Job>";
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job/a4a586a1-cb80-4441-84e2-48974e982d51", new Dictionary<string, string>(), "")
+                .Returning(HttpStatusCode.OK, responseContent)
+                .AsClient;
+
+            var response = client.GetJob(new GetJobRequest(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51")));
+            CheckJobInfo(response.JobInfo);
+            var objectLists = response.ObjectLists.ToList();
+            Assert.AreEqual(1, objectLists.Count);
+
+            var objectList = objectLists[0];
+            Assert.AreEqual("FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS", objectList.ServerId);
+
+            var objects = objectList.Objects.ToList();
+            Assert.AreEqual(1, objects.Count);
+            Assert.AreEqual("foo", objects[0].Name);
+            Assert.AreEqual(12, objects[0].Size);
+
+            var objectsInCache = objectList.ObjectsInCache.ToList();
+            Assert.AreEqual(1, objectsInCache.Count);
+            Assert.AreEqual("bar", objectsInCache[0].Name);
+            Assert.AreEqual(12, objectsInCache[0].Size);
+        }
+
+        private static void CheckJobInfo(JobInfo jobInfo)
+        {
+            Assert.AreEqual("bucketName", jobInfo.BucketName);
+            Assert.AreEqual(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51"), jobInfo.JobId);
+            Assert.AreEqual("NORMAL", jobInfo.Priority);
+            Assert.AreEqual("PUT", jobInfo.RequestType);
+            Assert.AreEqual("2014-05-22T18:24:00.000Z", jobInfo.StartDate);
+        }
     }
 }

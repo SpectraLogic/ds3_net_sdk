@@ -13,31 +13,30 @@
  * ****************************************************************************
  */
 
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 
 namespace Ds3.Models
 {
-    public class Ds3ObjectList : IEnumerable<Ds3Object>
+    public class JobInfo
     {
-        public string ServerId { get; private set; }
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public String BucketName { get; private set; }
+        public String StartDate { get; private set; }
+        public Guid JobId { get; private set; }
+        public String Priority { get; private set; }
+        public String RequestType { get; private set; }
 
-        internal Ds3ObjectList(string serverId, IEnumerable<Ds3Object> objects)
+        public JobInfo(
+            String bucketName,
+            String startDate,
+            Guid jobId,
+            String priority,
+            String requestType)
         {
-            ServerId = serverId;
-            Objects = objects.ToList();
-        }
-
-        public IEnumerator<Ds3Object> GetEnumerator()
-        {
-            return Objects.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Objects.GetEnumerator();
+            this.BucketName = bucketName;
+            this.StartDate = startDate;
+            this.JobId = jobId;
+            this.Priority = priority;
+            this.RequestType = requestType;
         }
     }
 }

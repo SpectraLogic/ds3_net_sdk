@@ -13,31 +13,33 @@
  * ****************************************************************************
  */
 
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.Xml.Linq;
 
-namespace Ds3.Models
+using Ds3.Models;
+using Ds3.Runtime;
+
+namespace Ds3.Calls
 {
-    public class Ds3ObjectList : IEnumerable<Ds3Object>
+    internal class ParseUtilities
     {
-        public string ServerId { get; private set; }
-        public IEnumerable<Ds3Object> Objects { get; private set; }
-
-        internal Ds3ObjectList(string serverId, IEnumerable<Ds3Object> objects)
+        public static JobInfo ParseJobInfo(XElement jobElement)
         {
-            ServerId = serverId;
-            Objects = objects.ToList();
+            return new JobInfo(
+                jobElement.AttributeText("BucketName"),
+                jobElement.AttributeText("StartDate"),
+                Guid.Parse(jobElement.AttributeText("JobId")),
+                jobElement.AttributeText("Priority"),
+                jobElement.AttributeText("RequestType")
+            );
         }
 
-        public IEnumerator<Ds3Object> GetEnumerator()
+        public static Ds3Object ParseDs3Object(XElement objectElement)
         {
-            return Objects.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Objects.GetEnumerator();
+            return new Ds3Object(
+                objectElement.AttributeText("Name"),
+                Convert.ToInt64(objectElement.AttributeText("Size"))
+            );
         }
     }
 }
