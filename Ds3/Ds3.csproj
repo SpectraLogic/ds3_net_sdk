@@ -76,6 +76,7 @@
     <Compile Include="Helpers\IDs3ClientHelpers.cs" />
     <Compile Include="Helpers\Job.cs" />
     <Compile Include="Helpers\JobApi.cs" />
+    <Compile Include="Helpers\JobRecoveryException.cs" />
     <Compile Include="Helpers\WriteJob.cs" />
     <Compile Include="Helpers\ReadJob.cs" />
     <Compile Include="IDs3Client.cs" />

@@ -132,6 +132,9 @@
   <data name="InvalidStreamException" xml:space="preserve">
     <value>PUT object streams must be both readable and seekable.</value>
   </data>
+  <data name="JobRecoveryException" xml:space="preserve">
+    <value>Expected job type '{0}' but the actual job was of type '{1}'.</value>
+  </data>
   <data name="MissingElementException" xml:space="preserve">
     <value>Expected an element called "{0}" but didn't find it.</value>
   </data>
