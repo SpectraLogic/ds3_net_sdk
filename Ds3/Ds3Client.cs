@@ -82,6 +82,11 @@ namespace Ds3
             return new BulkPutResponse(_netLayer.Invoke(request));
         }
 
+        public GetJobListResponse GetJobList(GetJobListRequest request)
+        {
+            return new GetJobListResponse(_netLayer.Invoke(request));
+        }
+
         public GetJobResponse GetJob(GetJobRequest request)
         {
             return new GetJobResponse(_netLayer.Invoke(request));

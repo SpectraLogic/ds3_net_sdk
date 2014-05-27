@@ -258,8 +258,8 @@ namespace TestDs3
                 new { Key = "file3", Size = 2523 }
             };
 
-            var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<objects>\r\n  <object name=\"file1\" size=\"256\" />\r\n  <object name=\"file2\" size=\"1202\" />\r\n  <object name=\"file3\" size=\"2523\" />\r\n</objects>";
-            var stringResponse = "<masterobjectlist jobid='00d3baf8-9e71-45dd-ba83-fb93eb793b04'><objects><object name='file2' size='1202'/><object name='file1' size='256'/><object name='file3' size='2523'/></objects></masterobjectlist>";
+            var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Objects>\r\n  <Object Name=\"file1\" Size=\"256\" />\r\n  <Object Name=\"file2\" Size=\"1202\" />\r\n  <Object Name=\"file3\" Size=\"2523\" />\r\n</Objects>";
+            var stringResponse = "<MasterObjectList JobId='00d3baf8-9e71-45dd-ba83-fb93eb793b04'><Objects><Object Name='file2' Size='1202'/><Object Name='file1' Size='256'/><Object Name='file3' Size='2523'/></Objects></MasterObjectList>";
 
             var inputObjects = new List<Ds3Object> {
                 new Ds3Object("file1", 256),
@@ -269,7 +269,7 @@ namespace TestDs3
 
             var queryParams = new Dictionary<string, string>() { { "operation", operation } };
             var client = MockNetwork
-                .Expecting(HttpVerb.PUT, "/_rest_/buckets/bucketName", queryParams, stringRequest)
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucketName", queryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringResponse)
                 .AsClient;
 
@@ -284,6 +284,57 @@ namespace TestDs3
                     Assert.AreEqual(expected[i].Size, firstObjectList[i].Size);
                 }
             }
+        }
+
+        [Test]
+        public void TestGetJobList()
+        {
+            var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"/></Jobs>";
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
+                .Returning(HttpStatusCode.OK, responseContent)
+                .AsClient;
+
+            var jobs = client.GetJobList(new GetJobListRequest()).Jobs.ToList();
+            Assert.AreEqual(1, jobs.Count);
+            CheckJobInfo(jobs[0]);
+        }
+
+        [Test]
+        public void TestGetJob()
+        {
+            var responseContent = "<Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"><Objects ChunkNumber=\"0\" ServerId=\"FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS\"><Object Name=\"bar\" Size=\"12\" State=\"IN_CACHE\"/><Object Name=\"foo\" Size=\"12\" State=\"NOT_IN_CACHE\"/></Objects></Job>";
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job/a4a586a1-cb80-4441-84e2-48974e982d51", new Dictionary<string, string>(), "")
+                .Returning(HttpStatusCode.OK, responseContent)
+                .AsClient;
+
+            var response = client.GetJob(new GetJobRequest(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51")));
+            CheckJobInfo(response.JobInfo);
+            var objectLists = response.ObjectLists.ToList();
+            Assert.AreEqual(1, objectLists.Count);
+
+            var objectList = objectLists[0];
+            Assert.AreEqual("FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS", objectList.ServerId);
+
+            var objects = objectList.Objects.ToList();
+            Assert.AreEqual(1, objects.Count);
+            Assert.AreEqual("foo", objects[0].Name);
+            Assert.AreEqual(12, objects[0].Size);
+
+            var objectsInCache = objectList.ObjectsInCache.ToList();
+            Assert.AreEqual(1, objectsInCache.Count);
+            Assert.AreEqual("bar", objectsInCache[0].Name);
+            Assert.AreEqual(12, objectsInCache[0].Size);
+        }
+
+        private static void CheckJobInfo(JobInfo jobInfo)
+        {
+            Assert.AreEqual("bucketName", jobInfo.BucketName);
+            Assert.AreEqual(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51"), jobInfo.JobId);
+            Assert.AreEqual("NORMAL", jobInfo.Priority);
+            Assert.AreEqual("PUT", jobInfo.RequestType);
+            Assert.AreEqual("2014-05-22T18:24:00.000Z", jobInfo.StartDate);
         }
     }
 }

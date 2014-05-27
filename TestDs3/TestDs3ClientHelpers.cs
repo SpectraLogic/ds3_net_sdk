@@ -124,12 +124,12 @@ namespace TestDs3
 
         private static IEnumerable<Ds3ObjectList> _bulkObjectList = new Ds3ObjectList[] {
             new Ds3ObjectList(
+                "192.168.56.100",
                 new[] {
                     new Ds3Object("baz", 12),
                     new Ds3Object("foo", 12),
                     new Ds3Object("bar", 12)
-                },
-                "192.168.56.100"
+                }
             )
         };
     }

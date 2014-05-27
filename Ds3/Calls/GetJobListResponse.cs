@@ -13,8 +13,6 @@
  * ****************************************************************************
  */
 
-using System;
-using System.IO;
 using System.Net;
 using System.Linq;
 using System.Collections.Generic;
@@ -24,35 +22,26 @@ using Ds3.Models;
 
 namespace Ds3.Calls
 {
-    public class BulkResponse : Ds3Response
+    public class GetJobListResponse : Ds3Response
     {
-        public Guid JobId { get; set; }
-
-        /// <summary>
-        /// The ordered lists of objects to put or get.
-        /// Note that the inner lists may be processed concurrently.
-        /// </summary>
-        public virtual IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
-
-        internal BulkResponse(IWebResponse response)
+        internal GetJobListResponse(IWebResponse response)
             : base(response)
         {
         }
 
+        public IEnumerable<JobInfo> Jobs { get; private set; }
+
         protected override void ProcessResponse()
         {
             HandleStatusCode(HttpStatusCode.OK);
-            using (Stream content = response.GetResponseStream())
+            using (var stream = response.GetResponseStream())
             {
-                var masterObjectList = XmlExtensions
-                    .ReadDocument(content)
-                    .ElementOrThrow("MasterObjectList");
-                JobId = Guid.Parse(masterObjectList.AttributeText("JobId"));
-                ObjectLists = (
-                    from objs in masterObjectList.Elements("Objects")
-                    let objects = objs.Elements("Object").Select(ParseUtilities.ParseDs3Object)
-                    select new Ds3ObjectList(objs.AttributeTextOrNull("ServerId"), objects)
-                ).ToList();
+                Jobs = XmlExtensions
+                    .ReadDocument(stream)
+                    .ElementOrThrow("Jobs")
+                    .Elements("Job")
+                    .Select(ParseUtilities.ParseJobInfo)
+                    .ToList();
             }
         }
     }

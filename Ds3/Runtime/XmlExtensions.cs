@@ -75,6 +75,11 @@ namespace Ds3.Runtime
 
         public static string AttributeText(this XElement self, string attributeName)
         {
+            return self.AttributeOrThrow(attributeName).Value;
+        }
+
+        public static string AttributeTextOrNull(this XElement self, string attributeName)
+        {
             var attribute = self.Attribute(attributeName);
             return attribute == null ? null : attribute.Value;
         }

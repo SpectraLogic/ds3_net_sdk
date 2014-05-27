@@ -13,31 +13,18 @@
  * ****************************************************************************
  */
 
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public class Ds3ObjectList : IEnumerable<Ds3Object>
+    public class GetJobListRequest : Ds3Request
     {
-        public string ServerId { get; private set; }
-        public IEnumerable<Ds3Object> Objects { get; private set; }
-
-        internal Ds3ObjectList(string serverId, IEnumerable<Ds3Object> objects)
+        internal override HttpVerb Verb
         {
-            ServerId = serverId;
-            Objects = objects.ToList();
+            get { return HttpVerb.GET;  }
         }
 
-        public IEnumerator<Ds3Object> GetEnumerator()
+        internal override string Path
         {
-            return Objects.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Objects.GetEnumerator();
+            get { return "/_rest_/job"; }
         }
     }
 }

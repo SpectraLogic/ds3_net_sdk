@@ -103,6 +103,13 @@ namespace Ds3
         BulkPutResponse BulkPut(BulkPutRequest request);
 
         /// <summary>
+        /// Retrieves the list of available jobs.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        GetJobListResponse GetJobList(GetJobListRequest request);
+
+        /// <summary>
         /// Retrieves information about a job so it can be resumed.
         /// </summary>
         /// <param name="request"></param>
