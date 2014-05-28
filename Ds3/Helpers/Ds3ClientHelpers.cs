@@ -27,6 +27,8 @@ namespace Ds3.Helpers
         private const int _defaultMaxKeys = 1000;
 
         private readonly IDs3Client _client;
+        private const string JobTypePut = "PUT";
+        private const string JobTypeGet = "GET";
 
         public Ds3ClientHelpers(IDs3Client client)
         {
@@ -108,7 +110,9 @@ namespace Ds3.Helpers
         {
             using (var job = this._client.GetJob(new GetJobRequest(jobId)))
             {
-                return new WriteJob(new Ds3ClientFactory(this._client), jobId, job.JobInfo.BucketName, job.ObjectLists);
+                var jobInfo = job.JobInfo;
+                CheckJobType(JobTypePut, jobInfo.RequestType);
+                return new WriteJob(new Ds3ClientFactory(this._client), jobInfo.JobId, jobInfo.BucketName, job.ObjectLists);
             }
         }
 
@@ -116,7 +120,20 @@ namespace Ds3.Helpers
         {
             using (var job = this._client.GetJob(new GetJobRequest(jobId)))
             {
-                return new ReadJob(new Ds3ClientFactory(this._client), jobId, job.JobInfo.BucketName, job.ObjectLists);
+                var jobInfo = job.JobInfo;
+                CheckJobType(JobTypeGet, jobInfo.RequestType);
+                var jobObjectsList =
+                    from jobObjects in job.ObjectLists
+                    select new Ds3ObjectList(jobObjects.ServerId, jobObjects.ObjectsInCache.Concat(jobObjects.Objects));
+                return new ReadJob(new Ds3ClientFactory(this._client), jobInfo.JobId, jobInfo.BucketName, jobObjectsList);
+            }
+        }
+
+        private static void CheckJobType(string expectedJobType, string actualJobType)
+        {
+            if (actualJobType != expectedJobType)
+            {
+                throw new JobRecoveryException(expectedJobType, actualJobType);
             }
         }
     }

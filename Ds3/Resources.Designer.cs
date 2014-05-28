@@ -106,6 +106,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected job type &apos;{0}&apos; but the actual job was of type &apos;{1}&apos;..
+        /// </summary>
+        internal static string JobRecoveryException {
+            get {
+                return ResourceManager.GetString("JobRecoveryException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expected an element called &quot;{0}&quot; but didn&apos;t find it..
         /// </summary>
         internal static string MissingElementException {
