@@ -57,7 +57,7 @@ namespace TestDs3
                     objectsGotten.Add(ds3Object.Name);
                 });
 
-            CollectionAssert.AreEqual(new[] { "baz", "foo", "bar" }, objectsGotten);
+            CollectionAssert.AreEqual(new[] { "baz", "bar", "foo" }, objectsGotten);
         }
 
         [Test]
@@ -87,8 +87,8 @@ namespace TestDs3
                 .StartWriteJob("mybucket", objectsToPut)
                 .Write(ds3Object => HelpersForTest.StringToStream(ds3Object.Name + " contents"));
 
-            CollectionAssert.AreEqual(new[] { "baz", "foo", "bar" }, objectsPut);
-            CollectionAssert.AreEqual(new[] { "baz contents", "foo contents", "bar contents" }, objectContentsPut);
+            CollectionAssert.AreEqual(new[] { "baz", "bar", "foo" }, objectsPut);
+            CollectionAssert.AreEqual(new[] { "baz contents", "bar contents", "foo contents" }, objectContentsPut);
         }
 
         [Test]
@@ -123,14 +123,9 @@ namespace TestDs3
         }
 
         private static IEnumerable<Ds3ObjectList> _bulkObjectList = new Ds3ObjectList[] {
-            new Ds3ObjectList(
-                "192.168.56.100",
-                new[] {
-                    new Ds3Object("baz", 12),
-                    new Ds3Object("foo", 12),
-                    new Ds3Object("bar", 12)
-                }
-            )
+            new Ds3ObjectList("192.168.56.100", new[] { new Ds3Object("baz", 12) }),
+            new Ds3ObjectList("192.168.56.101", new[] { new Ds3Object("bar", 12) }),
+            new Ds3ObjectList("192.168.56.100", new[] { new Ds3Object("foo", 12) })
         };
     }
 
