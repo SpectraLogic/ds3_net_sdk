@@ -45,14 +45,14 @@ namespace Ds3.Helpers
 
         protected void TransferAll(Transfer transfer)
         {
-            Parallel.ForEach(this._objectLists, objects =>
+            foreach (var objects in this._objectLists)
             {
                 var client = this._clientFactory.GetClientForServerId(objects.ServerId);
-                foreach (var obj in objects.Objects)
+                Parallel.ForEach(objects.Objects, obj =>
                 {
                     transfer(client, JobId, BucketName, obj);
-                }
-            });
+                });
+            }
         }
     }
 }
