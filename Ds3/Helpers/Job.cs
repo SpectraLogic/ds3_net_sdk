@@ -26,6 +26,13 @@ namespace Ds3.Helpers
         private readonly IDs3ClientFactory _clientFactory;
         private readonly IEnumerable<Ds3ObjectList> _objectLists;
 
+        private int _maxParallelRequests = 0;
+
+        protected int MaxParallelRequests
+        {
+            set { this._maxParallelRequests = value; }
+        }
+
         public Guid JobId { get; private set; }
         public string BucketName { get; private set; }
 
@@ -45,10 +52,13 @@ namespace Ds3.Helpers
 
         protected void TransferAll(Transfer transfer)
         {
+            var options = _maxParallelRequests > 0
+                ? new ParallelOptions() { MaxDegreeOfParallelism = _maxParallelRequests }
+                : new ParallelOptions();
             foreach (var objects in this._objectLists)
             {
                 var client = this._clientFactory.GetClientForServerId(objects.ServerId);
-                Parallel.ForEach(objects.Objects, obj =>
+                Parallel.ForEach(objects.Objects, options, obj =>
                 {
                     transfer(client, JobId, BucketName, obj);
                 });

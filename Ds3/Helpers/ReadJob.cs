@@ -52,5 +52,11 @@ namespace Ds3.Helpers
             this._modifier = modifier;
             return this;
         }
+
+        public new IReadJob WithMaxParallelRequests(int maxParallelRequests)
+        {
+            this.MaxParallelRequests = maxParallelRequests;
+            return this;
+        }
     }
 }
