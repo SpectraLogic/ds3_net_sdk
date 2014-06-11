@@ -34,12 +34,14 @@ namespace Ds3.Helpers
     {
         void Write(ObjectPutter putter);
         IWriteJob WithRequestModifier(ModifyPutRequest modifier);
+        IWriteJob WithMaxParallelRequests(int maxParallelRequests);
     }
 
     public interface IReadJob : IJob
     {
         void Read(ObjectGetter getter);
         IReadJob WithRequestModifier(ModifyGetRequest modifier);
+        IReadJob WithMaxParallelRequests(int maxParallelRequests);
     }
 
     public delegate void ModifyGetRequest(GetObjectRequest request);
