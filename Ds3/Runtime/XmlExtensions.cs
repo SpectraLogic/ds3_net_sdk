@@ -48,6 +48,12 @@ namespace Ds3.Runtime
             return self;
         }
 
+        public static XElement SetValueFluent(this XElement self, string value)
+        {
+            self.SetValue(value);
+            return self;
+        }
+
         public static T AddFluent<T>(this T self, XElement child) where T : XContainer
         {
             self.Add(child);

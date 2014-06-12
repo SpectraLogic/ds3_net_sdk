@@ -62,6 +62,8 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Calls\DeleteObjectListRequest.cs" />
+    <Compile Include="Calls\DeleteObjectListResponse.cs" />
     <Compile Include="Calls\GetJobListRequest.cs" />
     <Compile Include="Calls\GetJobListResponse.cs" />
     <Compile Include="Calls\GetJobRequest.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Helpers\ReadJob.cs" />
     <Compile Include="IDs3Client.cs" />
     <Compile Include="Models\Checksum.cs" />
+    <Compile Include="Models\DeleteDs3ObjectError.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectList.cs" />
     <Compile Include="Models\JobObjectList.cs" />

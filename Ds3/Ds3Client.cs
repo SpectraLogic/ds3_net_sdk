@@ -57,6 +57,11 @@ namespace Ds3
             return new DeleteObjectResponse(_netLayer.Invoke(request));
         }
 
+        public DeleteObjectListResponse DeleteObjectList(DeleteObjectListRequest request)
+        {
+            return new DeleteObjectListResponse(_netLayer.Invoke(request));
+        }
+
         public DeleteBucketResponse DeleteBucket(DeleteBucketRequest request)
         {
             return new DeleteBucketResponse(_netLayer.Invoke(request));

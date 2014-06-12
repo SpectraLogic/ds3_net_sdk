@@ -61,6 +61,13 @@ namespace Ds3
         DeleteObjectResponse DeleteObject(DeleteObjectRequest request);
 
         /// <summary>
+        /// Deletes the specified list of objects.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        DeleteObjectListResponse DeleteObjectList(DeleteObjectListRequest request);
+
+        /// <summary>
         /// Deletes the specified bucket.
         /// </summary>
         /// <param name="request"></param>
