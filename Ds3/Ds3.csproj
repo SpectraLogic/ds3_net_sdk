@@ -125,6 +125,7 @@
     <Compile Include="Runtime\Ds3BadResponseException.cs" />
     <Compile Include="Runtime\Ds3BadStatusCodeException.cs" />
     <Compile Include="Runtime\Ds3RedirectLimitException.cs" />
+    <Compile Include="Runtime\HttpHeaders.cs" />
     <Compile Include="Runtime\INetwork.cs" />
     <Compile Include="Runtime\IWebResponse.cs" />
     <Compile Include="Runtime\Network.cs" />

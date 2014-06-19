@@ -15,8 +15,11 @@
 
 using System;
 using System.IO;
+using System.Linq;
 
 using Ds3.Models;
+using System.Collections.Generic;
+using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
@@ -24,6 +27,7 @@ namespace Ds3.Calls
     {
         private readonly Stream _content;
         private Checksum _checksum = Checksum.None;
+        private IDictionary<string, string> _metadata = new Dictionary<string, string>();
 
         internal override HttpVerb Verb
         {
@@ -55,6 +59,26 @@ namespace Ds3.Calls
         public PutObjectRequest WithChecksum(Checksum checksum)
         {
             this._checksum = checksum;
+            return this;
+        }
+
+        public IDictionary<string, string> Metadata
+        {
+            get { return this._metadata; }
+            set { this.WithMetadata(value); }
+        }
+
+        public PutObjectRequest WithMetadata(IDictionary<string, string> metadata)
+        {
+            foreach (var key in this.Headers.Keys.Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix)).ToList())
+            {
+                this.Headers.Remove(key);
+            }
+            foreach (var keyValuePair in metadata)
+            {
+                this.Headers.Add(HttpHeaders.AwsMetadataPrefix + keyValuePair.Key, keyValuePair.Value);
+            }
+            this._metadata = metadata;
             return this;
         }
 

@@ -13,18 +13,27 @@
  * ****************************************************************************
  */
 
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Ds3.Runtime
 {
     internal class S3Signer
     {
-        
-        public static string AuthField(Credentials creds, string verb, string date, string resourcePath, string _md5 = "", string _contentType = "", string _amzHeaders = "")
+        public static string AuthField(
+            Credentials creds,
+            string verb,
+            string date,
+            string resourcePath,
+            string md5 = "",
+            string contentType = "",
+            IDictionary<string, string> amzHeaders = null)
         {
-            string signature = S3Signer.Signature(creds.Key, BuildPayload(verb, date, resourcePath, _md5, _contentType, _amzHeaders));
-            return "AWS " + creds.AccessId + ":" + signature;
+            var payload = BuildPayload(verb, date, resourcePath, md5, contentType, amzHeaders ?? new Dictionary<string, string>());
+            return "AWS " + creds.AccessId + ":" + S3Signer.Signature(creds.Key, payload);
         }
 
         private static string Signature(string key, string payload)
@@ -34,17 +43,31 @@ namespace Ds3.Runtime
             return System.Convert.ToBase64String(hashResult).Trim();
         }
 
-        private static string BuildPayload(string verb, string date, string resourcePath, string md5 = "", string contentType = "", string amzHeaders = "")
+        private static string BuildPayload(string verb, string date, string resourcePath, string md5, string contentType, IDictionary<string, string> amzHeaders)
         {
-            StringBuilder builder = new StringBuilder();
-
-            builder.Append(verb).Append("\n");
-            builder.Append(md5).Append("\n");
-            builder.Append(contentType).Append("\n");
-            builder.Append(date).Append("\n");
-            builder.Append(amzHeaders).Append(resourcePath);
+            var builder = new StringBuilder();
+            builder.Append(verb).Append('\n');
+            builder.Append(md5).Append('\n');
+            builder.Append(contentType).Append('\n');
+            builder.Append(date).Append('\n');
+            var canonicalizedAmzHeaders =
+                from keyValuePair in amzHeaders
+                let key = keyValuePair.Key.ToLowerInvariant()
+                where key.StartsWith(HttpHeaders.AwsPrefix)
+                orderby key
+                select new { Key = key, Value = UnfoldLongHeaderContent(keyValuePair.Value) };
+            foreach (var keyValuePair in canonicalizedAmzHeaders)
+            {
+                builder.Append(keyValuePair.Key).Append(':').Append(keyValuePair.Value).Append('\n');
+            }
+            builder.Append(resourcePath);
             return builder.ToString();
         }
 
+        private static readonly Regex _unfoldRegex = new Regex("[\n\r\t ]+");
+        private static string UnfoldLongHeaderContent(string headerContent)
+        {
+            return _unfoldRegex.Replace(headerContent, " ");
+        }
     }
 }

@@ -15,12 +15,9 @@
 
 using System;
 using System.Diagnostics;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 
 using Ds3.Models;
@@ -106,9 +103,16 @@ namespace Ds3.Runtime
             var md5 = ComputeChecksum(request.Md5, content);
             if (!string.IsNullOrEmpty(md5))
             {
-                httpRequest.Headers.Add("Content-MD5", md5);
+                httpRequest.Headers.Add(HttpHeaders.ContentMd5, md5);
             }
-            httpRequest.Headers.Add("Authorization", S3Signer.AuthField(Creds, request.Verb.ToString(), date.ToString("r"), request.Path, md5));
+            httpRequest.Headers.Add(HttpHeaders.Authorization, S3Signer.AuthField(
+                Creds,
+                request.Verb.ToString(),
+                date.ToString("r"),
+                request.Path,
+                md5: md5,
+                amzHeaders: request.Headers
+            ));
 
             var byteRange = request.GetByteRange();
             if (byteRange != null)
