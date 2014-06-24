@@ -14,10 +14,12 @@
  */
 
 using System;
+using System.Linq;
 using System.Xml.Linq;
 
 using Ds3.Models;
 using Ds3.Runtime;
+using System.Collections.Generic;
 
 namespace Ds3.Calls
 {
@@ -40,6 +42,14 @@ namespace Ds3.Calls
                 objectElement.AttributeText("Name"),
                 Convert.ToInt64(objectElement.AttributeText("Size"))
             );
+        }
+
+        public static IDictionary<string, string> ExtractCustomMetadata(IDictionary<string, string> headers)
+        {
+            return headers
+                .Keys
+                .Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix))
+                .ToDictionary(key => key.Substring(HttpHeaders.AwsMetadataPrefix.Length), key => headers[key]);
         }
     }
 }

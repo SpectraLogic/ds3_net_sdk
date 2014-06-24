@@ -15,6 +15,7 @@
 
 using System.Net;
 using System.IO;
+using System.Collections.Generic;
 
 using Ds3.Runtime;
 
@@ -23,6 +24,7 @@ namespace Ds3.Calls
     public class GetObjectResponse : Ds3Response
     {
         private Stream _contents;
+        public virtual IDictionary<string, string> Metadata { get; private set; }
 
         /// <summary>
         /// The contents of the object. Disposing of GetObjectResponse will also dispose of this stream.
@@ -41,6 +43,7 @@ namespace Ds3.Calls
         {
             HandleStatusCode(HttpStatusCode.OK);
             _contents = response.GetResponseStream();
+            Metadata = ParseUtilities.ExtractCustomMetadata(response.Headers);
         }
     }
 }

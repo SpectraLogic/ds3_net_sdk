@@ -271,6 +271,11 @@ namespace TestDs3
             get { throw new NotSupportedException(); }
         }
 
+        public IDictionary<string, string> Headers
+        {
+            get { throw new NotSupportedException(); }
+        }
+
         public void Dispose()
         {
             // Do nothing.

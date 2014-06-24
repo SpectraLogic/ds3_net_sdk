@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Ds3.Runtime
     internal class WebResponse : IWebResponse
     {
         private readonly HttpWebResponse _webResponse;
+        private IDictionary<string, string> _headers;
 
         internal WebResponse(HttpWebResponse webResponse)
         {
@@ -39,6 +41,19 @@ namespace Ds3.Runtime
         public HttpStatusCode StatusCode
         {
             get { return _webResponse.StatusCode; }
+        }
+
+        public IDictionary<string, string> Headers
+        {
+            get
+            {
+                return _headers ?? (_headers = ConvertToDictionary(_webResponse.Headers));
+            }
+        }
+
+        private static IDictionary<string, string> ConvertToDictionary(WebHeaderCollection headers)
+        {
+            return headers.Keys.Cast<string>().ToDictionary(key => key, key => headers[key]);
         }
 
         public void Dispose()

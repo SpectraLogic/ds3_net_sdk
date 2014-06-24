@@ -35,6 +35,7 @@ namespace Ds3.Calls
         public virtual string NextMarker { get; private set; }
         public virtual DateTime CreationDate { get; private set; }
         public virtual List<Ds3Object> Objects { get; private set; }
+        public virtual IDictionary<string, string> Metadata { get; private set; }
 
         internal GetBucketResponse(IWebResponse responseStream)
             : base(responseStream)
@@ -67,6 +68,7 @@ namespace Ds3.Calls
                         ParseDateTime(obj.TextOf("LastModified"))
                     )
                 ).ToList();
+                Metadata = ParseUtilities.ExtractCustomMetadata(response.Headers);
             }
         }
 

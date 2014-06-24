@@ -85,11 +85,13 @@ namespace TestDs3
     {
         private readonly string _responseString;
         private readonly HttpStatusCode _statusCode;
+        private readonly IDictionary<string, string> _headers;
 
         public MockWebResponse(string responseString, HttpStatusCode statusCode)
 	    {
             _responseString = responseString;
             _statusCode = statusCode;
+            _headers = new Dictionary<string, string>();
 	    }
 
         public Stream GetResponseStream()
@@ -100,6 +102,11 @@ namespace TestDs3
         public HttpStatusCode StatusCode
         {
 	        get { return _statusCode; }
+        }
+
+        public IDictionary<string, string> Headers
+        {
+            get { return _headers; }
         }
 
         public void Dispose()
