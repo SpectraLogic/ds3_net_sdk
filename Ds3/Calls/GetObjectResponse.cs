@@ -25,7 +25,7 @@ namespace Ds3.Calls
     {
         public IDictionary<string, string> Metadata { get; private set; }
 
-        public GetObjectResponse(IDictionary<string, string> metadata)
+        internal GetObjectResponse(IDictionary<string, string> metadata)
         {
             this.Metadata = metadata;
         }

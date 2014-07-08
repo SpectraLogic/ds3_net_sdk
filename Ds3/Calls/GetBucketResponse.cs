@@ -33,7 +33,7 @@ namespace Ds3.Calls
         public IEnumerable<Ds3ObjectInfo> Objects { get; private set; }
         public IDictionary<string, string> Metadata { get; private set; }
 
-        public GetBucketResponse(
+        internal GetBucketResponse(
             string name,
             string prefix,
             string marker,

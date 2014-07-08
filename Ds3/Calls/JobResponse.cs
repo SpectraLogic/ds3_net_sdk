@@ -27,7 +27,7 @@ namespace Ds3.Calls
         public IEnumerable<Node> Nodes { get; private set; }
         public IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
 
-        public JobResponse(
+        internal JobResponse(
             string bucketName,
             Guid jobId,
             IEnumerable<Node> nodes,
