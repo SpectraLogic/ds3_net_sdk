@@ -13,10 +13,12 @@
  * ****************************************************************************
  */
 
+using System;
 using System.Linq;
 using System.Net;
 
 using Ds3.Calls;
+using Ds3.Models;
 using Ds3.Runtime;
 
 namespace Ds3.ResponseParsers
@@ -27,7 +29,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetJobListResponse(
@@ -35,7 +37,13 @@ namespace Ds3.ResponseParsers
                             .ReadDocument(stream)
                             .ElementOrThrow("Jobs")
                             .Elements("Job")
-                            .Select(ParseUtilities.ParseJobInfo)
+                            .Select(jobElement => new JobInfo(
+                                jobElement.AttributeText("BucketName"),
+                                jobElement.AttributeText("StartDate"),
+                                Guid.Parse(jobElement.AttributeText("JobId")),
+                                jobElement.AttributeText("Priority"),
+                                jobElement.AttributeText("RequestType")
+                            ))
                             .ToList()
                     );
                 }

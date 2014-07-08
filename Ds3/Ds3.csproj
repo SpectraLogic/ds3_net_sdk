@@ -69,7 +69,6 @@
     <Compile Include="Calls\GetJobRequest.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
-    <Compile Include="Calls\ParseUtilities.cs" />
     <Compile Include="Helpers\CriticalSectionExecutor.cs" />
     <Compile Include="Helpers\Ds3ClientHelpers.cs" />
     <Compile Include="Helpers\EnumerableAlgorithms.cs" />
@@ -136,7 +135,7 @@
     <Compile Include="ResponseParsers\IResponseParser.cs" />
     <Compile Include="ResponseParsers\PutBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\PutObjectResponseParser.cs" />
-    <Compile Include="ResponseParsers\ResponseParserHelpers.cs" />
+    <Compile Include="ResponseParsers\ResponseParseUtilities.cs" />
     <Compile Include="Runtime\Ds3BadResponseException.cs" />
     <Compile Include="Runtime\Ds3BadStatusCodeException.cs" />
     <Compile Include="Runtime\Ds3RedirectLimitException.cs" />

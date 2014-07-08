@@ -29,7 +29,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK, HttpStatusCode.Forbidden, HttpStatusCode.NotFound);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK, HttpStatusCode.Forbidden, HttpStatusCode.NotFound);
                 HeadBucketStatus status;
                 switch (response.StatusCode)
                 {

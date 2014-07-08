@@ -27,7 +27,7 @@ namespace Ds3.ResponseParsers
     {
         public GetServiceResponse Parse(GetServiceRequest request, IWebResponse response)
         {
-            ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK);
+            ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
             using (Stream content = response.GetResponseStream())
             {
                 var root = XmlExtensions.ReadDocument(content).ElementOrThrow("ListAllMyBucketsResult");

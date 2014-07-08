@@ -31,7 +31,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 using (Stream content = response.GetResponseStream())
                 {
                     var masterObjectList = XmlExtensions
@@ -45,22 +45,42 @@ namespace Ds3.ResponseParsers
                             select new Node(
                                 Guid.Parse(nodeElement.AttributeText("Id")),
                                 nodeElement.AttributeText("EndPoint"),
-                                ParseUtilities.ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpPort")),
-                                ParseUtilities.ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpsPort"))
+                                ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpPort")),
+                                ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpsPort"))
                             )
                         ).ToList(),
                         objectLists: (
                             from objs in masterObjectList.Elements("Objects")
-                            let objects = objs.Elements("Object").Select(ParseUtilities.ParseJobObject)
+                            let objects =
+                                from objectElement in objs.Elements("Object")
+                                select new JobObject(
+                                    objectElement.AttributeText("Name"),
+                                    from blob in objectElement.Elements("Blob")
+                                    select new Blob(
+                                        Guid.Parse(blob.AttributeText("Id")),
+                                        long.Parse(blob.AttributeText("Length")),
+                                        long.Parse(blob.AttributeText("Offset"))
+                                    )
+                                )
                             select new Ds3ObjectList(
                                 long.Parse(objs.AttributeTextOrNull("ChunkNumber")),
-                                ParseUtilities.ParseGuidOrNull(objs.AttributeTextOrNull("NodeId")),
+                                ParseGuidOrNull(objs.AttributeTextOrNull("NodeId")),
                                 objects
                             )
                         ).ToList()
                     );
                 }
             }
+        }
+
+        private static Guid? ParseGuidOrNull(string guidStringOrNull)
+        {
+            return guidStringOrNull == null ? null : (Guid?)Guid.Parse(guidStringOrNull);
+        }
+
+        private static int? ParseIntOrNull(string intStringOrNull)
+        {
+            return intStringOrNull == null ? null : (int?)int.Parse(intStringOrNull);
         }
     }
 }

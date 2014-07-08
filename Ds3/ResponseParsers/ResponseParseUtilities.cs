@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,8 +25,16 @@ using Ds3.Runtime;
 
 namespace Ds3.ResponseParsers
 {
-    internal class ResponseParserHelpers
+    internal class ResponseParseUtilities
     {
+        public static IDictionary<string, string> ExtractCustomMetadata(IDictionary<string, string> headers)
+        {
+            return headers
+                .Keys
+                .Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix))
+                .ToDictionary(key => key.Substring(HttpHeaders.AwsMetadataPrefix.Length), key => headers[key]);
+        }
+
         public static void HandleStatusCode(IWebResponse response, params HttpStatusCode[] expectedStatusCodes)
         {
             HttpStatusCode actualStatusCode = response.StatusCode;

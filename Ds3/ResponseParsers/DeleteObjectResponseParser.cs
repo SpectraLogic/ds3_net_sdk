@@ -26,7 +26,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.NoContent);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
                 return new DeleteObjectResponse();
             }
         }

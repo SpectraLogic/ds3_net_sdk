@@ -30,7 +30,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 using (Stream content = response.GetResponseStream())
                 {
                     var root = XmlExtensions.ReadDocument(content).ElementOrThrow("ListBucketResult");
@@ -55,7 +55,7 @@ namespace Ds3.ResponseParsers
                                 ParseDateTime(obj.TextOf("LastModified"))
                             )
                         ).ToList(),
-                        metadata: ParseUtilities.ExtractCustomMetadata(response.Headers)
+                        metadata: ResponseParseUtilities.ExtractCustomMetadata(response.Headers)
                     );
                 }
             }

@@ -26,7 +26,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 return new PutObjectResponse();
             }
         }

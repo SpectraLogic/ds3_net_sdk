@@ -28,7 +28,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 using (var content = response.GetResponseStream())
                 {
                     var deleteResult = XmlExtensions
