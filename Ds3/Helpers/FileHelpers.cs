@@ -13,27 +13,26 @@
  * ****************************************************************************
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using Ds3.Models;
-using System;
 
 namespace Ds3.Helpers
 {
     public static class FileHelpers
     {
-        //TODO:
-        //public static Func<string, Stream> BuildFileGetter(string root)
-        //{
-        //    return key =>
-        //    {
-        //        var filePath = Path.Combine(root, ConvertKeyToPath(key));
-        //        EnsureDirectoryForFile(filePath);
-        //        return File.OpenWrite(filePath);
-        //    };
-        //}
+        public static Func<string, Stream> BuildFileGetter(string root)
+        {
+            return key =>
+            {
+                var filePath = Path.Combine(root, ConvertKeyToPath(key));
+                EnsureDirectoryForFile(filePath);
+                return File.OpenWrite(filePath);
+            };
+        }
 
         private static void EnsureDirectoryForFile(string path)
         {
@@ -44,11 +43,10 @@ namespace Ds3.Helpers
             }
         }
 
-        //TODO:
-        //public static Func<string, Stream> BuildFilePutter(string root)
-        //{
-        //    return key => File.OpenRead(Path.Combine(root, ConvertKeyToPath(key)));
-        //}
+        public static Func<string, Stream> BuildFilePutter(string root)
+        {
+            return key => File.OpenRead(Path.Combine(root, ConvertKeyToPath(key)));
+        }
 
         public static IEnumerable<Ds3Object> ListObjectsForDirectory(string root)
         {
