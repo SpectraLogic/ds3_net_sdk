@@ -107,8 +107,7 @@ namespace TestDs3
                 .Callback<PutObjectRequest>(request => {
                     objectsPut.Add(request.ObjectName);
                     objectContentsPut.Add(request.ObjectName, HelpersForTest.StringFromStream(request.GetContentStream()));
-                })
-                .Returns(new PutObjectResponse());
+                });
             var ds3ClientFactoryMock = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
             ds3ClientFactoryMock
                 .Setup(factory => factory.GetClientForNodeId(It.IsAny<Guid?>()))

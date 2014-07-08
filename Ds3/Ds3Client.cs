@@ -21,6 +21,7 @@ using Ds3.Runtime;
 using Ds3.Models;
 using Ds3.Calls;
 using Ds3.ResponseParsers;
+using System.Net;
 
 namespace Ds3
 {
@@ -48,14 +49,20 @@ namespace Ds3
             return new GetObjectResponseParser(_netLayer.CopyBufferSize).Parse(request, _netLayer.Invoke(request));
         }
 
-        public PutObjectResponse PutObject(PutObjectRequest request)
+        public void PutObject(PutObjectRequest request)
         {
-            return new PutObjectResponseParser().Parse(request, _netLayer.Invoke(request));
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
+            }
         }
 
-        public DeleteObjectResponse DeleteObject(DeleteObjectRequest request)
+        public void DeleteObject(DeleteObjectRequest request)
         {
-            return new DeleteObjectResponseParser().Parse(request, _netLayer.Invoke(request));
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
         }
 
         public DeleteObjectListResponse DeleteObjectList(DeleteObjectListRequest request)
@@ -63,14 +70,20 @@ namespace Ds3
             return new DeleteObjectListResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public DeleteBucketResponse DeleteBucket(DeleteBucketRequest request)
+        public void DeleteBucket(DeleteBucketRequest request)
         {
-            return new DeleteBucketResponseParser().Parse(request, _netLayer.Invoke(request));
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
         }
 
-        public PutBucketResponse PutBucket(PutBucketRequest request)
+        public void PutBucket(PutBucketRequest request)
         {
-            return new PutBucketResponseParser().Parse(request, _netLayer.Invoke(request));
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
+            }
         }
 
         public HeadBucketResponse HeadBucket(HeadBucketRequest request)

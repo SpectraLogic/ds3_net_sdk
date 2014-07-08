@@ -54,14 +54,14 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        PutObjectResponse PutObject(PutObjectRequest request);
+        void PutObject(PutObjectRequest request);
 
         /// <summary>
         /// Deletes the specified object.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        DeleteObjectResponse DeleteObject(DeleteObjectRequest request);
+        void DeleteObject(DeleteObjectRequest request);
 
         /// <summary>
         /// Deletes the specified list of objects.
@@ -75,14 +75,14 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        DeleteBucketResponse DeleteBucket(DeleteBucketRequest request);
+        void DeleteBucket(DeleteBucketRequest request);
 
         /// <summary>
         /// Creates the specified bucket.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        PutBucketResponse PutBucket(PutBucketRequest request);
+        void PutBucket(PutBucketRequest request);
 
         /// <summary>
         /// Performs a HTTP HEAD for a bucket. The HEAD will return information about if

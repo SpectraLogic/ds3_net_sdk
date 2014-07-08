@@ -25,7 +25,7 @@ using Ds3.Runtime;
 
 namespace TestDs3
 {
-    [TestFixture]
+    [TestFixture, Explicit("Long running test checks functionality rather than performance.")]
     public class TestPerformance
     {
         private const int _defaultBufferSize = 80 * 1024;
