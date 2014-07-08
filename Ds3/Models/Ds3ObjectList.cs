@@ -13,24 +13,27 @@
  * ****************************************************************************
  */
 
-using System.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ds3.Models
 {
-    public class Ds3ObjectList : IEnumerable<Ds3Object>
+    public class Ds3ObjectList : IEnumerable<JobObject>
     {
-        public string ServerId { get; private set; }
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public long ChunkNumber { get; private set; }
+        public Guid? NodeId { get; private set; }
+        public IEnumerable<JobObject> Objects { get; private set; }
 
-        internal Ds3ObjectList(string serverId, IEnumerable<Ds3Object> objects)
+        internal Ds3ObjectList(long chunkId, Guid? nodeId, IEnumerable<JobObject> objects)
         {
-            ServerId = serverId;
+            ChunkNumber = chunkId;
+            NodeId = nodeId;
             Objects = objects.ToList();
         }
 
-        public IEnumerator<Ds3Object> GetEnumerator()
+        public IEnumerator<JobObject> GetEnumerator()
         {
             return Objects.GetEnumerator();
         }

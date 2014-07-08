@@ -13,20 +13,14 @@
  * ****************************************************************************
  */
 
-using System.IO;
-using System.Net;
-using System.Xml.Serialization;
-using System.Collections.Generic;
-
+using Ds3.Calls;
 using Ds3.Runtime;
 
-namespace Ds3.Calls
+namespace Ds3.ResponseParsers
 {
-    public class BulkPutResponse : BulkResponse
+    internal interface IResponseParser<in TRequest, out TResponse>
+        where TRequest : Ds3Request
     {
-        internal BulkPutResponse(IWebResponse response)
-            : base(response)
-        {            
-        }
+        TResponse Parse(TRequest request, IWebResponse response);
     }
 }

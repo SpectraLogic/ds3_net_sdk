@@ -15,15 +15,21 @@
 
 using System.Net;
 
+using Ds3.Calls;
+using Ds3.Models;
 using Ds3.Runtime;
 
-namespace Ds3.Calls
+namespace Ds3.ResponseParsers
 {
-    public class BulkGetResponse : BulkResponse
+    internal class PutBucketResponseParser : IResponseParser<PutBucketRequest, PutBucketResponse>
     {
-        internal BulkGetResponse(IWebResponse response)
-            : base(response)
-        {            
+        public PutBucketResponse Parse(PutBucketRequest request, IWebResponse response)
+        {
+            using (response)
+            {
+                ResponseParserHelpers.HandleStatusCode(response, HttpStatusCode.OK);
+                return new PutBucketResponse();
+            }
         }
     }
 }

@@ -13,49 +13,26 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 using Ds3.Calls;
-using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class WriteJob : Job, IWriteJob
+    internal class WriteJob : Job<PutObjectRequest>, IWriteJob
     {
-        private ModifyPutRequest _modifier;
-
-        public WriteJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
-            : base(clientFactory, jobId, bucketName, objectLists)
+        public WriteJob(IDs3Client client, JobResponse jobResponse)
+            : base(client, jobResponse)
         {
         }
 
-        public void Write(ObjectPutter putter)
+        protected override void TransferBlob(IDs3Client client, BlobRequest blobRequest)
         {
-            this.TransferAll((client, jobId, bucket, ds3Object) =>
-            {
-                var request = new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object));
-                if (this._modifier != null)
-                {
-                    this._modifier(request);
-                }
-                using (client.PutObject(request))
-                {
-                }
-            });
-        }
-
-        public IWriteJob WithRequestModifier(ModifyPutRequest modifier)
-        {
-            this._modifier = modifier;
-            return this;
-        }
-
-        public IWriteJob WithMaxParallelRequests(int maxParallelRequests)
-        {
-            this.MaxParallelRequests = maxParallelRequests;
-            return this;
+            client.PutObject(new PutObjectRequest(
+                blobRequest.BucketName,
+                blobRequest.ObjectName,
+                blobRequest.JobId,
+                blobRequest.BlobId,
+                blobRequest.Stream
+            ));
         }
     }
 }

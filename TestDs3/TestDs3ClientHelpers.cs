@@ -13,19 +13,19 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+using Moq;
+using NUnit.Framework;
+
 using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Models;
-using Ds3.Runtime;
-using Moq;
-using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using NUnit.Framework.Constraints;
+using System.Text;
 
 namespace TestDs3
 {
@@ -35,48 +35,87 @@ namespace TestDs3
         [Test]
         public void TestReadObjects()
         {
-            var ds3ClientMock = new Mock<IDs3Client>();
+            var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
             ds3ClientMock
                 .Setup(client => client.BulkGet(It.IsAny<BulkGetRequest>()))
-                .Returns(new StubBulkGetResponse(_bulkObjectList));
+                .Returns(CreateJobResponse());
             ds3ClientMock
                 .Setup(client => client.GetObject(It.IsAny<GetObjectRequest>()))
-                .Returns<GetObjectRequest>(request => new StubGetObjectResponse(request.ObjectName + " contents"));
+                .Returns<GetObjectRequest>(request =>
+                {
+                    HelpersForTest.StringToStream(request.ObjectName + " contents").CopyTo(request.DestinationStream);
+                    return new GetObjectResponse(new Dictionary<string, string>());
+                });
+            var ds3ClientFactoryMock = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            ds3ClientFactoryMock
+                .Setup(factory => factory.GetClientForNodeId(It.IsAny<Guid?>()))
+                .Returns(ds3ClientMock.Object);
+            ds3ClientMock
+                .Setup(client => client.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Returns(ds3ClientFactoryMock.Object);
 
             var objectsGotten = new List<string>();
 
             var objectsToGet = new[] {
-                new Ds3Object("foo"),
-                new Ds3Object("bar"),
-                new Ds3Object("baz")
+                new Ds3Object("foo", null),
+                new Ds3Object("bar", null),
+                new Ds3Object("baz", null)
             };
+            var streams = new Dictionary<string, StringStream>();
             new Ds3ClientHelpers(ds3ClientMock.Object)
                 .StartReadJob("mybucket", objectsToGet)
-                .Read((ds3Object, contents) => {
-                    Assert.AreEqual(ds3Object.Name + " contents", HelpersForTest.StringFromStream(contents));
-                    objectsGotten.Add(ds3Object.Name);
+                .Transfer(key => {
+                    var stream = new StringStream();
+                    streams.Add(key, stream);
+                    objectsGotten.Add(key);
+                    return stream;
                 });
+            foreach (var kvp in streams)
+            {
+                Assert.AreEqual(kvp.Key + " contents", kvp.Value.Result);
+            }
 
-            CollectionAssert.AreEqual(new[] { "baz", "bar", "foo" }, objectsGotten);
+            CollectionAssert.AreEquivalent(new[] { "baz", "bar", "foo" }, objectsGotten);
+        }
+
+        private class StringStream : MemoryStream
+        {
+            public string Result { get; private set; }
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    this.Result = Encoding.UTF8.GetString(this.ToArray());
+                }
+                base.Dispose(disposing);
+            }
         }
 
         [Test]
         public void TestWriteObjects()
         {
             var objectsPut = new List<string>();
-            var objectContentsPut = new List<string>();
+            var objectContentsPut = new Dictionary<string, string>();
 
-            var ds3ClientMock = new Mock<IDs3Client>();
+            var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
             ds3ClientMock
                 .Setup(client => client.BulkPut(It.IsAny<BulkPutRequest>()))
-                .Returns(new StubBulkPutResponse(_bulkObjectList));
+                .Returns(CreateJobResponse());
             ds3ClientMock
                 .Setup(client => client.PutObject(It.IsAny<PutObjectRequest>()))
                 .Callback<PutObjectRequest>(request => {
                     objectsPut.Add(request.ObjectName);
-                    objectContentsPut.Add(HelpersForTest.StringFromStream(request.GetContentStream()));
+                    objectContentsPut.Add(request.ObjectName, HelpersForTest.StringFromStream(request.GetContentStream()));
                 })
-                .Returns(new StubPutObjectResponse());
+                .Returns(new PutObjectResponse());
+            var ds3ClientFactoryMock = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            ds3ClientFactoryMock
+                .Setup(factory => factory.GetClientForNodeId(It.IsAny<Guid?>()))
+                .Returns(ds3ClientMock.Object);
+            ds3ClientMock
+                .Setup(client => client.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Returns(ds3ClientFactoryMock.Object);
 
             var objectsToPut = new[] {
                 new Ds3Object("foo", 12),
@@ -85,200 +124,87 @@ namespace TestDs3
             };
             new Ds3ClientHelpers(ds3ClientMock.Object)
                 .StartWriteJob("mybucket", objectsToPut)
-                .Write(ds3Object => HelpersForTest.StringToStream(ds3Object.Name + " contents"));
+                .Transfer(key => HelpersForTest.StringToStream(key + " contents"));
 
-            CollectionAssert.AreEqual(new[] { "baz", "bar", "foo" }, objectsPut);
-            CollectionAssert.AreEqual(new[] { "baz contents", "bar contents", "foo contents" }, objectContentsPut);
+            var expectedkeys = new[] { "baz", "bar", "foo" };
+            CollectionAssert.AreEquivalent(expectedkeys, objectsPut);
+            CollectionAssert.AreEqual(new[] { "baz contents", "bar contents", "foo contents" }, expectedkeys.Select(key => objectContentsPut[key]));
+        }
+
+        private static JobResponse CreateJobResponse()
+        {
+            return new JobResponse(
+                "mybucket",
+                Guid.Parse("3ad595b2-38cb-447d-9e1d-a1125ba19f33"),
+                Enumerable.Empty<Node>(),
+                new Ds3ObjectList[] {
+                    new Ds3ObjectList(0, null, new[] { new JobObject("baz", new[] { new Blob(Guid.Parse("3748ee9e-5633-42c9-b97d-ed6bf4c0166d"), 12, 0) }) }),
+                    new Ds3ObjectList(1, null, new[] { new JobObject("bar", new[] { new Blob(Guid.Parse("7243f517-39dc-4ace-a8ff-42c10721219f"), 12, 0) }) }),
+                    new Ds3ObjectList(2, null, new[] { new JobObject("foo", new[] { new Blob(Guid.Parse("071837f5-342b-42ec-a177-5dc0bcacf4c4"), 12, 0) }) })
+                }
+            );
         }
 
         [Test]
         public void TestListObjects()
         {
-            var ds3ClientMock = new Mock<IDs3Client>();
+            var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
             ds3ClientMock
                 .Setup(client => client.GetBucket(It.IsAny<GetBucketRequest>()))
                 .Returns(new Queue<GetBucketResponse>(new[] {
-                    new StubGetBucketResponse(0),
-                    new StubGetBucketResponse(1)
+                    CreateGetBucketResponse(
+                        marker: "",
+                        nextMarker: "baz",
+                        isTruncated: true,
+                        ds3objectInfos: new List<Ds3ObjectInfo> {
+                            BuildDs3Object("foo", "2cde576e5f5a613e6cee466a681f4929", "2009-10-12T17:50:30.000Z", 12),
+                            BuildDs3Object("bar", "f3f98ff00be128139332bcf4b772be43", "2009-10-14T17:50:31.000Z", 12)
+                        }
+                    ),
+                    CreateGetBucketResponse(
+                        marker: "baz",
+                        nextMarker: "",
+                        isTruncated: false,
+                        ds3objectInfos: new List<Ds3ObjectInfo> {
+                            BuildDs3Object("baz", "802d45fcb9a3f7d00f1481362edc0ec9", "2009-10-18T17:50:35.000Z", 12)
+                        }
+                    )
                 }).Dequeue);
 
             var objects = new Ds3ClientHelpers(ds3ClientMock.Object).ListObjects("mybucket").ToList();
 
             Assert.AreEqual(3, objects.Count);
-            checkContents(objects[0], "foo", "2cde576e5f5a613e6cee466a681f4929", "2009-10-12T17:50:30.000Z", 12);
-            checkContents(objects[1], "bar", "f3f98ff00be128139332bcf4b772be43", "2009-10-14T17:50:31.000Z", 12);
-            checkContents(objects[2], "baz", "802d45fcb9a3f7d00f1481362edc0ec9", "2009-10-18T17:50:35.000Z", 12);
+            CheckContents(objects[0], "foo", 12);
+            CheckContents(objects[1], "bar", 12);
+            CheckContents(objects[2], "baz", 12);
         }
 
-        private static void checkContents(
-                Ds3Object contents,
-                string key,
-                string eTag,
-                string lastModified,
-                long size) {
+        private static void CheckContents(Ds3Object contents, string key, long size)
+        {
             Assert.AreEqual(key, contents.Name);
-            Assert.AreEqual(eTag, contents.Etag);
-            Assert.AreEqual(DateTime.Parse(lastModified), contents.LastModified);
             Assert.AreEqual(size, contents.Size);
         }
 
-        private static IEnumerable<Ds3ObjectList> _bulkObjectList = new Ds3ObjectList[] {
-            new Ds3ObjectList("192.168.56.100", new[] { new Ds3Object("baz", 12) }),
-            new Ds3ObjectList("192.168.56.101", new[] { new Ds3Object("bar", 12) }),
-            new Ds3ObjectList("192.168.56.100", new[] { new Ds3Object("foo", 12) })
-        };
-    }
-
-    class StubBulkGetResponse : BulkGetResponse
-    {
-        private readonly IEnumerable<Ds3ObjectList> _objectLists;
-
-        public StubBulkGetResponse(IEnumerable<Ds3ObjectList> objectLists)
-            : base(new DummyWebResponse())
+        private static GetBucketResponse CreateGetBucketResponse(string marker, bool isTruncated, string nextMarker, IEnumerable<Ds3ObjectInfo> ds3objectInfos)
         {
-            this._objectLists = objectLists;
+            return new GetBucketResponse(
+                name: "mybucket",
+                prefix: "",
+                marker: marker,
+                maxKeys: 2,
+                isTruncated: isTruncated,
+                delimiter: "",
+                nextMarker: nextMarker,
+                creationDate: DateTime.Now,
+                objects: ds3objectInfos,
+                metadata: new Dictionary<string, string>()
+            );
         }
 
-        protected override void ProcessResponse()
-        {
-        }
-
-        public override IEnumerable<Ds3ObjectList> ObjectLists
-        {
-            get { return this._objectLists; }
-        }
-    }
-
-    class StubBulkPutResponse : BulkPutResponse
-    {
-        private readonly IEnumerable<Ds3ObjectList> _objectLists;
-
-        public StubBulkPutResponse(IEnumerable<Ds3ObjectList> objectLists)
-            : base(new DummyWebResponse())
-        {
-            this._objectLists = objectLists;
-        }
-
-        protected override void ProcessResponse()
-        {
-        }
-
-        public override IEnumerable<Ds3ObjectList> ObjectLists
-        {
-            get { return this._objectLists; }
-        }
-    }
-
-    class StubGetObjectResponse : GetObjectResponse
-    {
-        private Stream _contents;
-
-        public StubGetObjectResponse(string contents)
-            : base(new DummyWebResponse())
-        {
-            this._contents = HelpersForTest.StringToStream(contents);
-        }
-
-        protected override void ProcessResponse()
-        {
-        }
-
-        public override Stream Contents
-        {
-            get
-            {
-                return this._contents;
-            }
-        }
-    }
-
-    class StubPutObjectResponse : PutObjectResponse
-    {
-        public StubPutObjectResponse()
-            : base(new DummyWebResponse())
-        {
-        }
-
-        protected override void ProcessResponse()
-        {
-        }
-    }
-
-    class StubGetBucketResponse : GetBucketResponse
-    {
-        private readonly List<Ds3Object> _ds3Objects;
-        private readonly string _marker;
-        private readonly string _nextMarker;
-        private readonly bool _isTruncated;
-
-        public override string Name { get { return "mybucket"; } }
-        public override string Prefix { get { return ""; } }
-        public override string Marker { get { return _marker; } }
-        public override int MaxKeys { get { return 2; } }
-        public override bool IsTruncated { get { return _isTruncated; } }
-        public override string Delimiter { get { return ""; } }
-        public override string NextMarker { get { return _nextMarker; } }
-        public override DateTime CreationDate { get { return DateTime.Now; } }
-        public override List<Ds3Object> Objects { get { return _ds3Objects; } }
-
-        public StubGetBucketResponse(int invocationIndex)
-            : base(new DummyWebResponse())
-        {
-            switch (invocationIndex)
-            {
-                case 0:
-                    this._ds3Objects = new List<Ds3Object> {
-                        BuildDs3Object("foo", "2cde576e5f5a613e6cee466a681f4929", "2009-10-12T17:50:30.000Z", 12),
-                        BuildDs3Object("bar", "f3f98ff00be128139332bcf4b772be43", "2009-10-14T17:50:31.000Z", 12)
-                    };
-                    this._marker = "";
-                    this._nextMarker = "baz";
-                    this._isTruncated = true;
-                    break;
-                case 1:
-                    this._ds3Objects = new List<Ds3Object> {
-                        BuildDs3Object("baz", "802d45fcb9a3f7d00f1481362edc0ec9", "2009-10-18T17:50:35.000Z", 12)
-                    };
-                    this._marker = "baz";
-                    this._nextMarker = "";
-                    this._isTruncated = false;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        private static Ds3Object BuildDs3Object(string key, string eTag, string lastModified, long size)
+        private static Ds3ObjectInfo BuildDs3Object(string key, string eTag, string lastModified, long size)
         {
             var owner = new Owner("person@spectralogic.com", "75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a");
-            return new Ds3Object(key, size, owner, eTag, "STANDARD", DateTime.Parse(lastModified));
-        }
-
-        protected override void ProcessResponse()
-        {
-        }
-    }
-
-    class DummyWebResponse : IWebResponse
-    {
-        public Stream GetResponseStream()
-        {
-            throw new NotSupportedException();
-        }
-
-        public HttpStatusCode StatusCode
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        public IDictionary<string, string> Headers
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        public void Dispose()
-        {
-            // Do nothing.
+            return new Ds3ObjectInfo(key, size, owner, eTag, "STANDARD", DateTime.Parse(lastModified));
         }
     }
 }

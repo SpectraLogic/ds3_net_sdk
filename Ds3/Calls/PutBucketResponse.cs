@@ -13,22 +13,9 @@
  * ****************************************************************************
  */
 
-using System.Net;
-
-using Ds3.Runtime;
-
 namespace Ds3.Calls
 {
-    public class PutBucketResponse : Ds3Response
+    public class PutBucketResponse
     {
-        internal PutBucketResponse(IWebResponse response)
-            : base(response)
-        {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.OK);
-        }
     }
 }

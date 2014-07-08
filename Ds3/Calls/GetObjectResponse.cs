@@ -21,29 +21,13 @@ using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
-    public class GetObjectResponse : Ds3Response
+    public class GetObjectResponse
     {
-        private Stream _contents;
-        public virtual IDictionary<string, string> Metadata { get; private set; }
+        public IDictionary<string, string> Metadata { get; private set; }
 
-        /// <summary>
-        /// The contents of the object. Disposing of GetObjectResponse will also dispose of this stream.
-        /// </summary>
-        public virtual Stream Contents
+        public GetObjectResponse(IDictionary<string, string> metadata)
         {
-            get { return _contents; }
-        }
-
-        internal GetObjectResponse(IWebResponse responseStream) 
-            : base(responseStream)
-        {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.OK);
-            _contents = response.GetResponseStream();
-            Metadata = ParseUtilities.ExtractCustomMetadata(response.Headers);
+            this.Metadata = metadata;
         }
     }
 }

@@ -13,7 +13,10 @@
  * ****************************************************************************
  */
 
+using System.Collections.Generic;
+
 using Ds3.Calls;
+using Ds3.Models;
 
 namespace Ds3
 {
@@ -97,7 +100,7 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        BulkGetResponse BulkGet(BulkGetRequest request);
+        JobResponse BulkGet(BulkGetRequest request);
 
         /// <summary>
         /// Primes a DS3 bulk put for better performance.
@@ -107,7 +110,7 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        BulkPutResponse BulkPut(BulkPutRequest request);
+        JobResponse BulkPut(BulkPutRequest request);
 
         /// <summary>
         /// Retrieves the list of available jobs.
@@ -121,6 +124,8 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        GetJobResponse GetJob(GetJobRequest request);
+        JobResponse GetJob(GetJobRequest request);
+
+        IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes);
     }
 }

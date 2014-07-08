@@ -13,22 +13,9 @@
  * ****************************************************************************
  */
 
-using System.Net;
-
-using Ds3.Runtime;
-
 namespace Ds3.Calls
 {
-    public class DeleteBucketResponse : Ds3Response
+    public class DeleteBucketResponse
     {
-        internal DeleteBucketResponse(IWebResponse response)
-            : base(response)
-        {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.NoContent);
-        }
     }
 }

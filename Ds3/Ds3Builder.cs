@@ -25,6 +25,7 @@ namespace Ds3
         private Uri Endpoint;
         private Uri Proxy = null;
         private int RedirectRetryCount = 5;
+        private int CopyBufferSize = Network.DefaultCopyBufferSize;
 
         /// <summary>
         /// </summary>
@@ -70,16 +71,22 @@ namespace Ds3
             return this;
         }
 
+        public Ds3Builder WithCopyBufferSize(int copyBufferSize)
+        {
+            this.CopyBufferSize = copyBufferSize;
+            return this;
+        }
+
         /// <summary>
         /// Creates the Ds3Client using the specified parameters.
         /// </summary>
         /// <returns></returns>
         public IDs3Client Build()
         {
-            Network netLayer = new Network(Endpoint, Creds, RedirectRetryCount);
+            Network netLayer = new Network(Endpoint, Creds, RedirectRetryCount, CopyBufferSize);
             if (Proxy != null)
             {
-                netLayer.Proxy =Proxy;
+                netLayer.Proxy = Proxy;
             }
             return new Ds3Client(netLayer);
         }

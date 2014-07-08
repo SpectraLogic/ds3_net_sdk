@@ -14,12 +14,13 @@
  */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Ds3.Runtime;
 using Ds3.Models;
 using Ds3.Calls;
+using Ds3.ResponseParsers;
 
 namespace Ds3
 {
@@ -34,67 +35,90 @@ namespace Ds3
 
         public GetServiceResponse GetService(GetServiceRequest request)
         {
-            return new GetServiceResponse(_netLayer.Invoke(request));
+            return new GetServiceResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetBucketResponse GetBucket(GetBucketRequest request)
         {
-            return new GetBucketResponse(_netLayer.Invoke(request));
+            return new GetBucketResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetObjectResponse GetObject(GetObjectRequest request)
         {
-            return new GetObjectResponse(_netLayer.Invoke(request));
+            return new GetObjectResponseParser(_netLayer.CopyBufferSize).Parse(request, _netLayer.Invoke(request));
         }
 
         public PutObjectResponse PutObject(PutObjectRequest request)
         {
-            return new PutObjectResponse(_netLayer.Invoke(request));
+            return new PutObjectResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public DeleteObjectResponse DeleteObject(DeleteObjectRequest request)
         {
-            return new DeleteObjectResponse(_netLayer.Invoke(request));
+            return new DeleteObjectResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public DeleteObjectListResponse DeleteObjectList(DeleteObjectListRequest request)
         {
-            return new DeleteObjectListResponse(_netLayer.Invoke(request));
+            return new DeleteObjectListResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public DeleteBucketResponse DeleteBucket(DeleteBucketRequest request)
         {
-            return new DeleteBucketResponse(_netLayer.Invoke(request));
+            return new DeleteBucketResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public PutBucketResponse PutBucket(PutBucketRequest request)
         {
-            return new PutBucketResponse(_netLayer.Invoke(request));
+            return new PutBucketResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public HeadBucketResponse HeadBucket(HeadBucketRequest request)
         {
-            return new HeadBucketResponse(_netLayer.Invoke(request));
+            return new HeadBucketResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public BulkGetResponse BulkGet(BulkGetRequest request)
+        public JobResponse BulkGet(BulkGetRequest request)
         {
-            return new BulkGetResponse(_netLayer.Invoke(request));
+            return new JobResponseParser<BulkGetRequest>().Parse(request, _netLayer.Invoke(request));
         }
 
-        public BulkPutResponse BulkPut(BulkPutRequest request)
+        public JobResponse BulkPut(BulkPutRequest request)
         {
-            return new BulkPutResponse(_netLayer.Invoke(request));
+            return new JobResponseParser<BulkPutRequest>().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetJobListResponse GetJobList(GetJobListRequest request)
         {
-            return new GetJobListResponse(_netLayer.Invoke(request));
+            return new GetJobListResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public GetJobResponse GetJob(GetJobRequest request)
+        public JobResponse GetJob(GetJobRequest request)
         {
-            return new GetJobResponse(_netLayer.Invoke(request));
+            return new JobResponseParser<GetJobRequest>().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes)
+        {
+            return new Ds3ClientFactory(this, nodes);
+        }
+
+        private class Ds3ClientFactory : IDs3ClientFactory
+        {
+            private readonly IDs3Client _client;
+            private readonly IDictionary<Guid, Node> _nodes;
+
+            public Ds3ClientFactory(IDs3Client client, IEnumerable<Node> nodes)
+            {
+                this._client = client;
+                this._nodes = nodes.ToDictionary(node => node.Id);
+            }
+
+            public IDs3Client GetClientForNodeId(Guid? nodeId)
+            {
+                //TODO: this needs to return a client that connects to the specified server id.
+                return this._client;
+            }
         }
     }
 }

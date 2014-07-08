@@ -13,50 +13,26 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 using Ds3.Calls;
-using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class ReadJob : Job, IReadJob
+    internal class ReadJob : Job<GetObjectRequest>, IReadJob
     {
-        private ModifyGetRequest _modifier;
-
-        public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
-            : base(clientFactory, jobId, bucketName, objectLists)
+        public ReadJob(IDs3Client client, JobResponse bulkGetResponse)
+            : base(client, bulkGetResponse)
         {
         }
-
-        public void Read(ObjectGetter getter)
+        
+        protected override void TransferBlob(IDs3Client client, BlobRequest blobRequest)
         {
-            this.TransferAll((client, jobId, bucket, ds3Object) =>
-            {
-                var request = new GetObjectRequest(bucket, ds3Object.Name, jobId);
-                if (this._modifier != null)
-                {
-                    this._modifier(request);
-                }
-                using (var response = client.GetObject(request))
-                {
-                    getter(ds3Object, response.Contents);
-                }
-            });
-        }
-
-        public IReadJob WithRequestModifier(ModifyGetRequest modifier)
-        {
-            this._modifier = modifier;
-            return this;
-        }
-
-        public new IReadJob WithMaxParallelRequests(int maxParallelRequests)
-        {
-            this.MaxParallelRequests = maxParallelRequests;
-            return this;
+            client.GetObject(new GetObjectRequest(
+                blobRequest.BucketName,
+                blobRequest.ObjectName,
+                blobRequest.JobId,
+                blobRequest.BlobId,
+                blobRequest.Stream
+            ));
         }
     }
 }

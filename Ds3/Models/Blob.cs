@@ -13,21 +13,21 @@
  * ****************************************************************************
  */
 
-namespace Ds3.Helpers
+using System;
+
+namespace Ds3.Models
 {
-    internal class Ds3ClientFactory : IDs3ClientFactory
+    public class Blob
     {
-        private readonly IDs3Client _client;
+        public Guid Id { get; private set; }
+        public long Length { get; private set; }
+        public long Offset { get; private set; }
 
-        public Ds3ClientFactory(IDs3Client client)
+        internal Blob(Guid id, long length, long offset)
         {
-            this._client = client;
-        }
-
-        public IDs3Client GetClientForServerId(string serverId)
-        {
-            //TODO: this needs to return a client that connects to the specified server id.
-            return this._client;
+            this.Id = id;
+            this.Length = length;
+            this.Offset = offset;
         }
     }
 }

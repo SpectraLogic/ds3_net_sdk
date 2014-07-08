@@ -64,6 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDs3Client.cs" />
     <Compile Include="TestDs3ClientHelpers.cs" />
+    <Compile Include="TestEnumerableAlgorithms.cs" />
+    <Compile Include="TestPerformance.cs" />
+    <Compile Include="TestWindowedStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DS3\Ds3.csproj">
@@ -96,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\ResultingMasterObjectList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

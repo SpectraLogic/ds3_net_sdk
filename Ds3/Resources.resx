@@ -123,11 +123,23 @@
   <data name="BadStatusCodeInvalidErrorResponseException" xml:space="preserve">
     <value>Received a status code of {0} when one of {1} was expected. Could not parse the response for additional information.</value>
   </data>
+  <data name="CannotSeekStreamException" xml:space="preserve">
+    <value>Must provide a seekable stream when wrapping a WindowedStream.</value>
+  </data>
   <data name="Encountered307NTimes" xml:space="preserve">
     <value>Encountered 307 number: {0}</value>
   </data>
+  <data name="EnumeratorsNotOfEqualLengthException" xml:space="preserve">
+    <value>Some of the provided enumerators are not equal in length.</value>
+  </data>
   <data name="FormatXmlException" xml:space="preserve">
     <value>Encountered an exception when formating xml string.</value>
+  </data>
+  <data name="InvalidEnumValueException" xml:space="preserve">
+    <value>Enum value not accounted for in a switch statement intended to be exhaustive.</value>
+  </data>
+  <data name="InvalidSeekOrigin" xml:space="preserve">
+    <value>Invalid SeekOrigin: {0}</value>
   </data>
   <data name="InvalidStreamException" xml:space="preserve">
     <value>PUT object streams must be both readable and seekable.</value>
@@ -143,6 +155,9 @@
   </data>
   <data name="TooManyRedirectsException" xml:space="preserve">
     <value>Too many redirects.</value>
+  </data>
+  <data name="UsingAllException" xml:space="preserve">
+    <value>Some resources failed to dispose while handling an exception. See inner exceptions for more information.</value>
   </data>
   <data name="XmlResponseErrorException" xml:space="preserve">
     <value>Encountered an error while reading XML response: "{0}"</value>

@@ -79,6 +79,11 @@ namespace TestDs3
             Assert.AreEqual(_requestContent, HelpersForTest.StringFromStream(request.GetContentStream()));
             return new MockWebResponse(_responseContent, _statusCode);
         }
+
+        public int CopyBufferSize
+        {
+            get { return Network.DefaultCopyBufferSize; }
+        }
     }
 
     class MockWebResponse : IWebResponse

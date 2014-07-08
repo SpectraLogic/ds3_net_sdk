@@ -36,11 +36,26 @@ namespace Ds3.Calls
             );
         }
 
-        public static Ds3Object ParseDs3Object(XElement objectElement)
+        public static Guid? ParseGuidOrNull(string guidStringOrNull)
         {
-            return new Ds3Object(
+            return guidStringOrNull == null ? null : (Guid?)Guid.Parse(guidStringOrNull);
+        }
+
+        public static int? ParseIntOrNull(string intStringOrNull)
+        {
+            return intStringOrNull == null ? null : (int?)int.Parse(intStringOrNull);
+        }
+
+        public static JobObject ParseJobObject(XElement objectElement)
+        {
+            return new JobObject(
                 objectElement.AttributeText("Name"),
-                Convert.ToInt64(objectElement.AttributeText("Size"))
+                from blob in objectElement.Elements("Blob")
+                select new Blob(
+                    Guid.Parse(blob.AttributeText("Id")),
+                    long.Parse(blob.AttributeText("Length")),
+                    long.Parse(blob.AttributeText("Offset"))
+                )
             );
         }
 

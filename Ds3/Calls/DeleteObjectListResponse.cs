@@ -22,37 +22,17 @@ using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
-    public class DeleteObjectListResponse : Ds3Response
+    public class DeleteObjectListResponse
     {
         public IEnumerable<Ds3Object> DeletedObjects { get; private set; }
         public IEnumerable<DeleteDs3ObjectError> DeleteErrors { get; private set; }
 
-        internal DeleteObjectListResponse(IWebResponse response)
-            : base(response)
+        public DeleteObjectListResponse(
+            IEnumerable<Ds3Object> deletedObjects,
+            IEnumerable<DeleteDs3ObjectError> deleteErrors)
         {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.OK);
-            using (var content = response.GetResponseStream())
-            {
-                var deleteResult = XmlExtensions
-                    .ReadDocument(content)
-                    .ElementOrThrow("DeleteResult");
-                this.DeletedObjects = deleteResult
-                    .Elements("Deleted")
-                    .Select(el => new Ds3Object(el.TextOf("Key")))
-                    .ToList();
-                this.DeleteErrors = deleteResult
-                    .Elements("Error")
-                    .Select(el => new DeleteDs3ObjectError(
-                        el.TextOf("Key"),
-                        el.TextOf("Code"),
-                        el.TextOf("Message")
-                    ))
-                    .ToList();
-            }
+            this.DeletedObjects = deletedObjects;
+            this.DeleteErrors = deleteErrors;
         }
     }
 }

@@ -1,0 +1,51 @@
+﻿<MasterObjectList BucketName="bucket8192000000" JobId="1a85e743-ec8f-4789-afec-97e587a26936" Priority="NORMAL" RequestType="PUT" StartDate="2014-07-01T20:12:52.000Z">
+  <Nodes>
+    <Node EndPoint="10.1.18.12" HttpPort="80" HttpsPort="443" Id="a02053b9-0147-11e4-8d6a-002590c1177c"/>
+    <Node EndPoint="10.1.18.13" HttpsPort="443" Id="4ecebf6f-bfd2-40a8-82a6-32fd684fd500"/>
+    <Node EndPoint="10.1.18.14" HttpPort="80" Id="4d5b6669-76f0-49f9-bc2a-9280f40cafa7"/>
+  </Nodes>
+  <Objects ChunkNumber="0" NodeId="a02053b9-0147-11e4-8d6a-002590c1177c">
+    <Object Name="client00obj000004-8000000">
+      <Blob Id="7abd8a10-3195-4468-8ca7-5eb1a9466ff2" Length="5368709120" Offset="0"/>
+      <Blob Id="651c60fb-3246-41fe-bc3e-59f09262cd40" Length="2823290880" Offset="5368709120"/>
+    </Object>
+    <Object Name="client00obj000003-8000000">
+      <Blob Id="db1e4489-e16b-498d-bcf0-e74745226352" Length="2823290880" Offset="5368709120"/>
+      <Blob Id="cc3ce27e-08b0-4bcc-8df6-7365d25fc364" Length="5368709120" Offset="0"/>
+    </Object>
+    <Object Name="client00obj000002-8000000">
+      <Blob Id="6004818c-ce1e-4786-a365-703a568827ac" Length="5368709120" Offset="0"/>
+      <Blob Id="94952064-ae93-4bf1-9e0a-1d130e78e688" Length="2823290880" Offset="5368709120"/>
+    </Object>
+    <Object Name="client00obj000005-8000000">
+      <Blob Id="9fdd9fb2-2b5c-4b5c-938b-b1e64ea7e6e7" Length="5368709120" Offset="0"/>
+      <Blob Id="58ad980e-ba89-4260-9d33-733fe08b52a3" Length="2823290880" Offset="5368709120"/>
+    </Object>
+    <Object Name="client00obj000006-8000000">
+      <Blob Id="4ccf5ce9-6f0d-421a-9133-94e3d235318f" Length="5368709120" Offset="0"/>
+      <Blob Id="7cfc806b-c629-4232-9404-bbcb56200771" Length="2823290880" Offset="5368709120"/>
+    </Object>
+    <Object Name="client00obj000000-8000000">
+      <Blob Id="39521863-f735-42cd-b579-da45a3e0c030" Length="5368709120" Offset="0"/>
+      <Blob Id="f80d371b-cfc0-4394-9280-e3c6339a97be" Length="2823290880" Offset="5368709120"/>
+    </Object>
+    <Object Name="client00obj000001-8000000">
+      <Blob Id="7b978f2f-7863-44e4-8ede-60efb320e650" Length="5368709120" Offset="0"/>
+      <Blob Id="ccb201e8-abdb-4a86-99ed-7165966d2c83" Length="2823290880" Offset="5368709120"/>
+    </Object>
+  </Objects>
+  <Objects ChunkNumber="1">
+    <Object Name="client00obj000008-8000000">
+      <Blob Id="79e11bd8-cfd1-4eb0-9ec1-916cff3efc33" Length="2823290880" Offset="5368709120"/>
+      <Blob Id="c282eb3c-c1aa-41cf-92ab-c392fb1304c8" Length="5368709120" Offset="0"/>
+    </Object>
+    <Object Name="client00obj000009-8000000">
+      <Blob Id="264fb9d5-2e49-4cb5-a7ea-386d0cb9be1f" Length="2823290880" Offset="5368709120"/>
+      <Blob Id="4861870f-3d67-4e6b-99ca-95b10b16ed97" Length="5368709120" Offset="0"/>
+    </Object>
+    <Object Name="client00obj000007-8000000">
+      <Blob Id="d3843e7e-99e7-4551-873f-ec9ade3a7dd6" Length="5368709120" Offset="0"/>
+      <Blob Id="c5f27bcc-f25a-4d5e-a34c-5b1f7c2040d8" Length="2823290880" Offset="5368709120"/>
+    </Object>
+  </Objects>
+</MasterObjectList>

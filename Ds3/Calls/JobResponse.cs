@@ -13,11 +13,30 @@
  * ****************************************************************************
  */
 
-namespace Ds3.Helpers
+using System;
+using System.Collections.Generic;
+
+using Ds3.Models;
+
+namespace Ds3.Calls
 {
-    //TODO: where to put
-    internal interface IDs3ClientFactory
+    public class JobResponse
     {
-        IDs3Client GetClientForServerId(string serverId);
+        public string BucketName { get; private set; }
+        public Guid JobId { get; private set; }
+        public IEnumerable<Node> Nodes { get; private set; }
+        public IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
+
+        public JobResponse(
+            string bucketName,
+            Guid jobId,
+            IEnumerable<Node> nodes,
+            IEnumerable<Ds3ObjectList> objectLists)
+        {
+            this.BucketName = bucketName;
+            this.JobId = jobId;
+            this.Nodes = nodes;
+            this.ObjectLists = objectLists;
+        }
     }
 }

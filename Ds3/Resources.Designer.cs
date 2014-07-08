@@ -79,6 +79,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Must provide a seekable stream when wrapping a WindowedStream..
+        /// </summary>
+        internal static string CannotSeekStreamException {
+            get {
+                return ResourceManager.GetString("CannotSeekStreamException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered 307 number: {0}.
         /// </summary>
         internal static string Encountered307NTimes {
@@ -88,11 +97,38 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some of the provided enumerators are not equal in length..
+        /// </summary>
+        internal static string EnumeratorsNotOfEqualLengthException {
+            get {
+                return ResourceManager.GetString("EnumeratorsNotOfEqualLengthException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered an exception when formating xml string..
         /// </summary>
         internal static string FormatXmlException {
             get {
                 return ResourceManager.GetString("FormatXmlException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enum value not accounted for in a switch statement intended to be exhaustive..
+        /// </summary>
+        internal static string InvalidEnumValueException {
+            get {
+                return ResourceManager.GetString("InvalidEnumValueException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid SeekOrigin: {0}.
+        /// </summary>
+        internal static string InvalidSeekOrigin {
+            get {
+                return ResourceManager.GetString("InvalidSeekOrigin", resourceCulture);
             }
         }
         
@@ -138,6 +174,15 @@ namespace Ds3 {
         internal static string TooManyRedirectsException {
             get {
                 return ResourceManager.GetString("TooManyRedirectsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Some resources failed to dispose while handling an exception. See inner exceptions for more information..
+        /// </summary>
+        internal static string UsingAllException {
+            get {
+                return ResourceManager.GetString("UsingAllException", resourceCulture);
             }
         }
         

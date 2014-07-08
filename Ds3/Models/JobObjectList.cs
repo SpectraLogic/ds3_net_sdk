@@ -15,15 +15,16 @@
 
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace Ds3.Models
 {
     public class JobObjectList : Ds3ObjectList
     {
-        public IEnumerable<Ds3Object> ObjectsInCache { get; private set; }
+        public IEnumerable<JobObject> ObjectsInCache { get; private set; }
 
-        public JobObjectList(string serverId, IEnumerable<Ds3Object> objects, IEnumerable<Ds3Object> objectsInCache)
-            : base(serverId, objects)
+        public JobObjectList(long chunkId, Guid? nodeId, IEnumerable<JobObject> objects, IEnumerable<JobObject> objectsInCache)
+            : base(chunkId, nodeId, objects)
         {
             this.ObjectsInCache = objectsInCache.ToList();
         }

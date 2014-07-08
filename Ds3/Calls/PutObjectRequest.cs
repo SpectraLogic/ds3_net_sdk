@@ -90,6 +90,7 @@ namespace Ds3.Calls
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
         public Guid JobId { get; private set; }
+        public Guid BlobId { get; private set; }
 
         [Obsolete]
         public PutObjectRequest(Bucket bucket, string objectName, Stream content)
@@ -99,19 +100,31 @@ namespace Ds3.Calls
 
         [Obsolete]
         public PutObjectRequest(string bucketName, string objectName, Stream content)
+            : this(bucketName, objectName, Guid.Empty, Guid.Empty, content)
         {
-            this.BucketName = bucketName;
-            this.ObjectName = objectName;
-            this._content = content;
         }
 
+        [Obsolete]
         public PutObjectRequest(string bucketName, string objectName, Guid jobId, Stream content)
+            : this(bucketName, objectName, jobId, Guid.Empty, content)
+        {
+        }
+
+        public PutObjectRequest(string bucketName, string objectName, Guid jobId, Guid blobId, Stream content)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this._content = content;
             this.JobId = jobId;
-            QueryParams.Add("job", jobId.ToString());
+            this.BlobId = blobId;
+            if (jobId != Guid.Empty)
+            {
+                QueryParams.Add("job", jobId.ToString());
+            }
+            if (blobId != Guid.Empty)
+            {
+                QueryParams.Add("id", blobId.ToString());
+            }
         }
     }
 }
