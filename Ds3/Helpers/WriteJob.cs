@@ -14,6 +14,7 @@
  */
 
 using Ds3.Calls;
+using Ds3.Models;
 
 namespace Ds3.Helpers
 {
@@ -33,6 +34,11 @@ namespace Ds3.Helpers
                 blobRequest.BlobId,
                 blobRequest.Stream
             ));
+        }
+
+        protected override bool ShouldTransferBlob(Blob blob)
+        {
+            return !blob.InCache;
         }
     }
 }

@@ -22,12 +22,14 @@ namespace Ds3.Models
         public Guid Id { get; private set; }
         public long Length { get; private set; }
         public long Offset { get; private set; }
+        public bool InCache { get; private set; }
 
-        internal Blob(Guid id, long length, long offset)
+        internal Blob(Guid id, long length, long offset, bool inCache)
         {
             this.Id = id;
             this.Length = length;
             this.Offset = offset;
+            this.InCache = inCache;
         }
     }
 }

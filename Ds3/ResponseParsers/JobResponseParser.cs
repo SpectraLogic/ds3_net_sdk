@@ -40,6 +40,9 @@ namespace Ds3.ResponseParsers
                     return new JobResponse(
                         bucketName: masterObjectList.AttributeText("BucketName"),
                         jobId: Guid.Parse(masterObjectList.AttributeText("JobId")),
+                        priority: masterObjectList.AttributeText("Priority"),
+                        requestType: masterObjectList.AttributeText("RequestType"),
+                        startDate: DateTime.Parse(masterObjectList.AttributeText("StartDate")),
                         nodes: (
                             from nodeElement in masterObjectList.Element("Nodes").Elements("Node")
                             select new Node(
@@ -59,7 +62,8 @@ namespace Ds3.ResponseParsers
                                     select new Blob(
                                         Guid.Parse(blob.AttributeText("Id")),
                                         long.Parse(blob.AttributeText("Length")),
-                                        long.Parse(blob.AttributeText("Offset"))
+                                        long.Parse(blob.AttributeText("Offset")),
+                                        bool.Parse(blob.AttributeText("InCache"))
                                     )
                                 )
                             select new Ds3ObjectList(

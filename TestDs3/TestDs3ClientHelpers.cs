@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 using Moq;
 using NUnit.Framework;
@@ -25,7 +26,6 @@ using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Models;
-using System.Text;
 
 namespace TestDs3
 {
@@ -38,7 +38,7 @@ namespace TestDs3
             var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
             ds3ClientMock
                 .Setup(client => client.BulkGet(It.IsAny<BulkGetRequest>()))
-                .Returns(CreateJobResponse());
+                .Returns(CreateJobResponse("GET"));
             ds3ClientMock
                 .Setup(client => client.GetObject(It.IsAny<GetObjectRequest>()))
                 .Returns<GetObjectRequest>(request =>
@@ -101,7 +101,7 @@ namespace TestDs3
             var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
             ds3ClientMock
                 .Setup(client => client.BulkPut(It.IsAny<BulkPutRequest>()))
-                .Returns(CreateJobResponse());
+                .Returns(CreateJobResponse("PUT"));
             ds3ClientMock
                 .Setup(client => client.PutObject(It.IsAny<PutObjectRequest>()))
                 .Callback<PutObjectRequest>(request => {
@@ -130,16 +130,19 @@ namespace TestDs3
             CollectionAssert.AreEqual(new[] { "baz contents", "bar contents", "foo contents" }, expectedkeys.Select(key => objectContentsPut[key]));
         }
 
-        private static JobResponse CreateJobResponse()
+        private static JobResponse CreateJobResponse(string requestType)
         {
             return new JobResponse(
-                "mybucket",
-                Guid.Parse("3ad595b2-38cb-447d-9e1d-a1125ba19f33"),
-                Enumerable.Empty<Node>(),
-                new Ds3ObjectList[] {
-                    new Ds3ObjectList(0, null, new[] { new JobObject("baz", new[] { new Blob(Guid.Parse("3748ee9e-5633-42c9-b97d-ed6bf4c0166d"), 12, 0) }) }),
-                    new Ds3ObjectList(1, null, new[] { new JobObject("bar", new[] { new Blob(Guid.Parse("7243f517-39dc-4ace-a8ff-42c10721219f"), 12, 0) }) }),
-                    new Ds3ObjectList(2, null, new[] { new JobObject("foo", new[] { new Blob(Guid.Parse("071837f5-342b-42ec-a177-5dc0bcacf4c4"), 12, 0) }) })
+                bucketName: "mybucket",
+                jobId: Guid.Parse("3ad595b2-38cb-447d-9e1d-a1125ba19f33"),
+                priority: "NORMAL",
+                requestType: requestType,
+                startDate: DateTime.Parse("2014-07-09T19:41:34.000Z"),
+                nodes: Enumerable.Empty<Node>(),
+                objectLists: new Ds3ObjectList[] {
+                    new Ds3ObjectList(0, null, new[] { new JobObject("baz", new[] { new Blob(Guid.Parse("3748ee9e-5633-42c9-b97d-ed6bf4c0166d"), 12, 0, false) }) }),
+                    new Ds3ObjectList(1, null, new[] { new JobObject("bar", new[] { new Blob(Guid.Parse("7243f517-39dc-4ace-a8ff-42c10721219f"), 12, 0, false) }) }),
+                    new Ds3ObjectList(2, null, new[] { new JobObject("foo", new[] { new Blob(Guid.Parse("071837f5-342b-42ec-a177-5dc0bcacf4c4"), 12, 0, false) }) })
                 }
             );
         }

@@ -24,17 +24,26 @@ namespace Ds3.Calls
     {
         public string BucketName { get; private set; }
         public Guid JobId { get; private set; }
+        public string Priority { get; private set; }
+        public string RequestType { get; private set; }
+        public DateTime StartDate { get; private set; }
         public IEnumerable<Node> Nodes { get; private set; }
         public IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
 
         internal JobResponse(
             string bucketName,
             Guid jobId,
+            string priority,
+            string requestType,
+            DateTime startDate,
             IEnumerable<Node> nodes,
             IEnumerable<Ds3ObjectList> objectLists)
         {
             this.BucketName = bucketName;
             this.JobId = jobId;
+            this.Priority = priority;
+            this.RequestType = requestType;
+            this.StartDate = startDate;
             this.Nodes = nodes;
             this.ObjectLists = objectLists;
         }

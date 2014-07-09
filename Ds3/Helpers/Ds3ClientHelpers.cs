@@ -96,33 +96,12 @@ namespace Ds3.Helpers
 
         public IWriteJob RecoverWriteJob(Guid jobId)
         {
-            throw new NotImplementedException();
-            //TODO
-        //    using (var job = this._client.GetJob(new GetJobRequest(jobId)))
-        //    {
-        //        var jobInfo = job.JobInfo;
-        //        CheckJobType(JobTypePut, jobInfo.RequestType);
-        //        return new WriteJob(new Ds3ClientFactory(this._client), jobInfo.JobId, jobInfo.BucketName, job.ObjectLists);
-        //    }
+            return new WriteJob(this._client, this._client.GetJob(new GetJobRequest(jobId)));
         }
 
         public IReadJob RecoverReadJob(Guid jobId)
         {
-            throw new NotImplementedException();
-            //TODO
-        //    using (var job = this._client.GetJob(new GetJobRequest(jobId)))
-        //    {
-        //        var jobInfo = job.JobInfo;
-        //        CheckJobType(JobTypeGet, jobInfo.RequestType);
-        //        var jobObjectsList =
-        //            from jobObjects in job.ObjectLists
-        //            select new Ds3ObjectList(
-        //                jobObjects.ChunkId,
-        //                jobObjects.NodeId,
-        //                jobObjects.ObjectsInCache.Concat(jobObjects.Objects)
-        //            );
-        //        return new ReadJob(new Ds3ClientFactory(this._client), jobInfo.JobId, jobInfo.BucketName, jobObjectsList);
-        //    }
+            return new ReadJob(this._client, this._client.GetJob(new GetJobRequest(jobId)));
         }
 
         private static void CheckJobType(string expectedJobType, string actualJobType)

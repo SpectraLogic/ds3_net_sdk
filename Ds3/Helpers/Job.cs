@@ -39,6 +39,8 @@ namespace Ds3.Helpers
 
         protected abstract void TransferBlob(IDs3Client client, BlobRequest requestInfo);
 
+        protected abstract bool ShouldTransferBlob(Blob blob);
+
         protected class BlobRequest
         {
             public string BucketName { get; private set; }
@@ -86,16 +88,17 @@ namespace Ds3.Helpers
 
         public void Transfer(Func<string, Stream> createStreamForObjectKey)
         {
+            var objectListsList = FilterBlobs(this._bulkResponse.ObjectLists);
+            var objectNamesPerChunk = objectListsList.Select(objectList => objectList.Select(obj => obj.Name));
+            var clientFactory = _client.BuildFactory(this._bulkResponse.Nodes);
+
             var objectStreams = new Dictionary<string, Stream>();
             UsingAll(objectStreams.Values, delegate
             {
-                var objectListsList = this._bulkResponse.ObjectLists as IList<Ds3ObjectList> ?? this._bulkResponse.ObjectLists.ToList();
-                var nestedNamesFromObjectLists = objectListsList.Select(objectList => objectList.Select(obj => obj.Name));
-                var clientFactory = _client.BuildFactory(this._bulkResponse.Nodes);
                 EnumerableAlgorithms.ForEach(
                     objectListsList,
-                    nestedNamesFromObjectLists.FirstMentionsPerRow(),
-                    nestedNamesFromObjectLists.LastMentionsPerRow(),
+                    objectNamesPerChunk.FirstMentionsPerRow(),
+                    objectNamesPerChunk.LastMentionsPerRow(),
                     (objectList, namesToOpen, namesToClose) =>
                     {
                         foreach (var nameToOpen in namesToOpen)
@@ -113,6 +116,25 @@ namespace Ds3.Helpers
                     }
                 );
             });
+        }
+
+        private IEnumerable<Ds3ObjectList> FilterBlobs(IEnumerable<Ds3ObjectList> objectListsList)
+        {
+            return (
+                from objectList in objectListsList
+                let newObjectList = (
+                    from obj in objectList.Objects
+                    let newBlobList = obj.Blobs.Where(ShouldTransferBlob).ToList()
+                    where newBlobList.Count > 0
+                    select new JobObject(obj.Name, newBlobList)
+                ).ToList()
+                where newObjectList.Count > 0
+                select new Ds3ObjectList(
+                    objectList.ChunkNumber,
+                    objectList.NodeId,
+                    newObjectList
+                )
+            ).ToList();
         }
 
         private void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
