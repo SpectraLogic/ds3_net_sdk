@@ -73,18 +73,34 @@ namespace Ds3
             return this;
         }
 
+        /// <summary>
+        /// Determines how many bytes to copy at a time to and from input streams when
+        /// performing object GET and PUT operations.
+        /// </summary>
+        /// <param name="copyBufferSize"></param>
+        /// <returns></returns>
         public Ds3Builder WithCopyBufferSize(int copyBufferSize)
         {
             this._copyBufferSize = copyBufferSize;
             return this;
         }
 
+        /// <summary>
+        /// Specifies how long to wait for an HTTP request or response to transfer.
+        /// </summary>
+        /// <param name="readWriteTimeout"></param>
+        /// <returns></returns>
         public Ds3Builder WithReadWriteTimeout(int readWriteTimeout)
         {
             this._readWriteTimeout = readWriteTimeout;
             return this;
         }
 
+        /// <summary>
+        /// Specifies how long to wait for the server to respond once the SDK has fully sent a request.
+        /// </summary>
+        /// <param name="requestTimeout"></param>
+        /// <returns></returns>
         public Ds3Builder WithRequestTimeout(int requestTimeout)
         {
             this._requestTimeout = requestTimeout;

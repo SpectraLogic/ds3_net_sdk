@@ -28,7 +28,7 @@ namespace Ds3.Calls
         public string RequestType { get; private set; }
         public DateTime StartDate { get; private set; }
         public IEnumerable<Node> Nodes { get; private set; }
-        public IEnumerable<Ds3ObjectList> ObjectLists { get; private set; }
+        public IEnumerable<JobObjectList> ObjectLists { get; private set; }
 
         internal JobResponse(
             string bucketName,
@@ -37,7 +37,7 @@ namespace Ds3.Calls
             string requestType,
             DateTime startDate,
             IEnumerable<Node> nodes,
-            IEnumerable<Ds3ObjectList> objectLists)
+            IEnumerable<JobObjectList> objectLists)
         {
             this.BucketName = bucketName;
             this.JobId = jobId;

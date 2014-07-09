@@ -17,13 +17,13 @@ using System;
 
 namespace Ds3.Helpers
 {
-    public interface ICriticalSectionExecutor
+    internal interface ICriticalSectionExecutor
     {
         void InLock(Action action);
         T InLock<T>(Func<T> func);
     }
 
-    public class CriticalSectionExecutor : ICriticalSectionExecutor
+    internal class CriticalSectionExecutor : ICriticalSectionExecutor
     {
         private readonly Object _lock = new object();
 

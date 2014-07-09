@@ -126,6 +126,12 @@ namespace Ds3
         /// <returns></returns>
         JobResponse GetJob(GetJobRequest request);
 
+        /// <summary>
+        /// For future multi-node support, this provides a means of creating
+        /// a client that connects to the specified node id.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns></returns>
         IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes);
     }
 }

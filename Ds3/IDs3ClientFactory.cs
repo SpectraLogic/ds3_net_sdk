@@ -19,6 +19,11 @@ namespace Ds3
 {
     public interface IDs3ClientFactory
     {
+        /// <summary>
+        /// Returns a client that connects to the specified node id.
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
         IDs3Client GetClientForNodeId(Guid? nodeId);
     }
 }

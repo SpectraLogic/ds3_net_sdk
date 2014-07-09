@@ -118,7 +118,7 @@ namespace Ds3.Helpers
             });
         }
 
-        private IEnumerable<Ds3ObjectList> FilterBlobs(IEnumerable<Ds3ObjectList> objectListsList)
+        private IEnumerable<JobObjectList> FilterBlobs(IEnumerable<JobObjectList> objectListsList)
         {
             return (
                 from objectList in objectListsList
@@ -129,7 +129,7 @@ namespace Ds3.Helpers
                     select new JobObject(obj.Name, newBlobList)
                 ).ToList()
                 where newObjectList.Count > 0
-                select new Ds3ObjectList(
+                select new JobObjectList(
                     objectList.ChunkNumber,
                     objectList.NodeId,
                     newObjectList

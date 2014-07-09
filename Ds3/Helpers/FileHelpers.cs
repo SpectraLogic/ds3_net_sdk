@@ -22,7 +22,7 @@ using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    public static class FileHelpers
+    public class FileHelpers
     {
         public static Func<string, Stream> BuildFileGetter(string root)
         {

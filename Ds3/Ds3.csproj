@@ -87,9 +87,8 @@
     <Compile Include="Models\DeleteDs3ObjectError.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectInfo.cs" />
-    <Compile Include="Models\Ds3ObjectList.cs" />
-    <Compile Include="Models\JobObject.cs" />
     <Compile Include="Models\JobObjectList.cs" />
+    <Compile Include="Models\JobObject.cs" />
     <Compile Include="Models\JobInfo.cs" />
     <Compile Include="Models\Node.cs" />
     <Compile Include="Models\Owner.cs" />

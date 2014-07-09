@@ -139,10 +139,10 @@ namespace TestDs3
                 requestType: requestType,
                 startDate: DateTime.Parse("2014-07-09T19:41:34.000Z"),
                 nodes: Enumerable.Empty<Node>(),
-                objectLists: new Ds3ObjectList[] {
-                    new Ds3ObjectList(0, null, new[] { new JobObject("baz", new[] { new Blob(Guid.Parse("3748ee9e-5633-42c9-b97d-ed6bf4c0166d"), 12, 0, false) }) }),
-                    new Ds3ObjectList(1, null, new[] { new JobObject("bar", new[] { new Blob(Guid.Parse("7243f517-39dc-4ace-a8ff-42c10721219f"), 12, 0, false) }) }),
-                    new Ds3ObjectList(2, null, new[] { new JobObject("foo", new[] { new Blob(Guid.Parse("071837f5-342b-42ec-a177-5dc0bcacf4c4"), 12, 0, false) }) })
+                objectLists: new JobObjectList[] {
+                    new JobObjectList(0, null, new[] { new JobObject("baz", new[] { new Blob(Guid.Parse("3748ee9e-5633-42c9-b97d-ed6bf4c0166d"), 12, 0, false) }) }),
+                    new JobObjectList(1, null, new[] { new JobObject("bar", new[] { new Blob(Guid.Parse("7243f517-39dc-4ace-a8ff-42c10721219f"), 12, 0, false) }) }),
+                    new JobObjectList(2, null, new[] { new JobObject("foo", new[] { new Blob(Guid.Parse("071837f5-342b-42ec-a177-5dc0bcacf4c4"), 12, 0, false) }) })
                 }
             );
         }

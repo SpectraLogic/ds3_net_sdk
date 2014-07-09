@@ -66,7 +66,7 @@ namespace Ds3.ResponseParsers
                                         bool.Parse(blob.AttributeText("InCache"))
                                     )
                                 )
-                            select new Ds3ObjectList(
+                            select new JobObjectList(
                                 long.Parse(objs.AttributeTextOrNull("ChunkNumber")),
                                 ParseGuidOrNull(objs.AttributeTextOrNull("NodeId")),
                                 objects

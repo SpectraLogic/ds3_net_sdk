@@ -18,7 +18,7 @@ using System.IO;
 
 namespace Ds3.Helpers
 {
-    public class WindowedStream : Stream
+    internal class WindowedStream : Stream
     {
         private readonly Stream _innerStream;
         private readonly long _originalLength;
