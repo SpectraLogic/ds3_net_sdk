@@ -27,20 +27,31 @@ namespace Ds3.Runtime
 {
     internal class Network : INetwork
     {
-        internal const int DefaultCopyBufferSize = 128 * 1024 * 1024;
+        internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
 
         private readonly Uri _endpoint;
         private readonly Credentials _creds;
         private readonly int _maxRedirects = 0;
+        private readonly int _redirectRetryCount;
+        private readonly int _readWriteTimeout;
+        private readonly int _requestTimeout;
 
         internal Uri Proxy = null;
 
-        public Network(Uri endpoint, Credentials creds, int maxRedirects, int copyBufferSize)
+        public Network(
+            Uri endpoint,
+            Credentials creds,
+            int redirectRetryCount,
+            int copyBufferSize,
+            int readWriteTimeout,
+            int requestTimeout)
         {
             this._endpoint = endpoint;
             this._creds = creds;
-            this._maxRedirects = maxRedirects;
+            this._redirectRetryCount = redirectRetryCount;
             this.CopyBufferSize = copyBufferSize;
+            this._readWriteTimeout = readWriteTimeout;
+            this._requestTimeout = requestTimeout;
         }
 
         public int CopyBufferSize { get; private set; }
@@ -104,6 +115,8 @@ namespace Ds3.Runtime
             httpRequest.Host = CreateHostString(_endpoint);
             httpRequest.AllowAutoRedirect = false;
             httpRequest.AllowWriteStreamBuffering = false;
+            httpRequest.ReadWriteTimeout = this._readWriteTimeout;
+            httpRequest.Timeout = this._requestTimeout;
             
             var md5 = ComputeChecksum(request.Md5, content);
             if (!string.IsNullOrEmpty(md5))

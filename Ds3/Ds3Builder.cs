@@ -21,19 +21,21 @@ namespace Ds3
 {
     public class Ds3Builder
     {
-        private Credentials Creds;
-        private Uri Endpoint;
-        private Uri Proxy = null;
-        private int RedirectRetryCount = 5;
-        private int CopyBufferSize = Network.DefaultCopyBufferSize;
+        private Credentials _creds;
+        private Uri _endpoint;
+        private Uri _proxy = null;
+        private int _redirectRetryCount = 5;
+        private int _copyBufferSize = Network.DefaultCopyBufferSize;
+        private int _readWriteTimeout = 60 * 60 * 1000;
+        private int _requestTimeout = 60 * 60 * 1000;
 
         /// <summary>
         /// </summary>
         /// <param name="endpoint">The http or https location at which your DS3 server is listening.</param>
         /// <param name="creds">Credentials with which to specify identity and sign requests.</param>
         public Ds3Builder(string endpoint, Credentials creds) {
-            this.Creds = creds;
-            this.Endpoint = new Uri(endpoint);
+            this._creds = creds;
+            this._endpoint = new Uri(endpoint);
         }
 
         /// <summary>
@@ -42,8 +44,8 @@ namespace Ds3
         /// <param name="creds">Credentials with which to specify identity and sign requests.</param>
         public Ds3Builder(Uri endpoint, Credentials creds)
         {
-            this.Creds = creds;
-            this.Endpoint = endpoint;
+            this._creds = creds;
+            this._endpoint = endpoint;
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace Ds3
         /// <returns></returns>
         public Ds3Builder WithProxy(Uri proxy)
         {
-            this.Proxy = proxy;
+            this._proxy = proxy;
             return this;
         }
 
@@ -67,13 +69,25 @@ namespace Ds3
         /// <returns></returns>
         public Ds3Builder WithRedirectRetries(int count)
         {
-            this.RedirectRetryCount = count;
+            this._redirectRetryCount = count;
             return this;
         }
 
         public Ds3Builder WithCopyBufferSize(int copyBufferSize)
         {
-            this.CopyBufferSize = copyBufferSize;
+            this._copyBufferSize = copyBufferSize;
+            return this;
+        }
+
+        public Ds3Builder WithReadWriteTimeout(int readWriteTimeout)
+        {
+            this._readWriteTimeout = readWriteTimeout;
+            return this;
+        }
+
+        public Ds3Builder WithRequestTimeout(int requestTimeout)
+        {
+            this._requestTimeout = requestTimeout;
             return this;
         }
 
@@ -83,10 +97,17 @@ namespace Ds3
         /// <returns></returns>
         public IDs3Client Build()
         {
-            Network netLayer = new Network(Endpoint, Creds, RedirectRetryCount, CopyBufferSize);
-            if (Proxy != null)
+            Network netLayer = new Network(
+                _endpoint,
+                _creds,
+                _redirectRetryCount,
+                _copyBufferSize,
+                _readWriteTimeout,
+                _requestTimeout
+            );
+            if (_proxy != null)
             {
-                netLayer.Proxy = Proxy;
+                netLayer.Proxy = _proxy;
             }
             return new Ds3Client(netLayer);
         }
