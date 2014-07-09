@@ -4,10 +4,17 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>My Project: Member List</title>
+<title>DS3 .NET SDK: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -22,7 +29,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">DS3 .NET SDK
    </div>
   </td>
  </tr>
@@ -37,7 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
+      <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('interface_ds3_1_1_i_ds3_client.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespace_ds3.html">Ds3</a></li><li class="navelem"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">IDs3Client</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">Ds3.IDs3Client Member List</div>  </div>
@@ -92,21 +109,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>This is the complete list of members for <a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a1969e2a0d2cd4e36a019a27859ee30e1">BulkGet</a>(BulkGetRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a759b3cdf023fe1e1217cdad2ed1d11fe">BulkPut</a>(BulkPutRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a4d4f870cae8b36d35b82508e3c3082c0">DeleteBucket</a>(DeleteBucketRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a3623d5b780a6e4a24a4248c70326ff8c">DeleteObject</a>(DeleteObjectRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#ae97a5b2a4b88b89b5413002745affa1f">BuildFactory</a>(IEnumerable&lt; Node &gt; nodes)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#aaf7ce2ff6940373e4ac5d6dee52c9fdc">BulkGet</a>(BulkGetRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a971ad810491237993e35dde7ed6c5f06">BulkPut</a>(BulkPutRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a18b864c5e045e27b597f923df1f0f499">DeleteBucket</a>(DeleteBucketRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a6609e76433d7427d78864d5859dd8205">DeleteObject</a>(DeleteObjectRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#ab0525f7f4c8870f362f4122a675afab8">DeleteObjectList</a>(DeleteObjectListRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a3fea096d023a976e738bedeb3f6cc58f">GetBucket</a>(GetBucketRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#aa2b2dbf04e7ff81bde430903b1b20c7d">GetJob</a>(GetJobRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a776a6d1f13d4eb28409c7458b2090570">GetJobList</a>(GetJobListRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a7afc6e7cf02e52eeb608947c4a4e7efb">GetObject</a>(GetObjectRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#af8c7daed279df426c72e0e8326d7894d">GetService</a>(GetServiceRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a1df1b998d33478cf17f093c0cc6dcaa8">PutBucket</a>(PutBucketRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#ab2f2a1cbf6810d5f7ca1dced133ba6ae">PutObject</a>(PutObjectRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a49f4e6145650396a1721796760d2bd2f">HeadBucket</a>(HeadBucketRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a13483c7f748469bd983a1d8e9ba35b9f">PutBucket</a>(PutBucketRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a50f97a6c99bd6547908fccd100421876">PutObject</a>(PutObjectRequest request)</td><td class="entry"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">Ds3.IDs3Client</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Wed May 7 2014 15:19:47 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.6
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Wed Jul 9 2014 16:23:31 for DS3 .NET SDK by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
 </body>
 </html>

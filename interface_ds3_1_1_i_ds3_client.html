@@ -4,10 +4,17 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>My Project: Ds3.IDs3Client Interface Reference</title>
+<title>DS3 .NET SDK: Ds3.IDs3Client Interface Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -22,7 +29,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">DS3 .NET SDK
    </div>
   </td>
  </tr>
@@ -37,7 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
+      <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('interface_ds3_1_1_i_ds3_client.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespace_ds3.html">Ds3</a></li><li class="navelem"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">IDs3Client</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -109,34 +126,74 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7afc6e7cf02e52eeb608947c4a4e7efb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_get_object_response.html">GetObjectResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a7afc6e7cf02e52eeb608947c4a4e7efb">GetObject</a> (<a class="el" href="class_ds3_1_1_calls_1_1_get_object_request.html">GetObjectRequest</a> request)</td></tr>
 <tr class="memdesc:a7afc6e7cf02e52eeb608947c4a4e7efb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a Stream of the contents of the specified object.  <a href="#a7afc6e7cf02e52eeb608947c4a4e7efb">More...</a><br/></td></tr>
 <tr class="separator:a7afc6e7cf02e52eeb608947c4a4e7efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2f2a1cbf6810d5f7ca1dced133ba6ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_put_object_response.html">PutObjectResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#ab2f2a1cbf6810d5f7ca1dced133ba6ae">PutObject</a> (<a class="el" href="class_ds3_1_1_calls_1_1_put_object_request.html">PutObjectRequest</a> request)</td></tr>
-<tr class="memdesc:ab2f2a1cbf6810d5f7ca1dced133ba6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Submits the contents of a Stream to a specified object.  <a href="#ab2f2a1cbf6810d5f7ca1dced133ba6ae">More...</a><br/></td></tr>
-<tr class="separator:ab2f2a1cbf6810d5f7ca1dced133ba6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3623d5b780a6e4a24a4248c70326ff8c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_delete_object_response.html">DeleteObjectResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a3623d5b780a6e4a24a4248c70326ff8c">DeleteObject</a> (<a class="el" href="class_ds3_1_1_calls_1_1_delete_object_request.html">DeleteObjectRequest</a> request)</td></tr>
-<tr class="memdesc:a3623d5b780a6e4a24a4248c70326ff8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the specified object.  <a href="#a3623d5b780a6e4a24a4248c70326ff8c">More...</a><br/></td></tr>
-<tr class="separator:a3623d5b780a6e4a24a4248c70326ff8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d4f870cae8b36d35b82508e3c3082c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_delete_bucket_response.html">DeleteBucketResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a4d4f870cae8b36d35b82508e3c3082c0">DeleteBucket</a> (<a class="el" href="class_ds3_1_1_calls_1_1_delete_bucket_request.html">DeleteBucketRequest</a> request)</td></tr>
-<tr class="memdesc:a4d4f870cae8b36d35b82508e3c3082c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the specified bucket.  <a href="#a4d4f870cae8b36d35b82508e3c3082c0">More...</a><br/></td></tr>
-<tr class="separator:a4d4f870cae8b36d35b82508e3c3082c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1df1b998d33478cf17f093c0cc6dcaa8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_put_bucket_response.html">PutBucketResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a1df1b998d33478cf17f093c0cc6dcaa8">PutBucket</a> (<a class="el" href="class_ds3_1_1_calls_1_1_put_bucket_request.html">PutBucketRequest</a> request)</td></tr>
-<tr class="memdesc:a1df1b998d33478cf17f093c0cc6dcaa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the specified bucket.  <a href="#a1df1b998d33478cf17f093c0cc6dcaa8">More...</a><br/></td></tr>
-<tr class="separator:a1df1b998d33478cf17f093c0cc6dcaa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1969e2a0d2cd4e36a019a27859ee30e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_get_response.html">BulkGetResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a1969e2a0d2cd4e36a019a27859ee30e1">BulkGet</a> (<a class="el" href="class_ds3_1_1_calls_1_1_bulk_get_request.html">BulkGetRequest</a> request)</td></tr>
-<tr class="memdesc:a1969e2a0d2cd4e36a019a27859ee30e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primes a DS3 bulk get for better performance. Note that this request requires that each Ds3Object have both the name and the size set. Subsequent GetObject operations should be performed in the order specified by the BulkGetResponse.  <a href="#a1969e2a0d2cd4e36a019a27859ee30e1">More...</a><br/></td></tr>
-<tr class="separator:a1969e2a0d2cd4e36a019a27859ee30e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a759b3cdf023fe1e1217cdad2ed1d11fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_response.html">BulkPutResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a759b3cdf023fe1e1217cdad2ed1d11fe">BulkPut</a> (<a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">BulkPutRequest</a> request)</td></tr>
-<tr class="memdesc:a759b3cdf023fe1e1217cdad2ed1d11fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primes a DS3 bulk put for better performance. Note that this request requires that each Ds3Object have both the name and the size set. Subsequent PutObject operations should be performed in the order specified by the BulkPutResponse.  <a href="#a759b3cdf023fe1e1217cdad2ed1d11fe">More...</a><br/></td></tr>
-<tr class="separator:a759b3cdf023fe1e1217cdad2ed1d11fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50f97a6c99bd6547908fccd100421876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a50f97a6c99bd6547908fccd100421876">PutObject</a> (<a class="el" href="class_ds3_1_1_calls_1_1_put_object_request.html">PutObjectRequest</a> request)</td></tr>
+<tr class="memdesc:a50f97a6c99bd6547908fccd100421876"><td class="mdescLeft">&#160;</td><td class="mdescRight">Submits the contents of a Stream to a specified object.  <a href="#a50f97a6c99bd6547908fccd100421876">More...</a><br/></td></tr>
+<tr class="separator:a50f97a6c99bd6547908fccd100421876"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6609e76433d7427d78864d5859dd8205"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a6609e76433d7427d78864d5859dd8205">DeleteObject</a> (<a class="el" href="class_ds3_1_1_calls_1_1_delete_object_request.html">DeleteObjectRequest</a> request)</td></tr>
+<tr class="memdesc:a6609e76433d7427d78864d5859dd8205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the specified object.  <a href="#a6609e76433d7427d78864d5859dd8205">More...</a><br/></td></tr>
+<tr class="separator:a6609e76433d7427d78864d5859dd8205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0525f7f4c8870f362f4122a675afab8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_delete_object_list_response.html">DeleteObjectListResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#ab0525f7f4c8870f362f4122a675afab8">DeleteObjectList</a> (<a class="el" href="class_ds3_1_1_calls_1_1_delete_object_list_request.html">DeleteObjectListRequest</a> request)</td></tr>
+<tr class="memdesc:ab0525f7f4c8870f362f4122a675afab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the specified list of objects.  <a href="#ab0525f7f4c8870f362f4122a675afab8">More...</a><br/></td></tr>
+<tr class="separator:ab0525f7f4c8870f362f4122a675afab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18b864c5e045e27b597f923df1f0f499"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a18b864c5e045e27b597f923df1f0f499">DeleteBucket</a> (<a class="el" href="class_ds3_1_1_calls_1_1_delete_bucket_request.html">DeleteBucketRequest</a> request)</td></tr>
+<tr class="memdesc:a18b864c5e045e27b597f923df1f0f499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the specified bucket.  <a href="#a18b864c5e045e27b597f923df1f0f499">More...</a><br/></td></tr>
+<tr class="separator:a18b864c5e045e27b597f923df1f0f499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13483c7f748469bd983a1d8e9ba35b9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a13483c7f748469bd983a1d8e9ba35b9f">PutBucket</a> (<a class="el" href="class_ds3_1_1_calls_1_1_put_bucket_request.html">PutBucketRequest</a> request)</td></tr>
+<tr class="memdesc:a13483c7f748469bd983a1d8e9ba35b9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the specified bucket.  <a href="#a13483c7f748469bd983a1d8e9ba35b9f">More...</a><br/></td></tr>
+<tr class="separator:a13483c7f748469bd983a1d8e9ba35b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49f4e6145650396a1721796760d2bd2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_head_bucket_response.html">HeadBucketResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a49f4e6145650396a1721796760d2bd2f">HeadBucket</a> (<a class="el" href="class_ds3_1_1_calls_1_1_head_bucket_request.html">HeadBucketRequest</a> request)</td></tr>
+<tr class="memdesc:a49f4e6145650396a1721796760d2bd2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a HTTP HEAD for a bucket. The HEAD will return information about if the bucket exists, or if the user has access to that bucket.  <a href="#a49f4e6145650396a1721796760d2bd2f">More...</a><br/></td></tr>
+<tr class="separator:a49f4e6145650396a1721796760d2bd2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf7ce2ff6940373e4ac5d6dee52c9fdc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_job_response.html">JobResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#aaf7ce2ff6940373e4ac5d6dee52c9fdc">BulkGet</a> (<a class="el" href="class_ds3_1_1_calls_1_1_bulk_get_request.html">BulkGetRequest</a> request)</td></tr>
+<tr class="memdesc:aaf7ce2ff6940373e4ac5d6dee52c9fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primes a DS3 bulk get for better performance. Note that this request requires that each Ds3Object have both the name and the size set. Subsequent GetObject operations should be performed in the order specified by the BulkGetResponse.  <a href="#aaf7ce2ff6940373e4ac5d6dee52c9fdc">More...</a><br/></td></tr>
+<tr class="separator:aaf7ce2ff6940373e4ac5d6dee52c9fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a971ad810491237993e35dde7ed6c5f06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_job_response.html">JobResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a971ad810491237993e35dde7ed6c5f06">BulkPut</a> (<a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">BulkPutRequest</a> request)</td></tr>
+<tr class="memdesc:a971ad810491237993e35dde7ed6c5f06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primes a DS3 bulk put for better performance. Note that this request requires that each Ds3Object have both the name and the size set. Subsequent PutObject operations should be performed in the order specified by the BulkPutResponse.  <a href="#a971ad810491237993e35dde7ed6c5f06">More...</a><br/></td></tr>
+<tr class="separator:a971ad810491237993e35dde7ed6c5f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776a6d1f13d4eb28409c7458b2090570"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_get_job_list_response.html">GetJobListResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#a776a6d1f13d4eb28409c7458b2090570">GetJobList</a> (<a class="el" href="class_ds3_1_1_calls_1_1_get_job_list_request.html">GetJobListRequest</a> request)</td></tr>
+<tr class="memdesc:a776a6d1f13d4eb28409c7458b2090570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the list of available jobs.  <a href="#a776a6d1f13d4eb28409c7458b2090570">More...</a><br/></td></tr>
+<tr class="separator:a776a6d1f13d4eb28409c7458b2090570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b2dbf04e7ff81bde430903b1b20c7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_job_response.html">JobResponse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#aa2b2dbf04e7ff81bde430903b1b20c7d">GetJob</a> (<a class="el" href="class_ds3_1_1_calls_1_1_get_job_request.html">GetJobRequest</a> request)</td></tr>
+<tr class="memdesc:aa2b2dbf04e7ff81bde430903b1b20c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves information about a job so it can be resumed.  <a href="#aa2b2dbf04e7ff81bde430903b1b20c7d">More...</a><br/></td></tr>
+<tr class="separator:aa2b2dbf04e7ff81bde430903b1b20c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae97a5b2a4b88b89b5413002745affa1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_ds3_1_1_i_ds3_client_factory.html">IDs3ClientFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_ds3_1_1_i_ds3_client.html#ae97a5b2a4b88b89b5413002745affa1f">BuildFactory</a> (IEnumerable&lt; <a class="el" href="class_ds3_1_1_models_1_1_node.html">Node</a> &gt; nodes)</td></tr>
+<tr class="memdesc:ae97a5b2a4b88b89b5413002745affa1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">For future multi-node support, this provides a means of creating a client that connects to the specified node id.  <a href="#ae97a5b2a4b88b89b5413002745affa1f">More...</a><br/></td></tr>
+<tr class="separator:ae97a5b2a4b88b89b5413002745affa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The main DS3 API interface. Use <a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a> to instantiate. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1969e2a0d2cd4e36a019a27859ee30e1"></a>
+<a class="anchor" id="ae97a5b2a4b88b89b5413002745affa1f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_get_response.html">BulkGetResponse</a> Ds3.IDs3Client.BulkGet </td>
+          <td class="memname"><a class="el" href="interface_ds3_1_1_i_ds3_client_factory.html">IDs3ClientFactory</a> Ds3.IDs3Client.BuildFactory </td>
+          <td>(</td>
+          <td class="paramtype">IEnumerable&lt; <a class="el" href="class_ds3_1_1_models_1_1_node.html">Node</a> &gt;&#160;</td>
+          <td class="paramname"><em>nodes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For future multi-node support, this provides a means of creating a client that connects to the specified node id. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nodes</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aaf7ce2ff6940373e4ac5d6dee52c9fdc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_job_response.html">JobResponse</a> Ds3.IDs3Client.BulkGet </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_get_request.html">BulkGetRequest</a>&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
@@ -156,12 +213,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a759b3cdf023fe1e1217cdad2ed1d11fe"></a>
+<a class="anchor" id="a971ad810491237993e35dde7ed6c5f06"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_response.html">BulkPutResponse</a> Ds3.IDs3Client.BulkPut </td>
+          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_job_response.html">JobResponse</a> Ds3.IDs3Client.BulkPut </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">BulkPutRequest</a>&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
@@ -181,12 +238,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4d4f870cae8b36d35b82508e3c3082c0"></a>
+<a class="anchor" id="a18b864c5e045e27b597f923df1f0f499"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_delete_bucket_response.html">DeleteBucketResponse</a> Ds3.IDs3Client.DeleteBucket </td>
+          <td class="memname">void Ds3.IDs3Client.DeleteBucket </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_delete_bucket_request.html">DeleteBucketRequest</a>&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
@@ -206,12 +263,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3623d5b780a6e4a24a4248c70326ff8c"></a>
+<a class="anchor" id="a6609e76433d7427d78864d5859dd8205"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_delete_object_response.html">DeleteObjectResponse</a> Ds3.IDs3Client.DeleteObject </td>
+          <td class="memname">void Ds3.IDs3Client.DeleteObject </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_delete_object_request.html">DeleteObjectRequest</a>&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
@@ -221,6 +278,31 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Deletes the specified object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">request</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab0525f7f4c8870f362f4122a675afab8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_delete_object_list_response.html">DeleteObjectListResponse</a> Ds3.IDs3Client.DeleteObjectList </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_delete_object_list_request.html">DeleteObjectListRequest</a>&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Deletes the specified list of objects. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">request</td><td></td></tr>
@@ -246,6 +328,56 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Retrieves the list of objects in the specified bucket. Note that the server may choose to limit the number of objects specified in its reply, so you may have to call this multiple times using the request.WithMarker() method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">request</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa2b2dbf04e7ff81bde430903b1b20c7d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_job_response.html">JobResponse</a> Ds3.IDs3Client.GetJob </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_get_job_request.html">GetJobRequest</a>&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves information about a job so it can be resumed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">request</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a776a6d1f13d4eb28409c7458b2090570"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_get_job_list_response.html">GetJobListResponse</a> Ds3.IDs3Client.GetJobList </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_get_job_list_request.html">GetJobListRequest</a>&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the list of available jobs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">request</td><td></td></tr>
@@ -306,12 +438,37 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1df1b998d33478cf17f093c0cc6dcaa8"></a>
+<a class="anchor" id="a49f4e6145650396a1721796760d2bd2f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_put_bucket_response.html">PutBucketResponse</a> Ds3.IDs3Client.PutBucket </td>
+          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_head_bucket_response.html">HeadBucketResponse</a> Ds3.IDs3Client.HeadBucket </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_head_bucket_request.html">HeadBucketRequest</a>&#160;</td>
+          <td class="paramname"><em>request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Performs a HTTP HEAD for a bucket. The HEAD will return information about if the bucket exists, or if the user has access to that bucket. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">request</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The response containing the status of the bucket.</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a13483c7f748469bd983a1d8e9ba35b9f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Ds3.IDs3Client.PutBucket </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_put_bucket_request.html">PutBucketRequest</a>&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
@@ -331,12 +488,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab2f2a1cbf6810d5f7ca1dced133ba6ae"></a>
+<a class="anchor" id="a50f97a6c99bd6547908fccd100421876"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_put_object_response.html">PutObjectResponse</a> Ds3.IDs3Client.PutObject </td>
+          <td class="memname">void Ds3.IDs3Client.PutObject </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_ds3_1_1_calls_1_1_put_object_request.html">PutObjectRequest</a>&#160;</td>
           <td class="paramname"><em>request</em></td><td>)</td>
@@ -360,11 +517,15 @@ Public Member Functions</h2></td></tr>
 <li>C:/Users/hansk/Documents/GitHub/ds3_net_sdk/Ds3/IDs3Client.cs</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Wed May 7 2014 15:19:47 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.6
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_ds3.html">Ds3</a></li><li class="navelem"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">IDs3Client</a></li>
+    <li class="footer">Generated on Wed Jul 9 2014 16:23:31 for DS3 .NET SDK by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
 </body>
 </html>

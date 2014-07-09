@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['putbucket',['PutBucket',['../interface_ds3_1_1_i_ds3_client.html#a1df1b998d33478cf17f093c0cc6dcaa8',1,'Ds3::IDs3Client']]],
-  ['putbucketrequest',['PutBucketRequest',['../class_ds3_1_1_calls_1_1_put_bucket_request.html',1,'Ds3::Calls']]],
-  ['putbucketresponse',['PutBucketResponse',['../class_ds3_1_1_calls_1_1_put_bucket_response.html',1,'Ds3::Calls']]],
-  ['putobject',['PutObject',['../interface_ds3_1_1_i_ds3_client.html#ab2f2a1cbf6810d5f7ca1dced133ba6ae',1,'Ds3::IDs3Client']]],
-  ['putobjectrequest',['PutObjectRequest',['../class_ds3_1_1_calls_1_1_put_object_request.html',1,'Ds3::Calls']]],
-  ['putobjectresponse',['PutObjectResponse',['../class_ds3_1_1_calls_1_1_put_object_response.html',1,'Ds3::Calls']]]
+  ['ids3client',['IDs3Client',['../interface_ds3_1_1_i_ds3_client.html',1,'Ds3']]],
+  ['ids3clientfactory',['IDs3ClientFactory',['../interface_ds3_1_1_i_ds3_client_factory.html',1,'Ds3']]],
+  ['ids3clienthelpers',['IDs3ClientHelpers',['../interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html',1,'Ds3::Helpers']]],
+  ['ijob_3c_20trequest_20_3e',['IJob&lt; TRequest &gt;',['../interface_ds3_1_1_helpers_1_1_i_job_3_01_t_request_01_4.html',1,'Ds3::Helpers']]],
+  ['ireadjob',['IReadJob',['../interface_ds3_1_1_helpers_1_1_i_read_job.html',1,'Ds3::Helpers']]],
+  ['iwritejob',['IWriteJob',['../interface_ds3_1_1_helpers_1_1_i_write_job.html',1,'Ds3::Helpers']]]
 ];

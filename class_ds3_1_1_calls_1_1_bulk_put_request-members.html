@@ -4,10 +4,17 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>My Project: Member List</title>
+<title>DS3 .NET SDK: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -22,7 +29,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">DS3 .NET SDK
    </div>
   </td>
  </tr>
@@ -37,7 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
+      <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('class_ds3_1_1_calls_1_1_bulk_put_request.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespace_ds3.html">Ds3</a></li><li class="navelem"><a class="el" href="namespace_ds3_1_1_calls.html">Calls</a></li><li class="navelem"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">BulkPutRequest</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">Ds3.Calls.BulkPutRequest Member List</div>  </div>
@@ -93,15 +110,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>This is the complete list of members for <a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">Ds3.Calls.BulkPutRequest</a>, including all inherited members.</p>
 <table class="directory">
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>BucketName</b> (defined in <a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html">Ds3.Calls.BulkRequest</a>)</td><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html">Ds3.Calls.BulkRequest</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>BulkPutRequest</b>(string bucketName, List&lt; Ds3Object &gt; objects) (defined in <a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">Ds3.Calls.BulkPutRequest</a>)</td><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">Ds3.Calls.BulkPutRequest</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html#a2a3f34ed682f401c27b31be32ab41176">BulkRequest</a>(string bucketName, List&lt; Ds3Object &gt; objectList)</td><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html">Ds3.Calls.BulkRequest</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>BulkPutRequest</b>(string bucketName, List&lt; Ds3Object &gt; objects) (defined in <a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">Ds3.Calls.BulkPutRequest</a>)</td><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_put_request.html">Ds3.Calls.BulkPutRequest</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html#a2a3f34ed682f401c27b31be32ab41176">BulkRequest</a>(string bucketName, List&lt; Ds3Object &gt; objectList)</td><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html">Ds3.Calls.BulkRequest</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>Objects</b> (defined in <a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html">Ds3.Calls.BulkRequest</a>)</td><td class="entry"><a class="el" href="class_ds3_1_1_calls_1_1_bulk_request.html">Ds3.Calls.BulkRequest</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Wed May 7 2014 15:19:48 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.6
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Wed Jul 9 2014 16:23:31 for DS3 .NET SDK by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
 </body>
 </html>

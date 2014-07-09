@@ -4,10 +4,17 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>My Project: Ds3.Ds3Builder Class Reference</title>
+<title>DS3 .NET SDK: Ds3.Ds3Builder Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -22,7 +29,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">DS3 .NET SDK
    </div>
   </td>
  </tr>
@@ -37,7 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
+      <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('class_ds3_1_1_ds3_builder.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Properties</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespace_ds3.html">Ds3</a></li><li class="navelem"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -105,6 +122,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab2f5340ad6c53e835a9ba68a63427ac7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ds3_1_1_ds3_builder.html#ab2f5340ad6c53e835a9ba68a63427ac7">WithRedirectRetries</a> (int count)</td></tr>
 <tr class="memdesc:ab2f5340ad6c53e835a9ba68a63427ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sometimes the DS3 server isn't ready to service a request. In these situations it will periodically respond with a 307 redirect to keep the connection alive. The SDK makes this transparent if it happens up to RedirectRetries times. Use this to specify a limit on how many times this should happen before throwing an exception.  <a href="#ab2f5340ad6c53e835a9ba68a63427ac7">More...</a><br/></td></tr>
 <tr class="separator:ab2f5340ad6c53e835a9ba68a63427ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e11b809ce45c780e7607dd33f6aacf4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ds3_1_1_ds3_builder.html#a7e11b809ce45c780e7607dd33f6aacf4">WithCopyBufferSize</a> (int copyBufferSize)</td></tr>
+<tr class="memdesc:a7e11b809ce45c780e7607dd33f6aacf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how many bytes to copy at a time to and from input streams when performing object GET and PUT operations.  <a href="#a7e11b809ce45c780e7607dd33f6aacf4">More...</a><br/></td></tr>
+<tr class="separator:a7e11b809ce45c780e7607dd33f6aacf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40167a5cd9a32243e594d132e4234cb1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ds3_1_1_ds3_builder.html#a40167a5cd9a32243e594d132e4234cb1">WithReadWriteTimeout</a> (int readWriteTimeout)</td></tr>
+<tr class="memdesc:a40167a5cd9a32243e594d132e4234cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies how long to wait for an HTTP request or response to transfer.  <a href="#a40167a5cd9a32243e594d132e4234cb1">More...</a><br/></td></tr>
+<tr class="separator:a40167a5cd9a32243e594d132e4234cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d076a35c2bf7cad75409b6b3fe64ced"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ds3_1_1_ds3_builder.html#a1d076a35c2bf7cad75409b6b3fe64ced">WithRequestTimeout</a> (int requestTimeout)</td></tr>
+<tr class="memdesc:a1d076a35c2bf7cad75409b6b3fe64ced"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies how long to wait for the server to respond once the SDK has fully sent a request.  <a href="#a1d076a35c2bf7cad75409b6b3fe64ced">More...</a><br/></td></tr>
+<tr class="separator:a1d076a35c2bf7cad75409b6b3fe64ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62929f21b5f6dd4127f284288b7c9d1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">IDs3Client</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ds3_1_1_ds3_builder.html#a62929f21b5f6dd4127f284288b7c9d1e">Build</a> ()</td></tr>
 <tr class="memdesc:a62929f21b5f6dd4127f284288b7c9d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the Ds3Client using the specified parameters.  <a href="#a62929f21b5f6dd4127f284288b7c9d1e">More...</a><br/></td></tr>
 <tr class="separator:a62929f21b5f6dd4127f284288b7c9d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,9 +139,6 @@ Public Member Functions</h2></td></tr>
 <a class="anchor" id="a91c737a658d9bff288fa877531e42a27"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Ds3.Ds3Builder.Ds3Builder </td>
@@ -135,11 +158,6 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p></p>
@@ -156,9 +174,6 @@ Public Member Functions</h2></td></tr>
 <a class="anchor" id="ac248147642725f6ae9aa95be4615dfe5"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Ds3.Ds3Builder.Ds3Builder </td>
@@ -178,11 +193,6 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p></p>
@@ -200,9 +210,6 @@ Public Member Functions</h2></td></tr>
 <a class="anchor" id="a62929f21b5f6dd4127f284288b7c9d1e"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="interface_ds3_1_1_i_ds3_client.html">IDs3Client</a> Ds3.Ds3Builder.Build </td>
@@ -211,11 +218,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Creates the Ds3Client using the specified parameters. </p>
@@ -223,12 +225,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a7e11b809ce45c780e7607dd33f6aacf4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a> Ds3.Ds3Builder.WithCopyBufferSize </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>copyBufferSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines how many bytes to copy at a time to and from input streams when performing object GET and PUT operations. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">copyBufferSize</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a5ab9b5e3b4e3ffadd4d59e819f2dc921"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a> Ds3.Ds3Builder.WithProxy </td>
@@ -238,11 +262,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Used to specify an HTTP proxy. </p>
@@ -256,12 +275,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a40167a5cd9a32243e594d132e4234cb1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a> Ds3.Ds3Builder.WithReadWriteTimeout </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>readWriteTimeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Specifies how long to wait for an HTTP request or response to transfer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">readWriteTimeout</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ab2f5340ad6c53e835a9ba68a63427ac7"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a> Ds3.Ds3Builder.WithRedirectRetries </td>
@@ -271,11 +312,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Sometimes the DS3 server isn't ready to service a request. In these situations it will periodically respond with a 307 redirect to keep the connection alive. The SDK makes this transparent if it happens up to RedirectRetries times. Use this to specify a limit on how many times this should happen before throwing an exception. </p>
@@ -289,15 +325,44 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a1d076a35c2bf7cad75409b6b3fe64ced"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a> Ds3.Ds3Builder.WithRequestTimeout </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>requestTimeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Specifies how long to wait for the server to respond once the SDK has fully sent a request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">requestTimeout</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>C:/Users/hansk/Documents/GitHub/ds3_net_sdk/Ds3/Ds3Builder.cs</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Wed May 7 2014 15:19:47 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.6
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespace_ds3.html">Ds3</a></li><li class="navelem"><a class="el" href="class_ds3_1_1_ds3_builder.html">Ds3Builder</a></li>
+    <li class="footer">Generated on Wed Jul 9 2014 16:23:31 for DS3 .NET SDK by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
 </body>
 </html>

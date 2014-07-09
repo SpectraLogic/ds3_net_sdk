@@ -1,0 +1,25 @@
+var namespace_ds3_1_1_calls =
+[
+    [ "BulkGetRequest", "class_ds3_1_1_calls_1_1_bulk_get_request.html", "class_ds3_1_1_calls_1_1_bulk_get_request" ],
+    [ "BulkPutRequest", "class_ds3_1_1_calls_1_1_bulk_put_request.html", "class_ds3_1_1_calls_1_1_bulk_put_request" ],
+    [ "BulkRequest", "class_ds3_1_1_calls_1_1_bulk_request.html", "class_ds3_1_1_calls_1_1_bulk_request" ],
+    [ "DeleteBucketRequest", "class_ds3_1_1_calls_1_1_delete_bucket_request.html", "class_ds3_1_1_calls_1_1_delete_bucket_request" ],
+    [ "DeleteObjectListRequest", "class_ds3_1_1_calls_1_1_delete_object_list_request.html", "class_ds3_1_1_calls_1_1_delete_object_list_request" ],
+    [ "DeleteObjectListResponse", "class_ds3_1_1_calls_1_1_delete_object_list_response.html", "class_ds3_1_1_calls_1_1_delete_object_list_response" ],
+    [ "DeleteObjectRequest", "class_ds3_1_1_calls_1_1_delete_object_request.html", "class_ds3_1_1_calls_1_1_delete_object_request" ],
+    [ "Ds3Request", "class_ds3_1_1_calls_1_1_ds3_request.html", "class_ds3_1_1_calls_1_1_ds3_request" ],
+    [ "GetBucketRequest", "class_ds3_1_1_calls_1_1_get_bucket_request.html", "class_ds3_1_1_calls_1_1_get_bucket_request" ],
+    [ "GetBucketResponse", "class_ds3_1_1_calls_1_1_get_bucket_response.html", "class_ds3_1_1_calls_1_1_get_bucket_response" ],
+    [ "GetJobListRequest", "class_ds3_1_1_calls_1_1_get_job_list_request.html", "class_ds3_1_1_calls_1_1_get_job_list_request" ],
+    [ "GetJobListResponse", "class_ds3_1_1_calls_1_1_get_job_list_response.html", "class_ds3_1_1_calls_1_1_get_job_list_response" ],
+    [ "GetJobRequest", "class_ds3_1_1_calls_1_1_get_job_request.html", "class_ds3_1_1_calls_1_1_get_job_request" ],
+    [ "GetObjectRequest", "class_ds3_1_1_calls_1_1_get_object_request.html", "class_ds3_1_1_calls_1_1_get_object_request" ],
+    [ "GetObjectResponse", "class_ds3_1_1_calls_1_1_get_object_response.html", "class_ds3_1_1_calls_1_1_get_object_response" ],
+    [ "GetServiceRequest", "class_ds3_1_1_calls_1_1_get_service_request.html", "class_ds3_1_1_calls_1_1_get_service_request" ],
+    [ "GetServiceResponse", "class_ds3_1_1_calls_1_1_get_service_response.html", "class_ds3_1_1_calls_1_1_get_service_response" ],
+    [ "HeadBucketRequest", "class_ds3_1_1_calls_1_1_head_bucket_request.html", "class_ds3_1_1_calls_1_1_head_bucket_request" ],
+    [ "HeadBucketResponse", "class_ds3_1_1_calls_1_1_head_bucket_response.html", "class_ds3_1_1_calls_1_1_head_bucket_response" ],
+    [ "JobResponse", "class_ds3_1_1_calls_1_1_job_response.html", "class_ds3_1_1_calls_1_1_job_response" ],
+    [ "PutBucketRequest", "class_ds3_1_1_calls_1_1_put_bucket_request.html", "class_ds3_1_1_calls_1_1_put_bucket_request" ],
+    [ "PutObjectRequest", "class_ds3_1_1_calls_1_1_put_object_request.html", "class_ds3_1_1_calls_1_1_put_object_request" ]
+];

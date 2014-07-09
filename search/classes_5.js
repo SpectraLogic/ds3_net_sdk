@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['owner',['Owner',['../class_ds3_1_1_models_1_1_owner.html',1,'Ds3::Models']]]
+  ['headbucketrequest',['HeadBucketRequest',['../class_ds3_1_1_calls_1_1_head_bucket_request.html',1,'Ds3::Calls']]],
+  ['headbucketresponse',['HeadBucketResponse',['../class_ds3_1_1_calls_1_1_head_bucket_response.html',1,'Ds3::Calls']]]
 ];
