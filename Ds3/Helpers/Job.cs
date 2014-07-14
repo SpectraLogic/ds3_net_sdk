@@ -46,17 +46,20 @@ namespace Ds3.Helpers
             public string BucketName { get; private set; }
             public string ObjectName { get; private set; }
             public Guid JobId { get; private set; }
+            public long Offset { get; private set; }
             public Stream Stream { get; private set; }
 
             public JobObjectRequest(
                 string bucketName,
                 string objectName,
                 Guid jobId,
+                long offset,
                 Stream stream)
             {
                 this.BucketName = bucketName;
                 this.ObjectName = objectName;
                 this.JobId = jobId;
+                this.Offset = offset;
                 this.Stream = stream;
             }
         }
@@ -139,6 +142,7 @@ namespace Ds3.Helpers
                     this._bulkResponse.BucketName,
                     obj.Name,
                     this._bulkResponse.JobId,
+                    obj.Offset,
                     new WindowedStream(stream, streamCoordinator, obj.Offset, obj.Length)
                 ),
                 jobObjectRequest => TransferJobObject(clientForNode, jobObjectRequest)

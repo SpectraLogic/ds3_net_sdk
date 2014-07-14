@@ -31,6 +31,7 @@ namespace Ds3.Helpers
                 jobObjectRequest.BucketName,
                 jobObjectRequest.ObjectName,
                 jobObjectRequest.JobId,
+                jobObjectRequest.Offset,
                 jobObjectRequest.Stream
             ));
         }
