@@ -13,20 +13,23 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
 namespace Ds3.Models
 {
     public class JobObject
     {
         public string Name { get; private set; }
-        public IEnumerable<Blob> Blobs { get; private set; }
+        public long Length { get; private set; }
+        public long Offset { get; private set; }
+        public bool InCache { get; private set; }
 
-        internal JobObject(string name, IEnumerable<Blob> blobs)
+        internal JobObject(string name, long length, long offset, bool inCache)
         {
             this.Name = name;
-            this.Blobs = blobs.ToList();
+            this.Length = length;
+            this.Offset = offset;
+            this.InCache = inCache;
         }
     }
 }

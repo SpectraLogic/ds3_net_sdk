@@ -28,7 +28,6 @@ namespace Ds3.Calls
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
         public Guid JobId { get; private set; }
-        public Guid BlobId { get; private set; }
 
         private Range _byteRange;
         public Range ByteRange
@@ -82,24 +81,19 @@ namespace Ds3.Calls
 
         [Obsolete]
         public GetObjectRequest(string bucketName, string ds3ObjectName, Stream destinationStream)
-            : this(bucketName, ds3ObjectName, Guid.Empty, Guid.Empty, destinationStream)
+            : this(bucketName, ds3ObjectName, Guid.Empty, destinationStream)
         {
         }
 
-        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId, Guid blobId, Stream destinationStream)
+        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId, Stream destinationStream)
         {
             this._destinationStream = destinationStream;
             this.BucketName = bucketName;
             this.ObjectName = ds3ObjectName;
             this.JobId = jobId;
-            this.BlobId = blobId;
             if (jobId != Guid.Empty)
             {
                 QueryParams.Add("job", jobId.ToString());
-            }
-            if (blobId != Guid.Empty)
-            {
-                QueryParams.Add("id", blobId.ToString());
             }
         }
     }

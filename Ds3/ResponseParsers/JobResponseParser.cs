@@ -58,13 +58,9 @@ namespace Ds3.ResponseParsers
                                 from objectElement in objs.Elements("Object")
                                 select new JobObject(
                                     objectElement.AttributeText("Name"),
-                                    from blob in objectElement.Elements("Blob")
-                                    select new Blob(
-                                        Guid.Parse(blob.AttributeText("Id")),
-                                        long.Parse(blob.AttributeText("Length")),
-                                        long.Parse(blob.AttributeText("Offset")),
-                                        bool.Parse(blob.AttributeText("InCache"))
-                                    )
+                                    long.Parse(objectElement.AttributeText("Length")),
+                                    long.Parse(objectElement.AttributeText("Offset")),
+                                    bool.Parse(objectElement.AttributeText("InCache"))
                                 )
                             select new JobObjectList(
                                 long.Parse(objs.AttributeTextOrNull("ChunkNumber")),

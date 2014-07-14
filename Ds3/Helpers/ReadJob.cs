@@ -24,19 +24,18 @@ namespace Ds3.Helpers
             : base(client, bulkGetResponse)
         {
         }
-        
-        protected override void TransferBlob(IDs3Client client, BlobRequest blobRequest)
+
+        protected override void TransferJobObject(IDs3Client client, JobObjectRequest jobObjectRequest)
         {
             client.GetObject(new GetObjectRequest(
-                blobRequest.BucketName,
-                blobRequest.ObjectName,
-                blobRequest.JobId,
-                blobRequest.BlobId,
-                blobRequest.Stream
+                jobObjectRequest.BucketName,
+                jobObjectRequest.ObjectName,
+                jobObjectRequest.JobId,
+                jobObjectRequest.Stream
             ));
         }
 
-        protected override bool ShouldTransferBlob(Blob blob)
+        protected override bool ShouldTransferJobObject(JobObject jobObject)
         {
             return true;
         }

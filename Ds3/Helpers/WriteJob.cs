@@ -25,20 +25,19 @@ namespace Ds3.Helpers
         {
         }
 
-        protected override void TransferBlob(IDs3Client client, BlobRequest blobRequest)
+        protected override void TransferJobObject(IDs3Client client, JobObjectRequest jobObjectRequest)
         {
             client.PutObject(new PutObjectRequest(
-                blobRequest.BucketName,
-                blobRequest.ObjectName,
-                blobRequest.JobId,
-                blobRequest.BlobId,
-                blobRequest.Stream
+                jobObjectRequest.BucketName,
+                jobObjectRequest.ObjectName,
+                jobObjectRequest.JobId,
+                jobObjectRequest.Stream
             ));
         }
 
-        protected override bool ShouldTransferBlob(Blob blob)
+        protected override bool ShouldTransferJobObject(JobObject jobObject)
         {
-            return !blob.InCache;
+            return !jobObject.InCache;
         }
     }
 }

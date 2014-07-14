@@ -285,87 +285,38 @@ namespace TestDs3
                 },
             };
 
+
             var expectedObjectLists = new[] {
                 new {
                     ChunkNumber=0L,
                     NodeId=(Guid?)Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"),
                     Objects = new[] {
-                        new {
-                            Name="client00obj000004-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("7abd8a10-3195-4468-8ca7-5eb1a9466ff2"), Length=5368709120L, Offset=0L },
-                                new { Id=Guid.Parse("651c60fb-3246-41fe-bc3e-59f09262cd40"), Length=2823290880L, Offset=5368709120L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000003-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("db1e4489-e16b-498d-bcf0-e74745226352"), Length=2823290880L, Offset=5368709120L },
-                                new { Id=Guid.Parse("cc3ce27e-08b0-4bcc-8df6-7365d25fc364"), Length=5368709120L, Offset=0L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000002-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("6004818c-ce1e-4786-a365-703a568827ac"), Length=5368709120L, Offset=0L },
-                                new { Id=Guid.Parse("94952064-ae93-4bf1-9e0a-1d130e78e688"), Length=2823290880L, Offset=5368709120L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000005-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("9fdd9fb2-2b5c-4b5c-938b-b1e64ea7e6e7"), Length=5368709120L, Offset=0L },
-                                new { Id=Guid.Parse("58ad980e-ba89-4260-9d33-733fe08b52a3"), Length=2823290880L, Offset=5368709120L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000006-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("4ccf5ce9-6f0d-421a-9133-94e3d235318f"), Length=5368709120L, Offset=0L },
-                                new { Id=Guid.Parse("7cfc806b-c629-4232-9404-bbcb56200771"), Length=2823290880L, Offset=5368709120L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000000-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("39521863-f735-42cd-b579-da45a3e0c030"), Length=5368709120L, Offset=0L },
-                                new { Id=Guid.Parse("f80d371b-cfc0-4394-9280-e3c6339a97be"), Length=2823290880L, Offset=5368709120L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000001-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("7b978f2f-7863-44e4-8ede-60efb320e650"), Length=5368709120L, Offset=0L },
-                                new { Id=Guid.Parse("ccb201e8-abdb-4a86-99ed-7165966d2c83"), Length=2823290880L, Offset=5368709120L },
-                            },
-                        },
+                        new { Name="client00obj000004-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000004-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000003-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000003-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000002-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000002-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000005-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000005-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000006-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000006-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000000-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000000-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000001-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000001-8000000", Length=2823290880L, Offset=5368709120L },
                     },
                 },
                 new {
                     ChunkNumber=1L,
                     NodeId=(Guid?)null,
                     Objects = new[] {
-                        new {
-                            Name="client00obj000008-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("79e11bd8-cfd1-4eb0-9ec1-916cff3efc33"), Length=2823290880L, Offset=5368709120L },
-                                new { Id=Guid.Parse("c282eb3c-c1aa-41cf-92ab-c392fb1304c8"), Length=5368709120L, Offset=0L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000009-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("264fb9d5-2e49-4cb5-a7ea-386d0cb9be1f"), Length=2823290880L, Offset=5368709120L },
-                                new { Id=Guid.Parse("4861870f-3d67-4e6b-99ca-95b10b16ed97"), Length=5368709120L, Offset=0L },
-                            },
-                        },
-                        new {
-                            Name="client00obj000007-8000000",
-                            Blobs = new[] {
-                                new { Id=Guid.Parse("d3843e7e-99e7-4551-873f-ec9ade3a7dd6"), Length=5368709120L, Offset=0L },
-                                new { Id=Guid.Parse("c5f27bcc-f25a-4d5e-a34c-5b1f7c2040d8"), Length=2823290880L, Offset=5368709120L },
-                            },
-                        }
+                        new { Name="client00obj000008-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000008-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000009-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000009-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000007-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000007-8000000", Length=2823290880L, Offset=5368709120L },
                     }
                 }
             };
@@ -385,12 +336,8 @@ namespace TestDs3
                 AssertInParallel(expectedObjectList.Objects, actualObjectList.Objects, (expectedObject, actualObject) =>
                 {
                     Assert.AreEqual(expectedObject.Name, actualObject.Name);
-                    AssertInParallel(expectedObject.Blobs, actualObject.Blobs, (expectedBlob, actualBlob) =>
-                    {
-                        Assert.AreEqual(expectedBlob.Id, actualBlob.Id);
-                        Assert.AreEqual(expectedBlob.Length, actualBlob.Length);
-                        Assert.AreEqual(expectedBlob.Offset, actualBlob.Offset);
-                    });
+                    Assert.AreEqual(expectedObject.Length, actualObject.Length);
+                    Assert.AreEqual(expectedObject.Offset, actualObject.Offset);
                 });
             });
         }

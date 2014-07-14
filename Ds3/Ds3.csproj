@@ -82,7 +82,6 @@
     <Compile Include="Helpers\WriteJob.cs" />
     <Compile Include="Helpers\ReadJob.cs" />
     <Compile Include="IDs3Client.cs" />
-    <Compile Include="Models\Blob.cs" />
     <Compile Include="Models\Checksum.cs" />
     <Compile Include="Models\DeleteDs3ObjectError.cs" />
     <Compile Include="Models\Ds3Object.cs" />

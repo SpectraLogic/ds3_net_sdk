@@ -37,29 +37,26 @@ namespace Ds3.Helpers
             this._bulkResponse = bulkResponse;
         }
 
-        protected abstract void TransferBlob(IDs3Client client, BlobRequest requestInfo);
+        protected abstract void TransferJobObject(IDs3Client client, JobObjectRequest requestInfo);
 
-        protected abstract bool ShouldTransferBlob(Blob blob);
+        protected abstract bool ShouldTransferJobObject(JobObject jobObject);
 
-        protected class BlobRequest
+        protected class JobObjectRequest
         {
             public string BucketName { get; private set; }
             public string ObjectName { get; private set; }
             public Guid JobId { get; private set; }
-            public Guid BlobId { get; private set; }
             public Stream Stream { get; private set; }
 
-            public BlobRequest(
+            public JobObjectRequest(
                 string bucketName,
                 string objectName,
                 Guid jobId,
-                Guid blobId,
                 Stream stream)
             {
                 this.BucketName = bucketName;
                 this.ObjectName = objectName;
                 this.JobId = jobId;
-                this.BlobId = blobId;
                 this.Stream = stream;
             }
         }
@@ -88,7 +85,7 @@ namespace Ds3.Helpers
 
         public void Transfer(Func<string, Stream> createStreamForObjectKey)
         {
-            var objectListsList = FilterBlobs(this._bulkResponse.ObjectLists);
+            var objectListsList = FilterJobObjects(this._bulkResponse.ObjectLists);
             var objectNamesPerChunk = objectListsList.Select(objectList => objectList.Select(obj => obj.Name));
             var clientFactory = _client.BuildFactory(this._bulkResponse.Nodes);
 
@@ -118,16 +115,11 @@ namespace Ds3.Helpers
             });
         }
 
-        private IEnumerable<JobObjectList> FilterBlobs(IEnumerable<JobObjectList> objectListsList)
+        private IEnumerable<JobObjectList> FilterJobObjects(IEnumerable<JobObjectList> objectListsList)
         {
             return (
                 from objectList in objectListsList
-                let newObjectList = (
-                    from obj in objectList.Objects
-                    let newBlobList = obj.Blobs.Where(ShouldTransferBlob).ToList()
-                    where newBlobList.Count > 0
-                    select new JobObject(obj.Name, newBlobList)
-                ).ToList()
+                let newObjectList = objectList.Objects.Where(ShouldTransferJobObject).ToList()
                 where newObjectList.Count > 0
                 select new JobObjectList(
                     objectList.ChunkNumber,
@@ -143,15 +135,13 @@ namespace Ds3.Helpers
                 from obj in jobObjects
                 let streamCoordinator = new CriticalSectionExecutor()
                 let stream = objectStreams[obj.Name]
-                from blob in obj.Blobs
-                select new BlobRequest(
+                select new JobObjectRequest(
                     this._bulkResponse.BucketName,
                     obj.Name,
                     this._bulkResponse.JobId,
-                    blob.Id,
-                    new WindowedStream(stream, streamCoordinator, blob.Offset, blob.Length)
+                    new WindowedStream(stream, streamCoordinator, obj.Offset, obj.Length)
                 ),
-                blobRequest => TransferBlob(clientForNode, blobRequest)
+                jobObjectRequest => TransferJobObject(clientForNode, jobObjectRequest)
             );
         }
 
