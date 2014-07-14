@@ -13,8 +13,6 @@
  * ****************************************************************************
  */
 
-using System;
-
 namespace Ds3.Models
 {
     public class JobObject

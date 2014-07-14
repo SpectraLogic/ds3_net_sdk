@@ -14,11 +14,9 @@
  */
 
 using System;
-using System.Net;
-using System.Collections.Generic;
+using System.IO;
 
 using Ds3.Models;
-using System.IO;
 
 namespace Ds3.Calls
 {
