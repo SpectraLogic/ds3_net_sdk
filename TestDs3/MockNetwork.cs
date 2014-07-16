@@ -20,6 +20,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 using Ds3;
@@ -31,7 +32,7 @@ namespace TestDs3
 {
     interface IMockNetworkWithExpectation
     {
-        IMockNetworkWithReturn Returning(HttpStatusCode statusCode, string responseContent);
+        IMockNetworkWithReturn Returning(HttpStatusCode statusCode, string responseContent, IDictionary<string, string> responseHeaders);
     }
 
     interface IMockNetworkWithReturn
@@ -47,6 +48,7 @@ namespace TestDs3
         private string _requestContent;
         private HttpStatusCode _statusCode;
         private string _responseContent;
+        private IDictionary<string, string> _responseHeaders;
 
         public static IMockNetworkWithExpectation Expecting(
             HttpVerb verb,
@@ -62,10 +64,11 @@ namespace TestDs3
             return mock;
         }
 
-        IMockNetworkWithReturn IMockNetworkWithExpectation.Returning(HttpStatusCode statusCode, string responseContent)
+        IMockNetworkWithReturn IMockNetworkWithExpectation.Returning(HttpStatusCode statusCode, string responseContent, IDictionary<string, string> responseHeaders)
         {
             _statusCode = statusCode;
             _responseContent = responseContent;
+            _responseHeaders = responseHeaders.ToDictionary(kvp => kvp.Key.ToLowerInvariant(), kvp => kvp.Value);
             return this;
         }
 
@@ -77,7 +80,7 @@ namespace TestDs3
             Assert.AreEqual(_path, request.Path);
             CollectionAssert.AreEquivalent(_queryParams, request.QueryParams);
             Assert.AreEqual(_requestContent, HelpersForTest.StringFromStream(request.GetContentStream()));
-            return new MockWebResponse(_responseContent, _statusCode);
+            return new MockWebResponse(_responseContent, _statusCode, _responseHeaders);
         }
 
         public int CopyBufferSize
@@ -90,13 +93,13 @@ namespace TestDs3
     {
         private readonly string _responseString;
         private readonly HttpStatusCode _statusCode;
-        private readonly IDictionary<string, string> _headers;
+        private readonly IDictionary<string, string> _responseHeaders;
 
-        public MockWebResponse(string responseString, HttpStatusCode statusCode)
+        public MockWebResponse(string responseString, HttpStatusCode statusCode, IDictionary<string, string> responseHeaders)
 	    {
             _responseString = responseString;
             _statusCode = statusCode;
-            _headers = new Dictionary<string, string>();
+            _responseHeaders = responseHeaders;
 	    }
 
         public Stream GetResponseStream()
@@ -111,7 +114,7 @@ namespace TestDs3
 
         public IDictionary<string, string> Headers
         {
-            get { return _headers; }
+            get { return _responseHeaders; }
         }
 
         public void Dispose()

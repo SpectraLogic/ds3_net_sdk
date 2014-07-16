@@ -23,7 +23,7 @@ namespace Ds3.ResponseParsers
 {
     internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
     {
-        public PutPartResponse Parse(PutPartRequest request, Runtime.IWebResponse response)
+        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
         {
             using (response)
             {

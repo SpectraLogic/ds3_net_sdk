@@ -32,7 +32,8 @@ namespace TestDs3
     [TestFixture]
     public class TestDs3Client
     {
-        private readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _emptyHeaders = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
 
         [Test]
         public void TestGetService()
@@ -54,7 +55,7 @@ namespace TestDs3
 
             var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, responseContent)
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient
                 .GetService(new GetServiceRequest());
             Assert.AreEqual("ryan", response.Owner.DisplayName);
@@ -74,7 +75,7 @@ namespace TestDs3
         {
             MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.BadRequest, "")
+                .Returning(HttpStatusCode.BadRequest, "", _emptyHeaders)
                 .AsClient
                 .GetService(new GetServiceRequest());
         }
@@ -85,7 +86,7 @@ namespace TestDs3
         {
             MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, "")
+                .Returning(HttpStatusCode.OK, "", _emptyHeaders)
                 .AsClient
                 .GetService(new GetServiceRequest());
         }
@@ -130,7 +131,7 @@ namespace TestDs3
 
             var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/remoteTest16", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, xmlResponse)
+                .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
                 .GetBucket(new GetBucketRequest("remoteTest16"));
             Assert.AreEqual(expected.Name, response.Name);
@@ -158,7 +159,7 @@ namespace TestDs3
         {
             MockNetwork
                 .Expecting(HttpVerb.PUT, "/bucketName", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, "")
+                .Returning(HttpStatusCode.OK, "", _emptyHeaders)
                 .AsClient
                 .PutBucket(new PutBucketRequest("bucketName"));
         }
@@ -168,7 +169,7 @@ namespace TestDs3
         {
             MockNetwork
                 .Expecting(HttpVerb.DELETE, "/bucketName", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.NoContent, "")
+                .Returning(HttpStatusCode.NoContent, "", _emptyHeaders)
                 .AsClient
                 .DeleteBucket(new DeleteBucketRequest("bucketName"));
         }
@@ -178,7 +179,7 @@ namespace TestDs3
         {
             MockNetwork
                 .Expecting(HttpVerb.DELETE, "/bucketName/my/file.txt", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.NoContent, "")
+                .Returning(HttpStatusCode.NoContent, "", _emptyHeaders)
                 .AsClient
                 .DeleteObject(new DeleteObjectRequest("bucketName", "my/file.txt"));
         }
@@ -189,7 +190,7 @@ namespace TestDs3
         {
             MockNetwork
                 .Expecting(HttpVerb.GET, "/bucketName", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.BadRequest, "")
+                .Returning(HttpStatusCode.BadRequest, "", _emptyHeaders)
                 .AsClient
                 .GetBucket(new GetBucketRequest("bucketName"));
         }
@@ -203,7 +204,7 @@ namespace TestDs3
             {
                 MockNetwork
                     .Expecting(HttpVerb.GET, "/bucketName/object", _emptyQueryParams, "")
-                    .Returning(HttpStatusCode.OK, stringResponse)
+                    .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                     .AsClient
                     .GetObject(new GetObjectRequest("bucketName", "object", memoryStream));
                 memoryStream.Position = 0L;
@@ -221,7 +222,7 @@ namespace TestDs3
 
             MockNetwork
                 .Expecting(HttpVerb.PUT, "/bucketName/object", _emptyQueryParams, stringRequest)
-                .Returning(HttpStatusCode.OK, stringRequest)
+                .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)
                 .AsClient
                 .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest)));
         }
@@ -261,7 +262,7 @@ namespace TestDs3
             var queryParams = new Dictionary<string, string>() { { "operation", operation } };
             var client = MockNetwork
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket8192000000", queryParams, stringRequest)
-                .Returning(HttpStatusCode.OK, stringResponse)
+                .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                 .AsClient;
 
             var expectedNodes = new[] {
@@ -369,7 +370,7 @@ namespace TestDs3
             var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"/></Jobs>";
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
-                .Returning(HttpStatusCode.OK, responseContent)
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
             var jobs = client.GetJobList(new GetJobListRequest()).Jobs.ToList();
