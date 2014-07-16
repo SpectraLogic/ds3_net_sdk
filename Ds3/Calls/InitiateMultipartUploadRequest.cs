@@ -29,6 +29,7 @@ namespace Ds3.Calls
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
+            this.QueryParams.Add("uploads", "");
         }
 
         public InitiateMultipartUploadRequest(string bucketName, string objectName, Guid jobId, long offset)
@@ -36,7 +37,6 @@ namespace Ds3.Calls
         {
             this.JobId = jobId;
             this.Offset = offset;
-            this.QueryParams.Add("uploads", "");
             if (this.JobId != Guid.Empty)
             {
                 this.QueryParams.Add("job", jobId.ToString());
