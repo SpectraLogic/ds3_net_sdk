@@ -14,14 +14,14 @@
  */
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
-
-using Ds3.Runtime;
-using Ds3.Models;
-using Ds3.Calls;
-using Ds3.ResponseParsers;
+using System.Linq;
 using System.Net;
+
+using Ds3.Calls;
+using Ds3.Models;
+using Ds3.ResponseParsers;
+using Ds3.Runtime;
 
 namespace Ds3
 {
@@ -114,6 +114,29 @@ namespace Ds3
         public IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes)
         {
             return new Ds3ClientFactory(this, nodes);
+        }
+
+        public InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request)
+        {
+            return new InitiateMultipartUploadResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public PutPartResponse PutPart(PutPartRequest request)
+        {
+            return new PutPartResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public CompleteMultipartUploadResponse CompleteMultipartUpload(CompleteMultipartUploadRequest request)
+        {
+            return new CompleteMultipartUploadResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public void AbortMultipartUpload(AbortMultipartUploadRequest request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
         }
 
         private class Ds3ClientFactory : IDs3ClientFactory

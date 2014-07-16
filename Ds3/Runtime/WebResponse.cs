@@ -14,12 +14,10 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace Ds3.Runtime
 {
@@ -53,7 +51,7 @@ namespace Ds3.Runtime
 
         private static IDictionary<string, string> ConvertToDictionary(WebHeaderCollection headers)
         {
-            return headers.Keys.Cast<string>().ToDictionary(key => key, key => headers[key]);
+            return headers.Keys.Cast<string>().ToDictionary(key => key.ToLowerInvariant(), key => headers[key]);
         }
 
         public void Dispose()

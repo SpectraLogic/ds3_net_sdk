@@ -150,6 +150,9 @@
   <data name="MissingElementException" xml:space="preserve">
     <value>Expected an element called "{0}" but didn't find it.</value>
   </data>
+  <data name="MissingHeaderException" xml:space="preserve">
+    <value>Expected a header called "{0}" but didn't find it.</value>
+  </data>
   <data name="ObjectsMissingSizeException" xml:space="preserve">
     <value>Some or all of the objects to put are missing a size field.</value>
   </data>

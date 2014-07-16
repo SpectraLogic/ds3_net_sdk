@@ -62,6 +62,9 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Calls\AbortMultipartUploadRequest.cs" />
+    <Compile Include="Calls\CompleteMultipartUploadRequest.cs" />
+    <Compile Include="Calls\CompleteMultipartUploadResponse.cs" />
     <Compile Include="Calls\DeleteObjectListRequest.cs" />
     <Compile Include="Calls\DeleteObjectListResponse.cs" />
     <Compile Include="Calls\GetJobListRequest.cs" />
@@ -69,6 +72,10 @@
     <Compile Include="Calls\GetJobRequest.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
+    <Compile Include="Calls\InitiateMultipartUploadRequest.cs" />
+    <Compile Include="Calls\InitiateMultipartUploadResponse.cs" />
+    <Compile Include="Calls\PutPartRequest.cs" />
+    <Compile Include="Calls\PutPartResponse.cs" />
     <Compile Include="Helpers\CriticalSectionExecutor.cs" />
     <Compile Include="Helpers\Ds3ClientHelpers.cs" />
     <Compile Include="Helpers\EnumerableAlgorithms.cs" />
@@ -111,20 +118,24 @@
     <Compile Include="Calls\Ds3Request.cs" />
     <Compile Include="Calls\PutBucketRequest.cs" />
     <Compile Include="Calls\PutObjectRequest.cs" />
+    <Compile Include="Models\UploadPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ResponseParsers\CompleteMultipartUploadResponseParser.cs" />
     <Compile Include="ResponseParsers\DeleteObjectListResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\GetJobListResponseParser.cs" />
     <Compile Include="ResponseParsers\GetServiceResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
+    <Compile Include="ResponseParsers\InitiateMultipartUploadResponseParser.cs" />
     <Compile Include="ResponseParsers\JobResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectResponseParser.cs" />
     <Compile Include="ResponseParsers\IResponseParser.cs" />
+    <Compile Include="ResponseParsers\PutPartResponseParser.cs" />
     <Compile Include="ResponseParsers\ResponseParseUtilities.cs" />
     <Compile Include="Runtime\Ds3BadResponseException.cs" />
     <Compile Include="Runtime\Ds3BadStatusCodeException.cs" />

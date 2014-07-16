@@ -126,6 +126,14 @@ namespace Ds3
         /// <returns></returns>
         JobResponse GetJob(GetJobRequest request);
 
+        InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request);
+
+        PutPartResponse PutPart(PutPartRequest request);
+
+        CompleteMultipartUploadResponse CompleteMultipartUpload(CompleteMultipartUploadRequest request);
+
+        void AbortMultipartUpload(AbortMultipartUploadRequest request);
+
         /// <summary>
         /// For future multi-node support, this provides a means of creating
         /// a client that connects to the specified node id.

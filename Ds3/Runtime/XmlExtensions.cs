@@ -74,7 +74,7 @@ namespace Ds3.Runtime
             var element = self.Attribute(attributeName);
             if (element == null)
             {
-                throw new Ds3BadResponseException(attributeName);
+                throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.XmlElement, attributeName);
             }
             return element;
         }
@@ -95,7 +95,7 @@ namespace Ds3.Runtime
             var element = self.Element(elementName);
             if (element == null)
             {
-                throw new Ds3BadResponseException(elementName);
+                throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.XmlElement, elementName);
             }
             return element;
         }

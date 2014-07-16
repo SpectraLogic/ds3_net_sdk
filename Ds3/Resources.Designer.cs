@@ -160,6 +160,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected a header called &quot;{0}&quot; but didn&apos;t find it..
+        /// </summary>
+        internal static string MissingHeaderException {
+            get {
+                return ResourceManager.GetString("MissingHeaderException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Some or all of the objects to put are missing a size field..
         /// </summary>
         internal static string ObjectsMissingSizeException {
