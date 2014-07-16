@@ -18,7 +18,7 @@ using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class WriteJob : Job<PutObjectRequest>, IWriteJob
+    internal class WriteJob : Job
     {
         public WriteJob(IDs3Client client, JobResponse jobResponse)
             : base(client, jobResponse)

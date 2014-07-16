@@ -15,8 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Ds3.Models;
 
@@ -24,14 +22,14 @@ namespace Ds3.Helpers
 {
     public interface IDs3ClientHelpers
     {
-        IWriteJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite);
-        IReadJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead);
-        IReadJob StartReadAllJob(string bucket);
+        IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite);
+        IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead);
+        IJob StartReadAllJob(string bucket);
         IEnumerable<Ds3Object> ListObjects(string bucketName);
         IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix);
         IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix, int maxKeys);
         void EnsureBucketExists(string bucketName);
-        IWriteJob RecoverWriteJob(Guid jobId);
-        IReadJob RecoverReadJob(Guid jobId);
+        IJob RecoverWriteJob(Guid jobId);
+        IJob RecoverReadJob(Guid jobId);
     }
 }

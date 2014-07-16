@@ -24,12 +24,11 @@ using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal abstract class Job<TRequest> : IJob<TRequest>
+    internal abstract class Job : IJob
     {
         private readonly IDs3Client _client;
         private readonly JobResponse _bulkResponse;
         private int _maxParallelRequests = 0;
-        private Action<TRequest> _modifier = null;
 
         protected Job(IDs3Client client, JobResponse bulkResponse)
         {
@@ -74,15 +73,9 @@ namespace Ds3.Helpers
             get { return this._bulkResponse.BucketName; }
         }
 
-        public IJob<TRequest> WithMaxParallelRequests(int maxParallelRequests)
+        public IJob WithMaxParallelRequests(int maxParallelRequests)
         {
             this._maxParallelRequests = maxParallelRequests;
-            return this;
-        }
-
-        public IJob<TRequest> WithRequestModifier(Action<TRequest> modifier)
-        {
-            this._modifier = modifier;
             return this;
         }
 

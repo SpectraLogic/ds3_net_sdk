@@ -35,17 +35,17 @@ namespace Ds3.Helpers
             this._client = client;
         }
 
-        public IWriteJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
+        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
         {
             return new WriteJob(this._client, this._client.BulkPut(new BulkPutRequest(bucket, objectsToWrite.ToList())));
         }
 
-        public IReadJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
+        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
         {
             return new ReadJob(this._client, this._client.BulkGet(new BulkGetRequest(bucket, objectsToRead.ToList())));
         }
 
-        public IReadJob StartReadAllJob(string bucket)
+        public IJob StartReadAllJob(string bucket)
         {
             return this.StartReadJob(bucket, this.ListObjects(bucket));
         }
@@ -94,14 +94,14 @@ namespace Ds3.Helpers
             }
         }
 
-        public IWriteJob RecoverWriteJob(Guid jobId)
+        public IJob RecoverWriteJob(Guid jobId)
         {
             var job = this._client.GetJob(new GetJobRequest(jobId));
             CheckJobType(JobTypePut, job.RequestType);
             return new WriteJob(this._client, job);
         }
 
-        public IReadJob RecoverReadJob(Guid jobId)
+        public IJob RecoverReadJob(Guid jobId)
         {
             var job = this._client.GetJob(new GetJobRequest(jobId));
             CheckJobType(JobTypeGet, job.RequestType);

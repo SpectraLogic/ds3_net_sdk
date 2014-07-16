@@ -18,7 +18,7 @@ using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class ReadJob : Job<GetObjectRequest>, IReadJob
+    internal class ReadJob : Job
     {
         public ReadJob(IDs3Client client, JobResponse bulkGetResponse)
             : base(client, bulkGetResponse)
