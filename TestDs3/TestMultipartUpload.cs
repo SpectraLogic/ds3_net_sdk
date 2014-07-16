@@ -20,6 +20,7 @@ using System.Net;
 using NUnit.Framework;
 
 using Ds3.Calls;
+using Ds3.Models;
 
 namespace TestDs3
 {
@@ -97,6 +98,41 @@ namespace TestDs3
                     HelpersForTest.StringToStream(putContent)
                 ));
             Assert.AreEqual("e2b5712a78c5cd8224e90e670de9fcac", response.Etag);
+        }
+
+        [Test]
+        public void TestCompleteMultipartUpload()
+        {
+            var queryParams = new Dictionary<string, string> { { "uploadId", "VXBsb2FkIElEIGZvciA2aWWpbmcncyBteS1tb3ZpZS5tMnRzIHVwbG9hZA" } };
+            var requestContent =
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+                + "<CompleteMultipartUpload>\r\n"
+                + "  <Part>\r\n"
+                + "    <PartNumber>1234</PartNumber>\r\n"
+                + "    <ETag>e2b5712a78c5cd8224e90e670de9fcac</ETag>\r\n"
+                + "  </Part>\r\n"
+                + "</CompleteMultipartUpload>";
+            var responseContent =
+                "<CompleteMultipartUploadResult>"
+                + "  <Location>http://ds3-server/bucket_name/object_name</Location>"
+                + "  <Bucket>bucket_name</Bucket>"
+                + "  <Key>object_name</Key>"
+                + "  <ETag>\"3858f62230ac3c915f300c664312c11f-9\"</ETag>"
+                + "</CompleteMultipartUploadResult>";
+            var response = MockNetwork
+                .Expecting(HttpVerb.POST, "/bucket_name/object_name", queryParams, requestContent)
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .AsClient
+                .CompleteMultipartUpload(new CompleteMultipartUploadRequest(
+                    "bucket_name",
+                    "object_name",
+                    "VXBsb2FkIElEIGZvciA2aWWpbmcncyBteS1tb3ZpZS5tMnRzIHVwbG9hZA",
+                    new[] { new UploadPart(1234, "e2b5712a78c5cd8224e90e670de9fcac") }
+                ));
+            Assert.AreEqual("bucket_name", response.BucketName);
+            Assert.AreEqual("object_name", response.ObjectName);
+            Assert.AreEqual("http://ds3-server/bucket_name/object_name", response.Location);
+            Assert.AreEqual("3858f62230ac3c915f300c664312c11f-9", response.Etag);
         }
     }
 }

@@ -36,6 +36,7 @@ namespace Ds3.Calls
             this.ObjectName = objectName;
             this.UploadId = uploadId;
             this.Parts = parts.ToList();
+            this.QueryParams.Add("uploadId", uploadId);
         }
 
         internal override HttpVerb Verb

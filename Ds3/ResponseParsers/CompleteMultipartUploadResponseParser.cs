@@ -31,7 +31,7 @@ namespace Ds3.ResponseParsers
                         root.TextOf("Location"),
                         root.TextOf("Bucket"),
                         root.TextOf("Key"),
-                        root.TextOf("ETag")
+                        root.TextOf("ETag").Trim('"')
                     );
                 }
             }
