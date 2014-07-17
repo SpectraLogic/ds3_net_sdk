@@ -39,7 +39,7 @@ namespace TestDs3
             var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
             ds3ClientMock
                 .Setup(client => client.BulkGet(It.IsAny<BulkGetRequest>()))
-                .Returns(CreateJobResponse("GET"));
+                .Returns(CreateJobResponse("GET", null));
             ds3ClientMock
                 .Setup(client => client.GetObject(It.IsAny<GetObjectRequest>()))
                 .Returns<GetObjectRequest>(request =>
@@ -96,98 +96,65 @@ namespace TestDs3
         [Test]
         public void TestWriteObjectsWhenAllSmallerThanPartSize()
         {
-            var objectsPut = new List<string>();
-            var objectContentsPut = new Dictionary<string, string>();
+            var bucket = "mybucket";
 
-            var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
-            ds3ClientMock
-                .Setup(client => client.BulkPut(It.IsAny<BulkPutRequest>()))
-                .Returns(CreateJobResponse("PUT"));
-            ds3ClientMock
-                .Setup(client => client.PutObject(It.IsAny<PutObjectRequest>()))
-                .Callback<PutObjectRequest>(request =>
-                {
-                    objectsPut.Add(request.ObjectName);
-                    objectContentsPut.Add(request.ObjectName, HelpersForTest.StringFromStream(request.GetContentStream()));
-                });
-            var ds3ClientFactoryMock = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            ds3ClientFactoryMock
-                .Setup(factory => factory.GetClientForNodeId(It.IsAny<Guid?>()))
-                .Returns(ds3ClientMock.Object);
-            ds3ClientMock
-                .Setup(client => client.BuildFactory(It.IsAny<IEnumerable<Node>>()))
-                .Returns(ds3ClientFactoryMock.Object);
+            var clientMock = new BulkPutClientMock(CreateJobResponse(
+                "PUT",
+                new[] {
+                    new JobObjectList(0, null, new[] {
+                        new JobObject("baz", 12, 0, false),
+                        new JobObject("bar", 12, 0, false)
+                    }),
+                    new JobObjectList(1, null, new[] {
+                        new JobObject("foo", 12, 0, false)
+                    })
+                }
+            ));
 
             var objectsToPut = new[] {
                 new Ds3Object("foo", 12),
                 new Ds3Object("bar", 12),
                 new Ds3Object("baz", 12)
             };
-            new Ds3ClientHelpers(ds3ClientMock.Object)
-                .StartWriteJob("mybucket", objectsToPut)
+            new Ds3ClientHelpers(clientMock.Object)
+                .StartWriteJob(bucket, objectsToPut)
                 .Transfer(key => HelpersForTest.StringToStream(key + " contents"));
 
-            var expectedkeys = new[] { "baz", "bar", "foo" };
-            CollectionAssert.AreEquivalent(expectedkeys, objectsPut);
-            CollectionAssert.AreEqual(new[] { "baz contents", "bar contents", "foo contents" }, expectedkeys.Select(key => objectContentsPut[key]));
+            CollectionAssert.AreEquivalent(
+                from key in new[] { "bar", "baz", "foo" }
+                orderby key
+                select new { BucketName = bucket, ObjectName = key, JobId = _jobId, Offset = 0L, Content = key + " contents" },
+                from put in clientMock.Puts
+                orderby put.ObjectName
+                let content = clientMock.PutContents[put.ObjectName]
+                select new { put.BucketName, put.ObjectName, put.JobId, put.Offset, Content = content }
+            );
         }
 
         [Test]
         public void TestWriteObjectsWhenGreaterThanPartSize()
         {
             var bucket = "mybucket";
-            
-            Func<string, string> uploadIdFor = objectName => objectName + "/14f2dde1-06cc-41e8-8f34-093580f9e49a";
-            Func<string, string> etagFor = objectName => objectName + "/5f735ed8-6842-4d14-ba78-d99cd1fbf24c";
 
-            var initiates = new List<InitiateMultipartUploadRequest>();
-            var parts = new List<PutPartRequest>();
-            var completes = new List<CompleteMultipartUploadRequest>();
-            var partContents = new Dictionary<Tuple<string, int>, string>();
-
-            var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
-            ds3ClientMock
-                .Setup(client => client.BulkPut(It.IsAny<BulkPutRequest>()))
-                .Returns(CreateJobResponse("PUT"));
-            ds3ClientMock
-                .Setup(client => client.InitiateMultipartUpload(It.IsAny<InitiateMultipartUploadRequest>()))
-                .Returns<InitiateMultipartUploadRequest>(request => new InitiateMultipartUploadResponse(
-                    request.BucketName,
-                    request.ObjectName,
-                    uploadIdFor(request.ObjectName)
-                ))
-                .Callback<InitiateMultipartUploadRequest>(initiates.Add);
-            ds3ClientMock
-                .Setup(client => client.PutPart(It.IsAny<PutPartRequest>()))
-                .Returns<PutPartRequest>(request => new PutPartResponse(etagFor(request.ObjectName)))
-                .Callback<PutPartRequest>(request =>
-                {
-                    partContents.Add(Tuple.Create(request.ObjectName, request.PartNumber), HelpersForTest.StringFromStream(request.GetContentStream()));
-                    parts.Add(request);
-                });
-            ds3ClientMock
-                .Setup(client => client.CompleteMultipartUpload(It.IsAny<CompleteMultipartUploadRequest>()))
-                .Returns<CompleteMultipartUploadRequest>(request => new CompleteMultipartUploadResponse(
-                    string.Format("http://dummy-server/{0}/{1}", request.BucketName, request.ObjectName),
-                    request.BucketName,
-                    request.ObjectName,
-                    request.ObjectName + "/eb7e724e-ba62-407b-856f-11fe08e949e2"
-                ))
-                .Callback<CompleteMultipartUploadRequest>(completes.Add);
-            var ds3ClientFactoryMock = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            ds3ClientFactoryMock
-                .Setup(factory => factory.GetClientForNodeId(It.IsAny<Guid?>()))
-                .Returns(ds3ClientMock.Object);
-            ds3ClientMock
-                .Setup(client => client.BuildFactory(It.IsAny<IEnumerable<Node>>()))
-                .Returns(ds3ClientFactoryMock.Object);
+            var clientMock = new BulkPutClientMock(CreateJobResponse(
+                "PUT",
+                new[] {
+                    new JobObjectList(0, null, new[] {
+                        new JobObject("baz", 12, 0, false),
+                        new JobObject("bar", 12, 0, false)
+                    }),
+                    new JobObjectList(1, null, new[] {
+                        new JobObject("foo", 12, 0, false)
+                    })
+                }
+            ));
 
             var objectsToPut = new[] {
                 new Ds3Object("foo", 12),
                 new Ds3Object("bar", 12),
                 new Ds3Object("baz", 12)
             };
-            new Ds3ClientHelpers(ds3ClientMock.Object)
+            new Ds3ClientHelpers(clientMock.Object)
                 .StartWriteJob(bucket, objectsToPut)
                 .WithPartSize(4L) // We expect a real client to restrict the part size to within S3 spec (5mb - 5gb).
                 .Transfer(key => HelpersForTest.StringToStream(key + " contents"));
@@ -198,42 +165,38 @@ namespace TestDs3
                     new { BucketName = bucket, ObjectName = "baz", JobId = _jobId, Offset = 0L },
                     new { BucketName = bucket, ObjectName = "foo", JobId = _jobId, Offset = 0L }
                 },
-                from initiate in initiates
+                from initiate in clientMock.Initiates
                 orderby initiate.ObjectName
                 select new { initiate.BucketName, initiate.ObjectName, initiate.JobId, initiate.Offset }
             );
 
             CollectionAssert.AreEquivalent(
-                new[] {
-                    new { BucketName = bucket, ObjectName = "bar", PartNumber = 1, UploadId = uploadIdFor("bar"), Content = "bar " },
-                    new { BucketName = bucket, ObjectName = "bar", PartNumber = 2, UploadId = uploadIdFor("bar"), Content = "cont" },
-                    new { BucketName = bucket, ObjectName = "bar", PartNumber = 3, UploadId = uploadIdFor("bar"), Content = "ents" },
-                    new { BucketName = bucket, ObjectName = "baz", PartNumber = 1, UploadId = uploadIdFor("baz"), Content = "baz " },
-                    new { BucketName = bucket, ObjectName = "baz", PartNumber = 2, UploadId = uploadIdFor("baz"), Content = "cont" },
-                    new { BucketName = bucket, ObjectName = "baz", PartNumber = 3, UploadId = uploadIdFor("baz"), Content = "ents" },
-                    new { BucketName = bucket, ObjectName = "foo", PartNumber = 1, UploadId = uploadIdFor("foo"), Content = "foo " },
-                    new { BucketName = bucket, ObjectName = "foo", PartNumber = 2, UploadId = uploadIdFor("foo"), Content = "cont" },
-                    new { BucketName = bucket, ObjectName = "foo", PartNumber = 3, UploadId = uploadIdFor("foo"), Content = "ents" }
-                },
-                from part in parts
+                from objectName in new[] { "bar", "baz", "foo" }
+                let uploadId = clientMock.UploadIdFor(objectName)
+                from part in new[] { 
+                    new { PartNumber = 1, Content = objectName + " " },
+                    new { PartNumber = 2, Content = "cont" },
+                    new { PartNumber = 3, Content = "ents" },
+                }
+                select new { BucketName = bucket, ObjectName = objectName, part.PartNumber, UploadId = uploadId, part.Content },
+                from part in clientMock.Parts
                 orderby part.ObjectName, part.PartNumber
-                select new { part.BucketName, part.ObjectName, part.PartNumber, part.UploadId, Content = partContents[Tuple.Create(part.ObjectName, part.PartNumber)] }
+                select new { part.BucketName, part.ObjectName, part.PartNumber, part.UploadId, Content = clientMock.PartContents[Tuple.Create(part.ObjectName, part.PartNumber)] }
             );
 
             HelpersForTest.AssertCollectionsEqual(
                 from objectName in new[] { "bar", "baz", "foo" }
-                let etag = etagFor(objectName)
-                select new {
+                let etag = clientMock.ETagFor(objectName)
+                select new
+                {
                     BucketName = bucket,
                     ObjectName = objectName,
-                    UploadId = uploadIdFor(objectName),
-                    Parts = new[] {
-                        new UploadPart(1, etag),
-                        new UploadPart(2, etag),
-                        new UploadPart(3, etag)
-                    }
+                    UploadId = clientMock.UploadIdFor(objectName),
+                    Parts =
+                        from partNumber in Enumerable.Range(1, 3)
+                        select new UploadPart(partNumber, etag)
                 },
-                from complete in completes
+                from complete in clientMock.Completes
                 orderby complete.ObjectName
                 select new { complete.BucketName, complete.ObjectName, complete.UploadId, complete.Parts },
                 (expected, actual) =>
@@ -250,9 +213,218 @@ namespace TestDs3
             );
         }
 
+        [Test]
+        public void TestWriteObjectsWhenMixedSinglepartAndMultipart()
+        {
+            var bucket = "mybucket";
+
+            var clientMock = new BulkPutClientMock(CreateJobResponse(
+                "PUT",
+                new[] {
+                    new JobObjectList(0, null, new[] {
+                        new JobObject("baz", 20, 0, false)
+                    }),
+                    new JobObjectList(1, null, new[] {
+                        new JobObject("baz", 6, 20, false),
+                        new JobObject("bar", 14, 0, false)
+                    }),
+                    new JobObjectList(2, null, new[] {
+                        new JobObject("foo", 10, 0, false)
+                    })
+                }
+            ));
+
+            var objectsToPut = new[] {
+                new Ds3Object("foo", 10),
+                new Ds3Object("bar", 14),
+                new Ds3Object("baz", 26)
+            };
+            var originalObjectContents = new Dictionary<string, string>
+            {
+                { "foo", "1234567890" },
+                { "bar", "12345678901234" },
+                { "baz", "12345678901234567890123456" }
+            };
+            new Ds3ClientHelpers(clientMock.Object)
+                .StartWriteJob(bucket, objectsToPut)
+                .WithPartSize(8L) // We expect a real client to restrict the part size to within S3 spec (5mb - 5gb).
+                .Transfer(key => HelpersForTest.StringToStream(originalObjectContents[key]));
+
+            CollectionAssert.AreEquivalent(
+                new[] { new { BucketName = bucket, ObjectName = "baz", JobId = _jobId, Offset = 20L, Content = "123456" } },
+                from put in clientMock.Puts
+                select new { put.BucketName, put.ObjectName, put.JobId, put.Offset, Content = clientMock.PutContents[put.ObjectName] }
+            );
+
+            CollectionAssert.AreEquivalent(
+                new[] {
+                    new { BucketName = bucket, ObjectName = "bar", JobId = _jobId, Offset = 0L },
+                    new { BucketName = bucket, ObjectName = "baz", JobId = _jobId, Offset = 0L },
+                    new { BucketName = bucket, ObjectName = "foo", JobId = _jobId, Offset = 0L }
+                },
+                from initiate in clientMock.Initiates
+                orderby initiate.ObjectName, initiate.Offset
+                select new { initiate.BucketName, initiate.ObjectName, initiate.JobId, initiate.Offset }
+            );
+
+            CollectionAssert.AreEquivalent(
+                new[] {
+                    new { BucketName = bucket, ObjectName = "bar", PartNumber = 1, UploadId = clientMock.UploadIdFor("bar"), Content = "12345678" },
+                    new { BucketName = bucket, ObjectName = "bar", PartNumber = 2, UploadId = clientMock.UploadIdFor("bar"), Content = "901234" },
+                    new { BucketName = bucket, ObjectName = "baz", PartNumber = 1, UploadId = clientMock.UploadIdFor("baz"), Content = "12345678" },
+                    new { BucketName = bucket, ObjectName = "baz", PartNumber = 2, UploadId = clientMock.UploadIdFor("baz"), Content = "90123456" },
+                    new { BucketName = bucket, ObjectName = "baz", PartNumber = 3, UploadId = clientMock.UploadIdFor("baz"), Content = "7890" },
+                    new { BucketName = bucket, ObjectName = "foo", PartNumber = 1, UploadId = clientMock.UploadIdFor("foo"), Content = "12345678" },
+                    new { BucketName = bucket, ObjectName = "foo", PartNumber = 2, UploadId = clientMock.UploadIdFor("foo"), Content = "90" }
+                },
+                from part in clientMock.Parts
+                let content = clientMock.PartContents[Tuple.Create(part.ObjectName, part.PartNumber)]
+                orderby part.ObjectName, part.PartNumber, content
+                select new { part.BucketName, part.ObjectName, part.PartNumber, part.UploadId, Content = content }
+            );
+
+            HelpersForTest.AssertCollectionsEqual(
+                from completionData in new[] {
+                    new { ObjectName = "bar", PartCount = 2 },
+                    new { ObjectName = "baz", PartCount = 3 },
+                    new { ObjectName = "foo", PartCount = 2 }
+                }
+                let objectName = completionData.ObjectName
+                let etag = clientMock.ETagFor(objectName)
+                orderby objectName, completionData.PartCount
+                select new
+                {
+                    BucketName = bucket,
+                    ObjectName = objectName,
+                    UploadId = clientMock.UploadIdFor(objectName),
+                    Parts =
+                        from partNumber in Enumerable.Range(1, completionData.PartCount)
+                        select new UploadPart(partNumber, etag)
+                },
+                from complete in clientMock.Completes
+                orderby complete.ObjectName, complete.Parts.Count()
+                select new { complete.BucketName, complete.ObjectName, complete.UploadId, complete.Parts },
+                (expected, actual) =>
+                {
+                    Assert.AreEqual(expected.BucketName, actual.BucketName);
+                    Assert.AreEqual(expected.ObjectName, actual.ObjectName);
+                    Assert.AreEqual(expected.UploadId, actual.UploadId);
+                    HelpersForTest.AssertCollectionsEqual(expected.Parts, actual.Parts, (expectedPart, actualPart) =>
+                    {
+                        Assert.AreEqual(expectedPart.PartNumber, actualPart.PartNumber);
+                        Assert.AreEqual(expectedPart.Etag, actualPart.Etag);
+                    });
+                }
+            );
+        }
+
+        private class BulkPutClientMock
+        {
+            public IDs3Client Object { get; private set; }
+
+            public IList<PutObjectRequest> Puts { get; private set; }
+            public IDictionary<string, string> PutContents { get; private set; }
+
+            public IList<InitiateMultipartUploadRequest> Initiates { get; private set; }
+            public IList<PutPartRequest> Parts { get; private set; }
+            public IList<CompleteMultipartUploadRequest> Completes { get; private set; }
+            public IDictionary<Tuple<string, int>, string> PartContents { get; private set; }
+
+            private readonly object _recorderLock = new object();
+
+            public BulkPutClientMock(JobResponse jobResponse)
+            {
+                this.Puts = new List<PutObjectRequest>();
+                this.PutContents = new Dictionary<string, string>();
+
+                this.Initiates = new List<InitiateMultipartUploadRequest>();
+                this.Parts = new List<PutPartRequest>();
+                this.Completes = new List<CompleteMultipartUploadRequest>();
+                this.PartContents = new Dictionary<Tuple<string, int>, string>();
+
+                this.Object = CreateMock(jobResponse);
+            }
+
+            public string UploadIdFor(string objectName)
+            {
+                return objectName + "/14f2dde1-06cc-41e8-8f34-093580f9e49a";
+            }
+
+            public string ETagFor(string objectName)
+            {
+                return objectName + "/5f735ed8-6842-4d14-ba78-d99cd1fbf24c";
+            }
+
+            private IDs3Client CreateMock(JobResponse jobResponse)
+            {
+                var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
+                ds3ClientMock
+                    .Setup(client => client.BulkPut(It.IsAny<BulkPutRequest>()))
+                    .Returns(jobResponse);
+                ds3ClientMock
+                    .Setup(client => client.PutObject(It.IsAny<PutObjectRequest>()))
+                    .Callback<PutObjectRequest>(request =>
+                    {
+                        lock (this._recorderLock)
+                        {
+                            this.PutContents.Add(request.ObjectName, HelpersForTest.StringFromStream(request.GetContentStream()));
+                            this.Puts.Add(request);
+                        }
+                    });
+                ds3ClientMock
+                    .Setup(client => client.InitiateMultipartUpload(It.IsAny<InitiateMultipartUploadRequest>()))
+                    .Returns<InitiateMultipartUploadRequest>(request => new InitiateMultipartUploadResponse(
+                        request.BucketName,
+                        request.ObjectName,
+                        this.UploadIdFor(request.ObjectName)
+                    ))
+                    .Callback<InitiateMultipartUploadRequest>(request =>
+                    {
+                        lock (this._recorderLock)
+                        {
+                            this.Initiates.Add(request);
+                        }
+                    });
+                ds3ClientMock
+                    .Setup(client => client.PutPart(It.IsAny<PutPartRequest>()))
+                    .Returns<PutPartRequest>(request => new PutPartResponse(this.ETagFor(request.ObjectName)))
+                    .Callback<PutPartRequest>(request =>
+                    {
+                        lock (this._recorderLock)
+                        {
+                            this.PartContents.Add(Tuple.Create(request.ObjectName, request.PartNumber), HelpersForTest.StringFromStream(request.GetContentStream()));
+                            this.Parts.Add(request);
+                        }
+                    });
+                ds3ClientMock
+                    .Setup(client => client.CompleteMultipartUpload(It.IsAny<CompleteMultipartUploadRequest>()))
+                    .Returns<CompleteMultipartUploadRequest>(request => new CompleteMultipartUploadResponse(
+                        string.Format("http://dummy-server/{0}/{1}", request.BucketName, request.ObjectName),
+                        request.BucketName,
+                        request.ObjectName,
+                        request.ObjectName + "/eb7e724e-ba62-407b-856f-11fe08e949e2"
+                    ))
+                    .Callback<CompleteMultipartUploadRequest>(request =>
+                    {
+                        lock (this._recorderLock)
+                        {
+                            this.Completes.Add(request);
+                        }
+                    });
+                var ds3ClientFactoryMock = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+                ds3ClientFactoryMock
+                    .Setup(factory => factory.GetClientForNodeId(It.IsAny<Guid?>()))
+                    .Returns(ds3ClientMock.Object);
+                ds3ClientMock
+                    .Setup(client => client.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                    .Returns(ds3ClientFactoryMock.Object);
+                return ds3ClientMock.Object;
+            }
+        }
+
         private static readonly Guid _jobId = Guid.Parse("3ad595b2-38cb-447d-9e1d-a1125ba19f33");
 
-        private static JobResponse CreateJobResponse(string requestType)
+        private static JobResponse CreateJobResponse(string requestType, IEnumerable<JobObjectList> objectLists)
         {
             return new JobResponse(
                 bucketName: "mybucket",
@@ -261,11 +433,7 @@ namespace TestDs3
                 requestType: requestType,
                 startDate: DateTime.Parse("2014-07-09T19:41:34.000Z"),
                 nodes: Enumerable.Empty<Node>(),
-                objectLists: new JobObjectList[] {
-                    new JobObjectList(0, null, new[] { new JobObject("baz", 12, 0, false) }),
-                    new JobObjectList(1, null, new[] { new JobObject("bar", 12, 0, false) }),
-                    new JobObjectList(2, null, new[] { new JobObject("foo", 12, 0, false) })
-                }
+                objectLists: objectLists
             );
         }
 
