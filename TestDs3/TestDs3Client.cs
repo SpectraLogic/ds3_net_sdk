@@ -323,38 +323,24 @@ namespace TestDs3
             };
 
             var response = makeCall(client, inputObjects);
-            AssertInParallel(expectedNodes, response.Nodes, (expectedNode, actualNode) =>
+            HelpersForTest.AssertCollectionsEqual(expectedNodes, response.Nodes, (expectedNode, actualNode) =>
             {
                 Assert.AreEqual(expectedNode.Id, actualNode.Id);
                 Assert.AreEqual(expectedNode.EndPoint, actualNode.EndPoint);
                 Assert.AreEqual(expectedNode.HttpPort, actualNode.HttpPort);
                 Assert.AreEqual(expectedNode.HttpsPort, actualNode.HttpsPort);
             });
-            AssertInParallel(expectedObjectLists, response.ObjectLists, (expectedObjectList, actualObjectList) =>
+            HelpersForTest.AssertCollectionsEqual(expectedObjectLists, response.ObjectLists, (expectedObjectList, actualObjectList) =>
             {
                 Assert.AreEqual(expectedObjectList.ChunkNumber, actualObjectList.ChunkNumber);
                 Assert.AreEqual(expectedObjectList.NodeId, actualObjectList.NodeId);
-                AssertInParallel(expectedObjectList.Objects, actualObjectList.Objects, (expectedObject, actualObject) =>
+                HelpersForTest.AssertCollectionsEqual(expectedObjectList.Objects, actualObjectList.Objects, (expectedObject, actualObject) =>
                 {
                     Assert.AreEqual(expectedObject.Name, actualObject.Name);
                     Assert.AreEqual(expectedObject.Length, actualObject.Length);
                     Assert.AreEqual(expectedObject.Offset, actualObject.Offset);
                 });
             });
-        }
-
-        private static void AssertInParallel<TFirst, TSecond>(
-            IEnumerable<TFirst> first,
-            IEnumerable<TSecond> second,
-            Action<TFirst, TSecond> assertion)
-        {
-            var firstList = first.ToList();
-            var secondList = second.ToList();
-            Assert.AreEqual(firstList.Count, secondList.Count);
-            for (int i = 0; i < firstList.Count; i++)
-            {
-                assertion(firstList[i], secondList[i]);
-            }
         }
 
         private static string ReadResource(string resourceName)

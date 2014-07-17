@@ -66,6 +66,7 @@
     <Compile Include="TestDs3Client.cs" />
     <Compile Include="TestDs3ClientHelpers.cs" />
     <Compile Include="TestEnumerableAlgorithms.cs" />
+    <Compile Include="TestObjectSplitter.cs" />
     <Compile Include="TestPerformance.cs" />
     <Compile Include="TestWindowedStream.cs" />
   </ItemGroup>

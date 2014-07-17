@@ -15,6 +15,9 @@
 
 using Ds3.Calls;
 using Ds3.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
 
 namespace Ds3.Helpers
 {
@@ -25,20 +28,20 @@ namespace Ds3.Helpers
         {
         }
 
-        protected override void TransferJobObject(IDs3Client client, JobObjectRequest jobObjectRequest)
+        protected override void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
         {
-            client.GetObject(new GetObjectRequest(
-                jobObjectRequest.BucketName,
-                jobObjectRequest.ObjectName,
-                jobObjectRequest.JobId,
-                jobObjectRequest.Offset,
-                jobObjectRequest.Stream
-            ));
-        }
-
-        protected override bool ShouldTransferJobObject(JobObject jobObject)
-        {
-            return true;
+            //jobObjects
+            //    .AsParallel()
+            //    .WithDegreeOfParallelism(_maxParallelRequests)
+            //    .Select(jobObject => );
+            throw new System.NotImplementedException();
+            //clientForNode.GetObject(new GetObjectRequest(
+            //    jobObjectRequest.BucketName,
+            //    jobObjectRequest.ObjectName,
+            //    jobObjectRequest.JobId,
+            //    jobObjectRequest.Offset,
+            //    jobObjectRequest.Stream
+            //));
         }
     }
 }

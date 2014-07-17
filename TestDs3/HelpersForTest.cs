@@ -13,30 +13,44 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
-using Ds3.Calls;
-using Ds3.Models;
-using Ds3.Runtime;
-using Moq;
+using NUnit.Framework;
 
 namespace TestDs3
 {
-    static class HelpersForTest
+    internal static class HelpersForTest
     {
         internal static string StringFromStream(Stream stream)
         {
             using (stream)
-            using (var reader = new StreamReader(stream))
             {
-                return reader.ReadToEnd();
+                stream.Position = 0L;
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
             }
         }
 
         internal static Stream StringToStream(string responseString)
         {
             return new MemoryStream(Encoding.UTF8.GetBytes(responseString));
+        }
+
+        internal static void AssertCollectionsEqual<T1, T2>(IEnumerable<T1> expected, IEnumerable<T2> actual, Action<T1, T2> assertion)
+        {
+            var expectedList = expected.ToList();
+            var actualList = actual.ToList();
+            Assert.AreEqual(expectedList.Count, actualList.Count);
+            for (var i = 0; i < expectedList.Count; i++)
+            {
+                assertion(expectedList[i], actualList[i]);
+            }
         }
     }
 }

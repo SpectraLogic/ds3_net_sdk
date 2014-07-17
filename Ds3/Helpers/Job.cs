@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Ds3.Calls;
 using Ds3.Models;
@@ -27,8 +26,9 @@ namespace Ds3.Helpers
     internal abstract class Job : IJob
     {
         private readonly IDs3Client _client;
-        private readonly JobResponse _bulkResponse;
-        private int _maxParallelRequests = 0;
+        protected readonly JobResponse _bulkResponse;
+        protected int _maxParallelRequests = 0;
+        protected long _partSize = 32L * 1024L * 1024L;
 
         protected Job(IDs3Client client, JobResponse bulkResponse)
         {
@@ -36,32 +36,7 @@ namespace Ds3.Helpers
             this._bulkResponse = bulkResponse;
         }
 
-        protected abstract void TransferJobObject(IDs3Client client, JobObjectRequest requestInfo);
-
-        protected abstract bool ShouldTransferJobObject(JobObject jobObject);
-
-        protected class JobObjectRequest
-        {
-            public string BucketName { get; private set; }
-            public string ObjectName { get; private set; }
-            public Guid JobId { get; private set; }
-            public long Offset { get; private set; }
-            public Stream Stream { get; private set; }
-
-            public JobObjectRequest(
-                string bucketName,
-                string objectName,
-                Guid jobId,
-                long offset,
-                Stream stream)
-            {
-                this.BucketName = bucketName;
-                this.ObjectName = objectName;
-                this.JobId = jobId;
-                this.Offset = offset;
-                this.Stream = stream;
-            }
-        }
+        protected abstract void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects);
 
         public Guid JobId
         {
@@ -79,17 +54,22 @@ namespace Ds3.Helpers
             return this;
         }
 
+        public IJob WithPartSize(long partSize)
+        {
+            this._partSize = partSize;
+            return this;
+        }
+
         public void Transfer(Func<string, Stream> createStreamForObjectKey)
         {
-            var objectListsList = FilterJobObjects(this._bulkResponse.ObjectLists);
-            var objectNamesPerChunk = objectListsList.Select(objectList => objectList.Select(obj => obj.Name));
+            var objectNamesPerChunk = this._bulkResponse.ObjectLists.Select(objectList => objectList.Select(obj => obj.Name));
             var clientFactory = _client.BuildFactory(this._bulkResponse.Nodes);
 
             var objectStreams = new Dictionary<string, Stream>();
             UsingAll(objectStreams.Values, delegate
             {
                 EnumerableAlgorithms.ForEach(
-                    objectListsList,
+                    this._bulkResponse.ObjectLists,
                     objectNamesPerChunk.FirstMentionsPerRow(),
                     objectNamesPerChunk.LastMentionsPerRow(),
                     (objectList, namesToOpen, namesToClose) =>
@@ -109,45 +89,6 @@ namespace Ds3.Helpers
                     }
                 );
             });
-        }
-
-        private IEnumerable<JobObjectList> FilterJobObjects(IEnumerable<JobObjectList> objectListsList)
-        {
-            return (
-                from objectList in objectListsList
-                let newObjectList = objectList.Objects.Where(ShouldTransferJobObject).ToList()
-                where newObjectList.Count > 0
-                select new JobObjectList(
-                    objectList.ChunkNumber,
-                    objectList.NodeId,
-                    newObjectList
-                )
-            ).ToList();
-        }
-
-        private void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
-        {
-            ParallelForEach(
-                from obj in jobObjects
-                let streamCoordinator = new CriticalSectionExecutor()
-                let stream = objectStreams[obj.Name]
-                select new JobObjectRequest(
-                    this._bulkResponse.BucketName,
-                    obj.Name,
-                    this._bulkResponse.JobId,
-                    obj.Offset,
-                    new WindowedStream(stream, streamCoordinator, obj.Offset, obj.Length)
-                ),
-                jobObjectRequest => TransferJobObject(clientForNode, jobObjectRequest)
-            );
-        }
-
-        private void ParallelForEach<T>(IEnumerable<T> items, Action<T> action)
-        {
-            var options = _maxParallelRequests > 0
-                ? new ParallelOptions() { MaxDegreeOfParallelism = _maxParallelRequests }
-                : new ParallelOptions();
-            Parallel.ForEach(items, options, action);
         }
 
         private static void UsingAll(IEnumerable<IDisposable> resources, Action action)

@@ -59,20 +59,9 @@ namespace TestDs3
 
         private static void AssertNestedCollectionsEqual<T>(IEnumerable<IEnumerable<T>> expected, IEnumerable<IEnumerable<T>> actual)
         {
-            AssertCollectionsEqual(expected, actual, (innerExpected, innerActual) =>
-                AssertCollectionsEqual(innerExpected, innerActual, (expectedItem, actualItem) =>
+            HelpersForTest.AssertCollectionsEqual(expected, actual, (innerExpected, innerActual) =>
+                HelpersForTest.AssertCollectionsEqual(innerExpected, innerActual, (expectedItem, actualItem) =>
                     Assert.AreEqual(expectedItem, actualItem)));
-        }
-
-        private static void AssertCollectionsEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, Action<T, T> assertion)
-        {
-            var expectedList = expected.ToList();
-            var actualList = actual.ToList();
-            Assert.AreEqual(expectedList.Count, actualList.Count);
-            for (var i = 0; i < expectedList.Count; i++)
-            {
-                assertion(expectedList[i], actualList[i]);
-            }
         }
     }
 }

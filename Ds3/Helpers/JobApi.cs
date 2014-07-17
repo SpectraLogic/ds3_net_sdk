@@ -24,6 +24,7 @@ namespace Ds3.Helpers
         Guid JobId { get; }
         string BucketName { get; }
         IJob WithMaxParallelRequests(int maxParallelRequests);
+        IJob WithPartSize(long partSize);
         void Transfer(Func<string, Stream> createStreamForObjectKey);
     }
 }

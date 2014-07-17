@@ -80,6 +80,7 @@
     <Compile Include="Helpers\Ds3ClientHelpers.cs" />
     <Compile Include="Helpers\EnumerableAlgorithms.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
+    <Compile Include="Helpers\ObjectSplitter.cs" />
     <Compile Include="IDs3ClientFactory.cs" />
     <Compile Include="Helpers\IDs3ClientHelpers.cs" />
     <Compile Include="Helpers\Job.cs" />
