@@ -13,11 +13,13 @@
  * ****************************************************************************
  */
 
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
 using Ds3.Calls;
 using Ds3.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
 
 namespace Ds3.Helpers
 {
@@ -30,18 +32,25 @@ namespace Ds3.Helpers
 
         protected override void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
         {
-            //jobObjects
-            //    .AsParallel()
-            //    .WithDegreeOfParallelism(_maxParallelRequests)
-            //    .Select(jobObject => );
-            throw new System.NotImplementedException();
-            //clientForNode.GetObject(new GetObjectRequest(
-            //    jobObjectRequest.BucketName,
-            //    jobObjectRequest.ObjectName,
-            //    jobObjectRequest.JobId,
-            //    jobObjectRequest.Offset,
-            //    jobObjectRequest.Stream
-            //));
+            var streamCoordinators = jobObjects.ToDictionary(jo => jo.Name, jo => new CriticalSectionExecutor());
+            var parallelOptions = this._maxParallelRequests > 0
+                ? new ParallelOptions { MaxDegreeOfParallelism = _maxParallelRequests }
+                : new ParallelOptions();
+            Parallel.ForEach(jobObjects, parallelOptions, jobObject =>
+            {
+                clientForNode.GetObject(new GetObjectRequest(
+                    this._bulkResponse.BucketName,
+                    jobObject.Name,
+                    this._bulkResponse.JobId,
+                    jobObject.Offset,
+                    new WindowedStream(
+                        objectStreams[jobObject.Name],
+                        streamCoordinators[jobObject.Name],
+                        jobObject.Offset,
+                        jobObject.Length
+                    )
+                ));
+            });
         }
     }
 }

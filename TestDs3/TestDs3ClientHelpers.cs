@@ -26,7 +26,6 @@ using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Models;
-using System.Collections;
 
 namespace TestDs3
 {
@@ -39,12 +38,36 @@ namespace TestDs3
             var ds3ClientMock = new Mock<IDs3Client>(MockBehavior.Strict);
             ds3ClientMock
                 .Setup(client => client.BulkGet(It.IsAny<BulkGetRequest>()))
-                .Returns(CreateJobResponse("GET", null));
+                .Returns(CreateJobResponse("GET", new[] {
+                    new JobObjectList(0, null, new[] {
+                        new JobObject("baz", 20, 0, false)
+                    }),
+                    new JobObjectList(1, null, new[] {
+                        new JobObject("baz", 6, 20, false),
+                        new JobObject("bar", 14, 0, false)
+                    }),
+                    new JobObjectList(2, null, new[] {
+                        new JobObject("foo", 10, 0, false)
+                    })
+                }));
+            var requests =
+                new[] {
+                    new { ObjectName = "baz", Offset = 0L, Contents = "12345678901234567890" },
+                    new { ObjectName = "baz", Offset = 20L, Contents = "123456" },
+                    new { ObjectName = "bar", Offset = 0L, Contents = "12345678901234" },
+                    new { ObjectName = "foo", Offset = 0L, Contents = "1234567890" }
+                }
+                .ToDictionary(
+                    req => new { req.ObjectName, req.Offset },
+                    req => req.Contents
+                );
             ds3ClientMock
                 .Setup(client => client.GetObject(It.IsAny<GetObjectRequest>()))
                 .Returns<GetObjectRequest>(request =>
                 {
-                    HelpersForTest.StringToStream(request.ObjectName + " contents").CopyTo(request.DestinationStream);
+                    HelpersForTest
+                        .StringToStream(requests[new { request.ObjectName, request.Offset }])
+                        .CopyTo(request.DestinationStream);
                     return new GetObjectResponse(new Dictionary<string, string>());
                 });
             var ds3ClientFactoryMock = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
@@ -54,8 +77,6 @@ namespace TestDs3
             ds3ClientMock
                 .Setup(client => client.BuildFactory(It.IsAny<IEnumerable<Node>>()))
                 .Returns(ds3ClientFactoryMock.Object);
-
-            var objectsGotten = new List<string>();
 
             var objectsToGet = new[] {
                 new Ds3Object("foo", null),
@@ -68,15 +89,18 @@ namespace TestDs3
                 .Transfer(key => {
                     var stream = new StringStream();
                     streams.Add(key, stream);
-                    objectsGotten.Add(key);
                     return stream;
                 });
+
+            var expectedContents = new Dictionary<string, string> {
+                { "baz", "12345678901234567890123456" },
+                { "bar", "12345678901234" },
+                { "foo", "1234567890" }
+            };
             foreach (var kvp in streams)
             {
-                Assert.AreEqual(kvp.Key + " contents", kvp.Value.Result);
+                Assert.AreEqual(expectedContents[kvp.Key], kvp.Value.Result);
             }
-
-            CollectionAssert.AreEquivalent(new[] { "baz", "bar", "foo" }, objectsGotten);
         }
 
         private class StringStream : MemoryStream
