@@ -60,7 +60,7 @@ namespace Ds3.Runtime
             {
                 builder.Append(keyValuePair.Key).Append(':').Append(keyValuePair.Value).Append('\n');
             }
-            builder.Append(resourcePath);
+            builder.Append(HttpHelper.PercentEncodePath(resourcePath));
             return builder.ToString();
         }
 

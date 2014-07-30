@@ -96,7 +96,7 @@ namespace Ds3.Runtime
         {
             DateTime date = DateTime.UtcNow;
             UriBuilder uriBuilder = new UriBuilder(_endpoint);
-            uriBuilder.Path = request.Path;
+            uriBuilder.Path = HttpHelper.PercentEncodePath(request.Path);
 
             if (request.QueryParams.Count > 0)
             {

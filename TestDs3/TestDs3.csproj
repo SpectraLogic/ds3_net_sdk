@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestHttpHelper.cs" />
     <Compile Include="TestMultipartUpload.cs" />
     <Compile Include="HelpersForTest.cs" />
     <Compile Include="MockNetwork.cs" />
