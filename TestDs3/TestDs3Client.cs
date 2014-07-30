@@ -34,6 +34,7 @@ namespace TestDs3
     {
         private static readonly IDictionary<string, string> _emptyHeaders = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
+        private const string JobResponseResourceName = "TestDs3.TestData.ResultingMasterObjectList.xml";
 
         [Test]
         public void TestGetService()
@@ -230,16 +231,16 @@ namespace TestDs3
         [Test]
         public void TestBulkPut()
         {
-            runBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects)));
+            RunBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects)));
         }
 
         [Test]
         public void TestBulkGet()
         {
-            runBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucket8192000000", objects)));
+            RunBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucket8192000000", objects)));
         }
 
-        private void runBulkTest(string operation, Func<IDs3Client, List<Ds3Object>, JobResponse> makeCall)
+        private void RunBulkTest(string operation, Func<IDs3Client, List<Ds3Object>, JobResponse> makeCall)
         {
             var files = new[] {
                 new { Key = "client00obj000000-8000000", Size = 8192000000L },
@@ -255,7 +256,7 @@ namespace TestDs3
             };
 
             var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Objects>\r\n  <Object Name=\"client00obj000000-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000001-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000002-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000003-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000004-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000005-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000006-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000007-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000008-8000000\" Size=\"8192000000\" />\r\n  <Object Name=\"client00obj000009-8000000\" Size=\"8192000000\" />\r\n</Objects>";
-            var stringResponse = ReadResource("TestDs3.TestData.ResultingMasterObjectList.xml");
+            var stringResponse = ReadResource(JobResponseResourceName);
 
             var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
 
@@ -264,7 +265,29 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket8192000000", queryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                 .AsClient;
+            CheckJobResponse(makeCall(client, inputObjects));
+        }
 
+        [Test]
+        public void TestGetJob()
+        {
+            var stringResponse = ReadResource(JobResponseResourceName);
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job/1a85e743-ec8f-4789-afec-97e587a26936", _emptyQueryParams, "")
+                .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
+                .AsClient;
+            CheckJobResponse(client.GetJob(new GetJobRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936"))));
+        }
+
+        private static string ReadResource(string resourceName)
+        {
+            using (var xmlFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            using (var reader = new StreamReader(xmlFile))
+                return reader.ReadToEnd();
+        }
+
+        private static void CheckJobResponse(JobResponse response)
+        {
             var expectedNodes = new[] {
                 new {
                     EndPoint="10.1.18.12",
@@ -285,8 +308,6 @@ namespace TestDs3
                     Id=Guid.Parse("4d5b6669-76f0-49f9-bc2a-9280f40cafa7")
                 },
             };
-
-
             var expectedObjectLists = new[] {
                 new {
                     ChunkNumber=0L,
@@ -321,8 +342,6 @@ namespace TestDs3
                     }
                 }
             };
-
-            var response = makeCall(client, inputObjects);
             HelpersForTest.AssertCollectionsEqual(expectedNodes, response.Nodes, (expectedNode, actualNode) =>
             {
                 Assert.AreEqual(expectedNode.Id, actualNode.Id);
@@ -343,13 +362,6 @@ namespace TestDs3
             });
         }
 
-        private static string ReadResource(string resourceName)
-        {
-            using (var xmlFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-            using (var reader = new StreamReader(xmlFile))
-                return reader.ReadToEnd();
-        }
-
         [Test]
         public void TestGetJobList()
         {
@@ -363,34 +375,6 @@ namespace TestDs3
             Assert.AreEqual(1, jobs.Count);
             CheckJobInfo(jobs[0]);
         }
-
-        //[Test]
-        //public void TestGetJob()
-        //{
-        //    var responseContent = "<Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"><Objects ChunkNumber=\"0\" ServerId=\"FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS\"><Object Name=\"bar\" Size=\"12\" State=\"IN_CACHE\"/><Object Name=\"foo\" Size=\"12\" State=\"NOT_IN_CACHE\"/></Objects></Job>";
-        //    var client = MockNetwork
-        //        .Expecting(HttpVerb.GET, "/_rest_/job/a4a586a1-cb80-4441-84e2-48974e982d51", new Dictionary<string, string>(), "")
-        //        .Returning(HttpStatusCode.OK, responseContent)
-        //        .AsClient;
-
-        //    var response = client.GetJob(new GetJobRequest(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51")));
-        //    CheckJobInfo(response.JobInfo);
-        //    var objectLists = response.ObjectLists.ToList();
-        //    Assert.AreEqual(1, objectLists.Count);
-
-        //    var objectList = objectLists[0];
-        //    Assert.AreEqual("FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS", objectList.ServerId);
-
-        //    var objects = objectList.Objects.ToList();
-        //    Assert.AreEqual(1, objects.Count);
-        //    Assert.AreEqual("foo", objects[0].Name);
-        //    Assert.AreEqual(12, objects[0].Size);
-
-        //    var objectsInCache = objectList.ObjectsInCache.ToList();
-        //    Assert.AreEqual(1, objectsInCache.Count);
-        //    Assert.AreEqual("bar", objectsInCache[0].Name);
-        //    Assert.AreEqual(12, objectsInCache[0].Size);
-        //}
 
         private static void CheckJobInfo(JobInfo jobInfo)
         {
