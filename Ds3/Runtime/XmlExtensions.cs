@@ -15,6 +15,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -26,7 +27,7 @@ namespace Ds3.Runtime
         {
             try
             {
-                return XDocument.Load(content);
+                return XDocument.Load(new XmlNoNamespaceReader(content));
             }
             catch (XmlException e)
             {
@@ -37,7 +38,15 @@ namespace Ds3.Runtime
         public static Stream WriteToMemoryStream(this XDocument doc)
         {
             var stream = new MemoryStream();
-            doc.Save(stream);
+            var settings = new XmlWriterSettings
+            {
+                OmitXmlDeclaration = true,
+                Encoding = new UTF8Encoding(false)
+            };
+            using (var xmlWriter = XmlWriter.Create(stream, settings))
+            {
+                doc.Save(xmlWriter);
+            }
             stream.Seek(0, SeekOrigin.Begin);
             return stream;
         }
@@ -109,6 +118,19 @@ namespace Ds3.Runtime
         {
             var element = self.Element(elementName);
             return element == null ? null : element.Value;
+        }
+
+        private class XmlNoNamespaceReader : XmlTextReader
+        {
+            public XmlNoNamespaceReader(Stream stream)
+                : base(stream)
+            {
+            }
+
+            public override string NamespaceURI
+            {
+                get { return ""; }
+            }
         }
     }
 }

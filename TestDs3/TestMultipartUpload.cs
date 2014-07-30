@@ -105,12 +105,11 @@ namespace TestDs3
         {
             var queryParams = new Dictionary<string, string> { { "uploadId", "VXBsb2FkIElEIGZvciA2aWWpbmcncyBteS1tb3ZpZS5tMnRzIHVwbG9hZA" } };
             var requestContent =
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
-                + "<CompleteMultipartUpload>\r\n"
-                + "  <Part>\r\n"
-                + "    <PartNumber>1234</PartNumber>\r\n"
-                + "    <ETag>e2b5712a78c5cd8224e90e670de9fcac</ETag>\r\n"
-                + "  </Part>\r\n"
+                "<CompleteMultipartUpload>"
+                + "<Part>"
+                + "<PartNumber>1234</PartNumber>"
+                + "<ETag>e2b5712a78c5cd8224e90e670de9fcac</ETag>"
+                + "</Part>"
                 + "</CompleteMultipartUpload>";
             var responseContent =
                 "<CompleteMultipartUploadResult>"

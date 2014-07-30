@@ -13,6 +13,8 @@
  * ****************************************************************************
  */
 
+using System.Net;
+
 using Ds3.Calls;
 using Ds3.Runtime;
 
@@ -24,6 +26,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 using (var responseStream = response.GetResponseStream())
                 {
                     var root = XmlExtensions.ReadDocument(responseStream).ElementOrThrow("CompleteMultipartUploadResult");

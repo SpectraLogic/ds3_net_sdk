@@ -23,16 +23,50 @@ namespace Ds3.Runtime
 {
     internal class S3Signer
     {
+        /// <summary>
+        /// List of resources that must be a part of the CanonicalizedResource Element.
+        /// See "Constructing the CanonicalizedResource Element" -> "Launch Process" -> table row 4
+        /// http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
+        /// </summary>
+        private static readonly ISet<string> _subresourcesToCanonicalize = new HashSet<string>
+        {
+            "acl",
+            "lifecycle",
+            "location",
+            "logging",
+            "notification",
+            "partNumber",
+            "policy",
+            "requestPayment",
+            "torrent",
+            "uploadId",
+            "uploads",
+            "versionId",
+            "versioning",
+            "versions",
+            "website",
+            "delete"
+        };
+
         public static string AuthField(
             Credentials creds,
             string verb,
             string date,
             string resourcePath,
+            IDictionary<string, string> queryString,
             string md5 = "",
             string contentType = "",
             IDictionary<string, string> amzHeaders = null)
         {
-            var payload = BuildPayload(verb, date, resourcePath, md5, contentType, amzHeaders ?? new Dictionary<string, string>());
+            var payload = BuildPayload(
+                verb,
+                date,
+                resourcePath,
+                queryString,
+                md5,
+                contentType,
+                amzHeaders ?? new Dictionary<string, string>()
+            );
             return "AWS " + creds.AccessId + ":" + S3Signer.Signature(creds.Key, payload);
         }
 
@@ -43,7 +77,14 @@ namespace Ds3.Runtime
             return System.Convert.ToBase64String(hashResult).Trim();
         }
 
-        private static string BuildPayload(string verb, string date, string resourcePath, string md5, string contentType, IDictionary<string, string> amzHeaders)
+        private static string BuildPayload(
+            string verb,
+            string date,
+            string resourcePath,
+            IDictionary<string, string> queryString,
+            string md5,
+            string contentType,
+            IDictionary<string, string> amzHeaders)
         {
             var builder = new StringBuilder();
             builder.Append(verb).Append('\n');
@@ -61,6 +102,23 @@ namespace Ds3.Runtime
                 builder.Append(keyValuePair.Key).Append(':').Append(keyValuePair.Value).Append('\n');
             }
             builder.Append(HttpHelper.PercentEncodePath(resourcePath));
+            var canonicalizedSubresources =
+                from kvp in queryString
+                where _subresourcesToCanonicalize.Contains(kvp.Key)
+                orderby kvp.Key
+                select kvp;
+            var delimiter = '?';
+            foreach (var keyValuePair in canonicalizedSubresources)
+            {
+                builder.Append(delimiter);
+                builder.Append(keyValuePair.Key);
+                if (keyValuePair.Value.Length > 0)
+                {
+                    builder.Append('=');
+                    builder.Append(keyValuePair.Value);
+                }
+                delimiter = '&';
+            }
             return builder.ToString();
         }
 

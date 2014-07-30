@@ -37,6 +37,7 @@ namespace Ds3.Runtime
         private readonly int _requestTimeout;
 
         internal Uri Proxy = null;
+        private readonly char[] _noChars = new char[0];
 
         public Network(
             Uri endpoint,
@@ -128,6 +129,7 @@ namespace Ds3.Runtime
                 request.Verb.ToString(),
                 date.ToString("r"),
                 request.Path,
+                request.QueryParams,
                 md5: md5,
                 amzHeaders: request.Headers
             ));
@@ -192,8 +194,15 @@ namespace Ds3.Runtime
 
         private string BuildQueryParams(Dictionary<string, string> queryParams)
         {
-            List<string> queryList = queryParams.Select(kvp => kvp.Key + "=" + kvp.Value).ToList();
-            return String.Join("&", queryList);            
+            return String.Join(
+                "&",
+                from kvp in queryParams
+                orderby kvp.Key
+                let encodedKey = HttpHelper.PercentEncodePath(kvp.Key, _noChars)
+                select kvp.Value.Length > 0
+                    ? encodedKey + "=" + HttpHelper.PercentEncodePath(kvp.Value, _noChars)
+                    : encodedKey
+            );
         }
     }
 }
