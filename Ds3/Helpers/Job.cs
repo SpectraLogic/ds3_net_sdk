@@ -28,7 +28,10 @@ namespace Ds3.Helpers
         private readonly IDs3Client _client;
         protected readonly JobResponse _bulkResponse;
         protected int _maxParallelRequests = 0;
-        protected long _partSize = 32L * 1024L * 1024L;
+        protected long _partSize = 32L * 1024L * 1024L
+            //TODO: Until the server supports multipart upload properly we don't want to use it.
+            // For now we'll just set the threshold to something ridiculous.
+            * 1024L * 1024L * 1024L;
 
         protected Job(IDs3Client client, JobResponse bulkResponse)
         {
