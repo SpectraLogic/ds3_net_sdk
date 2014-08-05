@@ -119,6 +119,8 @@ namespace Ds3
         /// <returns></returns>
         GetJobListResponse GetJobList(GetJobListRequest request);
 
+        JobResponse ModifyJob(ModifyJobRequest request);
+
         /// <summary>
         /// Retrieves information about a job so it can be resumed.
         /// </summary>

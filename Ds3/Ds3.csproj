@@ -76,6 +76,7 @@
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\InitiateMultipartUploadRequest.cs" />
     <Compile Include="Calls\InitiateMultipartUploadResponse.cs" />
+    <Compile Include="Calls\ModifyJobRequest.cs" />
     <Compile Include="Calls\PutPartRequest.cs" />
     <Compile Include="Calls\PutPartResponse.cs" />
     <Compile Include="Helpers\CriticalSectionExecutor.cs" />

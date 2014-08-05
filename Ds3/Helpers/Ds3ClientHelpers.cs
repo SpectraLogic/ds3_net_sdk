@@ -96,14 +96,14 @@ namespace Ds3.Helpers
 
         public IJob RecoverWriteJob(Guid jobId)
         {
-            var job = this._client.GetJob(new GetJobRequest(jobId));
+            var job = this._client.ModifyJob(new ModifyJobRequest(jobId));
             CheckJobType(JobTypePut, job.RequestType);
             return new WriteJob(this._client, job);
         }
 
         public IJob RecoverReadJob(Guid jobId)
         {
-            var job = this._client.GetJob(new GetJobRequest(jobId));
+            var job = this._client.ModifyJob(new ModifyJobRequest(jobId));
             CheckJobType(JobTypeGet, job.RequestType);
             return new ReadJob(this._client, job);
         }
