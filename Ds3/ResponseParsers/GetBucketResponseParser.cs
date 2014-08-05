@@ -55,7 +55,11 @@ namespace Ds3.ResponseParsers
                                 ParseDateTime(obj.TextOf("LastModified"))
                             )
                         ).ToList(),
-                        metadata: ResponseParseUtilities.ExtractCustomMetadata(response.Headers)
+                        metadata: ResponseParseUtilities.ExtractCustomMetadata(response.Headers),
+                        commonPrefixes: root
+                            .Elements("CommonPrefixes")
+                            .Select(cp => cp.TextOf("Prefix"))
+                            .ToList()
                     );
                 }
             }

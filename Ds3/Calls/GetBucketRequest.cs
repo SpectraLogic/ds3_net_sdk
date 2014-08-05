@@ -75,6 +75,27 @@ namespace Ds3.Calls
             return this;
         }
 
+        private string _delimiter;
+        public string Delimiter
+        {
+            get { return _delimiter; }
+            set { WithDelimiter(value); }
+        }
+
+        public GetBucketRequest WithDelimiter(string delimiter)
+        {
+            this._delimiter = delimiter;
+            if (delimiter != null)
+            {
+                this.QueryParams.Add("delimiter", delimiter);
+            }
+            else
+            {
+                this.QueryParams.Remove("delimiter");
+            }
+            return this;
+        }
+
         private string _prefix;
         public string Prefix
         {

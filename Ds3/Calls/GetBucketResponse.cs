@@ -32,6 +32,7 @@ namespace Ds3.Calls
         public DateTime CreationDate { get; private set; }
         public IEnumerable<Ds3ObjectInfo> Objects { get; private set; }
         public IDictionary<string, string> Metadata { get; private set; }
+        public IEnumerable<string> CommonPrefixes { get; private set; }
 
         internal GetBucketResponse(
             string name,
@@ -43,7 +44,8 @@ namespace Ds3.Calls
             string nextMarker,
             DateTime creationDate,
             IEnumerable<Ds3ObjectInfo> objects,
-            IDictionary<string, string> metadata)
+            IDictionary<string, string> metadata,
+            IEnumerable<string> commonPrefixes)
         {
             this.Name = name;
             this.Prefix = prefix;
@@ -55,6 +57,7 @@ namespace Ds3.Calls
             this.CreationDate = creationDate;
             this.Objects = objects;
             this.Metadata = metadata;
+            this.CommonPrefixes = commonPrefixes;
         }
     }
 }
