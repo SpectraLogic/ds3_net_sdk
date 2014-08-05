@@ -39,14 +39,14 @@ namespace TestDs3
             ds3ClientMock
                 .Setup(client => client.BulkGet(It.IsAny<BulkGetRequest>()))
                 .Returns(CreateJobResponse("GET", new[] {
-                    new JobObjectList(0, null, new[] {
+                    new JobObjectList(Guid.Parse("e36c4e47-9de7-4b56-8e2b-7ac062e6a094"), 0, null, new[] {
                         new JobObject("baz", 20, 0, false)
                     }),
-                    new JobObjectList(1, null, new[] {
+                    new JobObjectList(Guid.Parse("ea581f53-da37-4bac-ab51-6aa0a61ec558"), 1, null, new[] {
                         new JobObject("baz", 6, 20, false),
                         new JobObject("bar", 14, 0, false)
                     }),
-                    new JobObjectList(2, null, new[] {
+                    new JobObjectList(Guid.Parse("9d3098ba-e652-4dce-a237-321c31f343b5"), 2, null, new[] {
                         new JobObject("foo", 10, 0, false)
                     })
                 }));
@@ -125,11 +125,11 @@ namespace TestDs3
             var clientMock = new BulkPutClientMock(CreateJobResponse(
                 "PUT",
                 new[] {
-                    new JobObjectList(0, null, new[] {
+                    new JobObjectList(Guid.Parse("12bdf500-7a1f-422f-9c56-6dc05fd82db7"), 0, null, new[] {
                         new JobObject("baz", 12, 0, false),
                         new JobObject("bar", 12, 0, false)
                     }),
-                    new JobObjectList(1, null, new[] {
+                    new JobObjectList(Guid.Parse("9116b513-75db-4b1b-acf4-f39eec3dbcdc"), 1, null, new[] {
                         new JobObject("foo", 12, 0, false)
                     })
                 }
@@ -163,11 +163,11 @@ namespace TestDs3
             var clientMock = new BulkPutClientMock(CreateJobResponse(
                 "PUT",
                 new[] {
-                    new JobObjectList(0, null, new[] {
+                    new JobObjectList(Guid.Parse("7c53f8a2-d5e5-441a-9631-1821d35f1f0e"), 0, null, new[] {
                         new JobObject("baz", 12, 0, false),
                         new JobObject("bar", 12, 0, false)
                     }),
-                    new JobObjectList(1, null, new[] {
+                    new JobObjectList(Guid.Parse("07dc0f5d-b4ea-4f91-a1cf-aaa684a56742"), 1, null, new[] {
                         new JobObject("foo", 12, 0, false)
                     })
                 }
@@ -245,14 +245,14 @@ namespace TestDs3
             var clientMock = new BulkPutClientMock(CreateJobResponse(
                 "PUT",
                 new[] {
-                    new JobObjectList(0, null, new[] {
+                    new JobObjectList(Guid.Parse("6076c8a7-80a7-46e3-a662-8e64cf33a772"), 0, null, new[] {
                         new JobObject("baz", 20, 0, false)
                     }),
-                    new JobObjectList(1, null, new[] {
+                    new JobObjectList(Guid.Parse("9c234dfd-0ae1-402f-9fed-92674eb3b38a"), 1, null, new[] {
                         new JobObject("baz", 6, 20, false),
                         new JobObject("bar", 14, 0, false)
                     }),
-                    new JobObjectList(2, null, new[] {
+                    new JobObjectList(Guid.Parse("b31c2971-690b-4a7c-a6e9-f75bff629b3a"), 2, null, new[] {
                         new JobObject("foo", 10, 0, false)
                     })
                 }

@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Xml.Linq;
 
 using Ds3.Calls;
 using Ds3.Models;
@@ -52,25 +53,31 @@ namespace Ds3.ResponseParsers
                                 ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpsPort"))
                             )
                         ).ToList(),
-                        objectLists: (
-                            from objs in masterObjectList.Elements("Objects")
-                            let objects =
-                                from objectElement in objs.Elements("Object")
-                                select new JobObject(
-                                    objectElement.AttributeText("Name"),
-                                    long.Parse(objectElement.AttributeText("Length")),
-                                    long.Parse(objectElement.AttributeText("Offset")),
-                                    bool.Parse(objectElement.AttributeText("InCache"))
-                                )
-                            select new JobObjectList(
-                                long.Parse(objs.AttributeTextOrNull("ChunkNumber")),
-                                ParseGuidOrNull(objs.AttributeTextOrNull("NodeId")),
-                                objects
-                            )
-                        ).ToList()
+                        objectLists: masterObjectList
+                            .Elements("Objects")
+                            .Select(ParseObjectList)
+                            .ToList()
                     );
                 }
             }
+        }
+
+        public static JobObjectList ParseObjectList(XElement objectsElement)
+        {
+            var objects =
+                from objectElement in objectsElement.Elements("Object")
+                select new JobObject(
+                    objectElement.AttributeText("Name"),
+                    long.Parse(objectElement.AttributeText("Length")),
+                    long.Parse(objectElement.AttributeText("Offset")),
+                    bool.Parse(objectElement.AttributeText("InCache"))
+                );
+            return new JobObjectList(
+                Guid.Parse(objectsElement.AttributeTextOrNull("ChunkId")),
+                long.Parse(objectsElement.AttributeTextOrNull("ChunkNumber")),
+                ParseGuidOrNull(objectsElement.AttributeTextOrNull("NodeId")),
+                objects.ToList()
+            );
         }
 
         private static Guid? ParseGuidOrNull(string guidStringOrNull)

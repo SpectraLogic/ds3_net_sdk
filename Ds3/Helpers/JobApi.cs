@@ -16,7 +16,6 @@
 using System;
 using System.IO;
 
-
 namespace Ds3.Helpers
 {
     public interface IJob

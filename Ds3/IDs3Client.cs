@@ -126,6 +126,8 @@ namespace Ds3
         /// <returns></returns>
         JobResponse GetJob(GetJobRequest request);
 
+        AllocateJobChunkResponse AllocateJobChunk(AllocateJobChunkRequest request);
+
         InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request);
 
         PutPartResponse PutPart(PutPartRequest request);

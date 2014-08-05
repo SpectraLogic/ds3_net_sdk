@@ -63,6 +63,8 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Calls\AbortMultipartUploadRequest.cs" />
+    <Compile Include="Calls\AllocateJobChunkRequest.cs" />
+    <Compile Include="Calls\AllocateJobChunkResponse.cs" />
     <Compile Include="Calls\CompleteMultipartUploadRequest.cs" />
     <Compile Include="Calls\CompleteMultipartUploadResponse.cs" />
     <Compile Include="Calls\DeleteObjectListRequest.cs" />
@@ -126,6 +128,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ResponseParsers\AllocateJobChunkResponseParser.cs" />
     <Compile Include="ResponseParsers\CompleteMultipartUploadResponseParser.cs" />
     <Compile Include="ResponseParsers\DeleteObjectListResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketResponseParser.cs" />

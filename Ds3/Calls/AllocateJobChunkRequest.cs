@@ -14,35 +14,27 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public class JobObjectList : IEnumerable<JobObject>
+    public class AllocateJobChunkRequest : Ds3Request
     {
         public Guid ChunkId { get; private set; }
-        public long ChunkNumber { get; private set; }
-        public Guid? NodeId { get; private set; }
-        public IEnumerable<JobObject> Objects { get; private set; }
 
-        internal JobObjectList(Guid chunkId, long chunkNumber, Guid? nodeId, IEnumerable<JobObject> objects)
+        public AllocateJobChunkRequest(Guid chunkId)
         {
             this.ChunkId = chunkId;
-            this.ChunkNumber = chunkNumber;
-            this.NodeId = nodeId;
-            this.Objects = objects.ToList();
+            this.QueryParams.Add("operation", "allocate");
         }
 
-        public IEnumerator<JobObject> GetEnumerator()
+        internal override HttpVerb Verb
         {
-            return Objects.GetEnumerator();
+            get { return HttpVerb.PUT; }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        internal override string Path
         {
-            return Objects.GetEnumerator();
+            get { return "_rest_/job_chunk/" + ChunkId.ToString(); }
         }
     }
 }

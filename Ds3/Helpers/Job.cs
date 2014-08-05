@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 using Ds3.Calls;
 using Ds3.Models;
@@ -32,6 +33,7 @@ namespace Ds3.Helpers
             //TODO: Until the server supports multipart upload properly we don't want to use it.
             // For now we'll just set the threshold to something ridiculous.
             * 1024L * 1024L * 1024L;
+        private static readonly TimeSpan _defaultRetryAfter = TimeSpan.FromSeconds(5 * 60);
 
         protected Job(IDs3Client client, JobResponse bulkResponse)
         {
@@ -82,7 +84,8 @@ namespace Ds3.Helpers
                             objectStreams.Add(nameToOpen, createStreamForObjectKey(nameToOpen));
                         }
 
-                        TransferChunk(clientFactory.GetClientForNodeId(objectList.NodeId), objectStreams, objectList.Objects);
+                        var chunk = WaitForAvailableChunk(clientFactory.GetClientForNodeId(objectList.NodeId), objectList.ChunkId);
+                        TransferChunk(clientFactory.GetClientForNodeId(chunk.NodeId), objectStreams, chunk.Objects);
 
                         foreach (var nameToClose in namesToClose)
                         {
@@ -92,6 +95,24 @@ namespace Ds3.Helpers
                     }
                 );
             });
+        }
+
+        private static JobObjectList WaitForAvailableChunk(IDs3Client client, Guid chunkId)
+        {
+            JobObjectList result = null;
+            do
+            {
+                client
+                    .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
+                    .Match(chunk => result = chunk, () => SleepFor(_defaultRetryAfter), SleepFor);
+            }
+            while (result == null);
+            return result;
+        }
+
+        private static void SleepFor(TimeSpan retryAfter)
+        {
+            Thread.Sleep(Convert.ToInt32(retryAfter.TotalMilliseconds));
         }
 
         private static void UsingAll(IEnumerable<IDisposable> resources, Action action)
