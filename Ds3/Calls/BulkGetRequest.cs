@@ -14,17 +14,19 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 
 using Ds3.Models;
+using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
     public class BulkGetRequest : BulkRequest
     {
         public BulkGetRequest(string bucketName, List<Ds3Object> objects) 
-            : base(bucketName, objects)
+            : base(bucketName, objects, false)
         {
             QueryParams.Add("operation", "start_bulk_get");
-        }      
+        }
     }
 }
