@@ -513,7 +513,8 @@ namespace TestDs3
                 nextMarker: nextMarker,
                 creationDate: DateTime.Now,
                 objects: ds3objectInfos,
-                metadata: new Dictionary<string, string>()
+                metadata: new Dictionary<string, string>(),
+                commonPrefixes: Enumerable.Empty<string>()
             );
         }
 

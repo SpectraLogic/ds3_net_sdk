@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Ds3.Helpers
 {
-    internal class ObjectSplitter
+    internal class ObjectPartPlanner
     {
         public class ObjectPart
         {
@@ -34,7 +34,7 @@ namespace Ds3.Helpers
             }
         }
 
-        public static IEnumerable<ObjectPart> SplitObject(long partSize, long jobOffset, long jobLength)
+        public static IEnumerable<ObjectPart> PlanParts(long partSize, long jobOffset, long jobLength)
         {
             var offset = jobOffset;
             var length = jobLength;

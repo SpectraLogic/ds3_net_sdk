@@ -21,29 +21,29 @@ using System.Linq;
 using NUnit.Framework;
 
 using Ds3.Helpers;
-using Part = Ds3.Helpers.ObjectSplitter.ObjectPart;
+using Part = Ds3.Helpers.ObjectPartPlanner.ObjectPart;
 
 namespace TestDs3
 {
     [TestFixture]
-    public class TestObjectSplitter
+    public class TestObjectPartPlanner
     {
         private static readonly PartComparer _partComparer = new PartComparer();
 
         [Test]
-        public void TestSplitObject()
+        public void TestPlanParts()
         {
-            CheckSplitter(0L, 1024L, new Part(0L, 1024L, 1));
-            CheckSplitter(512L, 1024L, new Part(512L, 1024L, 1));
-            CheckSplitter(0L, 1025L, new Part(0L, 1024L, 1), new Part(1024L, 1L, 2));
-            CheckSplitter(512L, 1025L, new Part(512L, 1024L, 1), new Part(1536L, 1L, 2));
-            CheckSplitter(1536L, 1025L, new Part(1536L, 1024L, 1), new Part(2560L, 1L, 2));
-            CheckSplitter(512L, 3072L, new Part(512L, 1024L, 1), new Part(1536L, 1024L, 2), new Part(2560L, 1024L, 3));
+            CheckPlanParts(0L, 1024L, new Part(0L, 1024L, 1));
+            CheckPlanParts(512L, 1024L, new Part(512L, 1024L, 1));
+            CheckPlanParts(0L, 1025L, new Part(0L, 1024L, 1), new Part(1024L, 1L, 2));
+            CheckPlanParts(512L, 1025L, new Part(512L, 1024L, 1), new Part(1536L, 1L, 2));
+            CheckPlanParts(1536L, 1025L, new Part(1536L, 1024L, 1), new Part(2560L, 1L, 2));
+            CheckPlanParts(512L, 3072L, new Part(512L, 1024L, 1), new Part(1536L, 1024L, 2), new Part(2560L, 1024L, 3));
         }
 
-        private static void CheckSplitter(long offset, long length, params Part[] expected)
+        private static void CheckPlanParts(long offset, long length, params Part[] expected)
         {
-            var objectParts = ObjectSplitter.SplitObject(1024L, offset, length).ToList();
+            var objectParts = ObjectPartPlanner.PlanParts(1024L, offset, length).ToList();
             CollectionAssert.AreEqual(objectParts, expected.ToList(), _partComparer);
         }
 

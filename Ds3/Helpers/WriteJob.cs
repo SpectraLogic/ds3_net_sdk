@@ -57,7 +57,7 @@ namespace Ds3.Helpers
 
         private UploadState PrepareForUpload(IDs3Client client, Stream stream, JobObject jobObject)
         {
-            var parts = ObjectSplitter.SplitObject(_partSize, jobObject.Offset, jobObject.Length).ToList();
+            var parts = ObjectPartPlanner.PlanParts(_partSize, jobObject.Offset, jobObject.Length).ToList();
             var criticalSectionExecutor = new CriticalSectionExecutor();
             if (parts.Count > 1)
             {

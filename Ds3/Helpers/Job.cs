@@ -84,8 +84,7 @@ namespace Ds3.Helpers
                             objectStreams.Add(nameToOpen, createStreamForObjectKey(nameToOpen));
                         }
 
-                        var chunk = WaitForAvailableChunk(clientFactory.GetClientForNodeId(objectList.NodeId), objectList.ChunkId);
-                        TransferChunk(clientFactory.GetClientForNodeId(chunk.NodeId), objectStreams, chunk.Objects);
+                        TransferChunk(clientFactory.GetClientForNodeId(objectList.NodeId), objectStreams, objectList.Objects);
 
                         foreach (var nameToClose in namesToClose)
                         {
@@ -95,19 +94,6 @@ namespace Ds3.Helpers
                     }
                 );
             });
-        }
-
-        private static JobObjectList WaitForAvailableChunk(IDs3Client client, Guid chunkId)
-        {
-            JobObjectList result = null;
-            do
-            {
-                client
-                    .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
-                    .Match(chunk => result = chunk, () => SleepFor(_defaultRetryAfter), SleepFor);
-            }
-            while (result == null);
-            return result;
         }
 
         private static void SleepFor(TimeSpan retryAfter)

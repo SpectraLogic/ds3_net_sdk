@@ -21,6 +21,12 @@ namespace Ds3.Helpers
 {
     internal static class EnumerableAlgorithms
     {
+        /// <summary>
+        /// For each list of strings in the input, returns all of the strings
+        /// that have not appeared in any previous list of strings.
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <returns></returns>
         public static IEnumerable<IEnumerable<string>> FirstMentionsPerRow(this IEnumerable<IEnumerable<string>> rows)
         {
             var mentioned = new HashSet<string>();
@@ -37,11 +43,28 @@ namespace Ds3.Helpers
             }
         }
 
+        /// <summary>
+        /// For each list of strings in the input, returns all of the strings
+        /// that do not appear in any later list of strings.
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <returns></returns>
         public static IEnumerable<IEnumerable<string>> LastMentionsPerRow(this IEnumerable<IEnumerable<string>> rows)
         {
             return FirstMentionsPerRow(rows.Reverse()).Reverse();
         }
 
+        /// <summary>
+        /// Iterates over all three IEnumerable instances in parallel and calls
+        /// the provided function with an element from each one.
+        /// </summary>
+        /// <typeparam name="TFirst"></typeparam>
+        /// <typeparam name="TSecond"></typeparam>
+        /// <typeparam name="TThird"></typeparam>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <param name="third"></param>
+        /// <param name="action"></param>
         public static void ForEach<TFirst, TSecond, TThird>(
             IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,
