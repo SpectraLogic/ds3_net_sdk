@@ -22,6 +22,7 @@ namespace Ds3.Runtime
 {
     internal interface INetwork
     {
+        int CopyBufferSize { get; }
         IWebResponse Invoke(Ds3Request request);
     }
 }

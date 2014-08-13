@@ -13,22 +13,14 @@
  * ****************************************************************************
  */
 
-using System.Net;
-
+using Ds3.Calls;
 using Ds3.Runtime;
 
-namespace Ds3.Calls
+namespace Ds3.ResponseParsers
 {
-    public class DeleteObjectResponse : Ds3Response
+    internal interface IResponseParser<in TRequest, out TResponse>
+        where TRequest : Ds3Request
     {
-        internal DeleteObjectResponse(IWebResponse response)
-            : base(response)
-        {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.NoContent);
-        }
+        TResponse Parse(TRequest request, IWebResponse response);
     }
 }

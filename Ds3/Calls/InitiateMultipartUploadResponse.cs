@@ -13,21 +13,19 @@
  * ****************************************************************************
  */
 
-namespace Ds3.Helpers
+namespace Ds3.Calls
 {
-    internal class Ds3ClientFactory : IDs3ClientFactory
+    public class InitiateMultipartUploadResponse
     {
-        private readonly IDs3Client _client;
+        public string BucketName { get; private set; }
+        public string ObjectName { get; private set; }
+        public string UploadId { get; private set; }
 
-        public Ds3ClientFactory(IDs3Client client)
+        internal InitiateMultipartUploadResponse(string bucketName, string objectName, string uploadId)
         {
-            this._client = client;
-        }
-
-        public IDs3Client GetClientForServerId(string serverId)
-        {
-            //TODO: this needs to return a client that connects to the specified server id.
-            return this._client;
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this.UploadId = uploadId;
         }
     }
 }

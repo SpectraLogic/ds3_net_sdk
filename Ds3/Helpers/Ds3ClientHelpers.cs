@@ -35,23 +35,17 @@ namespace Ds3.Helpers
             this._client = client;
         }
 
-        public IWriteJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
+        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
         {
-            using (var prime = this._client.BulkPut(new BulkPutRequest(bucket, objectsToWrite.ToList())))
-            {
-                return new WriteJob(new Ds3ClientFactory(this._client), prime.JobId, bucket, prime.ObjectLists);
-            }
+            return new WriteJob(this._client, this._client.BulkPut(new BulkPutRequest(bucket, objectsToWrite.ToList())));
         }
 
-        public IReadJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
+        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
         {
-            using (var prime = this._client.BulkGet(new BulkGetRequest(bucket, objectsToRead.ToList())))
-            {
-                return new ReadJob(new Ds3ClientFactory(this._client), prime.JobId, bucket, prime.ObjectLists);
-            }
+            return new ReadJob(this._client, this._client.BulkGet(new BulkGetRequest(bucket, objectsToRead.ToList())));
         }
 
-        public IReadJob StartReadAllJob(string bucket)
+        public IJob StartReadAllJob(string bucket)
         {
             return this.StartReadJob(bucket, this.ListObjects(bucket));
         }
@@ -79,54 +73,39 @@ namespace Ds3.Helpers
                     MaxKeys = Math.Min(remainingKeys, _defaultMaxKeys),
                     Prefix = keyPrefix
                 };
-                using (var response = _client.GetBucket(request))
+                var response = _client.GetBucket(request);
+                isTruncated = response.IsTruncated;
+                marker = response.NextMarker;
+                var responseObjects = response.Objects as IList<Ds3ObjectInfo> ?? response.Objects.ToList();
+                remainingKeys -= responseObjects.Count;
+                foreach (var ds3Object in responseObjects)
                 {
-                    isTruncated = response.IsTruncated;
-                    marker = response.NextMarker;
-                    remainingKeys -= response.Objects.Count;
-                    foreach (var ds3Object in response.Objects)
-                    {
-                        yield return ds3Object;
-                    }
+                    yield return ds3Object;
                 }
             } while (isTruncated && remainingKeys > 0);
         }
 
-
         public void EnsureBucketExists(string bucketName)
         {
-            using (var headResponse = _client.HeadBucket(new HeadBucketRequest(bucketName)))
+            var headResponse = _client.HeadBucket(new HeadBucketRequest(bucketName));
+            if (headResponse.Status == HeadBucketResponse.StatusType.DoesntExist)
             {
-                if (headResponse.Status == HeadBucketResponse.StatusType.DoesntExist)
-                {
-                    using (_client.PutBucket(new PutBucketRequest(bucketName)))
-                    {
-                    }
-                }
+                _client.PutBucket(new PutBucketRequest(bucketName));
             }
         }
 
-        public IWriteJob RecoverWriteJob(Guid jobId)
+        public IJob RecoverWriteJob(Guid jobId)
         {
-            using (var job = this._client.GetJob(new GetJobRequest(jobId)))
-            {
-                var jobInfo = job.JobInfo;
-                CheckJobType(JobTypePut, jobInfo.RequestType);
-                return new WriteJob(new Ds3ClientFactory(this._client), jobInfo.JobId, jobInfo.BucketName, job.ObjectLists);
-            }
+            var job = this._client.ModifyJob(new ModifyJobRequest(jobId));
+            CheckJobType(JobTypePut, job.RequestType);
+            return new WriteJob(this._client, job);
         }
 
-        public IReadJob RecoverReadJob(Guid jobId)
+        public IJob RecoverReadJob(Guid jobId)
         {
-            using (var job = this._client.GetJob(new GetJobRequest(jobId)))
-            {
-                var jobInfo = job.JobInfo;
-                CheckJobType(JobTypeGet, jobInfo.RequestType);
-                var jobObjectsList =
-                    from jobObjects in job.ObjectLists
-                    select new Ds3ObjectList(jobObjects.ServerId, jobObjects.ObjectsInCache.Concat(jobObjects.Objects));
-                return new ReadJob(new Ds3ClientFactory(this._client), jobInfo.JobId, jobInfo.BucketName, jobObjectsList);
-            }
+            var job = this._client.ModifyJob(new ModifyJobRequest(jobId));
+            CheckJobType(JobTypeGet, job.RequestType);
+            return new ReadJob(this._client, job);
         }
 
         private static void CheckJobType(string expectedJobType, string actualJobType)

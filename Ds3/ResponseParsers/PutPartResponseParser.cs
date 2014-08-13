@@ -13,22 +13,27 @@
  * ****************************************************************************
  */
 
+
 using System.Net;
 
+using Ds3.Calls;
 using Ds3.Runtime;
 
-namespace Ds3.Calls
+namespace Ds3.ResponseParsers
 {
-    public class PutObjectResponse : Ds3Response
+    internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
     {
-        internal PutObjectResponse(IWebResponse response)
-            : base(response)
+        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
         {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.OK);
+            using (response)
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
+                if (!response.Headers.ContainsKey("etag"))
+                {
+                    throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.Header, "etag");
+                }
+                return new PutPartResponse(response.Headers["etag"]);
+            }
         }
     }
 }

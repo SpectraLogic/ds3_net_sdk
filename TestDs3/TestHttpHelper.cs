@@ -13,22 +13,19 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using NUnit.Framework;
 
 using Ds3.Runtime;
 
-namespace Ds3.Calls
+namespace TestDs3
 {
-    public class DeleteBucketResponse : Ds3Response
+    [TestFixture]
+    public class TestHttpHelper
     {
-        internal DeleteBucketResponse(IWebResponse response)
-            : base(response)
+        [Test]
+        public void TestUrlEncode()
         {
-        }
-
-        protected override void ProcessResponse()
-        {
-            HandleStatusCode(HttpStatusCode.NoContent);
+            Assert.AreEqual("abc%20/%E4%BB%BD", HttpHelper.PercentEncodePath("abc /份"));
         }
     }
 }

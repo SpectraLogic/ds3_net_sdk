@@ -25,9 +25,7 @@ namespace Ds3Client.Commands.Api
 
         protected override void ProcessRecord()
         {
-            using (CreateClient().PutBucket(new Ds3.Calls.PutBucketRequest(BucketName)))
-            {
-            }
+            CreateClient().PutBucket(new Ds3.Calls.PutBucketRequest(BucketName));
         }
     }
 }

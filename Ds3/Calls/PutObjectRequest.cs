@@ -14,9 +14,12 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Ds3.Models;
+using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
@@ -24,6 +27,7 @@ namespace Ds3.Calls
     {
         private readonly Stream _content;
         private Checksum _checksum = Checksum.None;
+        private IDictionary<string, string> _metadata = new Dictionary<string, string>();
 
         internal override HttpVerb Verb
         {
@@ -58,6 +62,26 @@ namespace Ds3.Calls
             return this;
         }
 
+        public IDictionary<string, string> Metadata
+        {
+            get { return this._metadata; }
+            set { this.WithMetadata(value); }
+        }
+
+        public PutObjectRequest WithMetadata(IDictionary<string, string> metadata)
+        {
+            foreach (var key in this.Headers.Keys.Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix)).ToList())
+            {
+                this.Headers.Remove(key);
+            }
+            foreach (var keyValuePair in metadata)
+            {
+                this.Headers.Add(HttpHeaders.AwsMetadataPrefix + keyValuePair.Key, keyValuePair.Value);
+            }
+            this._metadata = metadata;
+            return this;
+        }
+
         internal override Stream GetContentStream()
         {
             return _content;
@@ -66,6 +90,7 @@ namespace Ds3.Calls
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
         public Guid JobId { get; private set; }
+        public long Offset { get; private set; }
 
         [Obsolete]
         public PutObjectRequest(Bucket bucket, string objectName, Stream content)
@@ -81,13 +106,16 @@ namespace Ds3.Calls
             this._content = content;
         }
 
-        public PutObjectRequest(string bucketName, string objectName, Guid jobId, Stream content)
+        public PutObjectRequest(string bucketName, string objectName, Guid jobId, long offset, Stream content)
+            : this(bucketName, objectName, content)
         {
-            this.BucketName = bucketName;
-            this.ObjectName = objectName;
-            this._content = content;
             this.JobId = jobId;
-            QueryParams.Add("job", jobId.ToString());
+            this.Offset = offset;
+            if (jobId != Guid.Empty)
+            {
+                QueryParams.Add("job", jobId.ToString());
+                QueryParams.Add("offset", offset.ToString());
+            }
         }
     }
 }

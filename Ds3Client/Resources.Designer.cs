@@ -106,6 +106,15 @@ namespace Ds3Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exhaustive switch for enum failed..
+        /// </summary>
+        internal static string InvalidEnumValueException {
+            get {
+                return ResourceManager.GetString("InvalidEnumValueException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The name &quot;{0}&quot; is not valid. Please choose something that can be a valid filename..
         /// </summary>
         internal static string InvalidNameException {

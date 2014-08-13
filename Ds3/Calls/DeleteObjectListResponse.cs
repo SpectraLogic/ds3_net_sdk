@@ -13,17 +13,26 @@
  * ****************************************************************************
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
+using Ds3.Models;
 using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
-    public class BulkGetResponse : BulkResponse
+    public class DeleteObjectListResponse
     {
-        internal BulkGetResponse(IWebResponse response)
-            : base(response)
-        {            
+        public IEnumerable<Ds3Object> DeletedObjects { get; private set; }
+        public IEnumerable<DeleteDs3ObjectError> DeleteErrors { get; private set; }
+
+        internal DeleteObjectListResponse(
+            IEnumerable<Ds3Object> deletedObjects,
+            IEnumerable<DeleteDs3ObjectError> deleteErrors)
+        {
+            this.DeletedObjects = deletedObjects;
+            this.DeleteErrors = deleteErrors;
         }
     }
 }

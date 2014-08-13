@@ -13,24 +13,28 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Collections.Generic;
+using System.Reflection;
+
 using NUnit.Framework;
 
-using Ds3.Runtime;
-using Ds3.Models;
-using System;
 using Ds3;
 using Ds3.Calls;
+using Ds3.Models;
+using Ds3.Runtime;
 
 namespace TestDs3
 {
     [TestFixture]
     public class TestDs3Client
     {
-        private readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _emptyHeaders = new Dictionary<string, string>();
+        private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
+        private const string JobResponseResourceName = "TestDs3.TestData.ResultingMasterObjectList.xml";
 
         [Test]
         public void TestGetService()
@@ -50,21 +54,19 @@ namespace TestDs3
                 new { Key = "testbucket",   CreationDate = "2013-12-11T23:20:09" }
             };
 
-            using (var response = MockNetwork
+            var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, responseContent)
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient
-                .GetService(new GetServiceRequest()))
-            {
-                Assert.AreEqual("ryan", response.Owner.DisplayName);
-                Assert.AreEqual("ryan", response.Owner.Id);
+                .GetService(new GetServiceRequest());
+            Assert.AreEqual("ryan", response.Owner.DisplayName);
+            Assert.AreEqual("ryan", response.Owner.Id);
 
-                Assert.AreEqual(expectedBuckets.Length, response.Buckets.Count);
-                for (var i = 0; i < expectedBuckets.Length; i++)
-                {
-                    Assert.AreEqual(expectedBuckets[i].Key, response.Buckets[i].Name);
-                    Assert.AreEqual(expectedBuckets[i].CreationDate, response.Buckets[i].CreationDate);
-                }
+            Assert.AreEqual(expectedBuckets.Length, response.Buckets.Count);
+            for (var i = 0; i < expectedBuckets.Length; i++)
+            {
+                Assert.AreEqual(expectedBuckets[i].Key, response.Buckets[i].Name);
+                Assert.AreEqual(expectedBuckets[i].CreationDate, response.Buckets[i].CreationDate);
             }
         }
 
@@ -72,26 +74,22 @@ namespace TestDs3
         [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestGetBadService()
         {
-            using (MockNetwork
+            MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.BadRequest, "")
+                .Returning(HttpStatusCode.BadRequest, "", _emptyHeaders)
                 .AsClient
-                .GetService(new GetServiceRequest()))
-            {
-            }
+                .GetService(new GetServiceRequest());
         }
 
         [Test]
         [ExpectedException(typeof(Ds3BadResponseException))]
         public void TestGetWorseService()
         {
-            using (MockNetwork
+            MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, "")
+                .Returning(HttpStatusCode.OK, "", _emptyHeaders)
                 .AsClient
-                .GetService(new GetServiceRequest()))
-            {
-            }
+                .GetService(new GetServiceRequest());
         }
 
         [Test]
@@ -132,78 +130,70 @@ namespace TestDs3
                 }
             };
 
-            using (var response = MockNetwork
+            var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/remoteTest16", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, xmlResponse)
+                .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetBucket(new GetBucketRequest("remoteTest16")))
+                .GetBucket(new GetBucketRequest("remoteTest16"));
+            Assert.AreEqual(expected.Name, response.Name);
+            Assert.AreEqual(expected.Prefix, response.Prefix);
+            Assert.AreEqual(expected.Marker, response.Marker);
+            Assert.AreEqual(expected.MaxKeys, response.MaxKeys);
+            Assert.AreEqual(expected.IsTruncated, response.IsTruncated);
+
+            var responseObjects = response.Objects.ToList();
+            Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
+            for (var i = 0; i < expected.Objects.Length; i++)
             {
-                Assert.AreEqual(expected.Name, response.Name);
-                Assert.AreEqual(expected.Prefix, response.Prefix);
-                Assert.AreEqual(expected.Marker, response.Marker);
-                Assert.AreEqual(expected.MaxKeys, response.MaxKeys);
-                Assert.AreEqual(expected.IsTruncated, response.IsTruncated);
-                Assert.AreEqual(expected.Objects.Length, response.Objects.Count);
-                for (var i = 0; i < expected.Objects.Length; i++)
-                {
-                    Assert.AreEqual(expected.Objects[i].Key, response.Objects[i].Name);
-                    Assert.AreEqual(expected.Objects[i].LastModified, response.Objects[i].LastModified);
-                    Assert.AreEqual(expected.Objects[i].ETag, response.Objects[i].Etag);
-                    Assert.AreEqual(expected.Objects[i].Size, response.Objects[i].Size);
-                    Assert.AreEqual(expected.Objects[i].StorageClass, response.Objects[i].StorageClass);
-                    Assert.AreEqual(expected.Objects[i].Owner.ID, response.Objects[i].Owner.Id);
-                    Assert.AreEqual(expected.Objects[i].Owner.DisplayName, response.Objects[i].Owner.DisplayName);
-                }
+                Assert.AreEqual(expected.Objects[i].Key, responseObjects[i].Name);
+                Assert.AreEqual(expected.Objects[i].LastModified, responseObjects[i].LastModified);
+                Assert.AreEqual(expected.Objects[i].ETag, responseObjects[i].Etag);
+                Assert.AreEqual(expected.Objects[i].Size, responseObjects[i].Size);
+                Assert.AreEqual(expected.Objects[i].StorageClass, responseObjects[i].StorageClass);
+                Assert.AreEqual(expected.Objects[i].Owner.ID, responseObjects[i].Owner.Id);
+                Assert.AreEqual(expected.Objects[i].Owner.DisplayName, responseObjects[i].Owner.DisplayName);
             }
         }
 
         [Test]
         public void TestPutBucket()
         {
-            using (MockNetwork
+            MockNetwork
                 .Expecting(HttpVerb.PUT, "/bucketName", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, "")
+                .Returning(HttpStatusCode.OK, "", _emptyHeaders)
                 .AsClient
-                .PutBucket(new PutBucketRequest("bucketName")))
-            {
-            }
+                .PutBucket(new PutBucketRequest("bucketName"));
         }
 
         [Test]
         public void TestDeleteBucket()
         {
-            using (MockNetwork
+            MockNetwork
                 .Expecting(HttpVerb.DELETE, "/bucketName", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.NoContent, "")
+                .Returning(HttpStatusCode.NoContent, "", _emptyHeaders)
                 .AsClient
-                .DeleteBucket(new DeleteBucketRequest("bucketName")))
-            {
-            }
+                .DeleteBucket(new DeleteBucketRequest("bucketName"));
         }
 
         [Test]
         public void TestDeleteObject()
         {
-            using (MockNetwork
+            MockNetwork
                 .Expecting(HttpVerb.DELETE, "/bucketName/my/file.txt", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.NoContent, "")
+                .Returning(HttpStatusCode.NoContent, "", _emptyHeaders)
                 .AsClient
-                .DeleteObject(new DeleteObjectRequest("bucketName", "my/file.txt")))
-            {
-            }
+                .DeleteObject(new DeleteObjectRequest("bucketName", "my/file.txt"));
         }
 
         [Test]
         [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestGetBadBucket()
         {
-            using (MockNetwork
+            MockNetwork
                 .Expecting(HttpVerb.GET, "/bucketName", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.BadRequest, "")
+                .Returning(HttpStatusCode.BadRequest, "", _emptyHeaders)
                 .AsClient
-                .GetBucket(new GetBucketRequest("bucketName")))
-            {
-            }
+                .GetBucket(new GetBucketRequest("bucketName"));
         }
 
         [Test]
@@ -211,16 +201,18 @@ namespace TestDs3
         {
             var stringResponse = "object contents";
 
-            using (var response = MockNetwork
-                .Expecting(HttpVerb.GET, "/bucketName/object", _emptyQueryParams, "")
-                .Returning(HttpStatusCode.OK, stringResponse)
-                .AsClient
-                .GetObject(new GetObjectRequest("bucketName", "object")))
-            using (var contents = response.Contents)
-            using (var reader = new StreamReader(contents))
+            using (var memoryStream = new MemoryStream())
             {
-                var actualStringResponse = reader.ReadToEnd();
-                Assert.AreEqual(stringResponse, actualStringResponse);
+                MockNetwork
+                    .Expecting(HttpVerb.GET, "/bucketName/object", _emptyQueryParams, "")
+                    .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
+                    .AsClient
+                    .GetObject(new GetObjectRequest("bucketName", "object", memoryStream));
+                memoryStream.Position = 0L;
+                using (var reader = new StreamReader(memoryStream))
+                {
+                    Assert.AreEqual(stringResponse, reader.ReadToEnd());
+                }
             }
         }
 
@@ -229,61 +221,145 @@ namespace TestDs3
         {
             var stringRequest = "object content";
 
-            using (MockNetwork
+            MockNetwork
                 .Expecting(HttpVerb.PUT, "/bucketName/object", _emptyQueryParams, stringRequest)
-                .Returning(HttpStatusCode.OK, stringRequest)
+                .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)
                 .AsClient
-                .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest))))
-            {
-            }
+                .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest)));
         }
 
         [Test]
         public void TestBulkPut()
         {
-            runBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucketName", objects)));
+            RunBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects)));
         }
 
         [Test]
         public void TestBulkGet()
         {
-            runBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucketName", objects)));
+            RunBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucket8192000000", objects)));
         }
 
-        private void runBulkTest(string operation, Func<IDs3Client, List<Ds3Object>, BulkResponse> makeCall)
+        private void RunBulkTest(string operation, Func<IDs3Client, List<Ds3Object>, JobResponse> makeCall)
         {
-            var expected = new[] {
-                new { Key = "file2", Size = 1202 },
-                new { Key = "file1", Size = 256 },
-                new { Key = "file3", Size = 2523 }
+            var files = new[] {
+                new { Key = "client00obj000000-8000000", Size = 8192000000L },
+                new { Key = "client00obj000001-8000000", Size = 8192000000L },
+                new { Key = "client00obj000002-8000000", Size = 8192000000L },
+                new { Key = "client00obj000003-8000000", Size = 8192000000L },
+                new { Key = "client00obj000004-8000000", Size = 8192000000L },
+                new { Key = "client00obj000005-8000000", Size = 8192000000L },
+                new { Key = "client00obj000006-8000000", Size = 8192000000L },
+                new { Key = "client00obj000007-8000000", Size = 8192000000L },
+                new { Key = "client00obj000008-8000000", Size = 8192000000L },
+                new { Key = "client00obj000009-8000000", Size = 8192000000L }
             };
 
-            var stringRequest = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Objects>\r\n  <Object Name=\"file1\" Size=\"256\" />\r\n  <Object Name=\"file2\" Size=\"1202\" />\r\n  <Object Name=\"file3\" Size=\"2523\" />\r\n</Objects>";
-            var stringResponse = "<MasterObjectList JobId='00d3baf8-9e71-45dd-ba83-fb93eb793b04'><Objects><Object Name='file2' Size='1202'/><Object Name='file1' Size='256'/><Object Name='file3' Size='2523'/></Objects></MasterObjectList>";
+            var stringRequest = "<Objects><Object Name=\"client00obj000000-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000001-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000002-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000003-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000004-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000005-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000006-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000007-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000008-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000009-8000000\" Size=\"8192000000\" /></Objects>";
+            var stringResponse = ReadResource(JobResponseResourceName);
 
-            var inputObjects = new List<Ds3Object> {
-                new Ds3Object("file1", 256),
-                new Ds3Object("file2", 1202),
-                new Ds3Object("file3", 2523)
-            };
+            var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
 
             var queryParams = new Dictionary<string, string>() { { "operation", operation } };
             var client = MockNetwork
-                .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucketName", queryParams, stringRequest)
-                .Returning(HttpStatusCode.OK, stringResponse)
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket8192000000", queryParams, stringRequest)
+                .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                 .AsClient;
+            CheckJobResponse(makeCall(client, inputObjects));
+        }
 
-            using (var response = makeCall(client, inputObjects))
-            {
-                var objectLists = response.ObjectLists.ToList();
-                Assert.AreEqual(1, objectLists.Count);
-                var firstObjectList = objectLists[0].ToList();
-                for (var i = 0; i < expected.Length; i++)
-                {
-                    Assert.AreEqual(expected[i].Key, firstObjectList[i].Name);
-                    Assert.AreEqual(expected[i].Size, firstObjectList[i].Size);
+        [Test]
+        public void TestGetJob()
+        {
+            var stringResponse = ReadResource(JobResponseResourceName);
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job/1a85e743-ec8f-4789-afec-97e587a26936", _emptyQueryParams, "")
+                .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
+                .AsClient;
+            CheckJobResponse(client.GetJob(new GetJobRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936"))));
+        }
+
+        private static string ReadResource(string resourceName)
+        {
+            using (var xmlFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            using (var reader = new StreamReader(xmlFile))
+                return reader.ReadToEnd();
+        }
+
+        private static void CheckJobResponse(JobResponse response)
+        {
+            var expectedNodes = new[] {
+                new {
+                    EndPoint="10.1.18.12",
+                    HttpPort=(int?)80,
+                    HttpsPort=(int?)443,
+                    Id=Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c")
+                },
+                new {
+                    EndPoint="10.1.18.13",
+                    HttpPort=(int?)null,
+                    HttpsPort=(int?)443,
+                    Id=Guid.Parse("4ecebf6f-bfd2-40a8-82a6-32fd684fd500")
+                },
+                new {
+                    EndPoint="10.1.18.14",
+                    HttpPort=(int?)80,
+                    HttpsPort=(int?)null,
+                    Id=Guid.Parse("4d5b6669-76f0-49f9-bc2a-9280f40cafa7")
+                },
+            };
+            var expectedObjectLists = new[] {
+                new {
+                    ChunkNumber=0L,
+                    NodeId=(Guid?)Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"),
+                    Objects = new[] {
+                        new { Name="client00obj000004-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000004-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000003-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000003-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000002-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000002-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000005-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000005-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000006-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000006-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000000-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000000-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000001-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000001-8000000", Length=2823290880L, Offset=5368709120L },
+                    },
+                },
+                new {
+                    ChunkNumber=1L,
+                    NodeId=(Guid?)null,
+                    Objects = new[] {
+                        new { Name="client00obj000008-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000008-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000009-8000000", Length=2823290880L, Offset=5368709120L },
+                        new { Name="client00obj000009-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000007-8000000", Length=5368709120L, Offset=0L },
+                        new { Name="client00obj000007-8000000", Length=2823290880L, Offset=5368709120L },
+                    }
                 }
-            }
+            };
+            HelpersForTest.AssertCollectionsEqual(expectedNodes, response.Nodes, (expectedNode, actualNode) =>
+            {
+                Assert.AreEqual(expectedNode.Id, actualNode.Id);
+                Assert.AreEqual(expectedNode.EndPoint, actualNode.EndPoint);
+                Assert.AreEqual(expectedNode.HttpPort, actualNode.HttpPort);
+                Assert.AreEqual(expectedNode.HttpsPort, actualNode.HttpsPort);
+            });
+            HelpersForTest.AssertCollectionsEqual(expectedObjectLists, response.ObjectLists, (expectedObjectList, actualObjectList) =>
+            {
+                Assert.AreEqual(expectedObjectList.ChunkNumber, actualObjectList.ChunkNumber);
+                Assert.AreEqual(expectedObjectList.NodeId, actualObjectList.NodeId);
+                HelpersForTest.AssertCollectionsEqual(expectedObjectList.Objects, actualObjectList.Objects, (expectedObject, actualObject) =>
+                {
+                    Assert.AreEqual(expectedObject.Name, actualObject.Name);
+                    Assert.AreEqual(expectedObject.Length, actualObject.Length);
+                    Assert.AreEqual(expectedObject.Offset, actualObject.Offset);
+                });
+            });
         }
 
         [Test]
@@ -292,40 +368,12 @@ namespace TestDs3
             var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"/></Jobs>";
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
-                .Returning(HttpStatusCode.OK, responseContent)
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
             var jobs = client.GetJobList(new GetJobListRequest()).Jobs.ToList();
             Assert.AreEqual(1, jobs.Count);
             CheckJobInfo(jobs[0]);
-        }
-
-        [Test]
-        public void TestGetJob()
-        {
-            var responseContent = "<Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"><Objects ChunkNumber=\"0\" ServerId=\"FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS\"><Object Name=\"bar\" Size=\"12\" State=\"IN_CACHE\"/><Object Name=\"foo\" Size=\"12\" State=\"NOT_IN_CACHE\"/></Objects></Job>";
-            var client = MockNetwork
-                .Expecting(HttpVerb.GET, "/_rest_/job/a4a586a1-cb80-4441-84e2-48974e982d51", new Dictionary<string, string>(), "")
-                .Returning(HttpStatusCode.OK, responseContent)
-                .AsClient;
-
-            var response = client.GetJob(new GetJobRequest(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51")));
-            CheckJobInfo(response.JobInfo);
-            var objectLists = response.ObjectLists.ToList();
-            Assert.AreEqual(1, objectLists.Count);
-
-            var objectList = objectLists[0];
-            Assert.AreEqual("FAILED_TO_DETERMINE_DATAPATH_IP_ADDRESS", objectList.ServerId);
-
-            var objects = objectList.Objects.ToList();
-            Assert.AreEqual(1, objects.Count);
-            Assert.AreEqual("foo", objects[0].Name);
-            Assert.AreEqual(12, objects[0].Size);
-
-            var objectsInCache = objectList.ObjectsInCache.ToList();
-            Assert.AreEqual(1, objectsInCache.Count);
-            Assert.AreEqual("bar", objectsInCache[0].Name);
-            Assert.AreEqual(12, objectsInCache[0].Size);
         }
 
         private static void CheckJobInfo(JobInfo jobInfo)

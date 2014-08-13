@@ -13,22 +13,19 @@
  * ****************************************************************************
  */
 
-using System.Net;
-
-using Ds3.Runtime;
-
-namespace Ds3.Calls
+namespace Ds3.Models
 {
-    public class PutBucketResponse : Ds3Response
+    public class DeleteDs3ObjectError
     {
-        internal PutBucketResponse(IWebResponse response)
-            : base(response)
-        {
-        }
+        public string Key { get; private set; }
+        public string Code { get; private set; }
+        public string Message { get; private set; }
 
-        protected override void ProcessResponse()
+        internal DeleteDs3ObjectError(string key, string code, string message)
         {
-            HandleStatusCode(HttpStatusCode.OK);
+            this.Key = key;
+            this.Code = code;
+            this.Message = message;
         }
     }
 }

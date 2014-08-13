@@ -14,8 +14,7 @@
  */
 
 using System;
-using System.Net;
-using System.Collections.Generic;
+using System.IO;
 
 using Ds3.Models;
 
@@ -23,9 +22,11 @@ namespace Ds3.Calls
 {
     public class GetObjectRequest : Ds3Request
     {
+        private readonly Stream _destinationStream;
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
         public Guid JobId { get; private set; }
+        public long Offset { get; private set; }
 
         private Range _byteRange;
         public Range ByteRange
@@ -66,25 +67,35 @@ namespace Ds3.Calls
             }
         }
 
+        internal Stream DestinationStream
+        {
+            get { return this._destinationStream; }
+        }
+
         [Obsolete]
-        public GetObjectRequest(Bucket bucket, Ds3Object ds3Object)
-            : this(bucket.Name, ds3Object.Name)
+        public GetObjectRequest(Bucket bucket, Ds3Object ds3Object, Stream destinationStream)
+            : this(bucket.Name, ds3Object.Name, destinationStream)
         {
         }
 
         [Obsolete]
-        public GetObjectRequest(string bucketName, string ds3ObjectName)
+        public GetObjectRequest(string bucketName, string ds3ObjectName, Stream destinationStream)
         {
+            this._destinationStream = destinationStream;
             this.BucketName = bucketName;
             this.ObjectName = ds3ObjectName;
         }
 
-        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId)
+        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId, long offset, Stream destinationStream)
+            : this(bucketName, ds3ObjectName, destinationStream)
         {
-            this.BucketName = bucketName;
-            this.ObjectName = ds3ObjectName;
             this.JobId = jobId;
-            QueryParams.Add("job", jobId.ToString());
+            this.Offset = offset;
+            if (jobId != Guid.Empty)
+            {
+                QueryParams.Add("job", jobId.ToString());
+                QueryParams.Add("offset", offset.ToString());
+            }
         }
     }
 }

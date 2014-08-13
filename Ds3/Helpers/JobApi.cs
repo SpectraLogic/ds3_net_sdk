@@ -16,34 +16,14 @@
 using System;
 using System.IO;
 
-using Ds3.Models;
-using Ds3.Calls;
-
 namespace Ds3.Helpers
 {
-    public delegate Stream ObjectPutter(Ds3Object ds3Object);
-    public delegate void ObjectGetter(Ds3Object ds3Object, Stream inputStream);
-
     public interface IJob
     {
         Guid JobId { get; }
         string BucketName { get; }
+        IJob WithMaxParallelRequests(int maxParallelRequests);
+        IJob WithPartSize(long partSize);
+        void Transfer(Func<string, Stream> createStreamForObjectKey);
     }
-
-    public interface IWriteJob : IJob
-    {
-        void Write(ObjectPutter putter);
-        IWriteJob WithRequestModifier(ModifyPutRequest modifier);
-        IWriteJob WithMaxParallelRequests(int maxParallelRequests);
-    }
-
-    public interface IReadJob : IJob
-    {
-        void Read(ObjectGetter getter);
-        IReadJob WithRequestModifier(ModifyGetRequest modifier);
-        IReadJob WithMaxParallelRequests(int maxParallelRequests);
-    }
-
-    public delegate void ModifyGetRequest(GetObjectRequest request);
-    public delegate void ModifyPutRequest(PutObjectRequest request);
 }

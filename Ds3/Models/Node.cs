@@ -13,31 +13,23 @@
  * ****************************************************************************
  */
 
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 
 namespace Ds3.Models
 {
-    public class Ds3ObjectList : IEnumerable<Ds3Object>
+    public class Node
     {
-        public string ServerId { get; private set; }
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public Guid Id { get; private set; }
+        public string EndPoint { get; private set; }
+        public int? HttpPort { get; private set; }
+        public int? HttpsPort { get; private set; }
 
-        internal Ds3ObjectList(string serverId, IEnumerable<Ds3Object> objects)
+        internal Node(Guid id, string endPoint, int? httpPort, int? httpsPort)
         {
-            ServerId = serverId;
-            Objects = objects.ToList();
-        }
-
-        public IEnumerator<Ds3Object> GetEnumerator()
-        {
-            return Objects.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Objects.GetEnumerator();
+            this.Id = id;
+            this.EndPoint = endPoint;
+            this.HttpPort = httpPort;
+            this.HttpsPort = httpsPort;
         }
     }
 }

@@ -15,53 +15,117 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
+using System.Linq;
+using System.Threading;
 
+using Ds3.Calls;
 using Ds3.Models;
 
 namespace Ds3.Helpers
 {
     internal abstract class Job : IJob
     {
-        private readonly IDs3ClientFactory _clientFactory;
-        private readonly IEnumerable<Ds3ObjectList> _objectLists;
+        private readonly IDs3Client _client;
+        protected readonly JobResponse _bulkResponse;
+        protected int _maxParallelRequests = 0;
+        protected long _partSize = 32L * 1024L * 1024L
+            //TODO: Until the server supports multipart upload properly we don't want to use it.
+            // For now we'll just set the threshold to something ridiculous.
+            * 1024L * 1024L * 1024L;
+        private static readonly TimeSpan _defaultRetryAfter = TimeSpan.FromSeconds(5 * 60);
 
-        private int _maxParallelRequests = 0;
-
-        protected int MaxParallelRequests
+        protected Job(IDs3Client client, JobResponse bulkResponse)
         {
-            set { this._maxParallelRequests = value; }
+            this._client = client;
+            this._bulkResponse = bulkResponse;
         }
 
-        public Guid JobId { get; private set; }
-        public string BucketName { get; private set; }
+        protected abstract void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects);
 
-        public Job(
-            IDs3ClientFactory clientFactory,
-            Guid jobId,
-            string bucketName,
-            IEnumerable<Ds3ObjectList> objectLists)
+        public Guid JobId
         {
-            this._clientFactory = clientFactory;
-            this.JobId = jobId;
-            this.BucketName = bucketName;
-            this._objectLists = objectLists;
+            get { return this._bulkResponse.JobId; }
         }
 
-        protected delegate void Transfer(IDs3Client client, Guid jobId, string bucket, Ds3Object ds3Object);
-
-        protected void TransferAll(Transfer transfer)
+        public string BucketName
         {
-            var options = _maxParallelRequests > 0
-                ? new ParallelOptions() { MaxDegreeOfParallelism = _maxParallelRequests }
-                : new ParallelOptions();
-            foreach (var objects in this._objectLists)
+            get { return this._bulkResponse.BucketName; }
+        }
+
+        public IJob WithMaxParallelRequests(int maxParallelRequests)
+        {
+            this._maxParallelRequests = maxParallelRequests;
+            return this;
+        }
+
+        public IJob WithPartSize(long partSize)
+        {
+            this._partSize = partSize;
+            return this;
+        }
+
+        public void Transfer(Func<string, Stream> createStreamForObjectKey)
+        {
+            var objectNamesPerChunk = this._bulkResponse.ObjectLists.Select(objectList => objectList.Select(obj => obj.Name));
+            var clientFactory = _client.BuildFactory(this._bulkResponse.Nodes);
+
+            var objectStreams = new Dictionary<string, Stream>();
+            UsingAll(objectStreams.Values, delegate
             {
-                var client = this._clientFactory.GetClientForServerId(objects.ServerId);
-                Parallel.ForEach(objects.Objects, options, obj =>
+                EnumerableAlgorithms.ForEach(
+                    this._bulkResponse.ObjectLists,
+                    objectNamesPerChunk.FirstMentionsPerRow(),
+                    objectNamesPerChunk.LastMentionsPerRow(),
+                    (objectList, namesToOpen, namesToClose) =>
+                    {
+                        foreach (var nameToOpen in namesToOpen)
+                        {
+                            objectStreams.Add(nameToOpen, createStreamForObjectKey(nameToOpen));
+                        }
+
+                        TransferChunk(clientFactory.GetClientForNodeId(objectList.NodeId), objectStreams, objectList.Objects);
+
+                        foreach (var nameToClose in namesToClose)
+                        {
+                            objectStreams[nameToClose].Close();
+                            objectStreams.Remove(nameToClose);
+                        }
+                    }
+                );
+            });
+        }
+
+        private static void SleepFor(TimeSpan retryAfter)
+        {
+            Thread.Sleep(Convert.ToInt32(retryAfter.TotalMilliseconds));
+        }
+
+        private static void UsingAll(IEnumerable<IDisposable> resources, Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                var exceptions = new List<Exception>();
+                foreach (var resource in resources)
                 {
-                    transfer(client, JobId, BucketName, obj);
-                });
+                    try
+                    {
+                        resource.Dispose();
+                    }
+                    catch (Exception disposeException)
+                    {
+                        exceptions.Add(disposeException);
+                    }
+                }
+                if (exceptions.Count > 0)
+                {
+                    throw new AggregateException(Resources.UsingAllException, new[] { e }.Concat(exceptions));
+                }
+                throw;
             }
         }
     }

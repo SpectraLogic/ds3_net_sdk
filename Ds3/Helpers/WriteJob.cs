@@ -16,46 +16,103 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Ds3.Calls;
 using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class WriteJob : Job, IWriteJob
+    internal class WriteJob : Job
     {
-        private ModifyPutRequest _modifier;
-
-        public WriteJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
-            : base(clientFactory, jobId, bucketName, objectLists)
+        public WriteJob(IDs3Client client, JobResponse jobResponse)
+            : base(client, jobResponse)
         {
         }
 
-        public void Write(ObjectPutter putter)
+        protected override void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
         {
-            this.TransferAll((client, jobId, bucket, ds3Object) =>
+            var filteredJobObjects = jobObjects.Where(obj => !obj.InCache).AsParallel();
+            (
+                from jobObject in (
+                    _maxParallelRequests > 0
+                        ? filteredJobObjects.WithDegreeOfParallelism(_maxParallelRequests)
+                        : filteredJobObjects
+                )
+                let objectUploadState = PrepareForUpload(clientForNode, objectStreams[jobObject.Name], jobObject)
+                from uploadFunc in objectUploadState.PartActions
+                let uploadResult = uploadFunc()
+                where objectUploadState.UploadId != null
+                group uploadResult
+                    by new { jobObject.Name, objectUploadState.UploadId }
+                    into completionGroup
+                    select new CompleteMultipartUploadRequest(
+                        this._bulkResponse.BucketName,
+                        completionGroup.Key.Name,
+                        completionGroup.Key.UploadId,
+                        completionGroup.OrderBy(part => part.PartNumber)
+                    )
+            ).ForAll(request => clientForNode.CompleteMultipartUpload(request));
+        }
+
+        private UploadState PrepareForUpload(IDs3Client client, Stream stream, JobObject jobObject)
+        {
+            var parts = ObjectPartPlanner.PlanParts(_partSize, jobObject.Offset, jobObject.Length).ToList();
+            var criticalSectionExecutor = new CriticalSectionExecutor();
+            if (parts.Count > 1)
             {
-                var request = new PutObjectRequest(bucket, ds3Object.Name, jobId, putter(ds3Object));
-                if (this._modifier != null)
+                var uploadId = client
+                    .InitiateMultipartUpload(new InitiateMultipartUploadRequest(
+                        this._bulkResponse.BucketName,
+                        jobObject.Name,
+                        this._bulkResponse.JobId,
+                        jobObject.Offset
+                    ))
+                    .UploadId;
+                return new UploadState(
+                    uploadId,
+                    parts.Select(part => new Func<UploadPart>(delegate
+                    {
+                        var etag = client
+                            .PutPart(new PutPartRequest(
+                                this._bulkResponse.BucketName,
+                                jobObject.Name,
+                                part.PartNumber,
+                                uploadId,
+                                new WindowedStream(stream, criticalSectionExecutor, part.Offset, part.Length)
+                            ))
+                            .Etag;
+                        return new UploadPart(part.PartNumber, etag);
+                    }))
+                );
+            }
+            else
+            {
+                var objectPutter = new Func<UploadPart>(delegate
                 {
-                    this._modifier(request);
-                }
-                using (client.PutObject(request))
-                {
-                }
-            });
+                    client.PutObject(new PutObjectRequest(
+                        this._bulkResponse.BucketName,
+                        jobObject.Name,
+                        this._bulkResponse.JobId,
+                        jobObject.Offset,
+                        new WindowedStream(stream, criticalSectionExecutor, jobObject.Offset, jobObject.Length)
+                    ));
+                    return null;
+                });
+                return new UploadState(null, new[] { objectPutter });
+            }
         }
 
-        public IWriteJob WithRequestModifier(ModifyPutRequest modifier)
+        private class UploadState
         {
-            this._modifier = modifier;
-            return this;
-        }
+            public string UploadId { get; private set; }
+            public IEnumerable<Func<UploadPart>> PartActions { get; private set; }
 
-        public IWriteJob WithMaxParallelRequests(int maxParallelRequests)
-        {
-            this.MaxParallelRequests = maxParallelRequests;
-            return this;
+            public UploadState(string uploadId, IEnumerable<Func<UploadPart>> partActions)
+            {
+                this.UploadId = uploadId;
+                this.PartActions = partActions;
+            }
         }
     }
 }

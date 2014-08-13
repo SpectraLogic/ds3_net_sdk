@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
@@ -23,5 +24,6 @@ namespace Ds3.Runtime
     {
         Stream GetResponseStream();
         HttpStatusCode StatusCode { get; }
+        IDictionary<string, string> Headers { get; }
     }
 }

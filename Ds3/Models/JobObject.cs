@@ -13,33 +13,21 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Xml.Linq;
-
-using Ds3.Models;
-using Ds3.Runtime;
-
-namespace Ds3.Calls
+namespace Ds3.Models
 {
-    internal class ParseUtilities
+    public class JobObject
     {
-        public static JobInfo ParseJobInfo(XElement jobElement)
-        {
-            return new JobInfo(
-                jobElement.AttributeText("BucketName"),
-                jobElement.AttributeText("StartDate"),
-                Guid.Parse(jobElement.AttributeText("JobId")),
-                jobElement.AttributeText("Priority"),
-                jobElement.AttributeText("RequestType")
-            );
-        }
+        public string Name { get; private set; }
+        public long Length { get; private set; }
+        public long Offset { get; private set; }
+        public bool InCache { get; private set; }
 
-        public static Ds3Object ParseDs3Object(XElement objectElement)
+        internal JobObject(string name, long length, long offset, bool inCache)
         {
-            return new Ds3Object(
-                objectElement.AttributeText("Name"),
-                Convert.ToInt64(objectElement.AttributeText("Size"))
-            );
+            this.Name = name;
+            this.Length = length;
+            this.Offset = offset;
+            this.InCache = inCache;
         }
     }
 }
