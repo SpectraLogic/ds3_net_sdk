@@ -14,17 +14,14 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 
 namespace Ds3.Runtime
 {
     public class Ds3BadResponseException : Ds3RequestException
     {
-        internal Ds3BadResponseException(string expectedElementName)
-            : base(BuildMissingElementMessage(expectedElementName))
+        internal Ds3BadResponseException(ExpectedItemType expectedItemType, string expectedElementName)
+            : base(BuildMissingItemMessage(expectedItemType, expectedElementName))
         {
         }
 
@@ -33,14 +30,28 @@ namespace Ds3.Runtime
         {
         }
 
-        private static string BuildMissingElementMessage(string expectedElementName)
+        private static string BuildMissingItemMessage(ExpectedItemType expectedItemType, string expectedElementName)
         {
-            return string.Format(Resources.MissingElementException, expectedElementName);
+            switch (expectedItemType)
+            {
+                case ExpectedItemType.Header:
+                    return string.Format(Resources.MissingHeaderException, expectedElementName);
+                case ExpectedItemType.XmlElement:
+                    return string.Format(Resources.MissingElementException, expectedElementName);
+                default:
+                    throw new IndexOutOfRangeException(Resources.InvalidEnumValueException);
+            }
         }
 
         private static string BuildResponseParseException(XmlException innerException)
         {
             return string.Format(Resources.XmlResponseErrorException, innerException.Message);
+        }
+
+        public enum ExpectedItemType
+        {
+            Header,
+            XmlElement
         }
     }
 }

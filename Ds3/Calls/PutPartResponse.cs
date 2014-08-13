@@ -13,20 +13,15 @@
  * ****************************************************************************
  */
 
-using System.IO;
-using System.Net;
-using System.Xml.Serialization;
-using System.Collections.Generic;
-
-using Ds3.Runtime;
-
 namespace Ds3.Calls
 {
-    public class BulkPutResponse : BulkResponse
+    public class PutPartResponse
     {
-        internal BulkPutResponse(IWebResponse response)
-            : base(response)
-        {            
+        public string Etag { get; private set; }
+
+        internal PutPartResponse(string etag)
+        {
+            this.Etag = etag;
         }
     }
 }

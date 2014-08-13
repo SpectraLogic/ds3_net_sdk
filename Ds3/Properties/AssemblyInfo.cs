@@ -39,3 +39,4 @@ using System.Runtime.InteropServices;
 
 // Allow testing of internals.
 [assembly: InternalsVisibleTo("TestDs3")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

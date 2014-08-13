@@ -13,7 +13,10 @@
  * ****************************************************************************
  */
 
+using System.Collections.Generic;
+
 using Ds3.Calls;
+using Ds3.Models;
 
 namespace Ds3
 {
@@ -51,28 +54,35 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        PutObjectResponse PutObject(PutObjectRequest request);
+        void PutObject(PutObjectRequest request);
 
         /// <summary>
         /// Deletes the specified object.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        DeleteObjectResponse DeleteObject(DeleteObjectRequest request);
+        void DeleteObject(DeleteObjectRequest request);
+
+        /// <summary>
+        /// Deletes the specified list of objects.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        DeleteObjectListResponse DeleteObjectList(DeleteObjectListRequest request);
 
         /// <summary>
         /// Deletes the specified bucket.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        DeleteBucketResponse DeleteBucket(DeleteBucketRequest request);
+        void DeleteBucket(DeleteBucketRequest request);
 
         /// <summary>
         /// Creates the specified bucket.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        PutBucketResponse PutBucket(PutBucketRequest request);
+        void PutBucket(PutBucketRequest request);
 
         /// <summary>
         /// Performs a HTTP HEAD for a bucket. The HEAD will return information about if
@@ -90,7 +100,7 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        BulkGetResponse BulkGet(BulkGetRequest request);
+        JobResponse BulkGet(BulkGetRequest request);
 
         /// <summary>
         /// Primes a DS3 bulk put for better performance.
@@ -100,7 +110,7 @@ namespace Ds3
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        BulkPutResponse BulkPut(BulkPutRequest request);
+        JobResponse BulkPut(BulkPutRequest request);
 
         /// <summary>
         /// Retrieves the list of available jobs.
@@ -109,11 +119,31 @@ namespace Ds3
         /// <returns></returns>
         GetJobListResponse GetJobList(GetJobListRequest request);
 
+        JobResponse ModifyJob(ModifyJobRequest request);
+
         /// <summary>
         /// Retrieves information about a job so it can be resumed.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        GetJobResponse GetJob(GetJobRequest request);
+        JobResponse GetJob(GetJobRequest request);
+
+        AllocateJobChunkResponse AllocateJobChunk(AllocateJobChunkRequest request);
+
+        InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request);
+
+        PutPartResponse PutPart(PutPartRequest request);
+
+        CompleteMultipartUploadResponse CompleteMultipartUpload(CompleteMultipartUploadRequest request);
+
+        void AbortMultipartUpload(AbortMultipartUploadRequest request);
+
+        /// <summary>
+        /// For future multi-node support, this provides a means of creating
+        /// a client that connects to the specified node id.
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns></returns>
+        IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes);
     }
 }

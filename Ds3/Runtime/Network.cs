@@ -15,12 +15,9 @@
 
 using System;
 using System.Diagnostics;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 
 using Ds3.Models;
@@ -30,18 +27,35 @@ namespace Ds3.Runtime
 {
     internal class Network : INetwork
     {
-        private Uri Endpoint;
-        private Credentials Creds;
-        private int MaxRedirects = 0;
+        internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
+
+        private readonly Uri _endpoint;
+        private readonly Credentials _creds;
+        private readonly int _maxRedirects = 0;
+        private readonly int _redirectRetryCount;
+        private readonly int _readWriteTimeout;
+        private readonly int _requestTimeout;
 
         internal Uri Proxy = null;
+        private readonly char[] _noChars = new char[0];
 
-        public Network(Uri endpoint, Credentials creds, int maxRedirects)
+        public Network(
+            Uri endpoint,
+            Credentials creds,
+            int redirectRetryCount,
+            int copyBufferSize,
+            int readWriteTimeout,
+            int requestTimeout)
         {
-            this.Endpoint = endpoint;
-            this.Creds = creds;
-            this.MaxRedirects = maxRedirects;
+            this._endpoint = endpoint;
+            this._creds = creds;
+            this._redirectRetryCount = redirectRetryCount;
+            this.CopyBufferSize = copyBufferSize;
+            this._readWriteTimeout = readWriteTimeout;
+            this._requestTimeout = requestTimeout;
         }
+
+        public int CopyBufferSize { get; private set; }
 
         public IWebResponse Invoke(Ds3Request request)
         {
@@ -73,7 +87,7 @@ namespace Ds3.Runtime
                         }
                         return new WebResponse((HttpWebResponse)e.Response);
                     }
-                } while (redirect && redirectCount < MaxRedirects);
+                } while (redirect && redirectCount < _maxRedirects);
             }
 
             throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException);
@@ -82,8 +96,8 @@ namespace Ds3.Runtime
         private HttpWebRequest CreateRequest(Ds3Request request, Stream content)
         {
             DateTime date = DateTime.UtcNow;
-            UriBuilder uriBuilder = new UriBuilder(Endpoint);
-            uriBuilder.Path = request.Path;
+            UriBuilder uriBuilder = new UriBuilder(_endpoint);
+            uriBuilder.Path = HttpHelper.PercentEncodePath(request.Path);
 
             if (request.QueryParams.Count > 0)
             {
@@ -99,16 +113,26 @@ namespace Ds3.Runtime
                 httpRequest.Proxy = webProxy;
             }
             httpRequest.Date = date;
-            httpRequest.Host = CreateHostString(Endpoint);
+            httpRequest.Host = CreateHostString(_endpoint);
             httpRequest.AllowAutoRedirect = false;
             httpRequest.AllowWriteStreamBuffering = false;
+            httpRequest.ReadWriteTimeout = this._readWriteTimeout;
+            httpRequest.Timeout = this._requestTimeout;
             
             var md5 = ComputeChecksum(request.Md5, content);
             if (!string.IsNullOrEmpty(md5))
             {
-                httpRequest.Headers.Add("Content-MD5", md5);
+                httpRequest.Headers.Add(HttpHeaders.ContentMd5, md5);
             }
-            httpRequest.Headers.Add("Authorization", S3Signer.AuthField(Creds, request.Verb.ToString(), date.ToString("r"), request.Path, md5));
+            httpRequest.Headers.Add(HttpHeaders.Authorization, S3Signer.AuthField(
+                _creds,
+                request.Verb.ToString(),
+                date.ToString("r"),
+                request.Path,
+                request.QueryParams,
+                md5: md5,
+                amzHeaders: request.Headers
+            ));
 
             var byteRange = request.GetByteRange();
             if (byteRange != null)
@@ -133,7 +157,7 @@ namespace Ds3.Runtime
                             throw new Ds3.Runtime.Ds3RequestException(Resources.InvalidStreamException);
                         }
                         content.Seek(0, SeekOrigin.Begin);
-                        content.CopyTo(requestStream);
+                        content.CopyTo(requestStream, this.CopyBufferSize);
                         requestStream.Flush();
                     }
                 }
@@ -170,8 +194,15 @@ namespace Ds3.Runtime
 
         private string BuildQueryParams(Dictionary<string, string> queryParams)
         {
-            List<string> queryList = queryParams.Select(kvp => kvp.Key + "=" + kvp.Value).ToList();
-            return String.Join("&", queryList);            
+            return String.Join(
+                "&",
+                from kvp in queryParams
+                orderby kvp.Key
+                let encodedKey = HttpHelper.PercentEncodePath(kvp.Key, _noChars)
+                select kvp.Value.Length > 0
+                    ? encodedKey + "=" + HttpHelper.PercentEncodePath(kvp.Value, _noChars)
+                    : encodedKey
+            );
         }
     }
 }

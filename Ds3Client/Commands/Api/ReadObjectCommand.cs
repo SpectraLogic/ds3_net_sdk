@@ -85,25 +85,23 @@ namespace Ds3Client.Commands.Api
 
             var client = CreateClient();
             var resultObjects = new Ds3ClientHelpers(client).ListObjects(BucketName, KeyPrefix).ToList();
-            using (var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, resultObjects)))
+            var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, resultObjects));
+            try
             {
-                try
+                Parallel.ForEach(bulkGet.ObjectLists, ds3ObjectList =>
                 {
-                    Parallel.ForEach(bulkGet.ObjectLists, ds3ObjectList =>
+                    foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
                     {
-                        foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
-                        {
-                            WriteObjectToFile(client, key, EnsureDirectoryForFileExists(Path.Combine(Folder, MakeValidPath(key))));
-                        }
-                    });
-                }
-                catch (AggregateException e)
-                {
-                    foreach (var innerException in e.InnerExceptions)
-	                {
-                        WriteError(new ErrorRecord(innerException, "GetFailed", ErrorCategory.ReadError, innerException));
-	                }
-                }
+                        WriteObjectToFile(client, key, EnsureDirectoryForFileExists(Path.Combine(Folder, MakeValidPath(key))));
+                    }
+                });
+            }
+            catch (AggregateException e)
+            {
+                foreach (var innerException in e.InnerExceptions)
+	            {
+                    WriteError(new ErrorRecord(innerException, "GetFailed", ErrorCategory.ReadError, innerException));
+	            }
             }
         }
 
@@ -124,15 +122,14 @@ namespace Ds3Client.Commands.Api
 
         private void WriteObjectToFile(Ds3.IDs3Client client, string key, string file)
         {
-            var request = new Ds3.Calls.GetObjectRequest(BucketName, key);
-            if (Start.HasValue && End.HasValue)
-            {
-                request.WithByteRange(new Ds3.Calls.GetObjectRequest.Range(Start.Value, End.Value));
-            }
-            using (var response = client.GetObject(request))
             using (var outputStream = IOFile.OpenWrite(file))
             {
-                response.Contents.CopyTo(outputStream);
+                var request = new Ds3.Calls.GetObjectRequest(BucketName, key, outputStream);
+                if (Start.HasValue && End.HasValue)
+                {
+                    request.WithByteRange(new Ds3.Calls.GetObjectRequest.Range(Start.Value, End.Value));
+                }
+                client.GetObject(request);
             }
         }
 

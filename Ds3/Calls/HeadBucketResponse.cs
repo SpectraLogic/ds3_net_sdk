@@ -19,24 +19,13 @@ using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
-    public class HeadBucketResponse : Ds3Response
+    public class HeadBucketResponse
     {
-        internal HeadBucketResponse(IWebResponse response)
-            : base(response)
-        {
-        }
-
         public StatusType Status { get; private set; }
 
-        protected override void ProcessResponse()
+        internal HeadBucketResponse(StatusType status)
         {
-            HandleStatusCode(HttpStatusCode.OK, HttpStatusCode.Forbidden, HttpStatusCode.NotFound);
-            switch (this.response.StatusCode)
-            {
-                case HttpStatusCode.OK: this.Status = StatusType.Exists; break;
-                case HttpStatusCode.Forbidden: this.Status = StatusType.NotAuthorized; break;
-                case HttpStatusCode.NotFound: this.Status = StatusType.DoesntExist; break;
-            }
+            this.Status = status;
         }
 
         public enum StatusType

@@ -13,36 +13,19 @@
  * ****************************************************************************
  */
 
-using System.Net;
-using System.Linq;
 using System.Collections.Generic;
 
-using Ds3.Runtime;
 using Ds3.Models;
 
 namespace Ds3.Calls
 {
-    public class GetJobListResponse : Ds3Response
+    public class GetJobListResponse
     {
-        internal GetJobListResponse(IWebResponse response)
-            : base(response)
-        {
-        }
-
         public IEnumerable<JobInfo> Jobs { get; private set; }
 
-        protected override void ProcessResponse()
+        internal GetJobListResponse(IEnumerable<JobInfo> jobs)
         {
-            HandleStatusCode(HttpStatusCode.OK);
-            using (var stream = response.GetResponseStream())
-            {
-                Jobs = XmlExtensions
-                    .ReadDocument(stream)
-                    .ElementOrThrow("Jobs")
-                    .Elements("Job")
-                    .Select(ParseUtilities.ParseJobInfo)
-                    .ToList();
-            }
+            this.Jobs = jobs;
         }
     }
 }

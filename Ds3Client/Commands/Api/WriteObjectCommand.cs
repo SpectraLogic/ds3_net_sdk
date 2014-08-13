@@ -68,8 +68,8 @@ namespace Ds3Client.Commands.Api
         private void WriteFromLocalFile()
         {
             using (var fileStream = IOFile.OpenRead(File))
-            using (CreateClient().PutObject(new Ds3.Calls.PutObjectRequest(BucketName, Key, fileStream)))
             {
+                CreateClient().PutObject(new Ds3.Calls.PutObjectRequest(BucketName, Key, fileStream));
             }
         }
 
@@ -80,28 +80,26 @@ namespace Ds3Client.Commands.Api
                 .ToDictionary(file => (KeyPrefix ?? "") + file.Substring(Folder.Length).Replace('\\', '/'));
             var ds3ObjectsToQuery = keyToFileMapping.Select(item => new Ds3.Models.Ds3Object(item.Key, new FileInfo(item.Value).Length)).ToList();
             var client = CreateClient();
-            using (var bulkPutResponse = client.BulkPut(new Ds3.Calls.BulkPutRequest(BucketName, ds3ObjectsToQuery)))
+            var bulkPutResponse = client.BulkPut(new Ds3.Calls.BulkPutRequest(BucketName, ds3ObjectsToQuery));
+            try
             {
-                try
+                Parallel.ForEach(bulkPutResponse.ObjectLists, ds3ObjectList =>
                 {
-                    Parallel.ForEach(bulkPutResponse.ObjectLists, ds3ObjectList =>
+                    foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
                     {
-                        foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
+                        using (var fileStream = IOFile.OpenRead(keyToFileMapping[key]))
                         {
-                            using (var fileStream = IOFile.OpenRead(keyToFileMapping[key]))
-                            using (client.PutObject(new Ds3.Calls.PutObjectRequest(BucketName, key, fileStream)))
-                            {
-                            }
+                            client.PutObject(new Ds3.Calls.PutObjectRequest(BucketName, key, fileStream));
                         }
-                    });
-                }
-                catch (AggregateException e)
-                {
-                    foreach (var innerException in e.InnerExceptions)
-	                {
-                        WriteError(new ErrorRecord(innerException, "PutFailed", ErrorCategory.WriteError, innerException));
-	                }
-                }
+                    }
+                });
+            }
+            catch (AggregateException e)
+            {
+                foreach (var innerException in e.InnerExceptions)
+	            {
+                    WriteError(new ErrorRecord(innerException, "PutFailed", ErrorCategory.WriteError, innerException));
+	            }
             }
         }
     }

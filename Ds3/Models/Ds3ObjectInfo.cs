@@ -13,11 +13,24 @@
  * ****************************************************************************
  */
 
-namespace Ds3.Helpers
+using System;
+
+namespace Ds3.Models
 {
-    //TODO: where to put
-    internal interface IDs3ClientFactory
+    public class Ds3ObjectInfo : Ds3Object
     {
-        IDs3Client GetClientForServerId(string serverId);
+        public string Etag { get; private set; }
+        public DateTime LastModified { get; private set; }
+        public Owner Owner { get; private set; }
+        public string StorageClass { get; private set; }
+
+        public Ds3ObjectInfo(string name, long? size, Owner owner, string etag, string storageClass, DateTime lastModified)
+            : base(name, size)
+        {
+            this.Owner = owner;
+            this.Etag = etag;
+            this.StorageClass = storageClass;
+            this.LastModified = lastModified;
+        }
     }
 }

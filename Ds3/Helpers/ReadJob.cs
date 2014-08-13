@@ -13,50 +13,44 @@
  * ****************************************************************************
  */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 using Ds3.Calls;
 using Ds3.Models;
 
 namespace Ds3.Helpers
 {
-    internal class ReadJob : Job, IReadJob
+    internal class ReadJob : Job
     {
-        private ModifyGetRequest _modifier;
-
-        public ReadJob(IDs3ClientFactory clientFactory, Guid jobId, string bucketName, IEnumerable<Ds3ObjectList> objectLists)
-            : base(clientFactory, jobId, bucketName, objectLists)
+        public ReadJob(IDs3Client client, JobResponse bulkGetResponse)
+            : base(client, bulkGetResponse)
         {
         }
 
-        public void Read(ObjectGetter getter)
+        protected override void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
         {
-            this.TransferAll((client, jobId, bucket, ds3Object) =>
+            var streamCoordinators = jobObjects.ToDictionary(jo => jo.Name, jo => new CriticalSectionExecutor());
+            var parallelOptions = this._maxParallelRequests > 0
+                ? new ParallelOptions { MaxDegreeOfParallelism = _maxParallelRequests }
+                : new ParallelOptions();
+            Parallel.ForEach(jobObjects, parallelOptions, jobObject =>
             {
-                var request = new GetObjectRequest(bucket, ds3Object.Name, jobId);
-                if (this._modifier != null)
-                {
-                    this._modifier(request);
-                }
-                using (var response = client.GetObject(request))
-                {
-                    getter(ds3Object, response.Contents);
-                }
+                clientForNode.GetObject(new GetObjectRequest(
+                    this._bulkResponse.BucketName,
+                    jobObject.Name,
+                    this._bulkResponse.JobId,
+                    jobObject.Offset,
+                    new WindowedStream(
+                        objectStreams[jobObject.Name],
+                        streamCoordinators[jobObject.Name],
+                        jobObject.Offset,
+                        jobObject.Length
+                    )
+                ));
             });
-        }
-
-        public IReadJob WithRequestModifier(ModifyGetRequest modifier)
-        {
-            this._modifier = modifier;
-            return this;
-        }
-
-        public new IReadJob WithMaxParallelRequests(int maxParallelRequests)
-        {
-            this.MaxParallelRequests = maxParallelRequests;
-            return this;
         }
     }
 }

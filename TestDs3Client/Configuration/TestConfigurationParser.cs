@@ -14,14 +14,13 @@
  */
 
 using System;
-using System.Xml.Linq;
-using System.Reflection;
-using System.Xml;
 using System.IO;
+using System.Reflection;
+
 using NUnit.Framework;
-using Ds3Client;
-using Ds3Client.Configuration;
+
 using TestDs3Client.Configuration;
+using Ds3Client.Configuration;
 using Config = Ds3Client.Configuration.Configuration;
 
 namespace TestDs3Client
@@ -122,11 +121,11 @@ namespace TestDs3Client
 
         private static string ConvertStreamToString(Action<Stream> writeToStream)
         {
-            using (var stream = new MemoryStream())
+            using (var memoryStream = new MemoryStream())
             {
-                writeToStream(stream);
-                stream.Seek(0, SeekOrigin.Begin);
-                return ReadFromStream(stream);
+                writeToStream(memoryStream);
+                memoryStream.Position = 0L;
+                return ReadFromStream(memoryStream);
             }
         }
 

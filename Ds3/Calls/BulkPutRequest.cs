@@ -23,7 +23,7 @@ namespace Ds3.Calls
     public class BulkPutRequest : BulkRequest
     {
         public BulkPutRequest(string bucketName, List<Ds3Object> objects) 
-            : base(bucketName, objects)
+            : base(bucketName, objects, true)
         {
             if (!objects.TrueForAll(obj => obj.Size.HasValue))
             {

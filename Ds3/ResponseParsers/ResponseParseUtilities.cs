@@ -13,34 +13,29 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Linq;
-using System.IO;
 using System.Collections.Generic;
-using System.Xml.Linq;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Xml;
-using System.Diagnostics;
-using System.Xml.Serialization;
+using System.Xml.Linq;
 
-using Ds3.Runtime;
 using Ds3.Models;
+using Ds3.Runtime;
 
-namespace Ds3.Calls
+namespace Ds3.ResponseParsers
 {
-    public abstract class Ds3Response : IDisposable
-    {        
-        internal IWebResponse response;
-
-        internal Ds3Response(IWebResponse response)
+    internal class ResponseParseUtilities
+    {
+        public static IDictionary<string, string> ExtractCustomMetadata(IDictionary<string, string> headers)
         {
-            this.response = response;
-            ProcessResponse();
+            return headers
+                .Keys
+                .Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix))
+                .ToDictionary(key => key.Substring(HttpHeaders.AwsMetadataPrefix.Length), key => headers[key]);
         }
 
-        protected abstract void ProcessResponse();
-
-        protected internal void HandleStatusCode(params HttpStatusCode[] expectedStatusCodes)
+        public static void HandleStatusCode(IWebResponse response, params HttpStatusCode[] expectedStatusCodes)
         {
             HttpStatusCode actualStatusCode = response.StatusCode;
             if (!expectedStatusCodes.Contains(actualStatusCode))
@@ -78,17 +73,6 @@ namespace Ds3.Calls
             {
                 return null;
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            response.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
         }
     }
 }

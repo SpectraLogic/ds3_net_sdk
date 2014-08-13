@@ -25,6 +25,8 @@ namespace Ds3.Calls
 {
     public abstract class BulkRequest : Ds3Request
     {
+        private readonly bool _serializeSizeField;
+
         internal override HttpVerb Verb
         {
             get
@@ -48,10 +50,11 @@ namespace Ds3.Calls
         /// </summary>
         /// <param name="bucketName"></param>
         /// <param name="objectList">Note that both the Name and Size fields must be set on each Ds3Object.</param>
-        public BulkRequest(string bucketName, List<Ds3Object> objectList)
+        public BulkRequest(string bucketName, List<Ds3Object> objectList, bool serializeSizeField)
         {
             this.BucketName = bucketName;
             this.Objects = objectList;
+            this._serializeSizeField = serializeSizeField;
         }
 
         internal override Stream GetContentStream()
@@ -66,7 +69,7 @@ namespace Ds3.Calls
                     new XElement("Objects").AddAllFluent(
                         from obj in objects
                         let xmlObj = new XElement("Object").SetAttributeValueFluent("Name", obj.Name)
-                        select obj.Size.HasValue
+                        select _serializeSizeField
                             ? xmlObj.SetAttributeValueFluent("Size", obj.Size.Value.ToString("D"))
                             : xmlObj
                     )
