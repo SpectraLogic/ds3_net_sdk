@@ -255,7 +255,9 @@ namespace TestDs3
                 new { Key = "client00obj000009-8000000", Size = 8192000000L }
             };
 
-            var stringRequest = "<Objects><Object Name=\"client00obj000000-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000001-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000002-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000003-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000004-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000005-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000006-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000007-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000008-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000009-8000000\" Size=\"8192000000\" /></Objects>";
+            var stringRequest = operation == "start_bulk_get"
+                ? "<Objects><Object Name=\"client00obj000000-8000000\" /><Object Name=\"client00obj000001-8000000\" /><Object Name=\"client00obj000002-8000000\" /><Object Name=\"client00obj000003-8000000\" /><Object Name=\"client00obj000004-8000000\" /><Object Name=\"client00obj000005-8000000\" /><Object Name=\"client00obj000006-8000000\" /><Object Name=\"client00obj000007-8000000\" /><Object Name=\"client00obj000008-8000000\" /><Object Name=\"client00obj000009-8000000\" /></Objects>"
+                : "<Objects><Object Name=\"client00obj000000-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000001-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000002-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000003-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000004-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000005-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000006-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000007-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000008-8000000\" Size=\"8192000000\" /><Object Name=\"client00obj000009-8000000\" Size=\"8192000000\" /></Objects>";
             var stringResponse = ReadResource(JobResponseResourceName);
 
             var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
@@ -311,6 +313,7 @@ namespace TestDs3
             var expectedObjectLists = new[] {
                 new {
                     ChunkNumber=0L,
+                    ChunkId = Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44"),
                     NodeId=(Guid?)Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"),
                     Objects = new[] {
                         new { Name="client00obj000004-8000000", Length=5368709120L, Offset=0L },
@@ -331,6 +334,7 @@ namespace TestDs3
                 },
                 new {
                     ChunkNumber=1L,
+                    ChunkId = Guid.Parse("4137d768-25bb-4942-9d36-b92dfbe75e01"),
                     NodeId=(Guid?)null,
                     Objects = new[] {
                         new { Name="client00obj000008-8000000", Length=2823290880L, Offset=5368709120L },
@@ -352,6 +356,7 @@ namespace TestDs3
             HelpersForTest.AssertCollectionsEqual(expectedObjectLists, response.ObjectLists, (expectedObjectList, actualObjectList) =>
             {
                 Assert.AreEqual(expectedObjectList.ChunkNumber, actualObjectList.ChunkNumber);
+                Assert.AreEqual(expectedObjectList.ChunkId, actualObjectList.ChunkId);
                 Assert.AreEqual(expectedObjectList.NodeId, actualObjectList.NodeId);
                 HelpersForTest.AssertCollectionsEqual(expectedObjectList.Objects, actualObjectList.Objects, (expectedObject, actualObject) =>
                 {
