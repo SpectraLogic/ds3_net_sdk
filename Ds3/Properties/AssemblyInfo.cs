@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ds3_net_sdk")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provides a .NET interface to the DS3 Deep Storage REST API by Spectra Logic.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spectra Logic")]
 [assembly: AssemblyProduct("ds3_net_sdk")]
