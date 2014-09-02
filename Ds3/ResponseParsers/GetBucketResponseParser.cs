@@ -48,7 +48,7 @@ namespace Ds3.ResponseParsers
                             let owner = obj.ElementOrThrow("Owner")
                             select new Ds3ObjectInfo(
                                 obj.TextOf("Key"),
-                                int.Parse(obj.TextOf("Size")),
+                                long.Parse(obj.TextOf("Size")),
                                 new Owner(owner.TextOf("ID"), owner.TextOf("DisplayName")),
                                 obj.TextOf("ETag"),
                                 obj.TextOf("StorageClass"),
