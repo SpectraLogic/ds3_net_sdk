@@ -34,7 +34,7 @@ namespace Ds3.Calls
         public IDictionary<string, string> Metadata { get; private set; }
         public IEnumerable<string> CommonPrefixes { get; private set; }
 
-        internal GetBucketResponse(
+        public GetBucketResponse(
             string name,
             string prefix,
             string marker,

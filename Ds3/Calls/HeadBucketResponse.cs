@@ -23,7 +23,7 @@ namespace Ds3.Calls
     {
         public StatusType Status { get; private set; }
 
-        internal HeadBucketResponse(StatusType status)
+        public HeadBucketResponse(StatusType status)
         {
             this.Status = status;
         }

@@ -19,7 +19,7 @@ namespace Ds3.Calls
     {
         public string Etag { get; private set; }
 
-        internal PutPartResponse(string etag)
+        public PutPartResponse(string etag)
         {
             this.Etag = etag;
         }

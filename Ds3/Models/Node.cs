@@ -24,7 +24,7 @@ namespace Ds3.Models
         public int? HttpPort { get; private set; }
         public int? HttpsPort { get; private set; }
 
-        internal Node(Guid id, string endPoint, int? httpPort, int? httpsPort)
+        public Node(Guid id, string endPoint, int? httpPort, int? httpsPort)
         {
             this.Id = id;
             this.EndPoint = endPoint;
