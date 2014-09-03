@@ -24,7 +24,7 @@ namespace Ds3.Calls
         public Owner Owner { get; private set; }
         public List<Bucket> Buckets { get; private set; }
 
-        internal GetServiceResponse(Owner owner, List<Bucket> buckets)
+        public GetServiceResponse(Owner owner, List<Bucket> buckets)
         {
             this.Owner = owner;
             this.Buckets = buckets;

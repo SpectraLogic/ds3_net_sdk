@@ -23,7 +23,7 @@ namespace Ds3.Calls
     {
         public IEnumerable<JobInfo> Jobs { get; private set; }
 
-        internal GetJobListResponse(IEnumerable<JobInfo> jobs)
+        public GetJobListResponse(IEnumerable<JobInfo> jobs)
         {
             this.Jobs = jobs;
         }

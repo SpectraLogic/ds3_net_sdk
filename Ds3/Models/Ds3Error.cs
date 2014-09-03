@@ -27,7 +27,7 @@ namespace Ds3.Models
         public string Resource { get; private set; }
         public string RequestId { get; private set; }
 
-        internal Ds3Error(string code, string message, string resource, string requestId)
+        public Ds3Error(string code, string message, string resource, string requestId)
         {
             this.Code = code;
             this.Message = message;

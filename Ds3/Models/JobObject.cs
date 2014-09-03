@@ -22,7 +22,7 @@ namespace Ds3.Models
         public long Offset { get; private set; }
         public bool InCache { get; private set; }
 
-        internal JobObject(string name, long length, long offset, bool inCache)
+        public JobObject(string name, long length, long offset, bool inCache)
         {
             this.Name = name;
             this.Length = length;

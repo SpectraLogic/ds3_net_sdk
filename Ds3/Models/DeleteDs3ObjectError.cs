@@ -21,7 +21,7 @@ namespace Ds3.Models
         public string Code { get; private set; }
         public string Message { get; private set; }
 
-        internal DeleteDs3ObjectError(string key, string code, string message)
+        public DeleteDs3ObjectError(string key, string code, string message)
         {
             this.Key = key;
             this.Code = code;

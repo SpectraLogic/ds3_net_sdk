@@ -27,7 +27,7 @@ namespace Ds3.Models
         public Guid? NodeId { get; private set; }
         public IEnumerable<JobObject> Objects { get; private set; }
 
-        internal JobObjectList(Guid chunkId, long chunkNumber, Guid? nodeId, IEnumerable<JobObject> objects)
+        public JobObjectList(Guid chunkId, long chunkNumber, Guid? nodeId, IEnumerable<JobObject> objects)
         {
             this.ChunkId = chunkId;
             this.ChunkNumber = chunkNumber;

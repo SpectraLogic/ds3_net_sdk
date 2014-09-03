@@ -21,7 +21,7 @@ namespace Ds3.Calls
         public string ObjectName { get; private set; }
         public string UploadId { get; private set; }
 
-        internal InitiateMultipartUploadResponse(string bucketName, string objectName, string uploadId)
+        public InitiateMultipartUploadResponse(string bucketName, string objectName, string uploadId)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
