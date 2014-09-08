@@ -1,0 +1,7 @@
+﻿<MasterObjectList BucketName="bucket8192000000" JobId="1a85e743-ec8f-4789-afec-97e587a26936" Priority="NORMAL" RequestType="GET" StartDate="2014-07-01T20:12:52.000Z">
+  <Nodes>
+    <Node EndPoint="10.1.18.12" HttpPort="80" HttpsPort="443" Id="a02053b9-0147-11e4-8d6a-002590c1177c"/>
+    <Node EndPoint="10.1.18.13" HttpsPort="443" Id="95e97010-8e70-4733-926c-aeeb21796848"/>
+    <Node EndPoint="10.1.18.14" HttpPort="80" Id="4d5b6669-76f0-49f9-bc2a-9280f40cafa7"/>
+  </Nodes>
+</MasterObjectList>

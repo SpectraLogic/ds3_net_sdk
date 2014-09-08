@@ -114,6 +114,10 @@
   <ItemGroup>
     <EmbeddedResource Include="TestData\ResultingMasterObjectList.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\EmptyGetAvailableJobChunksResponse.xml" />
+    <EmbeddedResource Include="TestData\GetAvailableJobChunksResponse.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

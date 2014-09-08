@@ -13,11 +13,10 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Net;
-
 using Ds3.Calls;
 using Ds3.Runtime;
+using System;
+using System.Net;
 
 namespace Ds3.ResponseParsers
 {
@@ -42,13 +41,7 @@ namespace Ds3.ResponseParsers
                             );
 
                         case HttpStatusCode.ServiceUnavailable:
-                            var headerName = "retry-after";
-                            var retryAfter = response.Headers[headerName];
-                            if (retryAfter == null)
-                            {
-                                throw new ArgumentNullException(String.Format(Resources.MissingHeaderException, headerName));
-                            }
-                            return AllocateJobChunkResponse.RetryAfter(TimeSpan.FromSeconds(int.Parse(retryAfter)));
+                            return AllocateJobChunkResponse.RetryAfter(TimeSpan.FromSeconds(int.Parse(response.Headers["retry-after"])));
 
                         default:
                             throw new NotSupportedException("This line of code should be impossible to hit.");
