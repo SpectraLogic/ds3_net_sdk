@@ -59,7 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestDisposableCache.cs" />
     <Compile Include="TestHttpHelper.cs" />
+    <Compile Include="TestJobPartTracker.cs" />
     <Compile Include="TestMultipartUpload.cs" />
     <Compile Include="HelpersForTest.cs" />
     <Compile Include="MockNetwork.cs" />
@@ -67,7 +69,9 @@
     <Compile Include="TestDs3Client.cs" />
     <Compile Include="TestDs3ClientHelpers.cs" />
     <Compile Include="TestEnumerableAlgorithms.cs" />
+    <Compile Include="TestObjectPart.cs" />
     <Compile Include="TestObjectPartPlanner.cs" />
+    <Compile Include="TestObjectPartTracker.cs" />
     <Compile Include="TestPerformance.cs" />
     <Compile Include="TestWindowedStream.cs" />
   </ItemGroup>
