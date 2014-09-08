@@ -21,6 +21,11 @@ namespace Ds3.Helpers
 {
     internal static class EnumerableAlgorithms
     {
+        public static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> it)
+        {
+            return it.SelectMany(x => x);
+        }
+
         /// <summary>
         /// For each list of strings in the input, returns all of the strings
         /// that have not appeared in any previous list of strings.
