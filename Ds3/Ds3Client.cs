@@ -121,6 +121,11 @@ namespace Ds3
             return new AllocateJobChunkResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public GetAvailableJobChunksResponse GetAvailableJobChunks(GetAvailableJobChunksRequest request)
+        {
+            return new GetAvailableJobChunksResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes)
         {
             return new Ds3ClientFactory(this, nodes);

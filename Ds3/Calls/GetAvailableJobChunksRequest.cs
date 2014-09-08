@@ -17,24 +17,24 @@ using System;
 
 namespace Ds3.Calls
 {
-    public class AllocateJobChunkRequest : Ds3Request
+    public class GetAvailableJobChunksRequest : Ds3Request
     {
-        public Guid ChunkId { get; private set; }
+        public Guid JobId { get; private set; }
 
-        public AllocateJobChunkRequest(Guid chunkId)
+        public GetAvailableJobChunksRequest(Guid jobId)
         {
-            this.ChunkId = chunkId;
-            this.QueryParams.Add("operation", "allocate");
+            this.JobId = jobId;
+            this.QueryParams.Add("job", jobId.ToString());
         }
 
         internal override HttpVerb Verb
         {
-            get { return HttpVerb.PUT; }
+            get { return HttpVerb.GET; }
         }
 
         internal override string Path
         {
-            get { return "/_rest_/job_chunk/" + ChunkId.ToString(); }
+            get { return "/_rest_/job_chunk"; }
         }
     }
 }

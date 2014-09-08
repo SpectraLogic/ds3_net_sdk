@@ -130,6 +130,8 @@ namespace Ds3
 
         AllocateJobChunkResponse AllocateJobChunk(AllocateJobChunkRequest request);
 
+        GetAvailableJobChunksResponse GetAvailableJobChunks(GetAvailableJobChunksRequest request);
+
         InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request);
 
         PutPartResponse PutPart(PutPartRequest request);
