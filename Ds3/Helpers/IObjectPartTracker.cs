@@ -8,5 +8,6 @@ namespace Ds3.Helpers
         event Action Completed;
 
         void CompletePart(ObjectPart partToRemove);
+        bool ContainsPart(ObjectPart part);
     }
 }

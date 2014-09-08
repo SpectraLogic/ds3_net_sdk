@@ -18,14 +18,14 @@ namespace Ds3.Helpers
             {
                 lock (this._lock)
                 {
-                    this.DataTransferred += value;
+                    this._innerTracker.DataTransferred += value;
                 }
             }
             remove
             {
                 lock (this._lock)
                 {
-                    this.DataTransferred -= value;
+                    this._innerTracker.DataTransferred -= value;
                 }
             }
         }
@@ -53,6 +53,15 @@ namespace Ds3.Helpers
             lock (this._lock)
             {
                 this._innerTracker.CompletePart(partToRemove);
+            }
+        }
+
+
+        public bool ContainsPart(ObjectPart part)
+        {
+            lock (this._lock)
+            {
+                return this._innerTracker.ContainsPart(part);
             }
         }
     }

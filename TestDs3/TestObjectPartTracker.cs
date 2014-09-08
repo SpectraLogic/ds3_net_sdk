@@ -71,6 +71,15 @@ namespace TestDs3
             }));
         }
 
+        [Test]
+        public void ContainsPartWorks()
+        {
+            IObjectPartTracker tracker = new ObjectPartTracker(new[] { new ObjectPart(0L, 100L), new ObjectPart(100L, 100L) });
+            Assert.IsTrue(tracker.ContainsPart(new ObjectPart(100L, 100L)));
+            Assert.IsFalse(tracker.ContainsPart(new ObjectPart(100L, 50L)));
+            Assert.IsFalse(tracker.ContainsPart(new ObjectPart(150L, 50L)));
+        }
+
         private class SuccessCase : IEnumerable<ObjectPart>
         {
             private readonly string _name;

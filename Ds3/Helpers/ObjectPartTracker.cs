@@ -75,5 +75,11 @@ namespace Ds3.Helpers
                 lastEnd = range.End;
             }
         }
+
+
+        public bool ContainsPart(ObjectPart part)
+        {
+            return this._parts.Any(p => p.CompareTo(part) == 0);
+        }
     }
 }
