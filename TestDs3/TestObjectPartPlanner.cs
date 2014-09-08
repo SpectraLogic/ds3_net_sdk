@@ -21,58 +21,27 @@ using System.Linq;
 using NUnit.Framework;
 
 using Ds3.Helpers;
-using Part = Ds3.Helpers.ObjectPartPlanner.ObjectPart;
 
 namespace TestDs3
 {
     [TestFixture]
     public class TestObjectPartPlanner
     {
-        private static readonly PartComparer _partComparer = new PartComparer();
-
         [Test]
         public void TestPlanParts()
         {
-            CheckPlanParts(0L, 1024L, new Part(0L, 1024L, 1));
-            CheckPlanParts(512L, 1024L, new Part(512L, 1024L, 1));
-            CheckPlanParts(0L, 1025L, new Part(0L, 1024L, 1), new Part(1024L, 1L, 2));
-            CheckPlanParts(512L, 1025L, new Part(512L, 1024L, 1), new Part(1536L, 1L, 2));
-            CheckPlanParts(1536L, 1025L, new Part(1536L, 1024L, 1), new Part(2560L, 1L, 2));
-            CheckPlanParts(512L, 3072L, new Part(512L, 1024L, 1), new Part(1536L, 1024L, 2), new Part(2560L, 1024L, 3));
+            CheckPlanParts(0L, 1024L, new ObjectPart(0L, 1024L));
+            CheckPlanParts(512L, 1024L, new ObjectPart(512L, 1024L));
+            CheckPlanParts(0L, 1025L, new ObjectPart(0L, 1024L), new ObjectPart(1024L, 1L));
+            CheckPlanParts(512L, 1025L, new ObjectPart(512L, 1024L), new ObjectPart(1536L, 1L));
+            CheckPlanParts(1536L, 1025L, new ObjectPart(1536L, 1024L), new ObjectPart(2560L, 1L));
+            CheckPlanParts(512L, 3072L, new ObjectPart(512L, 1024L), new ObjectPart(1536L, 1024L), new ObjectPart(2560L, 1024L));
         }
 
-        private static void CheckPlanParts(long offset, long length, params Part[] expected)
+        private static void CheckPlanParts(long offset, long length, params ObjectPart[] expected)
         {
             var objectParts = ObjectPartPlanner.PlanParts(1024L, offset, length).ToList();
-            CollectionAssert.AreEqual(objectParts, expected.ToList(), _partComparer);
-        }
-
-        private class PartComparer : IComparer, IComparer<Part>
-        {
-            public int Compare(Part x, Part y)
-            {
-                return x.Length != y.Length
-                    ? Math.Sign(x.Length - y.Length)
-                    : ( x.Offset != y.Offset
-                        ? Math.Sign(x.Offset - y.Offset)
-                        : ( x.PartNumber != y.PartNumber
-                            ? Math.Sign(x.PartNumber - y.PartNumber)
-                            : 0
-                        )
-                    );
-            }
-
-            public int Compare(object x, object y)
-            {
-                if (x is Part && y is Part)
-                {
-                    return this.Compare((Part)x, (Part)y);
-                }
-                else
-                {
-                    throw new ArgumentException();
-                }
-            }
+            CollectionAssert.AreEqual(objectParts, expected.ToList(), Comparer<ObjectPart>.Default);
         }
     }
 }
