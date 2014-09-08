@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TestData\AllocateJobChunkResponse.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Compile Include="TestDisposableCache.cs" />
     <Compile Include="TestHttpHelper.cs" />
     <Compile Include="TestJobPartTracker.cs" />

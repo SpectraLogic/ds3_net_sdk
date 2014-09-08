@@ -35,6 +35,7 @@ namespace TestDs3
         private static readonly IDictionary<string, string> _emptyHeaders = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
         private const string JobResponseResourceName = "TestDs3.TestData.ResultingMasterObjectList.xml";
+        private const string AllocateJobChunkResponse = "TestDs3.TestData.AllocateJobChunkResponse.xml";
 
         [Test]
         public void TestGetService()
@@ -388,6 +389,47 @@ namespace TestDs3
             Assert.AreEqual("NORMAL", jobInfo.Priority);
             Assert.AreEqual("PUT", jobInfo.RequestType);
             Assert.AreEqual("2014-05-22T18:24:00.000Z", jobInfo.StartDate);
+        }
+
+        [Test]
+        public void AllocateChunkReturnsChunkWithNodeWhenAllocated()
+        {
+            var responseContent = ReadResource(AllocateJobChunkResponse);
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .AsClient;
+            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            JobObjectList chunkResult = null;
+            response.Match(
+                chunk => chunkResult = chunk,
+                retryAfter => Assert.Fail()
+            );
+            Assert.NotNull(chunkResult);
+            Assert.AreEqual(Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"), chunkResult.NodeId);
+            Assert.AreEqual(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44"), chunkResult.ChunkId);
+            Assert.AreEqual(0, chunkResult.ChunkNumber);
+            Assert.AreEqual(14, chunkResult.Objects.Count());
+        }
+
+        [Test]
+        public void AllocateChunkReturnsRetryWhen503AndHeader()
+        {
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
+            var headers = new Dictionary<string, string> { { "Retry-After", "300" } };
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
+                .Returning(HttpStatusCode.ServiceUnavailable, "", headers)
+                .AsClient;
+            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            TimeSpan? retryResult = null;
+            response.Match(
+                chunk => Assert.Fail(),
+                retryAfter => retryResult = retryAfter
+            );
+            Assert.NotNull(retryResult);
+            Assert.AreEqual(TimeSpan.FromMinutes(5), retryResult.Value);
         }
     }
 }
