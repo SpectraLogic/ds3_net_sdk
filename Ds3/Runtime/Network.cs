@@ -59,7 +59,6 @@ namespace Ds3.Runtime
 
         public IWebResponse Invoke(Ds3Request request)
         {
-            bool redirect = false;
             int redirectCount = 0;            
             
             using (var content = request.GetContentStream())
@@ -72,12 +71,13 @@ namespace Ds3.Runtime
                         var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
                         if (Is307(response))
                         {
-                            redirect = true;
                             redirectCount++;
                             Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
-                            continue;
                         }
-                        return response;
+                        else
+                        {
+                            return response;
+                        }
                     }
                     catch (WebException e)
                     {
@@ -87,7 +87,7 @@ namespace Ds3.Runtime
                         }
                         return new WebResponse((HttpWebResponse)e.Response);
                     }
-                } while (redirect && redirectCount < _maxRedirects);
+                } while (redirectCount < _maxRedirects);
             }
 
             throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException);
