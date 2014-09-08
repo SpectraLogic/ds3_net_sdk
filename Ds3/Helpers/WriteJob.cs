@@ -13,13 +13,12 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 using Ds3.Calls;
 using Ds3.Models;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading;
 
 namespace Ds3.Helpers
 {
@@ -30,89 +29,72 @@ namespace Ds3.Helpers
         {
         }
 
-        protected override void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
+        public override void Transfer(Func<string, Stream> createStreamForObjectKey)
         {
-            var filteredJobObjects = jobObjects.Where(obj => !obj.InCache).AsParallel();
-            (
-                from jobObject in (
-                    _maxParallelRequests > 0
-                        ? filteredJobObjects.WithDegreeOfParallelism(_maxParallelRequests)
-                        : filteredJobObjects
-                )
-                let objectUploadState = PrepareForUpload(clientForNode, objectStreams[jobObject.Name], jobObject)
-                from uploadFunc in objectUploadState.PartActions
-                let uploadResult = uploadFunc()
-                where objectUploadState.UploadId != null
-                group uploadResult
-                    by new { jobObject.Name, objectUploadState.UploadId }
-                    into completionGroup
-                    select new CompleteMultipartUploadRequest(
-                        this._bulkResponse.BucketName,
-                        completionGroup.Key.Name,
-                        completionGroup.Key.UploadId,
-                        completionGroup.OrderBy(part => part.PartNumber)
-                    )
-            ).ForAll(request => clientForNode.CompleteMultipartUpload(request));
-        }
+            var filteredChunks = this._bulkResponse.ObjectLists
+                .Select(FilterChunk)
+                .Where(chunk => chunk.Any())
+                .ToList();
 
-        private UploadState PrepareForUpload(IDs3Client client, Stream stream, JobObject jobObject)
-        {
-            var parts = ObjectPartPlanner.PlanParts(_partSize, jobObject.Offset, jobObject.Length).ToList();
-            var criticalSectionExecutor = new CriticalSectionExecutor();
-            if (parts.Count > 1)
+            using (var streamCache = new DisposableCache<string, StreamWindowFactory>(key =>
+                new StreamWindowFactory(createStreamForObjectKey(key))))
             {
-                var uploadId = client
-                    .InitiateMultipartUpload(new InitiateMultipartUploadRequest(
-                        this._bulkResponse.BucketName,
-                        jobObject.Name,
-                        this._bulkResponse.JobId,
-                        jobObject.Offset
-                    ))
-                    .UploadId;
-                return new UploadState(
-                    uploadId,
-                    parts.Select(part => new Func<UploadPart>(delegate
-                    {
-                        var etag = client
-                            .PutPart(new PutPartRequest(
-                                this._bulkResponse.BucketName,
-                                jobObject.Name,
-                                part.PartNumber,
-                                uploadId,
-                                new WindowedStream(stream, criticalSectionExecutor, part.Offset, part.Length)
-                            ))
-                            .Etag;
-                        return new UploadPart(part.PartNumber, etag);
-                    }))
-                );
-            }
-            else
-            {
-                var objectPutter = new Func<UploadPart>(delegate
+                var partTracker = JobPartTrackerFactory.BuildPartTracker(filteredChunks.SelectMany());
+                partTracker.DataTransferred += OnDataTransferred;
+                partTracker.ObjectCompleted += OnObjectCompleted;
+                partTracker.ObjectCompleted += streamCache.Close;
+
+                var clientFactory = this._client.BuildFactory(this._bulkResponse.Nodes);
+                foreach (var chunk in filteredChunks.Select(EnsureAllocated).Where(chunk => chunk.Any()))
                 {
-                    client.PutObject(new PutObjectRequest(
-                        this._bulkResponse.BucketName,
-                        jobObject.Name,
-                        this._bulkResponse.JobId,
-                        jobObject.Offset,
-                        new WindowedStream(stream, criticalSectionExecutor, jobObject.Offset, jobObject.Length)
-                    ));
-                    return null;
-                });
-                return new UploadState(null, new[] { objectPutter });
+                    var client = clientFactory.GetClientForNodeId(chunk.NodeId);
+                    InParallel(chunk, jobObject =>
+                    {
+                        client.PutObject(new PutObjectRequest(
+                            this._bulkResponse.BucketName,
+                            jobObject.Name,
+                            this._bulkResponse.JobId,
+                            jobObject.Offset,
+                            streamCache.Get(jobObject.Name).Get(jobObject.Offset, jobObject.Length)
+                        ));
+                        partTracker.CompletePart(
+                            jobObject.Name,
+                            new ObjectPart(jobObject.Offset, jobObject.Length)
+                        );
+                    });
+                }
             }
         }
 
-        private class UploadState
+        private JobObjectList EnsureAllocated(JobObjectList filteredChunk)
         {
-            public string UploadId { get; private set; }
-            public IEnumerable<Func<UploadPart>> PartActions { get; private set; }
+            return filteredChunk.NodeId == null
+                ? FilterChunk(AllocateChunk(filteredChunk.ChunkId))
+                : filteredChunk;
+        }
 
-            public UploadState(string uploadId, IEnumerable<Func<UploadPart>> partActions)
+        private JobObjectList FilterChunk(JobObjectList objectList)
+        {
+            return new JobObjectList(
+                objectList.ChunkId,
+                objectList.ChunkNumber,
+                objectList.NodeId,
+                objectList.Where(obj => !obj.InCache).ToList()
+            );
+        }
+
+        private JobObjectList AllocateChunk(Guid chunkId)
+        {
+            JobObjectList chunk = null;
+            //TODO: put this elsewhere
+            var _maxRetries = 50;
+            for (var i = 0; i < _maxRetries && chunk == null; i++)
             {
-                this.UploadId = uploadId;
-                this.PartActions = partActions;
+                this._client
+                    .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
+                    .Match(allocatedChunk => { chunk = allocatedChunk; }, Thread.Sleep);
             }
+            return chunk;
         }
     }
 }

@@ -180,7 +180,7 @@ namespace TestDs3
             };
             new Ds3ClientHelpers(clientMock.Object)
                 .StartWriteJob(bucket, objectsToPut)
-                .WithPartSize(4L) // We expect a real client to restrict the part size to within S3 spec (5mb - 5gb).
+                //TODO.WithPartSize(4L) // We expect a real client to restrict the part size to within S3 spec (5mb - 5gb).
                 .Transfer(key => HelpersForTest.StringToStream(key + " contents"));
 
             CollectionAssert.AreEquivalent(
@@ -271,7 +271,7 @@ namespace TestDs3
             };
             new Ds3ClientHelpers(clientMock.Object)
                 .StartWriteJob(bucket, objectsToPut)
-                .WithPartSize(8L) // We expect a real client to restrict the part size to within S3 spec (5mb - 5gb).
+                //TODO.WithPartSize(8L) // We expect a real client to restrict the part size to within S3 spec (5mb - 5gb).
                 .Transfer(key => HelpersForTest.StringToStream(originalObjectContents[key]));
 
             CollectionAssert.AreEquivalent(

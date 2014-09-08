@@ -15,6 +15,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 
 namespace Ds3.Helpers
 {
@@ -22,8 +23,13 @@ namespace Ds3.Helpers
     {
         Guid JobId { get; }
         string BucketName { get; }
+
         IJob WithMaxParallelRequests(int maxParallelRequests);
-        IJob WithPartSize(long partSize);
+        IJob WithCancellationToken(CancellationToken cancellationToken);
+
         void Transfer(Func<string, Stream> createStreamForObjectKey);
+
+        event Action<long> DataTransferred;
+        event Action<string> ObjectCompleted;
     }
 }

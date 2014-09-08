@@ -13,35 +13,32 @@
  * ****************************************************************************
  */
 
+using Ds3.Calls;
+using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-
-using Ds3.Calls;
-using Ds3.Models;
+using System.Threading.Tasks;
 
 namespace Ds3.Helpers
 {
     internal abstract class Job : IJob
     {
-        private readonly IDs3Client _client;
+        protected readonly IDs3Client _client;
         protected readonly JobResponse _bulkResponse;
-        protected int _maxParallelRequests = 0;
-        protected long _partSize = 32L * 1024L * 1024L
-            //TODO: Until the server supports multipart upload properly we don't want to use it.
-            // For now we'll just set the threshold to something ridiculous.
-            * 1024L * 1024L * 1024L;
-        private static readonly TimeSpan _defaultRetryAfter = TimeSpan.FromSeconds(5 * 60);
+        protected CancellationToken _cancellationToken = CancellationToken.None;
+        private int _maxParallelRequests = 0;
+
+        public event Action<long> DataTransferred;
+        public event Action<string> ObjectCompleted;
 
         protected Job(IDs3Client client, JobResponse bulkResponse)
         {
             this._client = client;
             this._bulkResponse = bulkResponse;
         }
-
-        protected abstract void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects);
 
         public Guid JobId
         {
@@ -59,74 +56,38 @@ namespace Ds3.Helpers
             return this;
         }
 
-        public IJob WithPartSize(long partSize)
+        public IJob WithCancellationToken(CancellationToken cancellationToken)
         {
-            this._partSize = partSize;
+            this._cancellationToken = cancellationToken;
             return this;
         }
 
-        public void Transfer(Func<string, Stream> createStreamForObjectKey)
+        public abstract void Transfer(Func<string, Stream> createStreamForObjectKey);
+
+        protected void OnObjectCompleted(string objectName)
         {
-            var objectNamesPerChunk = this._bulkResponse.ObjectLists.Select(objectList => objectList.Select(obj => obj.Name));
-            var clientFactory = _client.BuildFactory(this._bulkResponse.Nodes);
-
-            var objectStreams = new Dictionary<string, Stream>();
-            UsingAll(objectStreams.Values, delegate
+            if (this.ObjectCompleted != null)
             {
-                EnumerableAlgorithms.ForEach(
-                    this._bulkResponse.ObjectLists,
-                    objectNamesPerChunk.FirstMentionsPerRow(),
-                    objectNamesPerChunk.LastMentionsPerRow(),
-                    (objectList, namesToOpen, namesToClose) =>
-                    {
-                        foreach (var nameToOpen in namesToOpen)
-                        {
-                            objectStreams.Add(nameToOpen, createStreamForObjectKey(nameToOpen));
-                        }
-
-                        TransferChunk(clientFactory.GetClientForNodeId(objectList.NodeId), objectStreams, objectList.Objects);
-
-                        foreach (var nameToClose in namesToClose)
-                        {
-                            objectStreams[nameToClose].Close();
-                            objectStreams.Remove(nameToClose);
-                        }
-                    }
-                );
-            });
+                this.ObjectCompleted(objectName);
+            }
         }
 
-        private static void SleepFor(TimeSpan retryAfter)
+        protected void OnDataTransferred(long byteCount)
         {
-            Thread.Sleep(Convert.ToInt32(retryAfter.TotalMilliseconds));
+            if (this.DataTransferred != null)
+            {
+                this.DataTransferred(byteCount);
+            }
         }
 
-        private static void UsingAll(IEnumerable<IDisposable> resources, Action action)
+        protected void InParallel<T>(IEnumerable<T> things, Action<T> action)
         {
-            try
+            var parallelOptions = new ParallelOptions { CancellationToken = this._cancellationToken };
+            if (this._maxParallelRequests > 0)
             {
-                action();
+                parallelOptions.MaxDegreeOfParallelism = this._maxParallelRequests;
             }
-            catch (Exception e)
-            {
-                var exceptions = new List<Exception>();
-                foreach (var resource in resources)
-                {
-                    try
-                    {
-                        resource.Dispose();
-                    }
-                    catch (Exception disposeException)
-                    {
-                        exceptions.Add(disposeException);
-                    }
-                }
-                if (exceptions.Count > 0)
-                {
-                    throw new AggregateException(Resources.UsingAllException, new[] { e }.Concat(exceptions));
-                }
-                throw;
-            }
+            Parallel.ForEach(things, parallelOptions, action);
         }
     }
 }
