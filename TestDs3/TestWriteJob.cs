@@ -15,60 +15,14 @@ namespace TestDs3
     [TestFixture]
     public class TestWriteJob
     {
-        private static readonly Guid _firstNodeId = Guid.Parse("39ca7e02-82e8-4c8a-b74f-c6dab8f399ad");
-        private static readonly Guid _secondNodeId = Guid.Parse("a84b3fc6-4b97-400f-a5e3-fed47b93551c");
-
-        private static JobObjectList BuildFirstChunk(Guid? nodeId)
-        {
-            return new JobObjectList(
-                Guid.Parse("1f45812d-0b67-492b-b2b5-9fc2f6a0cf3f"),
-                0L,
-                nodeId,
-                new[]
-                {
-                    new JobObject("foo", 10L, 0L, false),
-                    new JobObject("bar", 10L, 0L, false)
-                }
-            );
-        }
-
-        private static JobObjectList BuildSecondChunk(Guid? nodeId)
-        {
-            return new JobObjectList(
-                Guid.Parse("a01e8077-93ad-496a-8464-9963fea3e423"),
-                1L,
-                nodeId,
-                new[]
-                {
-                    new JobObject("foo", 11L, 10L, false),
-                    new JobObject("bar", 11L, 10L, false)
-                }
-            );
-        }
-
-        private static readonly IEnumerable<Node> _nodeList = new[]
-        {
-            new Node(_firstNodeId, "black-pearl-1", 80, 443),
-            new Node(_secondNodeId, "black-pearl-2", 80, 443)
-        };
-
-        private static readonly JobResponse _bulkResponse = new JobResponse(
-            "bucket",
-            Guid.Parse("879e42ba-77fb-41fc-84c0-511acc90912b"),
-            "HIGH",
-            "GET",
-            DateTime.Parse("9/8/2014 9:25:56 PM"),
-            _nodeList,
-            new[] { BuildFirstChunk(null), BuildSecondChunk(null) }
-        );
-
         [Test]
         public void TransferCallsAllNecessaryClientMethods()
         {
             Action verify = () => { };
-            var client = BuildRootClient(ref verify);
-
-            var writeJob = new WriteJob(client, _bulkResponse);
+            var writeJob = new WriteJob(
+                BuildRootClient(ref verify),
+                BuildBulkResponse(_freshJobChunkList)
+            );
 
             var transfers = new ConcurrentQueue<long>();
             var objects = new ConcurrentQueue<string>();
@@ -84,6 +38,28 @@ namespace TestDs3
         }
 
         [Test]
+        public void TransferCallsAllNecessaryClientMethodsWhenRecovering()
+        {
+            Action verify = () => { };
+            var writeJob = new WriteJob(
+                BuildRootClient(ref verify, true),
+                BuildBulkResponse(_recoveredJobChunkList)
+            );
+
+            var transfers = new ConcurrentQueue<long>();
+            var objects = new ConcurrentQueue<string>();
+            writeJob.DataTransferred += transfers.Enqueue;
+            writeJob.ObjectCompleted += objects.Enqueue;
+
+            writeJob.Transfer(BuildMemoryStream);
+
+            CollectionAssert.AreEqual(new[] { 10L, 11L, 11L }, transfers);
+            CollectionAssert.AreEquivalent(new[] { "foo", "bar" }, objects);
+
+            verify();
+        }
+
+        [Test]
         public void WriteJobCanCancelBetweenChunks()
         {
             Action verify = () => { };
@@ -93,7 +69,7 @@ namespace TestDs3
             var cancellations = 0;
             var completions = 0;
 
-            var writeJob = new WriteJob(client, _bulkResponse);
+            var writeJob = new WriteJob(client, BuildBulkResponse(_freshJobChunkList));
             writeJob.WithCancellationToken(cancellationTokenSource.Token);
             writeJob.DataTransferred += size =>
             {
@@ -115,24 +91,79 @@ namespace TestDs3
             Assert.AreEqual(0, completions);
         }
 
-        [Test]
-        public void WriteJobCanCancelMidChunk()
+        private static readonly Guid _jobId = Guid.Parse("879e42ba-77fb-41fc-84c0-511acc90912b");
+        private static readonly Guid _firstNodeId = Guid.Parse("39ca7e02-82e8-4c8a-b74f-c6dab8f399ad");
+        private static readonly Guid _secondNodeId = Guid.Parse("a84b3fc6-4b97-400f-a5e3-fed47b93551c");
+        private static readonly IEnumerable<Node> _nodeList = new[]
         {
-            Assert.Inconclusive();
-            //TODO: we need to alter the mocks so we can know that one object
-            // will take longer than another and thus receive a cancellation token.
+            new Node(_firstNodeId, "black-pearl-1", 80, 443),
+            new Node(_secondNodeId, "black-pearl-2", 80, 443)
+        };
+        private static IEnumerable<JobObjectList> _freshJobChunkList = new[]
+        {
+            BuildFirstChunk(null),
+            BuildSecondChunk(null)
+        };
+        private static IEnumerable<JobObjectList> _recoveredJobChunkList = new[]
+        {
+            BuildFirstChunk(_firstNodeId, true),
+            BuildSecondChunk(null)
+        };
+
+        private static JobObjectList BuildFirstChunk(Guid? nodeId, bool fooInCache = false)
+        {
+            return new JobObjectList(
+                Guid.Parse("1f45812d-0b67-492b-b2b5-9fc2f6a0cf3f"),
+                0L,
+                nodeId,
+                new[]
+                {
+                    new JobObject("foo", 10L, 0L, fooInCache),
+                    new JobObject("bar", 10L, 0L, false)
+                }
+            );
         }
 
-        public static IDs3Client BuildRootClient(ref Action verify)
+        private static JobObjectList BuildSecondChunk(Guid? nodeId)
+        {
+            return new JobObjectList(
+                Guid.Parse("a01e8077-93ad-496a-8464-9963fea3e423"),
+                1L,
+                nodeId,
+                new[]
+                {
+                    new JobObject("foo", 11L, 10L, false),
+                    new JobObject("bar", 11L, 10L, false)
+                }
+            );
+        }
+
+        private static JobResponse BuildBulkResponse(IEnumerable<JobObjectList> chunks)
+        {
+            return new JobResponse(
+                "bucket",
+                _jobId,
+                "HIGH",
+                "GET",
+                DateTime.Parse("9/8/2014 9:25:56 PM"),
+                _nodeList,
+                chunks
+            );
+        }
+
+        public static IDs3Client BuildRootClient(ref Action verify, bool firstFooInCache = false)
         {
             var mockClient = new Mock<IDs3Client>(MockBehavior.Strict);
             mockClient
                 .Setup(client => client.BuildFactory(_nodeList))
-                .Returns(BuildClientFactory(ref verify));
-            mockClient
-                .Setup(client => client.AllocateJobChunk(It.Is<AllocateJobChunkRequest>(r =>
-                    r.ChunkId == Guid.Parse("1f45812d-0b67-492b-b2b5-9fc2f6a0cf3f"))))
-                .Returns(AllocateJobChunkResponse.Success(BuildFirstChunk(Guid.Parse("39ca7e02-82e8-4c8a-b74f-c6dab8f399ad"))));
+                .Returns(BuildClientFactory(ref verify, firstFooInCache));
+            if (!firstFooInCache)
+            {
+                mockClient
+                    .Setup(client => client.AllocateJobChunk(It.Is<AllocateJobChunkRequest>(r =>
+                        r.ChunkId == Guid.Parse("1f45812d-0b67-492b-b2b5-9fc2f6a0cf3f"))))
+                    .Returns(AllocateJobChunkResponse.Success(BuildFirstChunk(Guid.Parse("39ca7e02-82e8-4c8a-b74f-c6dab8f399ad"))));
+            }
             mockClient
                 .Setup(client => client.AllocateJobChunk(It.Is<AllocateJobChunkRequest>(r =>
                     r.ChunkId == Guid.Parse("a01e8077-93ad-496a-8464-9963fea3e423"))))
@@ -143,12 +174,12 @@ namespace TestDs3
             return mockClient.Object;
         }
 
-        private static IDs3ClientFactory BuildClientFactory(ref Action verify)
+        private static IDs3ClientFactory BuildClientFactory(ref Action verify, bool firstFooInCache)
         {
             var mockClientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
             mockClientFactory
                 .Setup(cf => cf.GetClientForNodeId(_firstNodeId))
-                .Returns(BuildPutClient(ref verify, 0L, 10L));
+                .Returns(BuildPutClient(ref verify, 0L, 10L, firstFooInCache));
             mockClientFactory
                 .Setup(cf => cf.GetClientForNodeId(_secondNodeId))
                 .Returns(BuildPutClient(ref verify, 10L, 11L));
@@ -158,10 +189,13 @@ namespace TestDs3
             return mockClientFactory.Object;
         }
 
-        private static IDs3Client BuildPutClient(ref Action verify, long offset, long length)
+        private static IDs3Client BuildPutClient(ref Action verify, long offset, long length, bool fooInCache = false)
         {
             var mockClient = new Mock<IDs3Client>(MockBehavior.Strict);
-            SetupPut(mockClient, "foo", offset, length);
+            if (!fooInCache)
+            {
+                SetupPut(mockClient, "foo", offset, length);
+            }
             SetupPut(mockClient, "bar", offset, length);
 
             verify += mockClient.VerifyAll;
@@ -174,7 +208,7 @@ namespace TestDs3
             mockClient.Setup(client => client.PutObject(It.Is<PutObjectRequest>(r =>
                 r.BucketName == "bucket"
                 && r.ObjectName == objectName
-                && r.JobId == _bulkResponse.JobId
+                && r.JobId == _jobId
                 && r.Offset == offset
                 && r.GetContentStream().Length == length
             )));
