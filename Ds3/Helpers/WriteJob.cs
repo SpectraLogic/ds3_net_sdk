@@ -90,7 +90,11 @@ namespace Ds3.Helpers
             {
                 this._client
                     .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
-                    .Match(allocatedChunk => { chunk = allocatedChunk; }, Thread.Sleep);
+                    .Match(
+                        allocatedChunk => { chunk = allocatedChunk; },
+                        Thread.Sleep,
+                        () => { throw new InvalidOperationException(Resources.JobGoneException); }
+                    );
             }
             return chunk;
         }

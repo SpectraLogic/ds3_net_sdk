@@ -97,6 +97,18 @@ namespace TestDs3
             Assert.AreEqual(0, completions);
         }
 
+        [Test]
+        public void TransferThrowsExceptionWhenChunkIsGone()
+        {
+            Action verify = () => { };
+            IJob writeJob = new WriteJob(
+                BuildRootClient(ref verify, chunkGone: true),
+                BuildBulkResponse(_freshJobChunkList)
+            );
+
+            Assert.Throws<InvalidOperationException>(() => writeJob.Transfer(BuildMemoryStream));
+        }
+
         private static readonly Guid _jobId = Guid.Parse("879e42ba-77fb-41fc-84c0-511acc90912b");
         private static readonly Guid _firstNodeId = Guid.Parse("39ca7e02-82e8-4c8a-b74f-c6dab8f399ad");
         private static readonly Guid _secondNodeId = Guid.Parse("a84b3fc6-4b97-400f-a5e3-fed47b93551c");
@@ -157,7 +169,11 @@ namespace TestDs3
             );
         }
 
-        public static IDs3Client BuildRootClient(ref Action verify, bool firstFooInCache = false, bool secondAllocateMustRetry = false)
+        public static IDs3Client BuildRootClient(
+            ref Action verify,
+            bool firstFooInCache = false,
+            bool secondAllocateMustRetry = false,
+            bool chunkGone = false)
         {
             var mockClient = new Mock<IDs3Client>(MockBehavior.Strict);
             mockClient
@@ -174,6 +190,10 @@ namespace TestDs3
             if (secondAllocateMustRetry)
             {
                 responses.Enqueue(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromSeconds(1)));
+            }
+            if (chunkGone)
+            {
+                responses.Enqueue(AllocateJobChunkResponse.ChunkGone);
             }
             responses.Enqueue(AllocateJobChunkResponse.Success(BuildSecondChunk(Guid.Parse("a84b3fc6-4b97-400f-a5e3-fed47b93551c"))));
             mockClient

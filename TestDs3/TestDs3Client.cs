@@ -406,7 +406,8 @@ namespace TestDs3
             JobObjectList chunkResult = null;
             response.Match(
                 chunk => chunkResult = chunk,
-                retryAfter => Assert.Fail()
+                retryAfter => Assert.Fail(),
+                Assert.Fail
             );
             Assert.NotNull(chunkResult);
             Assert.AreEqual(Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"), chunkResult.NodeId);
@@ -428,10 +429,29 @@ namespace TestDs3
             TimeSpan? retryResult = null;
             response.Match(
                 chunk => Assert.Fail(),
-                retryAfter => retryResult = retryAfter
+                retryAfter => retryResult = retryAfter,
+                Assert.Fail
             );
             Assert.NotNull(retryResult);
             Assert.AreEqual(TimeSpan.FromMinutes(5), retryResult.Value);
+        }
+
+        [Test]
+        public void AllocateChunkReturnsChunkGoneWhen404()
+        {
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
+                .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
+                .AsClient;
+            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            var chunkIsGone = false;
+            response.Match(
+                chunk => Assert.Fail(),
+                retryAfter => Assert.Fail(),
+                () => chunkIsGone = true
+            );
+            Assert.IsTrue(chunkIsGone);
         }
 
         [Test]

@@ -26,7 +26,7 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK, HttpStatusCode.ServiceUnavailable);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK, HttpStatusCode.ServiceUnavailable, HttpStatusCode.NotFound);
                 using (var responseStream = response.GetResponseStream())
                 {
                     switch (response.StatusCode)
@@ -42,6 +42,9 @@ namespace Ds3.ResponseParsers
 
                         case HttpStatusCode.ServiceUnavailable:
                             return AllocateJobChunkResponse.RetryAfter(TimeSpan.FromSeconds(int.Parse(response.Headers["retry-after"])));
+
+                        case HttpStatusCode.NotFound:
+                            return AllocateJobChunkResponse.ChunkGone;
 
                         default:
                             throw new NotSupportedException("This line of code should be impossible to hit.");
