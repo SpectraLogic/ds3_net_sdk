@@ -86,9 +86,7 @@ namespace Ds3.Helpers
         private JobObjectList AllocateChunk(Guid chunkId)
         {
             JobObjectList chunk = null;
-            //TODO: put this elsewhere
-            var _maxRetries = 50;
-            for (var i = 0; i < _maxRetries && chunk == null; i++)
+            while (chunk == null)
             {
                 this._client
                     .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))

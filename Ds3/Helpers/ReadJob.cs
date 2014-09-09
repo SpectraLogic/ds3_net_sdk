@@ -30,7 +30,7 @@ namespace Ds3.Helpers
 
         public override void Transfer(Func<string, Stream> createStreamForObjectKey)
         {
-            var objectsRemaining = this._bulkResponse.ObjectLists.Sum(jobObjectList => jobObjectList.Objects.Count());
+            var objectsRemaining = this._bulkResponse.ObjectLists.SelectMany().Select(part => part.Name).Distinct().Count();
             using (var streamCache = new DisposableCache<string, StreamWindowFactory>(key =>
                 new StreamWindowFactory(createStreamForObjectKey(key))))
             {
@@ -42,46 +42,42 @@ namespace Ds3.Helpers
 
                 while (objectsRemaining > 0)
                 {
-                    var availableJobChunks = this._client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._bulkResponse.JobId));
-                    availableJobChunks.Match(
-                        jobResponse =>
-                        {
-                            var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
-                            var transfers = (
-                                from objectList in jobResponse.ObjectLists
-                                let client = clientFactory.GetClientForNodeId(objectList.NodeId)
-                                from jobObject in objectList
-                                where partTracker.ContainsPart(jobObject.Name, new ObjectPart(jobObject.Offset, jobObject.Length))
-                                select new { client, jobObject }
-                            ).ToList();
-                            if (!transfers.Any())
+                    this._client
+                        .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._bulkResponse.JobId))
+                        .Match(
+                            jobResponse =>
                             {
-                                //TODO: this comes from elsewhere now
-                                //Thread.Sleep(_defaultRetryAfter);
-                            }
-                            InParallel(
-                                transfers,
-                                transfer =>
-                                {
-                                    transfer.client.GetObject(new GetObjectRequest(
-                                        jobResponse.BucketName,
-                                        transfer.jobObject.Name,
-                                        jobResponse.JobId,
-                                        transfer.jobObject.Offset,
-                                        streamCache
-                                            .Get(transfer.jobObject.Name)
-                                            .Get(transfer.jobObject.Offset, transfer.jobObject.Length)
-                                    ));
-                                    partTracker.CompletePart(
-                                        transfer.jobObject.Name,
-                                        new ObjectPart(transfer.jobObject.Offset, transfer.jobObject.Length)
-                                    );
-                                }
-                            );
-                        },
-                        () => { throw new Exception(); },//TODO
-                        Thread.Sleep//TODO
-                    );
+                                var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
+                                var transfers = (
+                                    from objectList in jobResponse.ObjectLists
+                                    let client = clientFactory.GetClientForNodeId(objectList.NodeId)
+                                    from jobObject in objectList
+                                    where partTracker.ContainsPart(jobObject.Name, new ObjectPart(jobObject.Offset, jobObject.Length))
+                                    select new { client, jobObject }
+                                ).ToList();
+                                InParallel(
+                                    transfers,
+                                    transfer =>
+                                    {
+                                        transfer.client.GetObject(new GetObjectRequest(
+                                            jobResponse.BucketName,
+                                            transfer.jobObject.Name,
+                                            jobResponse.JobId,
+                                            transfer.jobObject.Offset,
+                                            streamCache
+                                                .Get(transfer.jobObject.Name)
+                                                .Get(transfer.jobObject.Offset, transfer.jobObject.Length)
+                                        ));
+                                        partTracker.CompletePart(
+                                            transfer.jobObject.Name,
+                                            new ObjectPart(transfer.jobObject.Offset, transfer.jobObject.Length)
+                                        );
+                                    }
+                                );
+                            },
+                            () => { throw new InvalidOperationException(Resources.JobGoneException); },
+                            Thread.Sleep
+                        );
                 }
             }
         }

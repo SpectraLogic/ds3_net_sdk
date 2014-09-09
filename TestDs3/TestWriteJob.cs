@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
@@ -19,8 +20,8 @@ namespace TestDs3
         public void TransferCallsAllNecessaryClientMethods()
         {
             Action verify = () => { };
-            var writeJob = new WriteJob(
-                BuildRootClient(ref verify),
+            IJob writeJob = new WriteJob(
+                BuildRootClient(ref verify, secondAllocateMustRetry: true),
                 BuildBulkResponse(_freshJobChunkList)
             );
 
@@ -29,10 +30,15 @@ namespace TestDs3
             writeJob.DataTransferred += transfers.Enqueue;
             writeJob.ObjectCompleted += objects.Enqueue;
 
+            var stopwatch = Stopwatch.StartNew();
             writeJob.Transfer(BuildMemoryStream);
+            stopwatch.Stop();
 
             CollectionAssert.AreEqual(new[] { 10L, 10L, 11L, 11L }, transfers);
             CollectionAssert.AreEquivalent(new[] { "foo", "bar" }, objects);
+
+            Assert.GreaterOrEqual(stopwatch.ElapsedMilliseconds, 1000);
+            Assert.LessOrEqual(stopwatch.ElapsedMilliseconds, 1050);
 
             verify();
         }
@@ -41,8 +47,8 @@ namespace TestDs3
         public void TransferCallsAllNecessaryClientMethodsWhenRecovering()
         {
             Action verify = () => { };
-            var writeJob = new WriteJob(
-                BuildRootClient(ref verify, true),
+            IJob writeJob = new WriteJob(
+                BuildRootClient(ref verify, firstFooInCache: true),
                 BuildBulkResponse(_recoveredJobChunkList)
             );
 
@@ -69,7 +75,7 @@ namespace TestDs3
             var cancellations = 0;
             var completions = 0;
 
-            var writeJob = new WriteJob(client, BuildBulkResponse(_freshJobChunkList));
+            IJob writeJob = new WriteJob(client, BuildBulkResponse(_freshJobChunkList));
             writeJob.WithCancellationToken(cancellationTokenSource.Token);
             writeJob.DataTransferred += size =>
             {
@@ -144,14 +150,14 @@ namespace TestDs3
                 "bucket",
                 _jobId,
                 "HIGH",
-                "GET",
+                "PUT",
                 DateTime.Parse("9/8/2014 9:25:56 PM"),
                 _nodeList,
                 chunks
             );
         }
 
-        public static IDs3Client BuildRootClient(ref Action verify, bool firstFooInCache = false)
+        public static IDs3Client BuildRootClient(ref Action verify, bool firstFooInCache = false, bool secondAllocateMustRetry = false)
         {
             var mockClient = new Mock<IDs3Client>(MockBehavior.Strict);
             mockClient
@@ -164,10 +170,16 @@ namespace TestDs3
                         r.ChunkId == Guid.Parse("1f45812d-0b67-492b-b2b5-9fc2f6a0cf3f"))))
                     .Returns(AllocateJobChunkResponse.Success(BuildFirstChunk(Guid.Parse("39ca7e02-82e8-4c8a-b74f-c6dab8f399ad"))));
             }
+            var responses = new Queue<AllocateJobChunkResponse>();
+            if (secondAllocateMustRetry)
+            {
+                responses.Enqueue(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromSeconds(1)));
+            }
+            responses.Enqueue(AllocateJobChunkResponse.Success(BuildSecondChunk(Guid.Parse("a84b3fc6-4b97-400f-a5e3-fed47b93551c"))));
             mockClient
                 .Setup(client => client.AllocateJobChunk(It.Is<AllocateJobChunkRequest>(r =>
                     r.ChunkId == Guid.Parse("a01e8077-93ad-496a-8464-9963fea3e423"))))
-                .Returns(AllocateJobChunkResponse.Success(BuildSecondChunk(Guid.Parse("a84b3fc6-4b97-400f-a5e3-fed47b93551c"))));
+                .Returns(responses.Dequeue);
 
             verify += mockClient.VerifyAll;
 

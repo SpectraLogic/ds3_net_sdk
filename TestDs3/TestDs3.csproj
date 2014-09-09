@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestReadJob.cs" />
     <Compile Include="TestWriteJob.cs" />
     <EmbeddedResource Include="TestData\AllocateJobChunkResponse.xml">
       <SubType>Designer</SubType>

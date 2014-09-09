@@ -178,6 +178,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The job went away as we were trying to acquire chunk information..
+        /// </summary>
+        internal static string JobGoneException {
+            get {
+                return ResourceManager.GetString("JobGoneException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expected job type &apos;{0}&apos; but the actual job was of type &apos;{1}&apos;..
         /// </summary>
         internal static string JobRecoveryException {
