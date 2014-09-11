@@ -168,6 +168,9 @@
   <data name="MissingHeaderException" xml:space="preserve">
     <value>Expected a header called "{0}" but didn't find it.</value>
   </data>
+  <data name="NoObjectsToTransferException" xml:space="preserve">
+    <value>Tried to perform a bulk job but there were no objects to transfer.</value>
+  </data>
   <data name="ObjectPartOutOfRangeException" xml:space="preserve">
     <value>The object part was not available to be marked completed.</value>
   </data>

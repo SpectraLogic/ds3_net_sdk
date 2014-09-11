@@ -37,12 +37,22 @@ namespace Ds3.Helpers
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
         {
-            return new WriteJob(this._client, this._client.BulkPut(new BulkPutRequest(bucket, objectsToWrite.ToList())));
+            return new WriteJob(this._client, this._client.BulkPut(new BulkPutRequest(bucket, VerifyObjectCount(objectsToWrite))));
         }
 
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
         {
-            return new ReadJob(this._client, this._client.BulkGet(new BulkGetRequest(bucket, objectsToRead.ToList())));
+            return new ReadJob(this._client, this._client.BulkGet(new BulkGetRequest(bucket, VerifyObjectCount(objectsToRead))));
+        }
+
+        private static List<Ds3Object> VerifyObjectCount(IEnumerable<Ds3Object> objects)
+        {
+            var objectList = objects.ToList();
+            if (objectList.Count == 0)
+            {
+                throw new InvalidOperationException(Resources.NoObjectsToTransferException);
+            }
+            return objectList;
         }
 
         public IJob StartReadAllJob(string bucket)
