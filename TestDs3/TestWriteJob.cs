@@ -38,7 +38,7 @@ namespace TestDs3
             CollectionAssert.AreEquivalent(new[] { "foo", "bar" }, objects);
 
             Assert.GreaterOrEqual(stopwatch.ElapsedMilliseconds, 1000);
-            Assert.LessOrEqual(stopwatch.ElapsedMilliseconds, 1050);
+            Assert.LessOrEqual(stopwatch.ElapsedMilliseconds, 1100);
 
             verify();
         }
