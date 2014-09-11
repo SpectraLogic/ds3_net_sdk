@@ -178,6 +178,15 @@ namespace Ds3Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Did not pull any objects because there weren&apos;t any available to pull..
+        /// </summary>
+        internal static string NoObjectsMessage {
+            get {
+                return ResourceManager.GetString("NoObjectsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is currently no selected session..
         /// </summary>
         internal static string NoSelectedSessionException {

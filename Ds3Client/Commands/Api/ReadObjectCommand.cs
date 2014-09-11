@@ -48,12 +48,8 @@ namespace Ds3Client.Commands.Api
         [Parameter(ParameterSetName = ToLocalFileParamSet)]
         public long? End { get; set; }
 
-        [Alias(new string[] { "Prefix" })]
-        [Parameter(Position = 1, ParameterSetName = ToLocalFolderParamSet, ValueFromPipelineByPropertyName = true)]
-        public string KeyPrefix { get; set; }
-
         [Alias(new string[] { "Directory" })]
-        [Parameter(Position = 2, ParameterSetName = ToLocalFolderParamSet, Mandatory = true)]
+        [Parameter(ParameterSetName = ToLocalFolderParamSet, Mandatory = true)]
         public string Folder { get; set; }
 
         protected override void ProcessRecord()
@@ -83,26 +79,10 @@ namespace Ds3Client.Commands.Api
                 throw new ApiException(Resources.DirectoryAlreadyExistsException, Folder);
             }
 
-            var client = CreateClient();
-            var resultObjects = new Ds3ClientHelpers(client).ListObjects(BucketName, KeyPrefix).ToList();
-            var bulkGet = client.BulkGet(new Ds3.Calls.BulkGetRequest(BucketName, resultObjects));
-            try
-            {
-                Parallel.ForEach(bulkGet.ObjectLists, ds3ObjectList =>
-                {
-                    foreach (var key in from ds3Object in ds3ObjectList select ds3Object.Name)
-                    {
-                        WriteObjectToFile(client, key, EnsureDirectoryForFileExists(Path.Combine(Folder, MakeValidPath(key))));
-                    }
-                });
-            }
-            catch (AggregateException e)
-            {
-                foreach (var innerException in e.InnerExceptions)
-	            {
-                    WriteError(new ErrorRecord(innerException, "GetFailed", ErrorCategory.ReadError, innerException));
-	            }
-            }
+            new Ds3ClientHelpers(CreateClient())
+                .StartReadAllJob(BucketName)
+                .Transfer(FileHelpers.BuildFileGetter(Folder));
+                //WriteWarning(Resources.NoObjectsMessage);
         }
 
         private static object _ensureDirectoryLock = new object();

@@ -156,6 +156,9 @@
   <data name="MissingSecretKeyException" xml:space="preserve">
     <value>The configuration file you provided did not have a proper SecretKey element.</value>
   </data>
+  <data name="NoObjectsMessage" xml:space="preserve">
+    <value>Did not pull any objects because there weren't any available to pull.</value>
+  </data>
   <data name="NoSelectedSessionException" xml:space="preserve">
     <value>There is currently no selected session.</value>
   </data>
