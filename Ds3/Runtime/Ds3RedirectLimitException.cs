@@ -23,7 +23,7 @@ namespace Ds3.Runtime
 {
     public class Ds3RedirectLimitException : Ds3RequestException
     {
-        internal Ds3RedirectLimitException(string message)
+        public Ds3RedirectLimitException(string message)
             : base(message)
         {
         }

@@ -20,12 +20,12 @@ namespace Ds3.Runtime
 {
     public class Ds3RequestException : Exception
     {
-        internal Ds3RequestException(string message)
+        public Ds3RequestException(string message)
             : base(message)
         {
         }
 
-        internal Ds3RequestException(string message, Exception innerException)
+        public Ds3RequestException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
