@@ -78,6 +78,16 @@ namespace TestDs3
         }
 
         [Test]
+        public void CacheCanCloseBeforeGet()
+        {
+            var disposableCache = new DisposableCache<string, Disposable>(name => new Disposable(name));
+
+            disposableCache.Close("foo");
+
+            Assert.Throws<ObjectDisposedException>(() => disposableCache.Get("foo"));
+        }
+
+        [Test]
         public void CacheCallsFailWhenDisposed()
         {
             var disposableCache = new DisposableCache<string, Disposable>(name => new Disposable(name));
