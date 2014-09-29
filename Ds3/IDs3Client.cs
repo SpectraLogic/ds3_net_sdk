@@ -121,6 +121,8 @@ namespace Ds3
 
         JobResponse ModifyJob(ModifyJobRequest request);
 
+        void DeleteJob(DeleteJobRequest request);
+
         /// <summary>
         /// Retrieves information about a job so it can be resumed.
         /// </summary>

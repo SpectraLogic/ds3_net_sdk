@@ -13,20 +13,50 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
-using System.Linq;
-
 using Ds3.Models;
-using Ds3.Runtime;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
     public class BulkGetRequest : BulkRequest
     {
+        public ChunkOrdering? ChunkOrder { get; private set; }
+
         public BulkGetRequest(string bucketName, List<Ds3Object> objects) 
             : base(bucketName, objects, false)
         {
             QueryParams.Add("operation", "start_bulk_get");
+        }
+
+        public BulkGetRequest WithChunkOrdering(ChunkOrdering chunkOrdering)
+        {
+            this.ChunkOrder = chunkOrdering;
+            return this;
+        }
+
+        protected internal override XDocument GenerateObjectsDocument(IEnumerable<Ds3Object> objects)
+        {
+            var doc = base.GenerateObjectsDocument(objects);
+            if (this.ChunkOrder.HasValue)
+            {
+                doc.Root.SetAttributeValue(
+                    "ChunkClientProcessingOrderGuarantee",
+                    BuildChunkOrderingEnumString(this.ChunkOrder.Value)
+                );
+            }
+            return doc;
+        }
+
+        private static string BuildChunkOrderingEnumString(ChunkOrdering chunkOrder)
+        {
+            switch (chunkOrder)
+            {
+                case ChunkOrdering.None: return "NONE";
+                case ChunkOrdering.InOrder: return "IN_ORDER";
+                default: throw new NotSupportedException(Resources.InvalidEnumValueException);
+            }
         }
     }
 }

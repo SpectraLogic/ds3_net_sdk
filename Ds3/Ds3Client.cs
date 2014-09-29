@@ -106,6 +106,14 @@ namespace Ds3
             return new GetJobListResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public void DeleteJob(DeleteJobRequest request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public JobResponse ModifyJob(ModifyJobRequest request)
         {
             return new JobResponseParser<ModifyJobRequest>().Parse(request, _netLayer.Invoke(request));

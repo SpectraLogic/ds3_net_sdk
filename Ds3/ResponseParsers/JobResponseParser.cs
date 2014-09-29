@@ -49,6 +49,7 @@ namespace Ds3.ResponseParsers
                 priority: masterObjectList.AttributeText("Priority"),
                 requestType: masterObjectList.AttributeText("RequestType"),
                 startDate: DateTime.Parse(masterObjectList.AttributeText("StartDate")),
+                chunkOrder: ParseChunkOrdering(masterObjectList.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 nodes: (
                     from nodeElement in masterObjectList.Element("Nodes").Elements("Node")
                     select new Node(
@@ -63,6 +64,16 @@ namespace Ds3.ResponseParsers
                     .Select(ParseObjectList)
                     .ToList()
             );
+        }
+
+        private static ChunkOrdering ParseChunkOrdering(string chunkOrdering)
+        {
+            switch (chunkOrdering)
+            {
+                case "IN_ORDER": return ChunkOrdering.InOrder;
+                case "NONE": return ChunkOrdering.None;
+                default: throw new NotSupportedException(Resources.InvalidEnumValueException);
+            }
         }
 
         public static JobObjectList ParseObjectList(XElement objectsElement)

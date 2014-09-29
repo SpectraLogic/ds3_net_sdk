@@ -59,22 +59,20 @@ namespace Ds3.Calls
 
         internal override Stream GetContentStream()
         {
-            return GenerateObjectStream(this.Objects);
+            return GenerateObjectsDocument(this.Objects).WriteToMemoryStream();
         }
 
-        protected internal Stream GenerateObjectStream(IEnumerable<Ds3Object> objects)
+        protected internal virtual XDocument GenerateObjectsDocument(IEnumerable<Ds3Object> objects)
         {
-            return new XDocument()
-                .AddFluent(
-                    new XElement("Objects").AddAllFluent(
-                        from obj in objects
-                        let xmlObj = new XElement("Object").SetAttributeValueFluent("Name", obj.Name)
-                        select _serializeSizeField
-                            ? xmlObj.SetAttributeValueFluent("Size", obj.Size.Value.ToString("D"))
-                            : xmlObj
-                    )
+            return new XDocument().AddFluent(
+                new XElement("Objects").AddAllFluent(
+                    from obj in objects
+                    let xmlObj = new XElement("Object").SetAttributeValueFluent("Name", obj.Name)
+                    select _serializeSizeField
+                        ? xmlObj.SetAttributeValueFluent("Size", obj.Size.Value.ToString("D"))
+                        : xmlObj
                 )
-                .WriteToMemoryStream();
+            );
         }
     }
 }

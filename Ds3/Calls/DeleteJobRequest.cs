@@ -13,49 +13,23 @@
  * ****************************************************************************
  */
 
+using Ds3.Models;
 using System;
 
 namespace Ds3.Calls
 {
-    public class ModifyJobRequest : Ds3Request
+    public class DeleteJobRequest : Ds3Request
     {
-        private string _priority;
-
         public Guid JobId { get; private set; }
-        public string Priority {
-            get
-            {
-                return this._priority;
-            }
-            set
-            {
-                this.WithPriority(value);
-            }
-        }
 
-        public ModifyJobRequest WithPriority(string priority)
-        {
-            this._priority = priority;
-            if (priority == null)
-            {
-                this.QueryParams.Remove("priority");
-            }
-            else
-            {
-                this.QueryParams.Add("priority", priority);
-            }
-            return this;
-        }
-
-        public ModifyJobRequest(Guid jobId)
+        public DeleteJobRequest(Guid jobId)
         {
             this.JobId = jobId;
-            this._priority = null;
         }
 
         internal override HttpVerb Verb
         {
-            get { return HttpVerb.PUT; }
+            get { return HttpVerb.DELETE; }
         }
 
         internal override string Path

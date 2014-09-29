@@ -81,6 +81,7 @@
     <Compile Include="Calls\ModifyJobRequest.cs" />
     <Compile Include="Calls\PutPartRequest.cs" />
     <Compile Include="Calls\PutPartResponse.cs" />
+    <Compile Include="Calls\DeleteJobRequest.cs" />
     <Compile Include="Helpers\ConcurrentObjectPartTracker.cs" />
     <Compile Include="Helpers\CriticalSectionExecutor.cs" />
     <Compile Include="Helpers\DisposableCache.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Helpers\ReadJob.cs" />
     <Compile Include="IDs3Client.cs" />
     <Compile Include="Models\Checksum.cs" />
+    <Compile Include="Models\ChunkOrdering.cs" />
     <Compile Include="Models\DeleteDs3ObjectError.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectInfo.cs" />

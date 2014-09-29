@@ -37,6 +37,7 @@ namespace TestDs3
             "HIGH",
             "GET",
             DateTime.Parse("9/8/2014 9:25:56 PM"),
+            ChunkOrdering.InOrder,
             Enumerable.Empty<Node>(),
             Enumerable.Empty<JobObjectList>()
         );

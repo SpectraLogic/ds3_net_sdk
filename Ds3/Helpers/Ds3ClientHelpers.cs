@@ -42,7 +42,10 @@ namespace Ds3.Helpers
 
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
         {
-            return new ReadJob(this._client, this._client.BulkGet(new BulkGetRequest(bucket, VerifyObjectCount(objectsToRead))));
+            return new ReadJob(this._client, this._client.BulkGet(
+                new BulkGetRequest(bucket, VerifyObjectCount(objectsToRead))
+                    .WithChunkOrdering(ChunkOrdering.None)
+            ));
         }
 
         private static List<Ds3Object> VerifyObjectCount(IEnumerable<Ds3Object> objects)

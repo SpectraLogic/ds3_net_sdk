@@ -1,4 +1,4 @@
-﻿<MasterObjectList BucketName="bucket8192000000" JobId="1a85e743-ec8f-4789-afec-97e587a26936" Priority="NORMAL" RequestType="PUT" StartDate="2014-07-01T20:12:52.000Z">
+﻿<MasterObjectList BucketName="bucket8192000000" JobId="1a85e743-ec8f-4789-afec-97e587a26936" ChunkClientProcessingOrderGuarantee="IN_ORDER" Priority="NORMAL" RequestType="PUT" StartDate="2014-07-01T20:12:52.000Z">
   <Nodes>
     <Node EndPoint="10.1.18.12" HttpPort="80" HttpsPort="443" Id="a02053b9-0147-11e4-8d6a-002590c1177c"/>
     <Node EndPoint="10.1.18.13" HttpsPort="443" Id="4ecebf6f-bfd2-40a8-82a6-32fd684fd500"/>

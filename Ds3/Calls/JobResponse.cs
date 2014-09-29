@@ -27,6 +27,7 @@ namespace Ds3.Calls
         public string Priority { get; private set; }
         public string RequestType { get; private set; }
         public DateTime StartDate { get; private set; }
+        public ChunkOrdering ChunkOrder { get; private set; }
         public IEnumerable<Node> Nodes { get; private set; }
         public IEnumerable<JobObjectList> ObjectLists { get; private set; }
 
@@ -36,6 +37,7 @@ namespace Ds3.Calls
             string priority,
             string requestType,
             DateTime startDate,
+            ChunkOrdering chunkOrder,
             IEnumerable<Node> nodes,
             IEnumerable<JobObjectList> objectLists)
         {
@@ -44,6 +46,7 @@ namespace Ds3.Calls
             this.Priority = priority;
             this.RequestType = requestType;
             this.StartDate = startDate;
+            this.ChunkOrder = chunkOrder;
             this.Nodes = nodes;
             this.ObjectLists = objectLists;
         }

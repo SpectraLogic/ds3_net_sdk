@@ -179,6 +179,7 @@ namespace TestDs3
                 "HIGH",
                 "PUT",
                 DateTime.Parse("9/8/2014 9:25:56 PM"),
+                ChunkOrdering.InOrder,
                 _nodeList,
                 chunks
             );
