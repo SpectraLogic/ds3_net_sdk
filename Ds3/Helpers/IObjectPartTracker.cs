@@ -14,16 +14,15 @@
  */
 
 using System;
-using System.IO;
 
 namespace Ds3.Helpers
 {
-    public interface IJob
+    internal interface IObjectPartTracker
     {
-        Guid JobId { get; }
-        string BucketName { get; }
-        IJob WithMaxParallelRequests(int maxParallelRequests);
-        IJob WithPartSize(long partSize);
-        void Transfer(Func<string, Stream> createStreamForObjectKey);
+        event Action<long> DataTransferred;
+        event Action Completed;
+
+        void CompletePart(ObjectPart partToRemove);
+        bool ContainsPart(ObjectPart part);
     }
 }

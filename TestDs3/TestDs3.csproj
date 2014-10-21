@@ -59,7 +59,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestReadJob.cs" />
+    <Compile Include="TestWriteJob.cs" />
+    <EmbeddedResource Include="TestData\AllocateJobChunkResponse.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="TestDisposableCache.cs" />
     <Compile Include="TestHttpHelper.cs" />
+    <Compile Include="TestJob.cs" />
+    <Compile Include="TestJobPartTracker.cs" />
+    <Compile Include="TestJobPartTrackerFactory.cs" />
     <Compile Include="TestMultipartUpload.cs" />
     <Compile Include="HelpersForTest.cs" />
     <Compile Include="MockNetwork.cs" />
@@ -67,7 +76,9 @@
     <Compile Include="TestDs3Client.cs" />
     <Compile Include="TestDs3ClientHelpers.cs" />
     <Compile Include="TestEnumerableAlgorithms.cs" />
+    <Compile Include="TestObjectPart.cs" />
     <Compile Include="TestObjectPartPlanner.cs" />
+    <Compile Include="TestObjectPartTracker.cs" />
     <Compile Include="TestPerformance.cs" />
     <Compile Include="TestWindowedStream.cs" />
   </ItemGroup>
@@ -106,6 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\ResultingMasterObjectList.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\EmptyGetAvailableJobChunksResponse.xml" />
+    <EmbeddedResource Include="TestData\GetAvailableJobChunksResponse.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

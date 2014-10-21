@@ -115,11 +115,47 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This handle was already disposed. This is a bug. Please make Disposing only fire once..
+        /// </summary>
+        internal static string HandleAlreadyDisposedException {
+            get {
+                return ResourceManager.GetString("HandleAlreadyDisposedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This handle to a shared object has already been used..
+        /// </summary>
+        internal static string HandleAlreadyUsedException {
+            get {
+                return ResourceManager.GetString("HandleAlreadyUsedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This handle to a shared resource was not expected..
+        /// </summary>
+        internal static string HandleDoesNotExistException {
+            get {
+                return ResourceManager.GetString("HandleDoesNotExistException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enum value not accounted for in a switch statement intended to be exhaustive..
         /// </summary>
         internal static string InvalidEnumValueException {
             get {
                 return ResourceManager.GetString("InvalidEnumValueException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected offset {1} for key &apos;{0}&apos; when releasing stream..
+        /// </summary>
+        internal static string InvalidOffsetException {
+            get {
+                return ResourceManager.GetString("InvalidOffsetException", resourceCulture);
             }
         }
         
@@ -138,6 +174,15 @@ namespace Ds3 {
         internal static string InvalidStreamException {
             get {
                 return ResourceManager.GetString("InvalidStreamException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job went away as we were trying to acquire chunk information..
+        /// </summary>
+        internal static string JobGoneException {
+            get {
+                return ResourceManager.GetString("JobGoneException", resourceCulture);
             }
         }
         
@@ -169,6 +214,24 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tried to perform a bulk job but there were no objects to transfer..
+        /// </summary>
+        internal static string NoObjectsToTransferException {
+            get {
+                return ResourceManager.GetString("NoObjectsToTransferException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The object part was not available to be marked completed..
+        /// </summary>
+        internal static string ObjectPartOutOfRangeException {
+            get {
+                return ResourceManager.GetString("ObjectPartOutOfRangeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Some or all of the objects to put are missing a size field..
         /// </summary>
         internal static string ObjectsMissingSizeException {
@@ -178,20 +241,20 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job tried to open stream for key &apos;{0}&apos;, but that key should not be available. This is probably a bug in the helpers..
+        /// </summary>
+        internal static string StreamUnavailableException {
+            get {
+                return ResourceManager.GetString("StreamUnavailableException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Too many redirects..
         /// </summary>
         internal static string TooManyRedirectsException {
             get {
                 return ResourceManager.GetString("TooManyRedirectsException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Some resources failed to dispose while handling an exception. See inner exceptions for more information..
-        /// </summary>
-        internal static string UsingAllException {
-            get {
-                return ResourceManager.GetString("UsingAllException", resourceCulture);
             }
         }
         

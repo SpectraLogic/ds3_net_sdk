@@ -13,26 +13,28 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using System;
 
-using Ds3.Calls;
-using Ds3.Runtime;
-
-namespace Ds3.ResponseParsers
+namespace Ds3.Calls
 {
-    internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
+    public class GetAvailableJobChunksRequest : Ds3Request
     {
-        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
+        public Guid JobId { get; private set; }
+
+        public GetAvailableJobChunksRequest(Guid jobId)
         {
-            using (response)
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                if (!response.Headers.ContainsKey("etag"))
-                {
-                    throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.Header, "etag");
-                }
-                return new PutPartResponse(response.Headers["etag"]);
-            }
+            this.JobId = jobId;
+            this.QueryParams.Add("job", jobId.ToString());
+        }
+
+        internal override HttpVerb Verb
+        {
+            get { return HttpVerb.GET; }
+        }
+
+        internal override string Path
+        {
+            get { return "/_rest_/job_chunk"; }
         }
     }
 }

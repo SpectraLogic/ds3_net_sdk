@@ -35,6 +35,9 @@ namespace TestDs3
         private static readonly IDictionary<string, string> _emptyHeaders = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
         private const string JobResponseResourceName = "TestDs3.TestData.ResultingMasterObjectList.xml";
+        private const string AllocateJobChunkResponseResourceName = "TestDs3.TestData.AllocateJobChunkResponse.xml";
+        private const string GetAvailableJobChunksResponseResourceName = "TestDs3.TestData.GetAvailableJobChunksResponse.xml";
+        private const string EmptyGetAvailableJobChunksResponseResourceName = "TestDs3.TestData.EmptyGetAvailableJobChunksResponse.xml";
 
         [Test]
         public void TestGetService()
@@ -388,6 +391,134 @@ namespace TestDs3
             Assert.AreEqual("NORMAL", jobInfo.Priority);
             Assert.AreEqual("PUT", jobInfo.RequestType);
             Assert.AreEqual("2014-05-22T18:24:00.000Z", jobInfo.StartDate);
+        }
+
+        [Test]
+        public void AllocateChunkReturnsChunkWithNodeWhenAllocated()
+        {
+            var responseContent = ReadResource(AllocateJobChunkResponseResourceName);
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .AsClient;
+            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            JobObjectList chunkResult = null;
+            response.Match(
+                chunk => chunkResult = chunk,
+                retryAfter => Assert.Fail(),
+                Assert.Fail
+            );
+            Assert.NotNull(chunkResult);
+            Assert.AreEqual(Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"), chunkResult.NodeId);
+            Assert.AreEqual(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44"), chunkResult.ChunkId);
+            Assert.AreEqual(0, chunkResult.ChunkNumber);
+            Assert.AreEqual(14, chunkResult.Objects.Count());
+        }
+
+        [Test]
+        public void AllocateChunkReturnsRetryWhen503AndHeader()
+        {
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
+            var headers = new Dictionary<string, string> { { "Retry-After", "300" } };
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
+                .Returning(HttpStatusCode.ServiceUnavailable, "", headers)
+                .AsClient;
+            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            TimeSpan? retryResult = null;
+            response.Match(
+                chunk => Assert.Fail(),
+                retryAfter => retryResult = retryAfter,
+                Assert.Fail
+            );
+            Assert.NotNull(retryResult);
+            Assert.AreEqual(TimeSpan.FromMinutes(5), retryResult.Value);
+        }
+
+        [Test]
+        public void AllocateChunkReturnsChunkGoneWhen404()
+        {
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
+                .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
+                .AsClient;
+            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            var chunkIsGone = false;
+            response.Match(
+                chunk => Assert.Fail(),
+                retryAfter => Assert.Fail(),
+                () => chunkIsGone = true
+            );
+            Assert.IsTrue(chunkIsGone);
+        }
+
+        [Test]
+        public void GetAvailableChunksReturnsJobWhenSuccess()
+        {
+            var queryParams = new Dictionary<string, string> { { "job", "1a85e743-ec8f-4789-afec-97e587a26936" } };
+            var responseContent = ReadResource(GetAvailableJobChunksResponseResourceName);
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job_chunk", queryParams, "")
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .AsClient;
+
+            var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
+            JobResponse jobChunks = null;
+            response.Match(
+                jobResponse => jobChunks = jobResponse,
+                () => Assert.Fail(),
+                retryAfter => Assert.Fail()
+            );
+            Assert.NotNull(jobChunks);
+            var expectedNodeIds = new[]
+            {
+                Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"),
+                Guid.Parse("95e97010-8e70-4733-926c-aeeb21796848")
+            };
+            CollectionAssert.AreEqual(expectedNodeIds, jobChunks.ObjectLists.Select(chunk => chunk.NodeId.Value));
+        }
+
+        [Test]
+        public void GetAvailableChunksReturnsJobGoneWhen404()
+        {
+            var queryParams = new Dictionary<string, string> { { "job", "1a85e743-ec8f-4789-afec-97e587a26936" } };
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job_chunk", queryParams, "")
+                .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
+                .AsClient;
+
+            var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
+            var wasJobGone = false;
+            response.Match(
+                jobResponse => Assert.Fail(),
+                () => wasJobGone = true,
+                retryAfter => Assert.Fail()
+            );
+            Assert.IsTrue(wasJobGone);
+        }
+
+        [Test]
+        public void GetAvailableChunksReturnsRetryAfterWhenNoNodes()
+        {
+            var queryParams = new Dictionary<string, string> { { "job", "1a85e743-ec8f-4789-afec-97e587a26936" } };
+            var headers = new Dictionary<string, string> { { "Retry-After", "300" } };
+            var responseContent = ReadResource(EmptyGetAvailableJobChunksResponseResourceName);
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job_chunk", queryParams, "")
+                .Returning(HttpStatusCode.OK, responseContent, headers)
+                .AsClient;
+
+            var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
+            TimeSpan? retryValue = null;
+            response.Match(
+                jobResponse => Assert.Fail(),
+                () => Assert.Fail(),
+                retryAfter => retryValue = retryAfter
+            );
+            Assert.NotNull(retryValue);
+            Assert.AreEqual(TimeSpan.FromMinutes(5), retryValue.Value);
         }
     }
 }

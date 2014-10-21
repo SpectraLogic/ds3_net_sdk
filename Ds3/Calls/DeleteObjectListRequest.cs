@@ -56,5 +56,10 @@ namespace Ds3.Calls
         {
             get { return "/" + this.BucketName; }
         }
+
+        internal override Checksum Md5
+        {
+            get { return Checksum.Compute; }
+        }
     }
 }

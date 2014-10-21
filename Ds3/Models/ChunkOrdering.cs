@@ -13,26 +13,13 @@
  * ****************************************************************************
  */
 
-using System.Net;
-
-using Ds3.Calls;
-using Ds3.Runtime;
-
-namespace Ds3.ResponseParsers
+namespace Ds3.Models
 {
-    internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
+    /// <summary>
+    /// Represents the possible options for the ChunkClientProcessingOrderGuarantee parameter.
+    /// </summary>
+    public enum ChunkOrdering
     {
-        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
-        {
-            using (response)
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                if (!response.Headers.ContainsKey("etag"))
-                {
-                    throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.Header, "etag");
-                }
-                return new PutPartResponse(response.Headers["etag"]);
-            }
-        }
+        None, InOrder
     }
 }

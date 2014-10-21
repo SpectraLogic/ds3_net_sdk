@@ -13,26 +13,29 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using System;
 
-using Ds3.Calls;
-using Ds3.Runtime;
-
-namespace Ds3.ResponseParsers
+namespace Ds3.Helpers
 {
-    internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
+    public class ObjectPart : IComparable<ObjectPart>
     {
-        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
+        public long Offset { get; private set; }
+        public long Length { get; private set; }
+        public long End
         {
-            using (response)
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                if (!response.Headers.ContainsKey("etag"))
-                {
-                    throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.Header, "etag");
-                }
-                return new PutPartResponse(response.Headers["etag"]);
-            }
+            get { return this.Offset + this.Length - 1; }
+        }
+
+        public ObjectPart(long offset, long length)
+        {
+            this.Offset = offset;
+            this.Length = length;
+        }
+
+        public int CompareTo(ObjectPart other)
+        {
+            return Math.Sign(this.Length - other.Length)
+                + 2 * Math.Sign(this.Offset - other.Offset);
         }
     }
 }

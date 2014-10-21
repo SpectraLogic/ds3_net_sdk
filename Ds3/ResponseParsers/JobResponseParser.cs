@@ -35,30 +35,44 @@ namespace Ds3.ResponseParsers
                 ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 using (Stream content = response.GetResponseStream())
                 {
-                    var masterObjectList = XmlExtensions
-                        .ReadDocument(content)
-                        .ElementOrThrow("MasterObjectList");
-                    return new JobResponse(
-                        bucketName: masterObjectList.AttributeText("BucketName"),
-                        jobId: Guid.Parse(masterObjectList.AttributeText("JobId")),
-                        priority: masterObjectList.AttributeText("Priority"),
-                        requestType: masterObjectList.AttributeText("RequestType"),
-                        startDate: DateTime.Parse(masterObjectList.AttributeText("StartDate")),
-                        nodes: (
-                            from nodeElement in masterObjectList.Element("Nodes").Elements("Node")
-                            select new Node(
-                                Guid.Parse(nodeElement.AttributeText("Id")),
-                                nodeElement.AttributeText("EndPoint"),
-                                ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpPort")),
-                                ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpsPort"))
-                            )
-                        ).ToList(),
-                        objectLists: masterObjectList
-                            .Elements("Objects")
-                            .Select(ParseObjectList)
-                            .ToList()
-                    );
+                    return ParseResponseContent(content);
                 }
+            }
+        }
+
+        public static JobResponse ParseResponseContent(Stream content)
+        {
+            var masterObjectList = XmlExtensions.ReadDocument(content).ElementOrThrow("MasterObjectList");
+            return new JobResponse(
+                bucketName: masterObjectList.AttributeText("BucketName"),
+                jobId: Guid.Parse(masterObjectList.AttributeText("JobId")),
+                priority: masterObjectList.AttributeText("Priority"),
+                requestType: masterObjectList.AttributeText("RequestType"),
+                startDate: DateTime.Parse(masterObjectList.AttributeText("StartDate")),
+                chunkOrder: ParseChunkOrdering(masterObjectList.AttributeText("ChunkClientProcessingOrderGuarantee")),
+                nodes: (
+                    from nodeElement in masterObjectList.Element("Nodes").Elements("Node")
+                    select new Node(
+                        Guid.Parse(nodeElement.AttributeText("Id")),
+                        nodeElement.AttributeText("EndPoint"),
+                        ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpPort")),
+                        ParseIntOrNull(nodeElement.AttributeTextOrNull("HttpsPort"))
+                    )
+                ).ToList(),
+                objectLists: masterObjectList
+                    .Elements("Objects")
+                    .Select(ParseObjectList)
+                    .ToList()
+            );
+        }
+
+        private static ChunkOrdering ParseChunkOrdering(string chunkOrdering)
+        {
+            switch (chunkOrdering)
+            {
+                case "IN_ORDER": return ChunkOrdering.InOrder;
+                case "NONE": return ChunkOrdering.None;
+                default: throw new NotSupportedException(Resources.InvalidEnumValueException);
             }
         }
 

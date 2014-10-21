@@ -60,7 +60,7 @@ namespace Ds3.Calls
 
         internal override string Path
         {
-            get { return "_rest_/job/" + this.JobId.ToString(); }
+            get { return "/_rest_/job/" + this.JobId.ToString(); }
         }
     }
 }

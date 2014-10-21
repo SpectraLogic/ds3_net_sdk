@@ -46,7 +46,6 @@ namespace Ds3Example
 This example performs a bulk put of three files to a remote DS3 appliance and retrieves the list of objects to verify that the operations succeeded.
 
 ```csharp
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -65,8 +64,7 @@ namespace Ds3Example
               new Credentials("cnlhbg==", "4iDEhFRV")).Build();
 
             string bucketName = "bulkBucket";
-            PutBucketResponse bucketRequest = client.PutBucket(
-              new PutBucketRequest(bucketName));
+            client.PutBucket(new PutBucketRequest(bucketName));
 
             // Generate the list of files and their sizes.
             string[] fileList = new string[3] { "beowulf.txt", "frankenstein.txt", "ulysses.txt" };
@@ -80,13 +78,12 @@ namespace Ds3Example
 
             // Create the bulk request.  The DS3 Appliance must first be primed
             // with the Bulk command before individual files are Put.
-            BulkPutResponse response = client.BulkPut(new BulkPutRequest(bucketName, objects));
-            foreach (Ds3ObjectList objList in response.ObjectLists)
+            var response = client.BulkPut(new BulkPutRequest(bucketName, objects));
+            foreach (var objList in response.ObjectLists)
             {
-                foreach (Ds3Object obj in objList)
+                foreach (var obj in objList)
                 {
-                    PutObjectResponse objResponse = client.PutObject(
-                      new PutObjectRequest(bucketName, obj.Name,
+                    client.PutObject(new PutObjectRequest(bucketName, obj.Name,
                           new FileStream(obj.Name, FileMode.Open)));
                 }
             }

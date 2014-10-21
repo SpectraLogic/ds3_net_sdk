@@ -20,25 +20,10 @@ namespace Ds3.Helpers
 {
     internal class ObjectPartPlanner
     {
-        public class ObjectPart
-        {
-            public long Offset { get; private set; }
-            public long Length { get; private set; }
-            public int PartNumber { get; private set; }
-
-            public ObjectPart(long offset, long length, int partNumber)
-            {
-                this.Offset = offset;
-                this.Length = length;
-                this.PartNumber = partNumber;
-            }
-        }
-
         public static IEnumerable<ObjectPart> PlanParts(long partSize, long jobOffset, long jobLength)
         {
             var offset = jobOffset;
             var length = jobLength;
-            var i = 1;
             while (true)
             {
                 var chunkLength = Math.Min(length, partSize);
@@ -46,10 +31,9 @@ namespace Ds3.Helpers
                 {
                     yield break;
                 }
-                yield return new ObjectPart(offset, chunkLength, i);
+                yield return new ObjectPart(offset, chunkLength);
                 offset += chunkLength;
                 length -= chunkLength;
-                i++;
             }
         }
     }

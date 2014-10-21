@@ -135,14 +135,29 @@
   <data name="FormatXmlException" xml:space="preserve">
     <value>Encountered an exception when formating xml string.</value>
   </data>
+  <data name="HandleAlreadyDisposedException" xml:space="preserve">
+    <value>This handle was already disposed. This is a bug. Please make Disposing only fire once.</value>
+  </data>
+  <data name="HandleAlreadyUsedException" xml:space="preserve">
+    <value>This handle to a shared object has already been used.</value>
+  </data>
+  <data name="HandleDoesNotExistException" xml:space="preserve">
+    <value>This handle to a shared resource was not expected.</value>
+  </data>
   <data name="InvalidEnumValueException" xml:space="preserve">
     <value>Enum value not accounted for in a switch statement intended to be exhaustive.</value>
+  </data>
+  <data name="InvalidOffsetException" xml:space="preserve">
+    <value>Unexpected offset {1} for key '{0}' when releasing stream.</value>
   </data>
   <data name="InvalidSeekOrigin" xml:space="preserve">
     <value>Invalid SeekOrigin: {0}</value>
   </data>
   <data name="InvalidStreamException" xml:space="preserve">
     <value>PUT object streams must be both readable and seekable.</value>
+  </data>
+  <data name="JobGoneException" xml:space="preserve">
+    <value>The job went away as we were trying to acquire chunk information.</value>
   </data>
   <data name="JobRecoveryException" xml:space="preserve">
     <value>Expected job type '{0}' but the actual job was of type '{1}'.</value>
@@ -153,14 +168,20 @@
   <data name="MissingHeaderException" xml:space="preserve">
     <value>Expected a header called "{0}" but didn't find it.</value>
   </data>
+  <data name="NoObjectsToTransferException" xml:space="preserve">
+    <value>Tried to perform a bulk job but there were no objects to transfer.</value>
+  </data>
+  <data name="ObjectPartOutOfRangeException" xml:space="preserve">
+    <value>The object part was not available to be marked completed.</value>
+  </data>
   <data name="ObjectsMissingSizeException" xml:space="preserve">
     <value>Some or all of the objects to put are missing a size field.</value>
   </data>
+  <data name="StreamUnavailableException" xml:space="preserve">
+    <value>Job tried to open stream for key '{0}', but that key should not be available. This is probably a bug in the helpers.</value>
+  </data>
   <data name="TooManyRedirectsException" xml:space="preserve">
     <value>Too many redirects.</value>
-  </data>
-  <data name="UsingAllException" xml:space="preserve">
-    <value>Some resources failed to dispose while handling an exception. See inner exceptions for more information.</value>
   </data>
   <data name="XmlResponseErrorException" xml:space="preserve">
     <value>Encountered an error while reading XML response: "{0}"</value>

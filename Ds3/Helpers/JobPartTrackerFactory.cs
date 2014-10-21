@@ -13,26 +13,27 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using Ds3.Models;
+using System.Collections.Generic;
+using System.Linq;
 
-using Ds3.Calls;
-using Ds3.Runtime;
-
-namespace Ds3.ResponseParsers
+namespace Ds3.Helpers
 {
-    internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
+    internal static class JobPartTrackerFactory
     {
-        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
+        public static JobPartTracker BuildPartTracker(IEnumerable<JobObject> filteredParts)
         {
-            using (response)
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                if (!response.Headers.ContainsKey("etag"))
-                {
-                    throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.Header, "etag");
-                }
-                return new PutPartResponse(response.Headers["etag"]);
-            }
+            return new JobPartTracker(
+                filteredParts
+                    .GroupBy(
+                        part => part.Name,
+                        part => new ObjectPart(part.Offset, part.Length)
+                    )
+                    .ToDictionary(
+                        parts => parts.Key,
+                        parts => new ConcurrentObjectPartTracker(new ObjectPartTracker(parts)) as IObjectPartTracker
+                    )
+            );
         }
     }
 }

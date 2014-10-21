@@ -40,7 +40,7 @@ namespace Ds3.Runtime
             get { return _responseBody; }
         }
 
-        internal Ds3BadStatusCodeException(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Ds3Error error, string responseBody)
+        public Ds3BadStatusCodeException(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Ds3Error error, string responseBody)
             : base(StatusCodeMessage(expectedStatusCodes, receivedStatusCode, error))
         {
             this._statusCode = receivedStatusCode;

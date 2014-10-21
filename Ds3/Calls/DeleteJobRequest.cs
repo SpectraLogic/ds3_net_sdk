@@ -13,26 +13,28 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using Ds3.Models;
+using System;
 
-using Ds3.Calls;
-using Ds3.Runtime;
-
-namespace Ds3.ResponseParsers
+namespace Ds3.Calls
 {
-    internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
+    public class DeleteJobRequest : Ds3Request
     {
-        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
+        public Guid JobId { get; private set; }
+
+        public DeleteJobRequest(Guid jobId)
         {
-            using (response)
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                if (!response.Headers.ContainsKey("etag"))
-                {
-                    throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.Header, "etag");
-                }
-                return new PutPartResponse(response.Headers["etag"]);
-            }
+            this.JobId = jobId;
+        }
+
+        internal override HttpVerb Verb
+        {
+            get { return HttpVerb.DELETE; }
+        }
+
+        internal override string Path
+        {
+            get { return "/_rest_/job/" + this.JobId.ToString(); }
         }
     }
 }

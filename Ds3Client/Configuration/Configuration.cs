@@ -14,6 +14,7 @@
  */
 
 using System;
+
 namespace Ds3Client.Configuration
 {
     public class Configuration

@@ -21,7 +21,7 @@ namespace Ds3.Calls
 {
     public abstract class AllocateJobChunkResponse
     {
-        private static readonly RetryResponse _retry = new RetryResponse();
+        private static readonly AllocateJobChunkResponse _chunkGone = new ChunkGoneResponse();
 
         private AllocateJobChunkResponse()
         {
@@ -33,19 +33,19 @@ namespace Ds3.Calls
             return new SuccessChunkResponse(jobObjectList);
         }
 
-        public static AllocateJobChunkResponse Retry
-        {
-            get { return _retry; }
-        }
-
         public static AllocateJobChunkResponse RetryAfter(TimeSpan retryAfter)
         {
             return new RetryAfterResponse(retryAfter);
         }
 
-        public abstract void Match(Action<JobObjectList> success, Action retry, Action<TimeSpan> retryAfter);
+        public static AllocateJobChunkResponse ChunkGone
+        {
+            get { return _chunkGone; }
+        }
 
-        public abstract T Match<T>(Func<JobObjectList, T> success, Func<T> retry, Func<TimeSpan, T> retryAfter);
+        public abstract void Match(Action<JobObjectList> success, Action<TimeSpan> retryAfter, Action chunkGone);
+
+        public abstract T Match<T>(Func<JobObjectList, T> success, Func<TimeSpan, T> retryAfter, Func<T> chunkGone);
 
         private class SuccessChunkResponse : AllocateJobChunkResponse
         {
@@ -56,27 +56,14 @@ namespace Ds3.Calls
                 this._jobObjectList = jobObjectList;
             }
 
-            public override void Match(Action<JobObjectList> success, Action retry, Action<TimeSpan> retryAfter)
+            public override void Match(Action<JobObjectList> success, Action<TimeSpan> retryAfter, Action chunkGone)
             {
                 success(_jobObjectList);
             }
 
-            public override T Match<T>(Func<JobObjectList, T> success, Func<T> retry, Func<TimeSpan, T> retryAfter)
+            public override T Match<T>(Func<JobObjectList, T> success, Func<TimeSpan, T> retryAfter, Func<T> chunkGone)
             {
                 return success(_jobObjectList);
-            }
-        }
-
-        private class RetryResponse : AllocateJobChunkResponse
-        {
-            public override void Match(Action<JobObjectList> success, Action retry, Action<TimeSpan> retryAfter)
-            {
-                retry();
-            }
-
-            public override T Match<T>(Func<JobObjectList, T> success, Func<T> retry, Func<TimeSpan, T> retryAfter)
-            {
-                return retry();
             }
         }
 
@@ -89,14 +76,27 @@ namespace Ds3.Calls
                 this._retryAfter = retryAfter;
             }
 
-            public override void Match(Action<JobObjectList> success, Action retry, Action<TimeSpan> retryAfter)
+            public override void Match(Action<JobObjectList> success, Action<TimeSpan> retryAfter, Action chunkGone)
             {
                 retryAfter(_retryAfter);
             }
 
-            public override T Match<T>(Func<JobObjectList, T> success, Func<T> retry, Func<TimeSpan, T> retryAfter)
+            public override T Match<T>(Func<JobObjectList, T> success, Func<TimeSpan, T> retryAfter, Func<T> chunkGone)
             {
                 return retryAfter(_retryAfter);
+            }
+        }
+
+        private class ChunkGoneResponse : AllocateJobChunkResponse
+        {
+            public override void Match(Action<JobObjectList> success, Action<TimeSpan> retryAfter, Action chunkGone)
+            {
+                chunkGone();
+            }
+
+            public override T Match<T>(Func<JobObjectList, T> success, Func<TimeSpan, T> retryAfter, Func<T> chunkGone)
+            {
+                return chunkGone();
             }
         }
     }

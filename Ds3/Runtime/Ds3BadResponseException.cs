@@ -20,12 +20,12 @@ namespace Ds3.Runtime
 {
     public class Ds3BadResponseException : Ds3RequestException
     {
-        internal Ds3BadResponseException(ExpectedItemType expectedItemType, string expectedElementName)
+        public Ds3BadResponseException(ExpectedItemType expectedItemType, string expectedElementName)
             : base(BuildMissingItemMessage(expectedItemType, expectedElementName))
         {
         }
 
-        internal Ds3BadResponseException(XmlException innerException)
+        public Ds3BadResponseException(XmlException innerException)
             : base(BuildResponseParseException(innerException), innerException)
         {
         }

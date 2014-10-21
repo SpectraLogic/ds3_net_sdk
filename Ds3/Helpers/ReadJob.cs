@@ -13,13 +13,11 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
+using Ds3.Calls;
+using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-
-using Ds3.Calls;
-using Ds3.Models;
+using System.Threading;
 
 namespace Ds3.Helpers
 {
@@ -30,27 +28,58 @@ namespace Ds3.Helpers
         {
         }
 
-        protected override void TransferChunk(IDs3Client clientForNode, Dictionary<string, Stream> objectStreams, IEnumerable<JobObject> jobObjects)
+        public override void Transfer(Func<string, Stream> createStreamForObjectKey)
         {
-            var streamCoordinators = jobObjects.ToDictionary(jo => jo.Name, jo => new CriticalSectionExecutor());
-            var parallelOptions = this._maxParallelRequests > 0
-                ? new ParallelOptions { MaxDegreeOfParallelism = _maxParallelRequests }
-                : new ParallelOptions();
-            Parallel.ForEach(jobObjects, parallelOptions, jobObject =>
+            var objectsRemaining = this._bulkResponse.ObjectLists.SelectMany().Select(part => part.Name).Distinct().Count();
+            using (var streamCache = new DisposableCache<string, StreamWindowFactory>(key =>
+                new StreamWindowFactory(createStreamForObjectKey(key))))
             {
-                clientForNode.GetObject(new GetObjectRequest(
-                    this._bulkResponse.BucketName,
-                    jobObject.Name,
-                    this._bulkResponse.JobId,
-                    jobObject.Offset,
-                    new WindowedStream(
-                        objectStreams[jobObject.Name],
-                        streamCoordinators[jobObject.Name],
-                        jobObject.Offset,
-                        jobObject.Length
-                    )
-                ));
-            });
+                var partTracker = JobPartTrackerFactory.BuildPartTracker(this._bulkResponse.ObjectLists.SelectMany());
+                partTracker.DataTransferred += OnDataTransferred;
+                partTracker.ObjectCompleted += OnObjectCompleted;
+                partTracker.ObjectCompleted += streamCache.Close;
+                partTracker.ObjectCompleted += objectName => Interlocked.Decrement(ref objectsRemaining);
+
+                while (objectsRemaining > 0)
+                {
+                    this._client
+                        .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._bulkResponse.JobId))
+                        .Match(
+                            jobResponse =>
+                            {
+                                var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
+                                var transfers = (
+                                    from objectList in jobResponse.ObjectLists
+                                    let client = clientFactory.GetClientForNodeId(objectList.NodeId)
+                                    from jobObject in objectList
+                                    where partTracker.ContainsPart(jobObject.Name, new ObjectPart(jobObject.Offset, jobObject.Length))
+                                    select new { client, jobObject }
+                                ).ToList();
+                                InParallel(
+                                    transfers,
+                                    transfer =>
+                                    {
+                                        transfer.client.GetObject(new GetObjectRequest(
+                                            jobResponse.BucketName,
+                                            transfer.jobObject.Name,
+                                            jobResponse.JobId,
+                                            transfer.jobObject.Offset,
+                                            streamCache
+                                                .Get(transfer.jobObject.Name)
+                                                .Get(transfer.jobObject.Offset, transfer.jobObject.Length)
+                                        ));
+                                        partTracker.CompletePart(
+                                            transfer.jobObject.Name,
+                                            new ObjectPart(transfer.jobObject.Offset, transfer.jobObject.Length)
+                                        );
+                                    }
+                                );
+                            },
+                            () => { throw new InvalidOperationException(Resources.JobGoneException); },
+                            Thread.Sleep
+                        );
+                }
+            }
         }
     }
 }

@@ -13,26 +13,23 @@
  * ****************************************************************************
  */
 
-using System.Net;
+using System;
+using System.IO;
+using System.Threading;
 
-using Ds3.Calls;
-using Ds3.Runtime;
-
-namespace Ds3.ResponseParsers
+namespace Ds3.Helpers
 {
-    internal class PutPartResponseParser : IResponseParser<PutPartRequest, PutPartResponse>
+    public interface IJob
     {
-        public PutPartResponse Parse(PutPartRequest request, IWebResponse response)
-        {
-            using (response)
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                if (!response.Headers.ContainsKey("etag"))
-                {
-                    throw new Ds3BadResponseException(Ds3BadResponseException.ExpectedItemType.Header, "etag");
-                }
-                return new PutPartResponse(response.Headers["etag"]);
-            }
-        }
+        Guid JobId { get; }
+        string BucketName { get; }
+
+        IJob WithMaxParallelRequests(int maxParallelRequests);
+        IJob WithCancellationToken(CancellationToken cancellationToken);
+
+        void Transfer(Func<string, Stream> createStreamForObjectKey);
+
+        event Action<long> DataTransferred;
+        event Action<string> ObjectCompleted;
     }
 }
