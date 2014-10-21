@@ -77,13 +77,11 @@ namespace Ds3.Helpers
 
         private static void ValidateParts(IEnumerable<ObjectPart> parts)
         {
-            var ranges = parts
-                .OrderBy(part => part.Offset)
-                .Select(part => new { Start = part.Offset, End = part.Offset + part.Length - 1 });
+            var ranges = parts.OrderBy(part => part.Offset);
             var lastEnd = -1L;
             foreach (var range in ranges)
             {
-                if (range.Start <= lastEnd)
+                if (range.Offset <= lastEnd)
                 {
                     throw new ArgumentOutOfRangeException();
                 }

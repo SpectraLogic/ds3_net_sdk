@@ -69,7 +69,7 @@ namespace Ds3.Helpers
         private JobObjectList EnsureAllocated(JobObjectList filteredChunk)
         {
             return filteredChunk.NodeId == null
-                ? FilterChunk(AllocateChunk(filteredChunk.ChunkId))
+                ? AllocateChunk(filteredChunk.ChunkId)
                 : filteredChunk;
         }
 

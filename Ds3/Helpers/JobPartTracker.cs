@@ -18,6 +18,11 @@ using System.Collections.Generic;
 
 namespace Ds3.Helpers
 {
+    /// <summary>
+    /// Manages a collection of IObjectPartTrackers. The IObjectPartTracker
+    /// manages the parts for a single object, but this manages object parts
+    /// for all objects in a job.
+    /// </summary>
     internal class JobPartTracker
     {
         private readonly IDictionary<string, IObjectPartTracker> _trackers;

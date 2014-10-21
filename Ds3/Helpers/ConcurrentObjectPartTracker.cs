@@ -17,6 +17,10 @@ using System;
 
 namespace Ds3.Helpers
 {
+    /// <summary>
+    /// Wraps another object part tracker in locks. Each method call should be
+    /// atomic, and we don't need locks across calls.
+    /// </summary>
     internal class ConcurrentObjectPartTracker : IObjectPartTracker
     {
         private readonly IObjectPartTracker _innerTracker;

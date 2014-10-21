@@ -82,7 +82,6 @@ namespace Ds3Client.Commands.Api
             new Ds3ClientHelpers(CreateClient())
                 .StartReadAllJob(BucketName)
                 .Transfer(FileHelpers.BuildFileGetter(Folder));
-                //WriteWarning(Resources.NoObjectsMessage);
         }
 
         private static object _ensureDirectoryLock = new object();

@@ -18,6 +18,12 @@ using System.Collections.Generic;
 
 namespace Ds3.Helpers
 {
+    /// <summary>
+    /// Wraps a function that creates disposables, caches all
+    /// results, and disposes any cached values when disposed.
+    /// </summary>
+    /// <typeparam name="TKey">Type of key to look up or create disposable values.</typeparam>
+    /// <typeparam name="TDispoable">Type of disposable cached value.</typeparam>
     internal class DisposableCache<TKey, TDispoable> : IDisposable
         where TDispoable : IDisposable
     {
