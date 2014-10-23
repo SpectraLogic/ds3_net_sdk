@@ -23,7 +23,7 @@ using System.Collections;
 namespace TestDs3
 {
     [TestFixture]
-    public class TestObjectPartTracker
+    internal class TestObjectPartTracker
     {
         private static readonly IEnumerable<IEnumerable<ObjectPart>> _successes = new[]
         {
