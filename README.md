@@ -108,4 +108,8 @@ namespace Ds3Example
 
 [Building from Source](../../wiki/Building-from-Source)
 
-[Generating API Documentation](../../wiki/Documentation-Generation)
+[Building the DS3 SDK NuGet Package](../../wiki/Building-the-DS3-SDK-NuGet-package)
+
+
+API documentation resides in the gh-pages branch. See the README.md there for information on how to regenerate the documentation.
+
