@@ -20,6 +20,10 @@ using System.Configuration;
 
 namespace Ds3Examples
 {
+    /// <summary>
+    /// Shows how to transfer all of the files in a directory to a bucket
+    /// using the bulk job helpers as well as the file helpers.
+    /// </summary>
     class BulkPutExample
     {
         static void Main(string[] args)
@@ -34,7 +38,7 @@ namespace Ds3Examples
             ).Build();
 
             // Set up the high-level abstractions.
-            var helpers = new Ds3ClientHelpers(client);
+            IDs3ClientHelpers helpers = new Ds3ClientHelpers(client);
 
             string bucket = "bucket-name";
             string directory = "TestData";

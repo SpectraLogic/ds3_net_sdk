@@ -20,6 +20,10 @@ using System.Configuration;
 
 namespace Ds3Examples
 {
+    /// <summary>
+    /// Shows how to list all objects for a bucket.
+    /// The helper method handles the 1,000 object request paging logic.
+    /// </summary>
     class ListObjectsExample
     {
         static void Main(string[] args)
@@ -34,7 +38,7 @@ namespace Ds3Examples
             ).Build();
 
             // Set up the high-level abstractions.
-            var helpers = new Ds3ClientHelpers(client);
+            IDs3ClientHelpers helpers = new Ds3ClientHelpers(client);
 
             // Loop through all of the objects in the bucket.
             foreach (var obj in helpers.ListObjects("bucket-name"))

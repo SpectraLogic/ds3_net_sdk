@@ -20,6 +20,11 @@ using System.Configuration;
 
 namespace Ds3Examples
 {
+    /// <summary>
+    /// Shows how to list all of the buckets on DS3 server.
+    ///
+    /// There aren't really any gotchas to this, so we use the core client directly.
+    /// </summary>
     class ListBucketsExample
     {
         static void Main(string[] args)

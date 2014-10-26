@@ -20,6 +20,10 @@ using System.Configuration;
 
 namespace Ds3Examples
 {
+    /// <summary>
+    /// Shows how to do a bulk get of all of the objects in a bucket
+    /// using our bulk job helpers along with the file helpers.
+    /// </summary>
     class BulkGetExample
     {
         static void Main(string[] args)
@@ -34,13 +38,14 @@ namespace Ds3Examples
             ).Build();
 
             // Set up the high-level abstractions.
-            var helpers = new Ds3ClientHelpers(client);
+            IDs3ClientHelpers helpers = new Ds3ClientHelpers(client);
 
             string bucket = "bucket-name";
             string directory = "DataFromBucket";
 
             // Creates a bulk job with all of the objects in the bucket.
             IJob job = helpers.StartReadAllJob(bucket);
+            // Same as: IJob job = helpers.StartReadJob(bucket, helpers.ListObjects(bucket));
 
             // Keep the job id around. This is useful for job recovery in the case of a failure.
             Console.WriteLine("Job id {0} started.", job.JobId);

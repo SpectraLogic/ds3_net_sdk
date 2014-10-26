@@ -20,11 +20,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ds3_net_sdk")]
+[assembly: AssemblyTitle("DS3 .NET SDK")]
 [assembly: AssemblyDescription("Provides a .NET interface to the DS3 Deep Storage REST API by Spectra Logic.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Spectra Logic")]
-[assembly: AssemblyProduct("ds3_net_sdk")]
+[assembly: AssemblyProduct("DS3 .NET SDK")]
 [assembly: AssemblyCopyright("Copyright © Spectra Logic 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
