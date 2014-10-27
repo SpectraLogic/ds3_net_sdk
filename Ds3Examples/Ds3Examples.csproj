@@ -32,11 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Ds3Examples.ListBucketsExample</StartupObject>
+    <StartupObject>Ds3Examples.ListObjectsExample</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ds3_net_sdk">
-      <HintPath>..\packages\ds3_net_sdk.0.7.0.0\lib\net40\ds3_net_sdk.dll</HintPath>
+      <HintPath>packages\ds3_net_sdk.0.7.1.0\lib\net40\ds3_net_sdk.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
