@@ -24,6 +24,15 @@ namespace Ds3.Helpers
 {
     public class FileHelpers
     {
+        /// <summary>
+        /// Creates a function that can open a file stream for writing.
+        /// 
+        /// For use with IJob.Transfer(getter).
+        /// 
+        /// Creates all directories needed to save the file.
+        /// </summary>
+        /// <param name="root">The root directory within which to save objects.</param>
+        /// <returns></returns>
         public static Func<string, Stream> BuildFileGetter(string root)
         {
             return key =>
@@ -43,11 +52,25 @@ namespace Ds3.Helpers
             }
         }
 
+        /// <summary>
+        /// Creates a function that can open a file stream for reading.
+        /// 
+        /// For use with IJob.Transfer(putter).
+        /// </summary>
+        /// <param name="root">The root directory within which to read objects.</param>
+        /// <returns></returns>
         public static Func<string, Stream> BuildFilePutter(string root)
         {
             return key => File.OpenRead(Path.Combine(root, ConvertKeyToPath(key)));
         }
 
+        /// <summary>
+        /// Returns a list of object key, size pairs for a directory root (recursive).
+        ///
+        /// For use with IDs3ClientHelpers.StartWriteJob(bucket, objectsToWrite)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
         public static IEnumerable<Ds3Object> ListObjectsForDirectory(string root)
         {
             var rootDirectory = new DirectoryInfo(root);

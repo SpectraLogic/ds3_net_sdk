@@ -65,17 +65,11 @@ namespace Ds3.Helpers
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName)
         {
-            return ListObjects(bucketName, null, int.MaxValue);
+            return ListObjects(bucketName, null);
         }
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix)
         {
-            return ListObjects(bucketName, keyPrefix, int.MaxValue);
-        }
-
-        public IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix, int maxKeys)
-        {
-            var remainingKeys = maxKeys;
             var isTruncated = false;
             string marker = null;
             do
@@ -83,19 +77,17 @@ namespace Ds3.Helpers
                 var request = new Ds3.Calls.GetBucketRequest(bucketName)
                 {
                     Marker = marker,
-                    MaxKeys = Math.Min(remainingKeys, _defaultMaxKeys),
                     Prefix = keyPrefix
                 };
                 var response = _client.GetBucket(request);
                 isTruncated = response.IsTruncated;
                 marker = response.NextMarker;
                 var responseObjects = response.Objects as IList<Ds3ObjectInfo> ?? response.Objects.ToList();
-                remainingKeys -= responseObjects.Count;
                 foreach (var ds3Object in responseObjects)
                 {
                     yield return ds3Object;
                 }
-            } while (isTruncated && remainingKeys > 0);
+            } while (isTruncated);
         }
 
         public void EnsureBucketExists(string bucketName)

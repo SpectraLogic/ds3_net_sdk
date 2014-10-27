@@ -17,7 +17,7 @@ using System;
 
 namespace Ds3.Helpers
 {
-    public class ObjectPart : IComparable<ObjectPart>
+    internal class ObjectPart : IComparable<ObjectPart>
     {
         public long Offset { get; private set; }
         public long Length { get; private set; }

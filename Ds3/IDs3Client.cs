@@ -119,8 +119,18 @@ namespace Ds3
         /// <returns></returns>
         GetJobListResponse GetJobList(GetJobListRequest request);
 
+        /// <summary>
+        /// Returns the same information as GetJob, but also updates the last
+        /// access time to keep the job from expiring.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         JobResponse ModifyJob(ModifyJobRequest request);
 
+        /// <summary>
+        /// Deletes an in-progress job.
+        /// </summary>
+        /// <param name="request"></param>
         void DeleteJob(DeleteJobRequest request);
 
         /// <summary>
@@ -130,20 +140,56 @@ namespace Ds3
         /// <returns></returns>
         JobResponse GetJob(GetJobRequest request);
 
+        /// <summary>
+        /// Tries to ensure that the server can accept PUT reqeusts for
+        /// a particular chunk of data within a job. If the server does
+        /// not have space to accept the data it will return a retry-after
+        /// response.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         AllocateJobChunkResponse AllocateJobChunk(AllocateJobChunkRequest request);
 
+        /// <summary>
+        /// Returns the chunks of data that the client can GET from the
+        /// server. If the job is still active but the server doesn't
+        /// have data ready yet, then this will return a retry-after response.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         GetAvailableJobChunksResponse GetAvailableJobChunks(GetAvailableJobChunksRequest request);
 
+        /// <summary>
+        /// Starts a multi-part upload. If used to transfer an object within
+        /// the context of a job then the client must specify the job id and offset.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request);
 
+        /// <summary>
+        /// Puts a part of a multi-part upload.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         PutPartResponse PutPart(PutPartRequest request);
 
+        /// <summary>
+        /// Completes a multi-part upload.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         CompleteMultipartUploadResponse CompleteMultipartUpload(CompleteMultipartUploadRequest request);
 
+        /// <summary>
+        /// Cancels a multi-part upload, discarding all data transferred
+        /// for this upload.
+        /// </summary>
+        /// <param name="request"></param>
         void AbortMultipartUpload(AbortMultipartUploadRequest request);
 
         /// <summary>
-        /// For future multi-node support, this provides a means of creating
+        /// For multi-node support (planned), this provides a means of creating
         /// a client that connects to the specified node id.
         /// </summary>
         /// <param name="nodes"></param>

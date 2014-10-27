@@ -21,7 +21,7 @@ using System.Net;
 
 namespace Ds3.ResponseParsers
 {
-    class GetAvailableJobChunksResponseParser : IResponseParser<GetAvailableJobChunksRequest, GetAvailableJobChunksResponse>
+    internal class GetAvailableJobChunksResponseParser : IResponseParser<GetAvailableJobChunksRequest, GetAvailableJobChunksResponse>
     {
         public GetAvailableJobChunksResponse Parse(GetAvailableJobChunksRequest request, IWebResponse response)
         {
