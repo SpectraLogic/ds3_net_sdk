@@ -69,9 +69,6 @@ namespace Ds3.Helpers
         /// <returns></returns>
         IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix);
 
-        //TODO: delete
-        IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix, int maxKeys);
-
         /// <summary>
         /// Creates a bucket if it does not exist.
         /// </summary>
