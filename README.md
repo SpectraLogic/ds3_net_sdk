@@ -7,6 +7,10 @@ conforming to the DS3 specification.
 See the [PowerShell DS3 Module Documentation](../../wiki/PowerShell-DS3-Module)
 for more information on using DS3 from the command line on Windows.
 
+## Contact Us
+
+Join us at our [Google Groups](https://groups.google.com/d/forum/spectralogicds3-sdks) forum to ask questions, or see frequently asked questions.
+
 ## Setting up NuGet
 
 The SDK is distributed as a [NuGet](http://www.nuget.org) package for .Net 4.0
