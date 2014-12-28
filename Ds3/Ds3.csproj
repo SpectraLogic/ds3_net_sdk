@@ -76,6 +76,8 @@
     <Compile Include="Calls\GetJobRequest.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
+    <Compile Include="Calls\HeadObjectRequest.cs" />
+    <Compile Include="Calls\HeadObjectResponse.cs" />
     <Compile Include="Calls\InitiateMultipartUploadRequest.cs" />
     <Compile Include="Calls\InitiateMultipartUploadResponse.cs" />
     <Compile Include="Calls\ModifyJobRequest.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="ResponseParsers\GetJobListResponseParser.cs" />
     <Compile Include="ResponseParsers\GetServiceResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
+    <Compile Include="ResponseParsers\HeadObjectResponseParser.cs" />
     <Compile Include="ResponseParsers\InitiateMultipartUploadResponseParser.cs" />
     <Compile Include="ResponseParsers\JobResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectResponseParser.cs" />

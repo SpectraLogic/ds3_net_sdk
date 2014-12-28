@@ -50,6 +50,13 @@ namespace Ds3
         GetObjectResponse GetObject(GetObjectRequest request);
 
         /// <summary>
+        /// Retrieves information about an object without obtaining its contents.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        HeadObjectResponse HeadObject(HeadObjectRequest request);
+
+        /// <summary>
         /// Submits the contents of a Stream to a specified object.
         /// </summary>
         /// <param name="request"></param>
