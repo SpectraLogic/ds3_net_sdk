@@ -28,9 +28,7 @@ namespace Ds3.ResponseParsers
                 return new HeadObjectResponse(
                     long.Parse(response.Headers.Single(kvp => kvp.Key.ToLowerInvariant() == "content-length").Value),
                     response.Headers.Single(kvp => kvp.Key.ToLowerInvariant() == "etag").Value,
-                    response.Headers
-                        .Where(kvp => kvp.Key.ToLowerInvariant().StartsWith("x-amz-meta-"))
-                        .ToDictionary(kvp => kvp.Key.Substring("x-amz-meta-".Length), kvp => kvp.Value)
+                    ResponseParseUtilities.ExtractCustomMetadata(response.Headers)
                 );
             }
         }
