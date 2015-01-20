@@ -144,29 +144,6 @@ namespace Ds3
             return new Ds3ClientFactory(this, nodes);
         }
 
-        public InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request)
-        {
-            return new InitiateMultipartUploadResponseParser().Parse(request, _netLayer.Invoke(request));
-        }
-
-        public PutPartResponse PutPart(PutPartRequest request)
-        {
-            return new PutPartResponseParser().Parse(request, _netLayer.Invoke(request));
-        }
-
-        public CompleteMultipartUploadResponse CompleteMultipartUpload(CompleteMultipartUploadRequest request)
-        {
-            return new CompleteMultipartUploadResponseParser().Parse(request, _netLayer.Invoke(request));
-        }
-
-        public void AbortMultipartUpload(AbortMultipartUploadRequest request)
-        {
-            using (var response = _netLayer.Invoke(request))
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
-            }
-        }
-
         private class Ds3ClientFactory : IDs3ClientFactory
         {
             private readonly IDs3Client _client;

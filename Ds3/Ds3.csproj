@@ -62,11 +62,8 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Calls\AbortMultipartUploadRequest.cs" />
     <Compile Include="Calls\AllocateJobChunkRequest.cs" />
     <Compile Include="Calls\AllocateJobChunkResponse.cs" />
-    <Compile Include="Calls\CompleteMultipartUploadRequest.cs" />
-    <Compile Include="Calls\CompleteMultipartUploadResponse.cs" />
     <Compile Include="Calls\DeleteObjectListRequest.cs" />
     <Compile Include="Calls\DeleteObjectListResponse.cs" />
     <Compile Include="Calls\GetAvailableJobChunksRequest.cs" />
@@ -78,11 +75,7 @@
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
     <Compile Include="Calls\HeadObjectResponse.cs" />
-    <Compile Include="Calls\InitiateMultipartUploadRequest.cs" />
-    <Compile Include="Calls\InitiateMultipartUploadResponse.cs" />
     <Compile Include="Calls\ModifyJobRequest.cs" />
-    <Compile Include="Calls\PutPartRequest.cs" />
-    <Compile Include="Calls\PutPartResponse.cs" />
     <Compile Include="Calls\DeleteJobRequest.cs" />
     <Compile Include="Helpers\ConcurrentObjectPartTracker.cs" />
     <Compile Include="Helpers\CriticalSectionExecutor.cs" />
@@ -144,7 +137,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ResponseParsers\AllocateJobChunkResponseParser.cs" />
-    <Compile Include="ResponseParsers\CompleteMultipartUploadResponseParser.cs" />
     <Compile Include="ResponseParsers\DeleteObjectListResponseParser.cs" />
     <Compile Include="ResponseParsers\GetAvailableJobChunksResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketResponseParser.cs" />
@@ -152,11 +144,9 @@
     <Compile Include="ResponseParsers\GetServiceResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadObjectResponseParser.cs" />
-    <Compile Include="ResponseParsers\InitiateMultipartUploadResponseParser.cs" />
     <Compile Include="ResponseParsers\JobResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectResponseParser.cs" />
     <Compile Include="ResponseParsers\IResponseParser.cs" />
-    <Compile Include="ResponseParsers\PutPartResponseParser.cs" />
     <Compile Include="ResponseParsers\ResponseParseUtilities.cs" />
     <Compile Include="Runtime\Ds3BadResponseException.cs" />
     <Compile Include="Runtime\Ds3BadStatusCodeException.cs" />
