@@ -14,20 +14,31 @@
  */
 
 using Ds3.Models;
+using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
-    public class BulkGetRequest : BulkRequest
+    public class BulkGetRequest : Ds3Request
     {
+        public string BucketName { get; private set; }
+        public IEnumerable<string> FullObjects { get; private set; }
         public ChunkOrdering? ChunkOrder { get; private set; }
 
-        public BulkGetRequest(string bucketName, List<Ds3Object> objects) 
-            : base(bucketName, objects, false)
+        private BulkGetRequest(string bucketName, IEnumerable<string> fullObjects)
         {
-            QueryParams.Add("operation", "start_bulk_get");
+            this.BucketName = bucketName;
+            this.FullObjects = fullObjects.ToList();
+            this.QueryParams.Add("operation", "start_bulk_get");
+        }
+
+        public BulkGetRequest(string bucketName, List<Ds3Object> objects) 
+            : this(bucketName, objects.Select(o => o.Name))
+        {
         }
 
         public BulkGetRequest WithChunkOrdering(ChunkOrdering chunkOrdering)
@@ -36,18 +47,39 @@ namespace Ds3.Calls
             return this;
         }
 
-        protected internal override XDocument GenerateObjectsDocument(IEnumerable<Ds3Object> objects)
+        internal override HttpVerb Verb
         {
-            var doc = base.GenerateObjectsDocument(objects);
+            get
+            {
+                return HttpVerb.PUT;
+            }
+        }
+
+        internal override string Path
+        {
+            get
+            {
+                return "/_rest_/bucket/" + BucketName;
+            }
+        }
+
+        internal override Stream GetContentStream()
+        {
+            var root = new XElement("Objects")
+                .AddAllFluent(
+                    from name in this.FullObjects
+                    select new XElement("Object").SetAttributeValueFluent("Name", name)
+                );
             if (this.ChunkOrder.HasValue)
             {
-                doc.Root.SetAttributeValue(
+                root.SetAttributeValue(
                     "ChunkClientProcessingOrderGuarantee",
                     BuildChunkOrderingEnumString(this.ChunkOrder.Value)
                 );
             }
-            return doc;
+            return new XDocument().AddFluent(root).WriteToMemoryStream();
         }
+
 
         private static string BuildChunkOrderingEnumString(ChunkOrdering chunkOrder)
         {

@@ -13,23 +13,59 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
-
-using Ds3.Runtime;
 using Ds3.Models;
+using Ds3.Runtime;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
-    public class BulkPutRequest : BulkRequest
+    public class BulkPutRequest : Ds3Request
     {
-        public BulkPutRequest(string bucketName, List<Ds3Object> objects) 
-            : base(bucketName, objects, true)
+        public string BucketName { get; private set; }
+        public List<Ds3Object> Objects { get; private set; }
+
+        public BulkPutRequest(string bucketName, List<Ds3Object> objects)
         {
+            this.BucketName = bucketName;
+            this.Objects = objects;
             if (!objects.TrueForAll(obj => obj.Size.HasValue))
             {
                 throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
             }
             QueryParams.Add("operation", "start_bulk_put");
+        }
+
+        internal override HttpVerb Verb
+        {
+            get
+            {
+                return HttpVerb.PUT;
+            }
+        }
+
+        internal override string Path
+        {
+            get
+            {
+                return "/_rest_/bucket/" + BucketName;
+            }
+        }
+
+        internal override Stream GetContentStream()
+        {
+            return new XDocument()
+                .AddFluent(
+                    new XElement("Objects").AddAllFluent(
+                        from obj in this.Objects
+                        select new XElement("Object")
+                            .SetAttributeValueFluent("Name", obj.Name)
+                            .SetAttributeValueFluent("Size", obj.Size.Value.ToString("D"))
+                    )
+                )
+                .WriteToMemoryStream();
         }
     }
 }
