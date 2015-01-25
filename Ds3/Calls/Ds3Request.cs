@@ -13,27 +13,15 @@
  * ****************************************************************************
  */
 
-using System.Net;
-using System.IO;
-using System.Collections.Generic;
 using Ds3.Models;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Ds3.Calls
 {
     public abstract class Ds3Request
     {
-        public class Range
-        {
-            public long Start { get; private set; }
-            public long End { get; private set; }
-
-            public Range(long start, long end)
-            {
-                this.Start = start;
-                this.End = end;
-            }
-        }
-
         internal abstract HttpVerb Verb
         {
             get;
@@ -54,9 +42,9 @@ namespace Ds3.Calls
             get { return Checksum.None; }
         }
 
-        internal virtual Range GetByteRange()
+        internal virtual IEnumerable<Range> GetByteRanges()
         {
-            return null;
+            return Enumerable.Empty<Range>();
         }
 
         private Dictionary<string, string> _queryParams = new Dictionary<string, string>();

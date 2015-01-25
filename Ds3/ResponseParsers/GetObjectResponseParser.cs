@@ -14,6 +14,7 @@
  */
 
 using System.Net;
+using System.Linq;
 
 using Ds3.Calls;
 using Ds3.Runtime;
@@ -33,7 +34,12 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
+                ResponseParseUtilities.HandleStatusCode(
+                    response,
+                    request.GetByteRanges().Any()
+                        ? HttpStatusCode.PartialContent
+                        : HttpStatusCode.OK
+                );
                 using (var responseStream = response.GetResponseStream())
                 {
                     responseStream.CopyTo(request.DestinationStream, this._copyBufferSize);

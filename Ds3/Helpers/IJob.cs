@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+using Ds3.Models;
 using System;
 using System.IO;
 using System.Threading;
@@ -24,65 +25,7 @@ namespace Ds3.Helpers
     /// </summary>
     /// <seealso cref="IDs3ClientHelpers.StartWriteJob"/>
     /// <seealso cref="IDs3ClientHelpers.StartReadJob"/>
-    public interface IJob
+    public interface IJob : IBaseJob<IJob, string>
     {
-        /// <summary>
-        /// The id that allows the client to track job status and recover
-        /// or delete jobs in the case of a failure during transfer.
-        /// </summary>
-        Guid JobId { get; }
-
-        /// <summary>
-        /// The name of the bucket that this job is transferring to.
-        /// </summary>
-        string BucketName { get; }
-
-        /// <summary>
-        /// Must always be called before the Transfer method.
-        ///
-        /// Specifies The maximum number of simultaneous transfers
-        /// to or from the server for this particular job.
-        /// </summary>
-        /// <param name="maxParallelRequests"></param>
-        /// <returns>This IJob instance.</returns>
-        IJob WithMaxParallelRequests(int maxParallelRequests);
-
-        /// <summary>
-        /// Must always be called before the Transfer method.
-        ///
-        /// Allows the client to stop transferring to a job using a
-        /// CancellationTokenSource. Note that this does not cancel
-        /// a job, and the job can be resumed later. If you'd like
-        /// to cancel a job, use IDs3Client.DeleteJob().
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns>This IJob instance.</returns>
-        IJob WithCancellationToken(CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Performs all GETs or PUTs for the job (depending on the type
-        /// of job).
-        ///
-        /// This method uses DS3 cache handling requests to efficiently
-        /// transfer objects and handles multiplexing single object streams
-        /// when the DS3 job response splits individual objects into multiple
-        /// requests. It also performs requests in parallel for situations
-        /// where doing so can improve performance.
-        /// </summary>
-        /// <seealso cref="FileHelpers.BuildFileGetter"/>
-        /// <seealso cref="FileHelpers.BuildFilePutter"/>
-        /// <param name="createStreamForObjectKey">Opens a stream for a given object name.</param>
-        void Transfer(Func<string, Stream> createStreamForObjectKey);
-
-        /// <summary>
-        /// Fires handlers with the amount of additional data that's been transferred
-        /// when a part of a job is transferred.
-        /// </summary>
-        event Action<long> DataTransferred;
-
-        /// <summary>
-        /// Fires handlers with the name of each object as their transfers finish.
-        /// </summary>
-        event Action<string> ObjectCompleted;
     }
 }

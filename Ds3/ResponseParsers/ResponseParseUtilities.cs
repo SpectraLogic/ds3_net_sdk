@@ -62,7 +62,7 @@ namespace Ds3.ResponseParsers
                     root.TextOf("Code"),
                     root.TextOf("Message"),
                     root.TextOf("Resource"),
-                    root.TextOf("RequestId")
+                    root.TextOfOrNull("RequestId") ?? root.TextOfOrNull("ResourceId")
                 );
             }
             catch (XmlException)

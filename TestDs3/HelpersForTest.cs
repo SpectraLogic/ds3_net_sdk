@@ -13,18 +13,22 @@
  * ****************************************************************************
  */
 
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-using NUnit.Framework;
-
 namespace TestDs3
 {
     internal static class HelpersForTest
     {
+        internal static IEnumerable<T> Sorted<T>(this IEnumerable<T> self)
+        {
+            return self.OrderBy(it => it);
+        }
+
         internal static string StringFromStream(Stream stream)
         {
             using (stream)

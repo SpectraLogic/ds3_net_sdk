@@ -13,42 +13,24 @@
  * ****************************************************************************
  */
 
-using System;
-using System.IO;
-
 using Ds3.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Ds3.Calls
 {
     public class GetObjectRequest : Ds3Request
     {
-        private readonly Stream _destinationStream;
         public string BucketName { get; private set; }
         public string ObjectName { get; private set; }
         public Guid JobId { get; private set; }
         public long Offset { get; private set; }
 
-        private Range _byteRange;
-        public Range ByteRange
+        internal override IEnumerable<Range> GetByteRanges()
         {
-            get { return _byteRange; }
-            set { WithByteRange(value); }
-        }
-
-        /// <summary>
-        /// Specifies a range of bytes within the object to retrieve.
-        /// </summary>
-        /// <param name="byteRange"></param>
-        /// <returns></returns>
-        public GetObjectRequest WithByteRange(Range byteRange)
-        {
-            this._byteRange = byteRange;
-            return this;
-        }
-
-        internal override Range GetByteRange()
-        {
-            return this._byteRange;
+            return Enumerable.Empty<Range>();
         }
 
         internal override HttpVerb Verb
@@ -67,10 +49,7 @@ namespace Ds3.Calls
             }
         }
 
-        internal Stream DestinationStream
-        {
-            get { return this._destinationStream; }
-        }
+        internal Stream DestinationStream { get; private set; }
 
         public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId, long offset, Stream destinationStream)
         {
@@ -78,7 +57,7 @@ namespace Ds3.Calls
             this.ObjectName = ds3ObjectName;
             this.JobId = jobId;
             this.Offset = offset;
-            this._destinationStream = destinationStream;
+            this.DestinationStream = destinationStream;
             if (jobId != Guid.Empty)
             {
                 QueryParams.Add("job", jobId.ToString());

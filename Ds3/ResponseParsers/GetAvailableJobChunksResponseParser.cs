@@ -36,18 +36,23 @@ namespace Ds3.ResponseParsers
                             var jobResponse = JobResponseParser<GetAvailableJobChunksRequest>.ParseResponseContent(responseStream);
                             if (jobResponse.ObjectLists.Any())
                             {
-                                return GetAvailableJobChunksResponse.Success(jobResponse);
+                                return GetAvailableJobChunksResponse.Success(RetryAfterHeader(response), jobResponse);
                             }
-                            return GetAvailableJobChunksResponse.RetryAfter(TimeSpan.FromSeconds(int.Parse(response.Headers["retry-after"])));
+                            return GetAvailableJobChunksResponse.RetryAfter(RetryAfterHeader(response));
 
                         case HttpStatusCode.NotFound:
                             return GetAvailableJobChunksResponse.JobGone;
 
                         default:
-                            throw new NotSupportedException("This line of code should be impossible to hit.");
+                            throw new NotSupportedException(Resources.InvalidEnumValueException);
                     }
                 }
             }
+        }
+
+        private static TimeSpan RetryAfterHeader(IWebResponse response)
+        {
+            return TimeSpan.FromSeconds(int.Parse(response.Headers["retry-after"]));
         }
     }
 }

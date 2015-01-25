@@ -106,6 +106,24 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comparison argument must be of the same type..
+        /// </summary>
+        internal static string ExpectedObjectOfSameTypeException {
+            get {
+                return ResourceManager.GetString("ExpectedObjectOfSameTypeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected a PUT job, but was a GET job..
+        /// </summary>
+        internal static string ExpectedPutJobButWasGetJobException {
+            get {
+                return ResourceManager.GetString("ExpectedPutJobButWasGetJobException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered an exception when formating xml string..
         /// </summary>
         internal static string FormatXmlException {
@@ -187,15 +205,6 @@ namespace Ds3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expected job type &apos;{0}&apos; but the actual job was of type &apos;{1}&apos;..
-        /// </summary>
-        internal static string JobRecoveryException {
-            get {
-                return ResourceManager.GetString("JobRecoveryException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Expected an element called &quot;{0}&quot; but didn&apos;t find it..
         /// </summary>
         internal static string MissingElementException {
@@ -214,6 +223,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameter must be a 16-byte MD5 hash value..
+        /// </summary>
+        internal static string MustBeMd5Exception {
+            get {
+                return ResourceManager.GetString("MustBeMd5Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tried to perform a bulk job but there were no objects to transfer..
         /// </summary>
         internal static string NoObjectsToTransferException {
@@ -223,20 +241,29 @@ namespace Ds3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The object part was not available to be marked completed..
-        /// </summary>
-        internal static string ObjectPartOutOfRangeException {
-            get {
-                return ResourceManager.GetString("ObjectPartOutOfRangeException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Some or all of the objects to put are missing a size field..
         /// </summary>
         internal static string ObjectsMissingSizeException {
             get {
                 return ResourceManager.GetString("ObjectsMissingSizeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The requested range was not available to be marked completed..
+        /// </summary>
+        internal static string RangeNotTrackedException {
+            get {
+                return ResourceManager.GetString("RangeNotTrackedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranges {0} and {1} do not overlap..
+        /// </summary>
+        internal static string RangesDoNotOverlapException {
+            get {
+                return ResourceManager.GetString("RangesDoNotOverlapException", resourceCulture);
             }
         }
         

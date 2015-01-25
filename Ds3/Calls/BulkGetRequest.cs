@@ -29,7 +29,7 @@ namespace Ds3.Calls
         public IEnumerable<string> FullObjects { get; private set; }
         public ChunkOrdering? ChunkOrder { get; private set; }
 
-        private BulkGetRequest(string bucketName, IEnumerable<string> fullObjects)
+        public BulkGetRequest(string bucketName, IEnumerable<string> fullObjects)
         {
             this.BucketName = bucketName;
             this.FullObjects = fullObjects.ToList();

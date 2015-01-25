@@ -132,6 +132,12 @@
   <data name="EnumeratorsNotOfEqualLengthException" xml:space="preserve">
     <value>Some of the provided enumerators are not equal in length.</value>
   </data>
+  <data name="ExpectedObjectOfSameTypeException" xml:space="preserve">
+    <value>Comparison argument must be of the same type.</value>
+  </data>
+  <data name="ExpectedPutJobButWasGetJobException" xml:space="preserve">
+    <value>Expected a PUT job, but was a GET job.</value>
+  </data>
   <data name="FormatXmlException" xml:space="preserve">
     <value>Encountered an exception when formating xml string.</value>
   </data>
@@ -159,23 +165,26 @@
   <data name="JobGoneException" xml:space="preserve">
     <value>The job went away as we were trying to acquire chunk information.</value>
   </data>
-  <data name="JobRecoveryException" xml:space="preserve">
-    <value>Expected job type '{0}' but the actual job was of type '{1}'.</value>
-  </data>
   <data name="MissingElementException" xml:space="preserve">
     <value>Expected an element called "{0}" but didn't find it.</value>
   </data>
   <data name="MissingHeaderException" xml:space="preserve">
     <value>Expected a header called "{0}" but didn't find it.</value>
   </data>
+  <data name="MustBeMd5Exception" xml:space="preserve">
+    <value>Parameter must be a 16-byte MD5 hash value.</value>
+  </data>
   <data name="NoObjectsToTransferException" xml:space="preserve">
     <value>Tried to perform a bulk job but there were no objects to transfer.</value>
   </data>
-  <data name="ObjectPartOutOfRangeException" xml:space="preserve">
-    <value>The object part was not available to be marked completed.</value>
-  </data>
   <data name="ObjectsMissingSizeException" xml:space="preserve">
     <value>Some or all of the objects to put are missing a size field.</value>
+  </data>
+  <data name="RangeNotTrackedException" xml:space="preserve">
+    <value>The requested range was not available to be marked completed.</value>
+  </data>
+  <data name="RangesDoNotOverlapException" xml:space="preserve">
+    <value>Ranges {0} and {1} do not overlap.</value>
   </data>
   <data name="StreamUnavailableException" xml:space="preserve">
     <value>Job tried to open stream for key '{0}', but that key should not be available. This is probably a bug in the helpers.</value>

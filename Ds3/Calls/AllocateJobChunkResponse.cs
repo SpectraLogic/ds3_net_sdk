@@ -43,6 +43,16 @@ namespace Ds3.Calls
             get { return _chunkGone; }
         }
 
+        public void Match(Action<JobObjectList> success, Action<TimeSpan> retryAfter)
+        {
+            Match(success, retryAfter, () => { throw new InvalidOperationException(Resources.JobGoneException); });
+        }
+
+        public T Match<T>(Func<JobObjectList, T> success, Func<TimeSpan, T> retryAfter)
+        {
+            return Match(success, retryAfter, () => { throw new InvalidOperationException(Resources.JobGoneException); });
+        }
+
         public abstract void Match(Action<JobObjectList> success, Action<TimeSpan> retryAfter, Action chunkGone);
 
         public abstract T Match<T>(Func<JobObjectList, T> success, Func<TimeSpan, T> retryAfter, Func<T> chunkGone);

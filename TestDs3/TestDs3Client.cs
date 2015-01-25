@@ -474,13 +474,14 @@ namespace TestDs3
             var responseContent = ReadResource(GetAvailableJobChunksResponseResourceName);
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job_chunk", queryParams, "")
-                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .Returning(HttpStatusCode.OK, responseContent, new Dictionary<string, string> { { "retry-after", "123" } })
                 .AsClient;
 
             var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
+            TimeSpan timeSpan = TimeSpan.MinValue;
             JobResponse jobChunks = null;
             response.Match(
-                jobResponse => jobChunks = jobResponse,
+                (ts, jobResponse) => { timeSpan = ts; jobChunks = jobResponse; },
                 () => Assert.Fail(),
                 retryAfter => Assert.Fail()
             );
@@ -491,6 +492,7 @@ namespace TestDs3
                 Guid.Parse("95e97010-8e70-4733-926c-aeeb21796848")
             };
             CollectionAssert.AreEqual(expectedNodeIds, jobChunks.ObjectLists.Select(chunk => chunk.NodeId.Value));
+            Assert.AreEqual(TimeSpan.FromSeconds(123), timeSpan);
         }
 
         [Test]
@@ -505,7 +507,7 @@ namespace TestDs3
             var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
             var wasJobGone = false;
             response.Match(
-                jobResponse => Assert.Fail(),
+                (ts, jobResponse) => Assert.Fail(),
                 () => wasJobGone = true,
                 retryAfter => Assert.Fail()
             );
@@ -526,7 +528,7 @@ namespace TestDs3
             var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
             TimeSpan? retryValue = null;
             response.Match(
-                jobResponse => Assert.Fail(),
+                (ts, jobResponse) => Assert.Fail(),
                 () => Assert.Fail(),
                 retryAfter => retryValue = retryAfter
             );

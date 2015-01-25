@@ -35,7 +35,6 @@ namespace Ds3.Runtime
         /// methods are incomplete in one way or another.
         /// </summary>
         /// <param name="path"></param>
-        /// <param name="allowedChars"></param>
         /// <returns></returns>
         public static string PercentEncodePath(string path)
         {
