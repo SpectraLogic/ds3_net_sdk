@@ -206,11 +206,18 @@ namespace TestDs3
 
             using (var memoryStream = new MemoryStream())
             {
+                var jobId = Guid.Parse("6f7a31c1-7ddc-46d3-975d-be26d9878493");
+                var offset = 10L;
+                var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "job", "6f7a31c1-7ddc-46d3-975d-be26d9878493" },
+                    { "offset", "10" }
+                };
                 MockNetwork
-                    .Expecting(HttpVerb.GET, "/bucketName/object", _emptyQueryParams, "")
+                    .Expecting(HttpVerb.GET, "/bucketName/object", expectedQueryParams, "")
                     .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                     .AsClient
-                    .GetObject(new GetObjectRequest("bucketName", "object", memoryStream));
+                    .GetObject(new GetObjectRequest("bucketName", "object", jobId, offset, memoryStream));
                 memoryStream.Position = 0L;
                 using (var reader = new StreamReader(memoryStream))
                 {
@@ -223,12 +230,18 @@ namespace TestDs3
         public void TestPutObject()
         {
             var stringRequest = "object content";
-
+            var jobId = Guid.Parse("e5d4adce-e170-4915-ba04-595fab30df81");
+            var offset = 10L;
+            var expectedQueryParams = new Dictionary<string, string>
+            {
+                { "job", "e5d4adce-e170-4915-ba04-595fab30df81" },
+                { "offset", "10" }
+            };
             MockNetwork
-                .Expecting(HttpVerb.PUT, "/bucketName/object", _emptyQueryParams, stringRequest)
+                .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)
                 .AsClient
-                .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest)));
+                .PutObject(new PutObjectRequest("bucketName", "object", jobId, offset, HelpersForTest.StringToStream(stringRequest)));
         }
 
         [Test]

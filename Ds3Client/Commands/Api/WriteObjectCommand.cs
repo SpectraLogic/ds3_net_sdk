@@ -14,13 +14,10 @@
  */
 
 using Ds3.Helpers;
+using Ds3.Models;
 using Ds3Client.Api;
-using System;
 using System.IO;
-using System.Linq;
 using System.Management.Automation;
-using System.Threading.Tasks;
-using IOFile = System.IO.File;
 
 namespace Ds3Client.Commands.Api
 {
@@ -64,17 +61,27 @@ namespace Ds3Client.Commands.Api
 
         private void WriteFromLocalFile()
         {
-            using (var fileStream = IOFile.OpenRead(File))
+            var file = Path.GetFullPath(Path.Combine(this.SessionState.Path.CurrentFileSystemLocation.Path, File));
+            if (!System.IO.File.Exists(file))
             {
-                CreateClient().PutObject(new Ds3.Calls.PutObjectRequest(BucketName, Key, fileStream));
+                throw new ApiException(Resources.FileDoesNotExistException, file);
             }
+            var ds3Obj = new Ds3Object(this.Key, new System.IO.FileInfo(file).Length);
+            new Ds3ClientHelpers(CreateClient())
+                .StartWriteJob(BucketName, new[] { ds3Obj })
+                .Transfer(key => System.IO.File.OpenRead(file));
         }
 
         private void WriteFromLocalFolder()
         {
+            var folder = Path.GetFullPath(Path.Combine(this.SessionState.Path.CurrentFileSystemLocation.Path, Folder));
+            if (!Directory.Exists(folder))
+            {
+                throw new ApiException(Resources.DirectoryDoesNotExistException, folder);
+            }
             new Ds3ClientHelpers(CreateClient())
-                .StartWriteJob(BucketName, FileHelpers.ListObjectsForDirectory(Folder))
-                .Transfer(FileHelpers.BuildFilePutter(Folder));
+                .StartWriteJob(BucketName, FileHelpers.ListObjectsForDirectory(folder))
+                .Transfer(FileHelpers.BuildFilePutter(folder));
         }
     }
 }

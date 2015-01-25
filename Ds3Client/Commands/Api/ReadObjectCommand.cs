@@ -13,16 +13,13 @@
  * ****************************************************************************
  */
 
-using System;
+using Ds3.Helpers;
+using Ds3.Models;
+using Ds3Client.Api;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using System.Management.Automation;
-using IOFile = System.IO.File;
-using Ds3Client.Api;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using Ds3.Helpers;
 
 namespace Ds3Client.Commands.Api
 {
@@ -42,12 +39,6 @@ namespace Ds3Client.Commands.Api
         [Parameter(Position = 2, ParameterSetName = ToLocalFileParamSet, Mandatory = true)]
         public string File { get; set; }
 
-        [Parameter(ParameterSetName = ToLocalFileParamSet)]
-        public long? Start { get; set; }
-
-        [Parameter(ParameterSetName = ToLocalFileParamSet)]
-        public long? End { get; set; }
-
         [Alias(new string[] { "Directory" })]
         [Parameter(ParameterSetName = ToLocalFolderParamSet, Mandatory = true)]
         public string Folder { get; set; }
@@ -64,62 +55,28 @@ namespace Ds3Client.Commands.Api
 
         private void WriteToLocalFile()
         {
-            if (IOFile.Exists(File))
+            var file = Path.GetFullPath(Path.Combine(this.SessionState.Path.CurrentFileSystemLocation.Path, File));
+            if (System.IO.File.Exists(file))
             {
-                throw new ApiException(Resources.FileAlreadyExistsException, File);
+                throw new ApiException(Resources.FileAlreadyExistsException, file);
             }
 
-            WriteObjectToFile(CreateClient(), Key, File);
+            new Ds3ClientHelpers(CreateClient())
+                .StartReadJob(this.BucketName, new[] { new Ds3Object(this.Key, null) })
+                .Transfer(key => System.IO.File.OpenWrite(file));
         }
 
         private void WriteToLocalFolder()
         {
-            if (Directory.Exists(Folder))
+            var folder = Path.GetFullPath(Path.Combine(this.SessionState.Path.CurrentFileSystemLocation.Path, Folder));
+            if (Directory.Exists(folder))
             {
-                throw new ApiException(Resources.DirectoryAlreadyExistsException, Folder);
+                throw new ApiException(Resources.DirectoryAlreadyExistsException, folder);
             }
 
             new Ds3ClientHelpers(CreateClient())
                 .StartReadAllJob(BucketName)
-                .Transfer(FileHelpers.BuildFileGetter(Folder));
-        }
-
-        private static object _ensureDirectoryLock = new object();
-
-        private string EnsureDirectoryForFileExists(string filePath)
-        {
-            var destinationDirectory = Path.GetDirectoryName(filePath);
-            lock(_ensureDirectoryLock)
-            {
-                if (!Directory.Exists(destinationDirectory))
-                {
-                    Directory.CreateDirectory(destinationDirectory);
-                }
-            }
-            return filePath;
-        }
-
-        private void WriteObjectToFile(Ds3.IDs3Client client, string key, string file)
-        {
-            using (var outputStream = IOFile.OpenWrite(file))
-            {
-                var request = new Ds3.Calls.GetObjectRequest(BucketName, key, outputStream);
-                if (Start.HasValue && End.HasValue)
-                {
-                    request.WithByteRange(new Ds3.Calls.GetObjectRequest.Range(Start.Value, End.Value));
-                }
-                client.GetObject(request);
-            }
-        }
-
-        private static string MakeValidPath(string path)
-        {
-            return string.Join("\\", path.Split('/', '\\').Select(MakeValidFileName).ToArray());
-        }
-
-        private static string MakeValidFileName(string name)
-        {
-            return Regex.Replace(name, string.Format(@"([{0}]*\.+$)|([{0}]+)", Regex.Escape(new string(Path.GetInvalidFileNameChars()))), "_");
+                .Transfer(FileHelpers.BuildFileGetter(folder));
         }
     }
 }
