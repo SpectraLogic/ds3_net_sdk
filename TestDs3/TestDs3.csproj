@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Helpers\JobResponseStubs.cs" />
     <Compile Include="Helpers\RangeTranslators\TestMappingRangeTranslator.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestObjectToPartRangeTranslator.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestRequestRangeBuilder.cs" />
     <Compile Include="Helpers\RangeTranslators\TestRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestRequestToObjectRangeTranslator.cs" />
     <Compile Include="Helpers\MockStream.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Lang\LangTestHelpers.cs" />
     <Compile Include="Lang\TestParallel.cs" />
     <Compile Include="Lang\TestThreadSafeEnumerator.cs" />
+    <Compile Include="Models\TestDs3PartialObject.cs" />
     <Compile Include="Models\TestRange.cs" />
     <Compile Include="Helpers\Streams\TestStreamTranslator.cs" />
     <EmbeddedResource Include="TestData\AllocateJobChunkResponse.xml">

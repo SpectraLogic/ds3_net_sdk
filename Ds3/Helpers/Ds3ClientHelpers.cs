@@ -64,6 +64,29 @@ namespace Ds3.Helpers
             );
         }
 
+        public IPartialReadJob StartPartialReadJob(string bucket, IEnumerable<Ds3PartialObject> partialObjects)
+        {
+            var sortedPartialObjects = VerifyObjectCount(partialObjects);
+            sortedPartialObjects.Sort();
+            var jobResponse = this._client.BulkGet(
+                new BulkGetRequest(bucket, Enumerable.Empty<string>(), sortedPartialObjects)
+                    .WithChunkOrdering(ChunkOrdering.None)
+            );
+            var blobs = Blob.Convert(jobResponse).ToList();
+            blobs.Sort();
+            var rangesForRequests = RequestRangeBuilder.RangesForRequests(blobs, sortedPartialObjects);
+            return new PartialReadJob(
+                jobResponse.BucketName,
+                jobResponse.JobId,
+                new ReadTransferItemSource(this._client, jobResponse),
+                new PartialReadTransferrer(),
+                rangesForRequests,
+                new RequestToObjectRangeTranslator(rangesForRequests)
+                    .ComposedWith(new ObjectToPartRangeTranslator(sortedPartialObjects)),
+                sortedPartialObjects.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po))
+            );
+        }
+
         private static List<T> VerifyObjectCount<T>(IEnumerable<T> objects)
         {
             var objectList = objects.ToList();

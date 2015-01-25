@@ -49,6 +49,19 @@ namespace Ds3.Helpers
         IJob StartReadAllJob(string bucket);
 
         /// <summary>
+        /// Runs a DS3 bulk GET request with a set of partial object transfers and
+        /// returns an interface that can GET individual object parts efficiently
+        /// from the server.
+        /// 
+        /// Note that you can get multiple ranges within the same object at the same
+        /// time, but those ranges must be non-overlapping.
+        /// </summary>
+        /// <param name="bucket">The name of the bucket to get the objects from.</param>
+        /// <param name="partialObjects">The object parts to get.</param>
+        /// <returns>The IPartialReadJob implementation that can get each partial object per the DS3 protocol.</returns>
+        IPartialReadJob StartPartialReadJob(string bucket, IEnumerable<Ds3PartialObject> partialObjects);
+
+        /// <summary>
         /// Returns information about all of the objects in a bucket.
         ///
         /// Note that this method requests 1,000 objects at a time as they are consumed.

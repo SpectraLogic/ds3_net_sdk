@@ -79,6 +79,8 @@
     <Compile Include="Calls\DeleteJobRequest.cs" />
     <Compile Include="Helpers\Blob.cs" />
     <Compile Include="Helpers\Jobs\FullObjectJob.cs" />
+    <Compile Include="Helpers\Jobs\PartialReadJob.cs" />
+    <Compile Include="Helpers\RangeTranslators\RequestRangeBuilder.cs" />
     <Compile Include="Helpers\Streams\IResourceStore.cs" />
     <Compile Include="Helpers\Transferrers\ITransferer.cs" />
     <Compile Include="Helpers\TransferItemSources\ReadTransferItemSource.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Helpers\TransferItemSources\ITransferItemSource.cs" />
     <Compile Include="Helpers\TransferItemSources\WriteTransferItemSource.cs" />
     <Compile Include="Helpers\Streams\ResourceStore.cs" />
+    <Compile Include="Helpers\Transferrers\PartialReadTransferrer.cs" />
     <Compile Include="Helpers\Transferrers\ReadTransferrer.cs" />
     <Compile Include="Helpers\Transferrers\WriteTransferrer.cs" />
     <Compile Include="Lang\EventExtensions.cs" />
@@ -97,6 +100,7 @@
     <Compile Include="Helpers\Ds3ClientHelpers.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Helpers\IBaseJob.cs" />
+    <Compile Include="Helpers\IPartialReadJob.cs" />
     <Compile Include="Helpers\RangeTranslators\IRangeTranslator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,6 +109,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\RangeTranslators\MappingRangeTranslator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\RangeTranslators\ObjectToPartRangeTranslator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\RangeTranslators\RangeMapping.cs" />
@@ -121,6 +128,7 @@
     <Compile Include="Models\DeleteDs3ObjectError.cs" />
     <Compile Include="Models\Ds3Object.cs" />
     <Compile Include="Models\Ds3ObjectInfo.cs" />
+    <Compile Include="Models\Ds3PartialObject.cs" />
     <Compile Include="Models\JobObjectList.cs" />
     <Compile Include="Models\JobObject.cs" />
     <Compile Include="Models\JobInfo.cs" />
