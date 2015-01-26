@@ -72,25 +72,13 @@ namespace Ds3.Calls
             get { return this._destinationStream; }
         }
 
-        [Obsolete]
-        public GetObjectRequest(Bucket bucket, Ds3Object ds3Object, Stream destinationStream)
-            : this(bucket.Name, ds3Object.Name, destinationStream)
+        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId, long offset, Stream destinationStream)
         {
-        }
-
-        [Obsolete]
-        public GetObjectRequest(string bucketName, string ds3ObjectName, Stream destinationStream)
-        {
-            this._destinationStream = destinationStream;
             this.BucketName = bucketName;
             this.ObjectName = ds3ObjectName;
-        }
-
-        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId, long offset, Stream destinationStream)
-            : this(bucketName, ds3ObjectName, destinationStream)
-        {
             this.JobId = jobId;
             this.Offset = offset;
+            this._destinationStream = destinationStream;
             if (jobId != Guid.Empty)
             {
                 QueryParams.Add("job", jobId.ToString());

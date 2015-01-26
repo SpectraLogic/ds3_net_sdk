@@ -167,35 +167,6 @@ namespace Ds3
         GetAvailableJobChunksResponse GetAvailableJobChunks(GetAvailableJobChunksRequest request);
 
         /// <summary>
-        /// Starts a multi-part upload. If used to transfer an object within
-        /// the context of a job then the client must specify the job id and offset.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        InitiateMultipartUploadResponse InitiateMultipartUpload(InitiateMultipartUploadRequest request);
-
-        /// <summary>
-        /// Puts a part of a multi-part upload.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        PutPartResponse PutPart(PutPartRequest request);
-
-        /// <summary>
-        /// Completes a multi-part upload.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        CompleteMultipartUploadResponse CompleteMultipartUpload(CompleteMultipartUploadRequest request);
-
-        /// <summary>
-        /// Cancels a multi-part upload, discarding all data transferred
-        /// for this upload.
-        /// </summary>
-        /// <param name="request"></param>
-        void AbortMultipartUpload(AbortMultipartUploadRequest request);
-
-        /// <summary>
         /// For multi-node support (planned), this provides a means of creating
         /// a client that connects to the specified node id.
         /// </summary>

@@ -88,11 +88,29 @@ namespace Ds3Client {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The directory &quot;{0}&quot;does not exist..
+        /// </summary>
+        internal static string DirectoryDoesNotExistException {
+            get {
+                return ResourceManager.GetString("DirectoryDoesNotExistException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file &quot;{0}&quot; already exists. Read-DS3Object will not overwrite the file..
         /// </summary>
         internal static string FileAlreadyExistsException {
             get {
                 return ResourceManager.GetString("FileAlreadyExistsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &quot;{0}&quot; does not exist..
+        /// </summary>
+        internal static string FileDoesNotExistException {
+            get {
+                return ResourceManager.GetString("FileDoesNotExistException", resourceCulture);
             }
         }
         

@@ -92,25 +92,13 @@ namespace Ds3.Calls
         public Guid JobId { get; private set; }
         public long Offset { get; private set; }
 
-        [Obsolete]
-        public PutObjectRequest(Bucket bucket, string objectName, Stream content)
-            : this(bucket.Name, objectName, content)
-        {
-        }
-
-        [Obsolete]
-        public PutObjectRequest(string bucketName, string objectName, Stream content)
+        public PutObjectRequest(string bucketName, string objectName, Guid jobId, long offset, Stream content)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
-            this._content = content;
-        }
-
-        public PutObjectRequest(string bucketName, string objectName, Guid jobId, long offset, Stream content)
-            : this(bucketName, objectName, content)
-        {
             this.JobId = jobId;
             this.Offset = offset;
+            this._content = content;
             if (jobId != Guid.Empty)
             {
                 QueryParams.Add("job", jobId.ToString());
