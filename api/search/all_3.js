@@ -1,7 +1,7 @@
 var searchData=
 [
   ['calls',['Calls',['../namespace_ds3_1_1_calls.html',1,'Ds3']]],
-  ['datatransferred',['DataTransferred',['../interface_ds3_1_1_helpers_1_1_i_job.html#abdb0820db6b4d310d48a9da1bca81b45',1,'Ds3::Helpers::IJob']]],
+  ['datatransferred',['DataTransferred',['../interface_ds3_1_1_helpers_1_1_i_base_job.html#a46db3301db1acda19dacae7b22eda4e9',1,'Ds3::Helpers::IBaseJob']]],
   ['deletebucket',['DeleteBucket',['../interface_ds3_1_1_i_ds3_client.html#a18b864c5e045e27b597f923df1f0f499',1,'Ds3::IDs3Client']]],
   ['deletebucketrequest',['DeleteBucketRequest',['../class_ds3_1_1_calls_1_1_delete_bucket_request.html',1,'Ds3::Calls']]],
   ['deleteds3objecterror',['DeleteDs3ObjectError',['../class_ds3_1_1_models_1_1_delete_ds3_object_error.html',1,'Ds3::Models']]],
@@ -15,8 +15,8 @@ var searchData=
   ['ds3',['Ds3',['../namespace_ds3.html',1,'']]],
   ['ds3badresponseexception',['Ds3BadResponseException',['../class_ds3_1_1_runtime_1_1_ds3_bad_response_exception.html',1,'Ds3::Runtime']]],
   ['ds3badstatuscodeexception',['Ds3BadStatusCodeException',['../class_ds3_1_1_runtime_1_1_ds3_bad_status_code_exception.html',1,'Ds3::Runtime']]],
-  ['ds3builder',['Ds3Builder',['../class_ds3_1_1_ds3_builder.html',1,'Ds3']]],
   ['ds3builder',['Ds3Builder',['../class_ds3_1_1_ds3_builder.html#a91c737a658d9bff288fa877531e42a27',1,'Ds3.Ds3Builder.Ds3Builder(string endpoint, Credentials creds)'],['../class_ds3_1_1_ds3_builder.html#ac248147642725f6ae9aa95be4615dfe5',1,'Ds3.Ds3Builder.Ds3Builder(Uri endpoint, Credentials creds)']]],
+  ['ds3builder',['Ds3Builder',['../class_ds3_1_1_ds3_builder.html',1,'Ds3']]],
   ['ds3clienthelpers',['Ds3ClientHelpers',['../class_ds3_1_1_helpers_1_1_ds3_client_helpers.html',1,'Ds3::Helpers']]],
   ['ds3error',['Ds3Error',['../class_ds3_1_1_models_1_1_ds3_error.html',1,'Ds3::Models']]],
   ['ds3object',['Ds3Object',['../class_ds3_1_1_models_1_1_ds3_object.html',1,'Ds3::Models']]],
@@ -25,6 +25,13 @@ var searchData=
   ['ds3request',['Ds3Request',['../class_ds3_1_1_calls_1_1_ds3_request.html',1,'Ds3::Calls']]],
   ['ds3requestexception',['Ds3RequestException',['../class_ds3_1_1_runtime_1_1_ds3_request_exception.html',1,'Ds3::Runtime']]],
   ['helpers',['Helpers',['../namespace_ds3_1_1_helpers.html',1,'Ds3']]],
+  ['jobs',['Jobs',['../namespace_ds3_1_1_helpers_1_1_jobs.html',1,'Ds3::Helpers']]],
+  ['lang',['Lang',['../namespace_ds3_1_1_lang.html',1,'Ds3']]],
   ['models',['Models',['../namespace_ds3_1_1_models.html',1,'Ds3']]],
-  ['runtime',['Runtime',['../namespace_ds3_1_1_runtime.html',1,'Ds3']]]
+  ['progresstrackers',['ProgressTrackers',['../namespace_ds3_1_1_helpers_1_1_progress_trackers.html',1,'Ds3::Helpers']]],
+  ['rangetranslators',['RangeTranslators',['../namespace_ds3_1_1_helpers_1_1_range_translators.html',1,'Ds3::Helpers']]],
+  ['runtime',['Runtime',['../namespace_ds3_1_1_runtime.html',1,'Ds3']]],
+  ['streams',['Streams',['../namespace_ds3_1_1_helpers_1_1_streams.html',1,'Ds3::Helpers']]],
+  ['transferitemsources',['TransferItemSources',['../namespace_ds3_1_1_helpers_1_1_transfer_item_sources.html',1,'Ds3::Helpers']]],
+  ['transferrers',['Transferrers',['../namespace_ds3_1_1_helpers_1_1_transferrers.html',1,'Ds3::Helpers']]]
 ];

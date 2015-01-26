@@ -11,5 +11,6 @@ var namespace_ds3_1_1_models =
     [ "JobObjectList", "class_ds3_1_1_models_1_1_job_object_list.html", "class_ds3_1_1_models_1_1_job_object_list" ],
     [ "Node", "class_ds3_1_1_models_1_1_node.html", "class_ds3_1_1_models_1_1_node" ],
     [ "Owner", "class_ds3_1_1_models_1_1_owner.html", "class_ds3_1_1_models_1_1_owner" ],
+    [ "Range", "struct_ds3_1_1_models_1_1_range.html", "struct_ds3_1_1_models_1_1_range" ],
     [ "UploadPart", "class_ds3_1_1_models_1_1_upload_part.html", "class_ds3_1_1_models_1_1_upload_part" ]
 ];

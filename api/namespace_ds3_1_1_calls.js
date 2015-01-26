@@ -1,13 +1,9 @@
 var namespace_ds3_1_1_calls =
 [
-    [ "AbortMultipartUploadRequest", "class_ds3_1_1_calls_1_1_abort_multipart_upload_request.html", "class_ds3_1_1_calls_1_1_abort_multipart_upload_request" ],
     [ "AllocateJobChunkRequest", "class_ds3_1_1_calls_1_1_allocate_job_chunk_request.html", "class_ds3_1_1_calls_1_1_allocate_job_chunk_request" ],
     [ "AllocateJobChunkResponse", "class_ds3_1_1_calls_1_1_allocate_job_chunk_response.html", "class_ds3_1_1_calls_1_1_allocate_job_chunk_response" ],
     [ "BulkGetRequest", "class_ds3_1_1_calls_1_1_bulk_get_request.html", "class_ds3_1_1_calls_1_1_bulk_get_request" ],
     [ "BulkPutRequest", "class_ds3_1_1_calls_1_1_bulk_put_request.html", "class_ds3_1_1_calls_1_1_bulk_put_request" ],
-    [ "BulkRequest", "class_ds3_1_1_calls_1_1_bulk_request.html", "class_ds3_1_1_calls_1_1_bulk_request" ],
-    [ "CompleteMultipartUploadRequest", "class_ds3_1_1_calls_1_1_complete_multipart_upload_request.html", "class_ds3_1_1_calls_1_1_complete_multipart_upload_request" ],
-    [ "CompleteMultipartUploadResponse", "class_ds3_1_1_calls_1_1_complete_multipart_upload_response.html", "class_ds3_1_1_calls_1_1_complete_multipart_upload_response" ],
     [ "DeleteBucketRequest", "class_ds3_1_1_calls_1_1_delete_bucket_request.html", "class_ds3_1_1_calls_1_1_delete_bucket_request" ],
     [ "DeleteJobRequest", "class_ds3_1_1_calls_1_1_delete_job_request.html", "class_ds3_1_1_calls_1_1_delete_job_request" ],
     [ "DeleteObjectListRequest", "class_ds3_1_1_calls_1_1_delete_object_list_request.html", "class_ds3_1_1_calls_1_1_delete_object_list_request" ],
@@ -27,12 +23,10 @@ var namespace_ds3_1_1_calls =
     [ "GetServiceResponse", "class_ds3_1_1_calls_1_1_get_service_response.html", "class_ds3_1_1_calls_1_1_get_service_response" ],
     [ "HeadBucketRequest", "class_ds3_1_1_calls_1_1_head_bucket_request.html", "class_ds3_1_1_calls_1_1_head_bucket_request" ],
     [ "HeadBucketResponse", "class_ds3_1_1_calls_1_1_head_bucket_response.html", "class_ds3_1_1_calls_1_1_head_bucket_response" ],
-    [ "InitiateMultipartUploadRequest", "class_ds3_1_1_calls_1_1_initiate_multipart_upload_request.html", "class_ds3_1_1_calls_1_1_initiate_multipart_upload_request" ],
-    [ "InitiateMultipartUploadResponse", "class_ds3_1_1_calls_1_1_initiate_multipart_upload_response.html", "class_ds3_1_1_calls_1_1_initiate_multipart_upload_response" ],
+    [ "HeadObjectRequest", "class_ds3_1_1_calls_1_1_head_object_request.html", "class_ds3_1_1_calls_1_1_head_object_request" ],
+    [ "HeadObjectResponse", "class_ds3_1_1_calls_1_1_head_object_response.html", "class_ds3_1_1_calls_1_1_head_object_response" ],
     [ "JobResponse", "class_ds3_1_1_calls_1_1_job_response.html", "class_ds3_1_1_calls_1_1_job_response" ],
     [ "ModifyJobRequest", "class_ds3_1_1_calls_1_1_modify_job_request.html", "class_ds3_1_1_calls_1_1_modify_job_request" ],
     [ "PutBucketRequest", "class_ds3_1_1_calls_1_1_put_bucket_request.html", "class_ds3_1_1_calls_1_1_put_bucket_request" ],
-    [ "PutObjectRequest", "class_ds3_1_1_calls_1_1_put_object_request.html", "class_ds3_1_1_calls_1_1_put_object_request" ],
-    [ "PutPartRequest", "class_ds3_1_1_calls_1_1_put_part_request.html", "class_ds3_1_1_calls_1_1_put_part_request" ],
-    [ "PutPartResponse", "class_ds3_1_1_calls_1_1_put_part_response.html", "class_ds3_1_1_calls_1_1_put_part_response" ]
+    [ "PutObjectRequest", "class_ds3_1_1_calls_1_1_put_object_request.html", "class_ds3_1_1_calls_1_1_put_object_request" ]
 ];

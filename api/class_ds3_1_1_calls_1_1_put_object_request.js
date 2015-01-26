@@ -1,7 +1,5 @@
 var class_ds3_1_1_calls_1_1_put_object_request =
 [
-    [ "PutObjectRequest", "class_ds3_1_1_calls_1_1_put_object_request.html#a579820eb36c04cab87ac4a3a0975a812", null ],
-    [ "PutObjectRequest", "class_ds3_1_1_calls_1_1_put_object_request.html#a5f6cf068f5c9a8c8dc9339d286160a1a", null ],
     [ "PutObjectRequest", "class_ds3_1_1_calls_1_1_put_object_request.html#a471053befc14b9733c281271aa380f00", null ],
     [ "WithChecksum", "class_ds3_1_1_calls_1_1_put_object_request.html#a04a3127e51eca9939b53c21d328d6dcb", null ],
     [ "WithMetadata", "class_ds3_1_1_calls_1_1_put_object_request.html#ad9360813e337da3e9870ac003bf565a5", null ],

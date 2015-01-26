@@ -5,6 +5,5 @@ var searchData=
   ['buildfilegetter',['BuildFileGetter',['../class_ds3_1_1_helpers_1_1_file_helpers.html#a2e1b2381162b42c58cb04fc2244fa2f0',1,'Ds3::Helpers::FileHelpers']]],
   ['buildfileputter',['BuildFilePutter',['../class_ds3_1_1_helpers_1_1_file_helpers.html#ac96b69a8cfeeb079b5a8e50b4a455128',1,'Ds3::Helpers::FileHelpers']]],
   ['bulkget',['BulkGet',['../interface_ds3_1_1_i_ds3_client.html#aaf7ce2ff6940373e4ac5d6dee52c9fdc',1,'Ds3::IDs3Client']]],
-  ['bulkput',['BulkPut',['../interface_ds3_1_1_i_ds3_client.html#a971ad810491237993e35dde7ed6c5f06',1,'Ds3::IDs3Client']]],
-  ['bulkrequest',['BulkRequest',['../class_ds3_1_1_calls_1_1_bulk_request.html#ae1bb5cddea81543b3ae318ee43694601',1,'Ds3::Calls::BulkRequest']]]
+  ['bulkput',['BulkPut',['../interface_ds3_1_1_i_ds3_client.html#a971ad810491237993e35dde7ed6c5f06',1,'Ds3::IDs3Client']]]
 ];

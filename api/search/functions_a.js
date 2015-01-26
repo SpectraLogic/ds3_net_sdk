@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['putbucket',['PutBucket',['../interface_ds3_1_1_i_ds3_client.html#a13483c7f748469bd983a1d8e9ba35b9f',1,'Ds3::IDs3Client']]],
-  ['putobject',['PutObject',['../interface_ds3_1_1_i_ds3_client.html#a50f97a6c99bd6547908fccd100421876',1,'Ds3::IDs3Client']]],
-  ['putpart',['PutPart',['../interface_ds3_1_1_i_ds3_client.html#ac4321b04aa0fc29f32a25e6d50e81c10',1,'Ds3::IDs3Client']]]
+  ['startreadalljob',['StartReadAllJob',['../class_ds3_1_1_helpers_1_1_ds3_client_helpers.html#af3effe7e8105bd98c6a9800a327fde46',1,'Ds3.Helpers.Ds3ClientHelpers.StartReadAllJob()'],['../interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html#a9f71b403665489fb937ef970bff3ce1b',1,'Ds3.Helpers.IDs3ClientHelpers.StartReadAllJob()']]],
+  ['startreadjob',['StartReadJob',['../class_ds3_1_1_helpers_1_1_ds3_client_helpers.html#aeb72c519a17b34ef9ad41d490b311f01',1,'Ds3.Helpers.Ds3ClientHelpers.StartReadJob()'],['../interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html#a268aea880b8680e8d9c9a1eb7b6c64f7',1,'Ds3.Helpers.IDs3ClientHelpers.StartReadJob()']]],
+  ['startwritejob',['StartWriteJob',['../class_ds3_1_1_helpers_1_1_ds3_client_helpers.html#a7304db7c6e97823ee95d681d98586b90',1,'Ds3.Helpers.Ds3ClientHelpers.StartWriteJob()'],['../interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html#affb83089409889acafb0a2a2f5bde62f',1,'Ds3.Helpers.IDs3ClientHelpers.StartWriteJob()']]]
 ];
