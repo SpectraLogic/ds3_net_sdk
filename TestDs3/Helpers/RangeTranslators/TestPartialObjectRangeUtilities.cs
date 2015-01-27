@@ -23,7 +23,7 @@ using System.Linq;
 namespace TestDs3.Helpers.RangeTranslators
 {
     [TestFixture]
-    public class TestRequestRangeBuilder
+    public class TestPartialObjectRangeUtilities
     {
         private static IEnumerable<Range> _blobs = new[]
         {
@@ -66,7 +66,7 @@ namespace TestDs3.Helpers.RangeTranslators
         [Test]
         public void RangesForRequestsReturnsExpectedLookup()
         {
-            var result = RequestRangeBuilder.RangesForRequests(
+            var result = PartialObjectRangeUtilities.RangesForRequests(
                 _blobs.Select(p => new Blob(p, "bar")).Concat(_blobs.Select(p => new Blob(p, "foo"))),
                 _parts1.Select(p => new Ds3PartialObject(p, "bar")).Concat(_parts2.Select(p => new Ds3PartialObject(p, "foo")))
             );
@@ -96,11 +96,35 @@ namespace TestDs3.Helpers.RangeTranslators
         {
             Assert.AreEqual(
                 _expectedResults1.Sorted().ToArray(),
-                RequestRangeBuilder.RangesForObjectRequests(_blobs, _parts1).Sorted().ToArray()
+                PartialObjectRangeUtilities.RangesForObjectRequests(_blobs, _parts1).Sorted().ToArray()
             );
             Assert.AreEqual(
                 _expectedResults2.Sorted().ToArray(),
-                RequestRangeBuilder.RangesForObjectRequests(_blobs, _parts2).Sorted().ToArray()
+                PartialObjectRangeUtilities.RangesForObjectRequests(_blobs, _parts2).Sorted().ToArray()
+            );
+        }
+
+        [Test]
+        public void ObjectPartsForFullObjectsReturnsExpectedParts()
+        {
+            var fullObjects = new[] { "foo", "bar", "baz" };
+            var blobs = new[]
+            {
+                new Blob(Range.ByLength(10L, 10L), "hello"),
+                new Blob(Range.ByLength(0L, 123L), "baz"),
+                new Blob(Range.ByLength(15L, 15L), "bar"),
+                new Blob(Range.ByLength(100L, 10L), "foo"),
+                new Blob(Range.ByLength(0L, 15L), "bar"),
+                new Blob(Range.ByLength(0L, 100L), "foo"),
+            };
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    new Ds3PartialObject(Range.ByLength(0L, 123L), "baz"),
+                    new Ds3PartialObject(Range.ByLength(0L, 110L), "foo"),
+                    new Ds3PartialObject(Range.ByLength(0L, 30L), "bar"),
+                },
+                PartialObjectRangeUtilities.ObjectPartsForFullObjects(fullObjects, blobs)
             );
         }
     }

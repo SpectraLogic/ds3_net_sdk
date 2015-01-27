@@ -64,17 +64,23 @@ namespace Ds3.Helpers
             );
         }
 
-        public IPartialReadJob StartPartialReadJob(string bucket, IEnumerable<Ds3PartialObject> partialObjects)
+        public IPartialReadJob StartPartialReadJob(
+            string bucket,
+            IEnumerable<string> fullObjects,
+            IEnumerable<Ds3PartialObject> partialObjects)
         {
             var sortedPartialObjects = VerifyObjectCount(partialObjects);
             sortedPartialObjects.Sort();
             var jobResponse = this._client.BulkGet(
-                new BulkGetRequest(bucket, Enumerable.Empty<string>(), sortedPartialObjects)
+                new BulkGetRequest(bucket, fullObjects, sortedPartialObjects)
                     .WithChunkOrdering(ChunkOrdering.None)
             );
             var blobs = Blob.Convert(jobResponse).ToList();
             blobs.Sort();
-            var rangesForRequests = RequestRangeBuilder.RangesForRequests(blobs, sortedPartialObjects);
+            var allItems = sortedPartialObjects
+                .Concat(PartialObjectRangeUtilities.ObjectPartsForFullObjects(fullObjects, blobs))
+                .ToList();
+            var rangesForRequests = PartialObjectRangeUtilities.RangesForRequests(blobs, allItems);
             return new PartialReadJob(
                 jobResponse.BucketName,
                 jobResponse.JobId,
@@ -82,8 +88,8 @@ namespace Ds3.Helpers
                 new PartialReadTransferrer(),
                 rangesForRequests,
                 new RequestToObjectRangeTranslator(rangesForRequests)
-                    .ComposedWith(new ObjectToPartRangeTranslator(sortedPartialObjects)),
-                sortedPartialObjects.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po))
+                    .ComposedWith(new ObjectToPartRangeTranslator(allItems)),
+                allItems.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po))
             );
         }
 

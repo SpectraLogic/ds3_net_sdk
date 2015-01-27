@@ -80,7 +80,7 @@
     <Compile Include="Helpers\Blob.cs" />
     <Compile Include="Helpers\Jobs\FullObjectJob.cs" />
     <Compile Include="Helpers\Jobs\PartialReadJob.cs" />
-    <Compile Include="Helpers\RangeTranslators\RequestRangeBuilder.cs" />
+    <Compile Include="Helpers\RangeTranslators\PartialObjectRangeUtilities.cs" />
     <Compile Include="Helpers\Streams\IResourceStore.cs" />
     <Compile Include="Helpers\Transferrers\ITransferer.cs" />
     <Compile Include="Helpers\TransferItemSources\ReadTransferItemSource.cs" />

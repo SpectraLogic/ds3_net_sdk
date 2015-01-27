@@ -57,9 +57,13 @@ namespace Ds3.Helpers
         /// time, but those ranges must be non-overlapping.
         /// </summary>
         /// <param name="bucket">The name of the bucket to get the objects from.</param>
+        /// <param name="fullObjects">The list of full objects to get.</param>
         /// <param name="partialObjects">The object parts to get.</param>
         /// <returns>The IPartialReadJob implementation that can get each partial object per the DS3 protocol.</returns>
-        IPartialReadJob StartPartialReadJob(string bucket, IEnumerable<Ds3PartialObject> partialObjects);
+        IPartialReadJob StartPartialReadJob(
+            string bucket,
+            IEnumerable<string> fullObjects,
+            IEnumerable<Ds3PartialObject> partialObjects);
 
         /// <summary>
         /// Returns information about all of the objects in a bucket.

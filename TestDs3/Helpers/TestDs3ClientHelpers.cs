@@ -125,8 +125,8 @@ namespace TestDs3.Helpers
                 new Ds3PartialObject(Range.ByLength(0L, 4L), "foo"),
                 new Ds3PartialObject(Range.ByLength(6L, 10L), "foo"),
                 new Ds3PartialObject(Range.ByLength(10L, 26L), "bar"),
-                new Ds3PartialObject(Range.ByLength(0L, 10L), "hello"),
             };
+            var fullObjects = new[] { "hello" };
 
             var initialJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),
@@ -165,7 +165,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BulkGet(ItIsBulkGetRequest(
                     Stubs.BucketName,
                     ChunkOrdering.None,
-                    Enumerable.Empty<string>(),
+                    fullObjects,
                     partialObjects
                 )))
                 .Returns(initialJobResponse);
@@ -174,7 +174,7 @@ namespace TestDs3.Helpers
                 .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object)
-                .StartPartialReadJob(Stubs.BucketName, partialObjects);
+                .StartPartialReadJob(Stubs.BucketName, fullObjects, partialObjects);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<Ds3PartialObject>();
@@ -189,13 +189,14 @@ namespace TestDs3.Helpers
             clientFactory.VerifyAll();
             client.VerifyAll();
 
+            var fullObjectPart = new Ds3PartialObject(Range.ByLength(0L, 10L), fullObjects[0]);
             CollectionAssert.AreEqual(
                 new[]
                 {
                     new { Key = partialObjects[0], Value = "abcd" },
                     new { Key = partialObjects[1], Value = "ghijklmnop" },
                     new { Key = partialObjects[2], Value = "abcdefghijklmnopqrstuvwxyz" },
-                    new { Key = partialObjects[3], Value = "ABCDefGHIJ" },
+                    new { Key = fullObjectPart, Value = "ABCDefGHIJ" },
                 }.OrderBy(it => it.Key).ToArray(),
                 (
                     from item in streams
@@ -207,7 +208,7 @@ namespace TestDs3.Helpers
                 new[] { 1L, 4L, 4L, 5L, 6L, 10L, 20L },
                 dataTransfers.Sorted().ToArray()
             );
-            CollectionAssert.AreEquivalent(partialObjects, itemsCompleted);
+            CollectionAssert.AreEquivalent(partialObjects.Concat(new[] { fullObjectPart }), itemsCompleted);
         }
 
         [Test, Timeout(1000)]

@@ -62,7 +62,7 @@
     <Compile Include="Helpers\JobResponseStubs.cs" />
     <Compile Include="Helpers\RangeTranslators\TestMappingRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestObjectToPartRangeTranslator.cs" />
-    <Compile Include="Helpers\RangeTranslators\TestRequestRangeBuilder.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestPartialObjectRangeUtilities.cs" />
     <Compile Include="Helpers\RangeTranslators\TestRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestRequestToObjectRangeTranslator.cs" />
     <Compile Include="Helpers\MockStream.cs" />

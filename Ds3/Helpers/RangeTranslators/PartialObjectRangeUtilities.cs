@@ -20,8 +20,20 @@ using System.Linq;
 
 namespace Ds3.Helpers.RangeTranslators
 {
-    internal static class RequestRangeBuilder
+    internal static class PartialObjectRangeUtilities
     {
+        public static IEnumerable<Ds3PartialObject> ObjectPartsForFullObjects(
+            IEnumerable<string> fullObjects,
+            IEnumerable<Blob> blobs)
+        {
+            var fullObjectsSet = new HashSet<string>(fullObjects);
+            return
+                from blob in blobs
+                where fullObjectsSet.Contains(blob.Context)
+                group blob.Range.End by blob.Context into grp
+                select new Ds3PartialObject(Range.ByPosition(0L, grp.Max()), grp.Key);
+        }
+
         public static ILookup<Blob, Range> RangesForRequests(
             IEnumerable<Blob> blobs,
             IEnumerable<Ds3PartialObject> partialObjects)
