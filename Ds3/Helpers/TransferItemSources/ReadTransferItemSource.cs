@@ -23,7 +23,7 @@ namespace Ds3.Helpers.TransferItemSources
 {
     internal class ReadTransferItemSource : ITransferItemSource
     {
-        private readonly object _lock = new object();
+        private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
         private readonly IDs3Client _client;
         private readonly Guid _jobId;
@@ -51,15 +51,26 @@ namespace Ds3.Helpers.TransferItemSources
 
         public IEnumerable<TransferItem> EnumerateAvailableTransfers()
         {
-            return EnumerateTransferItemLists().SelectMany(it => it);
+            // Flatten all batches into a single enumerable.
+            return EnumerateTransferItemBatches().SelectMany(it => it);
         }
 
-        private IEnumerable<IEnumerable<TransferItem>> EnumerateTransferItemLists()
+        /// <summary>
+        /// This generator method yields batches of transfer items. After yielding a
+        /// batch, it blocks until the consumer passes each of the batch items to
+        /// CompleteBlob. It does so using the _numberInProgress countdown event.
+        /// If the consumer calls Stop, the generator terminates.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<IEnumerable<TransferItem>> EnumerateTransferItemBatches()
         {
+            // If the wait handle resumed because of _numberInProgress, continue iterating (that's the 0 == ...).
+            // Otherwise it resumed because of the stop, so we'll terminate.
             while (0 == WaitHandle.WaitAny(new[] { this._numberInProgress.WaitHandle, this._stopEvent.WaitHandle }))
             {
+                // Get the current batch of transfer items.
                 TransferItem[] transferItems;
-                lock (this._lock)
+                lock (this._blobsRemainingLock)
                 {
                     if (this._blobsRemaining.Count == 0)
                     {
@@ -67,10 +78,14 @@ namespace Ds3.Helpers.TransferItemSources
                     }
                     transferItems = GetNextTransfers();
                 }
+
+                // We're about to return more items, so reset the counter.
                 if (transferItems.Length > 0)
                 {
                     this._numberInProgress.Reset(transferItems.Length);
                 }
+
+                // Return the current batch.
                 yield return transferItems;
             }
         }
@@ -105,7 +120,7 @@ namespace Ds3.Helpers.TransferItemSources
 
         public void CompleteBlob(Blob blob)
         {
-            lock (this._lock)
+            lock (this._blobsRemainingLock)
             {
                 this._blobsRemaining.Remove(blob);
             }

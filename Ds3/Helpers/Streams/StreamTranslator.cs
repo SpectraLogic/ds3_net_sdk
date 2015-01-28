@@ -132,25 +132,6 @@ namespace Ds3.Helpers.Streams
             this.Position += count;
         }
 
-        private void TranslateOperation(int count, Action<Stream, int, int> performIo)
-        {
-            var contextRange = ContextRange.Create(Range.ByLength(this.Position, count), this._outerContext);
-            var progress = 0;
-            foreach (var range in this._rangeTranslator.Translate(contextRange))
-            {
-                // We know that every range length <= count.
-                var rangeLength = (int)range.Range.Length;
-                this._writtenContexts.Add(range.Context);
-                this._streamStore.Access(range.Context, stream =>
-                {
-                    stream.Position = range.Range.Start;
-                    performIo(stream, progress, rangeLength);
-                });
-                progress += rangeLength;
-            }
-            this.Position += count;
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (this._disposed)

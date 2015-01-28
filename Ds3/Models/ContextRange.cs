@@ -35,6 +35,7 @@ namespace Ds3.Models
 
         public override int GetHashCode()
         {
+            // Algorithm based on http://stackoverflow.com/a/263416/472522
             unchecked
             {
                 int hash = 486187739;
