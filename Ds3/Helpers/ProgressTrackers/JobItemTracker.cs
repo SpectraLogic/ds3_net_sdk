@@ -30,65 +30,70 @@ namespace Ds3.Helpers.ProgressTrackers
     /// </summary>
     internal class JobItemTracker<T> where T : IComparable<T>
     {
-        private readonly IDictionary<T, IRangeTransferTracker> _trackers;
-        private readonly ISet<T> _activeJobItems;
-        private readonly object _activeJobItemsLock = new object();
+        private readonly object _rangesLock = new object();
+        private readonly IDictionary<T, ISet<Range>> _ranges;
 
         public event Action<long> DataTransferred;
         public event Action<T> ItemCompleted;
 
-
         public JobItemTracker(IEnumerable<ContextRange<T>> ranges)
-            : this(BuildTrackers(ranges))
         {
-        }
-
-        private static IDictionary<T, IRangeTransferTracker> BuildTrackers(IEnumerable<ContextRange<T>> ranges)
-        {
-            return ranges
-                .GroupBy(
-                    range => range.Context,
-                    range => range.Range
-                )
-                .ToDictionary(
-                    grp => grp.Key,
-                    grp => new ConcurrentRangeTransferTracker(new RangeTransferTracker(grp))
-                        as IRangeTransferTracker
-                );
-        }
-
-        public JobItemTracker(IDictionary<T, IRangeTransferTracker> trackers)
-        {
-            this._trackers = trackers;
-            this._activeJobItems = new HashSet<T>(this._trackers.Keys);
-            foreach (var kvp in trackers)
-            {
-                kvp.Value.DataTransferred += size => this.DataTransferred.Call(size);
-                kvp.Value.Completed += () => OnItemCompleted(kvp.Key);
-            }
+            this._ranges = ranges
+                .GroupBy(range => range.Context, range => range.Range)
+                .ToDictionary(grp => grp.Key, grp => new SortedSet<Range>(grp) as ISet<Range>);
         }
 
         public void CompleteRange(ContextRange<T> contextRange)
         {
-            this._trackers[contextRange.Context].CompleteRange(contextRange.Range);
+            lock (this._rangesLock)
+            {
+                ISet<Range> rangesForContext;
+                if (this._ranges.TryGetValue(contextRange.Context, out rangesForContext))
+                {
+                    CompleteRangeForItem(rangesForContext, contextRange.Range);
+                    this.DataTransferred.Call(contextRange.Range.Length);
+                    if (rangesForContext.Count == 0)
+                    {
+                        this._ranges.Remove(contextRange.Context);
+                        this.ItemCompleted.Call(contextRange.Context);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("contextRange", Resources.RangeNotTrackedException);
+                }
+            }
         }
 
-        private void OnItemCompleted(T obj)
+        private static void CompleteRangeForItem(ISet<Range> rangesForItem, Range rangeToRemove)
         {
-            lock (this._activeJobItemsLock)
+            var existingRange = rangesForItem.LastOrDefault(range => range.Start <= rangeToRemove.Start);
+            if (existingRange.Equals(default(Range)))
             {
-                this._activeJobItems.Remove(obj);
+                throw new ArgumentOutOfRangeException("rangeToRemove", Resources.RangeNotTrackedException);
             }
-            this.ItemCompleted.Call(obj);
+            if (rangeToRemove.End > existingRange.End)
+            {
+                throw new ArgumentOutOfRangeException("rangeToRemove", Resources.RangeNotTrackedException);
+            }
+            rangesForItem.Remove(existingRange);
+            if (rangeToRemove.Start > existingRange.Start)
+            {
+                rangesForItem.Add(Range.ByLength(existingRange.Start, rangeToRemove.Start - existingRange.Start));
+            }
+            if (rangeToRemove.End < existingRange.End)
+            {
+                rangesForItem.Add(Range.ByLength(rangeToRemove.End + 1, existingRange.End - rangeToRemove.End));
+            }
         }
 
         public bool Completed
         {
             get
             {
-                lock (this._activeJobItemsLock)
+                lock (this._rangesLock)
                 {
-                    return this._activeJobItems.Count == 0;
+                    return this._ranges.Count == 0;
                 }
             }
         }

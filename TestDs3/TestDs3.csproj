@@ -83,7 +83,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDs3Client.cs" />
     <Compile Include="Helpers\TestDs3ClientHelpers.cs" />
-    <Compile Include="Helpers\ProgressTrackers\TestRangeTransferTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DS3\Ds3.csproj">

@@ -85,7 +85,6 @@
     <Compile Include="Helpers\TransferItemSources\TransferItem.cs" />
     <Compile Include="Helpers\TransferItemSources\ITransferItemSource.cs" />
     <Compile Include="Helpers\TransferItemSources\WriteTransferItemSource.cs" />
-    <Compile Include="Helpers\ProgressTrackers\ConcurrentRangeTransferTracker.cs" />
     <Compile Include="Helpers\Streams\ResourceStore.cs" />
     <Compile Include="Helpers\Transferrers\ReadTransferrer.cs" />
     <Compile Include="Helpers\Transferrers\WriteTransferrer.cs" />
@@ -98,12 +97,10 @@
     <Compile Include="Helpers\Ds3ClientHelpers.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Helpers\IBaseJob.cs" />
-    <Compile Include="Helpers\ProgressTrackers\IRangeTransferTracker.cs" />
     <Compile Include="Helpers\RangeTranslators\IRangeTranslator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helpers\ProgressTrackers\JobItemTracker.cs" />
-    <Compile Include="Helpers\ProgressTrackers\RangeTransferTracker.cs" />
     <Compile Include="Helpers\RangeTranslators\RequestToObjectRangeTranslator.cs">
       <SubType>Code</SubType>
     </Compile>
