@@ -20,31 +20,53 @@ using Ds3.Helpers.Transferrers;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Ds3.Helpers.Jobs
 {
     internal class PartialReadJob : Job<IPartialReadJob, Ds3PartialObject>, IPartialReadJob
     {
+        public static IPartialReadJob Create(
+            JobResponse jobResponse,
+            IEnumerable<string> fullObjects,
+            IEnumerable<Ds3PartialObject> partialObjects,
+            ITransferItemSource transferItemSource)
+        {
+            var blobs = Blob.Convert(jobResponse).ToList();
+            var allItems = partialObjects
+                .Concat(PartialObjectRangeUtilities.ObjectPartsForFullObjects(fullObjects, blobs))
+                .ToList();
+            return new PartialReadJob(
+                jobResponse.BucketName,
+                jobResponse.JobId,
+                transferItemSource,
+                PartialObjectRangeUtilities.RangesForRequests(blobs, allItems),
+                allItems,
+                allItems.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po))
+            );
+        }
+
         public PartialReadJob(
             string bucketName,
             Guid jobId,
             ITransferItemSource transferItemSource,
-            ITransferrer transferrer,
             ILookup<Blob, Range> rangesForRequests,
-            IRangeTranslator<Blob, Ds3PartialObject> rangeTranslator,
+            IEnumerable<Ds3PartialObject> allItems,
             IEnumerable<ContextRange<Ds3PartialObject>> itemsToTrack)
                 : base(
                     bucketName,
                     jobId,
                     transferItemSource,
-                    transferrer,
+                    new PartialReadTransferrer(),
                     rangesForRequests,
-                    rangeTranslator,
+                    new RequestToObjectRangeTranslator(rangesForRequests)
+                        .ComposedWith(new ObjectToPartRangeTranslator(allItems)),
                     itemsToTrack
                 )
         {
+            this.AllItems = allItems;
         }
+
+        public IEnumerable<Ds3PartialObject> AllItems { get; private set; }
     }
 }

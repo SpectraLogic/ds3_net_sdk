@@ -44,7 +44,7 @@ namespace Ds3.Helpers.RangeTranslators
                 join partsOfObj in
                     from po in partialObjects group po.Range by po.Context
                     on blobsOfObj.Key equals partsOfObj.Key
-                from range in RangesForObjectRequests(blobsOfObj, partsOfObj)
+                from range in RangesForObjectRequests(blobsOfObj.OrderBy(r => r), partsOfObj.OrderBy(r => r))
                 group range.Range by new Blob(range.Context, blobsOfObj.Key)
             ).ToLookup();
         }

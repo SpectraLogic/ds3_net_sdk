@@ -26,13 +26,29 @@ namespace Ds3.Helpers.Jobs
 {
     internal class FullObjectJob : Job<IJob, string>, IJob
     {
+        public static IJob Create(
+            JobResponse jobResponse,
+            ITransferItemSource transferItemSource,
+            ITransferrer transferrer)
+        {
+            var blobs = Blob.Convert(jobResponse);
+            var rangesForRequests = blobs.ToLookup(b => b, b => b.Range);
+            return new FullObjectJob(
+                jobResponse.BucketName,
+                jobResponse.JobId,
+                transferItemSource,
+                transferrer,
+                rangesForRequests,
+                blobs
+            );
+        }
+
         public FullObjectJob(
             string bucketName,
             Guid jobId,
             ITransferItemSource transferItemSource,
             ITransferrer transferrer,
             ILookup<Blob, Range> rangesForRequests,
-            IRangeTranslator<Blob, string> rangeTranslator,
             IEnumerable<ContextRange<string>> itemsToTrack)
                 : base(
                     bucketName,
@@ -40,7 +56,7 @@ namespace Ds3.Helpers.Jobs
                     transferItemSource,
                     transferrer,
                     rangesForRequests,
-                    rangeTranslator,
+                    new RequestToObjectRangeTranslator(rangesForRequests),
                     itemsToTrack
                 )
         {

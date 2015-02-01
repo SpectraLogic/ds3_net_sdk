@@ -175,6 +175,10 @@ namespace TestDs3.Helpers
 
             var job = new Ds3ClientHelpers(client.Object)
                 .StartPartialReadJob(Stubs.BucketName, fullObjects, partialObjects);
+            CollectionAssert.AreEquivalent(
+                partialObjects.Concat(new[] { new Ds3PartialObject(Range.ByLength(0L, 10L), "hello") }),
+                job.AllItems
+            );
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<Ds3PartialObject>();

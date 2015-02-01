@@ -14,12 +14,16 @@
  */
 
 using Ds3.Models;
-using System;
-using System.IO;
+using System.Collections.Generic;
 
 namespace Ds3.Helpers
 {
     public interface IPartialReadJob : IBaseJob<IPartialReadJob, Ds3PartialObject>
     {
+        /// <summary>
+        /// All of the items that this job will transfer. For full
+        /// objects, this is the full object as a single Ds3PartialObject.
+        /// </summary>
+        IEnumerable<Ds3PartialObject> AllItems { get; }
     }
 }

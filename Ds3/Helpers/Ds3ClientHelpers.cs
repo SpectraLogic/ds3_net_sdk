@@ -15,7 +15,6 @@
 
 using Ds3.Calls;
 using Ds3.Helpers.Jobs;
-using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.TransferItemSources;
 using Ds3.Helpers.Transferrers;
 using Ds3.Models;
@@ -44,7 +43,7 @@ namespace Ds3.Helpers
                 bucket,
                 VerifyObjectCount(objectsToWrite)
             ));
-            return BuildJob(
+            return FullObjectJob.Create(
                 jobResponse,
                 new WriteTransferItemSource(this._client, jobResponse),
                 new WriteTransferrer()
@@ -57,7 +56,7 @@ namespace Ds3.Helpers
                 new BulkGetRequest(bucket, VerifyObjectCount(objectsToRead))
                     .WithChunkOrdering(ChunkOrdering.None)
             );
-            return BuildJob(
+            return FullObjectJob.Create(
                 jobResponse,
                 new ReadTransferItemSource(this._client, jobResponse),
                 new ReadTransferrer()
@@ -69,27 +68,21 @@ namespace Ds3.Helpers
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects)
         {
-            var sortedPartialObjects = VerifyObjectCount(partialObjects);
-            sortedPartialObjects.Sort();
+            var partialObjectList = new SortedSet<Ds3PartialObject>(partialObjects);
+            var fullObjectList = fullObjects.ToList();
+            if (partialObjectList.Count + fullObjectList.Count == 0)
+            {
+                throw new InvalidOperationException(Resources.NoObjectsToTransferException);
+            }
             var jobResponse = this._client.BulkGet(
-                new BulkGetRequest(bucket, fullObjects, sortedPartialObjects)
+                new BulkGetRequest(bucket, fullObjectList, partialObjectList)
                     .WithChunkOrdering(ChunkOrdering.None)
             );
-            var blobs = Blob.Convert(jobResponse).ToList();
-            blobs.Sort();
-            var allItems = sortedPartialObjects
-                .Concat(PartialObjectRangeUtilities.ObjectPartsForFullObjects(fullObjects, blobs))
-                .ToList();
-            var rangesForRequests = PartialObjectRangeUtilities.RangesForRequests(blobs, allItems);
-            return new PartialReadJob(
-                jobResponse.BucketName,
-                jobResponse.JobId,
-                new ReadTransferItemSource(this._client, jobResponse),
-                new PartialReadTransferrer(),
-                rangesForRequests,
-                new RequestToObjectRangeTranslator(rangesForRequests)
-                    .ComposedWith(new ObjectToPartRangeTranslator(allItems)),
-                allItems.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po))
+            return PartialReadJob.Create(
+                jobResponse,
+                fullObjectList,
+                partialObjectList,
+                new ReadTransferItemSource(this._client, jobResponse)
             );
         }
 
@@ -151,28 +144,10 @@ namespace Ds3.Helpers
             {
                 throw new InvalidOperationException(Resources.ExpectedPutJobButWasGetJobException);
             }
-            return BuildJob(
+            return FullObjectJob.Create(
                 jobResponse,
                 new ReadTransferItemSource(this._client, jobResponse),
                 new ReadTransferrer()
-            );
-        }
-
-        private static IJob BuildJob(
-            JobResponse jobResponse,
-            ITransferItemSource transferItemSource,
-            ITransferrer transferrer)
-        {
-            var blobs = Blob.Convert(jobResponse);
-            var rangesForRequests = blobs.ToLookup(b => b, b => b.Range);
-            return new FullObjectJob(
-                jobResponse.BucketName,
-                jobResponse.JobId,
-                transferItemSource,
-                transferrer,
-                rangesForRequests,
-                new RequestToObjectRangeTranslator(rangesForRequests),
-                blobs
             );
         }
     }
