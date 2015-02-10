@@ -39,7 +39,8 @@ namespace TestDs3.Helpers
                 new DateTime(2015, 1, 11, 11, 54, 0),
                 ChunkOrdering.None,
                 Nodes,
-                chunks
+                chunks,
+                JobStatus.IN_PROGRESS
             );
         }
 

@@ -75,6 +75,7 @@
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
     <Compile Include="Calls\HeadObjectResponse.cs" />
+    <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Calls\ModifyJobRequest.cs" />
     <Compile Include="Calls\DeleteJobRequest.cs" />
     <Compile Include="Helpers\Blob.cs" />
