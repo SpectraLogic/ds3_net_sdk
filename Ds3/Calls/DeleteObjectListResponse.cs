@@ -27,7 +27,7 @@ namespace Ds3.Calls
         public IEnumerable<Ds3Object> DeletedObjects { get; private set; }
         public IEnumerable<DeleteDs3ObjectError> DeleteErrors { get; private set; }
 
-        internal DeleteObjectListResponse(
+        public DeleteObjectListResponse(
             IEnumerable<Ds3Object> deletedObjects,
             IEnumerable<DeleteDs3ObjectError> deleteErrors)
         {
