@@ -26,9 +26,9 @@ namespace Ds3.Calls
             // Prevent non-internal implementations.
         }
 
-        public static GetAvailableJobChunksResponse Success(JobResponse jobResponse)
+        public static GetAvailableJobChunksResponse Success(TimeSpan retryAfter, JobResponse jobResponse)
         {
-            return new SuccessResponse(jobResponse);
+            return new SuccessResponse(retryAfter, jobResponse);
         }
 
         public static GetAvailableJobChunksResponse JobGone
@@ -41,38 +41,50 @@ namespace Ds3.Calls
             return new RetryAfterResponse(retryAfter);
         }
 
-        public abstract void Match(Action<JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter);
+        public void Match(Action<TimeSpan, JobResponse> success, Action<TimeSpan> retryAfter)
+        {
+            this.Match(success, () => { throw new InvalidOperationException(Resources.JobGoneException); }, retryAfter);
+        }
 
-        public abstract T Match<T>(Func<JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter);
+        public T Match<T>(Func<TimeSpan, JobResponse, T> success, Func<TimeSpan, T> retryAfter)
+        {
+            return this.Match(success, () => { throw new InvalidOperationException(Resources.JobGoneException); }, retryAfter);
+        }
+
+        public abstract void Match(Action<TimeSpan, JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter);
+
+        public abstract T Match<T>(Func<TimeSpan, JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter);
 
         private class SuccessResponse : GetAvailableJobChunksResponse
         {
+            private readonly TimeSpan _retryAfter;
             private readonly JobResponse _jobResponse;
 
-            public SuccessResponse(JobResponse jobResponse)
+            public SuccessResponse(TimeSpan retryAfter, JobResponse jobResponse)
             {
+                this._retryAfter = retryAfter;
                 this._jobResponse = jobResponse;
             }
 
-            public override void Match(Action<JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter)
+            public override void Match(Action<TimeSpan, JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter)
             {
-                success(this._jobResponse);
+                success(this._retryAfter, this._jobResponse);
             }
 
-            public override T Match<T>(Func<JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter)
+            public override T Match<T>(Func<TimeSpan, JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter)
             {
-                return success(this._jobResponse);
+                return success(this._retryAfter, this._jobResponse);
             }
         }
 
         private class JobGoneResponse : GetAvailableJobChunksResponse
         {
-            public override void Match(Action<JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter)
+            public override void Match(Action<TimeSpan, JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter)
             {
                 jobGone();
             }
 
-            public override T Match<T>(Func<JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter)
+            public override T Match<T>(Func<TimeSpan, JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter)
             {
                 return jobGone();
             }
@@ -87,12 +99,12 @@ namespace Ds3.Calls
                 this._retryAfter = retryAfter;
             }
 
-            public override void Match(Action<JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter)
+            public override void Match(Action<TimeSpan, JobResponse> success, Action jobGone, Action<TimeSpan> retryAfter)
             {
                 retryAfter(_retryAfter);
             }
 
-            public override T Match<T>(Func<JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter)
+            public override T Match<T>(Func<TimeSpan, JobResponse, T> success, Func<T> jobGone, Func<TimeSpan, T> retryAfter)
             {
                 return retryAfter(_retryAfter);
             }

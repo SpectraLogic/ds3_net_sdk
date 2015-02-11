@@ -77,28 +77,45 @@
     <Compile Include="Calls\HeadObjectResponse.cs" />
     <Compile Include="Calls\ModifyJobRequest.cs" />
     <Compile Include="Calls\DeleteJobRequest.cs" />
-    <Compile Include="Helpers\ConcurrentObjectPartTracker.cs" />
-    <Compile Include="Helpers\CriticalSectionExecutor.cs" />
-    <Compile Include="Helpers\DisposableCache.cs" />
+    <Compile Include="Helpers\Blob.cs" />
+    <Compile Include="Helpers\Jobs\FullObjectJob.cs" />
+    <Compile Include="Helpers\Streams\IResourceStore.cs" />
+    <Compile Include="Helpers\Transferrers\ITransferer.cs" />
+    <Compile Include="Helpers\TransferItemSources\ReadTransferItemSource.cs" />
+    <Compile Include="Helpers\TransferItemSources\TransferItem.cs" />
+    <Compile Include="Helpers\TransferItemSources\ITransferItemSource.cs" />
+    <Compile Include="Helpers\TransferItemSources\WriteTransferItemSource.cs" />
+    <Compile Include="Helpers\Streams\ResourceStore.cs" />
+    <Compile Include="Helpers\Transferrers\ReadTransferrer.cs" />
+    <Compile Include="Helpers\Transferrers\WriteTransferrer.cs" />
+    <Compile Include="Lang\EventExtensions.cs" />
+    <Compile Include="Lang\Parallel.cs" />
+    <Compile Include="Lang\ThreadSafeEnumerator.cs" />
+    <Compile Include="Models\ContextRange.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Helpers\Ds3ClientHelpers.cs" />
-    <Compile Include="Helpers\EnumerableAlgorithms.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
-    <Compile Include="Helpers\IObjectPartTracker.cs" />
-    <Compile Include="Helpers\JobPartTracker.cs" />
-    <Compile Include="Helpers\JobPartTrackerFactory.cs" />
-    <Compile Include="Helpers\ObjectPart.cs" />
-    <Compile Include="Helpers\ObjectPartPlanner.cs" />
-    <Compile Include="Helpers\ObjectPartTracker.cs" />
-    <Compile Include="Helpers\StreamWindowFactory.cs" />
+    <Compile Include="Helpers\IBaseJob.cs" />
+    <Compile Include="Helpers\RangeTranslators\IRangeTranslator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\ProgressTrackers\JobItemTracker.cs" />
+    <Compile Include="Helpers\RangeTranslators\RequestToObjectRangeTranslator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\RangeTranslators\MappingRangeTranslator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\RangeTranslators\RangeMapping.cs" />
+    <Compile Include="Helpers\Streams\StreamTranslator.cs" />
     <Compile Include="IDs3ClientFactory.cs" />
     <Compile Include="Helpers\IDs3ClientHelpers.cs" />
-    <Compile Include="Helpers\Job.cs" />
+    <Compile Include="Helpers\Jobs\Job.cs" />
     <Compile Include="Helpers\IJob.cs" />
-    <Compile Include="Helpers\JobRecoveryException.cs" />
-    <Compile Include="Helpers\WindowedStream.cs" />
-    <Compile Include="Helpers\WriteJob.cs" />
-    <Compile Include="Helpers\ReadJob.cs" />
     <Compile Include="IDs3Client.cs" />
+    <Compile Include="Lang\Grouping.cs" />
+    <Compile Include="Lang\Lookup.cs" />
     <Compile Include="Models\Checksum.cs" />
     <Compile Include="Models\ChunkOrdering.cs" />
     <Compile Include="Models\DeleteDs3ObjectError.cs" />
@@ -115,7 +132,6 @@
     <Compile Include="Models\Bucket.cs" />
     <Compile Include="Calls\BulkGetRequest.cs" />
     <Compile Include="Calls\BulkPutRequest.cs" />
-    <Compile Include="Calls\BulkRequest.cs" />
     <Compile Include="Calls\JobResponse.cs" />
     <Compile Include="Calls\DeleteBucketRequest.cs" />
     <Compile Include="Calls\DeleteObjectRequest.cs" />
@@ -129,6 +145,7 @@
     <Compile Include="Calls\Ds3Request.cs" />
     <Compile Include="Calls\PutBucketRequest.cs" />
     <Compile Include="Calls\PutObjectRequest.cs" />
+    <Compile Include="Models\Range.cs" />
     <Compile Include="Models\UploadPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
@@ -170,6 +187,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

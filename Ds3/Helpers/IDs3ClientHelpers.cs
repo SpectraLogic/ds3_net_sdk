@@ -34,7 +34,7 @@ namespace Ds3.Helpers
 
         /// <summary>
         /// Runs a DS3 bulk GET request with a set of objects and returns an
-        /// interface that can GET individual objects efficiently to the server.
+        /// interface that can GET individual objects efficiently from the server.
         /// </summary>
         /// <param name="bucket">The name of the bucket to get the objects from.</param>
         /// <param name="objectsToRead">The object names to get.</param>
@@ -82,13 +82,5 @@ namespace Ds3.Helpers
         /// <param name="jobId"></param>
         /// <returns>An IJob implementation that can put each object per the DS3 protocol.</returns>
         IJob RecoverWriteJob(Guid jobId);
-
-        /// <summary>
-        /// Determines the state of an existing bulk GET job and returns
-        /// an interface that can GET the remaining objects efficiently.
-        /// </summary>
-        /// <param name="jobId"></param>
-        /// <returns>An IJob implementation that can get each object per the DS3 protocol.</returns>
-        IJob RecoverReadJob(Guid jobId);
     }
 }

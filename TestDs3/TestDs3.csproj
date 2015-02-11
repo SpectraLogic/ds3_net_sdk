@@ -59,27 +59,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestReadJob.cs" />
-    <Compile Include="TestWriteJob.cs" />
+    <Compile Include="Helpers\JobResponseStubs.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestMappingRangeTranslator.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestRangeTranslator.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestRequestToObjectRangeTranslator.cs" />
+    <Compile Include="Helpers\MockStream.cs" />
+    <Compile Include="Helpers\TransferItemSources\TransferItemSourceHelpers.cs" />
+    <Compile Include="Helpers\TransferItemSources\TestReadTransferItemSource.cs" />
+    <Compile Include="Helpers\TransferItemSources\TestWriteTransferItemSource.cs" />
+    <Compile Include="Lang\LangTestHelpers.cs" />
+    <Compile Include="Lang\TestParallel.cs" />
+    <Compile Include="Lang\TestThreadSafeEnumerator.cs" />
+    <Compile Include="Models\TestRange.cs" />
+    <Compile Include="Helpers\Streams\TestStreamTranslator.cs" />
     <EmbeddedResource Include="TestData\AllocateJobChunkResponse.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="TestDisposableCache.cs" />
-    <Compile Include="TestHttpHelper.cs" />
-    <Compile Include="TestJob.cs" />
-    <Compile Include="TestJobPartTracker.cs" />
-    <Compile Include="TestJobPartTrackerFactory.cs" />
+    <Compile Include="Helpers\Streams\TestResourceStore.cs" />
+    <Compile Include="Runtime\TestHttpHelper.cs" />
+    <Compile Include="Helpers\ProgressTrackers\TestJobItemTracker.cs" />
     <Compile Include="HelpersForTest.cs" />
     <Compile Include="MockNetwork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDs3Client.cs" />
-    <Compile Include="TestDs3ClientHelpers.cs" />
-    <Compile Include="TestEnumerableAlgorithms.cs" />
-    <Compile Include="TestObjectPart.cs" />
-    <Compile Include="TestObjectPartPlanner.cs" />
-    <Compile Include="TestObjectPartTracker.cs" />
-    <Compile Include="TestPerformance.cs" />
-    <Compile Include="TestWindowedStream.cs" />
+    <Compile Include="Helpers\TestDs3ClientHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DS3\Ds3.csproj">

@@ -57,7 +57,7 @@ namespace Ds3.Models
             {
                 if (hash.Length != 16)
                 {
-                    throw new ArgumentException(string.Format("Parameter must be a 16-byte MD5 hash value."));
+                    throw new ArgumentException(string.Format(Resources.MustBeMd5Exception));
                 }
                 this._hash = hash;
             }

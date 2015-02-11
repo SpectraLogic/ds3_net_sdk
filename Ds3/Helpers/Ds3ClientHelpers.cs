@@ -13,12 +13,15 @@
  * ****************************************************************************
  */
 
+using Ds3.Calls;
+using Ds3.Helpers.Jobs;
+using Ds3.Helpers.RangeTranslators;
+using Ds3.Helpers.TransferItemSources;
+using Ds3.Helpers.Transferrers;
+using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Ds3.Calls;
-using Ds3.Models;
 
 namespace Ds3.Helpers
 {
@@ -37,18 +40,31 @@ namespace Ds3.Helpers
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
         {
-            return new WriteJob(this._client, this._client.BulkPut(new BulkPutRequest(bucket, VerifyObjectCount(objectsToWrite))));
+            var jobResponse = this._client.BulkPut(new BulkPutRequest(
+                bucket,
+                VerifyObjectCount(objectsToWrite)
+            ));
+            return BuildJob(
+                jobResponse,
+                new WriteTransferItemSource(this._client, jobResponse),
+                new WriteTransferrer()
+            );
         }
 
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead)
         {
-            return new ReadJob(this._client, this._client.BulkGet(
+            var jobResponse = this._client.BulkGet(
                 new BulkGetRequest(bucket, VerifyObjectCount(objectsToRead))
                     .WithChunkOrdering(ChunkOrdering.None)
-            ));
+            );
+            return BuildJob(
+                jobResponse,
+                new ReadTransferItemSource(this._client, jobResponse),
+                new ReadTransferrer()
+            );
         }
 
-        private static List<Ds3Object> VerifyObjectCount(IEnumerable<Ds3Object> objects)
+        private static List<T> VerifyObjectCount<T>(IEnumerable<T> objects)
         {
             var objectList = objects.ToList();
             if (objectList.Count == 0)
@@ -101,24 +117,34 @@ namespace Ds3.Helpers
 
         public IJob RecoverWriteJob(Guid jobId)
         {
-            var job = this._client.ModifyJob(new ModifyJobRequest(jobId));
-            CheckJobType(JobTypePut, job.RequestType);
-            return new WriteJob(this._client, job);
-        }
-
-        public IJob RecoverReadJob(Guid jobId)
-        {
-            var job = this._client.ModifyJob(new ModifyJobRequest(jobId));
-            CheckJobType(JobTypeGet, job.RequestType);
-            return new ReadJob(this._client, job);
-        }
-
-        private static void CheckJobType(string expectedJobType, string actualJobType)
-        {
-            if (actualJobType != expectedJobType)
+            var jobResponse = this._client.ModifyJob(new ModifyJobRequest(jobId));
+            if (jobResponse.RequestType != JobTypePut)
             {
-                throw new JobRecoveryException(expectedJobType, actualJobType);
+                throw new InvalidOperationException(Resources.ExpectedPutJobButWasGetJobException);
             }
+            return BuildJob(
+                jobResponse,
+                new ReadTransferItemSource(this._client, jobResponse),
+                new ReadTransferrer()
+            );
+        }
+
+        private static IJob BuildJob(
+            JobResponse jobResponse,
+            ITransferItemSource transferItemSource,
+            ITransferrer transferrer)
+        {
+            var blobs = Blob.Convert(jobResponse);
+            var rangesForRequests = blobs.ToLookup(b => b, b => b.Range);
+            return new FullObjectJob(
+                jobResponse.BucketName,
+                jobResponse.JobId,
+                transferItemSource,
+                transferrer,
+                rangesForRequests,
+                new RequestToObjectRangeTranslator(rangesForRequests),
+                blobs
+            );
         }
     }
 }

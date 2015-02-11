@@ -134,8 +134,7 @@ namespace Ds3.Runtime
                 amzHeaders: request.Headers
             ));
 
-            var byteRange = request.GetByteRange();
-            if (byteRange != null)
+            foreach (var byteRange in request.GetByteRanges())
             {
                 httpRequest.AddRange(byteRange.Start, byteRange.End);
             }

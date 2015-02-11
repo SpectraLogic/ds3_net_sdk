@@ -47,7 +47,7 @@ namespace Ds3.ResponseParsers
                             return AllocateJobChunkResponse.ChunkGone;
 
                         default:
-                            throw new NotSupportedException("This line of code should be impossible to hit.");
+                            throw new NotSupportedException(Resources.InvalidEnumValueException);
                     }
                 }
             }
