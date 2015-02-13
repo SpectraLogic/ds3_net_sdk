@@ -26,6 +26,14 @@ namespace Ds3.Calls
     {
         public string BucketName { get; private set; }
         public List<Ds3Object> Objects { get; private set; }
+        public long? MaxBlobSize { get; private set; }
+
+        public BulkPutRequest WithMaxBlobSize(long maxBlobSize)
+        {
+            this.MaxBlobSize = maxBlobSize;
+            this.QueryParams["max_upload_size"] = maxBlobSize.ToString("D");
+            return this;
+        }
 
         public BulkPutRequest(string bucketName, List<Ds3Object> objects)
         {
