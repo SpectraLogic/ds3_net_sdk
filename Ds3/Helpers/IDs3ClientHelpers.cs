@@ -29,8 +29,9 @@ namespace Ds3.Helpers
         /// <seealso cref="FileHelpers.ListObjectsForDirectory"/>
         /// <param name="bucket">The name of the bucket to put the objects to.</param>
         /// <param name="objectsToWrite">The object names and sizes to put.</param>
+        /// <param name="maxBlobSize">The (optional) maximum size for the parts of the objects to transmit.</param>
         /// <returns>An IJob implementation that can put each object per the DS3 protocol.</returns>
-        IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite);
+        IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null);
 
         /// <summary>
         /// Runs a DS3 bulk GET request with a set of objects and returns an

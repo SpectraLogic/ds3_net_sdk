@@ -215,8 +215,8 @@ namespace TestDs3.Helpers
             CollectionAssert.AreEquivalent(partialObjects.Concat(new[] { fullObjectPart }), itemsCompleted);
         }
 
-        [Test, Timeout(1000)]
-        public void BasicWriteTransfer()
+        [Test, Timeout(1000), TestCase(1048576L), TestCase(null)]
+        public void BasicWriteTransfer(long? maxBlobSize)
         {
             var initialJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),
@@ -257,7 +257,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkPut(ItIsBulkPutRequest(Stubs.BucketName, ds3Objects)))
+                .Setup(c => c.BulkPut(ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, maxBlobSize)))
                 .Returns(initialJobResponse);
             client
                 .Setup(c => c.AllocateJobChunk(ItIsAllocateRequest(Stubs.ChunkId1)))
@@ -269,7 +269,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.AllocateJobChunk(ItIsAllocateRequest(Stubs.ChunkId3)))
                 .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects);
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, maxBlobSize);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -404,11 +404,12 @@ namespace TestDs3.Helpers
             );
         }
 
-        private static BulkPutRequest ItIsBulkPutRequest(string bucketName, IEnumerable<Ds3Object> objects)
+        private static BulkPutRequest ItIsBulkPutRequest(string bucketName, IEnumerable<Ds3Object> objects, long? maxBlobSize)
         {
             return Match.Create(
                 r =>
                     r.BucketName == bucketName
+                    && r.MaxBlobSize == maxBlobSize
                     && r.Objects.Select(o => new { o.Name, o.Size })
                         .SequenceEqual(objects.Select(o => new { o.Name, o.Size })),
                 () => new BulkPutRequest(bucketName, objects.ToList())

@@ -37,12 +37,17 @@ namespace Ds3.Helpers
             this._client = client;
         }
 
-        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite)
+        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null)
         {
-            var jobResponse = this._client.BulkPut(new BulkPutRequest(
+            var request = new BulkPutRequest(
                 bucket,
                 VerifyObjectCount(objectsToWrite)
-            ));
+            );
+            if (maxBlobSize.HasValue)
+            {
+                request.WithMaxBlobSize(maxBlobSize.Value);
+            }
+            var jobResponse = this._client.BulkPut(request);
             return FullObjectJob.Create(
                 jobResponse,
                 new WriteTransferItemSource(this._client, jobResponse),
