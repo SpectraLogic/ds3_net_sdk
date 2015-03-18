@@ -151,8 +151,8 @@ namespace Ds3.Helpers
             }
             return FullObjectJob.Create(
                 jobResponse,
-                new ReadTransferItemSource(this._client, jobResponse),
-                new ReadTransferrer()
+                new WriteTransferItemSource(this._client, jobResponse),
+                new WriteTransferrer()
             );
         }
     }
