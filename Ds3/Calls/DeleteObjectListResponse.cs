@@ -24,11 +24,11 @@ namespace Ds3.Calls
 {
     public class DeleteObjectListResponse
     {
-        public IEnumerable<Ds3Object> DeletedObjects { get; private set; }
+        public IEnumerable<string> DeletedObjects { get; private set; }
         public IEnumerable<DeleteDs3ObjectError> DeleteErrors { get; private set; }
 
         public DeleteObjectListResponse(
-            IEnumerable<Ds3Object> deletedObjects,
+            IEnumerable<string> deletedObjects,
             IEnumerable<DeleteDs3ObjectError> deleteErrors)
         {
             this.DeletedObjects = deletedObjects;
