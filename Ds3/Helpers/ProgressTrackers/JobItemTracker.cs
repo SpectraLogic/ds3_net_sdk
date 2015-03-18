@@ -31,7 +31,7 @@ namespace Ds3.Helpers.ProgressTrackers
     internal class JobItemTracker<T> where T : IComparable<T>
     {
         private readonly object _rangesLock = new object();
-        private readonly IDictionary<T, ISet<Range>> _ranges;
+        private readonly IDictionary<T, SortedSet<Range>> _ranges;
 
         public event Action<long> DataTransferred;
         public event Action<T> ItemCompleted;
@@ -40,14 +40,14 @@ namespace Ds3.Helpers.ProgressTrackers
         {
             this._ranges = ranges
                 .GroupBy(range => range.Context, range => range.Range)
-                .ToDictionary(grp => grp.Key, grp => new SortedSet<Range>(grp) as ISet<Range>);
+                .ToDictionary(grp => grp.Key, grp => new SortedSet<Range>(grp));
         }
 
         public void CompleteRange(ContextRange<T> contextRange)
         {
             lock (this._rangesLock)
             {
-                ISet<Range> rangesForContext;
+                SortedSet<Range> rangesForContext;
                 if (this._ranges.TryGetValue(contextRange.Context, out rangesForContext))
                 {
                     CompleteRangeForItem(rangesForContext, contextRange.Range);
@@ -65,13 +65,14 @@ namespace Ds3.Helpers.ProgressTrackers
             }
         }
 
-        private static void CompleteRangeForItem(ISet<Range> rangesForItem, Range rangeToRemove)
+        private static void CompleteRangeForItem(SortedSet<Range> rangesForItem, Range rangeToRemove)
         {
-            var existingRange = rangesForItem.LastOrDefault(range => range.Start <= rangeToRemove.Start);
-            if (existingRange.Equals(default(Range)))
+            var relevantRange = rangesForItem.GetViewBetween(Range.ByLength(0L, 0L), Range.ByPosition(rangeToRemove.Start, long.MaxValue - 1L));
+            if (relevantRange.Count == 0)
             {
                 throw new ArgumentOutOfRangeException("rangeToRemove", Resources.RangeNotTrackedException);
             }
+            var existingRange = relevantRange.Max;
             if (rangeToRemove.End > existingRange.End)
             {
                 throw new ArgumentOutOfRangeException("rangeToRemove", Resources.RangeNotTrackedException);

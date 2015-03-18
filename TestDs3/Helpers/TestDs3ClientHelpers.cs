@@ -124,6 +124,7 @@ namespace TestDs3.Helpers
             {
                 new Ds3PartialObject(Range.ByLength(0L, 4L), "foo"),
                 new Ds3PartialObject(Range.ByLength(6L, 10L), "foo"),
+                new Ds3PartialObject(Range.ByLength(18L, 1L), "foo"),
                 new Ds3PartialObject(Range.ByLength(10L, 26L), "bar"),
             };
             var fullObjects = new[] { "hello" };
@@ -145,7 +146,7 @@ namespace TestDs3.Helpers
 
             var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
             SetupGetObject(node2Client, "bar", 0L, "abcde", Range.ByLength(10L, 5L));
-            SetupGetObject(node2Client, "foo", 10L, "klmnop", Range.ByLength(10L, 6L));
+            SetupGetObject(node2Client, "foo", 10L, "klmnop!", Range.ByLength(10L, 6L), Range.ByLength(18L, 1L));
             SetupGetObject(node2Client, "foo", 0L, "abcdghij", Range.ByLength(0L, 4L), Range.ByLength(6L, 4L));
             SetupGetObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy", Range.ByLength(15L, 20L));
 
@@ -199,7 +200,8 @@ namespace TestDs3.Helpers
                 {
                     new { Key = partialObjects[0], Value = "abcd" },
                     new { Key = partialObjects[1], Value = "ghijklmnop" },
-                    new { Key = partialObjects[2], Value = "abcdefghijklmnopqrstuvwxyz" },
+                    new { Key = partialObjects[2], Value = "!" },
+                    new { Key = partialObjects[3], Value = "abcdefghijklmnopqrstuvwxyz" },
                     new { Key = fullObjectPart, Value = "ABCDefGHIJ" },
                 }.OrderBy(it => it.Key).ToArray(),
                 (
@@ -209,7 +211,7 @@ namespace TestDs3.Helpers
                 ).ToArray()
             );
             CollectionAssert.AreEquivalent(
-                new[] { 1L, 4L, 4L, 5L, 6L, 10L, 20L },
+                new[] { 1L, 1L, 4L, 4L, 5L, 6L, 10L, 20L },
                 dataTransfers.Sorted().ToArray()
             );
             CollectionAssert.AreEquivalent(partialObjects.Concat(new[] { fullObjectPart }), itemsCompleted);
