@@ -95,6 +95,14 @@ namespace Ds3.Runtime
 
         private HttpWebRequest CreateRequest(Ds3Request request, Stream content)
         {
+            if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
+            {
+                if (content != Stream.Null && !content.CanRead)
+                {
+                    throw new Ds3.Runtime.Ds3RequestException(Resources.InvalidStreamException);
+                }
+            }
+
             DateTime date = DateTime.UtcNow;
             UriBuilder uriBuilder = new UriBuilder(_endpoint);
             uriBuilder.Path = HttpHelper.PercentEncodePath(request.Path);
@@ -147,15 +155,14 @@ namespace Ds3.Runtime
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
             {
                 httpRequest.ContentLength = content.Length;
-                using (var requestStream = httpRequest.GetRequestStream())
+                if (content != Stream.Null)
                 {
-                    if (content != Stream.Null)
+                    using (var requestStream = httpRequest.GetRequestStream())
                     {
-                        if (!content.CanSeek || !content.CanRead)
+                        if (content.Position != 0)
                         {
-                            throw new Ds3.Runtime.Ds3RequestException(Resources.InvalidStreamException);
+                            content.Seek(0, SeekOrigin.Begin);
                         }
-                        content.Seek(0, SeekOrigin.Begin);
                         content.CopyTo(requestStream, this.CopyBufferSize);
                         requestStream.Flush();
                     }
