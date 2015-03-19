@@ -35,6 +35,7 @@ namespace Ds3.Runtime
         private readonly int _redirectRetryCount;
         private readonly int _readWriteTimeout;
         private readonly int _requestTimeout;
+        private readonly int _connectionLimit;
 
         internal Uri Proxy = null;
         private readonly char[] _noChars = new char[0];
@@ -45,7 +46,8 @@ namespace Ds3.Runtime
             int redirectRetryCount,
             int copyBufferSize,
             int readWriteTimeout,
-            int requestTimeout)
+            int requestTimeout,
+            int connectionLimit)
         {
             this._endpoint = endpoint;
             this._creds = creds;
@@ -53,6 +55,7 @@ namespace Ds3.Runtime
             this.CopyBufferSize = copyBufferSize;
             this._readWriteTimeout = readWriteTimeout;
             this._requestTimeout = requestTimeout;
+            this._connectionLimit = connectionLimit;
         }
 
         public int CopyBufferSize { get; private set; }
@@ -113,6 +116,7 @@ namespace Ds3.Runtime
             }
 
             HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.ToString());
+            httpRequest.ServicePoint.ConnectionLimit = _connectionLimit;
             httpRequest.Method = request.Verb.ToString();
             if (Proxy != null)
             {
