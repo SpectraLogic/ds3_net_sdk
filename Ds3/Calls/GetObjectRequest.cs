@@ -28,9 +28,27 @@ namespace Ds3.Calls
         public Guid JobId { get; private set; }
         public long Offset { get; private set; }
 
+        private IEnumerable<Range> _byteRanges = Enumerable.Empty<Range>();
+        public IEnumerable<Range> ByteRanges
+        {
+            get { return _byteRanges; }
+            set { WithByteRanges(value); }
+        }
+
+        /// <summary>
+        /// Specifies a list of ranges of bytes within the object to retrieve.
+        /// </summary>
+        /// <param name="byteRanges"></param>
+        /// <returns></returns>
+        public GetObjectRequest WithByteRanges(IEnumerable<Range> byteRanges)
+        {
+            this._byteRanges = byteRanges;
+            return this;
+        }
+
         internal override IEnumerable<Range> GetByteRanges()
         {
-            return Enumerable.Empty<Range>();
+            return this._byteRanges;
         }
 
         internal override HttpVerb Verb

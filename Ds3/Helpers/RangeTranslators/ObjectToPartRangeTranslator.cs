@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ******************************************************************************
  *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
@@ -13,17 +13,26 @@
  * ****************************************************************************
  */
 
-using System.Reflection;
+using Ds3.Models;
+using System.Collections.Generic;
+using System.Linq;
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+namespace Ds3.Helpers.RangeTranslators
+{
+    internal class ObjectToPartRangeTranslator : MappingRangeTranslator<string, Ds3PartialObject>
+    {
+        public ObjectToPartRangeTranslator(IEnumerable<Ds3PartialObject> parts)
+            : base(MapObjectRangesToPartRanges(parts))
+        {
+        }
+
+        private static ILookup<string, RangeMapping<Ds3PartialObject>> MapObjectRangesToPartRanges(
+            IEnumerable<Ds3PartialObject> parts)
+        {
+            return parts.ToLookup(
+                part => part.Name,
+                part => new RangeMapping<Ds3PartialObject>(part.Range, 0L, part)
+            );
+        }
+    }
+}

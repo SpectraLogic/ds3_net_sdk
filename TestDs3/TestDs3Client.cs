@@ -247,16 +247,29 @@ namespace TestDs3
         [Test]
         public void TestBulkPut()
         {
-            RunBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects)));
+            RunBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects)), _emptyQueryParams);
+        }
+
+        [Test]
+        public void TestBulkPutWithMaxBlobSize()
+        {
+            RunBulkTest(
+                "start_bulk_put",
+                (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects).WithMaxBlobSize(1048576L)),
+                new Dictionary<string, string> { { "max_upload_size", "1048576" } }
+            );
         }
 
         [Test]
         public void TestBulkGet()
         {
-            RunBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucket8192000000", objects)));
+            RunBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucket8192000000", objects)), _emptyQueryParams);
         }
 
-        private void RunBulkTest(string operation, Func<IDs3Client, List<Ds3Object>, JobResponse> makeCall)
+        private void RunBulkTest(
+            string operation,
+            Func<IDs3Client, List<Ds3Object>, JobResponse> makeCall,
+            IDictionary<string, string> additionalQueryParams)
         {
             var files = new[] {
                 new { Key = "client00obj000000-8000000", Size = 8192000000L },
@@ -279,6 +292,10 @@ namespace TestDs3
             var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
 
             var queryParams = new Dictionary<string, string>() { { "operation", operation } };
+            foreach (var kvp in additionalQueryParams)
+            {
+                queryParams.Add(kvp.Key, kvp.Value);
+            }
             var client = MockNetwork
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket8192000000", queryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)

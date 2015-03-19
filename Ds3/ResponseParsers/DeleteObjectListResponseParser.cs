@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                     return new DeleteObjectListResponse(
                         deletedObjects: deleteResult
                             .Elements("Deleted")
-                            .Select(el => new Ds3Object(el.TextOf("Key"), null))
+                            .Select(el => el.TextOf("Key"))
                             .ToList(),
                         deleteErrors: deleteResult
                             .Elements("Error")

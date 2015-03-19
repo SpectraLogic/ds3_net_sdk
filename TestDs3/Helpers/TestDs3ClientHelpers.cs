@@ -76,7 +76,8 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BulkGet(ItIsBulkGetRequest(
                     Stubs.BucketName,
                     ChunkOrdering.None,
-                    Stubs.ObjectNames
+                    Stubs.ObjectNames,
+                    Enumerable.Empty<Ds3PartialObject>()
                 )))
                 .Returns(initialJobResponse);
             client
@@ -117,7 +118,107 @@ namespace TestDs3.Helpers
         }
 
         [Test, Timeout(1000)]
-        public void BasicWriteTransfer()
+        public void PartialReadTransfer()
+        {
+            var partialObjects = new[]
+            {
+                new Ds3PartialObject(Range.ByLength(0L, 4L), "foo"),
+                new Ds3PartialObject(Range.ByLength(6L, 10L), "foo"),
+                new Ds3PartialObject(Range.ByLength(18L, 1L), "foo"),
+                new Ds3PartialObject(Range.ByLength(10L, 26L), "bar"),
+            };
+            var fullObjects = new[] { "hello" };
+
+            var initialJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(null, false, false),
+                Stubs.Chunk2(null, false, false),
+                Stubs.Chunk3(null, false, false)
+            );
+            var availableJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId2, true, true),
+                Stubs.Chunk2(Stubs.NodeId2, true, true),
+                Stubs.Chunk3(Stubs.NodeId1, true, true)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            SetupGetObject(node1Client, "hello", 0L, "ABCDefGHIJ", Range.ByLength(0L, 10L));
+            SetupGetObject(node1Client, "bar", 35L, "z", Range.ByLength(35L, 1L));
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            SetupGetObject(node2Client, "bar", 0L, "abcde", Range.ByLength(10L, 5L));
+            SetupGetObject(node2Client, "foo", 10L, "klmnop!", Range.ByLength(10L, 6L), Range.ByLength(18L, 1L));
+            SetupGetObject(node2Client, "foo", 0L, "abcdghij", Range.ByLength(0L, 4L), Range.ByLength(6L, 4L));
+            SetupGetObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy", Range.ByLength(15L, 20L));
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.BulkGet(ItIsBulkGetRequest(
+                    Stubs.BucketName,
+                    ChunkOrdering.None,
+                    fullObjects,
+                    partialObjects
+                )))
+                .Returns(initialJobResponse);
+            client
+                .Setup(c => c.GetAvailableJobChunks(ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+
+            var job = new Ds3ClientHelpers(client.Object)
+                .StartPartialReadJob(Stubs.BucketName, fullObjects, partialObjects);
+            CollectionAssert.AreEquivalent(
+                partialObjects.Concat(new[] { new Ds3PartialObject(Range.ByLength(0L, 10L), "hello") }),
+                job.AllItems
+            );
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<Ds3PartialObject>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
+            var streams = new ConcurrentDictionary<Ds3PartialObject, MockStream>();
+            job.Transfer(key => streams.GetOrAdd(key, k => new MockStream()));
+
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            var fullObjectPart = new Ds3PartialObject(Range.ByLength(0L, 10L), fullObjects[0]);
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new { Key = partialObjects[0], Value = "abcd" },
+                    new { Key = partialObjects[1], Value = "ghijklmnop" },
+                    new { Key = partialObjects[2], Value = "!" },
+                    new { Key = partialObjects[3], Value = "abcdefghijklmnopqrstuvwxyz" },
+                    new { Key = fullObjectPart, Value = "ABCDefGHIJ" },
+                }.OrderBy(it => it.Key).ToArray(),
+                (
+                    from item in streams
+                    orderby item.Key
+                    select new { item.Key, Value = _encoding.GetString(item.Value.Result) }
+                ).ToArray()
+            );
+            CollectionAssert.AreEquivalent(
+                new[] { 1L, 1L, 4L, 4L, 5L, 6L, 10L, 20L },
+                dataTransfers.Sorted().ToArray()
+            );
+            CollectionAssert.AreEquivalent(partialObjects.Concat(new[] { fullObjectPart }), itemsCompleted);
+        }
+
+        [Test, Timeout(1000), TestCase(1048576L), TestCase(null)]
+        public void BasicWriteTransfer(long? maxBlobSize)
         {
             var initialJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),
@@ -158,7 +259,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkPut(ItIsBulkPutRequest(Stubs.BucketName, ds3Objects)))
+                .Setup(c => c.BulkPut(ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, maxBlobSize)))
                 .Returns(initialJobResponse);
             client
                 .Setup(c => c.AllocateJobChunk(ItIsAllocateRequest(Stubs.ChunkId1)))
@@ -170,7 +271,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.AllocateJobChunk(ItIsAllocateRequest(Stubs.ChunkId3)))
                 .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects);
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, maxBlobSize);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -225,7 +326,8 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BulkGet(ItIsBulkGetRequest(
                     Stubs.BucketName,
                     ChunkOrdering.None,
-                    Stubs.ObjectNames
+                    Stubs.ObjectNames,
+                    Enumerable.Empty<Ds3PartialObject>()
                 )))
                 .Returns(initialJobResponse);
             client
@@ -290,23 +392,26 @@ namespace TestDs3.Helpers
         private static BulkGetRequest ItIsBulkGetRequest(
             string bucketName,
             ChunkOrdering chunkOrdering,
-            IEnumerable<string> fullObjects)
+            IEnumerable<string> fullObjects,
+            IEnumerable<Ds3PartialObject> partialObjects)
         {
             return Match.Create(
                 r =>
                     r.BucketName == bucketName
                     && r.ChunkOrder == chunkOrdering
-                    && r.FullObjects.Sorted().SequenceEqual(fullObjects.Sorted()),
-                () => new BulkGetRequest(bucketName, fullObjects)
+                    && r.FullObjects.Sorted().SequenceEqual(fullObjects.Sorted())
+                    && r.PartialObjects.Sorted().SequenceEqual(partialObjects.Sorted()),
+                () => new BulkGetRequest(bucketName, fullObjects, partialObjects)
                     .WithChunkOrdering(chunkOrdering)
             );
         }
 
-        private static BulkPutRequest ItIsBulkPutRequest(string bucketName, IEnumerable<Ds3Object> objects)
+        private static BulkPutRequest ItIsBulkPutRequest(string bucketName, IEnumerable<Ds3Object> objects, long? maxBlobSize)
         {
             return Match.Create(
                 r =>
                     r.BucketName == bucketName
+                    && r.MaxBlobSize == maxBlobSize
                     && r.Objects.Select(o => new { o.Name, o.Size })
                         .SequenceEqual(objects.Select(o => new { o.Name, o.Size })),
                 () => new BulkPutRequest(bucketName, objects.ToList())

@@ -13,7 +13,6 @@
  * ****************************************************************************
  */
 
-using Ds3.Lang;
 using NUnit.Framework;
 using System;
 using System.Collections.Concurrent;
@@ -40,7 +39,7 @@ namespace TestDs3.Lang
                 strings,
                 it =>
                 {
-                    Thread.Sleep(1);
+                    Thread.Sleep(10);
                     results.Enqueue(Tuple.Create(Environment.CurrentManagedThreadId, it));
                 }
             );

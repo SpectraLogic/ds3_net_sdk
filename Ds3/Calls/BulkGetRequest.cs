@@ -27,17 +27,19 @@ namespace Ds3.Calls
     {
         public string BucketName { get; private set; }
         public IEnumerable<string> FullObjects { get; private set; }
+        public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
         public ChunkOrdering? ChunkOrder { get; private set; }
 
-        public BulkGetRequest(string bucketName, IEnumerable<string> fullObjects)
+        public BulkGetRequest(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
         {
             this.BucketName = bucketName;
             this.FullObjects = fullObjects.ToList();
+            this.PartialObjects = partialObjects.ToList();
             this.QueryParams.Add("operation", "start_bulk_get");
         }
 
         public BulkGetRequest(string bucketName, List<Ds3Object> objects) 
-            : this(bucketName, objects.Select(o => o.Name))
+            : this(bucketName, objects.Select(o => o.Name), Enumerable.Empty<Ds3PartialObject>())
         {
         }
 
@@ -69,6 +71,13 @@ namespace Ds3.Calls
                 .AddAllFluent(
                     from name in this.FullObjects
                     select new XElement("Object").SetAttributeValueFluent("Name", name)
+                )
+                .AddAllFluent(
+                    from partial in this.PartialObjects
+                    select new XElement("Object")
+                        .SetAttributeValueFluent("Name", partial.Name)
+                        .SetAttributeValueFluent("Offset", partial.Range.Start.ToString())
+                        .SetAttributeValueFluent("Length", partial.Range.Length.ToString())
                 );
             if (this.ChunkOrder.HasValue)
             {

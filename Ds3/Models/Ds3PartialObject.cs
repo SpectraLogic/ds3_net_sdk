@@ -1,4 +1,4 @@
-/*
+﻿/*
  * ******************************************************************************
  *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
@@ -13,17 +13,21 @@
  * ****************************************************************************
  */
 
-using System.Reflection;
+using Ds3.Helpers;
+using System;
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+namespace Ds3.Models
+{
+    public sealed class Ds3PartialObject : ContextRange<string>
+    {
+        public string Name
+        {
+            get { return this.Context; }
+        }
+
+        public Ds3PartialObject(Range range, string objectName)
+            : base(range, objectName)
+        {
+        }
+    }
+}

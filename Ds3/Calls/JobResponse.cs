@@ -30,6 +30,7 @@ namespace Ds3.Calls
         public ChunkOrdering ChunkOrder { get; private set; }
         public IEnumerable<Node> Nodes { get; private set; }
         public IEnumerable<JobObjectList> ObjectLists { get; private set; }
+        public JobStatus Status { get; set; }
 
         public JobResponse(
             string bucketName,
@@ -39,7 +40,8 @@ namespace Ds3.Calls
             DateTime startDate,
             ChunkOrdering chunkOrder,
             IEnumerable<Node> nodes,
-            IEnumerable<JobObjectList> objectLists)
+            IEnumerable<JobObjectList> objectLists,
+            JobStatus status)
         {
             this.BucketName = bucketName;
             this.JobId = jobId;
@@ -49,6 +51,7 @@ namespace Ds3.Calls
             this.ChunkOrder = chunkOrder;
             this.Nodes = nodes;
             this.ObjectLists = objectLists;
+            this.Status = status;
         }
     }
 }

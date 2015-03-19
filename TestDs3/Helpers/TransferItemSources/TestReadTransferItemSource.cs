@@ -65,7 +65,7 @@ namespace TestDs3.Helpers.TransferItemSources
             var task = Task.Run(() =>
             {
                 readyToStop.Wait();
-                Thread.Sleep(100);
+                Thread.Sleep(130);
                 transferItemSource.Stop();
             });
             using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())

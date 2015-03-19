@@ -29,8 +29,9 @@ namespace Ds3.Helpers
         /// <seealso cref="FileHelpers.ListObjectsForDirectory"/>
         /// <param name="bucket">The name of the bucket to put the objects to.</param>
         /// <param name="objectsToWrite">The object names and sizes to put.</param>
+        /// <param name="maxBlobSize">The (optional) maximum size for the parts of the objects to transmit.</param>
         /// <returns>An IJob implementation that can put each object per the DS3 protocol.</returns>
-        IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite);
+        IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null);
 
         /// <summary>
         /// Runs a DS3 bulk GET request with a set of objects and returns an
@@ -47,6 +48,23 @@ namespace Ds3.Helpers
         /// <param name="bucket">The name of the bucket to get the objects from.</param>
         /// <returns>An IJob implementation that can get each object per the DS3 protocol.</returns>
         IJob StartReadAllJob(string bucket);
+
+        /// <summary>
+        /// Runs a DS3 bulk GET request with a set of partial object transfers and
+        /// returns an interface that can GET individual object parts efficiently
+        /// from the server.
+        /// 
+        /// Note that you can get multiple ranges within the same object at the same
+        /// time, but those ranges must be non-overlapping.
+        /// </summary>
+        /// <param name="bucket">The name of the bucket to get the objects from.</param>
+        /// <param name="fullObjects">The list of full objects to get.</param>
+        /// <param name="partialObjects">The object parts to get.</param>
+        /// <returns>The IPartialReadJob implementation that can get each partial object per the DS3 protocol.</returns>
+        IPartialReadJob StartPartialReadJob(
+            string bucket,
+            IEnumerable<string> fullObjects,
+            IEnumerable<Ds3PartialObject> partialObjects);
 
         /// <summary>
         /// Returns information about all of the objects in a bucket.
