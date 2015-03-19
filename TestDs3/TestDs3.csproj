@@ -72,6 +72,7 @@
     <Compile Include="Lang\LangTestHelpers.cs" />
     <Compile Include="Lang\TestParallel.cs" />
     <Compile Include="Lang\TestThreadSafeEnumerator.cs" />
+    <Compile Include="Models\TestDs3Object.cs" />
     <Compile Include="Models\TestDs3PartialObject.cs" />
     <Compile Include="Models\TestRange.cs" />
     <Compile Include="Helpers\Streams\TestStreamTranslator.cs" />

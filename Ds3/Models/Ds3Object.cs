@@ -13,8 +13,6 @@
  * ****************************************************************************
  */
 
-using System;
-
 namespace Ds3.Models
 {
     public class Ds3Object
@@ -26,6 +24,33 @@ namespace Ds3.Models
         {
             this.Name = name;
             this.Size = size;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var ds3Obj = obj as Ds3Object;
+            if (ds3Obj == null)
+            {
+                return false;
+            }
+            return this.Name == ds3Obj.Name && this.Size == ds3Obj.Size;
+        }
+
+        public override int GetHashCode()
+        {
+            // Algorithm based on http://stackoverflow.com/a/263416/472522
+            unchecked
+            {
+                int hash = 512927377;
+                hash = hash * 15485863 + this.Name.GetHashCode();
+                hash = hash * 15485863 + this.Size.GetHashCode();
+                return hash;
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Ds3Object[{0}, {1}]", this.Name, this.Size);
         }
     }
 }
