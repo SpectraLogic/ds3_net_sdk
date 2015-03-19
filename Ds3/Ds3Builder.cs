@@ -28,6 +28,7 @@ namespace Ds3
         private int _copyBufferSize = Network.DefaultCopyBufferSize;
         private int _readWriteTimeout = 60 * 60 * 1000;
         private int _requestTimeout = 60 * 60 * 1000;
+        private int _connectionLimit = 12;
 
         /// <summary>
         /// </summary>
@@ -108,6 +109,17 @@ namespace Ds3
         }
 
         /// <summary>
+        /// Specifies how many concurrent connections we can open to a single host.
+        /// </summary>
+        /// <param name="connectionLimit"></param>
+        /// <returns></returns>
+        public Ds3Builder WithConnectionLimit(int connectionLimit)
+        {
+            this._connectionLimit = connectionLimit;
+            return this;
+        }
+
+        /// <summary>
         /// Creates the Ds3Client using the specified parameters.
         /// </summary>
         /// <returns></returns>
@@ -119,7 +131,8 @@ namespace Ds3
                 _redirectRetryCount,
                 _copyBufferSize,
                 _readWriteTimeout,
-                _requestTimeout
+                _requestTimeout,
+                _connectionLimit
             );
             if (_proxy != null)
             {
