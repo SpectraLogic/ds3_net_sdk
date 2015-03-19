@@ -6,6 +6,7 @@ var namespace_ds3_1_1_models =
     [ "Ds3Error", "class_ds3_1_1_models_1_1_ds3_error.html", "class_ds3_1_1_models_1_1_ds3_error" ],
     [ "Ds3Object", "class_ds3_1_1_models_1_1_ds3_object.html", "class_ds3_1_1_models_1_1_ds3_object" ],
     [ "Ds3ObjectInfo", "class_ds3_1_1_models_1_1_ds3_object_info.html", "class_ds3_1_1_models_1_1_ds3_object_info" ],
+    [ "Ds3PartialObject", "class_ds3_1_1_models_1_1_ds3_partial_object.html", "class_ds3_1_1_models_1_1_ds3_partial_object" ],
     [ "JobInfo", "class_ds3_1_1_models_1_1_job_info.html", "class_ds3_1_1_models_1_1_job_info" ],
     [ "JobObject", "class_ds3_1_1_models_1_1_job_object.html", "class_ds3_1_1_models_1_1_job_object" ],
     [ "JobObjectList", "class_ds3_1_1_models_1_1_job_object_list.html", "class_ds3_1_1_models_1_1_job_object_list" ],

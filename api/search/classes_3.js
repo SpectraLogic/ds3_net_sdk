@@ -13,6 +13,7 @@ var searchData=
   ['ds3error',['Ds3Error',['../class_ds3_1_1_models_1_1_ds3_error.html',1,'Ds3::Models']]],
   ['ds3object',['Ds3Object',['../class_ds3_1_1_models_1_1_ds3_object.html',1,'Ds3::Models']]],
   ['ds3objectinfo',['Ds3ObjectInfo',['../class_ds3_1_1_models_1_1_ds3_object_info.html',1,'Ds3::Models']]],
+  ['ds3partialobject',['Ds3PartialObject',['../class_ds3_1_1_models_1_1_ds3_partial_object.html',1,'Ds3::Models']]],
   ['ds3redirectlimitexception',['Ds3RedirectLimitException',['../class_ds3_1_1_runtime_1_1_ds3_redirect_limit_exception.html',1,'Ds3::Runtime']]],
   ['ds3request',['Ds3Request',['../class_ds3_1_1_calls_1_1_ds3_request.html',1,'Ds3::Calls']]],
   ['ds3requestexception',['Ds3RequestException',['../class_ds3_1_1_runtime_1_1_ds3_request_exception.html',1,'Ds3::Runtime']]]

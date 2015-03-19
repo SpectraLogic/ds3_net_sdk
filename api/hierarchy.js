@@ -11,6 +11,7 @@ var hierarchy =
     [ "Ds3.Models.Ds3Object", "class_ds3_1_1_models_1_1_ds3_object.html", [
       [ "Ds3.Models.Ds3ObjectInfo", "class_ds3_1_1_models_1_1_ds3_object_info.html", null ]
     ] ],
+    [ "Ds3.Models.Ds3PartialObject", "class_ds3_1_1_models_1_1_ds3_partial_object.html", null ],
     [ "Ds3.Calls.Ds3Request", "class_ds3_1_1_calls_1_1_ds3_request.html", [
       [ "Ds3.Calls.AllocateJobChunkRequest", "class_ds3_1_1_calls_1_1_allocate_job_chunk_request.html", null ],
       [ "Ds3.Calls.BulkGetRequest", "class_ds3_1_1_calls_1_1_bulk_get_request.html", null ],
@@ -49,6 +50,9 @@ var hierarchy =
     [ "Ds3.Helpers.IBaseJob< TSelf, TItem >", "interface_ds3_1_1_helpers_1_1_i_base_job.html", null ],
     [ "Ds3.Helpers.IBaseJob< IJob, string >", "interface_ds3_1_1_helpers_1_1_i_base_job.html", [
       [ "Ds3.Helpers.IJob", "interface_ds3_1_1_helpers_1_1_i_job.html", null ]
+    ] ],
+    [ "Ds3.Helpers.IBaseJob< IPartialReadJob, Ds3PartialObject >", "interface_ds3_1_1_helpers_1_1_i_base_job.html", [
+      [ "Ds3.Helpers.IPartialReadJob", "interface_ds3_1_1_helpers_1_1_i_partial_read_job.html", null ]
     ] ],
     [ "IComparable", null, [
       [ "Ds3.Models.ContextRange< T >", "class_ds3_1_1_models_1_1_context_range.html", null ],

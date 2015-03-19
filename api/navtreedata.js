@@ -22,7 +22,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"class_ds3_1_1_models_1_1_job_object_list.html#a02cfb57a544c8abf55e619266e5516ff"
+"class_ds3_1_1_models_1_1_job_info.html#a78d6ec6823ca3e15f7f9f4f84e371157"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

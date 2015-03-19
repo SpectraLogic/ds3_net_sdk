@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['withbyteranges',['WithByteRanges',['../class_ds3_1_1_calls_1_1_get_object_request.html#a04d369ebb3e63249d5c855cd9e3da024',1,'Ds3::Calls::GetObjectRequest']]],
   ['withcancellationtoken',['WithCancellationToken',['../interface_ds3_1_1_helpers_1_1_i_base_job.html#a0440d80df333bb34788ca2c4b0a4cbe2',1,'Ds3::Helpers::IBaseJob']]],
   ['withcopybuffersize',['WithCopyBufferSize',['../class_ds3_1_1_ds3_builder.html#a7e11b809ce45c780e7607dd33f6aacf4',1,'Ds3::Ds3Builder']]],
   ['withmarker',['WithMarker',['../class_ds3_1_1_calls_1_1_get_bucket_request.html#a4e1b7f28dea98f6fbf38f3d83fcad9a1',1,'Ds3::Calls::GetBucketRequest']]],

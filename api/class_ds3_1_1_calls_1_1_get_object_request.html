@@ -125,6 +125,9 @@ Inheritance diagram for Ds3.Calls.GetObjectRequest:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a04d369ebb3e63249d5c855cd9e3da024"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_ds3_1_1_calls_1_1_get_object_request.html">GetObjectRequest</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ds3_1_1_calls_1_1_get_object_request.html#a04d369ebb3e63249d5c855cd9e3da024">WithByteRanges</a> (IEnumerable&lt; <a class="el" href="struct_ds3_1_1_models_1_1_range.html">Range</a> &gt; byteRanges)</td></tr>
+<tr class="memdesc:a04d369ebb3e63249d5c855cd9e3da024"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies a list of ranges of bytes within the object to retrieve.  <a href="#a04d369ebb3e63249d5c855cd9e3da024">More...</a><br /></td></tr>
+<tr class="separator:a04d369ebb3e63249d5c855cd9e3da024"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaeb293bdef991645ca27fa8181bcb39c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaeb293bdef991645ca27fa8181bcb39c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>GetObjectRequest</b> (string bucketName, string ds3ObjectName, Guid jobId, long offset, Stream destinationStream)</td></tr>
 <tr class="separator:aaeb293bdef991645ca27fa8181bcb39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,14 +146,51 @@ Guid&#160;</td><td class="memItemRight" valign="bottom"><b>JobId</b><code> [get]
 <tr class="memitem:a7fd81214a1d72c1b820701ec9782f5de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7fd81214a1d72c1b820701ec9782f5de"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>Offset</b><code> [get]</code></td></tr>
 <tr class="separator:a7fd81214a1d72c1b820701ec9782f5de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a174eade110e538bc53e6b7781407968d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a174eade110e538bc53e6b7781407968d"></a>
+IEnumerable&lt; <a class="el" href="struct_ds3_1_1_models_1_1_range.html">Range</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ByteRanges</b><code> [get, set]</code></td></tr>
+<tr class="separator:a174eade110e538bc53e6b7781407968d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a04d369ebb3e63249d5c855cd9e3da024"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_ds3_1_1_calls_1_1_get_object_request.html">GetObjectRequest</a> Ds3.Calls.GetObjectRequest.WithByteRanges </td>
+          <td>(</td>
+          <td class="paramtype">IEnumerable&lt; <a class="el" href="struct_ds3_1_1_models_1_1_range.html">Range</a> &gt;&#160;</td>
+          <td class="paramname"><em>byteRanges</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Specifies a list of ranges of bytes within the object to retrieve. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">byteRanges</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_ds3.html">Ds3</a></li><li class="navelem"><a class="el" href="namespace_ds3_1_1_calls.html">Calls</a></li><li class="navelem"><a class="el" href="class_ds3_1_1_calls_1_1_get_object_request.html">GetObjectRequest</a></li>
-    <li class="footer">Generated on Mon Jan 26 2015 13:55:10 for DS3 .NET Software Development Kit by
+    <li class="footer">Generated on Thu Mar 19 2015 10:00:08 for DS3 .NET Software Development Kit by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
