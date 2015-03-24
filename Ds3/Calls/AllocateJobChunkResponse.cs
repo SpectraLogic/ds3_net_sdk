@@ -28,16 +28,29 @@ namespace Ds3.Calls
             // Prevent non-internal implementations.
         }
 
+        /// <summary>
+        /// Creates a response object specifying the object list that was successfully (or already) allocated.
+        /// </summary>
+        /// <param name="jobObjectList">The job objects that were allocated.</param>
+        /// <returns>The response instance.</returns>
         public static AllocateJobChunkResponse Success(JobObjectList jobObjectList)
         {
             return new SuccessChunkResponse(jobObjectList);
         }
 
+        /// <summary>
+        /// Creates a response object specifying that the client should retry the request.
+        /// </summary>
+        /// <param name="retryAfter">The amount of time that the client should wait before retrying.</param>
+        /// <returns>The response instance.</returns>
         public static AllocateJobChunkResponse RetryAfter(TimeSpan retryAfter)
         {
             return new RetryAfterResponse(retryAfter);
         }
 
+        /// <summary>
+        /// Creates a response object specifying that the chunk no longer exists.
+        /// </summary>
         public static AllocateJobChunkResponse ChunkGone
         {
             get { return _chunkGone; }
@@ -53,8 +66,21 @@ namespace Ds3.Calls
             return Match(success, retryAfter, () => { throw new InvalidOperationException(Resources.JobGoneException); });
         }
 
+        /// <summary>
+        /// Calls success, retryAfter, or chunkGone depending on which type of response this actually is.
+        /// </summary>
+        /// <param name="success">The function to call if this is a "success" instance.</param>
+        /// <param name="retryAfter">The function to call if this is a "retryAfter" instance.</param>
+        /// <param name="chunkGone">The function to call if this is a "chunkGone" instance.</param>
         public abstract void Match(Action<JobObjectList> success, Action<TimeSpan> retryAfter, Action chunkGone);
 
+        /// <summary>
+        /// Calls success, retryAfter, or chunkGone depending on which type of response this actually is.
+        /// </summary>
+        /// <param name="success">The function to call if this is a "success" instance.</param>
+        /// <param name="retryAfter">The function to call if this is a "retryAfter" instance.</param>
+        /// <param name="chunkGone">The function to call if this is a "chunkGone" instance.</param>
+        /// <returns>What either success, retryAfter, or chunkGone return.</returns>
         public abstract T Match<T>(Func<JobObjectList, T> success, Func<TimeSpan, T> retryAfter, Func<T> chunkGone);
 
         private class SuccessChunkResponse : AllocateJobChunkResponse
