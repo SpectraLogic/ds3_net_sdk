@@ -26,22 +26,48 @@ namespace Ds3.Models
         private static Checksum _none = new NoneChecksum();
         private static Checksum _compute = new ComputeChecksum();
 
+        /// <summary>
+        /// Do not provide a checksum header on PUT.
+        /// </summary>
         public static Checksum None
         {
             get { return _none; }
         }
 
+        /// <summary>
+        /// Calculate the checksum automatically. This requires a seekable streem.
+        /// </summary>
         public static Checksum Compute
         {
             get { return _compute; }
         }
 
+        /// <summary>
+        /// Provide a binary checksum value directly, if the client
+        /// application knows the checksum of a payload beforehand.
+        /// </summary>
+        /// <param name="hash">The checksum bytes</param>
+        /// <returns>The Checksum "value" instance</returns>
         public static Checksum Value(byte[] hash)
         {
             return new ValueChecksum(hash);
         }
 
+        /// <summary>
+        /// Calls none, compute, or value, depending on which type this actually is.
+        /// </summary>
+        /// <param name="none">The function to call if the value is "none".</param>
+        /// <param name="compute">The function to call if the value is "compute".</param>
+        /// <param name="value">The function to call if the value is "value" with a checksum payload.</param>
         public abstract void Match(Action none, Action compute, Action<byte[]> value);
+
+        /// <summary>
+        /// Calls none, compute, or value, depending on which type this actually is.
+        /// </summary>
+        /// <param name="none">The function to call if the value is "none".</param>
+        /// <param name="compute">The function to call if the value is "compute".</param>
+        /// <param name="value">The function to call if the value is "value" with a checksum payload.</param>
+        /// <returns>What either none, computer, or value return.</returns>
         public abstract T Match<T>(Func<T> none, Func<T> compute, Func<byte[], T> value);
 
         private Checksum()
