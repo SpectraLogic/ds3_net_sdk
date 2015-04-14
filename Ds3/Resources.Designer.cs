@@ -196,6 +196,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid value for type: {0}.
+        /// </summary>
+        internal static string InvalidValueForTypeException {
+            get {
+                return ResourceManager.GetString("InvalidValueForTypeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The job went away as we were trying to acquire chunk information..
         /// </summary>
         internal static string JobGoneException {

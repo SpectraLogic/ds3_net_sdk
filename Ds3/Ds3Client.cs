@@ -139,6 +139,16 @@ namespace Ds3
             return new GetAvailableJobChunksResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public GetAggregatePhysicalPlacementResponse GetAggregatePhysicalPlacement(GetAggregatePhysicalPlacementRequest request)
+        {
+            return new GetAggregatePhysicalPlacementResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetPhysicalPlacementForObjectsResponse GetPhysicalPlacementForObjects(GetPhysicalPlacementForObjectsRequest request)
+        {
+            return new GetPhysicalPlacementForObjectsResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes)
         {
             return new Ds3ClientFactory(this, nodes);

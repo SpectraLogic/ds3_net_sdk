@@ -167,6 +167,20 @@ namespace Ds3
         GetAvailableJobChunksResponse GetAvailableJobChunks(GetAvailableJobChunksRequest request);
 
         /// <summary>
+        /// Returns the set of physical media containing the provided set of objects.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        GetAggregatePhysicalPlacementResponse GetAggregatePhysicalPlacement(GetAggregatePhysicalPlacementRequest request);
+
+        /// <summary>
+        /// For each offset and length within each provided object, lists the tapes used to store the data.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        GetPhysicalPlacementForObjectsResponse GetPhysicalPlacementForObjects(GetPhysicalPlacementForObjectsRequest request);
+
+        /// <summary>
         /// For multi-node support (planned), this provides a means of creating
         /// a client that connects to the specified node id.
         /// </summary>
