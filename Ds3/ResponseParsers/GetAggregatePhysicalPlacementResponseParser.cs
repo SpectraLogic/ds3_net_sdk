@@ -24,44 +24,29 @@ using System.Xml.Linq;
 
 namespace Ds3.ResponseParsers
 {
-    internal class GetPhysicalPlacementResponseParser : IResponseParser<GetPhysicalPlacementRequest, GetPhysicalPlacementResponse>
+    internal class GetAggregatePhysicalPlacementResponseParser : IResponseParser<GetAggregatePhysicalPlacementRequest, GetAggregatePhysicalPlacementResponse>
     {
-        public GetPhysicalPlacementResponse Parse(GetPhysicalPlacementRequest request, IWebResponse response)
+        public GetAggregatePhysicalPlacementResponse Parse(GetAggregatePhysicalPlacementRequest request, IWebResponse response)
         {
             using (response)
             {
                 ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
                 using (var stream = response.GetResponseStream())
                 {
-                    var dataNode = XmlExtensions.ReadDocument(stream).ElementOrThrow("Data");
-                    if (request.FullDetails)
-                    {
-                        return new GetPhysicalPlacementResponse(dataNode.Elements("Object").Select(ParseObjectPlacement).ToList());
-                    }
-                    else
-                    {
-                        return new GetPhysicalPlacementResponse(dataNode.ElementOrThrow("Tapes").Elements("Tape").Select(ParseTape).ToList());
-                    }
+                    return new GetAggregatePhysicalPlacementResponse(
+                        XmlExtensions
+                            .ReadDocument(stream)
+                            .ElementOrThrow("Data")
+                            .ElementOrThrow("Tapes")
+                            .Elements("Tape")
+                            .Select(ParseTape)
+                            .ToList()
+                    );
                 }
             }
         }
 
-        private static Ds3ObjectPlacement ParseObjectPlacement(XElement objectEl)
-        {
-            return new Ds3ObjectPlacement
-            {
-                 Name = objectEl.AttributeText("Name"),
-                 Offset = long.Parse(objectEl.AttributeText("Offset")),
-                 Length = long.Parse(objectEl.AttributeText("Length")),
-                 Tapes = objectEl
-                     .ElementOrThrow("PhysicalPlacement")
-                     .ElementOrThrow("Tapes")
-                     .Elements("Tape")
-                     .Select(ParseTape)
-            };
-        }
-
-        private static Tape ParseTape(XElement tapeEl)
+        internal static Tape ParseTape(XElement tapeEl)
         {
             return new Tape
             {

@@ -58,7 +58,6 @@ namespace Ds3.Calls
         /// <summary>
         /// Convenience overload if the client wants to throw a job gone exception if the job is gone.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="success"></param>
         /// <param name="retryAfter"></param>
         /// <returns></returns>

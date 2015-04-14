@@ -71,8 +71,10 @@
     <Compile Include="Calls\GetJobListRequest.cs" />
     <Compile Include="Calls\GetJobListResponse.cs" />
     <Compile Include="Calls\GetJobRequest.cs" />
-    <Compile Include="Calls\GetPhysicalPlacementRequest.cs" />
-    <Compile Include="Calls\GetPhysicalPlacementResponse.cs" />
+    <Compile Include="Calls\GetPhysicalPlacementForObjectsRequest.cs" />
+    <Compile Include="Calls\GetPhysicalPlacementForObjectsResponse.cs" />
+    <Compile Include="Calls\GetAggregatePhysicalPlacementRequest.cs" />
+    <Compile Include="Calls\GetAggregatePhysicalPlacementResponse.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
@@ -173,7 +175,8 @@
     <Compile Include="ResponseParsers\GetAvailableJobChunksResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\GetJobListResponseParser.cs" />
-    <Compile Include="ResponseParsers\GetPhysicalPlacementResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetPhysicalPlacementForObjectsResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetAggregatePhysicalPlacementResponseParser.cs" />
     <Compile Include="ResponseParsers\GetServiceResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadObjectResponseParser.cs" />

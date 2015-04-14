@@ -168,12 +168,17 @@ namespace Ds3
 
         /// <summary>
         /// Returns the set of physical media containing the provided set of objects.
-        /// In full details mode, lists tapes used to store each offset and length of
-        /// each of the provided objects.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        GetPhysicalPlacementResponse GetPhysicalPlacement(GetPhysicalPlacementRequest request);
+        GetAggregatePhysicalPlacementResponse GetAggregatePhysicalPlacement(GetAggregatePhysicalPlacementRequest request);
+
+        /// <summary>
+        /// For each offset and length within each provided object, lists the tapes used to store the data.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        GetPhysicalPlacementForObjectsResponse GetPhysicalPlacementForObjects(GetPhysicalPlacementForObjectsRequest request);
 
         /// <summary>
         /// For multi-node support (planned), this provides a means of creating

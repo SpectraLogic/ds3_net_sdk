@@ -595,8 +595,7 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var result = client.GetPhysicalPlacement(new GetPhysicalPlacementRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" }));
-            Assert.Throws<InvalidOperationException>(() => { var placements = result.ObjectPlacements; });
+            var result = client.GetAggregatePhysicalPlacement(new GetAggregatePhysicalPlacementRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" }));
             CollectionAssert.AreEqual(new[] { _testTape }, result.Tapes.ToArray(), new TapeComparer());
         }
 
@@ -623,11 +622,7 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var result = client.GetPhysicalPlacement(
-                new GetPhysicalPlacementRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" })
-                    .WithFullDetails()
-            );
-            Assert.Throws<InvalidOperationException>(() => { var placements = result.Tapes; });
+            var result = client.GetPhysicalPlacementForObjects(new GetPhysicalPlacementForObjectsRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" }));
             CollectionAssert.AreEqual( new[] { _testObjectPlacement }, result.ObjectPlacements.ToArray(), new Ds3ObjectPlacementComparer());
         }
 

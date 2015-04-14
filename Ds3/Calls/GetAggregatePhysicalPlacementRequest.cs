@@ -21,20 +21,12 @@ using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
-    public class GetPhysicalPlacementRequest : Ds3Request
+    public class GetAggregatePhysicalPlacementRequest : Ds3Request
     {
         public string BucketName { get; private set; }
         public IEnumerable<string> Objects { get; private set; }
-        public bool FullDetails { get; private set; }
 
-        public GetPhysicalPlacementRequest WithFullDetails()
-        {
-            this.FullDetails = true;
-            this.QueryParams.Add("full_details", "");
-            return this;
-        }
-
-        public GetPhysicalPlacementRequest(string bucketName, IEnumerable<string> objects)
+        public GetAggregatePhysicalPlacementRequest(string bucketName, IEnumerable<string> objects)
         {
             this.BucketName = bucketName;
             this.Objects = objects;
