@@ -71,10 +71,13 @@
     <Compile Include="Calls\GetJobListRequest.cs" />
     <Compile Include="Calls\GetJobListResponse.cs" />
     <Compile Include="Calls\GetJobRequest.cs" />
+    <Compile Include="Calls\GetPhysicalPlacementRequest.cs" />
+    <Compile Include="Calls\GetPhysicalPlacementResponse.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
     <Compile Include="Calls\HeadObjectResponse.cs" />
+    <Compile Include="Models\Ds3ObjectPlacement.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Calls\ModifyJobRequest.cs" />
     <Compile Include="Calls\DeleteJobRequest.cs" />
@@ -155,6 +158,9 @@
     <Compile Include="Calls\PutBucketRequest.cs" />
     <Compile Include="Calls\PutObjectRequest.cs" />
     <Compile Include="Models\Range.cs" />
+    <Compile Include="Models\Tape.cs" />
+    <Compile Include="Models\TapeState.cs" />
+    <Compile Include="Models\TapeType.cs" />
     <Compile Include="Models\UploadPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
@@ -167,6 +173,7 @@
     <Compile Include="ResponseParsers\GetAvailableJobChunksResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\GetJobListResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetPhysicalPlacementResponseParser.cs" />
     <Compile Include="ResponseParsers\GetServiceResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadObjectResponseParser.cs" />

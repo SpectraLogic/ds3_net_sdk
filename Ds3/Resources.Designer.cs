@@ -61,6 +61,24 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Asked for the object placements, but the request was not a full details request..
+        /// </summary>
+        internal static string AccessedFullDetailsButRequestedSummaryException {
+            get {
+                return ResourceManager.GetString("AccessedFullDetailsButRequestedSummaryException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Asked for the tapes directly but the request was a full details request..
+        /// </summary>
+        internal static string AccessedSummaryButRequestedFullDetailsException {
+            get {
+                return ResourceManager.GetString("AccessedSummaryButRequestedFullDetailsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Received a status code of {0} when one of {1} was expected. Error message: &quot;{2}&quot;.
         /// </summary>
         internal static string BadStatusCodeException {
@@ -192,6 +210,15 @@ namespace Ds3 {
         internal static string InvalidStreamException {
             get {
                 return ResourceManager.GetString("InvalidStreamException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid value for type: {0}.
+        /// </summary>
+        internal static string InvalidValueForTypeException {
+            get {
+                return ResourceManager.GetString("InvalidValueForTypeException", resourceCulture);
             }
         }
         

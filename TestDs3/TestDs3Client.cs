@@ -13,19 +13,19 @@
  * ****************************************************************************
  */
 
+using Ds3;
+using Ds3.Calls;
+using Ds3.Models;
+using Ds3.Runtime;
+using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-
-using NUnit.Framework;
-
-using Ds3;
-using Ds3.Calls;
-using Ds3.Models;
-using Ds3.Runtime;
+using TestDs3.Lang;
 
 namespace TestDs3
 {
@@ -38,6 +38,8 @@ namespace TestDs3
         private const string AllocateJobChunkResponseResourceName = "TestDs3.TestData.AllocateJobChunkResponse.xml";
         private const string GetAvailableJobChunksResponseResourceName = "TestDs3.TestData.GetAvailableJobChunksResponse.xml";
         private const string EmptyGetAvailableJobChunksResponseResourceName = "TestDs3.TestData.EmptyGetAvailableJobChunksResponse.xml";
+        private const string GetPhysicalPlacementResponseResourceName = "TestDs3.TestData.GetPhysicalPlacementResponse.xml";
+        private const string GetPhysicalPlacementFullDetailsResponseResourceName = "TestDs3.TestData.GetPhysicalPlacementFullDetailsResponse.xml";
 
         [Test]
         public void TestGetService()
@@ -551,6 +553,145 @@ namespace TestDs3
             );
             Assert.NotNull(retryValue);
             Assert.AreEqual(TimeSpan.FromMinutes(5), retryValue.Value);
+        }
+
+        private readonly static Tape _testTape = new Tape
+        {
+            AssignedToBucket = false,
+            AvailableRawCapacity = 10000L,
+            BarCode = "t1",
+            BucketId = "7a6a0b80-4c24-4f8c-9779-527e863c5470",
+            DescriptionForIdentification = "A really cool tape",
+            EjectDate = new DateTime(2015, 4, 13, 8, 9, 18, 443),
+            EjectLabel = "Bin X",
+            EjectLocation = "New Jersey",
+            EjectPending = null,
+            FullOfData = false,
+            Id = "11eaa8ec-e287-4852-a5f8-c06b8dd90aec",
+            LastAccessed = null,
+            LastCheckpoint = "",
+            LastModified = new DateTime(2015, 4, 9, 8, 11, 48, 305),
+            LastVerified = null,
+            PartitionId = "9d1ab9db-f488-461d-b04c-31001496c05e",
+            PreviousState = null,
+            SerialNumber = "123456",
+            State = TapeState.Ejected,
+            TotalRawCapacity = 20000,
+            Type = TapeType.Lto5,
+            WriteProtected = false,
+        };
+
+        [Test]
+        public void GetPhysicalPlacementReturnsPartialDetails()
+        {
+            var requestString = "<Objects><Object Name=\"o1\" /><Object Name=\"o2\" /><Object Name=\"o3\" /><Object Name=\"o4\" /></Objects>";
+            var queryParams = new Dictionary<string, string>
+            {
+                { "operation", "get_physical_placement" },
+            };
+            var responseContent = ReadResource(GetPhysicalPlacementResponseResourceName);
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/test_bucket", queryParams, requestString)
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .AsClient;
+
+            var result = client.GetPhysicalPlacement(new GetPhysicalPlacementRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" }));
+            Assert.Throws<InvalidOperationException>(() => { var placements = result.ObjectPlacements; });
+            CollectionAssert.AreEqual(new[] { _testTape }, result.Tapes.ToArray(), new TapeComparer());
+        }
+
+        private static readonly Ds3ObjectPlacement _testObjectPlacement = new Ds3ObjectPlacement
+        {
+            Name = "foo_object",
+            Offset = 10L,
+            Length = 20L,
+            Tapes = new[] { _testTape }
+        };
+
+        [Test]
+        public void GetPhysicalPlacementReturnsFullDetails()
+        {
+            var requestString = "<Objects><Object Name=\"o1\" /><Object Name=\"o2\" /><Object Name=\"o3\" /><Object Name=\"o4\" /></Objects>";
+            var queryParams = new Dictionary<string, string>
+            {
+                { "operation", "get_physical_placement" },
+                { "full_details", "" },
+            };
+            var responseContent = ReadResource(GetPhysicalPlacementFullDetailsResponseResourceName);
+            var client = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/test_bucket", queryParams, requestString)
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .AsClient;
+
+            var result = client.GetPhysicalPlacement(
+                new GetPhysicalPlacementRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" })
+                    .WithFullDetails()
+            );
+            Assert.Throws<InvalidOperationException>(() => { var placements = result.Tapes; });
+            CollectionAssert.AreEqual( new[] { _testObjectPlacement }, result.ObjectPlacements.ToArray(), new Ds3ObjectPlacementComparer());
+        }
+
+        private class Ds3ObjectPlacementComparer : IComparer, IComparer<Ds3ObjectPlacement>
+        {
+            public int Compare(object x, object y)
+            {
+                return this.Compare(x as Ds3ObjectPlacement, y as Ds3ObjectPlacement);
+            }
+
+            public int Compare(Ds3ObjectPlacement x, Ds3ObjectPlacement y)
+            {
+                if (x == null || y == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                return CompareChain.Of(x, y)
+                    .Value(op => op.Name)
+                    .Value(op => op.Offset)
+                    .Value(op => op.Length)
+                    .Value(op => op.Tapes, new EnumerableComparer<Tape>(new TapeComparer()))
+                    .Result;
+            }
+        }
+
+        private class TapeComparer : IComparer, IComparer<Tape>
+        {
+            public int Compare(object x, object y)
+            {
+                return this.Compare(x as Tape, y as Tape);
+            }
+
+            public int Compare(Tape x, Tape y)
+            {
+                if (x == null || y == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return CompareChain.Of(x, y)
+                    .Value(t => t.AssignedToBucket)
+        			.Value(t => t.AvailableRawCapacity)
+        			.Value(t => t.BarCode)
+        			.Value(t => t.BucketId)
+        			.Value(t => t.DescriptionForIdentification)
+        			.Value(t => t.EjectDate)
+        			.Value(t => t.EjectLabel)
+        			.Value(t => t.EjectLocation)
+        			.Value(t => t.EjectPending)
+        			.Value(t => t.FullOfData)
+        			.Value(t => t.Id)
+        			.Value(t => t.LastAccessed)
+        			.Value(t => t.LastCheckpoint)
+        			.Value(t => t.LastModified)
+        			.Value(t => t.LastVerified)
+        			.Value(t => t.PartitionId)
+        			.Value(t => t.PreviousState)
+        			.Value(t => t.SerialNumber)
+        			.Value(t => t.State)
+        			.Value(t => t.TotalRawCapacity)
+        			.Value(t => t.Type)
+        			.Value(t => t.WriteProtected)
+                    .Result;
+            }
         }
     }
 }

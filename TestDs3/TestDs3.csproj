@@ -69,7 +69,11 @@
     <Compile Include="Helpers\TransferItemSources\TransferItemSourceHelpers.cs" />
     <Compile Include="Helpers\TransferItemSources\TestReadTransferItemSource.cs" />
     <Compile Include="Helpers\TransferItemSources\TestWriteTransferItemSource.cs" />
+    <Compile Include="Lang\EnumerableComparer.cs" />
+    <Compile Include="Lang\CompareChain.cs" />
     <Compile Include="Lang\LangTestHelpers.cs" />
+    <Compile Include="Lang\TestCompareChain.cs" />
+    <Compile Include="Lang\TestEnumerableComparer.cs" />
     <Compile Include="Lang\TestParallel.cs" />
     <Compile Include="Lang\TestThreadSafeEnumerator.cs" />
     <Compile Include="Models\TestDs3Object.cs" />
@@ -127,6 +131,10 @@
   <ItemGroup>
     <EmbeddedResource Include="TestData\EmptyGetAvailableJobChunksResponse.xml" />
     <EmbeddedResource Include="TestData\GetAvailableJobChunksResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\GetPhysicalPlacementFullDetailsResponse.xml" />
+    <EmbeddedResource Include="TestData\GetPhysicalPlacementResponse.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
