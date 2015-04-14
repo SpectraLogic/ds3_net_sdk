@@ -72,17 +72,23 @@ namespace TestDs3.Lang
         [Test, Timeout(1000)]
         public void ForEachTerminatesUponFailure()
         {
+            var threadCount = 12;
             int itemsReturned = 0;
             try
             {
-                var throwExceptions = new ManualResetEventSlim();
-                Task.Delay(10).ContinueWith(t => Task.Run(() => throwExceptions.Set()));
+                var throwExceptions = new CountdownEvent(threadCount);
+                var threadsRun = new ConcurrentDictionary<int, int>();
                 Parallel.ForEach(
-                    12,
+                    threadCount,
                     CancellationToken.None,
                     Infinite().Select(it => { itemsReturned = it; return it; }),
                     i =>
                     {
+                        threadsRun.AddOrUpdate(
+                            Thread.CurrentThread.ManagedThreadId,
+                            k => { throwExceptions.Signal(); return 1; },
+                            (k, v) => 1
+                        );
                         Thread.Sleep(1);
                         if (throwExceptions.IsSet)
                         {
@@ -94,7 +100,7 @@ namespace TestDs3.Lang
             }
             catch (AggregateException e)
             {
-                Assert.AreEqual(12, e.InnerExceptions.Count);
+                Assert.AreEqual(threadCount, e.InnerExceptions.Count);
                 foreach (var inner in e.InnerExceptions)
                 {
                     Assert.IsInstanceOf<InvalidOperationException>(inner);
