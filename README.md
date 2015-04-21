@@ -1,11 +1,7 @@
 # DS3 .Net SDK
 
-An [SDK](http://en.wikipedia.org/wiki/Software_development_kit) and Windows
-PowerShell [CLI](http://en.wikipedia.org/wiki/Command-line_interface)
-conforming to the DS3 specification.
-
-See the [PowerShell DS3 Module Documentation](../../wiki/PowerShell-DS3-Module)
-for more information on using DS3 from the command line on Windows.
+An [SDK](http://en.wikipedia.org/wiki/Software_development_kit) conforming to
+the DS3 specification.
 
 ## Contact Us
 

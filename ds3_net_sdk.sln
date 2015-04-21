@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ds3", "DS3\Ds3.csproj", "{00047EA6-0178-4ABD-B183-D1D73D222673}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ds3Client", "Ds3Client\Ds3Client.csproj", "{354C57FE-7738-4040-9726-59476513B06A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDs3Client", "TestDs3Client\TestDs3Client.csproj", "{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CC8ED96-63BF-4CC0-853D-575B0BB50A7B}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDs3", "TestDs3\TestDs3.csproj", "{E9315C7A-23BC-4D7D-BF63-FBB94B0F80E7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ds3ClientInstaller", "Ds3ClientInstaller\Ds3ClientInstaller.csproj", "{ED10E7CE-FBB5-4A64-B821-B30A9F7CAD40}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2D641731-E696-4F60-B444-A4DD1E7D03FD}"
 	ProjectSection(SolutionItems) = preProject
@@ -35,22 +29,10 @@ Global
 		{00047EA6-0178-4ABD-B183-D1D73D222673}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00047EA6-0178-4ABD-B183-D1D73D222673}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00047EA6-0178-4ABD-B183-D1D73D222673}.Release|Any CPU.Build.0 = Release|Any CPU
-		{354C57FE-7738-4040-9726-59476513B06A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{354C57FE-7738-4040-9726-59476513B06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{354C57FE-7738-4040-9726-59476513B06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{354C57FE-7738-4040-9726-59476513B06A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBC04D12-FABE-4AC8-8BB9-E7037CBBC71F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9315C7A-23BC-4D7D-BF63-FBB94B0F80E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9315C7A-23BC-4D7D-BF63-FBB94B0F80E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9315C7A-23BC-4D7D-BF63-FBB94B0F80E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9315C7A-23BC-4D7D-BF63-FBB94B0F80E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED10E7CE-FBB5-4A64-B821-B30A9F7CAD40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED10E7CE-FBB5-4A64-B821-B30A9F7CAD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED10E7CE-FBB5-4A64-B821-B30A9F7CAD40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED10E7CE-FBB5-4A64-B821-B30A9F7CAD40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
