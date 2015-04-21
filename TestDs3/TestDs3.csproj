@@ -93,7 +93,7 @@
     <Compile Include="Helpers\TestDs3ClientHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DS3\Ds3.csproj">
+    <ProjectReference Include="..\Ds3\Ds3.csproj">
       <Project>{00047ea6-0178-4abd-b183-d1d73d222673}</Project>
       <Name>Ds3</Name>
     </ProjectReference>
