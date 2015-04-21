@@ -1,8 +1,5 @@
 language: csharp
 solution: ds3_net_sdk.sln
-install:
-  - nuget restore ds3_net_sdk.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release ds3_net_sdk.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./TestDs3/bin/Release/TestDs3.dll
+  - mono ./packages/NUnit.Runners.2.6.3/tools/nunit-console.exe ./TestDs3/bin/Release/TestDs3.dll
