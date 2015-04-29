@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+using Ds3.Calls;
 using System;
 
 namespace Ds3.Models
@@ -24,19 +25,22 @@ namespace Ds3.Models
         public Guid JobId { get; private set; }
         public String Priority { get; private set; }
         public String RequestType { get; private set; }
+        public JobStatus Status { get; private set; }
 
         public JobInfo(
             String bucketName,
             String startDate,
             Guid jobId,
             String priority,
-            String requestType)
+            String requestType,
+            JobStatus jobStatus)
         {
             this.BucketName = bucketName;
             this.StartDate = startDate;
             this.JobId = jobId;
             this.Priority = priority;
             this.RequestType = requestType;
+            this.Status = jobStatus;
         }
     }
 }

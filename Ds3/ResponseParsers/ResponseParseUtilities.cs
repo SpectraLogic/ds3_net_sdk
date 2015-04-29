@@ -13,15 +13,15 @@
  * ****************************************************************************
  */
 
+using Ds3.Calls;
+using Ds3.Models;
+using Ds3.Runtime;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
 using System.Xml.Linq;
-
-using Ds3.Models;
-using Ds3.Runtime;
 
 namespace Ds3.ResponseParsers
 {
@@ -33,6 +33,17 @@ namespace Ds3.ResponseParsers
                 .Keys
                 .Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix))
                 .ToDictionary(key => key.Substring(HttpHeaders.AwsMetadataPrefix.Length), key => headers[key]);
+        }
+
+        internal static JobStatus ParseJobStatus(string jobStatus)
+        {
+            switch (jobStatus)
+            {
+                case "COMPLETED": return JobStatus.COMPLETED;
+                case "CANCELLED": return JobStatus.CANCELLED;
+                case "IN_PROGRESS": return JobStatus.IN_PROGRESS;
+                default: return JobStatus.IN_PROGRESS;
+            }
         }
 
         public static void HandleStatusCode(IWebResponse response, params HttpStatusCode[] expectedStatusCodes)

@@ -17,6 +17,19 @@ namespace Ds3.Calls
 {
     public class GetJobListRequest : Ds3Request
     {
+        public string Bucket { get; private set; }
+
+        public GetJobListRequest WithBucket(string bucket)
+        {
+            if (this.Bucket != null)
+            {
+                this.QueryParams.Remove("bucket");
+            }
+            this.QueryParams.Add("bucket", bucket);
+            this.Bucket = bucket;
+            return this;
+        }
+
         internal override HttpVerb Verb
         {
             get { return HttpVerb.GET;  }

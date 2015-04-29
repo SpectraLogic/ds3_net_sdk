@@ -405,13 +405,31 @@ namespace TestDs3
         [Test]
         public void TestGetJobList()
         {
-            var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\"/></Jobs>";
+            var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
             var jobs = client.GetJobList(new GetJobListRequest()).Jobs.ToList();
+            Assert.AreEqual(1, jobs.Count);
+            CheckJobInfo(jobs[0]);
+        }
+
+        [Test]
+        public void TestGetJobListWithBucketName()
+        {
+            var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
+            var queryParams = new Dictionary<string, string>
+            {
+                { "bucket", "bucketName" }
+            };
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job", queryParams, "")
+                .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
+                .AsClient;
+
+            var jobs = client.GetJobList(new GetJobListRequest().WithBucket("bucketName")).Jobs.ToList();
             Assert.AreEqual(1, jobs.Count);
             CheckJobInfo(jobs[0]);
         }

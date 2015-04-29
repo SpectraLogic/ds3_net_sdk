@@ -63,19 +63,8 @@ namespace Ds3.ResponseParsers
                     .Elements("Objects")
                     .Select(ParseObjectList)
                     .ToList(),
-                status: ParseJobStatus(masterObjectList.TextOfOrNull("Status"))
+                status: ResponseParseUtilities.ParseJobStatus(masterObjectList.TextOfOrNull("Status"))
             );
-        }
-
-        private static JobStatus ParseJobStatus(string jobStatus)
-        {
-            switch (jobStatus)
-            {
-                case "COMPLETED": return JobStatus.COMPLETED;
-                case "CANCELLED": return JobStatus.CANCELLED;
-                case "IN_PROGRESS": return JobStatus.IN_PROGRESS;
-                default: return JobStatus.IN_PROGRESS;
-            }
         }
 
         private static ChunkOrdering ParseChunkOrdering(string chunkOrdering)
