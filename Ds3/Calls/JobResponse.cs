@@ -30,7 +30,7 @@ namespace Ds3.Calls
         public ChunkOrdering ChunkOrder { get; private set; }
         public IEnumerable<Node> Nodes { get; private set; }
         public IEnumerable<JobObjectList> ObjectLists { get; private set; }
-        public JobStatus Status { get; set; }
+        public JobStatus Status { get; private set; }
 
         public JobResponse(
             string bucketName,

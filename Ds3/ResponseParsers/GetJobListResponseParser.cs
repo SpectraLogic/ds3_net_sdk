@@ -42,7 +42,8 @@ namespace Ds3.ResponseParsers
                                 jobElement.AttributeText("StartDate"),
                                 Guid.Parse(jobElement.AttributeText("JobId")),
                                 jobElement.AttributeText("Priority"),
-                                jobElement.AttributeText("RequestType")
+                                jobElement.AttributeText("RequestType"),
+                                ResponseParseUtilities.ParseJobStatus(jobElement.AttributeText("Status"))
                             ))
                             .ToList()
                     );
