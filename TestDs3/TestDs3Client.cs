@@ -35,6 +35,7 @@ namespace TestDs3
         private static readonly IDictionary<string, string> _emptyHeaders = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
         private const string JobResponseResourceName = "TestDs3.TestData.ResultingMasterObjectList.xml";
+        private const string CompletedJobResponseResourceName = "TestDs3.TestData.CompletedMasterObjectList.xml";
         private const string AllocateJobChunkResponseResourceName = "TestDs3.TestData.AllocateJobChunkResponse.xml";
         private const string GetAvailableJobChunksResponseResourceName = "TestDs3.TestData.GetAvailableJobChunksResponse.xml";
         private const string EmptyGetAvailableJobChunksResponseResourceName = "TestDs3.TestData.EmptyGetAvailableJobChunksResponse.xml";
@@ -314,6 +315,27 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                 .AsClient;
             CheckJobResponse(client.GetJob(new GetJobRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936"))));
+        }
+
+        [Test]
+        public void TestGetCompletedJob()
+        {
+            var stringResponse = ReadResource(CompletedJobResponseResourceName);
+            var client = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/job/350225fb-ec92-4456-a09d-5ffb7c7830bb", _emptyQueryParams, "")
+                .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
+                .AsClient;
+            var jobId = Guid.Parse("350225fb-ec92-4456-a09d-5ffb7c7830bb");
+            var job = client.GetJob(new GetJobRequest(jobId));
+            Assert.AreEqual("avid-bucket", job.BucketName);
+            Assert.AreEqual(ChunkOrdering.InOrder, job.ChunkOrder);
+            Assert.AreEqual(jobId, job.JobId);
+            CollectionAssert.AreEqual(Enumerable.Empty<Node>(), job.Nodes);
+            CollectionAssert.AreEqual(Enumerable.Empty<JobObjectList>(), job.ObjectLists);
+            Assert.AreEqual("NORMAL", job.Priority);
+            Assert.AreEqual("PUT", job.RequestType);
+            Assert.AreEqual(new DateTime(2015, 5, 5, 17, 9, 30, 0, DateTimeKind.Utc), job.StartDate.ToUniversalTime());
+            Assert.AreEqual(JobStatus.COMPLETED, job.Status);
         }
 
         private static string ReadResource(string resourceName)

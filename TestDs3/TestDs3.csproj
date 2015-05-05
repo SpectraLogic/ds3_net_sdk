@@ -136,6 +136,9 @@
     <EmbeddedResource Include="TestData\GetPhysicalPlacementFullDetailsResponse.xml" />
     <EmbeddedResource Include="TestData\GetPhysicalPlacementResponse.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\CompletedMasterObjectList.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
