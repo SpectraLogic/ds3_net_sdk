@@ -51,7 +51,8 @@ namespace Ds3.ResponseParsers
                 startDate: DateTime.Parse(masterObjectList.AttributeText("StartDate")),
                 chunkOrder: ParseChunkOrdering(masterObjectList.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 nodes: (
-                    from nodeElement in masterObjectList.Element("Nodes").Elements("Node")
+                    from nodesElement in masterObjectList.Elements("Nodes")
+                    from nodeElement in nodesElement.Elements("Node")
                     select new Node(
                         Guid.Parse(nodeElement.AttributeText("Id")),
                         nodeElement.AttributeText("EndPoint"),
@@ -63,7 +64,7 @@ namespace Ds3.ResponseParsers
                     .Elements("Objects")
                     .Select(ParseObjectList)
                     .ToList(),
-                status: ResponseParseUtilities.ParseJobStatus(masterObjectList.TextOfOrNull("Status"))
+                status: ResponseParseUtilities.ParseJobStatus(masterObjectList.AttributeTextOrNull("Status"))
             );
         }
 
