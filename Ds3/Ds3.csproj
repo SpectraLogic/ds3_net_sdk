@@ -71,6 +71,8 @@
     <Compile Include="Calls\GetJobListRequest.cs" />
     <Compile Include="Calls\GetJobListResponse.cs" />
     <Compile Include="Calls\GetJobRequest.cs" />
+    <Compile Include="Calls\GetObjectsRequest.cs" />
+    <Compile Include="Calls\GetObjectsResponse.cs" />
     <Compile Include="Calls\GetPhysicalPlacementForObjectsRequest.cs" />
     <Compile Include="Calls\GetPhysicalPlacementForObjectsResponse.cs" />
     <Compile Include="Calls\GetAggregatePhysicalPlacementRequest.cs" />
@@ -79,7 +81,9 @@
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
     <Compile Include="Calls\HeadObjectResponse.cs" />
+    <Compile Include="Models\DS3GetObjectsInfo.cs" />
     <Compile Include="Models\Ds3ObjectPlacement.cs" />
+    <Compile Include="Models\DS3ObjectTypes.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Calls\ModifyJobRequest.cs" />
     <Compile Include="Calls\DeleteJobRequest.cs" />
@@ -175,6 +179,7 @@
     <Compile Include="ResponseParsers\GetAvailableJobChunksResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\GetJobListResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetObjectsResponseParser.cs" />
     <Compile Include="ResponseParsers\GetPhysicalPlacementForObjectsResponseParser.cs" />
     <Compile Include="ResponseParsers\GetAggregatePhysicalPlacementResponseParser.cs" />
     <Compile Include="ResponseParsers\GetServiceResponseParser.cs" />
