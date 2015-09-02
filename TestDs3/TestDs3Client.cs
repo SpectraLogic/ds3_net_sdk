@@ -102,7 +102,8 @@ namespace TestDs3
         public void TestGetBucket()
         {
             var xmlResponse = "<ListBucketResult><Name>remoteTest16</Name><Prefix/><Marker/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>user/hduser/gutenberg/20417.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>674570</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/5000.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1423803</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/4300.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1573150</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents></ListBucketResult>";
-            var expected = new {
+            var expected = new
+            {
                 Name = "remoteTest16",
                 Prefix = "",
                 Marker = "",
@@ -158,6 +159,64 @@ namespace TestDs3
                 Assert.AreEqual(expected.Objects[i].StorageClass, responseObjects[i].StorageClass);
                 Assert.AreEqual(expected.Objects[i].Owner.ID, responseObjects[i].Owner.Id);
                 Assert.AreEqual(expected.Objects[i].Owner.DisplayName, responseObjects[i].Owner.DisplayName);
+            }
+        }
+
+        [Test]
+        public void TestGetObjects()
+        {
+            var xmlResponse = @"<Data><S3Object><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:51.643</CreationDate><Id>82c8caee-9ad2-4c2c-912a-7d7f1dba850e</Id><Name>dont_get_around_much_anymore.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object><S3Object><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.457</CreationDate><Id>7dad06d1-d492-497e-828d-ca8c53cf5e6d</Id><Name>is_you_is_or_is_you_aint.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object><S3Object><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.012</CreationDate><Id>bcf24226-9c5e-423d-99fb-4939a61cd1fb</Id><Name>youre_just_in_love.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object></Data>";
+            var expected = new
+            {
+                Objects = new[] {
+                    new {
+                        BucketId = "b25a51b1-3dc8-4ecb-86d0-de334314e0a8",
+                        Name = "dont_get_around_much_anymore.mp4",
+                        Id = "82c8caee-9ad2-4c2c-912a-7d7f1dba850e",
+                        CreationDate = DateTime.Parse("2015-08-26 16:11:51.643"),
+                        Type = DS3ObjectTypes.DATA,
+                        Version = 1L
+                    },
+                    new {
+                        BucketId = "b25a51b1-3dc8-4ecb-86d0-de334314e0a8",
+                        Name = "is_you_is_or_is_you_aint.mp4",
+                        Id = "7dad06d1-d492-497e-828d-ca8c53cf5e6d",
+                        CreationDate = DateTime.Parse("2015-08-26 16:11:52.457"),
+                        Type = DS3ObjectTypes.DATA,
+                        Version = 1L
+                    },
+                    new {
+                        BucketId = "b25a51b1-3dc8-4ecb-86d0-de334314e0a8",
+                        Name = "youre_just_in_love.mp4",
+                        Id = "bcf24226-9c5e-423d-99fb-4939a61cd1fb",
+                        CreationDate = DateTime.Parse("2015-08-26 16:11:52.012"),
+                        Type = DS3ObjectTypes.DATA,
+                        Version = 1L
+                    }
+                }
+            };
+
+            var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "bucketId", "videos" },
+                    { "name", "%mp4" }
+                };
+            var response = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/object/", expectedQueryParams, "")
+                .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
+                .AsClient
+                .GetObjects(new GetObjectsRequest("videos", "%mp4"));
+            
+            var responseObjects = response.Objects.ToList();
+            Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
+            for (var i = 0; i < expected.Objects.Length; i++)
+            {
+                Assert.AreEqual(expected.Objects[i].Name, responseObjects[i].Name);
+                Assert.AreEqual(expected.Objects[i].CreationDate, responseObjects[i].CreationDate);
+                Assert.AreEqual(expected.Objects[i].Id, responseObjects[i].Id);
+                Assert.AreEqual(expected.Objects[i].BucketId, responseObjects[i].BucketId);
+                Assert.AreEqual(expected.Objects[i].Type.ToString(), responseObjects[i].Type.ToString());
+                Assert.AreEqual(expected.Objects[i].Version, responseObjects[i].Version);
             }
         }
 

@@ -5,5 +5,5 @@ using System.Text;
 
 namespace Ds3.Models
 {
-    public enum DS3ObjectTypes { Data, Folder };    
+    public enum DS3ObjectTypes { DATA, FOLDER, ALL };    
 }

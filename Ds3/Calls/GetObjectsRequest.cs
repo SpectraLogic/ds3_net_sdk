@@ -25,13 +25,108 @@ namespace Ds3.Calls
     {
         // bucketId, id, name, page_length, page_offset, type, version
         public string BucketId { get; private set; }
-        public string ObjectId { get; private set; }
         public string ObjectName { get; private set; }
-        public DateTime CreationDate { get; private set; }
-        public DS3ObjectTypes ObjectType { get; private set; }
-        public long? Length { get; private set; }
-        public long? Offset { get; private set; }
-        public long? Version { get; private set; }
+
+        private string _objectId;
+        public string ObjectId
+        {
+            get { return _objectId; }
+            set { WithObjectId(value); }
+        }
+        protected GetObjectsRequest WithObjectId(string ds3ObjectId)
+        {
+            this._objectId = ds3ObjectId;
+            if (!string.IsNullOrEmpty(ds3ObjectId))
+            {
+                this.QueryParams.Add("id", ds3ObjectId);
+            }
+            else
+            {
+                this.QueryParams.Remove("id");
+            }
+            return this;
+        }
+
+        private DS3ObjectTypes _objectType;
+        public DS3ObjectTypes ObjectType
+        { 
+            get { return _objectType; }
+            set { WithObjectType(value); }
+        }
+        protected GetObjectsRequest WithObjectType(DS3ObjectTypes type)
+        {
+            this._objectType = type;
+            if (type != DS3ObjectTypes.ALL)
+            {
+                this.QueryParams.Add("type", type.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("type");
+            }
+            return this;
+        }
+
+        private long? _length;
+        public long? Length
+        {
+            get { return _length; }
+            set { WithLength(value); }
+        }
+        protected GetObjectsRequest WithLength(long? length)
+        {
+            this._length = length;
+            if (length != null && length > 0L)
+            {
+                this.QueryParams.Add("page_length", length.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_length");
+            }
+            return this;
+        }
+
+        private long? _offset;
+        public long? Offset
+        {
+            get { return _offset; }
+            set { WithOffset(value); }
+        }
+        protected GetObjectsRequest WithOffset(long? offset)
+        {
+            this._offset = offset;
+            if (offset != null && offset > 0L)
+            {
+                this.QueryParams.Add("page_offset", offset.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_offset");
+            }
+            return this;
+        }
+
+        private long? _version;
+        public long? Version
+        {
+            get { return _version; }
+            set { WithVersion(value); }
+        }
+        protected GetObjectsRequest WithVersion(long? version)
+        {
+            this._version = version;
+            if (version != null && version > 0L)
+            {
+                this.QueryParams.Add("version", version.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("version");
+            }
+            return this;
+        }
+
 
         internal override HttpVerb Verb
         {
@@ -61,6 +156,7 @@ namespace Ds3.Calls
             {
                 this.QueryParams.Add("name", ds3ObjectName);
             }
+            this.ObjectType = DS3ObjectTypes.ALL;
         }
 
         public GetObjectsRequest(string bucketId, string ds3ObjectName, string ds3ObjectId, long length, long offset, DS3ObjectTypes type, long version)
@@ -77,30 +173,10 @@ namespace Ds3.Calls
                 this.QueryParams.Add("name", ds3ObjectName);
             }
             this.ObjectId = ds3ObjectId;
-            if (!string.IsNullOrEmpty(ds3ObjectId))
-            {
-                this.QueryParams.Add("id", ds3ObjectId);
-            }
             this.Length = length;
-            if (length != null &&  length > 0L)
-            {
-                this.QueryParams.Add("page_length", length.ToString());
-            }
             this.Offset = offset;
-            if (offset != null &&  offset > 0L)
-            {
-                this.QueryParams.Add("page_offset", offset.ToString());
-            }
             this.Version = version;
-            if (version != null &&  version > 0L)
-            {
-                this.QueryParams.Add("version", version.ToString());
-            }
             this.ObjectType = type;
-            if (type != null)
-            {
-                this.QueryParams.Add("type", type.ToString());
-            }
         }
     }
 }
