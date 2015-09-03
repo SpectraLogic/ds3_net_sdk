@@ -24,8 +24,44 @@ namespace Ds3.Calls
     public class GetObjectsRequest : Ds3Request
     {
         // bucketId, id, name, page_length, page_offset, type, version
-        public string BucketId { get; private set; }
-        public string ObjectName { get; private set; }
+        private string _bucketId;
+        public string BucketId { 
+            get {return _bucketId; }
+            set { WithBucketId(value); }
+        }
+        protected GetObjectsRequest WithBucketId(string bucket)
+        {
+            this._bucketId = bucket;
+            if (!string.IsNullOrEmpty(bucket))
+            {
+                this.QueryParams.Add("bucketId", bucket);
+            }
+            else
+            {
+                this.QueryParams.Remove("bucketId");
+            }
+            return this;
+        }
+
+        private string _objectName;
+        public string ObjectName 
+        { 
+            get { return _objectId; }
+            set { WithObjectName(value); }
+        }
+        protected GetObjectsRequest WithObjectName(string name)
+        {
+            this._objectName = name;
+            if (!string.IsNullOrEmpty(name))
+            {
+                this.QueryParams.Add("name", name);
+            }
+            else
+            {
+                this.QueryParams.Remove("name");
+            }
+            return this;
+        }
 
         private string _objectId;
         public string ObjectId
@@ -144,39 +180,10 @@ namespace Ds3.Calls
             }
         }
 
-        public GetObjectsRequest(string bucketId, string ds3ObjectName)
-        {
-            this.BucketId = bucketId;
-            if (!string.IsNullOrEmpty(bucketId))
-            {
-                this.QueryParams.Add("bucketId", bucketId);
-            }
-            this.ObjectName = ds3ObjectName;
-            if (!string.IsNullOrEmpty(ds3ObjectName))
-            {
-                this.QueryParams.Add("name", ds3ObjectName);
-            }
-            this.ObjectType = DS3ObjectTypes.ALL;
+        public GetObjectsRequest()
+        {            
         }
 
-        public GetObjectsRequest(string bucketId, string ds3ObjectName, string ds3ObjectId, long length, long offset, DS3ObjectTypes type, long version)
-        {
-            // bucketId, id, name, page_length, page_offset, type, version
-            this.BucketId = bucketId;
-            if (!string.IsNullOrEmpty(bucketId))
-            {
-                this.QueryParams.Add("bucketId", bucketId);
-            }
-            this.ObjectName = ds3ObjectName;
-            if (!string.IsNullOrEmpty(ds3ObjectName))
-            {
-                this.QueryParams.Add("name", ds3ObjectName);
-            }
-            this.ObjectId = ds3ObjectId;
-            this.Length = length;
-            this.Offset = offset;
-            this.Version = version;
-            this.ObjectType = type;
-        }
+        
     }
 }

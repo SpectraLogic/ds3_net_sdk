@@ -205,7 +205,11 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/_rest_/object/", expectedQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetObjects(new GetObjectsRequest("videos", "%mp4"));
+                .GetObjects(new GetObjectsRequest()
+                    {
+                      BucketId = "videos", 
+                      ObjectName = "%mp4"
+                    } );
             
             var responseObjects = response.Objects.ToList();
             Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
@@ -219,6 +223,35 @@ namespace TestDs3
                 Assert.AreEqual(expected.Objects[i].Version, responseObjects[i].Version);
             }
         }
+
+        [Test]
+        public void TestGetObjectsBadBucket()
+        {
+            var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "bucketId", "badbucket" },
+                    { "name", "nofiles" }
+                };
+            var response = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/object/", expectedQueryParams, "")
+                .Returning(HttpStatusCode.NotFound, string.Empty, _emptyHeaders)
+                .AsClient;
+        }
+
+        [Test]
+        public void TestGetObjectsNoFiles()
+        {
+            var xmlResponse = @"<Data></Data>";
+            var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "name", "nofiles" }
+                };
+            var response = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/object/", expectedQueryParams, "")
+                .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
+                .AsClient;
+        }
+
 
         [Test]
         public void TestPutBucket()
