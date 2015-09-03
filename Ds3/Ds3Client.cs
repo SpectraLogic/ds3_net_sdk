@@ -49,6 +49,11 @@ namespace Ds3
             return new GetObjectResponseParser(_netLayer.CopyBufferSize).Parse(request, _netLayer.Invoke(request));
         }
 
+        public GetObjectsResponse GetObjects(GetObjectsRequest request)
+        {
+            return new GetObjectsResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public HeadObjectResponse HeadObject(HeadObjectRequest request)
         {
             return new HeadObjectResponseParser().Parse(request, _netLayer.Invoke(request));

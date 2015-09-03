@@ -50,6 +50,16 @@ namespace Ds3
         GetObjectResponse GetObject(GetObjectRequest request);
 
         /// <summary>
+        /// Retrieves the list of objects matching request params. Note that
+        /// the server may choose to limit the number of objects specified in its
+        /// reply, so you may have to call this multiple times using the
+        /// request.WithMarker() method.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        GetObjectsResponse GetObjects(GetObjectsRequest request);
+
+        /// <summary>
         /// Retrieves information about an object without obtaining its contents.
         /// </summary>
         /// <param name="request"></param>
