@@ -81,6 +81,13 @@ namespace Ds3
         void DeleteObject(DeleteObjectRequest request);
 
         /// <summary>
+        /// Deletes the specified folder.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        void DeleteFolder(DeleteFolderRequest request);
+
+        /// <summary>
         /// Deletes the specified list of objects.
         /// </summary>
         /// <param name="request"></param>

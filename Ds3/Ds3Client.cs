@@ -75,6 +75,14 @@ namespace Ds3
             }
         }
 
+        public void DeleteFolder(DeleteFolderRequest request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public DeleteObjectListResponse DeleteObjectList(DeleteObjectListRequest request)
         {
             return new DeleteObjectListResponseParser().Parse(request, _netLayer.Invoke(request));

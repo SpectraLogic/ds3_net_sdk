@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Calls\AllocateJobChunkRequest.cs" />
     <Compile Include="Calls\AllocateJobChunkResponse.cs" />
+    <Compile Include="Calls\DeleteFolderRequest.cs" />
     <Compile Include="Calls\DeleteObjectListRequest.cs" />
     <Compile Include="Calls\DeleteObjectListResponse.cs" />
     <Compile Include="Calls\GetAvailableJobChunksRequest.cs" />
