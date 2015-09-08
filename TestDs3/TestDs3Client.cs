@@ -99,6 +99,48 @@ namespace TestDs3
         }
 
         [Test]
+        public void TestGetSystemInfo()
+        {
+            var xmlResponse = @"<Data><ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA</ApiVersion><BuildInformation><Branch>//BlueStorm/r1.x</Branch><Revision>1154042</Revision><Version>1.2.0</Version></BuildInformation><SerialNumber>5003048001dbd7b3</SerialNumber></Data>";
+            var expected = new GetSystemInformationResponse("91C76B3B5B01A306A0DFA94C9EE3549A", "767D11668247E20543EFC3B1C76117BA", "//BlueStorm/r1.x", "1154042", "1.2.0", "5003048001dbd7b3");
+            var response = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_INFORMATION", _emptyQueryParams, "")
+                .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
+                .AsClient
+                .GetSystemInformation(new GetSystemInformationRequest());
+            Assert.AreEqual(response.ApiMC5Full, expected.ApiMC5Full);
+            Assert.AreEqual(response.ApiMC5Major, expected.ApiMC5Major);
+            Assert.AreEqual(response.BuildBranch, expected.BuildBranch);
+            Assert.AreEqual(response.BuildRev, expected.BuildRev);
+            Assert.AreEqual(response.BuildVersion, expected.BuildVersion);
+            Assert.AreEqual(response.SerialNumber, expected.SerialNumber);
+        }
+
+        [Test]
+        public void TestVerifySystemHealth()
+        {
+            var xmlResponse = @"<Data><MsRequiredToVerifyDataPlannerHealth>666</MsRequiredToVerifyDataPlannerHealth></Data>";
+            var expected = new VerifySystemHealthResponse(666L);
+            var response = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_HEALTH", _emptyQueryParams, "")
+                .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
+                .AsClient
+                .VerifySystemHealth(new VerifySystemHealthRequest());
+            Assert.AreEqual(response.MillisToVerify, expected.MillisToVerify);
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3BadStatusCodeException))]
+        public void TestVerifySystemHealthConnectFail()
+        {
+            var response = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_HEALTH", _emptyQueryParams, "")
+                .Returning(HttpStatusCode.ServiceUnavailable, "", _emptyHeaders)
+                .AsClient
+                .VerifySystemHealth(new VerifySystemHealthRequest());
+        }
+
+        [Test]
         public void TestGetBucket()
         {
             var xmlResponse = "<ListBucketResult><Name>remoteTest16</Name><Prefix/><Marker/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>user/hduser/gutenberg/20417.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>674570</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/5000.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1423803</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/4300.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1573150</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents></ListBucketResult>";
