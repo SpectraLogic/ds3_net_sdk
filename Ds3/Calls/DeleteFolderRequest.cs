@@ -21,26 +21,7 @@ namespace Ds3.Calls
 {
     public class DeleteFolderRequest : Ds3Request
     {
-        private string _bucketId;
-        public string BucketId
-        {
-            get { return _bucketId; }
-            set { WithBucketId(value); }
-        }
-        protected DeleteFolderRequest WithBucketId(string bucket)
-        {
-            this._bucketId = bucket;
-            if (!string.IsNullOrEmpty(bucket))
-            {
-                this.QueryParams.Add("bucketId", bucket);
-            }
-            else
-            {
-                this.QueryParams.Remove("bucketId");
-            }
-            return this;
-        }
-
+        public string BucketId { get; private set; }
         public string FolderName { get; private set; }
 
         internal override HttpVerb Verb
@@ -63,6 +44,7 @@ namespace Ds3.Calls
         {
             this.BucketId = bucketId;
             this.FolderName = folderName;
+            this.QueryParams.Add("bucketId", bucketId);
             this.QueryParams.Add("recursive", "");
         }
 
