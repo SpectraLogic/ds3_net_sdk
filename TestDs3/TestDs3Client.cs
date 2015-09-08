@@ -284,6 +284,53 @@ namespace TestDs3
         }
 
         [Test]
+        public void TestDeleteFolder()
+        {
+            var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "bucketId", "testdelete" },
+                    { "recursive", "" }
+                };
+            MockNetwork
+                .Expecting(HttpVerb.DELETE, "/_rest_/folder/coffeehouse/jk", expectedQueryParams, "")
+                .Returning(HttpStatusCode.NoContent, "", _emptyHeaders)
+                .AsClient
+                .DeleteFolder(new DeleteFolderRequest("testdelete", "coffeehouse/jk"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3BadStatusCodeException))]
+        public void TestDeleteFolderMissingFolder()
+        {
+            var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "bucketId", "testdelete" },
+                    { "recursive", "" }
+                };
+            MockNetwork
+                .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
+                .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
+                .AsClient
+                .DeleteFolder(new DeleteFolderRequest("testdelete", "badfoldername"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3BadStatusCodeException))]
+        public void TestDeleteFolderMissingBucket()
+        {
+            var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "bucketId", "nosuchbucket" },
+                    { "recursive", "" }
+                };
+            MockNetwork
+                .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
+                .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
+                .AsClient
+                .DeleteFolder(new DeleteFolderRequest("nosuchbucket", "badfoldername"));
+        }
+
+        [Test]
         [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestGetBadBucket()
         {
