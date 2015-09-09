@@ -102,14 +102,13 @@ namespace TestDs3
         public void TestGetSystemInfo()
         {
             var xmlResponse = @"<Data><ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA</ApiVersion><BuildInformation><Branch>//BlueStorm/r1.x</Branch><Revision>1154042</Revision><Version>1.2.0</Version></BuildInformation><SerialNumber>5003048001dbd7b3</SerialNumber></Data>";
-            var expected = new GetSystemInformationResponse("91C76B3B5B01A306A0DFA94C9EE3549A", "767D11668247E20543EFC3B1C76117BA", "//BlueStorm/r1.x", "1154042", "1.2.0", "5003048001dbd7b3");
+            var expected = new GetSystemInformationResponse("91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA", "//BlueStorm/r1.x", "1154042", "1.2.0", "5003048001dbd7b3");
             var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_INFORMATION", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
                 .GetSystemInformation(new GetSystemInformationRequest());
-            Assert.AreEqual(response.ApiMC5Full, expected.ApiMC5Full);
-            Assert.AreEqual(response.ApiMC5Major, expected.ApiMC5Major);
+            Assert.AreEqual(response.ApiMC5, expected.ApiMC5);
             Assert.AreEqual(response.BuildBranch, expected.BuildBranch);
             Assert.AreEqual(response.BuildRev, expected.BuildRev);
             Assert.AreEqual(response.BuildVersion, expected.BuildVersion);

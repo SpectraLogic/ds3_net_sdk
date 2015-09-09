@@ -33,17 +33,15 @@ namespace Ds3.Calls
 {
     public class GetSystemInformationResponse
     {
-        public string ApiMC5Major { get; set; }
-        public string ApiMC5Full { get; set; }
-        public string BuildBranch { get; set; }
-        public string BuildRev { get; set; }
-        public string BuildVersion { get; set; }
-        public string SerialNumber { get; set; }
+        public string ApiMC5 { get; private set; }
+        public string BuildBranch { get; private set; }
+        public string BuildRev { get; private set; }
+        public string BuildVersion { get; private set; }
+        public string SerialNumber { get; private set; }
 
-        public GetSystemInformationResponse(string apiMC5Major, string apiMC5Full, string buildBranch, string buildRev, string buildVersion, string serialNumber)
+        public GetSystemInformationResponse(string apiMC5, string buildBranch, string buildRev, string buildVersion, string serialNumber)
         { 
-            this.ApiMC5Major = apiMC5Major;
-            this.ApiMC5Full = apiMC5Full;
+            this.ApiMC5 = apiMC5;
             this.BuildBranch = buildBranch;
             this.BuildRev = buildRev;
             this.BuildVersion = buildVersion;

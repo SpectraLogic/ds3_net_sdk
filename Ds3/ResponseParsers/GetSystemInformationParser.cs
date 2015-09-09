@@ -47,20 +47,9 @@ namespace Ds3.ResponseParsers
                     string BuildBranch = buildParams.TextOf("Branch");
                     string BuildRev = buildParams.TextOf("Revision");
                     string BuildVersion = buildParams.TextOf("Version");
-                    string ApiVersion = root.TextOf("ApiVersion");
-                    string MC5Major = string.Empty;
-                    string MC5Full = string.Empty;
-                    if (!string.IsNullOrEmpty(ApiVersion))
-                    {
-                        string[] mc5s = ApiVersion.Split('.');
-                        if ((mc5s != null) &&  (mc5s.Length == 2))
-                        {
-                            MC5Major = mc5s[0];
-                            MC5Full = mc5s[1];
-                        }
-                    }
+                    string ApiMC5 = root.TextOf("ApiVersion");
                     string SerialNumber = root.TextOf("SerialNumber");
-                    return new GetSystemInformationResponse(MC5Major, MC5Full, BuildBranch, BuildRev, BuildVersion, SerialNumber);
+                    return new GetSystemInformationResponse(ApiMC5, BuildBranch, BuildRev, BuildVersion, SerialNumber);
 
                 }
             }
