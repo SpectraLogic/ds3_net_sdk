@@ -20,9 +20,6 @@ using Ds3.Calls;
 using Ds3.Models;
 using Ds3.Runtime;
 
-/*
- * <Data><MsRequiredToVerifyDataPlannerHealth>18</MsRequiredToVerifyDataPlannerHealth></Data>
- */
 
 namespace Ds3.ResponseParsers
 {

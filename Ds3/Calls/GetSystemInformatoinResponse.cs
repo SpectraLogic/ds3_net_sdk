@@ -18,17 +18,6 @@ using System.Net;
 using Ds3.Models;
 using Ds3.Runtime;
 
-/* <Data>
- *  <ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.C3E40C732B27EFA6D25AB24D3E01E851</ApiVersion>
- *  <BuildInformation>
- *      <Branch/>
- *      <Revision/>
- *      <Version/>
- *  </BuildInformation>
- *  <SerialNumber>UNKNOWN</SerialNumber>
- * </Data>
- */
-
 namespace Ds3.Calls
 {
     public class GetSystemInformationResponse
