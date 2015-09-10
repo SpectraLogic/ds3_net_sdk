@@ -39,6 +39,16 @@ namespace Ds3
             return new GetServiceResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public GetSystemInformationResponse GetSystemInformation(GetSystemInformationRequest request)
+        {
+            return new GetSystemInformationParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public VerifySystemHealthResponse VerifySystemHealth(VerifySystemHealthRequest request)
+        {
+            return new VerifySystemHealthResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public GetBucketResponse GetBucket(GetBucketRequest request)
         {
             return new GetBucketResponseParser().Parse(request, _netLayer.Invoke(request));

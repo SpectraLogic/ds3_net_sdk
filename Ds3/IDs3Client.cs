@@ -33,6 +33,20 @@ namespace Ds3
         GetServiceResponse GetService(GetServiceRequest request);
 
         /// <summary>
+        /// Get Serial Number, ApiVersion, and build version information
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        GetSystemInformationResponse GetSystemInformation(GetSystemInformationRequest request);
+
+        /// <summary>
+        ///"ping" machine -- Http.OK shows system tests complete
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        VerifySystemHealthResponse VerifySystemHealth(VerifySystemHealthRequest request);
+
+        /// <summary>
         /// Retrieves the list of objects in the specified bucket. Note that
         /// the server may choose to limit the number of objects specified in its
         /// reply, so you may have to call this multiple times using the
