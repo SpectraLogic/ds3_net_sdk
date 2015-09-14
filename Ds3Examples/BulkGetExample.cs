@@ -17,6 +17,7 @@ using Ds3;
 using Ds3.Helpers;
 using System;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace Ds3Examples
 {
@@ -26,6 +27,8 @@ namespace Ds3Examples
     /// </summary>
     class BulkGetExample
     {
+        private static TraceSwitch clientSwitch = new TraceSwitch("clientSwitch", "Controls tracing for example client");
+
         static void Main(string[] args)
         {
             // Configure and build the core client.
@@ -49,6 +52,10 @@ namespace Ds3Examples
 
             // Keep the job id around. This is useful for job recovery in the case of a failure.
             Console.WriteLine("Job id {0} started.", job.JobId);
+
+            // Tracing example 
+            if (clientSwitch.TraceInfo) { Trace.WriteLine(string.Format("StartReadAllJob({0})", bucket)); }
+            if (clientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("dd files from: {0}", directory)); }
 
             // Transfer all of the files.
             job.Transfer(FileHelpers.BuildFileGetter(directory));

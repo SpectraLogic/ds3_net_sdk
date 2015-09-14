@@ -17,6 +17,7 @@ using Ds3;
 using Ds3.Helpers;
 using System;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace Ds3Examples
 {
@@ -26,6 +27,8 @@ namespace Ds3Examples
     /// </summary>
     class BulkPutExample
     {
+        private static TraceSwitch clientSwitch = new TraceSwitch("clientSwitch", "Controls tracing for example client");
+        
         static void Main(string[] args)
         {
             // Configure and build the core client.
@@ -45,9 +48,14 @@ namespace Ds3Examples
 
             // Creates a bucket if it does not already exist.
             helpers.EnsureBucketExists(bucket);
+            if (clientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("Bucket exists: {0}", bucket)); }
 
             // Creates a bulk job with the server based on the files in a directory (recursively).
             IJob job = helpers.StartWriteJob(bucket, FileHelpers.ListObjectsForDirectory(directory));
+
+            // Tracing example 
+            if (clientSwitch.TraceInfo) { Trace.WriteLine(string.Format("StartWriteJob({0})", bucket)); }
+            if (clientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("Add files from: {0}", directory)); }
 
             // Keep the job id around. This is useful for job recovery in the case of a failure.
             Console.WriteLine("Job id {0} started.", job.JobId);
