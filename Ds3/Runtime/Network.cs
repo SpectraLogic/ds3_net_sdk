@@ -27,6 +27,8 @@ namespace Ds3.Runtime
 {
     internal class Network : INetwork
     {
+        private static TraceSwitch sdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
+        
         internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
 
         private readonly Uri _endpoint;
@@ -68,6 +70,9 @@ namespace Ds3.Runtime
             {
                 do
                 {
+                    if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine("Request: " + request.GetType().ToString()); }
+                    if (sdkNetworkSwitch.TraceVerbose) { Trace.WriteLine(request.getDescription(BuildQueryParams(request.QueryParams))); }
+
                     HttpWebRequest httpRequest = CreateRequest(request, content);
                     try
                     {
@@ -75,10 +80,11 @@ namespace Ds3.Runtime
                         if (Is307(response))
                         {
                             redirectCount++;
-                            Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
+                            if (sdkNetworkSwitch.TraceWarning) { Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network"); }
                         }
                         else
                         {
+                            if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(" | Response status: " + response.StatusCode.ToString()); }
                             return response;
                         }
                     }
