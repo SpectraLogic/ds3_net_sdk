@@ -68,7 +68,6 @@ namespace Ds3.Runtime
             
             using (var content = request.GetContentStream())
             {
-                long send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 do
                 {
                     if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine("Request: " + request.GetType().ToString()); }
@@ -77,6 +76,7 @@ namespace Ds3.Runtime
                     HttpWebRequest httpRequest = CreateRequest(request, content);
                     try
                     {
+                        long send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                         var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
                         long millis = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - send;
                         if (Is307(response))
