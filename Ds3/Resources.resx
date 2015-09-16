@@ -189,6 +189,12 @@
   <data name="RangesDoNotOverlapException" xml:space="preserve">
     <value>Ranges {0} and {1} do not overlap.</value>
   </data>
+  <data name="Request Logging" xml:space="preserve">
+    <value>Request: {0}</value>
+  </data>
+  <data name="ResponseLogging" xml:space="preserve">
+    <value>| Response status: {0} ({1}ms)</value>
+  </data>
   <data name="StreamUnavailableException" xml:space="preserve">
     <value>Job tried to open stream for key '{0}', but that key should not be available. This is probably a bug in the helpers.</value>
   </data>

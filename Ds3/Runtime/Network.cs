@@ -70,7 +70,7 @@ namespace Ds3.Runtime
             {
                 do
                 {
-                    if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine("Request: " + request.GetType().ToString()); }
+                    if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.Request_Logging, request.GetType().ToString())); }
                     if (sdkNetworkSwitch.TraceVerbose) { Trace.WriteLine(request.getDescription(BuildQueryParams(request.QueryParams))); }
 
                     HttpWebRequest httpRequest = CreateRequest(request, content);
@@ -86,7 +86,7 @@ namespace Ds3.Runtime
                         }
                         else
                         {
-                            if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(" | Response status: {0} ({1}ms)", response.StatusCode.ToString(), millis)); }
+                            if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.ResponseLogging, response.StatusCode.ToString(), millis)); }
                             return response;
                         }
                     }
