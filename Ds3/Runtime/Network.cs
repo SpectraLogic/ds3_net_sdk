@@ -64,10 +64,11 @@ namespace Ds3.Runtime
 
         public IWebResponse Invoke(Ds3Request request)
         {
-            int redirectCount = 0;            
+            int redirectCount = 0;
             
             using (var content = request.GetContentStream())
             {
+                long send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 do
                 {
                     if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine("Request: " + request.GetType().ToString()); }
@@ -77,6 +78,7 @@ namespace Ds3.Runtime
                     try
                     {
                         var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
+                        long millis = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - send;
                         if (Is307(response))
                         {
                             redirectCount++;
@@ -84,7 +86,7 @@ namespace Ds3.Runtime
                         }
                         else
                         {
-                            if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(" | Response status: " + response.StatusCode.ToString()); }
+                            if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(" | Response status: {0} ({1}ms)", response.StatusCode.ToString(), millis)); }
                             return response;
                         }
                     }
