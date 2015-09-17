@@ -17,6 +17,7 @@ using Ds3;
 using Ds3.Calls;
 using System;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace Ds3Examples
 {
@@ -27,6 +28,8 @@ namespace Ds3Examples
     /// </summary>
     class ListBucketsExample
     {
+        private static TraceSwitch clientSwitch = new TraceSwitch("clientSwitch", "Controls tracing for example client");
+        
         static void Main(string[] args)
         {
             // Configure and build the core client.
@@ -38,9 +41,13 @@ namespace Ds3Examples
                 )
             ).Build();
 
+            // Tracing example 
+            if (clientSwitch.TraceInfo) { Trace.WriteLine("List all buckets"); }
+
             // Loop through all of the objects in the bucket.
             foreach (var bucket in client.GetService(new GetServiceRequest()).Buckets)
             {
+                if (clientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("Bucket '{0}'.", bucket.Name)); }
                 Console.WriteLine("Bucket '{0}'.", bucket.Name);
             }
 

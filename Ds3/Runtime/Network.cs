@@ -27,6 +27,8 @@ namespace Ds3.Runtime
 {
     internal class Network : INetwork
     {
+        private static TraceSwitch sdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
+        
         internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
 
         private readonly Uri _endpoint;
@@ -62,23 +64,29 @@ namespace Ds3.Runtime
 
         public IWebResponse Invoke(Ds3Request request)
         {
-            int redirectCount = 0;            
+            int redirectCount = 0;
             
             using (var content = request.GetContentStream())
             {
                 do
                 {
+                    if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.Request_Logging, request.GetType().ToString())); }
+                    if (sdkNetworkSwitch.TraceVerbose) { Trace.WriteLine(request.getDescription(BuildQueryParams(request.QueryParams))); }
+
                     HttpWebRequest httpRequest = CreateRequest(request, content);
                     try
                     {
+                        long send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                         var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
+                        long millis = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - send;
                         if (Is307(response))
                         {
                             redirectCount++;
-                            Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
+                            if (sdkNetworkSwitch.TraceWarning) { Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network"); }
                         }
                         else
                         {
+                            if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.ResponseLogging, response.StatusCode.ToString(), millis)); }
                             return response;
                         }
                     }

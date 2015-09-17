@@ -277,6 +277,24 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request: {0}.
+        /// </summary>
+        internal static string Request_Logging {
+            get {
+                return ResourceManager.GetString("Request Logging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to | Response status: {0} ({1}ms).
+        /// </summary>
+        internal static string ResponseLogging {
+            get {
+                return ResourceManager.GetString("ResponseLogging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job tried to open stream for key &apos;{0}&apos;, but that key should not be available. This is probably a bug in the helpers..
         /// </summary>
         internal static string StreamUnavailableException {

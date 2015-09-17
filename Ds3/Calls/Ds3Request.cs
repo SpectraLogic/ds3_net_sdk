@@ -61,6 +61,10 @@ namespace Ds3.Calls
         {
             get { return _headers; }
         }
+        public string getDescription(string paramstring)
+        {
+            return string.Format(" | {0} {1}{2}{3}", this.Verb.ToString(), this.Path, string.IsNullOrEmpty(paramstring) ? "" : "?", string.IsNullOrEmpty(paramstring) ? "" : paramstring);
+        }
     }
 
     internal enum HttpVerb {GET, PUT, POST, DELETE, HEAD, PATCH};
