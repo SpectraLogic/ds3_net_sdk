@@ -108,6 +108,11 @@ namespace Ds3.Helpers
 
         public static IEnumerable<Ds3Object> ListObjectsForDirectory(string root, string prefix)
         {
+            // remove trailing slash (it works but spoil the count)
+            if(root.EndsWith("\\") || root.EndsWith("/"))
+            {
+                root = root.Substring(0, root.Length - 1);
+            }
             var rootDirectory = new DirectoryInfo(root);
             var rootSize = rootDirectory.FullName.Length + 1;
             return rootDirectory
