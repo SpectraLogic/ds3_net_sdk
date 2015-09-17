@@ -784,7 +784,7 @@ namespace TestDs3
             string src = root + "src\\";
             string dest = root + "dest\\";
             string[] files = { "one.txt", "two.txt", "three.txt" };
-            string testdata = "On the shore dimly seen, through the deep water mist";
+            string testdata = "On the shore dimly seen, through the mists of the deep";
             testdata += "Where our foe's haughty host, in dread silence reposes.";
 
             // create and populate a new test dir
