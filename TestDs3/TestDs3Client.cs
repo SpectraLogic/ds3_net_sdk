@@ -17,6 +17,7 @@ using Ds3;
 using Ds3.Calls;
 using Ds3.Models;
 using Ds3.Runtime;
+using Ds3.Helpers;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -775,6 +776,53 @@ namespace TestDs3
             Assert.AreEqual(TimeSpan.FromMinutes(5), retryValue.Value);
         }
 
+        [Test]
+        public void TestPrefix()
+        {
+            string root = Path.GetTempPath() + "testprefix\\";
+            string prefix = "prefix_";
+            string src = root + "src\\";
+            string dest = root + "dest\\";
+            string[] files = { "one.txt", "two.txt", "three.txt" };
+            string testdata = "On the shore dimly seen, through the deep water mist";
+            testdata += "Where our foe's haughty host, in dread silence reposes.";
+
+            // create and populate a new test dir
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, true);
+            }
+            Directory.CreateDirectory(root);
+            Directory.CreateDirectory(src);
+            Directory.CreateDirectory(dest);
+
+            foreach (var file in files)
+            {
+                TextWriter writer = new StreamWriter(src + file);
+                writer.WriteLine(testdata);
+                writer.Close();
+            }
+
+            //Copy with prefix
+            var srcfiles = FileHelpers.ListObjectsForDirectory(src, prefix);
+            foreach (var file in srcfiles)
+            {
+                File.Create(dest + file.Name);
+            }
+
+            // Look in source with FilePutter (should remove prefix to find source file)
+            Func<string, Stream> fGet = FileHelpers.BuildFilePutter(src, prefix);
+            var destfiles = Directory.EnumerateFiles(dest);
+            foreach (var path in destfiles)
+            {
+                string file = Path.GetFileName(path);
+                Stream stream = fGet(file);
+                long size = stream.Length;
+                size -= 2; // (EOF and End String)
+                Assert.AreEqual(testdata.Length, size);
+            }
+        }
+
         private readonly static Tape _testTape = new Tape
         {
             AssignedToBucket = false,
@@ -907,6 +955,7 @@ namespace TestDs3
         			.Value(t => t.WriteProtected)
                     .Result;
             }
+
         }
     }
 }
