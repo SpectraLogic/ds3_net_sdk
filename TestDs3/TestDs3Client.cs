@@ -783,6 +783,7 @@ namespace TestDs3
             string prefix = "prefix_";
             string src = root + "src\\";
             string dest = root + "dest\\";
+            string destput = root + "destput\\";
             string[] files = { "one.txt", "two.txt", "three.txt" };
             string testdata = "On the shore dimly seen, through the mists of the deep";
             testdata += "Where our foe's haughty host, in dread silence reposes.";
@@ -795,6 +796,7 @@ namespace TestDs3
             Directory.CreateDirectory(root);
             Directory.CreateDirectory(src);
             Directory.CreateDirectory(dest);
+            Directory.CreateDirectory(destput);
 
             foreach (var file in files)
             {
@@ -810,17 +812,40 @@ namespace TestDs3
                 File.Create(dest + file.Name);
             }
 
+            // normally would be used for objects coming from device
+            var srcfilesnoprefix = FileHelpers.ListObjectsForDirectory(src, string.Empty);
+            Func<string, Stream> fGet = FileHelpers.BuildFileGetter(src, prefix);
+            foreach (var file in srcfilesnoprefix)
+            {
+                Stream stream = fGet(destput + file.Name);
+                stream.Close();
+            }
+
             // Look in source with FilePutter (should remove prefix to find source file)
-            Func<string, Stream> fGet = FileHelpers.BuildFilePutter(src, prefix);
+            Func<string, Stream> fPut = FileHelpers.BuildFilePutter(src, prefix);
             var destfiles = Directory.EnumerateFiles(dest);
+            Assert.AreEqual(destfiles.Count(), files.Length);
+            var destputfiles = Directory.EnumerateFiles(destput);
+            CollectionAssert.AreEquivalent(JustFilenames(destfiles), JustFilenames(destputfiles));
             foreach (var path in destfiles)
             {
                 string file = Path.GetFileName(path);
-                Stream stream = fGet(file);
+                Stream stream = fPut(file);
                 long size = stream.Length;
                 size -= 2; // (EOF and End String)
                 Assert.AreEqual(testdata.Length, size);
             }
+        }
+
+        private IEnumerable<string> JustFilenames(IEnumerable<string> fullpaths)
+        {
+            int len = fullpaths.Count();
+            List<string> ret = new List<string>();
+            foreach (var path in fullpaths )
+            {
+                ret.Add(Path.GetFileName(path));
+            }
+            return ret;
         }
 
         private readonly static Tape _testTape = new Tape
