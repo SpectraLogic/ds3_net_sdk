@@ -779,11 +779,11 @@ namespace TestDs3
         [Test]
         public void TestPrefix()
         {
-            string root = Path.GetTempPath() + "testprefix\\";
+            string root = Path.GetTempPath() + "testprefix" + Path.DirectorySeparatorChar;
             string prefix = "prefix_";
-            string src = root + "src\\";
-            string dest = root + "dest\\";
-            string destput = root + "destput\\";
+            string src = root + "src" + Path.DirectorySeparatorChar;
+            string dest = root + "dest" + Path.DirectorySeparatorChar;
+            string destput = root + "destput" + Path.DirectorySeparatorChar;
             string[] files = { "one.txt", "two.txt", "three.txt" };
             string testdata = "On the shore dimly seen, through the mists of the deep";
             testdata += "Where our foe's haughty host, in dread silence reposes.";
