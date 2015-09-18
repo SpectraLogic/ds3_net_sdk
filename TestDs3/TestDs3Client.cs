@@ -809,7 +809,9 @@ namespace TestDs3
             var srcfiles = FileHelpers.ListObjectsForDirectory(src, prefix);
             foreach (var file in srcfiles)
             {
-                File.Create(dest + file.Name);
+                TextWriter writer = new StreamWriter(dest + file.Name);
+                writer.WriteLine(testdata);
+                writer.Close();
             }
 
             // normally would be used for objects coming from device
