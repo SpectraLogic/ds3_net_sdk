@@ -17,6 +17,7 @@ using Ds3;
 using Ds3.Calls;
 using Ds3.Models;
 using Ds3.Runtime;
+using Ds3.Helpers;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -775,6 +776,84 @@ namespace TestDs3
             Assert.AreEqual(TimeSpan.FromMinutes(5), retryValue.Value);
         }
 
+        [Test]
+        public void TestPrefix()
+        {
+            string root = Path.GetTempPath() + "testprefix" + Path.DirectorySeparatorChar;
+            string prefix = "prefix_";
+            string src = root + "src" + Path.DirectorySeparatorChar;
+            string dest = root + "dest" + Path.DirectorySeparatorChar;
+            string destput = root + "destput" + Path.DirectorySeparatorChar;
+            string[] files = { "one.txt", "two.txt", "three.txt" };
+            string testdata = "On the shore dimly seen, through the mists of the deep";
+            testdata += "Where our foe's haughty host, in dread silence reposes.";
+
+            // create and populate a new test dir
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, true);
+            }
+            Directory.CreateDirectory(root);
+            Directory.CreateDirectory(src);
+            Directory.CreateDirectory(dest);
+            Directory.CreateDirectory(destput);
+
+            foreach (var file in files)
+            {
+                TextWriter writer = new StreamWriter(src + file);
+                writer.WriteLine(testdata);
+                writer.Close();
+            }
+
+            //Copy with prefix
+            var srcfiles = FileHelpers.ListObjectsForDirectory(src, prefix);
+            foreach (var file in srcfiles)
+            {
+                TextWriter writer = new StreamWriter(dest + file.Name);
+                writer.WriteLine(testdata);
+                writer.Close();
+            }
+
+            // normally would be used for objects coming from device
+            var srcfilesnoprefix = FileHelpers.ListObjectsForDirectory(src, string.Empty);
+            Func<string, Stream> fGet = FileHelpers.BuildFileGetter(destput, prefix);
+            foreach (var file in srcfilesnoprefix)
+            {
+                Stream stream = fGet(file.Name);
+                Assert.IsNotNull(stream);
+                stream.WriteByte(0x48);
+                stream.WriteByte(0x69);
+                stream.Flush();
+                stream.Close();
+            }
+
+            // Look in source with FilePutter (should remove prefix to find source file)
+            Func<string, Stream> fPut = FileHelpers.BuildFilePutter(src, prefix);
+            var destfiles = Directory.EnumerateFiles(dest);
+            Assert.AreEqual(destfiles.Count(), files.Length);
+            var destputfiles = Directory.EnumerateFiles(destput);
+            Assert.AreEqual(destputfiles.Count(), files.Length);
+            CollectionAssert.AreEquivalent(JustFilenames(destfiles), JustFilenames(destputfiles));
+            foreach (var path in destfiles)
+            {
+                string file = Path.GetFileName(path);
+                Stream stream = fPut(file);
+                long size = stream.Length;
+                Assert.GreaterOrEqual(size, testdata.Length);
+            }
+        }
+
+        private IEnumerable<string> JustFilenames(IEnumerable<string> fullpaths)
+        {
+            int len = fullpaths.Count();
+            List<string> ret = new List<string>();
+            foreach (var path in fullpaths )
+            {
+                ret.Add(Path.GetFileName(path));
+            }
+            return ret;
+        }
+
         private readonly static Tape _testTape = new Tape
         {
             AssignedToBucket = false,
@@ -907,6 +986,7 @@ namespace TestDs3
         			.Value(t => t.WriteProtected)
                     .Result;
             }
+
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Ds3.Helpers
         /// <summary>
         /// Creates a function that can open a file stream for writing.
         /// 
-        /// For use with IJob.Transfer(getter).
+        /// Backwards-compatible signature before prefix was added
         /// 
         /// Creates all directories needed to save the file.
         /// </summary>
@@ -35,11 +35,27 @@ namespace Ds3.Helpers
         /// <returns></returns>
         public static Func<string, Stream> BuildFileGetter(string root)
         {
+            return BuildFileGetter(root, string.Empty);
+        }
+            
+        /// <summary>
+        /// Creates a function that can open a file stream for writing.
+        /// 
+        /// For use with IJob.Transfer(getter).
+        /// 
+        /// Creates all directories needed to save the file.
+        /// </summary>
+        /// <param name="root">The root directory within which to save objects.</param>
+        /// <param name="prefix">A string to prepend to the filename.</param>
+        /// <returns></returns>
+        public static Func<string, Stream> BuildFileGetter(string root, string prefix)
+        {
             return key =>
             {
-                var filePath = Path.Combine(root, ConvertKeyToPath(key));
-                EnsureDirectoryForFile(filePath);
-                return File.OpenWrite(filePath);
+                var fullPath = Path.Combine(root, ConvertKeyToPath(key));
+                var fixedPath = PrependPrefix(fullPath, prefix);
+                EnsureDirectoryForFile(fixedPath);
+                return File.OpenWrite(fixedPath);
             };
         }
 
@@ -56,12 +72,26 @@ namespace Ds3.Helpers
         /// Creates a function that can open a file stream for reading.
         /// 
         /// For use with IJob.Transfer(putter).
+        /// Backwards-compatible signature before prefix was added
         /// </summary>
         /// <param name="root">The root directory within which to read objects.</param>
         /// <returns></returns>
         public static Func<string, Stream> BuildFilePutter(string root)
         {
-            return key => File.OpenRead(Path.Combine(root, ConvertKeyToPath(key)));
+            return BuildFilePutter(root, string.Empty);
+        }
+
+        /// <summary>
+        /// Creates a function that can open a file stream for reading.
+        /// 
+        /// For use with IJob.Transfer(putter).
+        /// </summary>
+        /// <param name="root">The root directory within which to read objects.</param>
+        /// <param name="prefix">A string to prepend to the object name.</param>
+        /// <returns></returns>
+        public static Func<string, Stream> BuildFilePutter(string root, string prefix)
+        {
+            return key => File.OpenRead(Path.Combine(root, RemovePrefix(ConvertKeyToPath(key), prefix)));
         }
 
         /// <summary>
@@ -73,12 +103,22 @@ namespace Ds3.Helpers
         /// <returns></returns>
         public static IEnumerable<Ds3Object> ListObjectsForDirectory(string root)
         {
+            return ListObjectsForDirectory(root, string.Empty);
+        }
+
+        public static IEnumerable<Ds3Object> ListObjectsForDirectory(string root, string prefix)
+        {
+            // remove trailing slash (it works but spoil the count)
+            if(root.EndsWith("\\") || root.EndsWith("/"))
+            {
+                root = root.Substring(0, root.Length - 1);
+            }
             var rootDirectory = new DirectoryInfo(root);
             var rootSize = rootDirectory.FullName.Length + 1;
             return rootDirectory
                 .EnumerateFiles("*", SearchOption.AllDirectories)
                 .Select(file => new Ds3Object(
-                    ConvertPathToKey(file.FullName.Substring(rootSize)),
+                    PrependPrefix(ConvertPathToKey(file.FullName.Substring(rootSize)), prefix),
                     file.Length
                 ));
         }
@@ -91,6 +131,37 @@ namespace Ds3.Helpers
         private static string ConvertPathToKey(string path)
         {
             return path.Replace('\\', '/');
+        }
+
+        /// <summary>
+        /// Add a prefix string to the beginning of a filename
+        ///
+        /// For use with ListObjectsForDirectory
+        /// </summary>
+        /// <param name="path">Full path< too file/param>
+        /// <param name="prefix">String to prepend to filename</param>
+        /// <returns>full path with prefix prepended</returns>
+        private static string PrependPrefix(string path, string prefix)
+        {
+            var fileName = Path.GetFileName(path);
+            var fixedPath = path.Substring(0, path.Length - fileName.Length) + prefix + fileName;
+            return fixedPath;
+        }
+
+        /// <summary>
+        /// Remmve the prefix string from a filename to find the actual file
+        ///
+        /// For use with BuildFilePutter
+        /// </summary>
+        /// <param name="path">Full path< too file/param>
+        /// <param name="prefix">String to prepend to filename</param>
+        /// <returns>full path with prefix prepended</returns>
+        private static string RemovePrefix(string path, string prefix)
+        {
+            var fileName = Path.GetFileName(path);
+            var fixedName = fileName.Replace(prefix, string.Empty);
+            var fixedPath = path.Substring(0, path.Length - fileName.Length) + fixedName;
+            return fixedPath;
         }
     }
 }
