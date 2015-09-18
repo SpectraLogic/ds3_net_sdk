@@ -816,7 +816,7 @@ namespace TestDs3
 
             // normally would be used for objects coming from device
             var srcfilesnoprefix = FileHelpers.ListObjectsForDirectory(src, string.Empty);
-            Func<string, Stream> fGet = FileHelpers.BuildFileGetter(src, prefix);
+            Func<string, Stream> fGet = FileHelpers.BuildFileGetter(destput, prefix);
             foreach (var file in srcfilesnoprefix)
             {
                 Stream stream = fGet(destput + file.Name);
@@ -832,7 +832,7 @@ namespace TestDs3
             var destfiles = Directory.EnumerateFiles(dest);
             Assert.AreEqual(destfiles.Count(), files.Length);
             var destputfiles = Directory.EnumerateFiles(destput);
-            // Assert.AreEqual(destputfiles.Count(), files.Length);
+            Assert.AreEqual(destputfiles.Count(), files.Length);
             CollectionAssert.AreEquivalent(JustFilenames(destfiles), JustFilenames(destputfiles));
             foreach (var path in destfiles)
             {
