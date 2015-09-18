@@ -818,6 +818,9 @@ namespace TestDs3
             foreach (var file in srcfilesnoprefix)
             {
                 Stream stream = fGet(destput + file.Name);
+                stream.WriteByte(0x48);
+                stream.WriteByte(0x69);
+                stream.Flush();
                 stream.Close();
             }
 
@@ -826,6 +829,7 @@ namespace TestDs3
             var destfiles = Directory.EnumerateFiles(dest);
             Assert.AreEqual(destfiles.Count(), files.Length);
             var destputfiles = Directory.EnumerateFiles(destput);
+            Assert.AreEqual(destputfiles.Count(), files.Length);
             CollectionAssert.AreEquivalent(JustFilenames(destfiles), JustFilenames(destputfiles));
             foreach (var path in destfiles)
             {
