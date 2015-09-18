@@ -819,7 +819,7 @@ namespace TestDs3
             Func<string, Stream> fGet = FileHelpers.BuildFileGetter(destput, prefix);
             foreach (var file in srcfilesnoprefix)
             {
-                Stream stream = fGet(destput + file.Name);
+                Stream stream = fGet(file.Name);
                 Assert.IsNotNull(stream);
                 stream.WriteByte(0x48);
                 stream.WriteByte(0x69);
