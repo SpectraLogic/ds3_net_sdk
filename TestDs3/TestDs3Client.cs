@@ -779,8 +779,21 @@ namespace TestDs3
         [Test]
         public void TestPrefix()
         {
-            string root = Path.GetTempPath() + "testprefix" + Path.DirectorySeparatorChar;
             string prefix = "prefix_";
+            string testdir = "testprefix";
+            runPrefixTest(prefix, testdir);
+        }
+
+        [Test]
+        public void TestNoPrefix()
+        {
+            string testdir = "testnoprefix";
+            runPrefixTest(string.Empty, testdir);
+        }
+
+        private void runPrefixTest(string prefix, string testdirname)
+        {
+            string root = Path.GetTempPath() + testdirname + Path.DirectorySeparatorChar;
             string src = root + "src" + Path.DirectorySeparatorChar;
             string dest = root + "dest" + Path.DirectorySeparatorChar;
             string destput = root + "destput" + Path.DirectorySeparatorChar;
