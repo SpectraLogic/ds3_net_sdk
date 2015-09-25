@@ -179,7 +179,7 @@ namespace Ds3
         JobResponse GetJob(GetJobRequest request);
 
         /// <summary>
-        /// Tries to ensure that the server can accept PUT reqeusts for
+        /// Tries to ensure that the server can accept PUT requests for
         /// a particular chunk of data within a job. If the server does
         /// not have space to accept the data it will return a retry-after
         /// response.
