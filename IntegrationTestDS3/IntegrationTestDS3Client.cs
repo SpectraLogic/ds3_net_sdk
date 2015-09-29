@@ -288,6 +288,32 @@ namespace IntegrationTestDs3
            Assert.AreEqual(antefoldercount - postfoldercount, 1);
        }
 
+       [Test] 
+       public void Test0990CleanUp()
+        {
+            var items = _helpers.ListObjects(TESTBUCKET);
+
+            // Loop through all of the objects in the bucket.
+            foreach (var obj in items)
+            {
+                DeleteObject(TESTBUCKET, obj.Name);
+            }
+            DeleteBucket(TESTBUCKET);
+        }
+
+       public void DeleteObject(string bucketname, string objectName)
+       {
+           var request = new Ds3.Calls.DeleteObjectRequest(bucketname, objectName);
+           _client.DeleteObject(request);
+       }
+
+       public void DeleteBucket(string bucketname)
+       {
+           var request = new Ds3.Calls.DeleteBucketRequest(bucketname);
+           _client.DeleteBucket(request);
+       }
+
+
        #endregion sequential tests
 
         #region main
@@ -303,6 +329,7 @@ namespace IntegrationTestDs3
            it.Test0500DeleteFolder();
            it.Test0910DeleteObject();
            it.Test0920DeleteObjectWithPrefix();
+           it.Test0990CleanUp();
 
        }
         #endregion main
