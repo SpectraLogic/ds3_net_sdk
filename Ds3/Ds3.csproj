@@ -80,8 +80,6 @@
     <Compile Include="Calls\GetAggregatePhysicalPlacementResponse.cs" />
     <Compile Include="Calls\GetSystemInformationRequest.cs" />
     <Compile Include="Calls\GetSystemInformatoinResponse.cs" />
-    <Compile Include="Calls\GetTapesRequest.cs" />
-    <Compile Include="Calls\GetTapesResponse.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
@@ -191,7 +189,6 @@
     <Compile Include="ResponseParsers\GetAggregatePhysicalPlacementResponseParser.cs" />
     <Compile Include="ResponseParsers\GetServiceResponseParser.cs" />
     <Compile Include="ResponseParsers\GetSystemInformationParser.cs" />
-    <Compile Include="ResponseParsers\GetTapesResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadObjectResponseParser.cs" />
     <Compile Include="ResponseParsers\JobResponseParser.cs" />
