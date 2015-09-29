@@ -69,6 +69,7 @@
     <Compile Include="Helpers\TransferItemSources\TransferItemSourceHelpers.cs" />
     <Compile Include="Helpers\TransferItemSources\TestReadTransferItemSource.cs" />
     <Compile Include="Helpers\TransferItemSources\TestWriteTransferItemSource.cs" />
+    <Compile Include="IntegrationTestDS3Client.cs" />
     <Compile Include="Lang\EnumerableComparer.cs" />
     <Compile Include="Lang\CompareChain.cs" />
     <Compile Include="Lang\LangTestHelpers.cs" />
@@ -138,6 +139,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\CompletedMasterObjectList.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\beowulf.txt" />
+    <EmbeddedResource Include="TestData\sherlock_holmes.txt" />
+    <EmbeddedResource Include="TestData\tale_of_two_cities.txt" />
+    <EmbeddedResource Include="TestData\ulysses.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

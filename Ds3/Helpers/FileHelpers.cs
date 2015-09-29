@@ -143,6 +143,10 @@ namespace Ds3.Helpers
         /// <returns>full path with prefix prepended</returns>
         private static string PrependPrefix(string path, string prefix)
         {
+            if (string.IsNullOrEmpty(prefix))
+            {
+                return path;
+            }
             var fileName = Path.GetFileName(path);
             var fixedPath = path.Substring(0, path.Length - fileName.Length) + prefix + fileName;
             return fixedPath;
