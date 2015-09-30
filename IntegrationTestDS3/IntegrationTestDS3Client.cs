@@ -355,13 +355,25 @@ namespace IntegrationTestDs3
            it.Test0110BulkGetWithPrefix();
            it.Test0120BulkGetWithoutPrefix();
            it.Test0500DeleteFolder();
-           it.Test0510DeleteDeletedBucket();
-           it.Test0520GetBadBucket();
+           ExpectException(it.Test0510DeleteDeletedBucket, typeof(Ds3BadStatusCodeException));
+           ExpectException(it.Test0520GetBadBucket, typeof(Ds3BadStatusCodeException));
            it.Test0910DeleteObject();
-           it.Test0915DeleteDeletedObject();
+           ExpectException(it.Test0915DeleteDeletedObject, typeof(Ds3BadStatusCodeException));
            it.Test0920DeleteObjectWithPrefix();
            it.Test0990CleanUp();
 
+       }
+
+       public static void ExpectException(Action f, Type expected)
+       {
+           try { f(); }
+           catch(Exception actual)
+           {
+               Assert.IsTrue(actual.GetType() == expected);
+               return;
+           }
+           // no exception returned -- fine if expected == null
+           Assert.IsNull(expected);
        }
         #endregion main
     }
