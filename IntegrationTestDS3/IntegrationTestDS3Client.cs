@@ -221,7 +221,7 @@ namespace IntegrationTestDs3
            int postfoldercount = antefolder.Count();
            Assert.Greater(postfoldercount, antefoldercount);
        }
-              
+       
        [Test]
        public void Test0500DeleteFolder()
        {
@@ -255,13 +255,31 @@ namespace IntegrationTestDs3
            };
            return _client.GetObjects(request).Objects;
        }
-       
+
+
+       [Test]
+       [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
+       public void Test0510DeleteDeletedBucket()
+       {
+           // delete it
+           DeleteFolderRequest request = new Ds3.Calls.DeleteFolderRequest(TESTBUCKET, FOLDER);
+           _client.DeleteFolder(request);
+       }
+
+       [Test]
+       [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
+       public void Test0520GetBadBucket()
+       {
+           var request = new Ds3.Calls.GetBucketRequest("NoBucket" + DateTime.Now.Ticks);
+           _client.GetBucket(request);
+       }
+
        [Test]
        public void Test0910DeleteObject()
        {
            var antefolder = listBucketObjects();
            int antefoldercount = antefolder.Count();
-           // delete the dirst book 
+           // delete the first book 
            string book = BOOKS.First<string>();
            var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, string.Empty + book);
            _client.DeleteObject(request);
@@ -271,7 +289,17 @@ namespace IntegrationTestDs3
            int postfoldercount = postfolder.Count();
            Assert.AreEqual(antefoldercount - postfoldercount, 1);
        }
-        
+
+       [Test]
+       [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
+       public void Test0915DeleteDeletedObject()
+       {
+           // delete the first book, again 
+           string book = BOOKS.First<string>();
+           var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, string.Empty + book);
+               _client.DeleteObject(request);
+       }
+
        [Test]
        public void Test0920DeleteObjectWithPrefix()
        {
@@ -327,7 +355,10 @@ namespace IntegrationTestDs3
            it.Test0110BulkGetWithPrefix();
            it.Test0120BulkGetWithoutPrefix();
            it.Test0500DeleteFolder();
+           it.Test0510DeleteDeletedBucket();
+           it.Test0520GetBadBucket();
            it.Test0910DeleteObject();
+           it.Test0915DeleteDeletedObject();
            it.Test0920DeleteObjectWithPrefix();
            it.Test0990CleanUp();
 
