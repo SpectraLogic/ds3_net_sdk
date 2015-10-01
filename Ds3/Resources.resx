@@ -174,9 +174,6 @@
   <data name="MissingHeaderException" xml:space="preserve">
     <value>Expected a header called "{0}" but didn't find it.</value>
   </data>
-  <data name="MustBeMd5Exception" xml:space="preserve">
-    <value>Parameter must be a 16-byte MD5 hash value.</value>
-  </data>
   <data name="NoObjectsToTransferException" xml:space="preserve">
     <value>Tried to perform a bulk job but there were no objects to transfer.</value>
   </data>
