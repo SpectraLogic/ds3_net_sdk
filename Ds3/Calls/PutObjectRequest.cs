@@ -27,7 +27,7 @@ namespace Ds3.Calls
     {
         private readonly Stream _content;
         private Checksum _checksum = Checksum.None;
-	    private Checksum.ChecksumType _checksumType;
+        private Checksum.ChecksumType _checksumType;
         private IDictionary<string, string> _metadata = new Dictionary<string, string>();
 
         internal override HttpVerb Verb
@@ -51,12 +51,12 @@ namespace Ds3.Calls
             get { return this._checksum; }
         }
 
-		internal override Checksum.ChecksumType ChecksumType
-		{
-			get { return this._checksumType; }
-		}
+        internal override Checksum.ChecksumType ChecksumType
+        {
+            get { return this._checksumType; }
+        }
 
-		public Checksum Checksum
+        public Checksum Checksum
         {
             get { return this._checksum; }
             set { this.WithChecksum(value); }
@@ -65,7 +65,7 @@ namespace Ds3.Calls
         public PutObjectRequest WithChecksum(Checksum checksum, Checksum.ChecksumType checksumType = Checksum.ChecksumType.Md5)
         {
             this._checksum = checksum;
-	        this._checksumType = checksumType;
+            this._checksumType = checksumType;
             return this;
         }
 
