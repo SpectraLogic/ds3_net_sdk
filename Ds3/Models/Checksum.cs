@@ -26,6 +26,14 @@ namespace Ds3.Models
         private static Checksum _none = new NoneChecksum();
         private static Checksum _compute = new ComputeChecksum();
 
+		public enum ChecksumType
+		{
+			None,
+			Md5,
+			Sha256,
+			Sha512
+		}
+
         /// <summary>
         /// Do not provide a checksum header on PUT.
         /// </summary>
@@ -81,10 +89,6 @@ namespace Ds3.Models
 
             public ValueChecksum(byte[] hash)
             {
-                if (hash.Length != 16)
-                {
-                    throw new ArgumentException(string.Format(Resources.MustBeMd5Exception));
-                }
                 this._hash = hash;
             }
 
