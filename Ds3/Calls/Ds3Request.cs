@@ -42,12 +42,12 @@ namespace Ds3.Calls
             get { return Checksum.None; }
         }
 
-		internal virtual Checksum.ChecksumType ChecksumType
-		{
-			get { return Checksum.ChecksumType.None; }
-		}
+        internal virtual Checksum.ChecksumType ChecksumType
+        {
+            get { return Checksum.ChecksumType.None; }
+        }
 
-		internal virtual IEnumerable<Range> GetByteRanges()
+        internal virtual IEnumerable<Range> GetByteRanges()
         {
             return Enumerable.Empty<Range>();
         }

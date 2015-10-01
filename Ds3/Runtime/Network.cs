@@ -139,26 +139,27 @@ namespace Ds3.Runtime
             httpRequest.ReadWriteTimeout = this._readWriteTimeout;
             httpRequest.Timeout = this._requestTimeout;
 
-			var chucksumValue = ComputeChecksum(request.ChecksumObject, content, request.ChecksumType);
-			if (!string.IsNullOrEmpty(chucksumValue))
-			{
-				switch (request.ChecksumType)
-				{
-					case Checksum.ChecksumType.Md5:
-						if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"MD5 checksum is {chucksumValue}");
-						httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
-						break;
-					case Checksum.ChecksumType.Sha256:
-						if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"SHA-256 checksum is {chucksumValue}");
-						httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
-						break;
-					case Checksum.ChecksumType.Sha512:
-						if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"SHA-512 checksum is {chucksumValue}");
-						httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
-						break;
-				}
-			}
-	        httpRequest.Headers.Add(HttpHeaders.Authorization, S3Signer.AuthField(
+            var chucksumValue = ComputeChecksum(request.ChecksumObject, content, request.ChecksumType);
+            if (!string.IsNullOrEmpty(chucksumValue))
+            {
+                switch (request.ChecksumType)
+                {
+                    case Checksum.ChecksumType.Md5:
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"MD5 checksum is {chucksumValue}");
+                        httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
+                        break;
+                    case Checksum.ChecksumType.Sha256:
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"SHA-256 checksum is {chucksumValue}");
+                        httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
+                        break;
+                    case Checksum.ChecksumType.Sha512:
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"SHA-512 checksum is {chucksumValue}");
+                        httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
+                        break;
+                }
+            }
+
+            httpRequest.Headers.Add(HttpHeaders.Authorization, S3Signer.AuthField(
                 _creds,
                 request.Verb.ToString(),
                 date.ToString("r"),
@@ -200,24 +201,26 @@ namespace Ds3.Runtime
         private static string ComputeChecksum(Checksum checksum, Stream content, Checksum.ChecksumType checksumType = Checksum.ChecksumType.Md5)
         {
             return checksum.Match(
-							 () => "",
-							 () =>
-							 {
-								switch (checksumType)
-								 {
-									 case Checksum.ChecksumType.Md5:
-										 return Convert.ToBase64String(System.Security.Cryptography.MD5.Create().ComputeHash(content));
-									 case Checksum.ChecksumType.Sha256:
-										 return Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(content));
-									 case Checksum.ChecksumType.Sha512:
-										 return Convert.ToBase64String(System.Security.Cryptography.SHA512.Create().ComputeHash(content));
-									 default:
-										 return "";
-								 }
-							 },
-							 hash => Convert.ToBase64String(hash)
-							 );
-		}
+                () => "",
+                () =>
+                {
+                    switch (checksumType)
+                    {
+                        case Checksum.ChecksumType.Md5:
+                            return Convert.ToBase64String(System.Security.Cryptography.MD5.Create().ComputeHash(content));
+                        case Checksum.ChecksumType.Sha256:
+                            return
+                                Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(content));
+                        case Checksum.ChecksumType.Sha512:
+                            return
+                                Convert.ToBase64String(System.Security.Cryptography.SHA512.Create().ComputeHash(content));
+                        default:
+                            return "";
+                    }
+                },
+                hash => Convert.ToBase64String(hash)
+                );
+        }
 
         private string CreateHostString(Uri endpoint)
         {

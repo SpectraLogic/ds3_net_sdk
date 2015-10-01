@@ -26,13 +26,13 @@ namespace Ds3.Models
         private static Checksum _none = new NoneChecksum();
         private static Checksum _compute = new ComputeChecksum();
 
-		public enum ChecksumType
-		{
-			None,
-			Md5,
-			Sha256,
-			Sha512
-		}
+        public enum ChecksumType
+        {
+            None,
+            Md5,
+            Sha256,
+            Sha512
+        }
 
         /// <summary>
         /// Do not provide a checksum header on PUT.
