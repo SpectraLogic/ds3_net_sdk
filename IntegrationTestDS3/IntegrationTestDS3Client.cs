@@ -355,7 +355,7 @@ namespace IntegrationTestDs3
            it.Test0110BulkGetWithPrefix();
            it.Test0120BulkGetWithoutPrefix();
            it.Test0500DeleteFolder();
-           ExpectException(it.Test0510DeleteDeletedBucket, typeof(Ds3BadStatusCodeException));
+           ExpectException(it.Test0510DeleteDeletedBucket, null);
            ExpectException(it.Test0520GetBadBucket, typeof(Ds3BadStatusCodeException));
            it.Test0910DeleteObject();
            ExpectException(it.Test0915DeleteDeletedObject, typeof(Ds3BadStatusCodeException));
