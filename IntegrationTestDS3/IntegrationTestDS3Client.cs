@@ -345,38 +345,5 @@ namespace IntegrationTestDs3
 
        #endregion sequential tests
 
-        #region main
-       public static void Main()
-       {
-           IntegrationTestDs3Client it = new IntegrationTestDs3Client();
-           it.startup();
-           it.DoIntegrationPing();
-           it.Test0010BulkPutNoPrefix();
-           it.Test0020BulkPutWithPrefix();
-           it.Test0110BulkGetWithPrefix();
-           it.Test0120BulkGetWithoutPrefix();
-           it.Test0500DeleteFolder();
-           // Fails on current simulator (ubless you pass in null) This was reported as a defect and fixed 
-           // ExpectException(it.Test0510DeleteDeletedBucket, Ds3BadStatusCodeException);
-           ExpectException(it.Test0520GetBadBucket, typeof(Ds3BadStatusCodeException));
-           it.Test0910DeleteObject();
-           ExpectException(it.Test0915DeleteDeletedObject, typeof(Ds3BadStatusCodeException));
-           it.Test0920DeleteObjectWithPrefix();
-           it.Test0990CleanUp();
-
-       }
-
-       public static void ExpectException(Action f, Type expected)
-       {
-           try { f(); }
-           catch(Exception actual)
-           {
-               Assert.IsTrue(actual.GetType() == expected);
-               return;
-           }
-           // no exception returned -- fine if expected == null
-           Assert.IsNull(expected);
-       }
-        #endregion main
     }
 }
