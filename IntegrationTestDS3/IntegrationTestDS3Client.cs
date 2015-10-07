@@ -355,6 +355,7 @@ namespace IntegrationTestDs3
                 return stream;
             });
             } finally {
+                DeleteObject(bucketName, fileName);
                 DeleteBucket(bucketName);
             }
        }
