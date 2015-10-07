@@ -1,4 +1,4 @@
-test: integration unit
+test: unit integration
 
 integration: build
 	mono ./packages/NUnit.Runners.2.6.3/tools/nunit-console.exe ./IntegrationTestDS3/bin/Debug/IntegrationTestDS3.dll
