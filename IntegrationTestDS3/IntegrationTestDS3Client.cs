@@ -37,7 +37,7 @@ namespace IntegrationTestDs3
        private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
        private string[] BOOKS = { "beowulf.txt", "sherlock_holmes.txt", "tale_of_two_cities.txt" };
        private string[] JOYCEBOOKS = { "ulysses.txt" };
-       
+
        private static string TESTDIR = "TestObjectData";
        private static string TESTBUCKET = "TestBucket" + DateTime.Now.Ticks;
        private static string PREFIX = "test_";
@@ -47,7 +47,7 @@ namespace IntegrationTestDs3
        private string testdirectoryDestPrefix { get; set; }
 
         private IDs3Client _client { get; set; }
-        private Ds3ClientHelpers _helpers { get; set; } 
+        private Ds3ClientHelpers _helpers { get; set; }
         public string _endpoint {  private get;  set; }
         public Credentials _credentials { private get;  set; }
 
@@ -62,12 +62,11 @@ namespace IntegrationTestDs3
             _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
             string accesskey =  Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
             string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
-            _credentials = new Credentials(accesskey, secretkey); 
+            _credentials = new Credentials(accesskey, secretkey);
             _client = new Ds3Builder(_endpoint, _credentials).Build();
             _helpers = new Ds3ClientHelpers(_client);
 
             setupTestData();
-       
        }
 
        private void setupTestData()
@@ -108,11 +107,12 @@ namespace IntegrationTestDs3
        private static string ReadResource(string resourceName)
        {
            using (var srcFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-           using (var reader = new StreamReader(srcFile))
+           using (var reader = new StreamReader(srcFile)) {
                return reader.ReadToEnd();
+           }
        }
 
-        #endregion setup
+       #endregion setup
 
        #region ping
 
@@ -139,7 +139,7 @@ namespace IntegrationTestDs3
        #endregion ping
 
        #region sequential tests
-       
+
        [Test]
        public void Test0010BulkPutNoPrefix()
        {
@@ -162,7 +162,7 @@ namespace IntegrationTestDs3
            int postfoldercount = postfolder.Count();
            Assert.AreEqual(postfoldercount - antefoldercount, directoryobjects.Count());
        }
-       
+
        [Test]
        public void Test0020BulkPutWithPrefix()
        {
@@ -203,7 +203,7 @@ namespace IntegrationTestDs3
            int postfoldercount = antefolder.Count();
            Assert.Greater(postfoldercount, antefoldercount);
        }
-       
+
        [Test]
        public void Test0120BulkGetWithoutPrefix()
        {
@@ -221,7 +221,7 @@ namespace IntegrationTestDs3
            int postfoldercount = antefolder.Count();
            Assert.Greater(postfoldercount, antefoldercount);
        }
-       
+
        [Test]
        public void Test0500DeleteFolder()
        {
@@ -295,7 +295,7 @@ namespace IntegrationTestDs3
        [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
        public void Test0915DeleteDeletedObject()
        {
-           // delete the first book, again 
+           // delete the first book, again
            string book = BOOKS.First<string>();
            var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, string.Empty + book);
                _client.DeleteObject(request);
@@ -306,7 +306,7 @@ namespace IntegrationTestDs3
        {
            var antefolder = listBucketObjects();
            int antefoldercount = antefolder.Count();
-           // delete the dirst book 
+           // delete the dirst book
            string book = BOOKS.First<string>();
            var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, PREFIX + book);
            _client.DeleteObject(request);
@@ -317,7 +317,7 @@ namespace IntegrationTestDs3
            Assert.AreEqual(antefoldercount - postfoldercount, 1);
        }
 
-       [Test] 
+       [Test]
        public void Test0990CleanUp()
         {
             var items = _helpers.ListObjects(TESTBUCKET);
@@ -329,6 +329,35 @@ namespace IntegrationTestDs3
             }
             DeleteBucket(TESTBUCKET);
         }
+
+       [Test]
+       public void TestSpecialCharacter()
+       {
+            var bucketName = "odd_character_bucket";
+            _helpers.EnsureBucketExists(bucketName);
+
+            var fileName = "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMAC HD.avb";
+            var obj = new Ds3Object(fileName, 1024);
+            var objs = new List<Ds3Object>();
+            objs.Add(obj);
+            try {
+            var job = _helpers.StartWriteJob(bucketName, objs);
+
+            job.Transfer(key => {
+                var data = new byte[1024];
+                var stream = new MemoryStream(data);
+                for (int i = 0; i < 1024; i++) {
+                    stream.WriteByte(97);
+                }
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                return stream;
+            });
+            } finally {
+                DeleteBucket(bucketName);
+            }
+       }
 
        public void DeleteObject(string bucketname, string objectName)
        {
