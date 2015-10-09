@@ -28,7 +28,7 @@ namespace Ds3.Runtime
     internal class Network : INetwork
     {
         private static TraceSwitch sdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
-        
+
         internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
 
         private readonly Uri _endpoint;
@@ -65,7 +65,7 @@ namespace Ds3.Runtime
         public IWebResponse Invoke(Ds3Request request)
         {
             int redirectCount = 0;
-            
+
             using (var content = request.GetContentStream())
             {
                 do
