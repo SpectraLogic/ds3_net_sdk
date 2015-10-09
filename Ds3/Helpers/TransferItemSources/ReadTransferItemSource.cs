@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers.TransferItemSources
 {
@@ -26,6 +27,7 @@ namespace Ds3.Helpers.TransferItemSources
         private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
         private readonly IDs3Client _client;
+        private int _retryAfter; // Negative _retryAfter value represent infinity retries
         private readonly Guid _jobId;
         private readonly ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
@@ -33,18 +35,21 @@ namespace Ds3.Helpers.TransferItemSources
 
         public ReadTransferItemSource(
             IDs3Client client,
+            int retryAfter,
             JobResponse initialJobResponse)
-            : this(Thread.Sleep, client, initialJobResponse)
+            : this(Thread.Sleep, client, retryAfter, initialJobResponse)
         {
         }
 
         public ReadTransferItemSource(
             Action<TimeSpan> wait,
             IDs3Client client,
+            int retryAfter,
             JobResponse initialJobResponse)
         {
             this._wait = wait;
             this._client = client;
+            this._retryAfter = retryAfter;
             this._jobId = initialJobResponse.JobId;
             this._blobsRemaining = new HashSet<Blob>(Blob.Convert(initialJobResponse));
         }
@@ -92,30 +97,36 @@ namespace Ds3.Helpers.TransferItemSources
 
         private TransferItem[] GetNextTransfers()
         {
+            if (_retryAfter == 0)
+                throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
+            
             return this._client
-                .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._jobId))
-                .Match((ts, jobResponse) =>
-                {
-                    var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
-                    var result = (
-                        from chunk in jobResponse.ObjectLists
-                        let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
-                        from jobObject in chunk.Objects
-                        let blob = Blob.Convert(jobObject)
-                        where this._blobsRemaining.Contains(blob)
-                        select new TransferItem(transferClient, blob)
-                    ).ToArray();
-                    if (result.Length == 0)
-                    {
-                        this._wait(ts);
-                    }
-                    return result;
-                },
-                ts =>
+            .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._jobId))
+            .Match((ts, jobResponse) =>
+            {
+                var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
+                var result = (
+                    from chunk in jobResponse.ObjectLists
+                    let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
+                    from jobObject in chunk.Objects
+                    let blob = Blob.Convert(jobObject)
+                    where this._blobsRemaining.Contains(blob)
+                    select new TransferItem(transferClient, blob)
+                ).ToArray();
+                if (result.Length == 0)
                 {
                     this._wait(ts);
-                    return new TransferItem[0];
-                });
+                }
+                return result;
+            },
+            ts =>
+            {
+                Console.WriteLine("waiting for 2sec"); //TODO delete me
+                this._wait(new TimeSpan(0, 0, 2)); //TODO delete me
+                //this._wait(ts); //TODO remove the comment
+                _retryAfter--;
+                return new TransferItem[0];
+            });
         }
 
         public void CompleteBlob(Blob blob)
