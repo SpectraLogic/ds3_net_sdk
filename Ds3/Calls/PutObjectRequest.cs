@@ -46,7 +46,7 @@ namespace Ds3.Calls
             }
         }
 
-        internal override Checksum ChecksumObject
+        internal override Checksum ChecksumValue
         {
             get { return this._checksum; }
         }
