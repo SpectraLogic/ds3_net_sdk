@@ -18,6 +18,8 @@ namespace Ds3.Runtime
     internal static class HttpHeaders
     {
         public const string ContentMd5 = "Content-MD5";
+        public const string ContentSha256 = "Content-SHA256";
+        public const string ContentSha512 = "Content-SHA512";
         public const string Authorization = "Authorization";
         public const string AwsPrefix = "x-amz-";
         public const string AwsMetadataPrefix = AwsPrefix + "meta-";
