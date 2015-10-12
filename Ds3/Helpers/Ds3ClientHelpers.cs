@@ -52,7 +52,7 @@ namespace Ds3.Helpers
             var jobResponse = this._client.BulkPut(request);
             return FullObjectJob.Create(
                 jobResponse,
-                new WriteTransferItemSource(this._client, this._retryAfter, jobResponse),
+                new WriteTransferItemSource(this._client, jobResponse),
                 new WriteTransferrer()
             );
         }
@@ -153,7 +153,7 @@ namespace Ds3.Helpers
             }
             return FullObjectJob.Create(
                 jobResponse,
-                new WriteTransferItemSource(this._client, this._retryAfter, jobResponse),
+                new WriteTransferItemSource(this._client, jobResponse),
                 new WriteTransferrer()
             );
         }

@@ -27,7 +27,8 @@ namespace Ds3.Helpers.TransferItemSources
         private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
         private readonly IDs3Client _client;
-        private int _retryAfter; // Negative _retryAfter value represent infinity retries
+        private readonly int _retryAfter; // Negative _retryAfter value represent infinity retries
+        private int _retryAfterLeft; // The number of retries left
         private readonly Guid _jobId;
         private readonly ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
@@ -57,7 +58,7 @@ namespace Ds3.Helpers.TransferItemSources
         {
             this._wait = wait;
             this._client = client;
-            this._retryAfter = retryAfter;
+            this._retryAfter = _retryAfterLeft = retryAfter;
             this._jobId = initialJobResponse.JobId;
             this._blobsRemaining = new HashSet<Blob>(Blob.Convert(initialJobResponse));
         }
@@ -105,9 +106,6 @@ namespace Ds3.Helpers.TransferItemSources
 
         private TransferItem[] GetNextTransfers()
         {
-            if (_retryAfter == 0)
-                throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
-            
             return this._client
             .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._jobId))
             .Match((ts, jobResponse) =>
@@ -125,12 +123,18 @@ namespace Ds3.Helpers.TransferItemSources
                 {
                     this._wait(ts);
                 }
+                _retryAfterLeft = _retryAfter; // Reset the number of retries to the initial value
                 return result;
             },
             ts =>
             {
+                _retryAfterLeft--;
+                if (_retryAfterLeft == 0)
+                {
+                    throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
+                }
+
                 this._wait(ts);
-                _retryAfter--;
                 return new TransferItem[0];
             });
         }
