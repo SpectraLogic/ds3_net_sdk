@@ -83,17 +83,22 @@ namespace Ds3.Helpers.TransferItemSources
                 client
                     .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
                     .Match(
-                        allocatedChunk => { chunk = allocatedChunk; },
+                        allocatedChunk =>
+                        {
+                            chunk = allocatedChunk;
+                        },
                         ts =>
                         {
-                            Console.WriteLine("waiting for 2sec"); //TODO delete me
-                            this._wait(new TimeSpan(0, 0, 2)); //TODO delete me
-                          //this._wait(ts); //TODO remove the comment
+                            this._wait(ts);
                             _retryAfter--;
                         },
-                        () => { chunkGone = true; }
+                        () =>
+                        {
+                            chunkGone = true;
+                        }
                     );
             }
+
             if (_retryAfter == 0)
                 throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
 

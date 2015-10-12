@@ -232,6 +232,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reached the limit number of retries request.
+        /// </summary>
+        internal static string NoMoreRetriesException {
+            get {
+                return ResourceManager.GetString("NoMoreRetriesException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tried to perform a bulk job but there were no objects to transfer..
         /// </summary>
         internal static string NoObjectsToTransferException {

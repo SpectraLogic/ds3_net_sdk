@@ -198,6 +198,7 @@
     <Compile Include="ResponseParsers\VerifySystemHealthResponseParser.cs" />
     <Compile Include="Runtime\Ds3BadResponseException.cs" />
     <Compile Include="Runtime\Ds3BadStatusCodeException.cs" />
+    <Compile Include="Runtime\Ds3NoMoreRetriesException.cs" />
     <Compile Include="Runtime\Ds3RedirectLimitException.cs" />
     <Compile Include="Runtime\HttpHeaders.cs" />
     <Compile Include="Runtime\HttpHelper.cs" />
