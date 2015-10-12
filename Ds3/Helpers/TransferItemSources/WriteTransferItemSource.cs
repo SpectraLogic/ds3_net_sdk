@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Ds3.Runtime;
 
 namespace Ds3.Helpers.TransferItemSources
 {
@@ -27,34 +26,22 @@ namespace Ds3.Helpers.TransferItemSources
     {
         private readonly Action<TimeSpan> _wait;
         private readonly IDs3Client _client;
-        private int _retryAfter; // Negative _retryAfter value represent infinity retries
         private readonly JobResponse _jobResponse;
 
         public WriteTransferItemSource(
             IDs3Client client,
-            int retryAfter,
             JobResponse jobResponse)
-            : this(Thread.Sleep, client, retryAfter, jobResponse)
+            : this(Thread.Sleep, client, jobResponse)
         {
         }
 
         public WriteTransferItemSource(
             Action<TimeSpan> wait,
             IDs3Client client,
-            JobResponse jobResponse)
-            : this(wait, client, -1, jobResponse)
-        {
-        }
-
-        public WriteTransferItemSource(
-            Action<TimeSpan> wait,
-            IDs3Client client,
-            int retryAfter,
             JobResponse jobResponse)
         {
             this._wait = wait;
             this._client = client;
-            this._retryAfter = retryAfter;
             this._jobResponse = jobResponse;
         }
 
@@ -85,31 +72,17 @@ namespace Ds3.Helpers.TransferItemSources
         {
             JobObjectList chunk = null;
             var chunkGone = false;
-            while (chunk == null && !chunkGone && _retryAfter!=0)
+            while (chunk == null && !chunkGone)
             {
                 // This is an idempotent operation, so we don't care if it's already allocated.
                 client
                     .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
                     .Match(
-                        allocatedChunk =>
-                        {
-                            chunk = allocatedChunk;
-                        },
-                        ts =>
-                        {
-                            this._wait(ts);
-                            _retryAfter--;
-                        },
-                        () =>
-                        {
-                            chunkGone = true;
-                        }
+                        allocatedChunk => { chunk = allocatedChunk; },
+                        this._wait,
+                        () => { chunkGone = true; }
                     );
             }
-
-            if (_retryAfter == 0)
-                throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
-
             return chunk;
         }
     }
