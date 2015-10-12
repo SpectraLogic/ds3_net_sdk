@@ -139,7 +139,7 @@ namespace Ds3.Runtime
             httpRequest.ReadWriteTimeout = this._readWriteTimeout;
             httpRequest.Timeout = this._requestTimeout;
 
-            var chucksumValue = ComputeChecksum(request.ChecksumObject, content, request.ChecksumType);
+            var chucksumValue = ComputeChecksum(request.ChecksumValue, content, request.ChecksumType);
             if (!string.IsNullOrEmpty(chucksumValue))
             {
                 switch (request.ChecksumType)

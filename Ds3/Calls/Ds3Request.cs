@@ -37,7 +37,7 @@ namespace Ds3.Calls
             return Stream.Null;
         }
 
-        internal virtual Checksum ChecksumObject
+        internal virtual Checksum ChecksumValue
         {
             get { return Checksum.None; }
         }
