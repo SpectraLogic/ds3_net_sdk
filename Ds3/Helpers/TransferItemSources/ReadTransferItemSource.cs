@@ -121,9 +121,7 @@ namespace Ds3.Helpers.TransferItemSources
             },
             ts =>
             {
-                Console.WriteLine("waiting for 2sec"); //TODO delete me
-                this._wait(new TimeSpan(0, 0, 2)); //TODO delete me
-                //this._wait(ts); //TODO remove the comment
+                this._wait(ts);
                 _retryAfter--;
                 return new TransferItem[0];
             });

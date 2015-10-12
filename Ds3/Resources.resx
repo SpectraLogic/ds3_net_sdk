@@ -201,4 +201,7 @@
   <data name="XmlResponseErrorException" xml:space="preserve">
     <value>Encountered an error while reading XML response: "{0}"</value>
   </data>
+  <data name="NoMoreRetriesException" xml:space="preserve">
+    <value>Reached the limit number of retries request</value>
+  </data>
 </root>
