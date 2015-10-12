@@ -44,6 +44,14 @@ namespace Ds3.Helpers.TransferItemSources
         public ReadTransferItemSource(
             Action<TimeSpan> wait,
             IDs3Client client,
+            JobResponse initialJobResponse)
+            : this(wait, client, -1, initialJobResponse)
+        {
+        }
+
+        public ReadTransferItemSource(
+            Action<TimeSpan> wait,
+            IDs3Client client,
             int retryAfter,
             JobResponse initialJobResponse)
         {

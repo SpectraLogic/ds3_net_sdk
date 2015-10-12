@@ -41,6 +41,14 @@ namespace Ds3.Helpers.TransferItemSources
         public WriteTransferItemSource(
             Action<TimeSpan> wait,
             IDs3Client client,
+            JobResponse jobResponse)
+            : this(wait, client, -1, jobResponse)
+        {
+        }
+
+        public WriteTransferItemSource(
+            Action<TimeSpan> wait,
+            IDs3Client client,
             int retryAfter,
             JobResponse jobResponse)
         {
