@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Range = Ds3.Models.Range;
+using Ds3.Runtime;
 
 namespace TestDs3.Helpers.TransferItemSources
 {
@@ -222,6 +222,74 @@ namespace TestDs3.Helpers.TransferItemSources
 
             clientFactory.VerifyAll();
             client.VerifyAll();
+        }
+
+        [Test]
+        public void TestEnumerateTransfersSetRetryAfter()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(Stubs.Chunk1(null, false, false));
+            var factory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            factory
+                .Setup(f => f.GetClientForNodeId(It.IsAny<Guid?>()))
+                .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Returns(factory.Object);
+            client
+                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Returns(GetAvailableJobChunksResponse.RetryAfter(
+                    TimeSpan.FromMinutes(5)));
+
+            var transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 2, initialJobResponse);
+
+            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 2);
+                    transfers.MoveNext();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                    return;
+                }
+                Assert.Fail();
+            }
+        }
+
+        [Test]
+        public void TestEnumerateTransfersInfinitRetryAfter()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(Stubs.Chunk1(null, false, false));
+            var factory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            factory
+                .Setup(f => f.GetClientForNodeId(It.IsAny<Guid?>()))
+                .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Returns(factory.Object);
+            client
+                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Returns(GetAvailableJobChunksResponse.RetryAfter(
+                    TimeSpan.FromMinutes(5)));
+
+            var transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, -1, initialJobResponse);
+
+            var task = Task.Run(() =>
+            {
+                using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+                {
+                    transfers.MoveNext();
+                    Assert.Fail(); //We can't move next since we will retry forever
+                }
+            });
+
+            Thread.Sleep(TimeSpan.FromSeconds(10)); // Wait for the 10sec, the task should not be finished
+            Assert.False(task.IsCompleted);
         }
 
         private class ProducerConsumer

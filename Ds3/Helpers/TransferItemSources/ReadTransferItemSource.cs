@@ -28,7 +28,7 @@ namespace Ds3.Helpers.TransferItemSources
         private readonly Action<TimeSpan> _wait;
         private readonly IDs3Client _client;
         private readonly int _retryAfter; // Negative _retryAfter value represent infinity retries
-        private int _retryAfterLeft; // The number of retries left
+        public int RetryAfterLeft { get; private set; } // The number of retries left
         private readonly Guid _jobId;
         private readonly ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
@@ -58,7 +58,7 @@ namespace Ds3.Helpers.TransferItemSources
         {
             this._wait = wait;
             this._client = client;
-            this._retryAfter = _retryAfterLeft = retryAfter;
+            this._retryAfter = RetryAfterLeft = retryAfter;
             this._jobId = initialJobResponse.JobId;
             this._blobsRemaining = new HashSet<Blob>(Blob.Convert(initialJobResponse));
         }
@@ -123,13 +123,13 @@ namespace Ds3.Helpers.TransferItemSources
                 {
                     this._wait(ts);
                 }
-                _retryAfterLeft = _retryAfter; // Reset the number of retries to the initial value
+                RetryAfterLeft = _retryAfter; // Reset the number of retries to the initial value
                 return result;
             },
             ts =>
             {
-                _retryAfterLeft--;
-                if (_retryAfterLeft == 0)
+                RetryAfterLeft--;
+                if (RetryAfterLeft == 0)
                 {
                     throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
                 }
