@@ -248,15 +248,14 @@ namespace TestDs3.Helpers.TransferItemSources
                 try
                 {
                     Assert.True(transferItemSource.RetryAfterLeft == 2);
-                    transfers.MoveNext();
+                    transfers.MoveNext(); // Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(transferItemSource.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
-                    return;
                 }
-                Assert.Fail();
             }
         }
 
