@@ -53,7 +53,7 @@ namespace Ds3.Runtime
             string date,
             string resourcePath,
             IDictionary<string, string> queryString,
-            string md5 = "",
+            string checksumValue = "",
             string contentType = "",
             IDictionary<string, string> amzHeaders = null)
         {
@@ -62,7 +62,7 @@ namespace Ds3.Runtime
                 date,
                 resourcePath,
                 queryString,
-                md5,
+                checksumValue,
                 contentType,
                 amzHeaders ?? new Dictionary<string, string>()
             );

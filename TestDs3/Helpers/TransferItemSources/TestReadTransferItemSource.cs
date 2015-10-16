@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Range = Ds3.Models.Range;
+using Ds3.Runtime;
 
 namespace TestDs3.Helpers.TransferItemSources
 {
@@ -222,6 +222,130 @@ namespace TestDs3.Helpers.TransferItemSources
 
             clientFactory.VerifyAll();
             client.VerifyAll();
+        }
+
+        [Test]
+        public void TestEnumerateTransfersSetRetryAfter()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(Stubs.Chunk1(null, false, false));
+            var factory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            factory
+                .Setup(f => f.GetClientForNodeId(It.IsAny<Guid?>()))
+                .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Returns(factory.Object);
+            client
+                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Returns(GetAvailableJobChunksResponse.RetryAfter(
+                    TimeSpan.FromMinutes(0)));
+
+            var transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 0, initialJobResponse);
+            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                }
+            }
+
+            transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 1, initialJobResponse);
+            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 1);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                }
+            }
+
+            transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 2, initialJobResponse);
+            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 2);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                }
+            }
+
+            transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 100, initialJobResponse);
+            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 100);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                }
+            }
+        }
+
+        [Test]
+        public void TestEnumerateTransfersResetRetryAfter()
+        {
+            var retryAfter = 5;
+            var initialJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(null, false, false)
+                );
+
+            var factory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            factory
+                .Setup(f => f.GetClientForNodeId(It.IsAny<Guid?>()))
+                .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Returns(factory.Object);
+            client
+                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Returns(() =>
+                {
+                    if (retryAfter == 1) //after 4 retires we want to success
+                    {
+                        return GetAvailableJobChunksResponse.Success(
+                            TimeSpan.FromMinutes(0),
+                            Stubs.BuildJobResponse(Stubs.Chunk1(Stubs.NodeId1, true, true)));
+                    }
+
+                    return GetAvailableJobChunksResponse.RetryAfter(TimeSpan.FromSeconds(0));
+                });
+
+            var transferItemSource = new ReadTransferItemSource(_ => { retryAfter--; }, client.Object, retryAfter, initialJobResponse);
+
+
+            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            {
+                Assert.True(transferItemSource.RetryAfterLeft == 5);
+                transfers.MoveNext();
+                Assert.True(transferItemSource.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
+                transfers.MoveNext();
+            }
         }
 
         private class ProducerConsumer
