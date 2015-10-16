@@ -128,11 +128,11 @@ namespace Ds3.Helpers.TransferItemSources
             },
             ts =>
             {
-                RetryAfterLeft--;
                 if (RetryAfterLeft == 0)
                 {
                     throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
                 }
+                RetryAfterLeft--;
 
                 this._wait(ts);
                 return new TransferItem[0];
