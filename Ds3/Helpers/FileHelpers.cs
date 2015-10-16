@@ -125,12 +125,12 @@ namespace Ds3.Helpers
 
         private static string ConvertKeyToPath(string key)
         {
-            return key.Replace('/', '\\');
+            return key.Replace('/', Path.DirectorySeparatorChar);
         }
 
         private static string ConvertPathToKey(string path)
         {
-            return path.Replace('\\', '/');
+            return path.Replace(Path.DirectorySeparatorChar, '/');
         }
 
         /// <summary>

@@ -48,8 +48,9 @@ namespace IntegrationTestDs3
 
         private IDs3Client _client { get; set; }
         private Ds3ClientHelpers _helpers { get; set; }
-        public string _endpoint {  private get;  set; }
-        public Credentials _credentials { private get;  set; }
+        public string _endpoint { private get; set; }
+        public string _proxy { private get; set; }
+        public Credentials _credentials { private get; set; }
 
         public string BuildRev { private set; get; }
         public string BuildVersion { private set; get; }
@@ -60,10 +61,16 @@ namespace IntegrationTestDs3
         public void startup()
         {
             _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
-            string accesskey =  Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
+            string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
             string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
+            _proxy = Environment.GetEnvironmentVariable("http_proxy");
             _credentials = new Credentials(accesskey, secretkey);
-            _client = new Ds3Builder(_endpoint, _credentials).Build();
+            Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
+            if (!string.IsNullOrEmpty(_proxy))
+            {
+                builder.WithProxy(new Uri(_proxy));
+            }
+            _client = builder.Build();
             _helpers = new Ds3ClientHelpers(_client);
 
             setupTestData();
@@ -283,6 +290,8 @@ namespace IntegrationTestDs3
            // delete the first book 
            string book = BOOKS.First<string>();
            var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, string.Empty + book);
+           string debugme = request.ObjectName;
+           Console.WriteLine(debugme);
            _client.DeleteObject(request);
 
            // one less ?
