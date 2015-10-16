@@ -31,10 +31,12 @@ namespace Ds3.Helpers
         private readonly IDs3Client _client;
         private const string JobTypePut = "PUT";
         private const string JobTypeGet = "GET";
+        private readonly int _retryAfter; //-1 represent infinite number
 
-        public Ds3ClientHelpers(IDs3Client client)
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1)
         {
             this._client = client;
+            this._retryAfter = retryAfter;
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null)
@@ -63,7 +65,7 @@ namespace Ds3.Helpers
             );
             return FullObjectJob.Create(
                 jobResponse,
-                new ReadTransferItemSource(this._client, jobResponse),
+                new ReadTransferItemSource(this._client, this._retryAfter, jobResponse),
                 new ReadTransferrer()
             );
         }
@@ -87,7 +89,7 @@ namespace Ds3.Helpers
                 jobResponse,
                 fullObjectList,
                 partialObjectList,
-                new ReadTransferItemSource(this._client, jobResponse)
+                new ReadTransferItemSource(this._client, this._retryAfter, jobResponse)
             );
         }
 

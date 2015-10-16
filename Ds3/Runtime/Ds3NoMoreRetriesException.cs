@@ -13,15 +13,16 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Net;
+
 namespace Ds3.Runtime
 {
-    internal static class HttpHeaders
+    public class Ds3NoMoreRetriesException : Exception
     {
-        public const string ContentMd5 = "Content-MD5";
-        public const string ContentSha256 = "Content-SHA256";
-        public const string ContentSha512 = "Content-SHA512";
-        public const string Authorization = "Authorization";
-        public const string AwsPrefix = "x-amz-";
-        public const string AwsMetadataPrefix = AwsPrefix + "meta-";
+        public Ds3NoMoreRetriesException(string message)
+            : base(message)
+        {
+        }
     }
 }

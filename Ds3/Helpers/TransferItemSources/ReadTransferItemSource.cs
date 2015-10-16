@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers.TransferItemSources
 {
@@ -26,6 +27,8 @@ namespace Ds3.Helpers.TransferItemSources
         private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
         private readonly IDs3Client _client;
+        private readonly int _retryAfter; // Negative _retryAfter value represent infinity retries
+        public int RetryAfterLeft { get; private set; } // The number of retries left
         private readonly Guid _jobId;
         private readonly ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
@@ -33,8 +36,9 @@ namespace Ds3.Helpers.TransferItemSources
 
         public ReadTransferItemSource(
             IDs3Client client,
+            int retryAfter,
             JobResponse initialJobResponse)
-            : this(Thread.Sleep, client, initialJobResponse)
+            : this(Thread.Sleep, client, retryAfter, initialJobResponse)
         {
         }
 
@@ -42,9 +46,19 @@ namespace Ds3.Helpers.TransferItemSources
             Action<TimeSpan> wait,
             IDs3Client client,
             JobResponse initialJobResponse)
+            : this(wait, client, -1, initialJobResponse)
+        {
+        }
+
+        public ReadTransferItemSource(
+            Action<TimeSpan> wait,
+            IDs3Client client,
+            int retryAfter,
+            JobResponse initialJobResponse)
         {
             this._wait = wait;
             this._client = client;
+            this._retryAfter = RetryAfterLeft = retryAfter;
             this._jobId = initialJobResponse.JobId;
             this._blobsRemaining = new HashSet<Blob>(Blob.Convert(initialJobResponse));
         }
@@ -93,29 +107,36 @@ namespace Ds3.Helpers.TransferItemSources
         private TransferItem[] GetNextTransfers()
         {
             return this._client
-                .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._jobId))
-                .Match((ts, jobResponse) =>
-                {
-                    var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
-                    var result = (
-                        from chunk in jobResponse.ObjectLists
-                        let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
-                        from jobObject in chunk.Objects
-                        let blob = Blob.Convert(jobObject)
-                        where this._blobsRemaining.Contains(blob)
-                        select new TransferItem(transferClient, blob)
-                    ).ToArray();
-                    if (result.Length == 0)
-                    {
-                        this._wait(ts);
-                    }
-                    return result;
-                },
-                ts =>
+            .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._jobId))
+            .Match((ts, jobResponse) =>
+            {
+                var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
+                var result = (
+                    from chunk in jobResponse.ObjectLists
+                    let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
+                    from jobObject in chunk.Objects
+                    let blob = Blob.Convert(jobObject)
+                    where this._blobsRemaining.Contains(blob)
+                    select new TransferItem(transferClient, blob)
+                ).ToArray();
+                if (result.Length == 0)
                 {
                     this._wait(ts);
-                    return new TransferItem[0];
-                });
+                }
+                RetryAfterLeft = _retryAfter; // Reset the number of retries to the initial value
+                return result;
+            },
+            ts =>
+            {
+                RetryAfterLeft--;
+                if (RetryAfterLeft == 0)
+                {
+                    throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
+                }
+
+                this._wait(ts);
+                return new TransferItem[0];
+            });
         }
 
         public void CompleteBlob(Blob blob)
