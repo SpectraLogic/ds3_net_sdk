@@ -64,7 +64,7 @@ namespace Ds3Examples
 
         protected void runPutFromStream(string bucket, string filename, long size)
         {
-            _helpers.EnsureBucketExists(bucket);
+            runCreateBucket(bucket);
 
             // create Ds3Object to store name and size
             var ds3Obj = new Ds3Object(filename, size);
@@ -95,11 +95,11 @@ namespace Ds3Examples
         protected void runPut(string bucket, string srcDirectory, string filename)
         {
             // Creates a bucket if it does not already exist.
-            _helpers.EnsureBucketExists(bucket);
+            runCreateBucket(bucket);
 
             // get file size, instantiate Ds3Object, add to list
-            FileInfo fileinf =  new FileInfo(Path.Combine(srcDirectory, filename));
-            var ds3Obj = new Ds3Object(filename, fileinf.Length);
+            FileInfo fileInfo =  new FileInfo(Path.Combine(srcDirectory, filename));
+            var ds3Obj = new Ds3Object(filename, fileInfo.Length);
             var ds3Objs = new List<Ds3Object>();
             ds3Objs.Add(ds3Obj);
 
@@ -115,7 +115,7 @@ namespace Ds3Examples
         protected void runBulkPut(string bucket, string srcDirectory, string prefix = "")
         {
             // Creates a bucket if it does not already exist.
-            _helpers.EnsureBucketExists(bucket);
+            runCreateBucket(bucket);
 
             // Creates a bulk job with the server based on the files in a directory (recursively).
             IJob job = _helpers.StartWriteJob(bucket, FileHelpers.ListObjectsForDirectory(srcDirectory, prefix));
@@ -326,20 +326,20 @@ namespace Ds3Examples
             string testSourceDirectory = "TestData";
             string testSourceSubDirectory = "FScottKey";
             string testSourceFile = "LoremIpsum.txt";
-            string binaryfile = "binarytest";
-            long binaryfilesize = 4096L;
+            string binaryFile = "binarytest";
+            long binaryFileSize = 4096L;
 
             // set these values to valid locations on local filesystem
             // directory to be copied (should exist and be poulated)
-            string sourcedir = "C:\\TestObjectData";
+            string sourceDir = "C:\\TestObjectData";
             // destination for restore if not empty (will be created if needed)
-            string destdir = "";
+            string destDir = "";
 
             // optional prefix to prepend to filename
             string prefix = "mytest123_";
 
             // instantiate client
-            Ds3ExampleClient exampleclient = new Ds3ExampleClient(endpoint, 
+            Ds3ExampleClient exampleClient = new Ds3ExampleClient(endpoint, 
                                     new Credentials(accesskey, secretkey), proxy);
 
             try
@@ -348,36 +348,36 @@ namespace Ds3Examples
                 Ds3ExampleClient.SetupFiles(testSourceDirectory, testSourceSubDirectory);
 
                 // connect to machine
-                string systeminfo = exampleclient.runPing();
+                string systeminfo = exampleClient.runPing();
                 if (clientSwitch.TraceVerbose) { Trace.WriteLine(systeminfo); }
 
                 // List all contents before operations
                 Console.WriteLine("\nSTARTING STATE:");
-                exampleclient.runListAll();
+                exampleClient.runListAll();
 
                 // force removal of test bucket from previous executions.
-                exampleclient.runCleanAll(bucket);
+                exampleClient.runCleanAll(bucket);
 
                 #region put objects
-                /*************************************************
-                 *** PUT FILES FROM LOCAL FILESYSTEM TO DEVICE ***
-                 *************************************************/
+                /*************************************************************
+                 *** PUT FILES TO DEVICE FROM LOCAL FILESYSTEM  AND STREAM ***
+                 *************************************************************/
                 // create a bucket on the device
-                exampleclient.runCreateBucket(bucket);
+                exampleClient.runCreateBucket(bucket);
 
                 // put a single file into the bucket from stream
-                exampleclient.runPut(bucket, testSourceDirectory, testSourceFile);
+                exampleClient.runPut(bucket, testSourceDirectory, testSourceFile);
 
                 // put a file into the bucket from stream
-                exampleclient.runPutFromStream(bucket, binaryfile, binaryfilesize);
+                exampleClient.runPutFromStream(bucket, binaryFile, binaryFileSize);
 
                 // copy the whole directory with a file prefix
-                exampleclient.runBulkPut(bucket, testSourceDirectory, prefix);
+                exampleClient.runBulkPut(bucket, testSourceDirectory, prefix);
 
                 // copy a local directory, recursively into the bucket
-                if (Directory.Exists(sourcedir))
+                if (Directory.Exists(sourceDir))
                 {
-                    exampleclient.runBulkPut(bucket, sourcedir);
+                    exampleClient.runBulkPut(bucket, sourceDir);
                 }
                 else
                 {
@@ -385,7 +385,7 @@ namespace Ds3Examples
                 }
                 // List all contents
                 Console.WriteLine("\nAFTER PUT:");
-                exampleclient.runListAll();
+                exampleClient.runListAll();
                 
                 #endregion put objects
 
@@ -397,23 +397,23 @@ namespace Ds3Examples
                 
                 // get bucket list
                 Console.WriteLine("Buckets:");
-                long bucketcount = exampleclient.runListBuckets();
+                long bucketCount = exampleClient.runListBuckets();
 
                 // get object list
                 Console.WriteLine("Objects in {0}:", bucket);
-                long objectcount = exampleclient.runListObjects(bucket);
+                long objectCount = exampleClient.runListObjects(bucket);
                 
                 // get object list in pages
                 Console.WriteLine("Objects in {0}:", bucket);
-                string objid = null;
-                string objectname = null;
+                string objId = null;
+                string objectName = null;
                 DS3ObjectTypes type = DS3ObjectTypes.ALL;
                 long version = 1L;
-                long pagesize = objectcount / 3L;
-                for (long offset = 0L; offset < objectcount; offset += pagesize)
+                long pageSize = objectCount / 3L;
+                for (long offset = 0L; offset < objectCount; offset += pageSize)
                 {
                     Console.WriteLine(string.Format("Get {0} (offset = {1})", bucket, offset));
-                    exampleclient.runGetObjects(bucket, objectname, objid, pagesize, offset, type, version);
+                    exampleClient.runGetObjects(bucket, objectName, objId, pageSize, offset, type, version);
                 }
 
                 #endregion listobjects
@@ -424,12 +424,12 @@ namespace Ds3Examples
                  *************************************************/
 
                 // get single file from out-of-box example
-                exampleclient.runGet(bucket, testRestoreDirectory, testSourceFile);
+                exampleClient.runGet(bucket, testRestoreDirectory, testSourceFile);
 
                 // restore whole bucket into local directory
-                if (!string.IsNullOrEmpty(destdir))
+                if (!string.IsNullOrEmpty(destDir))
                 {
-                    exampleclient.runBulkGet(bucket, destdir, string.Empty);
+                    exampleClient.runBulkGet(bucket, destDir, string.Empty);
                 }
                 
                 #endregion get objects
@@ -440,20 +440,20 @@ namespace Ds3Examples
                  ***         DELETE FILES FROM DEVICE          ***
                  *************************************************/
                 // delete a single object
-                exampleclient.runDeleteObject(bucket, testSourceFile);
+                exampleClient.runDeleteObject(bucket, testSourceFile);
 
                 // delete all objects in a folder
-                exampleclient.runDeleteFolder(bucket, testSourceSubDirectory);
+                exampleClient.runDeleteFolder(bucket, testSourceSubDirectory);
 
                 // delete all objects in a bucket but not the bucket
-                exampleclient.runDeleteObjects(bucket);
+                exampleClient.runDeleteObjects(bucket);
 
                 // delete an empty bucket
-                exampleclient.runDeleteBucket(bucket);
+                exampleClient.runDeleteBucket(bucket);
 
                 // List all contents 
                 Console.WriteLine("\nAFTER DELETE:");
-                exampleclient.runListAll();
+                exampleClient.runListAll();
 
                 #endregion delete objects
 
@@ -465,7 +465,7 @@ namespace Ds3Examples
 
             // Wait for user input.
             Console.WriteLine("All jobs complete. Hit any key to exit.");
-            Console.ReadLine();
+            Console.ReadKey();
         }
 
         #endregion main()
@@ -475,14 +475,14 @@ namespace Ds3Examples
         public static void SetupFiles(string testSourceDirectory, string testSourceSubDirectory)
         {
             string[] files = { "one.txt", "two.txt", "three.txt", "four.txt" };
-            string testdata = "On the shore dimly seen, through the mists of the deep. ";
-            testdata += "Where our foe's haughty host in dread silence reposes. ";
-            testdata += "What is that which the breeze, o'er the towering steep, ";
-            testdata += "As it fitfully blows, half conceals half discloses? ";
-            testdata += "Now it catches the gleam of the morning’s first beam, ";
-            testdata += "In full glory reflected now shines in the stream: ";
-            testdata += "Tis the star-spangled banner! Oh long may it wave, ";
-            testdata += "O’er the land of the free and the home of the brave!";
+            string testData = "On the shore dimly seen, through the mists of the deep. ";
+            testData += "Where our foe's haughty host in dread silence reposes. ";
+            testData += "What is that which the breeze, o'er the towering steep, ";
+            testData += "As it fitfully blows, half conceals half discloses? ";
+            testData += "Now it catches the gleam of the morning’s first beam, ";
+            testData += "In full glory reflected now shines in the stream: ";
+            testData += "Tis the star-spangled banner! Oh long may it wave, ";
+            testData += "O’er the land of the free and the home of the brave!";
  
             // create and populate a new test dir
             if (Directory.Exists(testSourceDirectory))
@@ -492,7 +492,7 @@ namespace Ds3Examples
                 foreach (var file in files)
                 {
                     TextWriter writer = new StreamWriter(Path.Combine(subdir, file));
-                    writer.WriteLine(testdata);
+                    writer.WriteLine(testData);
                     writer.Close();
                 }
             }
