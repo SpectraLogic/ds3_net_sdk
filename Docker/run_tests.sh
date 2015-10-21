@@ -1,5 +1,5 @@
 #!/bin/bash
-${GIT_REPO:=https://github.com/SpectraLogic/ds3_net_sdk.git}
+echo using Git Repo: ${GIT_REPO:="https://github.com/SpectraLogic/ds3_net_sdk.git"}
 
 # clone ds3_net_sdk from github
 cd /opt
