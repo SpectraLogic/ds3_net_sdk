@@ -37,12 +37,15 @@ namespace IntegrationTestDs3
        private static readonly IDictionary<string, string> _emptyQueryParams = new Dictionary<string, string>();
        private string[] BOOKS = { "beowulf.txt", "sherlock_holmes.txt", "tale_of_two_cities.txt" };
        private string[] JOYCEBOOKS = { "ulysses.txt" };
+       private string[] BIGFILES = { "big_book_file.txt" };
 
        private static string TESTDIR = "TestObjectData";
        private static string TESTBUCKET = "TestBucket" + DateTime.Now.Ticks;
        private static string PREFIX = "test_";
        private static string FOLDER = "joyce";
+       private static string BIG = "big";
        private string testdirectorySrc { get; set; }
+       private string testdirectoryBigFolder { get; set; }
        private string testdirectoryDest { get; set; }
        private string testdirectoryDestPrefix { get; set; }
 
@@ -60,9 +63,9 @@ namespace IntegrationTestDs3
         [SetUp]
         public void startup()
         {
-            _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
-            string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
-            string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
+            _endpoint = "http://10.1.19.204";// Environment.GetEnvironmentVariable("DS3_ENDPOINT");
+            string accesskey = "c3BlY3RyYQ==";// Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
+            string secretkey = "LI84SzSi";// Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
             _proxy = Environment.GetEnvironmentVariable("http_proxy");
             _credentials = new Credentials(accesskey, secretkey);
             Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
@@ -84,8 +87,10 @@ namespace IntegrationTestDs3
            testdirectoryDest = root + "dest" + Path.DirectorySeparatorChar;
            testdirectoryDestPrefix = root + "destPrefix" + Path.DirectorySeparatorChar;
 
-           // create and populate a new test dir
-           if (Directory.Exists(root))
+           testdirectoryBigFolder = root + BIG + Path.DirectorySeparatorChar;
+
+            // create and populate a new test dir
+            if (Directory.Exists(root))
            {
                Directory.Delete(root, true);
            }
@@ -94,6 +99,7 @@ namespace IntegrationTestDs3
            Directory.CreateDirectory(testdirectorySrcFolder);
            Directory.CreateDirectory(testdirectoryDest);
            Directory.CreateDirectory(testdirectoryDestPrefix);
+           Directory.CreateDirectory(testdirectoryBigFolder);
 
            foreach (var book in BOOKS)
            {
@@ -109,7 +115,14 @@ namespace IntegrationTestDs3
                writer.Write(booktext);
                writer.Close();
            }
-       }
+            foreach (var bigFile in BIGFILES)
+            {
+                TextWriter writer = new StreamWriter(testdirectoryBigFolder + bigFile);
+                var bigBookText = ReadResource("IntegrationTestDS3.TestData." + bigFile);
+                writer.Write(bigBookText);
+                writer.Close();
+            }
+        }
 
        private static string ReadResource(string resourceName)
        {
@@ -143,11 +156,46 @@ namespace IntegrationTestDs3
            BuildRev = response.BuildRev;
            BuildVersion = response.BuildVersion;
        }
-       #endregion ping
+        #endregion ping
 
-       #region sequential tests
+        #region sequential tests
 
-       [Test]
+        [Test]
+        public void TestBulkPutWithBlob()
+        {
+            // Creates a bucket if it does not already exist.
+            _helpers.EnsureBucketExists(TESTBUCKET);
+
+            var antefolder = listBucketObjects();
+            int antefoldercount = antefolder.Count();
+
+            // Creates a bulk job with the server based on the files in a directory (recursively).
+            var directoryobjects = FileHelpers.ListObjectsForDirectory(testdirectoryBigFolder, string.Empty);
+            Assert.Greater(directoryobjects.Count(), 0);
+            IJob job1 = _helpers.StartWriteJob(TESTBUCKET, directoryobjects, 10485760);
+
+            // Transfer all of the files.
+            job1.Transfer(FileHelpers.BuildFilePutter(testdirectoryBigFolder, string.Empty));
+
+            // Creates a bulk job with all of the objects in the bucket.
+            IJob job2 = _helpers.StartReadAllJob(TESTBUCKET);
+
+            // Transfer all of the files.
+            job2.Transfer(FileHelpers.BuildFileGetter(testdirectoryBigFolder, PREFIX));
+
+            foreach (var file in Directory.GetFiles(testdirectoryBigFolder))
+            {
+                var fileName = Path.GetFileName(file);
+                if (fileName.StartsWith(PREFIX)) continue;
+
+                Assert.AreEqual(
+                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(file))),
+                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", testdirectoryBigFolder, PREFIX, fileName))))
+                    );
+            }
+        }
+
+        [Test]
        public void Test0010BulkPutNoPrefix()
        {
            // Creates a bucket if it does not already exist.
