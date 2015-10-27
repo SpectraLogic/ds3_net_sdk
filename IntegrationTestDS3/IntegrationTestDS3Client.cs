@@ -63,9 +63,9 @@ namespace IntegrationTestDs3
         [SetUp]
         public void startup()
         {
-            _endpoint = "http://10.1.19.204";// Environment.GetEnvironmentVariable("DS3_ENDPOINT");
-            string accesskey = "c3BlY3RyYQ==";// Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
-            string secretkey = "LI84SzSi";// Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
+            _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
+            string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
+            string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
             _proxy = Environment.GetEnvironmentVariable("http_proxy");
             _credentials = new Credentials(accesskey, secretkey);
             Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
