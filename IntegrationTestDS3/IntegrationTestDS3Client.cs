@@ -44,10 +44,12 @@ namespace IntegrationTestDs3
        private static string PREFIX = "test_";
        private static string FOLDER = "joyce";
        private static string BIG = "big";
-       private string testdirectorySrc { get; set; }
-       private string testdirectoryBigFolder { get; set; }
-       private string testdirectoryDest { get; set; }
-       private string testdirectoryDestPrefix { get; set; }
+       private static long MAXBLOBSIZE = 10 * 1024 * 1024;
+
+       private string testDirectorySrc { get; set; }
+       private string testDirectoryBigFolder { get; set; }
+       private string testDirectoryDest { get; set; }
+       private string testDirectoryDestPrefix { get; set; }
 
         private IDs3Client _client { get; set; }
         private Ds3ClientHelpers _helpers { get; set; }
@@ -82,12 +84,12 @@ namespace IntegrationTestDs3
        private void setupTestData()
        {
            string root = Path.GetTempPath() + TESTDIR + Path.DirectorySeparatorChar;
-           testdirectorySrc = root + "src" + Path.DirectorySeparatorChar;
-           string testdirectorySrcFolder = root + "src" + Path.DirectorySeparatorChar + FOLDER + Path.DirectorySeparatorChar;
-           testdirectoryDest = root + "dest" + Path.DirectorySeparatorChar;
-           testdirectoryDestPrefix = root + "destPrefix" + Path.DirectorySeparatorChar;
+           testDirectorySrc = root + "src" + Path.DirectorySeparatorChar;
+           string testDirectorySrcFolder = root + "src" + Path.DirectorySeparatorChar + FOLDER + Path.DirectorySeparatorChar;
+           testDirectoryDest = root + "dest" + Path.DirectorySeparatorChar;
+           testDirectoryDestPrefix = root + "destPrefix" + Path.DirectorySeparatorChar;
 
-           testdirectoryBigFolder = root + BIG + Path.DirectorySeparatorChar;
+           testDirectoryBigFolder = root + BIG + Path.DirectorySeparatorChar;
 
             // create and populate a new test dir
             if (Directory.Exists(root))
@@ -95,29 +97,29 @@ namespace IntegrationTestDs3
                Directory.Delete(root, true);
            }
            Directory.CreateDirectory(root);
-           Directory.CreateDirectory(testdirectorySrc);
-           Directory.CreateDirectory(testdirectorySrcFolder);
-           Directory.CreateDirectory(testdirectoryDest);
-           Directory.CreateDirectory(testdirectoryDestPrefix);
-           Directory.CreateDirectory(testdirectoryBigFolder);
+           Directory.CreateDirectory(testDirectorySrc);
+           Directory.CreateDirectory(testDirectorySrcFolder);
+           Directory.CreateDirectory(testDirectoryDest);
+           Directory.CreateDirectory(testDirectoryDestPrefix);
+           Directory.CreateDirectory(testDirectoryBigFolder);
 
            foreach (var book in BOOKS)
            {
-               TextWriter writer = new StreamWriter(testdirectorySrc + book);
+               TextWriter writer = new StreamWriter(testDirectorySrc + book);
                var booktext = ReadResource("IntegrationTestDS3.TestData." + book);
                writer.Write(booktext);
                writer.Close();
            }
            foreach (var book in JOYCEBOOKS)
            {
-               TextWriter writer = new StreamWriter(testdirectorySrcFolder + book);
+               TextWriter writer = new StreamWriter(testDirectorySrcFolder + book);
                var booktext = ReadResource("IntegrationTestDS3.TestData." + book);
                writer.Write(booktext);
                writer.Close();
            }
             foreach (var bigFile in BIGFILES)
             {
-                TextWriter writer = new StreamWriter(testdirectoryBigFolder + bigFile);
+                TextWriter writer = new StreamWriter(testDirectoryBigFolder + bigFile);
                 var bigBookText = ReadResource("IntegrationTestDS3.TestData." + bigFile);
                 writer.Write(bigBookText);
                 writer.Close();
@@ -170,27 +172,27 @@ namespace IntegrationTestDs3
             int antefoldercount = antefolder.Count();
 
             // Creates a bulk job with the server based on the files in a directory (recursively).
-            var directoryobjects = FileHelpers.ListObjectsForDirectory(testdirectoryBigFolder, string.Empty);
+            var directoryobjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder, string.Empty);
             Assert.Greater(directoryobjects.Count(), 0);
-            IJob job1 = _helpers.StartWriteJob(TESTBUCKET, directoryobjects, 10485760);
+            IJob job1 = _helpers.StartWriteJob(TESTBUCKET, directoryobjects, MAXBLOBSIZE);
 
             // Transfer all of the files.
-            job1.Transfer(FileHelpers.BuildFilePutter(testdirectoryBigFolder, string.Empty));
+            job1.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder, string.Empty));
 
             // Creates a bulk job with all of the objects in the bucket.
             IJob job2 = _helpers.StartReadAllJob(TESTBUCKET);
 
             // Transfer all of the files.
-            job2.Transfer(FileHelpers.BuildFileGetter(testdirectoryBigFolder, PREFIX));
+            job2.Transfer(FileHelpers.BuildFileGetter(testDirectoryBigFolder, PREFIX));
 
-            foreach (var file in Directory.GetFiles(testdirectoryBigFolder))
+            foreach (var file in Directory.GetFiles(testDirectoryBigFolder))
             {
                 var fileName = Path.GetFileName(file);
                 if (fileName.StartsWith(PREFIX)) continue;
 
                 Assert.AreEqual(
                     System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(file))),
-                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", testdirectoryBigFolder, PREFIX, fileName))))
+                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", testDirectoryBigFolder, PREFIX, fileName))))
                     );
             }
         }
@@ -205,12 +207,12 @@ namespace IntegrationTestDs3
            int antefoldercount = antefolder.Count();
 
            // Creates a bulk job with the server based on the files in a directory (recursively).
-           var directoryobjects =  FileHelpers.ListObjectsForDirectory(testdirectorySrc, string.Empty);
+           var directoryobjects =  FileHelpers.ListObjectsForDirectory(testDirectorySrc, string.Empty);
            Assert.Greater(directoryobjects.Count(), 0);
            IJob job = _helpers.StartWriteJob(TESTBUCKET, directoryobjects);
 
            // Transfer all of the files.
-           job.Transfer(FileHelpers.BuildFilePutter(testdirectorySrc, string.Empty));
+           job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, string.Empty));
 
            // all files there?
            var postfolder = listBucketObjects();
@@ -228,12 +230,12 @@ namespace IntegrationTestDs3
            int antefoldercount = antefolder.Count();
 
            // Creates a bulk job with the server based on the files in a directory (recursively).
-           var directoryobjects = FileHelpers.ListObjectsForDirectory(testdirectorySrc, PREFIX);
+           var directoryobjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc, PREFIX);
            Assert.Greater(directoryobjects.Count(), 0);
            IJob job = _helpers.StartWriteJob(TESTBUCKET, directoryobjects);
 
            // Transfer all of the files.
-           job.Transfer(FileHelpers.BuildFilePutter(testdirectorySrc, PREFIX));
+           job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, PREFIX));
 
            // put all files?
            var postfolder = listBucketObjects();
@@ -245,16 +247,16 @@ namespace IntegrationTestDs3
        public void Test0110BulkGetWithPrefix()
        {
 
-           var antefolder = FileHelpers.ListObjectsForDirectory(testdirectoryDestPrefix, PREFIX);
+           var antefolder = FileHelpers.ListObjectsForDirectory(testDirectoryDestPrefix, PREFIX);
            int antefoldercount = antefolder.Count();
 
            // Creates a bulk job with all of the objects in the bucket.
            IJob job = _helpers.StartReadAllJob(TESTBUCKET);
 
            // Transfer all of the files.
-           job.Transfer(FileHelpers.BuildFileGetter(testdirectoryDestPrefix, PREFIX));
+           job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDestPrefix, PREFIX));
 
-           var postfolder = FileHelpers.ListObjectsForDirectory(testdirectoryDestPrefix, PREFIX);
+           var postfolder = FileHelpers.ListObjectsForDirectory(testDirectoryDestPrefix, PREFIX);
            int postfoldercount = antefolder.Count();
            Assert.Greater(postfoldercount, antefoldercount);
        }
@@ -263,16 +265,16 @@ namespace IntegrationTestDs3
        public void Test0120BulkGetWithoutPrefix()
        {
 
-           var antefolder = FileHelpers.ListObjectsForDirectory(testdirectoryDest, string.Empty);
+           var antefolder = FileHelpers.ListObjectsForDirectory(testDirectoryDest, string.Empty);
            int antefoldercount = antefolder.Count();
 
            // Creates a bulk job with all of the objects in the bucket.
            IJob job = _helpers.StartReadAllJob(TESTBUCKET);
 
            // Transfer all of the files.
-           job.Transfer(FileHelpers.BuildFileGetter(testdirectoryDest, string.Empty));
+           job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDest, string.Empty));
 
-           var postfolder = FileHelpers.ListObjectsForDirectory(testdirectoryDest, string.Empty);
+           var postfolder = FileHelpers.ListObjectsForDirectory(testDirectoryDest, string.Empty);
            int postfoldercount = antefolder.Count();
            Assert.Greater(postfoldercount, antefoldercount);
        }
