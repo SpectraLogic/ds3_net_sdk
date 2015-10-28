@@ -91,8 +91,8 @@ namespace IntegrationTestDs3
 
            testDirectoryBigFolder = root + BIG + Path.DirectorySeparatorChar;
 
-            // create and populate a new test dir
-            if (Directory.Exists(root))
+           // create and populate a new test dir
+           if (Directory.Exists(root))
            {
                Directory.Delete(root, true);
            }
