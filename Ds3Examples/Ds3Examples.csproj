@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Ds3Examples.ListObjectsExample</StartupObject>
+    <StartupObject>Ds3Examples.Ds3ExampleClient</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ds3_net_sdk, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="BulkGetExample.cs" />
     <Compile Include="BulkPutExample.cs" />
+    <Compile Include="Ds3ExampleClient.cs" />
     <Compile Include="ListBucketsExample.cs" />
     <Compile Include="ListObjectsExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +62,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\LoremIpsum.txt">
