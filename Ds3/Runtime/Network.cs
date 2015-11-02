@@ -145,15 +145,15 @@ namespace Ds3.Runtime
                 switch (request.ChecksumType)
                 {
                     case Checksum.ChecksumType.Md5:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"MD5 checksum is {chucksumValue}");
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("MD5 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
                         break;
                     case Checksum.ChecksumType.Sha256:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"SHA-256 checksum is {chucksumValue}");
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-256 checksum is {0}",chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
                         break;
                     case Checksum.ChecksumType.Sha512:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine($"SHA-512 checksum is {chucksumValue}");
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-512 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
                         break;
                 }
