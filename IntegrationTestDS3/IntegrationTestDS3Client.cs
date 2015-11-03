@@ -47,7 +47,6 @@ namespace IntegrationTestDs3
         private static string FOLDER = "joyce";
         private static string BIG = "big";
         private static string BIGFORMAXBLOB = "bigForMaxBlob";
-
         private static long MAXBLOBSIZE = 10 * 1024 * 1024;
 
         private string testDirectorySrc { get; set; }
