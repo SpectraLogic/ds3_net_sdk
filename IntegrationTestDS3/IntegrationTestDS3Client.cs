@@ -26,6 +26,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Diagnostics;
 // using TestDs3.Lang;
 
 namespace IntegrationTestDs3
@@ -44,10 +47,13 @@ namespace IntegrationTestDs3
         private static string PREFIX = "test_";
         private static string FOLDER = "joyce";
         private static string BIG = "big";
+        private static string BIGFORMAXBLOB = "bigForMaxBlob";
+
         private static long MAXBLOBSIZE = 10 * 1024 * 1024;
 
         private string testDirectorySrc { get; set; }
         private string testDirectoryBigFolder { get; set; }
+        private string testDirectoryBigFolderForMaxBlob { get; set; }
         private string testDirectoryDest { get; set; }
         private string testDirectoryDestPrefix { get; set; }
 
@@ -90,6 +96,7 @@ namespace IntegrationTestDs3
             testDirectoryDestPrefix = root + "destPrefix" + Path.DirectorySeparatorChar;
 
             testDirectoryBigFolder = root + BIG + Path.DirectorySeparatorChar;
+            testDirectoryBigFolderForMaxBlob = root + BIGFORMAXBLOB + Path.DirectorySeparatorChar;
 
             // create and populate a new test dir
             if (Directory.Exists(root))
@@ -102,6 +109,7 @@ namespace IntegrationTestDs3
             Directory.CreateDirectory(testDirectoryDest);
             Directory.CreateDirectory(testDirectoryDestPrefix);
             Directory.CreateDirectory(testDirectoryBigFolder);
+            Directory.CreateDirectory(testDirectoryBigFolderForMaxBlob);
 
             foreach (var book in BOOKS)
             {
@@ -120,9 +128,15 @@ namespace IntegrationTestDs3
             foreach (var bigFile in BIGFILES)
             {
                 TextWriter writer = new StreamWriter(testDirectoryBigFolder + bigFile);
+                TextWriter writerForMaxBlob = new StreamWriter(testDirectoryBigFolderForMaxBlob + bigFile + "_maxBlob");
+
                 var bigBookText = ReadResource("IntegrationTestDS3.TestData." + bigFile);
+
                 writer.Write(bigBookText);
                 writer.Close();
+
+                writerForMaxBlob.Write(bigBookText);
+                writerForMaxBlob.Close();
             }
         }
 
@@ -164,38 +178,125 @@ namespace IntegrationTestDs3
         #region sequential tests
 
         [Test]
-        public void TestBulkPutWithBlob()
+        public void TestBulkPutWithMaxBlob()
         {
             // Creates a bucket if it does not already exist.
             _helpers.EnsureBucketExists(TESTBUCKET);
 
-            var antefolder = listBucketObjects();
-            int antefoldercount = antefolder.Count();
-
             // Creates a bulk job with the server based on the files in a directory (recursively).
-            var directoryobjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder, string.Empty);
-            Assert.Greater(directoryobjects.Count(), 0);
-            IJob job1 = _helpers.StartWriteJob(TESTBUCKET, directoryobjects, MAXBLOBSIZE);
+            var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder, string.Empty);
+            Assert.Greater(directoryObjects.Count(), 0);
+            IJob job = _helpers.StartWriteJob(TESTBUCKET, directoryObjects, MAXBLOBSIZE);
 
             // Transfer all of the files.
-            job1.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder, string.Empty));
+            job.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder, string.Empty));
 
+            VerifyFiles(testDirectoryBigFolder);
+        }
+        
+        [Test]
+        public void TestPutObjectWithMaxBlob()
+        {
+            // Creates a bucket if it does not already exist.
+            _helpers.EnsureBucketExists(TESTBUCKET);
+
+            var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolderForMaxBlob, string.Empty).ToList();
+            var bulkResult = _client.BulkPut(new BulkPutRequest(TESTBUCKET, directoryObjects).WithMaxBlobSize(MAXBLOBSIZE));
+
+            var chunkIds = new HashSet<Guid>();
+            foreach (var obj in bulkResult.ObjectLists)
+            {
+                chunkIds.Add(obj.ChunkId);
+            }
+
+            while (chunkIds.Count > 0)
+            {
+                var availableChunks = _client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(bulkResult.JobId));
+
+                availableChunks.Match(
+                    (time, response) =>
+                    {
+                        // for each chunk that is available, check to make sure
+                        // we have not sent it, and if not, send that object
+                        AsyncUpload(_client, chunkIds, response, bulkResult);
+                    },
+                    () =>
+                    {
+                        throw new InvalidOperationException(
+                            "The job went away as we were trying to acquire chunk information");
+                    },
+                    retryAfter =>
+                    {
+                        // if we did not got some chunks than sleep and retry.  This could mean that the cache is full
+                        Thread.Sleep((int)(retryAfter.TotalMilliseconds * 1000));
+                    });
+            }
+
+            VerifyFiles(testDirectoryBigFolderForMaxBlob);
+        }
+
+        private void VerifyFiles(string folder)
+        {
             // Creates a bulk job with all of the objects in the bucket.
-            IJob job2 = _helpers.StartReadAllJob(TESTBUCKET);
+            IJob job = _helpers.StartReadAllJob(TESTBUCKET);
 
             // Transfer all of the files.
-            job2.Transfer(FileHelpers.BuildFileGetter(testDirectoryBigFolder, PREFIX));
+            job.Transfer(FileHelpers.BuildFileGetter(folder, PREFIX));
 
-            foreach (var file in Directory.GetFiles(testDirectoryBigFolder))
+            foreach (var file in Directory.GetFiles(folder))
             {
                 var fileName = Path.GetFileName(file);
                 if (fileName.StartsWith(PREFIX)) continue;
 
+                var origFile = File.OpenRead(Path.GetFullPath(file));
+                var newFile = File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", folder, PREFIX, fileName)));
+
                 Assert.AreEqual(
-                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(file))),
-                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", testDirectoryBigFolder, PREFIX, fileName))))
+                    System.Security.Cryptography.MD5.Create().ComputeHash(origFile),
+                    System.Security.Cryptography.MD5.Create().ComputeHash(newFile)
                     );
+
+                origFile.Close();
+                newFile.Close();
             }
+        }
+
+        private void AsyncUpload(IDs3Client client, ICollection<Guid> chunkIds, JobResponse response, JobResponse bulkResult)
+        {
+            Parallel.ForEach(response.ObjectLists,
+                chunk =>
+                {
+                    if (!chunkIds.Contains(chunk.ChunkId)) return;
+                    chunkIds.Remove(chunk.ChunkId);
+
+                    // it is possible that if we start resending a chunk, due to the program crashing, that
+                    // some objects will already be in cache.  Check to make sure that they are not, and then
+                    // send the object to Spectra S3
+
+                    Parallel.ForEach(chunk,
+                        obj =>
+                        {
+                            if (obj.InCache) return;
+                            PutObject(client, obj, bulkResult);
+                        });
+                    Console.WriteLine();
+                });
+        }
+
+        private void PutObject(IDs3Client client, JobObject obj, JobResponse bulkResult)
+        {
+            var fileToPut = File.OpenRead($"{testDirectoryBigFolderForMaxBlob}\\{obj.Name}");
+            var putObjectRequest = new PutObjectRequest(
+                bulkResult.BucketName,
+                obj.Name,
+                bulkResult.JobId,
+                obj.Offset,
+                fileToPut,
+                obj.Length
+                );
+
+            _client.PutObject(putObjectRequest);
+            fileToPut.Close();
         }
 
         [Test]

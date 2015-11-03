@@ -20,6 +20,7 @@ using System.Linq;
 
 using Ds3.Models;
 using Ds3.Runtime;
+using Ds3.Helpers.Streams;
 
 namespace Ds3.Calls
 {
@@ -99,18 +100,32 @@ namespace Ds3.Calls
         public Guid JobId { get; private set; }
         public long Offset { get; private set; }
 
-        public PutObjectRequest(string bucketName, string objectName, Guid jobId, long offset, Stream content)
+        private void SetParameters(string bucketName, string objectName, Guid jobId, long offset)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.JobId = jobId;
             this.Offset = offset;
-            this._content = content;
+
             if (jobId != Guid.Empty)
             {
                 QueryParams.Add("job", jobId.ToString());
                 QueryParams.Add("offset", offset.ToString());
             }
+        }
+
+        public PutObjectRequest(string bucketName, string objectName, Guid jobId, long offset, Stream content, long length)
+        {
+            SetParameters(bucketName, objectName, jobId, offset);
+
+            this._content = new PutObjectRequestStream(content, Offset, length);
+        }
+
+        public PutObjectRequest(string bucketName, string objectName, Guid jobId, long offset, Stream content)
+        {
+            SetParameters(bucketName, objectName, jobId, offset);
+
+            this._content = content;
         }
     }
 }
