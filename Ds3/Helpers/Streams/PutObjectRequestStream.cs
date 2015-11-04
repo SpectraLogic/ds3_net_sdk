@@ -17,7 +17,7 @@ using System.IO;
 
 namespace Ds3.Helpers.Streams
 {
-    internal class PutObjectRequestStream : Stream
+    public class PutObjectRequestStream : Stream
     {
         private readonly Stream _stream;
         private long _streamOffset;

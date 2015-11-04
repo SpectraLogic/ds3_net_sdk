@@ -18,6 +18,7 @@ using Ds3.Calls;
 using Ds3.Models;
 using Ds3.Runtime;
 using Ds3.Helpers;
+using Ds3.Helpers.Streams;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -284,13 +285,13 @@ namespace IntegrationTestDs3
         private void PutObject(IDs3Client client, JobObject obj, JobResponse bulkResult)
         {
             var fileToPut = File.OpenRead($"{testDirectoryBigFolderForMaxBlob}\\{obj.Name}");
+            var contentStream = new PutObjectRequestStream(fileToPut, obj.Offset, obj.Length);
             var putObjectRequest = new PutObjectRequest(
                 bulkResult.BucketName,
                 obj.Name,
                 bulkResult.JobId,
                 obj.Offset,
-                fileToPut,
-                obj.Length
+                contentStream
                 );
 
             _client.PutObject(putObjectRequest);
