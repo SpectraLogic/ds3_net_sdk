@@ -136,6 +136,11 @@ namespace Ds3.Runtime
             httpRequest.Host = CreateHostString(_endpoint);
             httpRequest.AllowAutoRedirect = false;
             httpRequest.AllowWriteStreamBuffering = false;
+            // hangs on Mono's NET framework for DELETEs (NETSDK-58)
+            if (request.Verb == HttpVerb.DELETE)
+            {
+                httpRequest.AllowWriteStreamBuffering = true;
+            }
             httpRequest.ReadWriteTimeout = this._readWriteTimeout;
             httpRequest.Timeout = this._requestTimeout;
 

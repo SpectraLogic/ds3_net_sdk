@@ -229,7 +229,7 @@ namespace IntegrationTestDs3
            Assert.Greater(postfoldercount, antefoldercount);
        }
 
-       //  [Test] *** will fail in mono
+       [Test]
        public void Test0500DeleteFolder()
        {
            // now it's there
@@ -282,7 +282,7 @@ namespace IntegrationTestDs3
            _client.GetBucket(request);
        }
 
-       //  [Test] *** will fail in mono
+       [Test]
        public void Test0910DeleteObject()
        {
            var antefolder = listBucketObjects();
@@ -300,7 +300,7 @@ namespace IntegrationTestDs3
            Assert.AreEqual(antefoldercount - postfoldercount, 1);
        }
 
-       //  [Test] *** will fail in mono
+       [Test] 
        [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
        public void Test0915DeleteDeletedObject()
        {
@@ -310,7 +310,7 @@ namespace IntegrationTestDs3
                _client.DeleteObject(request);
        }
 
-       //  [Test] *** will fail in mono
+       [Test]
        public void Test0920DeleteObjectWithPrefix()
        {
            var antefolder = listBucketObjects();
@@ -326,7 +326,7 @@ namespace IntegrationTestDs3
            Assert.AreEqual(antefoldercount - postfoldercount, 1);
        }
 
-       //  [Test] *** will fail in mono
+       [Test] 
        public void Test0990CleanUp()
         {
             var items = _helpers.ListObjects(TESTBUCKET);
@@ -364,7 +364,7 @@ namespace IntegrationTestDs3
                 return stream;
             });
             } finally {
-               // DeleteObject(bucketName, fileName); ** will fail in mono
+               DeleteObject(bucketName, fileName); 
             }
        }
 
