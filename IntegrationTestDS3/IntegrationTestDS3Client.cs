@@ -162,41 +162,10 @@ namespace IntegrationTestDs3
         #endregion ping
 
         #region sequential tests
-
-        [Test]
-        public void TestBulkPutWithBlob()
-        {
-            // Creates a bucket if it does not already exist.
-            _helpers.EnsureBucketExists(TESTBUCKET);
-
-            var antefolder = listBucketObjects();
-            int antefoldercount = antefolder.Count();
-
-            // Creates a bulk job with the server based on the files in a directory (recursively).
-            var directoryobjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder, string.Empty);
-            Assert.Greater(directoryobjects.Count(), 0);
-            IJob job1 = _helpers.StartWriteJob(TESTBUCKET, directoryobjects, MAXBLOBSIZE);
-
-            // Transfer all of the files.
-            job1.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder, string.Empty));
-
-            // Creates a bulk job with all of the objects in the bucket.
-            IJob job2 = _helpers.StartReadAllJob(TESTBUCKET);
-
-            // Transfer all of the files.
-            job2.Transfer(FileHelpers.BuildFileGetter(testDirectoryBigFolder, PREFIX));
-
-            foreach (var file in Directory.GetFiles(testDirectoryBigFolder))
-            {
-                var fileName = Path.GetFileName(file);
-                if (fileName.StartsWith(PREFIX)) continue;
-
-                Assert.AreEqual(
-                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(file))),
-                    System.Security.Cryptography.MD5.Create().ComputeHash(File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", testDirectoryBigFolder, PREFIX, fileName))))
-                    );
-            }
-        }
+        /*  Nunit runs tests in lex order  
+         ** so one test can be contingent on predecessors
+         ** Test0900 cleans up test bucket
+         **/
 
         [Test]
         public void Test0010BulkPutNoPrefix()
@@ -333,65 +302,8 @@ namespace IntegrationTestDs3
             _client.GetBucket(request);
         }
 
-        //  [Test] *** will fail in mono
-        public void Test0910DeleteObject()
-        {
-            var antefolder = listBucketObjects();
-            int antefoldercount = antefolder.Count();
-            // delete the first book
-            string book = BOOKS.First<string>();
-            var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, string.Empty + book);
-            string debugme = request.ObjectName;
-            Console.WriteLine(debugme);
-            _client.DeleteObject(request);
-
-            // one less ?
-            var postfolder = listBucketObjects();
-            int postfoldercount = postfolder.Count();
-            Assert.AreEqual(antefoldercount - postfoldercount, 1);
-        }
-
-        //  [Test] *** will fail in mono
-        [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
-        public void Test0915DeleteDeletedObject()
-        {
-            // delete the first book, again
-            string book = BOOKS.First<string>();
-            var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, string.Empty + book);
-            _client.DeleteObject(request);
-        }
-
-        //  [Test] *** will fail in mono
-        public void Test0920DeleteObjectWithPrefix()
-        {
-            var antefolder = listBucketObjects();
-            int antefoldercount = antefolder.Count();
-            // delete the dirst book
-            string book = BOOKS.First<string>();
-            var request = new Ds3.Calls.DeleteObjectRequest(TESTBUCKET, PREFIX + book);
-            _client.DeleteObject(request);
-
-            // one less ?
-            var postfolder = listBucketObjects();
-            int postfoldercount = postfolder.Count();
-            Assert.AreEqual(antefoldercount - postfoldercount, 1);
-        }
-
-        //  [Test] *** will fail in mono
-        public void Test0990CleanUp()
-        {
-            var items = _helpers.ListObjects(TESTBUCKET);
-
-            // Loop through all of the objects in the bucket.
-            foreach (var obj in items)
-            {
-                DeleteObject(TESTBUCKET, obj.Name);
-            }
-            DeleteBucket(TESTBUCKET);
-        }
-
         [Test]
-        public void TestSpecialCharacter()
+        public void Test0810SpecialCharacter()
         {
             var bucketName = TESTBUCKET;
             _helpers.EnsureBucketExists(bucketName);
@@ -420,8 +332,100 @@ namespace IntegrationTestDs3
             }
             finally
             {
-                // DeleteObject(bucketName, fileName); ** will fail in mono
+              DeleteObject(bucketName, fileName);
             }
+        }
+
+        [Test]
+        public void Test0820BulkPutWithBlob()
+        {
+            // Creates a bucket if it does not already exist.
+            _helpers.EnsureBucketExists(TESTBUCKET);
+
+            var antefolder = listBucketObjects();
+            int antefoldercount = antefolder.Count();
+
+            // Creates a bulk job with the server based on the files in a directory (recursively).
+            var directoryobjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder, string.Empty);
+            Assert.Greater(directoryobjects.Count(), 0);
+            IJob job1 = _helpers.StartWriteJob(TESTBUCKET, directoryobjects, MAXBLOBSIZE);
+
+            // Transfer all of the files.
+            job1.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder, string.Empty));
+
+            // Creates a bulk job with all of the objects in the bucket.
+            IJob job2 = _helpers.StartReadAllJob(TESTBUCKET);
+
+            // Transfer all of the files.
+            job2.Transfer(FileHelpers.BuildFileGetter(testDirectoryBigFolder, PREFIX));
+
+            foreach (var file in Directory.GetFiles(testDirectoryBigFolder))
+            {
+                var fileName = Path.GetFileName(file);
+                if (fileName.StartsWith(PREFIX)) continue;
+                using (FileStream source = File.OpenRead(Path.GetFullPath(file)))
+                {
+                    using(FileStream dest = File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", testDirectoryBigFolder, PREFIX, fileName))))
+                    {
+                        Assert.AreEqual(
+                        System.Security.Cryptography.MD5.Create().ComputeHash(source),
+                        System.Security.Cryptography.MD5.Create().ComputeHash(dest)
+                        );
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void Test0910DeleteObject()
+        {
+            var antefolder = listBucketObjects();
+            int antefoldercount = antefolder.Count();
+            // delete the first book
+            string book = BOOKS.First<string>();
+            DeleteObject(TESTBUCKET, book);
+            
+            // one less ?
+            var postfolder = listBucketObjects();
+            int postfoldercount = postfolder.Count();
+            Assert.AreEqual(antefoldercount - postfoldercount, 1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
+        public void Test0915DeleteDeletedObject()
+        {
+            // delete the first book, again
+            string book = BOOKS.First<string>();
+            DeleteObject(TESTBUCKET, book);
+        }
+
+        [Test]
+        public void Test0920DeleteObjectWithPrefix()
+        {
+            var antefolder = listBucketObjects();
+            int antefoldercount = antefolder.Count();
+            // delete the dirst book
+            string book = BOOKS.First<string>();
+            DeleteObject(TESTBUCKET, PREFIX + book);
+            
+            // one less ?
+            var postfolder = listBucketObjects();
+            int postfoldercount = postfolder.Count();
+            Assert.AreEqual(antefoldercount - postfoldercount, 1);
+        }
+
+        [Test]
+        public void Test0990CleanUp()
+        {
+            var items = _helpers.ListObjects(TESTBUCKET);
+
+            // Loop through all of the objects in the bucket.
+            foreach (var obj in items)
+            {
+                DeleteObject(TESTBUCKET, obj.Name);
+            }
+            DeleteBucket(TESTBUCKET);
         }
 
         public void DeleteObject(string bucketname, string objectName)
