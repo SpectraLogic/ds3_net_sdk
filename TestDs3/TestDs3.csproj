@@ -66,6 +66,7 @@
     <Compile Include="Helpers\RangeTranslators\TestRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestRequestToObjectRangeTranslator.cs" />
     <Compile Include="Helpers\MockStream.cs" />
+    <Compile Include="Helpers\Streams\TestPutObjectRequestStream.cs" />
     <Compile Include="Helpers\TransferItemSources\TransferItemSourceHelpers.cs" />
     <Compile Include="Helpers\TransferItemSources\TestReadTransferItemSource.cs" />
     <Compile Include="Helpers\TransferItemSources\TestWriteTransferItemSource.cs" />

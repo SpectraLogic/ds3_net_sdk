@@ -20,14 +20,13 @@ namespace Ds3.Helpers.Streams
     public class PutObjectRequestStream : Stream
     {
         private readonly Stream _stream;
-        private long _streamOffset;
         private long _streamLength;
         private long _totalBytesRead = 0;
 
         public PutObjectRequestStream(Stream stream, long offset, long length)
         {
             this._stream = stream;
-            this._streamOffset = offset;
+            this._stream.Position = offset;
             this._streamLength = length;
         }
 
@@ -67,12 +66,12 @@ namespace Ds3.Helpers.Streams
         {
             get
             {
-                return _streamOffset;
+                return _stream.Position;
             }
 
             set
             {
-                _streamOffset = value;
+                _stream.Position = value;
             }
         }
 
@@ -103,7 +102,6 @@ namespace Ds3.Helpers.Streams
             }
 
             int bytesRead = _stream.Read(buffer, offset, count);
-            this.Position += bytesRead;
             _totalBytesRead += bytesRead;
             return bytesRead;
         }
