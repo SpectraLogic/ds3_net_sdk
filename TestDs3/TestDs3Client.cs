@@ -429,6 +429,27 @@ namespace TestDs3
         }
 
         [Test]
+        public void TestPutObjectWithPutObjectRequestStream()
+        {
+            var stringRequest = "object content";
+            var jobId = Guid.Parse("e5d4adce-e170-4915-ba04-595fab30df81");
+            var offset = 10L;
+            var expectedQueryParams = new Dictionary<string, string>
+            {
+                { "job", "e5d4adce-e170-4915-ba04-595fab30df81" },
+                { "offset", "10" }
+            };
+
+            var stream = HelpersForTest.StringToStream(stringRequest);
+            var putObjectRequestStream = new Ds3.Helpers.Streams.PutObjectRequestStream(stream, offset, stream.Length);
+            MockNetwork
+                .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, stringRequest)
+                .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)
+                .AsClient
+                .PutObject(new PutObjectRequest("bucketName", "object", jobId, offset, putObjectRequestStream));
+        }
+
+        [Test]
         public void TestBulkPut()
         {
             RunBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects)), _emptyQueryParams);

@@ -86,6 +86,7 @@
     <Compile Include="Calls\HeadObjectResponse.cs" />
     <Compile Include="Calls\VerifySystemHealthRequest.cs" />
     <Compile Include="Calls\VerifySystemHealthResponse.cs" />
+    <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
     <Compile Include="Models\DS3GetObjectsInfo.cs" />
     <Compile Include="Models\Ds3ObjectPlacement.cs" />
     <Compile Include="Models\DS3ObjectTypes.cs" />

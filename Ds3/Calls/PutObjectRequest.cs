@@ -106,6 +106,7 @@ namespace Ds3.Calls
             this.JobId = jobId;
             this.Offset = offset;
             this._content = content;
+
             if (jobId != Guid.Empty)
             {
                 QueryParams.Add("job", jobId.ToString());
