@@ -179,21 +179,6 @@ namespace IntegrationTestDs3
         ** so one test can be contingent on predecessors
         ** Test0900 cleans up test bucket
         **/
-        private void PutObject(IDs3Client client, JobObject obj, JobResponse bulkResult)
-        {
-            var fileToPut = File.OpenRead($"{testDirectoryBigFolderForMaxBlob}\\{obj.Name}");
-            var contentStream = new PutObjectRequestStream(fileToPut, obj.Offset, obj.Length);
-            var putObjectRequest = new PutObjectRequest(
-                bulkResult.BucketName,
-                obj.Name,
-                bulkResult.JobId,
-                obj.Offset,
-                contentStream
-                );
-
-            _client.PutObject(putObjectRequest);
-            fileToPut.Close();
-        }
 
         [Test]
         public void Test0010BulkPutNoPrefix()
@@ -468,6 +453,22 @@ namespace IntegrationTestDs3
                         });
                     Console.WriteLine();
                 });
+        }
+
+        private void PutObject(IDs3Client client, JobObject obj, JobResponse bulkResult)
+        {
+            var fileToPut = File.OpenRead($"{testDirectoryBigFolderForMaxBlob}\\{obj.Name}");
+            var contentStream = new PutObjectRequestStream(fileToPut, obj.Offset, obj.Length);
+            var putObjectRequest = new PutObjectRequest(
+                bulkResult.BucketName,
+                obj.Name,
+                bulkResult.JobId,
+                obj.Offset,
+                contentStream
+                );
+
+            _client.PutObject(putObjectRequest);
+            fileToPut.Close();
         }
 
         [Test]
