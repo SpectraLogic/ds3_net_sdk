@@ -96,7 +96,7 @@ namespace Ds3.Runtime
             _bytesRead += bytesRead;
 
             if ((bytesRead == 0) && (_bytesRead != _contentLenght))
-                throw new Ds3ContentLenghtNotMatch(string.Format(Resources.ContentLenghtNotMatch, _contentLenght, _bytesRead));
+                throw new Ds3ContentLenghtNotMatch(Resources.ContentLenghtNotMatch, _contentLenght, _bytesRead);
 
             return bytesRead;
         }

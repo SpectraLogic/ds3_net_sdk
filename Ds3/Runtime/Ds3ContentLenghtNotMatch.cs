@@ -14,15 +14,20 @@
  */
 
 using System;
-using System.Net;
 
 namespace Ds3.Runtime
 {
     public class Ds3ContentLenghtNotMatch : Exception
     {
-        public Ds3ContentLenghtNotMatch(string message)
-            : base(message)
+        public Ds3ContentLenghtNotMatch(string message, long contentLenght, long bytesRead)
+            : base(string.Format(message, contentLenght, bytesRead))
         {
+            ContentLenght = contentLenght;
+            BytesRead = bytesRead;
+                
         }
+
+        public long BytesRead { get; private set; }
+        public long ContentLenght { get; private set; }
     }
 }
