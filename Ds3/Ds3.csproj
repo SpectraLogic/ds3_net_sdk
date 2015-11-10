@@ -87,6 +87,8 @@
     <Compile Include="Calls\VerifySystemHealthRequest.cs" />
     <Compile Include="Calls\VerifySystemHealthResponse.cs" />
     <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
+    <Compile Include="Runtime\Ds3ContentLenghtNotMatch.cs" />
+    <Compile Include="Runtime\WebResponseStream.cs" />
     <Compile Include="Models\DS3GetObjectsInfo.cs" />
     <Compile Include="Models\Ds3ObjectPlacement.cs" />
     <Compile Include="Models\DS3ObjectTypes.cs" />
