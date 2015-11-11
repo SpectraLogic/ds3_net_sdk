@@ -88,6 +88,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Content lenght ({0}) not match the number of byte read ({1}).
+        /// </summary>
+        internal static string ContentLenghtNotMatch {
+            get {
+                return ResourceManager.GetString("ContentLenghtNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered 307 number: {0}.
         /// </summary>
         internal static string Encountered307NTimes {

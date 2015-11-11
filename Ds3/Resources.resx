@@ -204,4 +204,7 @@
   <data name="NoMoreRetriesException" xml:space="preserve">
     <value>Reached the limit number of retries request</value>
   </data>
+  <data name="ContentLenghtNotMatch" xml:space="preserve">
+    <value>The Content lenght ({0}) not match the number of byte read ({1})</value>
+  </data>
 </root>

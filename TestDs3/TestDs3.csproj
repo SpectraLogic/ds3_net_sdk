@@ -90,6 +90,7 @@
     <Compile Include="HelpersForTest.cs" />
     <Compile Include="MockNetwork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\TestWebResponseStream.cs" />
     <Compile Include="TestDs3Client.cs" />
     <Compile Include="Helpers\TestDs3ClientHelpers.cs" />
   </ItemGroup>

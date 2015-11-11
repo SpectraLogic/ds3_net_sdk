@@ -457,7 +457,7 @@ namespace IntegrationTestDs3
 
         private void PutObject(IDs3Client client, JobObject obj, JobResponse bulkResult)
         {
-			var fileToPut = File.OpenRead(testDirectoryBigFolderForMaxBlob + obj.Name);
+            var fileToPut = File.OpenRead(testDirectoryBigFolderForMaxBlob + obj.Name);
             var contentStream = new PutObjectRequestStream(fileToPut, obj.Offset, obj.Length);
             var putObjectRequest = new PutObjectRequest(
                 bulkResult.BucketName,
