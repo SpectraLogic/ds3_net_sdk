@@ -161,6 +161,14 @@ namespace Ds3.Runtime
                         if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-512 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
                         break;
+                    case Checksum.ChecksumType.Crc32:
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32 checksum is {0}", chucksumValue));
+                        httpRequest.Headers.Add(HttpHeaders.ContentCRC32, chucksumValue);
+                        break;
+                    case Checksum.ChecksumType.Crc32C:
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32C checksum is {0}", chucksumValue));
+                        httpRequest.Headers.Add(HttpHeaders.ContentCRC32C, chucksumValue);
+                        break;
                 }
             }
 
@@ -219,6 +227,12 @@ namespace Ds3.Runtime
                         case Checksum.ChecksumType.Sha512:
                             return
                                 Convert.ToBase64String(System.Security.Cryptography.SHA512.Create().ComputeHash(content));
+                        case Checksum.ChecksumType.Crc32:
+                            return
+                                Convert.ToBase64String(Ds3.Models.Crc32.Create().ComputeHash(content));
+                        case Checksum.ChecksumType.Crc32C:
+                            return
+                                Convert.ToBase64String(Ds3.Models.Crc32C.Create().ComputeHash(content));
                         default:
                             return "";
                     }

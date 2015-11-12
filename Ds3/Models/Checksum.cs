@@ -31,7 +31,9 @@ namespace Ds3.Models
             None,
             Md5,
             Sha256,
-            Sha512
+            Sha512,
+            Crc32C,
+            Crc32
         }
 
         /// <summary>
