@@ -44,6 +44,19 @@ namespace TestDs3.Helpers
             );
         }
 
+        public static JobObjectList ReadFailureChunk(Guid? nodeId, bool inCache)
+        {
+            return new JobObjectList(
+                ChunkId1,
+                1,
+                nodeId,
+                new[]
+                { 
+                    new JobObject("bar", 20, 0, inCache),
+                }
+            );
+        }
+
         public static JobObjectList Chunk1(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
             return new JobObjectList(

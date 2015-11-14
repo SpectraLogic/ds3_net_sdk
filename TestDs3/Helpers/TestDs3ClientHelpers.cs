@@ -17,6 +17,7 @@ using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Models;
+using Ds3.Runtime;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -383,6 +384,72 @@ namespace TestDs3.Helpers
             CheckContents(objects[2], "baz", 12);
         }
 
+        [Test, Timeout(1000)]
+        public void PartialObjectReturn()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(
+                Stubs.ReadFailureChunk(null, false)
+            );
+            var availableJobResponse = Stubs.BuildJobResponse(
+            
+                Stubs.ReadFailureChunk(Stubs.NodeId1, true)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);            
+            SetupGetObjectWithContentLengthMismatchException(node1Client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L); // The initial request is for all 20 bytes, but only the first 10 will be sent
+            SetupGetObject(node1Client, "bar", 0L, "JLMNOPQRSTU", Range.ByLength(9L, 11L));  // The client will request the full last byte based off of when the client fails
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.BulkGet(ItIsBulkGetRequest(
+                    Stubs.BucketName,
+                    ChunkOrdering.None,
+                    Stubs.ObjectNames,
+                    Enumerable.Empty<Ds3PartialObject>()
+                )))
+                .Returns(initialJobResponse);
+            client
+                .Setup(c => c.GetAvailableJobChunks(ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+
+            var job = new Ds3ClientHelpers(client.Object).StartReadJob(
+                Stubs.BucketName,
+                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
+            );
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<string>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
+            var streams = new ConcurrentDictionary<string, MockStream>();
+            job.Transfer(key => streams.GetOrAdd(key, k => new MockStream()));
+
+            node1Client.VerifyAll();            
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new { Key = "bar", Value = "ABCDEFGHIJLMNOPQRSTU" },                   
+                },
+                from item in streams
+                orderby item.Key
+                select new { item.Key, Value = _encoding.GetString(item.Value.Result) }
+            );
+            CollectionAssert.AreEquivalent(new[] { 20L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames, itemsCompleted);
+        }
+
         private static void WriteToStream(Stream stream, string value)
         {
             var buffer = _encoding.GetBytes(value);
@@ -484,8 +551,9 @@ namespace TestDs3.Helpers
             Mock<IDs3Client> client,
             string objectName,
             long offset,
-            string payload,
-            params Range[] byteRanges)
+            string payload,           
+            params Range[] byteRanges
+            )
         {
             client
                 .Setup(c => c.GetObject(ItIsGetObjectRequest(
@@ -497,6 +565,27 @@ namespace TestDs3.Helpers
                 )))
                 .Returns(new GetObjectResponse(new Dictionary<string, string>()))
                 .Callback<GetObjectRequest>(r => WriteToStream(r.DestinationStream, payload));
+        }
+
+        private static void SetupGetObjectWithContentLengthMismatchException(
+            Mock<IDs3Client> client,
+            string objectName,
+            long offset,
+            string payload,
+            long expectedLength,
+            long returnedLength,
+            params Range[] byteRanges
+            )
+        {
+            client
+                .Setup(c => c.GetObject(ItIsGetObjectRequest(
+                    Stubs.BucketName,
+                    objectName,
+                    Stubs.JobId,
+                    offset,
+                    byteRanges
+                )))
+                .Throws(new Ds3ContentLengthNotMatch("Content Length mismatch", expectedLength, returnedLength));
         }
 
         private static void SetupPutObject(
