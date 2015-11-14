@@ -397,7 +397,7 @@ namespace TestDs3.Helpers
 
             var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);            
             SetupGetObjectWithContentLengthMismatchException(node1Client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L); // The initial request is for all 20 bytes, but only the first 10 will be sent
-            SetupGetObject(node1Client, "bar", 0L, "JLMNOPQRSTU", Range.ByLength(9L, 11L));  // The client will request the full last byte based off of when the client fails
+            SetupGetObject(node1Client, "bar", 0L, "JLMNOPQRSTU", Range.ByPosition(8L, 19L));  // The client will request the full last byte based off of when the client fails
 
             var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
             clientFactory
@@ -437,17 +437,18 @@ namespace TestDs3.Helpers
             clientFactory.VerifyAll();
             client.VerifyAll();
 
+            // Since we are using a mock for the underlying client, the first request does not write any content to the stream
             CollectionAssert.AreEqual(
                 new[]
                 {
-                    new { Key = "bar", Value = "ABCDEFGHIJLMNOPQRSTU" },                   
+                    new { Key = "bar", Value = "ABCDEFGHIJLMNOPQRSTU" },
                 },
                 from item in streams
                 orderby item.Key
                 select new { item.Key, Value = _encoding.GetString(item.Value.Result) }
             );
             CollectionAssert.AreEquivalent(new[] { 20L }, dataTransfers);
-            CollectionAssert.AreEquivalent(Stubs.ObjectNames, itemsCompleted);
+            CollectionAssert.AreEquivalent(Stubs.PartialFailureObjectNames, itemsCompleted);
         }
 
         private static void WriteToStream(Stream stream, string value)
@@ -564,7 +565,10 @@ namespace TestDs3.Helpers
                     byteRanges
                 )))
                 .Returns(new GetObjectResponse(new Dictionary<string, string>()))
-                .Callback<GetObjectRequest>(r => WriteToStream(r.DestinationStream, payload));
+                .Callback<GetObjectRequest>(r => {
+                    Console.WriteLine("Writing \"" + payload + "\" to stream");
+                    WriteToStream(r.DestinationStream, payload);
+                });
         }
 
         private static void SetupGetObjectWithContentLengthMismatchException(
@@ -584,7 +588,10 @@ namespace TestDs3.Helpers
                     Stubs.JobId,
                     offset,
                     byteRanges
-                )))
+                ))).Callback<GetObjectRequest>(r => {
+                    Console.WriteLine("Writing \"" + payload + "\" to stream");
+                    WriteToStream(r.DestinationStream, payload);
+                })
                 .Throws(new Ds3ContentLengthNotMatch("Content Length mismatch", expectedLength, returnedLength));
         }
 

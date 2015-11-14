@@ -20,6 +20,7 @@ using Ds3.Helpers.TransferItemSources;
 using Ds3.Helpers.Transferrers;
 using Ds3.Lang;
 using Ds3.Models;
+using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -118,20 +119,47 @@ namespace Ds3.Helpers.Jobs
         {
             var ranges = this._rangesForRequests[blob];
             var getLength = ranges.Sum(r => r.Length);
-            this._transferrer.Transfer(
-                client,
-                this.BucketName,
-                blob.Context,
-                blob.Range.Start,
-                this.JobId,
-                ranges,
-                new StreamTranslator<TItem, Blob>(
-                    this._rangeTranslator,
-                    this._resourceStore,
-                    blob,
-                    getLength
-                )
-            );
+            var stream = new StreamTranslator<TItem, Blob>(
+                        this._rangeTranslator,
+                        this._resourceStore,
+                        blob,
+                        getLength
+                    );
+            try
+            {
+                this._transferrer.Transfer(
+                    client,
+                    this.BucketName,
+                    blob.Context,
+                    blob.Range.Start,
+                    this.JobId,
+                    ranges,
+                    stream
+                );
+            }
+            catch (Ds3ContentLengthNotMatch execption)
+            {
+                // Issue a partial get for the remainder of the request
+                // Seek back one byte to make sure that the connection did not fail part way through a byte
+                stream.Seek(-1, SeekOrigin.Current);
+
+                // TODO Figure out the new range(s) that must be used
+                var newRanges = new List<Range>();
+                newRanges.Add(Range.ByPosition(execption.BytesRead - 2, execption.ContentLength - 1));
+
+                Console.WriteLine("Range: " + (execption.BytesRead - 2) + "-" + (execption.ContentLength - 1));
+
+                var partialObjectTransferrer = new PartialReadTransferrer();
+                partialObjectTransferrer.Transfer(
+                    client,
+                    this.BucketName,
+                    blob.Context,
+                    blob.Range.Start,
+                    this.JobId,
+                    newRanges,
+                    stream
+                );
+            }
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, getLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))
             {

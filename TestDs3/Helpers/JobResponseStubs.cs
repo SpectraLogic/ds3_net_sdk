@@ -22,6 +22,12 @@ namespace TestDs3.Helpers
             new Node(NodeId1, "http://192.168.10.1", 80, 443),
             new Node(NodeId2, "http://192.168.10.2", 80, 443)
         };
+
+        public static readonly string[] PartialFailureObjectNames = new[]
+        {
+            "bar"
+        };
+
         public static readonly string[] ObjectNames = new[]
         {
             "foo",
