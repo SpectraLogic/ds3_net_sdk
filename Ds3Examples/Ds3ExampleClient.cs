@@ -126,6 +126,37 @@ namespace Ds3Examples
             job.Transfer(FileHelpers.BuildFilePutter(srcDirectory, prefix));
         }
 
+        protected void runPutWithChecksum(string bucket, string srcDirectory, string filename, 
+                                          string hashString = null, 
+                                          Checksum.ChecksumType checksumType = Checksum.ChecksumType.Md5)
+        {
+            _helpers.EnsureBucketExists(bucket);
+
+            FileInfo fileInfo = new FileInfo(Path.Combine(srcDirectory, filename));
+            var ds3Obj = new Ds3Object(filename, fileInfo.Length);
+            var ds3Objs = new List<Ds3Object>();
+            ds3Objs.Add(ds3Obj);
+
+            // create a job
+            var job = _helpers.StartWriteJob(bucket, ds3Objs);
+
+            // instantiate a PutObjectRequest
+            FileStream fs = File.Open(srcDirectory + Path.DirectorySeparatorChar + filename, FileMode.Open);
+            PutObjectRequest putRequest = new PutObjectRequest(bucket, filename, job.JobId, 0L, fs);
+            if (string.IsNullOrEmpty(hashString))
+            {
+                // Compute checksum
+                putRequest.WithChecksum(Checksum.Compute, checksumType);
+            }
+            else
+            {
+                // or pass in a precomputed Base64 string representation of the hash
+                putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(hashString)), checksumType);
+            }
+            _client.PutObject(putRequest);
+            fs.Close();
+        }
+
         protected bool runBulkGet(string bucket, string directory, string prefix)
         {
             // Creates a bulk job with all of the objects in the bucket.
@@ -326,8 +357,12 @@ namespace Ds3Examples
             string testSourceDirectory = "TestData";
             string testSourceSubDirectory = "FScottKey";
             string testSourceFile = "LoremIpsum.txt";
+            string testSourceFile2 = "LoremIpsumCyrillic.txt";
             string binaryFile = "binarytest";
             long binaryFileSize = 4096L;
+
+            string testChecksumFile = "numbers.txt";
+            string testChecksumCrc32C = "4waSgw==";
 
             // set these values to valid locations on local filesystem
             // directory to be copied (should exist and be poulated)
@@ -365,8 +400,14 @@ namespace Ds3Examples
                 // create a bucket on the device
                 exampleClient.runCreateBucket(bucket);
 
-                // put a single file into the bucket from stream
+                // put a single file into the bucket
                 exampleClient.runPut(bucket, testSourceDirectory, testSourceFile);
+
+                // put a single file into the bucket with precomputed checksum
+                exampleClient.runPutWithChecksum(bucket, testSourceDirectory, testChecksumFile, testChecksumCrc32C, Checksum.ChecksumType.Crc32C);
+
+                // put a single file into the bucket with dynamically generated checksum
+                exampleClient.runPutWithChecksum(bucket, testSourceDirectory, testSourceFile2, string.Empty, Checksum.ChecksumType.Md5);
 
                 // put a file into the bucket from stream
                 exampleClient.runPutFromStream(bucket, binaryFile, binaryFileSize);

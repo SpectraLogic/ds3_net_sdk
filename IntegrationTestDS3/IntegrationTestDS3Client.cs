@@ -181,7 +181,56 @@ namespace IntegrationTestDs3
         **/
 
         [Test]
-        public void Test0010BulkPutNoPrefix()
+        public void Test0020PutWithChecksum()
+        {
+            // grab a file
+            var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
+            Assert.IsNotEmpty(directoryObjects);
+            Ds3Object testObject = directoryObjects.First<Ds3Object>();
+            var ds3Objs = new List<Ds3Object>();
+            ds3Objs.Add(testObject);
+
+            // create or ensure bucket
+            _helpers.EnsureBucketExists(TESTBUCKET);
+            // create a job
+            var job = _helpers.StartWriteJob(TESTBUCKET, ds3Objs);
+
+            // instantiate a PutObjectRequest
+            FileStream fs = File.Open(testDirectorySrc + Path.DirectorySeparatorChar + testObject.Name, FileMode.Open);
+            PutObjectRequest putRequest = new PutObjectRequest(TESTBUCKET, testObject.Name, job.JobId, 0L, fs);
+            putRequest.WithChecksum(Checksum.Compute, Checksum.ChecksumType.Crc32C);
+            _client.PutObject(putRequest);
+            fs.Close();
+
+            //clean up, we want to put this file again
+            DeleteObject(TESTBUCKET, testObject.Name);
+        }
+
+        [Test]
+        public void Test0030PutWithSuppliedChecksum()
+        {
+            // "123456789" has a well known checksum
+            string content = "123456789";
+            string testChecksumCrc32C = "4waSgw==";
+           
+            Ds3Object testObject = new Ds3Object("numbers.txt", 9);
+            var ds3Objs = new List<Ds3Object>();
+            ds3Objs.Add(testObject);
+
+            using (MemoryStream stream = new MemoryStream(System.Text.Encoding.ASCII.GetBytes(content)))
+            {
+                // create or ensure bucket
+                _helpers.EnsureBucketExists(TESTBUCKET);
+                // create a job
+                var job = _helpers.StartWriteJob(TESTBUCKET, ds3Objs);
+                PutObjectRequest putRequest = new PutObjectRequest(TESTBUCKET, testObject.Name, job.JobId, 0L, stream);
+                putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(testChecksumCrc32C)), Checksum.ChecksumType.Crc32C);
+                _client.PutObject(putRequest);
+            }
+        }
+
+        [Test]
+        public void Test0050BulkPutNoPrefix()
         {
             // Creates a bucket if it does not already exist.
             _helpers.EnsureBucketExists(TESTBUCKET);
@@ -204,7 +253,7 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        public void Test0020BulkPutWithPrefix()
+        public void Test0060BulkPutWithPrefix()
         {
             // Creates a bucket if it does not already exist.
             _helpers.EnsureBucketExists(TESTBUCKET);
@@ -262,7 +311,7 @@ namespace IntegrationTestDs3
             Assert.Greater(postfoldercount, antefoldercount);
         }
 
-        //  [Test] *** will fail in mono
+        [Test]
         public void Test0500DeleteFolder()
         {
             // now it's there

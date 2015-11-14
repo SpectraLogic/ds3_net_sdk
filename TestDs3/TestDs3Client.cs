@@ -429,6 +429,31 @@ namespace TestDs3
         }
 
         [Test]
+        public void TestPutObjectWithCRC()
+        {
+            var stringRequest = "object content";
+            var jobId = Guid.Parse("e5d4adce-e170-4915-ba04-595fab30df81");
+            var offset = 10L;
+            var expectedQueryParams = new Dictionary<string, string>
+            {
+                { "job", "e5d4adce-e170-4915-ba04-595fab30df81" },
+                { "offset", "10" },
+
+            };
+            var expectedHeaders = new Dictionary<string, string>
+            {
+                { "Content-CRC32C", "4waSgw=="}
+
+            };
+            MockNetwork
+                .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, stringRequest)
+                .Returning(HttpStatusCode.OK, stringRequest, expectedHeaders)
+                .AsClient
+                .PutObject(new PutObjectRequest("bucketName", "object", jobId, offset, HelpersForTest.StringToStream(stringRequest))
+                .WithChecksum(Checksum.Value(Convert.FromBase64String("4waSgw==")), Checksum.ChecksumType.Crc32C));
+        }
+
+        [Test]
         public void TestPutObjectWithPutObjectRequestStream()
         {
             var stringRequest = "object content";

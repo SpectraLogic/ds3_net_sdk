@@ -20,6 +20,8 @@ namespace Ds3.Runtime
         public const string ContentMd5 = "Content-MD5";
         public const string ContentSha256 = "Content-SHA256";
         public const string ContentSha512 = "Content-SHA512";
+        public const string ContentCRC32C = "Content-CRC32C";
+        public const string ContentCRC32 = "Content-CRC32";
         public const string Authorization = "Authorization";
         public const string AwsPrefix = "x-amz-";
         public const string AwsMetadataPrefix = AwsPrefix + "meta-";
