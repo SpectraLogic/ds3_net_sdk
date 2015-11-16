@@ -397,7 +397,7 @@ namespace TestDs3.Helpers
 
             var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);            
             SetupGetObjectWithContentLengthMismatchException(node1Client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L); // The initial request is for all 20 bytes, but only the first 10 will be sent
-            SetupGetObject(node1Client, "bar", 0L, "JLMNOPQRSTU", Range.ByPosition(8L, 19L));  // The client will request the full last byte based off of when the client fails
+            SetupGetObject(node1Client, "bar", 0L, "JLMNOPQRSTU", Range.ByPosition(9L, 19L));  // The client will request the full last byte based off of when the client fails
 
             var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
             clientFactory

@@ -86,6 +86,7 @@
     <Compile Include="Calls\HeadObjectResponse.cs" />
     <Compile Include="Calls\VerifySystemHealthRequest.cs" />
     <Compile Include="Calls\VerifySystemHealthResponse.cs" />
+    <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />

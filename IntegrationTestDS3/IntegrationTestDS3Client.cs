@@ -16,16 +16,13 @@
 using Ds3;
 using Ds3.Calls;
 using Ds3.Models;
-using Ds3.Runtime;
 using Ds3.Helpers;
 using Ds3.Helpers.Streams;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Threading;
@@ -43,7 +40,7 @@ namespace IntegrationTestDs3
         private string[] BIGFILES = { "big_book_file.txt" };
 
         private static string TESTDIR = "TestObjectData";
-        private static string TESTBUCKET = "TestBucket" + DateTime.Now.Ticks;
+        private static string TESTBUCKET = "TestBucket";
         private static string PREFIX = "test_";
         private static string FOLDER = "joyce";
         private static string BIG = "big";
@@ -70,10 +67,17 @@ namespace IntegrationTestDs3
         [SetUp]
         public void startup()
         {
+            /*
             _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
             string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
             string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
             _proxy = Environment.GetEnvironmentVariable("http_proxy");
+            
+            */
+            _endpoint = "http://192.168.56.102:8080";
+            string accesskey = "c3BlY3RyYQ==";
+            string secretkey = "womvedQo";
+            _proxy = "http://192.168.56.1:9090";
             _credentials = new Credentials(accesskey, secretkey);
             Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
             if (!string.IsNullOrEmpty(_proxy))

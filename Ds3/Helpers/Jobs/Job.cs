@@ -1,4 +1,4 @@
-﻿/*
+﻿    /*
  * ******************************************************************************
  *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
@@ -137,17 +137,13 @@ namespace Ds3.Helpers.Jobs
                     stream
                 );
             }
-            catch (Ds3ContentLengthNotMatch execption)
+            catch (Ds3ContentLengthNotMatch exception)
             {
                 // Issue a partial get for the remainder of the request
                 // Seek back one byte to make sure that the connection did not fail part way through a byte
                 stream.Seek(-1, SeekOrigin.Current);
 
-                // TODO Figure out the new range(s) that must be used
-                var newRanges = new List<Range>();
-                newRanges.Add(Range.ByPosition(execption.BytesRead - 2, execption.ContentLength - 1));
-
-                Console.WriteLine("Range: " + (execption.BytesRead - 2) + "-" + (execption.ContentLength - 1));
+                var newRanges = JobsUtil.RetryRanges(ranges, exception.BytesRead, exception.ContentLength);
 
                 var partialObjectTransferrer = new PartialReadTransferrer();
                 partialObjectTransferrer.Transfer(

@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\JobResponseStubs.cs" />
+    <Compile Include="Helpers\Jobs\TestJobsUtil.cs" />
     <Compile Include="Helpers\RangeTranslators\TestMappingRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestObjectToPartRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestPartialObjectRangeUtilities.cs" />

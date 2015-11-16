@@ -138,7 +138,7 @@ namespace Ds3.Helpers
         ///
         /// For use with ListObjectsForDirectory
         /// </summary>
-        /// <param name="path">Full path< too file/param>
+        /// <param name="path">Full pathtoo file</param>
         /// <param name="prefix">String to prepend to filename</param>
         /// <returns>full path with prefix prepended</returns>
         private static string PrependPrefix(string path, string prefix)
@@ -153,7 +153,7 @@ namespace Ds3.Helpers
         ///
         /// For use with BuildFilePutter
         /// </summary>
-        /// <param name="path">Full path< too file/param>
+        /// <param name="path">Full path too file</param>
         /// <param name="prefix">String to prepend to filename</param>
         /// <returns>full path with prefix prepended</returns>
         private static string RemovePrefix(string path, string prefix)
