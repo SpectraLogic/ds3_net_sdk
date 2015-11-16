@@ -52,6 +52,8 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataIntegrity.cs" />
+    <Compile Include="Ds3TestUtils.cs" />
     <Compile Include="IntegrationTestDS3Client.cs" />
   </ItemGroup>
   <ItemGroup>

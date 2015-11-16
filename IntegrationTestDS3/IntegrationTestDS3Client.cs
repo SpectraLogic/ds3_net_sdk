@@ -77,7 +77,8 @@ namespace IntegrationTestDs3
             _endpoint = "http://192.168.56.102:8080";
             string accesskey = "c3BlY3RyYQ==";
             string secretkey = "womvedQo";
-            _proxy = "http://192.168.56.1:9090";
+            //_proxy = "http://192.168.56.1:9090";
+            _proxy = "";
             _credentials = new Credentials(accesskey, secretkey);
             Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
             if (!string.IsNullOrEmpty(_proxy))
