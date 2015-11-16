@@ -113,15 +113,25 @@ namespace IntegrationTestDs3
             foreach (var book in BOOKS)
             {
                 TextWriter writer = new StreamWriter(testDirectorySrc + book);
-                var booktext = ReadResource("IntegrationTestDS3.TestData." + book);
-                writer.Write(booktext);
+                using (Stream bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
+                {
+                    using (StreamReader booktext = new StreamReader(bookstream))
+                    {
+                        writer.Write(booktext);
+                    }
+                }
                 writer.Close();
             }
             foreach (var book in JOYCEBOOKS)
             {
                 TextWriter writer = new StreamWriter(testDirectorySrcFolder + book);
-                var booktext = ReadResource("IntegrationTestDS3.TestData." + book);
-                writer.Write(booktext);
+                using (Stream bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
+                {
+                    using (StreamReader booktext = new StreamReader(bookstream))
+                    {
+                        writer.Write(booktext);
+                    }
+                }
                 writer.Close();
             }
             foreach (var bigFile in BIGFILES)
@@ -129,23 +139,23 @@ namespace IntegrationTestDs3
                 TextWriter writer = new StreamWriter(testDirectoryBigFolder + bigFile);
                 TextWriter writerForMaxBlob = new StreamWriter(testDirectoryBigFolderForMaxBlob + bigFile + "_maxBlob");
 
-                var bigBookText = ReadResource("IntegrationTestDS3.TestData." + bigFile);
+                using (Stream bookstream = ReadResource("IntegrationTestDS3.TestData." + bigFile))
+                {
+                    using (StreamReader booktext = new StreamReader(bookstream))
+                    {
+                        writer.Write(booktext);
+                        writerForMaxBlob.Write(booktext);
+                    }
+                }
 
-                writer.Write(bigBookText);
                 writer.Close();
-
-                writerForMaxBlob.Write(bigBookText);
                 writerForMaxBlob.Close();
             }
         }
 
-        private static string ReadResource(string resourceName)
+        private static Stream ReadResource(string resourceName)
         {
-            using (var srcFile = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-            using (var reader = new StreamReader(srcFile))
-            {
-                return reader.ReadToEnd();
-            }
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
         }
 
         #endregion setup
@@ -241,7 +251,7 @@ namespace IntegrationTestDs3
             Ds3Object testObject = new Ds3Object("numbers_badcrc.txt", 9);
             var ds3Objs = new List<Ds3Object>();
             ds3Objs.Add(testObject);
-            
+
             using (MemoryStream stream = new MemoryStream(System.Text.Encoding.ASCII.GetBytes(content)))
             {
                 // create or ensure bucket
@@ -286,7 +296,7 @@ namespace IntegrationTestDs3
             var putfile = from f in listBucketObjects()
                           where f.Name == fileName
                           select f;
-            Assert.AreEqual(1 , putfile.Count());
+            Assert.AreEqual(1, putfile.Count());
             DeleteObject(bucketName, fileName);
         }
 
@@ -413,7 +423,7 @@ namespace IntegrationTestDs3
         }
 
 
-        #endregion 
+        #endregion
 
         #region sequential tests
         /*  Nunit runs tests in lex order  
@@ -563,7 +573,7 @@ namespace IntegrationTestDs3
             // delete the first book
             string book = BOOKS.First<string>();
             DeleteObject(TESTBUCKET, book);
-            
+
             // one less ?
             var postfolder = listBucketObjects();
             int postfoldercount = postfolder.Count();
@@ -587,7 +597,7 @@ namespace IntegrationTestDs3
             // delete the dirst book
             string book = BOOKS.First<string>();
             DeleteObject(TESTBUCKET, PREFIX + book);
-            
+
             // one less ?
             var postfolder = listBucketObjects();
             int postfoldercount = postfolder.Count();
