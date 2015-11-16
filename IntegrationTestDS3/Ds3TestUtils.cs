@@ -56,6 +56,23 @@ namespace IntegrationTestDS3
             }
         }
 
+        internal static string GetSingleObjectWithRange(IDs3Client client, string bucketName, string objectName, Range range)
+        {
+            string tempFilename = Path.GetTempFileName();
+
+            using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
+            {
+
+                IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
+
+                var job = helper.StartPartialReadJob(bucketName, new List<string>(), new List<Ds3PartialObject> { new Ds3PartialObject(range, objectName) });
+                
+                job.Transfer(key => fileStream);
+
+                return tempFilename;
+            }
+        }
+
         public static void DeleteBucket(IDs3Client client, string bucketName)
         {
             if (client.HeadBucket(new HeadBucketRequest(bucketName)).Status == Ds3.Calls.HeadBucketResponse.StatusType.DoesntExist)
@@ -89,5 +106,7 @@ namespace IntegrationTestDS3
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("IntegrationTestDS3.TestData." + resourceName);
         }
+
+
     }
 }

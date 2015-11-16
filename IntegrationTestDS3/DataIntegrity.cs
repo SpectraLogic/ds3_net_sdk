@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Ds3;
+using Ds3.Models;
 using Ds3.Helpers;
 using System.IO;
 
@@ -56,7 +57,7 @@ namespace IntegrationTestDS3
 
             try
             {
-                Ds3TestUtils.LoadTestData(_client, "integrityBucket");
+                Ds3TestUtils.LoadTestData(_client, bucketName);
 
                 string file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt");
                 tempFiles.Add(file);
@@ -64,6 +65,28 @@ namespace IntegrationTestDS3
                 string sha1 = Ds3TestUtils.ComputeSha1(file);
 
                 Assert.AreEqual("jtpN/ZmICOS8pWseFd0+MX2CII0=", sha1);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void GetPartialData()
+        {
+            string bucketName = "partialDataBucket";
+
+            try
+            {
+                Ds3TestUtils.LoadTestData(_client, bucketName);
+
+                string file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0,1046));
+                tempFiles.Add(file);
+
+                string sha1 = Ds3TestUtils.ComputeSha1(file);
+
+                Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
             }
             finally
             {
