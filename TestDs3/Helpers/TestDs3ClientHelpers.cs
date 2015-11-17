@@ -107,7 +107,7 @@ namespace TestDs3.Helpers
                 },
                 from item in streams
                 orderby item.Key
-                select new { item.Key, Value = MockHelpers._encoding.GetString(item.Value.Result) }
+                select new { item.Key, Value = MockHelpers.Encoding.GetString(item.Value.Result) }
             );
             CollectionAssert.AreEquivalent(new[] { 15L, 20L, 11L, 10L, 10L, 10L }, dataTransfers);
             CollectionAssert.AreEquivalent(Stubs.ObjectNames, itemsCompleted);
@@ -203,7 +203,7 @@ namespace TestDs3.Helpers
                 (
                     from item in streams
                     orderby item.Key
-                    select new { item.Key, Value = MockHelpers._encoding.GetString(item.Value.Result) }
+                    select new { item.Key, Value = MockHelpers.Encoding.GetString(item.Value.Result) }
                 ).ToArray()
             );
             CollectionAssert.AreEquivalent(
@@ -439,7 +439,7 @@ namespace TestDs3.Helpers
                 },
                 from item in streams
                 orderby item.Key
-                select new { item.Key, Value = MockHelpers._encoding.GetString(item.Value.Result) }
+                select new { item.Key, Value = MockHelpers.Encoding.GetString(item.Value.Result) }
             );
             CollectionAssert.AreEquivalent(new[] { 20L }, dataTransfers);
             CollectionAssert.AreEquivalent(Stubs.PartialFailureObjectNames, itemsCompleted);
