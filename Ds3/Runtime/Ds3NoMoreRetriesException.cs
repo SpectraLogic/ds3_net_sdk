@@ -24,5 +24,9 @@ namespace Ds3.Runtime
             : base(message)
         {
         }
+
+        public Ds3NoMoreRetriesException(string message, Exception e) : base(message, e) 
+        { 
+        }
     }
 }

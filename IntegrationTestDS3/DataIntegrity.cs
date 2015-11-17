@@ -15,7 +15,6 @@ namespace IntegrationTestDS3
     {
 
         private IDs3Client _client;
-        private IDs3ClientHelpers _helpers;
         private List<string> tempFiles = new List<string>();
 
         [SetUp]
@@ -38,7 +37,6 @@ namespace IntegrationTestDS3
                 builder.WithProxy(new Uri(_proxy));
             }
             this._client = builder.Build();
-            this._helpers = new Ds3ClientHelpers(this._client);
         }
 
         [TearDown]

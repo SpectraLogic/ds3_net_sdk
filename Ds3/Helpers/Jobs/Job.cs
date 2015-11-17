@@ -124,38 +124,18 @@ namespace Ds3.Helpers.Jobs
                         this._resourceStore,
                         blob,
                         getLength
-                    );
-            try
-            {
-                this._transferrer.Transfer(
-                    client,
-                    this.BucketName,
-                    blob.Context,
-                    blob.Range.Start,
-                    this.JobId,
-                    ranges,
-                    stream
-                );
-            }
-            catch (Ds3ContentLengthNotMatch exception)
-            {
-                // Issue a partial get for the remainder of the request
-                // Seek back one byte to make sure that the connection did not fail part way through a byte
-                stream.Seek(-1, SeekOrigin.Current);
-
-                var newRanges = JobsUtil.RetryRanges(ranges, exception.BytesRead, exception.ContentLength);
-
-                var partialObjectTransferrer = new PartialReadTransferrer();
-                partialObjectTransferrer.Transfer(
-                    client,
-                    this.BucketName,
-                    blob.Context,
-                    blob.Range.Start,
-                    this.JobId,
-                    newRanges,
-                    stream
-                );
-            }
+            );
+           
+            this._transferrer.Transfer(
+                client,
+                this.BucketName,
+                blob.Context,
+                blob.Range.Start,
+                this.JobId,
+                ranges,
+                stream
+            );
+            
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, getLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))
             {

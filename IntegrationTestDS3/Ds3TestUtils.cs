@@ -39,14 +39,14 @@ namespace IntegrationTestDS3
         /// This will get the object and return the name of the temporary file it was written to.
         /// It is up to the caller to delete the temporary file
         /// </summary>
-        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName)
+        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName, int retries = 5)
         {
             string tempFilename = Path.GetTempFileName();
 
             using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
             {
-
-                IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
+                
+                IDs3ClientHelpers helper = new Ds3ClientHelpers(client, getObjectRetries: retries);
 
                 var job = helper.StartReadJob(bucketName, new List<Ds3Object>{ new Ds3Object(objectName, null)});
             

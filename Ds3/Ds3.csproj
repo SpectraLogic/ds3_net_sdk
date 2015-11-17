@@ -88,6 +88,7 @@
     <Compile Include="Calls\VerifySystemHealthResponse.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
+    <Compile Include="Helpers\Transferrers\PartialDataTransferrerDecorator.cs" />
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
     <Compile Include="Runtime\WebResponseStream.cs" />
