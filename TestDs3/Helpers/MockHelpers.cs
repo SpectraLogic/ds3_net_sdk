@@ -28,7 +28,7 @@ using NUnit.Framework;
 
 namespace TestDs3.Helpers
 {
-    internal class MockHelpers
+    internal static class MockHelpers
     {
         public static void SetupGetObjectWithContentLengthMismatchException(
              Mock<IDs3Client> client,
@@ -56,11 +56,11 @@ namespace TestDs3.Helpers
                 .Throws(new Ds3ContentLengthNotMatch("Content Length mismatch", expectedLength, returnedLength));
         }
 
-        internal static readonly Encoding _encoding = new UTF8Encoding(false);
+        internal static readonly Encoding Encoding = new UTF8Encoding(false);
 
         private static void WriteToStream(Stream stream, string value)
         {
-            var buffer = _encoding.GetBytes(value);
+            var buffer = Encoding.GetBytes(value);
             stream.Write(buffer, 0, buffer.Length);
         }
 
@@ -194,7 +194,7 @@ namespace TestDs3.Helpers
                 .Callback<PutObjectRequest>(r =>
                 {
                     using (var stream = r.GetContentStream())
-                    using (var reader = new StreamReader(stream, _encoding))
+                    using (var reader = new StreamReader(stream, Encoding))
                     {
                         Assert.AreEqual(expectedData, reader.ReadToEnd());
                     }

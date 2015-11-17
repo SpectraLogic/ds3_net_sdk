@@ -25,7 +25,7 @@ using System.Security.Cryptography;
 
 namespace IntegrationTestDS3
 {
-    internal class Ds3TestUtils
+    internal static class Ds3TestUtils
     {
 
         public static List<Ds3Object> Objects = new List<Ds3Object>

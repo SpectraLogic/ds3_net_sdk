@@ -22,7 +22,7 @@ using System.IO;
 namespace IntegrationTestDS3
 {
     [TestFixture]
-    class DataIntegrity
+    internal class DataIntegrity
     {
 
         private IDs3Client _client;
