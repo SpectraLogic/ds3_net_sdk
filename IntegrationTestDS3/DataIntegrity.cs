@@ -32,23 +32,8 @@ namespace IntegrationTestDS3
         [SetUp]
         public void Setup()
         {
-            /*
-             * Ds3Builder builder = Ds3Builder.FromEnv();
-             * this._client = builder.Build();
-             * 
-             */
-            string _endpoint = "http://192.168.56.102:8080";
-            string accesskey = "c3BlY3RyYQ==";
-            string secretkey = "womvedQo";
-            string _proxy = "http://192.168.56.1:9090";
-            //string _proxy = "";
-            var _credentials = new Credentials(accesskey, secretkey);
-            Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
-            if (!string.IsNullOrEmpty(_proxy))
-            {
-                builder.WithProxy(new Uri(_proxy));
-            }
-            _client = builder.Build();
+             Ds3Builder builder = Ds3Builder.FromEnv();
+             _client = builder.Build();
         }
 
         [TearDown]

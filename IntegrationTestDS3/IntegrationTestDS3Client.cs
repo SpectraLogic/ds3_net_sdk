@@ -55,9 +55,6 @@ namespace IntegrationTestDs3
 
         private IDs3Client _client { get; set; }
         private Ds3ClientHelpers _helpers { get; set; }
-        public string _endpoint { private get; set; }
-        public string _proxy { private get; set; }
-        public Credentials _credentials { private get; set; }
 
         public string BuildRev { private set; get; }
         public string BuildVersion { private set; get; }
@@ -65,33 +62,15 @@ namespace IntegrationTestDs3
 
         #region setup
         [SetUp]
-        public void startup()
+        public void Startup()
         {
-            /*
-            _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
-            string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
-            string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
-            _proxy = Environment.GetEnvironmentVariable("http_proxy");
-            
-            */
-            _endpoint = "http://192.168.56.102:8080";
-            string accesskey = "c3BlY3RyYQ==";
-            string secretkey = "womvedQo";
-            //_proxy = "http://192.168.56.1:9090";
-            _proxy = "";
-            _credentials = new Credentials(accesskey, secretkey);
-            Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
-            if (!string.IsNullOrEmpty(_proxy))
-            {
-                builder.WithProxy(new Uri(_proxy));
-            }
-            _client = builder.Build();
+            _client = Ds3Builder.FromEnv().Build();
             _helpers = new Ds3ClientHelpers(_client);
 
-            setupTestData();
+            SetupTestData();
         }
 
-        private void setupTestData()
+        private void SetupTestData()
         {
             string root = Path.GetTempPath() + TESTDIR + Path.DirectorySeparatorChar;
             testDirectorySrc = root + "src" + Path.DirectorySeparatorChar;
