@@ -40,7 +40,7 @@ namespace IntegrationTestDs3
         private string[] BIGFILES = { "big_book_file.txt" };
 
         private static string TESTDIR = "TestObjectData";
-        private static string TESTBUCKET = "TestBucket";
+        private static string TESTBUCKET = "TestBucket" + DateTime.Now.Ticks;
         private static string PREFIX = "test_";
         private static string FOLDER = "joyce";
         private static string BIG = "big";
