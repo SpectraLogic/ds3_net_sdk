@@ -207,4 +207,7 @@
   <data name="ContentLengthNotMatch" xml:space="preserve">
     <value>The Content length ({0}) not match the number of byte read ({1})</value>
   </data>
+  <data name="TooManyRetriesForPartialData" xml:space="preserve">
+    <value>Exhausted retries for retrieving data when partial data was received.</value>
+  </data>
 </root>

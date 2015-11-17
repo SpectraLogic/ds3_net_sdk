@@ -59,7 +59,7 @@ namespace Ds3.Helpers.Transferrers
 
                     if (_retries != -1 && currentTry >= _retries)
                     {
-                        throw new Ds3NoMoreRetriesException("Exhausted retries for retrieving data when partial data was received.", exception, currentTry);
+                        throw new Ds3NoMoreRetriesException(Resources.TooManyRetriesForPartialData, exception, currentTry);
                     }
 
                     // Issue a partial get for the remainder of the request
