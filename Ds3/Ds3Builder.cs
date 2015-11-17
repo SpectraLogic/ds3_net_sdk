@@ -31,6 +31,27 @@ namespace Ds3
         private int _connectionLimit = 12;
 
         /// <summary>
+        /// Creates a Ds3Builder with the endpoint, credentials, and proxy all populated from
+        /// environment variables.
+        /// </summary>
+        public static Ds3Builder FromEnv()
+        {
+            string _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
+            string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
+            string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
+            string _proxy = Environment.GetEnvironmentVariable("http_proxy");
+
+            var _credentials = new Credentials(accesskey, secretkey);
+            Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
+            if (!string.IsNullOrEmpty(_proxy))
+            {
+                builder.WithProxy(new Uri(_proxy));
+            }
+
+            return builder;
+        }
+
+        /// <summary>
         /// </summary>
         /// <param name="endpoint">The http or https location at which your DS3 server is listening.</param>
         /// <param name="creds">Credentials with which to specify identity and sign requests.</param>

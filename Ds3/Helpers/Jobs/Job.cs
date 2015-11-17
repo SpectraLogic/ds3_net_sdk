@@ -1,4 +1,4 @@
-﻿/*
+﻿    /*
  * ******************************************************************************
  *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
@@ -20,6 +20,7 @@ using Ds3.Helpers.TransferItemSources;
 using Ds3.Helpers.Transferrers;
 using Ds3.Lang;
 using Ds3.Models;
+using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -118,6 +119,13 @@ namespace Ds3.Helpers.Jobs
         {
             var ranges = this._rangesForRequests[blob];
             var getLength = ranges.Sum(r => r.Length);
+            var stream = new StreamTranslator<TItem, Blob>(
+                        this._rangeTranslator,
+                        this._resourceStore,
+                        blob,
+                        getLength
+            );
+           
             this._transferrer.Transfer(
                 client,
                 this.BucketName,
@@ -125,13 +133,9 @@ namespace Ds3.Helpers.Jobs
                 blob.Range.Start,
                 this.JobId,
                 ranges,
-                new StreamTranslator<TItem, Blob>(
-                    this._rangeTranslator,
-                    this._resourceStore,
-                    blob,
-                    getLength
-                )
+                stream
             );
+            
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, getLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))
             {

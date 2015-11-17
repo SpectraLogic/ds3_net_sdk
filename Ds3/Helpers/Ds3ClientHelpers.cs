@@ -32,11 +32,13 @@ namespace Ds3.Helpers
         private const string JobTypePut = "PUT";
         private const string JobTypeGet = "GET";
         private readonly int _retryAfter; //-1 represent infinite number
+        private readonly int _getObjectRetries; // -1 represents infintie number of retries
 
-        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1)
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5)
         {
             this._client = client;
             this._retryAfter = retryAfter;
+            this._getObjectRetries = getObjectRetries;
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null)
@@ -66,14 +68,15 @@ namespace Ds3.Helpers
             return FullObjectJob.Create(
                 jobResponse,
                 new ReadTransferItemSource(this._client, this._retryAfter, jobResponse),
-                new ReadTransferrer()
+                new PartialDataTransferrerDecorator(new ReadTransferrer(), _getObjectRetries)
             );
         }
 
         public IPartialReadJob StartPartialReadJob(
             string bucket,
             IEnumerable<string> fullObjects,
-            IEnumerable<Ds3PartialObject> partialObjects)
+            IEnumerable<Ds3PartialObject> partialObjects
+            )
         {
             var partialObjectList = new SortedSet<Ds3PartialObject>(partialObjects);
             var fullObjectList = fullObjects.ToList();
@@ -89,7 +92,8 @@ namespace Ds3.Helpers
                 jobResponse,
                 fullObjectList,
                 partialObjectList,
-                new ReadTransferItemSource(this._client, this._retryAfter, jobResponse)
+                new ReadTransferItemSource(this._client, this._retryAfter, jobResponse),
+                _getObjectRetries
             );
         }
 

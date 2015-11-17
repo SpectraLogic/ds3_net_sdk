@@ -22,6 +22,12 @@ namespace TestDs3.Helpers
             new Node(NodeId1, "http://192.168.10.1", 80, 443),
             new Node(NodeId2, "http://192.168.10.2", 80, 443)
         };
+
+        public static readonly string[] PartialFailureObjectNames = new[]
+        {
+            "bar"
+        };
+
         public static readonly string[] ObjectNames = new[]
         {
             "foo",
@@ -41,6 +47,19 @@ namespace TestDs3.Helpers
                 Nodes,
                 chunks,
                 JobStatus.IN_PROGRESS
+            );
+        }
+
+        public static JobObjectList ReadFailureChunk(Guid? nodeId, bool inCache)
+        {
+            return new JobObjectList(
+                ChunkId1,
+                1,
+                nodeId,
+                new[]
+                { 
+                    new JobObject("bar", 20, 0, inCache),
+                }
             );
         }
 

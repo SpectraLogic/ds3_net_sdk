@@ -36,8 +36,8 @@ namespace TestDs3.Helpers.Streams
                 GetRequestedStream(stream, stream.Length),
                 stream);
 
-            Assert.Catch(typeof(Ds3ContentLenghtNotMatch), () => GetRequestedStream(stream, stream.Length + 10));
-            Assert.Catch(typeof(Ds3ContentLenghtNotMatch), () => GetRequestedStream(stream, stream.Length - 10));
+            Assert.Catch(typeof(Ds3ContentLengthNotMatch), () => GetRequestedStream(stream, stream.Length + 10));
+            Assert.Catch(typeof(Ds3ContentLengthNotMatch), () => GetRequestedStream(stream, stream.Length - 10));
 
         }
 

@@ -17,17 +17,17 @@ using System;
 
 namespace Ds3.Runtime
 {
-    public class Ds3ContentLenghtNotMatch : Exception
+    public class Ds3ContentLengthNotMatch : Exception
     {
-        public Ds3ContentLenghtNotMatch(string message, long contentLenght, long bytesRead)
-            : base(string.Format(message, contentLenght, bytesRead))
+        public Ds3ContentLengthNotMatch(string message, long contentLength, long bytesRead)
+            : base(string.Format(message, contentLength, bytesRead))
         {
-            ContentLenght = contentLenght;
+            ContentLength = contentLength;
             BytesRead = bytesRead;
                 
         }
 
         public long BytesRead { get; private set; }
-        public long ContentLenght { get; private set; }
+        public long ContentLength { get; private set; }
     }
 }

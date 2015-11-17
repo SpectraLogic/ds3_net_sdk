@@ -88,11 +88,11 @@ namespace Ds3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Content lenght ({0}) not match the number of byte read ({1}).
+        ///   Looks up a localized string similar to The Content length ({0}) not match the number of byte read ({1}).
         /// </summary>
-        internal static string ContentLenghtNotMatch {
+        internal static string ContentLengthNotMatch {
             get {
-                return ResourceManager.GetString("ContentLenghtNotMatch", resourceCulture);
+                return ResourceManager.GetString("ContentLengthNotMatch", resourceCulture);
             }
         }
         
@@ -288,9 +288,9 @@ namespace Ds3 {
         /// <summary>
         ///   Looks up a localized string similar to Request: {0}.
         /// </summary>
-        internal static string Request_Logging {
+        internal static string RequestLogging {
             get {
-                return ResourceManager.GetString("Request Logging", resourceCulture);
+                return ResourceManager.GetString("RequestLogging", resourceCulture);
             }
         }
         
@@ -318,6 +318,15 @@ namespace Ds3 {
         internal static string TooManyRedirectsException {
             get {
                 return ResourceManager.GetString("TooManyRedirectsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exhausted retries for retrieving data when partial data was received..
+        /// </summary>
+        internal static string TooManyRetriesForPartialData {
+            get {
+                return ResourceManager.GetString("TooManyRetriesForPartialData", resourceCulture);
             }
         }
         

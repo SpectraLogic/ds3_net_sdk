@@ -86,9 +86,11 @@
     <Compile Include="Calls\HeadObjectResponse.cs" />
     <Compile Include="Calls\VerifySystemHealthRequest.cs" />
     <Compile Include="Calls\VerifySystemHealthResponse.cs" />
+    <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
+    <Compile Include="Helpers\Transferrers\PartialDataTransferrerDecorator.cs" />
     <Compile Include="Models\Crc32.cs" />
-    <Compile Include="Runtime\Ds3ContentLenghtNotMatch.cs" />
+    <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
     <Compile Include="Runtime\WebResponseStream.cs" />
     <Compile Include="Models\DS3GetObjectsInfo.cs" />
     <Compile Include="Models\Ds3ObjectPlacement.cs" />

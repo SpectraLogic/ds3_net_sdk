@@ -186,7 +186,7 @@
   <data name="RangesDoNotOverlapException" xml:space="preserve">
     <value>Ranges {0} and {1} do not overlap.</value>
   </data>
-  <data name="Request Logging" xml:space="preserve">
+  <data name="RequestLogging" xml:space="preserve">
     <value>Request: {0}</value>
   </data>
   <data name="ResponseLogging" xml:space="preserve">
@@ -204,7 +204,10 @@
   <data name="NoMoreRetriesException" xml:space="preserve">
     <value>Reached the limit number of retries request</value>
   </data>
-  <data name="ContentLenghtNotMatch" xml:space="preserve">
-    <value>The Content lenght ({0}) not match the number of byte read ({1})</value>
+  <data name="ContentLengthNotMatch" xml:space="preserve">
+    <value>The Content length ({0}) not match the number of byte read ({1})</value>
+  </data>
+  <data name="TooManyRetriesForPartialData" xml:space="preserve">
+    <value>Exhausted retries for retrieving data when partial data was received.</value>
   </data>
 </root>

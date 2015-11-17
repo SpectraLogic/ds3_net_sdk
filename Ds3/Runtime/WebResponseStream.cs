@@ -21,13 +21,13 @@ namespace Ds3.Runtime
     public class WebResponseStream : Stream
     {
         private readonly Stream _stream;
-        private readonly long _contentLenght;
+        private readonly long _contentLength;
         private int _bytesRead = 0;
 
-        public WebResponseStream(Stream stream, long contentLenght)
+        public WebResponseStream(Stream stream, long contentLength)
         {
             this._stream = stream;
-            this._contentLenght = contentLenght;
+            this._contentLength = contentLength;
         }
 
         public override bool CanRead
@@ -95,8 +95,8 @@ namespace Ds3.Runtime
             int bytesRead = _stream.Read(buffer, offset, count);
             _bytesRead += bytesRead;
 
-            if ((bytesRead == 0) && (_bytesRead != _contentLenght))
-                throw new Ds3ContentLenghtNotMatch(Resources.ContentLenghtNotMatch, _contentLenght, _bytesRead);
+            if ((bytesRead == 0) && (_bytesRead != _contentLength))
+                throw new Ds3ContentLengthNotMatch(Resources.ContentLengthNotMatch, _contentLength, _bytesRead);
 
             return bytesRead;
         }

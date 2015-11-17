@@ -16,16 +16,13 @@
 using Ds3;
 using Ds3.Calls;
 using Ds3.Models;
-using Ds3.Runtime;
 using Ds3.Helpers;
 using Ds3.Helpers.Streams;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Threading;
@@ -58,35 +55,23 @@ namespace IntegrationTestDs3
 
         private IDs3Client _client { get; set; }
         private Ds3ClientHelpers _helpers { get; set; }
-        public string _endpoint { private get; set; }
-        public string _proxy { private get; set; }
-        public Credentials _credentials { private get; set; }
 
         public string BuildRev { private set; get; }
         public string BuildVersion { private set; get; }
         public string BuildBranch { private set; get; }
 
         #region setup
+
         [TestFixtureSetUp]
-        public void startup()
-        {
-            _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
-            string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
-            string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
-            _proxy = Environment.GetEnvironmentVariable("http_proxy");
-            _credentials = new Credentials(accesskey, secretkey);
-            Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
-            if (!string.IsNullOrEmpty(_proxy))
-            {
-                builder.WithProxy(new Uri(_proxy));
-            }
-            _client = builder.Build();
+        public void Startup() {
+        
+            _client = Ds3Builder.FromEnv().Build();
             _helpers = new Ds3ClientHelpers(_client);
 
-            this.setupTestData();
+            SetupTestData();
         }
 
-        private void setupTestData()
+        private void SetupTestData()
         {
             string root = Path.GetTempPath() + TESTDIR + Path.DirectorySeparatorChar;
             testDirectorySrc = root + "src" + Path.DirectorySeparatorChar;
@@ -165,7 +150,7 @@ namespace IntegrationTestDs3
         [Test]
         public void DoIntegrationPing()
         {
-            VerifySystemHealthRequest request = new Ds3.Calls.VerifySystemHealthRequest();
+            VerifySystemHealthRequest request = new VerifySystemHealthRequest();
             VerifySystemHealthResponse response = _client.VerifySystemHealth(request);
 
             Assert.GreaterOrEqual(response.MillisToVerify, 0);
@@ -175,7 +160,7 @@ namespace IntegrationTestDs3
         public void GetSystemInfo()
         {
             // get valid data and populate properties
-            GetSystemInformationRequest request = new Ds3.Calls.GetSystemInformationRequest();
+            GetSystemInformationRequest request = new GetSystemInformationRequest();
             GetSystemInformationResponse response = _client.GetSystemInformation(request);
             Assert.IsNotNullOrEmpty(response.BuildVersion);
             BuildBranch = response.BuildBranch;
@@ -252,6 +237,7 @@ namespace IntegrationTestDs3
             var ds3Objs = new List<Ds3Object>();
             ds3Objs.Add(testObject);
 
+
             using (MemoryStream stream = new MemoryStream(System.Text.Encoding.ASCII.GetBytes(content)))
             {
                 // create or ensure bucket
@@ -293,7 +279,7 @@ namespace IntegrationTestDs3
             });
 
             // Is it there?
-            var putfile = from f in listBucketObjects()
+            var putfile = from f in ListBucketObjects()
                           where f.Name == fileName
                           select f;
             Assert.AreEqual(1, putfile.Count());
@@ -418,7 +404,7 @@ namespace IntegrationTestDs3
                 contentStream
                 );
 
-            _client.PutObject(putObjectRequest);
+            client.PutObject(putObjectRequest);
             fileToPut.Close();
         }
 
@@ -436,7 +422,7 @@ namespace IntegrationTestDs3
             // Creates a bucket if it does not already exist.
             _helpers.EnsureBucketExists(TESTBUCKET);
 
-            var antefolder = listBucketObjects();
+            var antefolder = ListBucketObjects();
             int antefoldercount = antefolder.Count();
 
             // Creates a bulk job with the server based on the files in a directory (recursively).
@@ -448,7 +434,7 @@ namespace IntegrationTestDs3
             job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, string.Empty));
 
             // all files there?
-            var postfolder = listBucketObjects();
+            var postfolder = ListBucketObjects();
             int postfoldercount = postfolder.Count();
             Assert.AreEqual(postfoldercount - antefoldercount, directoryobjects.Count());
         }
@@ -459,7 +445,7 @@ namespace IntegrationTestDs3
             // Creates a bucket if it does not already exist.
             _helpers.EnsureBucketExists(TESTBUCKET);
 
-            var antefolder = listBucketObjects();
+            var antefolder = ListBucketObjects();
             int antefoldercount = antefolder.Count();
 
             // Creates a bulk job with the server based on the files in a directory (recursively).
@@ -471,7 +457,7 @@ namespace IntegrationTestDs3
             job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, PREFIX));
 
             // put all files?
-            var postfolder = listBucketObjects();
+            var postfolder = ListBucketObjects();
             int postfoldercount = postfolder.Count();
             Assert.AreEqual(postfoldercount - antefoldercount, directoryobjects.Count());
         }
@@ -516,7 +502,7 @@ namespace IntegrationTestDs3
         public void Test0500DeleteFolder()
         {
             // now it's there
-            var antefolder = listBucketObjects();
+            var antefolder = ListBucketObjects();
             int antefoldercount = antefolder.Count();
             Assert.Greater(antefoldercount, 0);
 
@@ -528,18 +514,18 @@ namespace IntegrationTestDs3
             Assert.Greater(foldercount, 0);
 
             // delete it
-            DeleteFolderRequest request = new Ds3.Calls.DeleteFolderRequest(TESTBUCKET, FOLDER);
+            DeleteFolderRequest request = new DeleteFolderRequest(TESTBUCKET, FOLDER);
             _client.DeleteFolder(request);
 
             // now it's gone
-            var postfolder = listBucketObjects();
+            var postfolder = ListBucketObjects();
             int postfoldercount = postfolder.Count();
             Assert.AreEqual(antefoldercount - postfoldercount, foldercount);
         }
 
-        IEnumerable<Ds3Object> listBucketObjects()
+        IEnumerable<Ds3Object> ListBucketObjects()
         {
-            var request = new Ds3.Calls.GetObjectsRequest()
+            var request = new GetObjectsRequest()
             {
                 BucketId = TESTBUCKET
             };
@@ -561,21 +547,21 @@ namespace IntegrationTestDs3
         [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
         public void Test0520GetBadBucket()
         {
-            var request = new Ds3.Calls.GetBucketRequest("NoBucket" + DateTime.Now.Ticks);
+            var request = new GetBucketRequest("NoBucket" + DateTime.Now.Ticks);
             _client.GetBucket(request);
         }
 
         [Test]
         public void Test0910DeleteObject()
         {
-            var antefolder = listBucketObjects();
+            var antefolder = ListBucketObjects();
             int antefoldercount = antefolder.Count();
             // delete the first book
             string book = BOOKS.First<string>();
             DeleteObject(TESTBUCKET, book);
 
             // one less ?
-            var postfolder = listBucketObjects();
+            var postfolder = ListBucketObjects();
             int postfoldercount = postfolder.Count();
             Assert.AreEqual(antefoldercount - postfoldercount, 1);
         }
@@ -592,14 +578,14 @@ namespace IntegrationTestDs3
         [Test]
         public void Test0920DeleteObjectWithPrefix()
         {
-            var antefolder = listBucketObjects();
+            var antefolder = ListBucketObjects();
             int antefoldercount = antefolder.Count();
             // delete the dirst book
             string book = BOOKS.First<string>();
             DeleteObject(TESTBUCKET, PREFIX + book);
 
             // one less ?
-            var postfolder = listBucketObjects();
+            var postfolder = ListBucketObjects();
             int postfoldercount = postfolder.Count();
             Assert.AreEqual(antefoldercount - postfoldercount, 1);
         }
@@ -617,15 +603,15 @@ namespace IntegrationTestDs3
             DeleteBucket(TESTBUCKET);
         }
 
-        public void DeleteObject(string bucketname, string objectName)
+        void DeleteObject(string bucketname, string objectName)
         {
-            var request = new Ds3.Calls.DeleteObjectRequest(bucketname, objectName);
+            var request = new DeleteObjectRequest(bucketname, objectName);
             _client.DeleteObject(request);
         }
 
-        public void DeleteBucket(string bucketname)
+        void DeleteBucket(string bucketname)
         {
-            var request = new Ds3.Calls.DeleteBucketRequest(bucketname);
+            var request = new DeleteBucketRequest(bucketname);
             _client.DeleteBucket(request);
         }
 
@@ -633,7 +619,7 @@ namespace IntegrationTestDs3
         #endregion sequential tests
 
         [TestFixtureTearDown]
-        public void cleanUp()
+        public void CleanUp()
         {
             // sequential tests will delete TESTBUCKET
             // individual tests will not
@@ -648,7 +634,5 @@ namespace IntegrationTestDs3
             }
             DeleteBucket(TESTBUCKET);
         }
-
-
     }
 }
