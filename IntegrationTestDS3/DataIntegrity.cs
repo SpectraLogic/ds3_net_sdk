@@ -1,11 +1,23 @@
-﻿using System;
+﻿/*
+ * ******************************************************************************
+ *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+ *   this file except in compliance with the License. A copy of the License is located at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file.
+ *   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ *   CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ *   specific language governing permissions and limitations under the License.
+ * ****************************************************************************
+ */
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Ds3;
 using Ds3.Models;
-using Ds3.Helpers;
 using System.IO;
 
 namespace IntegrationTestDS3
@@ -15,7 +27,7 @@ namespace IntegrationTestDS3
     {
 
         private IDs3Client _client;
-        private List<string> tempFiles = new List<string>();
+        private readonly List<string> _tempFiles = new List<string>();
 
         [SetUp]
         public void Setup()
@@ -36,13 +48,13 @@ namespace IntegrationTestDS3
             {
                 builder.WithProxy(new Uri(_proxy));
             }
-            this._client = builder.Build();
+            _client = builder.Build();
         }
 
         [TearDown]
         public void Teardown()
         {
-            foreach (string file in tempFiles)
+            foreach (var file in _tempFiles)
             {
                 File.Delete(file);
             }
@@ -51,16 +63,16 @@ namespace IntegrationTestDS3
         [Test]
         public void SingleObjectGet()
         {
-            string bucketName = "integrityBucket";
+            var bucketName = "integrityBucket";
 
             try
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
 
-                string file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt");
-                tempFiles.Add(file);
+                var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt");
+                _tempFiles.Add(file);
 
-                string sha1 = Ds3TestUtils.ComputeSha1(file);
+                var sha1 = Ds3TestUtils.ComputeSha1(file);
 
                 Assert.AreEqual("jtpN/ZmICOS8pWseFd0+MX2CII0=", sha1);
             }
@@ -73,16 +85,16 @@ namespace IntegrationTestDS3
         [Test]
         public void GetPartialData()
         {
-            string bucketName = "partialDataBucket";
+            var bucketName = "partialDataBucket";
 
             try
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
 
-                string file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0,1046));
-                tempFiles.Add(file);
+                var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0,1046));
+                _tempFiles.Add(file);
 
-                string sha1 = Ds3TestUtils.ComputeSha1(file);
+                var sha1 = Ds3TestUtils.ComputeSha1(file);
 
                 Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
             }

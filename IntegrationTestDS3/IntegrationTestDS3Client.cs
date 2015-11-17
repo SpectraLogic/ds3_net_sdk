@@ -160,7 +160,7 @@ namespace IntegrationTestDs3
         [Test]
         public void DoIntegrationPing()
         {
-            VerifySystemHealthRequest request = new Ds3.Calls.VerifySystemHealthRequest();
+            VerifySystemHealthRequest request = new VerifySystemHealthRequest();
             VerifySystemHealthResponse response = _client.VerifySystemHealth(request);
 
             Assert.GreaterOrEqual(response.MillisToVerify, 0);
@@ -170,7 +170,7 @@ namespace IntegrationTestDs3
         public void GetSystemInfo()
         {
             // get valid data and populate properties
-            GetSystemInformationRequest request = new Ds3.Calls.GetSystemInformationRequest();
+            GetSystemInformationRequest request = new GetSystemInformationRequest();
             GetSystemInformationResponse response = _client.GetSystemInformation(request);
             Assert.IsNotNullOrEmpty(response.BuildVersion);
             BuildBranch = response.BuildBranch;
@@ -343,7 +343,7 @@ namespace IntegrationTestDs3
 
         IEnumerable<Ds3Object> listBucketObjects()
         {
-            var request = new Ds3.Calls.GetObjectsRequest()
+            var request = new GetObjectsRequest()
             {
                 BucketId = TESTBUCKET
             };
@@ -365,7 +365,7 @@ namespace IntegrationTestDs3
         [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
         public void Test0520GetBadBucket()
         {
-            var request = new Ds3.Calls.GetBucketRequest("NoBucket" + DateTime.Now.Ticks);
+            var request = new GetBucketRequest("NoBucket" + DateTime.Now.Ticks);
             _client.GetBucket(request);
         }
 
@@ -521,7 +521,7 @@ namespace IntegrationTestDs3
                 contentStream
                 );
 
-            _client.PutObject(putObjectRequest);
+            client.PutObject(putObjectRequest);
             fileToPut.Close();
         }
 
@@ -577,15 +577,15 @@ namespace IntegrationTestDs3
             DeleteBucket(TESTBUCKET);
         }
 
-        public void DeleteObject(string bucketname, string objectName)
+        void DeleteObject(string bucketname, string objectName)
         {
-            var request = new Ds3.Calls.DeleteObjectRequest(bucketname, objectName);
+            var request = new DeleteObjectRequest(bucketname, objectName);
             _client.DeleteObject(request);
         }
 
-        public void DeleteBucket(string bucketname)
+        void DeleteBucket(string bucketname)
         {
-            var request = new Ds3.Calls.DeleteBucketRequest(bucketname);
+            var request = new DeleteBucketRequest(bucketname);
             _client.DeleteBucket(request);
         }
 

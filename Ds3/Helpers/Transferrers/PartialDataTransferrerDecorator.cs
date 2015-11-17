@@ -1,7 +1,20 @@
-﻿using System;
+﻿/*
+ * ******************************************************************************
+ *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+ *   this file except in compliance with the License. A copy of the License is located at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file.
+ *   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ *   CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ *   specific language governing permissions and limitations under the License.
+ * ****************************************************************************
+ */
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ds3.Models;
 using Ds3.Helpers.Jobs;
 using System.IO;
@@ -16,8 +29,8 @@ namespace Ds3.Helpers.Transferrers
         private readonly int _retries;
 
         internal PartialDataTransferrerDecorator(ITransferrer transferrer, int retries = 5) {
-            this._transferrer = transferrer;
-            this._retries = retries;
+            _transferrer = transferrer;
+            _retries = retries;
         }
 
         public void Transfer(
@@ -30,8 +43,8 @@ namespace Ds3.Helpers.Transferrers
            Stream stream) 
         {
 
-            int currentTry = 0;
-            var transferrer = this._transferrer;
+            var currentTry = 0;
+            var transferrer = _transferrer;
             var _ranges = ranges;
 
             while (true)
@@ -44,9 +57,9 @@ namespace Ds3.Helpers.Transferrers
                 catch (Ds3ContentLengthNotMatch exception)
                 {
 
-                    if (this._retries != -1 && currentTry >= this._retries)
+                    if (_retries != -1 && currentTry >= _retries)
                     {
-                        throw new Ds3NoMoreRetriesException("Exhausted retries for retrieving data when partial data was received.", exception);
+                        throw new Ds3NoMoreRetriesException("Exhausted retries for retrieving data when partial data was received.", exception, currentTry);
                     }
 
                     // Issue a partial get for the remainder of the request

@@ -14,19 +14,27 @@
  */
 
 using System;
-using System.Net;
 
 namespace Ds3.Runtime
 {
     public class Ds3NoMoreRetriesException : Exception
     {
+
+        public readonly int Retries;
+
         public Ds3NoMoreRetriesException(string message)
             : base(message)
         {
+            Retries = -1;
         }
 
         public Ds3NoMoreRetriesException(string message, Exception e) : base(message, e) 
-        { 
+        {
+            Retries = -1;
+        }
+
+        public Ds3NoMoreRetriesException(string message, Exception e, int retries) : base(message, e) {
+            Retries = retries;
         }
     }
 }

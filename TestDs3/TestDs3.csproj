@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Helpers\JobResponseStubs.cs" />
     <Compile Include="Helpers\Jobs\TestJobsUtil.cs" />
+    <Compile Include="Helpers\MockHelpers.cs" />
     <Compile Include="Helpers\RangeTranslators\TestMappingRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestObjectToPartRangeTranslator.cs" />
     <Compile Include="Helpers\RangeTranslators\TestPartialObjectRangeUtilities.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Helpers\TransferItemSources\TransferItemSourceHelpers.cs" />
     <Compile Include="Helpers\TransferItemSources\TestReadTransferItemSource.cs" />
     <Compile Include="Helpers\TransferItemSources\TestWriteTransferItemSource.cs" />
+    <Compile Include="Helpers\Transferrers\TestPartialDataTransferrerDecorator.cs" />
     <Compile Include="Lang\EnumerableComparer.cs" />
     <Compile Include="Lang\CompareChain.cs" />
     <Compile Include="Lang\LangTestHelpers.cs" />
