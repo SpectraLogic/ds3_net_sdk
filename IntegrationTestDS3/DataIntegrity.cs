@@ -13,11 +13,14 @@
  * ****************************************************************************
  */
 
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Ds3;
 using Ds3.Models;
 using System.IO;
+using System.Linq;
+using Ds3.Calls;
 
 namespace IntegrationTestDS3
 {
@@ -31,7 +34,14 @@ namespace IntegrationTestDS3
         [SetUp]
         public void Setup()
         {
-             Ds3Builder builder = Ds3Builder.FromEnv();
+             //Ds3Builder builder = Ds3Builder.FromEnv();
+            string endpoint = "http://192.168.56.102:8080";
+            string accessKey = "c3BlY3RyYQ==";
+            string secretKey = "womvedQo";
+            string httpProxy = "http://192.168.56.1:8888";
+            Ds3Builder builder = new Ds3Builder(endpoint, new Credentials(accessKey, secretKey));
+
+            builder.WithProxy(new Uri(httpProxy));
              _client = builder.Build();
         }
 
@@ -81,6 +91,36 @@ namespace IntegrationTestDS3
                 var sha1 = Ds3TestUtils.ComputeSha1(file);
 
                 Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void PutLargeNumberOfObjects()
+        {
+
+            const string bucketName = "lotsOfFiles";
+
+            try
+            {
+
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var objects = new List<Ds3Object>();
+
+                for (var i = 0; i < 1000; i++)
+                {
+                    objects.Add(new Ds3Object(Guid.NewGuid().ToString(), contentBytes.Length));
+                }
+
+                Ds3TestUtils.PutFiles(_client, bucketName, objects, key => new MemoryStream(contentBytes));
+
+                Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).Objects.Count());
+
             }
             finally
             {

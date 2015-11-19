@@ -38,14 +38,7 @@ namespace IntegrationTestDS3
 
         public static void LoadTestData(IDs3Client client, string bucketName)
         {
-            IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
-
-            helper.EnsureBucketExists(bucketName);
-
-            var job = helper.StartWriteJob(bucketName, Objects);
-
-            job.Transfer(key => ReadResource(key));
-
+            PutFiles(client, bucketName, Objects, ReadResource);
         }
 
         /// <summary>
@@ -84,6 +77,20 @@ namespace IntegrationTestDS3
 
                 return tempFilename;
             }
+        }
+
+        public static void PutFiles(IDs3Client client, string bucketName, IEnumerable<Ds3Object> files,
+            Func<string, Stream> createStreamForTransferItem)
+        {
+
+            IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
+
+            helper.EnsureBucketExists(bucketName);
+
+            var job = helper.StartWriteJob(bucketName, files);
+
+            job.Transfer(createStreamForTransferItem);
+
         }
 
         public static void DeleteBucket(IDs3Client client, string bucketName)
