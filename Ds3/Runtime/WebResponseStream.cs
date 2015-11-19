@@ -13,7 +13,6 @@
  * ****************************************************************************
  */
 
-using System;
 using System.IO;
 
 namespace Ds3.Runtime
@@ -26,8 +25,8 @@ namespace Ds3.Runtime
 
         public WebResponseStream(Stream stream, long contentLength)
         {
-            this._stream = stream;
-            this._contentLength = contentLength;
+            _stream = stream;
+            _contentLength = contentLength;
         }
 
         public override bool CanRead
@@ -87,15 +86,15 @@ namespace Ds3.Runtime
 
         public override void SetLength(long value)
         {
-            this._stream.SetLength(value);
+            _stream.SetLength(value);
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int bytesRead = _stream.Read(buffer, offset, count);
+            var bytesRead = _stream.Read(buffer, offset, count);
             _bytesRead += bytesRead;
 
-            if ((bytesRead == 0) && (_bytesRead != _contentLength))
+            if ( _contentLength > -1 && (bytesRead == 0) && (_bytesRead != _contentLength))
                 throw new Ds3ContentLengthNotMatch(Resources.ContentLengthNotMatch, _contentLength, _bytesRead);
 
             return bytesRead;

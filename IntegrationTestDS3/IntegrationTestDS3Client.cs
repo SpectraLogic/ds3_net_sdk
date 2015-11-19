@@ -64,7 +64,7 @@ namespace IntegrationTestDs3
 
         [TestFixtureSetUp]
         public void Startup() {
-        
+
             _client = Ds3Builder.FromEnv().Build();
             _helpers = new Ds3ClientHelpers(_client);
 
@@ -208,10 +208,9 @@ namespace IntegrationTestDs3
             string testChecksumCrc32C = "4waSgw==";
 
             Ds3Object testObject = new Ds3Object("numbers.txt", 9);
-            var ds3Objs = new List<Ds3Object>();
-            ds3Objs.Add(testObject);
+            var ds3Objs = new List<Ds3Object> {testObject};
 
-            using (MemoryStream stream = new MemoryStream(System.Text.Encoding.ASCII.GetBytes(content)))
+            using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
             {
                 // create or ensure bucket
                 _helpers.EnsureBucketExists(TESTBUCKET);
@@ -238,7 +237,7 @@ namespace IntegrationTestDs3
             ds3Objs.Add(testObject);
 
 
-            using (MemoryStream stream = new MemoryStream(System.Text.Encoding.ASCII.GetBytes(content)))
+            using (MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
             {
                 // create or ensure bucket
                 _helpers.EnsureBucketExists(TESTBUCKET);
