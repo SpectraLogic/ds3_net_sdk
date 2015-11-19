@@ -65,17 +65,7 @@ namespace IntegrationTestDs3
         [TestFixtureSetUp]
         public void Startup() {
 
-            //Ds3Builder builder = Ds3Builder.FromEnv();
-            string endpoint = "http://192.168.56.102:8080";
-            string accessKey = "c3BlY3RyYQ==";
-            string secretKey = "womvedQo";
-            string httpProxy = "http://192.168.56.1:8888";
-            Ds3Builder builder = new Ds3Builder(endpoint, new Credentials(accessKey, secretKey));
-
-            builder.WithProxy(new Uri(httpProxy));
-            _client = builder.Build();
-
-            //_client = Ds3Builder.FromEnv().Build();
+            _client = Ds3Builder.FromEnv().Build();
             _helpers = new Ds3ClientHelpers(_client);
 
             SetupTestData();
