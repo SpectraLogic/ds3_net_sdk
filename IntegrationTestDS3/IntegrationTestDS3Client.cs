@@ -475,7 +475,7 @@ namespace IntegrationTestDs3
             job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDestPrefix, PREFIX));
 
             var postfolder = FileHelpers.ListObjectsForDirectory(testDirectoryDestPrefix, PREFIX);
-            int postfoldercount = antefolder.Count();
+            int postfoldercount = postfolder.Count();
             Assert.Greater(postfoldercount, antefoldercount);
         }
 
@@ -493,7 +493,7 @@ namespace IntegrationTestDs3
             job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDest, string.Empty));
 
             var postfolder = FileHelpers.ListObjectsForDirectory(testDirectoryDest, string.Empty);
-            int postfoldercount = antefolder.Count();
+            int postfoldercount = postfolder.Count();
             Assert.Greater(postfoldercount, antefoldercount);
         }
 

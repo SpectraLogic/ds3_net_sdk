@@ -7,7 +7,6 @@ namespace Ds3.Models
 {
     public class DS3GetObjectsInfo : Ds3Object
     {
-        public string Name { get; private set; }
         public string Id { get; private set; }
         public string BucketId { get; private set; }
         public DateTime CreationDate { get; private set; }
@@ -23,7 +22,6 @@ namespace Ds3.Models
             string type,
             Int64 version) : base(name, null)
         {
-            this.Name = name;
             this.CreationDate = creationDate;
             this.BucketId = bucketId;
             this.Id = id;
