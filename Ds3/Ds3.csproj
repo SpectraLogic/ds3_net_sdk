@@ -87,6 +87,7 @@
     <Compile Include="Calls\VerifySystemHealthRequest.cs" />
     <Compile Include="Calls\VerifySystemHealthResponse.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
+    <Compile Include="Helpers\Streams\DisposableStream.cs" />
     <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
     <Compile Include="Helpers\Transferrers\PartialDataTransferrerDecorator.cs" />
     <Compile Include="Models\Crc32.cs" />
