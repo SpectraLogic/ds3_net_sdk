@@ -21,6 +21,7 @@ using Ds3.Models;
 using System.IO;
 using System.Linq;
 using Ds3.Calls;
+using Ds3.Helpers;
 
 namespace IntegrationTestDS3
 {
@@ -34,7 +35,7 @@ namespace IntegrationTestDS3
         [SetUp]
         public void Setup()
         {
-             Ds3Builder builder = Ds3Builder.FromEnv();
+             var builder = Ds3Builder.FromEnv();
              _client = builder.Build();
         }
 
@@ -50,7 +51,7 @@ namespace IntegrationTestDS3
         [Test]
         public void SingleObjectGet()
         {
-            var bucketName = "integrityBucket";
+            const string bucketName = "integrityBucket";
 
             try
             {
@@ -72,7 +73,7 @@ namespace IntegrationTestDS3
         [Test]
         public void GetPartialData()
         {
-            var bucketName = "partialDataBucket";
+            const string bucketName = "partialDataBucket";
 
             try
             {
@@ -114,6 +115,40 @@ namespace IntegrationTestDS3
 
                 Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).Objects.Count());
 
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestEventEmiter()
+        {
+            const string bucketName = "eventEmitter";
+
+            try
+            {
+                var counter = 0;
+                Ds3TestUtils.LoadTestData(_client, bucketName);
+
+                var ds3ObjList = new List<Ds3Object> 
+                {
+                    new Ds3Object("beowulf.txt", null)
+                };
+
+                var helpers = new Ds3ClientHelpers(_client);
+
+                var job = helpers.StartReadJob(bucketName, ds3ObjList);
+
+                job.ItemCompleted += item =>
+                {
+                    Console.WriteLine(@"Got completed event for " + item);
+                    counter++;
+                };
+                job.Transfer(name => Stream.Null);
+
+                Assert.AreEqual(1, counter);
             }
             finally
             {
