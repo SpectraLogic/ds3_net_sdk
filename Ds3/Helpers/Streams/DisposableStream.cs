@@ -20,10 +20,10 @@ namespace Ds3.Helpers.Streams
 {
     internal class DisposableStream : Stream, IDisposable
     {
-        private readonly Stream _stream;
+        private readonly FileStream _stream;
         private bool _disposed;
 
-        public DisposableStream(Stream stream)
+        public DisposableStream(FileStream stream)
         {
             _stream = stream;
         }
@@ -57,7 +57,7 @@ namespace Ds3.Helpers.Streams
 
             if (disposing)
             {
-                _stream.Flush();
+                _stream.Flush(true);
                 _stream.Dispose();
             }
 
