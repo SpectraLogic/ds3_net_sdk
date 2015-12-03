@@ -13,10 +13,10 @@
  * ****************************************************************************
  */
 
-using System.Net;
 using System.Linq;
-
+using System.Net;
 using Ds3.Calls;
+using Ds3.Lang;
 using Ds3.Runtime;
 
 namespace Ds3.ResponseParsers
@@ -27,9 +27,9 @@ namespace Ds3.ResponseParsers
 
         public GetObjectResponseParser(int copyBufferSize)
         {
-            this._copyBufferSize = copyBufferSize;
+            _copyBufferSize = copyBufferSize;
         }
-        
+
         public GetObjectResponse Parse(GetObjectRequest request, IWebResponse response)
         {
             using (response)
@@ -39,14 +39,13 @@ namespace Ds3.ResponseParsers
                     request.GetByteRanges().Any()
                         ? HttpStatusCode.PartialContent
                         : HttpStatusCode.OK
-                );
+                    );
                 using (var responseStream = response.GetResponseStream())
                 {
-                    responseStream.CopyTo(request.DestinationStream, this._copyBufferSize);
+                    StreamsUtil.BufferedCopyTo(responseStream, request.DestinationStream, _copyBufferSize);
                 }
-                return new GetObjectResponse(
-                    metadata: ResponseParseUtilities.ExtractCustomMetadata(response.Headers)
-                );
+                return new GetObjectResponse(ResponseParseUtilities.ExtractCustomMetadata(response.Headers)
+                    );
             }
         }
     }

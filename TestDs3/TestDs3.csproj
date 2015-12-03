@@ -76,6 +76,7 @@
     <Compile Include="Lang\EnumerableComparer.cs" />
     <Compile Include="Lang\CompareChain.cs" />
     <Compile Include="Lang\LangTestHelpers.cs" />
+    <Compile Include="Lang\TestStreamsUtil.cs" />
     <Compile Include="Lang\TestCompareChain.cs" />
     <Compile Include="Lang\TestEnumerableComparer.cs" />
     <Compile Include="Lang\TestParallel.cs" />
