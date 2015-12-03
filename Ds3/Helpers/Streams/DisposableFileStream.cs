@@ -18,12 +18,12 @@ using System.IO;
 
 namespace Ds3.Helpers.Streams
 {
-    internal class DisposableStream : Stream, IDisposable
+    internal class DisposableFileStream : Stream, IDisposable
     {
         private readonly FileStream _stream;
         private bool _disposed;
 
-        public DisposableStream(FileStream stream)
+        public DisposableFileStream(FileStream stream)
         {
             _stream = stream;
         }

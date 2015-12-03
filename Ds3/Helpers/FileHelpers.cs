@@ -51,7 +51,7 @@ namespace Ds3.Helpers
                 var fullPath = Path.Combine(root, ConvertKeyToPath(key));
                 var fixedPath = PrependPrefix(fullPath, prefix);
                 EnsureDirectoryForFile(fixedPath);
-                return new DisposableStream(File.OpenWrite(fixedPath));
+                return new DisposableFileStream(File.OpenWrite(fixedPath));
             };
         }
 
@@ -87,7 +87,8 @@ namespace Ds3.Helpers
         {
             return
                 key =>
-                    new DisposableStream(File.OpenRead(Path.Combine(root, RemovePrefix(ConvertKeyToPath(key), prefix))));
+                    new DisposableFileStream(
+                        File.OpenRead(Path.Combine(root, RemovePrefix(ConvertKeyToPath(key), prefix))));
         }
 
         /// <summary>
