@@ -1,5 +1,7 @@
 # DS3 .Net SDK
 
+[![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/SpectraLogic/ds3_net_sdk/blob/master/LICENSE.md)
+
 An [SDK](http://en.wikipedia.org/wiki/Software_development_kit) conforming to
 the DS3 specification.
 
