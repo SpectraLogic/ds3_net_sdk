@@ -26,6 +26,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Threading;
+using IntegrationTestDS3;
+
 // using TestDs3.Lang;
 
 namespace IntegrationTestDs3
@@ -63,9 +65,10 @@ namespace IntegrationTestDs3
         #region setup
 
         [TestFixtureSetUp]
-        public void Startup() {
+        public void Startup()
+        {
 
-            _client = Ds3Builder.FromEnv().Build();
+            _client = Ds3TestUtils.CreateClient();
             _helpers = new Ds3ClientHelpers(_client);
 
             SetupTestData();

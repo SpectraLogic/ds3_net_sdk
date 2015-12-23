@@ -50,7 +50,7 @@ namespace Ds3.ResponseParsers
         {
             return new Tape
             {
-                AssignedToBucket = bool.Parse(tapeEl.TextOf("AssignedToBucket")),
+                AssignedToBucket = ParseNullableBool(tapeEl.TextOfOrNull("AssignedToBucket")),
                 AvailableRawCapacity = ParseNullableLong(tapeEl.TextOfOrNull("AvailableRawCapacity")),
                 BarCode = tapeEl.TextOf("BarCode"),
                 BucketId = tapeEl.TextOfOrNull("BucketId"),
@@ -77,17 +77,24 @@ namespace Ds3.ResponseParsers
 
         private static DateTime? ParseNullableDateTime(string dateTimeStringOrNull)
         {
-            return string.IsNullOrWhiteSpace(dateTimeStringOrNull) ? (DateTime?)null : DateTime.Parse(dateTimeStringOrNull);
+            return string.IsNullOrWhiteSpace(dateTimeStringOrNull)
+                ? (DateTime?) null
+                : DateTime.Parse(dateTimeStringOrNull);
+        }
+
+        private static bool? ParseNullableBool(string boolOrNull)
+        {
+            return string.IsNullOrWhiteSpace(boolOrNull) ? (bool?) null : bool.Parse(boolOrNull);
         }
 
         private static long? ParseNullableLong(string longOrNull)
         {
-            return string.IsNullOrWhiteSpace(longOrNull) ? (long?)null : long.Parse(longOrNull);
+            return string.IsNullOrWhiteSpace(longOrNull) ? (long?) null : long.Parse(longOrNull);
         }
 
         private static TapeState? ParseNullableTapeState(string tapeStateOrNull)
         {
-            return string.IsNullOrWhiteSpace(tapeStateOrNull) ? (TapeState?)null : ParseTapeState(tapeStateOrNull);
+            return string.IsNullOrWhiteSpace(tapeStateOrNull) ? (TapeState?) null : ParseTapeState(tapeStateOrNull);
         }
 
         private static TapeState ParseTapeState(string tapeState)

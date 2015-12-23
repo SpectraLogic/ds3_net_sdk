@@ -19,7 +19,7 @@ namespace Ds3.Models
 {
     public class Tape
     {
-        public bool AssignedToBucket { get; set; }
+        public bool? AssignedToBucket { get; set; }
         public long? AvailableRawCapacity { get; set; }
         public string BarCode { get; set; }
         public string BucketId { get; set; }

@@ -35,8 +35,7 @@ namespace IntegrationTestDS3
         [SetUp]
         public void Setup()
         {
-             var builder = Ds3Builder.FromEnv();
-             _client = builder.Build();
+            _client = Ds3TestUtils.CreateClient();
         }
 
         [TearDown]
