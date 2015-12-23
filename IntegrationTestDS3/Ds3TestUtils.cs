@@ -28,6 +28,11 @@ namespace IntegrationTestDS3
     internal static class Ds3TestUtils
     {
 
+        public static IDs3Client CreateClient()
+        {
+            return Ds3Builder.FromEnv().Build();
+        }
+
         public static List<Ds3Object> Objects = new List<Ds3Object>
         {
             new Ds3Object("beowulf.txt", 294059),
