@@ -1,5 +1,6 @@
 # DS3 .Net SDK
 
+[![Build Status](https://travis-ci.org/SpectraLogic/ds3_net_sdk.svg?branch=v1.2.3)](https://travis-ci.org/SpectraLogic/ds3_net_sdk)
 [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/SpectraLogic/ds3_net_sdk/blob/master/LICENSE.md)
 
 An [SDK](http://en.wikipedia.org/wiki/Software_development_kit) conforming to
