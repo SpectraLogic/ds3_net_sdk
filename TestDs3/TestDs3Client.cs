@@ -671,7 +671,7 @@ namespace TestDs3
             var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
             var queryParams = new Dictionary<string, string>
             {
-                { "bucket", "bucketName" }
+                { "bucketId", "bucketName" }
             };
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", queryParams, "")
@@ -915,7 +915,7 @@ namespace TestDs3
 
         private readonly static Tape _testTape = new Tape
         {
-            AssignedToBucket = false,
+            AssignedToStorageDomain = false,
             AvailableRawCapacity = 10000L,
             BarCode = "t1",
             BucketId = "7a6a0b80-4c24-4f8c-9779-527e863c5470",
@@ -1021,7 +1021,7 @@ namespace TestDs3
                 }
 
                 return CompareChain.Of(x, y)
-                    .Value(t => t.AssignedToBucket)
+                    .Value(t => t.AssignedToStorageDomain)
         			.Value(t => t.AvailableRawCapacity)
         			.Value(t => t.BarCode)
         			.Value(t => t.BucketId)

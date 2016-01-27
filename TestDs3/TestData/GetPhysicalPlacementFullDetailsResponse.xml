@@ -4,7 +4,7 @@
     <PhysicalPlacement>
       <Tapes>
         <Tape>
-          <AssignedToBucket>false</AssignedToBucket>
+          <AssignedToStorageDomain>false</AssignedToStorageDomain>
           <AvailableRawCapacity>10000</AvailableRawCapacity>
           <BarCode>t1</BarCode>
           <BucketId>7a6a0b80-4c24-4f8c-9779-527e863c5470</BucketId>
