@@ -23,9 +23,9 @@ namespace Ds3.Calls
         {
             if (this.Bucket != null)
             {
-                this.QueryParams.Remove("bucketId");
+                this.QueryParams.Remove("bucket");
             }
-            this.QueryParams.Add("bucketId", bucket);
+            this.QueryParams.Add("bucket", bucket);
             this.Bucket = bucket;
             return this;
         }

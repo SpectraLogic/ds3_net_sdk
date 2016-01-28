@@ -50,7 +50,7 @@ namespace Ds3.ResponseParsers
         {
             return new Tape
             {
-                AssignedToStorageDomain = ParseNullableBool(tapeEl.TextOfOrNull("AssignedToStorageDomain")),
+                AssignedToBucket = ParseNullableBool(tapeEl.TextOfOrNull("AssignedToBucket")),
                 AvailableRawCapacity = ParseNullableLong(tapeEl.TextOfOrNull("AvailableRawCapacity")),
                 BarCode = tapeEl.TextOf("BarCode"),
                 BucketId = tapeEl.TextOfOrNull("BucketId"),
