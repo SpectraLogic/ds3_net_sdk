@@ -13,24 +13,24 @@
  * ****************************************************************************
  */
 
-using System.Text;
-using NUnit.Framework;
 using Ds3.Runtime;
+using NUnit.Framework;
+using System;
 using System.IO;
+using System.Text;
 
-namespace TestDs3.Helpers.Streams
+namespace TestDs3.Runtime
 {
-
     [TestFixture]
-    class TestWebResponseStream
+    internal class TestWebResponseStream
     {
-        const int CopyBufferSize = 1;
-        byte[] byteStringSize26 = Encoding.UTF8.GetBytes("abcdefghijklmnopqrstuvwxyz");
+        private const int CopyBufferSize = 1;
+        private readonly byte[] _byteStringSize26 = Encoding.UTF8.GetBytes("abcdefghijklmnopqrstuvwxyz");
 
         [Test]
         public void TestCopyTo()
         {
-            var stream = new MemoryStream(byteStringSize26);
+            var stream = new MemoryStream(_byteStringSize26);
 
             Assert.AreEqual(
                 GetRequestedStream(stream, stream.Length),
@@ -38,10 +38,9 @@ namespace TestDs3.Helpers.Streams
 
             Assert.Catch(typeof(Ds3ContentLengthNotMatch), () => GetRequestedStream(stream, stream.Length + 10));
             Assert.Catch(typeof(Ds3ContentLengthNotMatch), () => GetRequestedStream(stream, stream.Length - 10));
-
         }
 
-        private Stream GetRequestedStream(Stream source, long lenght)
+        private static Stream GetRequestedStream(Stream source, long lenght)
         {
             var webReponseStream = new WebResponseStream(source, lenght);
             var requestStream = new MemoryStream();
@@ -53,5 +52,48 @@ namespace TestDs3.Helpers.Streams
 
             return requestStream;
         }
+
+        [Test]
+        public void TestForOverflow()
+        {
+            var webReponseStream = new WebResponseStream(new FakeStream(), int.MaxValue * 2L);
+            webReponseStream.Read(null, 0, 0);
+            webReponseStream.Read(null, 0, 0);
+            Assert.AreEqual(webReponseStream.GetBytesRead(), int.MaxValue * 2L);
+        }
+    }
+
+    internal class FakeStream : Stream
+    {
+        public override void Flush()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long Seek(long offset, SeekOrigin origin)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SetLength(long value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            return int.MaxValue;
+        }
+
+        public override void Write(byte[] buffer, int offset, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CanRead { get; }
+        public override bool CanSeek { get; }
+        public override bool CanWrite { get; }
+        public override long Length { get; }
+        public override long Position { get; set; }
     }
 }

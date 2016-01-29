@@ -104,5 +104,10 @@ namespace Ds3.Runtime
         {
             _stream.Write(buffer, offset, count);
         }
+
+        public long GetBytesRead()
+        {
+            return _bytesRead;
+        }
     }
 }
