@@ -21,7 +21,7 @@ namespace Ds3.Runtime
     {
         private readonly Stream _stream;
         private readonly long _contentLength;
-        private int _bytesRead = 0;
+        private long _bytesRead = 0;
 
         public WebResponseStream(Stream stream, long contentLength)
         {
@@ -103,6 +103,11 @@ namespace Ds3.Runtime
         public override void Write(byte[] buffer, int offset, int count)
         {
             _stream.Write(buffer, offset, count);
+        }
+
+        public long GetBytesRead()
+        {
+            return _bytesRead;
         }
     }
 }
