@@ -40,9 +40,9 @@ namespace TestDs3.Runtime
             Assert.Catch(typeof(Ds3ContentLengthNotMatch), () => GetRequestedStream(stream, stream.Length - 10));
         }
 
-        private static Stream GetRequestedStream(Stream source, long lenght)
+        private static Stream GetRequestedStream(Stream source, long length)
         {
-            var webReponseStream = new WebResponseStream(source, lenght);
+            var webReponseStream = new WebResponseStream(source, length);
             var requestStream = new MemoryStream();
             if (webReponseStream.Position != 0)
             {
