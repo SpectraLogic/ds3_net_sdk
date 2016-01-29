@@ -21,7 +21,7 @@ namespace Ds3.Runtime
     {
         private readonly Stream _stream;
         private readonly long _contentLength;
-        private long _bytesRead;
+        private long _bytesRead = 0;
 
         public WebResponseStream(Stream stream, long contentLength)
         {
