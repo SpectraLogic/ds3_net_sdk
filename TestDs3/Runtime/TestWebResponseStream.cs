@@ -95,13 +95,25 @@ namespace TestDs3.Runtime
             throw new NotImplementedException();
         }
 
-        public override bool CanRead => this._canRead;
+        public override bool CanRead
+        {
+            get { return this._canRead; }
+        }
 
-        public override bool CanSeek => this._canSeek;
+        public override bool CanSeek
+        {
+            get { return this._canSeek; }
+        }
 
-        public override bool CanWrite => this._canWrite;
+        public override bool CanWrite
+        {
+            get { return this._canWrite; }
+        }
 
-        public override long Length => this._length;
+        public override long Length
+        {
+            get { return this._length; }
+        }
 
         public override long Position { get; set; }
     }
