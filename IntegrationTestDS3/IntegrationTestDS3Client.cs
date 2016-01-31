@@ -178,6 +178,7 @@ namespace IntegrationTestDs3
         **/
 
         [Test]
+        [Ignore]
         public void TestPutWithChecksum()
         {
             // grab a file
@@ -204,6 +205,7 @@ namespace IntegrationTestDs3
         }
 
         [Test]
+        [Ignore]
         public void TestPutWithSuppliedChecksum()
         {
             // "123456789" has a well known checksum
