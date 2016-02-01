@@ -990,7 +990,7 @@ namespace TestDs3
 
         [Test]
         [ExpectedException(typeof(Ds3MaxJobsException))]
-        public void TestBulkPutWithJob1000Exception()
+        public void TestBulkPutWithDs3MaxJobsException()
         {
             var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
             const string stringRequest = "<Objects><Object Name=\"obj1\" Size=\"1234\" /></Objects>";
@@ -1009,7 +1009,7 @@ namespace TestDs3
 
         [Test]
         [ExpectedException(typeof(Ds3MaxJobsException))]
-        public void TestStartWriteJobWithJob1000Exception()
+        public void TestStartWriteJobWithDs3MaxJobsException()
         {
             var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
             const string stringRequest = "<Objects><Object Name=\"obj1\" Size=\"1234\" /></Objects>";
