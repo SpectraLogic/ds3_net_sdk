@@ -86,7 +86,7 @@
     <Compile Include="Calls\HeadObjectResponse.cs" />
     <Compile Include="Calls\VerifySystemHealthRequest.cs" />
     <Compile Include="Calls\VerifySystemHealthResponse.cs" />
-    <Compile Include="Runtime\Job1000Exception.cs" />
+    <Compile Include="Runtime\Ds3MaxJobsException.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\DisposableFileStream.cs" />
     <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
