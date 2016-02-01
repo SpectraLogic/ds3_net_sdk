@@ -43,7 +43,7 @@ namespace Ds3.ResponseParsers
                         }
 
                     case HttpStatusCode.ServiceUnavailable:
-                        throw new Job1000Exception();
+                        throw new Ds3MaxJobsException();
 
                     default:
                         return null; // we should never hit that

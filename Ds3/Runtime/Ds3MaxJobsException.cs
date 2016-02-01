@@ -2,7 +2,7 @@
 
 namespace Ds3.Runtime
 {
-    public class Job1000Exception : Exception
+    public class Ds3MaxJobsException : Exception
     {
     }
 }

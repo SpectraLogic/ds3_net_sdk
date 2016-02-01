@@ -65,7 +65,7 @@ namespace Ds3.Helpers
                 {
                     jobResponse = this._client.BulkPut(request);
                 }
-                catch (Job1000Exception)
+                catch (Ds3MaxJobsException)
                 {
                     if (retriesLeft == 0)
                     {

@@ -989,7 +989,7 @@ namespace TestDs3
 
 
         [Test]
-        [ExpectedException(typeof(Job1000Exception))]
+        [ExpectedException(typeof(Ds3MaxJobsException))]
         public void TestBulkPutWithJob1000Exception()
         {
             var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
@@ -1008,7 +1008,7 @@ namespace TestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Job1000Exception))]
+        [ExpectedException(typeof(Ds3MaxJobsException))]
         public void TestStartWriteJobWithJob1000Exception()
         {
             var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
