@@ -26,6 +26,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using Moq;
+using TestDs3.Helpers;
 using TestDs3.Lang;
 
 namespace TestDs3
@@ -248,11 +250,11 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
                 .GetObjects(new GetObjectsRequest()
-                    {
-                      BucketId = "videos", 
-                      ObjectName = "%mp4"
-                    } );
-            
+                {
+                    BucketId = "videos",
+                    ObjectName = "%mp4"
+                });
+
             var responseObjects = response.Objects.ToList();
             Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
             for (var i = 0; i < expected.Objects.Length; i++)
@@ -906,7 +908,7 @@ namespace TestDs3
         {
             int len = fullpaths.Count();
             List<string> ret = new List<string>();
-            foreach (var path in fullpaths )
+            foreach (var path in fullpaths)
             {
                 ret.Add(Path.GetFileName(path));
             }
@@ -981,7 +983,49 @@ namespace TestDs3
                 .AsClient;
 
             var result = client.GetPhysicalPlacementForObjects(new GetPhysicalPlacementForObjectsRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" }));
-            CollectionAssert.AreEqual( new[] { _testObjectPlacement }, result.ObjectPlacements.ToArray(), new Ds3ObjectPlacementComparer());
+            CollectionAssert.AreEqual(new[] { _testObjectPlacement }, result.ObjectPlacements.ToArray(), new Ds3ObjectPlacementComparer());
+        }
+
+
+
+        [Test]
+        [ExpectedException(typeof(Job1000Exception))]
+        public void TestBulkPutWithJob1000Exception()
+        {
+            var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
+            const string stringRequest = "<Objects><Object Name=\"obj1\" Size=\"1234\" /></Objects>";
+            var mockClient = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket", queryParams, stringRequest)
+                .Returning(HttpStatusCode.ServiceUnavailable, "", _emptyHeaders)
+                .AsClient;
+
+            var files = new[] {
+                new { Key = "obj1", Size = 1234L }
+            };
+            var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
+
+            mockClient.BulkPut(new BulkPutRequest("bucket", inputObjects));
+        }
+
+        [Test]
+        [ExpectedException(typeof(Job1000Exception))]
+        public void TestStartWriteJobWithJob1000Exception()
+        {
+            var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
+            const string stringRequest = "<Objects><Object Name=\"obj1\" Size=\"1234\" /></Objects>";
+            var mockClient = MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket", queryParams, stringRequest)
+                .Returning(HttpStatusCode.ServiceUnavailable, "", _emptyHeaders)
+                .AsClient;
+
+            var files = new[] {
+                new { Key = "obj1", Size = 1234L }
+            };
+            var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
+
+            var helpers = new Ds3ClientHelpers(mockClient, jobRetries: 3, jobWaitTime: 0);
+
+            helpers.StartWriteJob("bucket", inputObjects);
         }
 
         private class Ds3ObjectPlacementComparer : IComparer, IComparer<Ds3ObjectPlacement>
@@ -1045,7 +1089,6 @@ namespace TestDs3
         			.Value(t => t.WriteProtected)
                     .Result;
             }
-
         }
     }
 }

@@ -20,6 +20,7 @@ using System.Net;
 using System.Xml.Linq;
 
 using Ds3.Calls;
+using Ds3.Helpers;
 using Ds3.Models;
 using Ds3.Runtime;
 
@@ -32,10 +33,20 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                using (Stream content = response.GetResponseStream())
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK, HttpStatusCode.ServiceUnavailable);
+                switch (response.StatusCode)
                 {
-                    return ParseResponseContent(content);
+                    case HttpStatusCode.OK:
+                        using (var content = response.GetResponseStream())
+                        {
+                            return ParseResponseContent(content);
+                        }
+
+                    case HttpStatusCode.ServiceUnavailable:
+                        throw new Job1000Exception();
+
+                    default:
+                        return null; // we should never hit that
                 }
             }
         }
