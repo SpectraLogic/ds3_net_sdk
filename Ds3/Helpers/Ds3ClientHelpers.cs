@@ -21,6 +21,8 @@ using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers
 {
@@ -32,13 +34,17 @@ namespace Ds3.Helpers
         private const string JobTypePut = "PUT";
         private const string JobTypeGet = "GET";
         private readonly int _retryAfter; //-1 represent infinite number
-        private readonly int _getObjectRetries; // -1 represents infintie number of retries
+        private readonly int _getObjectRetries; // -1 represents infinite number of retries
+        private readonly int _jobRetries;
+        private readonly int _jobWaitTime; //in minutes
 
-        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5)
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1, int jobWaitTime = 5)
         {
             this._client = client;
             this._retryAfter = retryAfter;
             this._getObjectRetries = getObjectRetries;
+            this._jobRetries = jobRetries;
+            this._jobWaitTime = jobWaitTime;
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null)
@@ -51,7 +57,26 @@ namespace Ds3.Helpers
             {
                 request.WithMaxBlobSize(maxBlobSize.Value);
             }
-            var jobResponse = this._client.BulkPut(request);
+            JobResponse jobResponse = null;
+            var retriesLeft = this._jobRetries;
+            do
+            {
+                try
+                {
+                    jobResponse = this._client.BulkPut(request);
+                }
+                catch (Ds3MaxJobsException)
+                {
+                    if (retriesLeft == 0)
+                    {
+                        throw;
+                    }
+
+                    retriesLeft--;
+                    Thread.Sleep(this._jobWaitTime * 1000 * 60);
+                }
+            } while (jobResponse == null);
+            
             return FullObjectJob.Create(
                 jobResponse,
                 new WriteTransferItemSource(this._client, jobResponse),
