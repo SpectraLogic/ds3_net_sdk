@@ -180,6 +180,12 @@ namespace IntegrationTestDs3
         [Test]
         public void TestPutWithChecksum()
         {
+            //This test is supported only for BP 1.2
+            if (!isTestSupported(_client, 1.2))
+            {
+                Assert.Ignore();
+            }
+
             // grab a file
             var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
             Assert.IsNotEmpty(directoryObjects);
@@ -206,6 +212,12 @@ namespace IntegrationTestDs3
         [Test]
         public void TestPutWithSuppliedChecksum()
         {
+            //This test is supported only for BP 1.2
+            if (!isTestSupported(_client, 1.2))
+            {
+                Assert.Ignore();
+            }
+
             // "123456789" has a well known checksum
             string content = "123456789";
             string testChecksumCrc32C = "4waSgw==";
@@ -227,7 +239,16 @@ namespace IntegrationTestDs3
             DeleteObject(TESTBUCKET, testObject.Name);
         }
 
-        [Test]
+        private bool isTestSupported(IDs3Client client, double supportedBlackPearlVersion)
+        {
+            var buildInfo = client.GetSystemInformation(new GetSystemInformationRequest()).BuildVersion;
+            var buildInfoArr = buildInfo.Split('.');
+            var version = double.Parse(string.Format("{0}.{1}", buildInfoArr[0], buildInfoArr[1]));
+
+            return version == supportedBlackPearlVersion;
+    }
+
+    [Test]
         [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
         public void TestPutWithBadChecksum()
         {
