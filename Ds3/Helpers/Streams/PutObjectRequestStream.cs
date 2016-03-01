@@ -13,7 +13,9 @@
  * ****************************************************************************
  */
 
+using System;
 using System.IO;
+using System.Threading;
 
 namespace Ds3.Helpers.Streams
 {
@@ -22,6 +24,12 @@ namespace Ds3.Helpers.Streams
         private readonly Stream _stream;
         private long _streamLength;
         private long _totalBytesRead = 0;
+
+        public PutObjectRequestStream(Stream stream, long length)
+        {
+            this._stream = stream;
+            this._streamLength = length;
+        }
 
         public PutObjectRequestStream(Stream stream, long offset, long length)
         {
@@ -50,7 +58,7 @@ namespace Ds3.Helpers.Streams
         {
             get
             {
-                return _stream.CanWrite;
+                return false;
             }
         }
 
@@ -92,23 +100,26 @@ namespace Ds3.Helpers.Streams
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            Console.WriteLine("[{0}] stream position {1}", Thread.CurrentThread.ManagedThreadId, Position);
             if (_totalBytesRead == this._streamLength)
             {
+                this._totalBytesRead = 0;
                 return 0;
             }
-            else if (_totalBytesRead + count > this._streamLength)
+
+            if (_totalBytesRead + count > this._streamLength)
             {
-                count = (int)_totalBytesRead + count - (int)this._streamLength;
+                count = (int) (this._streamLength - _totalBytesRead);
             }
 
-            int bytesRead = _stream.Read(buffer, offset, count);
+            var bytesRead = _stream.Read(buffer, offset, count);
             _totalBytesRead += bytesRead;
             return bytesRead;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            _stream.Write(buffer, offset, count);
+            throw new NotSupportedException();
         }
     }
 }

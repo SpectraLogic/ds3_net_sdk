@@ -98,7 +98,7 @@ namespace Ds3.Helpers.Streams
                 this._streamStore.Access(range.Context, stream =>
                 {
                     stream.Position = range.Range.Start;
-                    for (var streamProgress = 0; streamProgress < rangeLength; )
+                    for (var streamProgress = 0; streamProgress < rangeLength;)
                     {
                         streamProgress += stream.Read(
                             buffer,

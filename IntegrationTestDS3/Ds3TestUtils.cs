@@ -30,6 +30,11 @@ namespace IntegrationTestDS3
 
         public static IDs3Client CreateClient()
         {
+            Environment.SetEnvironmentVariable("DS3_ENDPOINT", "http://sm25-2.eng.sldomain.com");
+            Environment.SetEnvironmentVariable("DS3_ACCESS_KEY", "c3BlY3RyYQ==");
+            Environment.SetEnvironmentVariable("DS3_SECRET_KEY", "uY9JtDZT");//uWvMXihc
+            Environment.SetEnvironmentVariable("http_proxy", "");
+
             return Ds3Builder.FromEnv().Build();
         }
 

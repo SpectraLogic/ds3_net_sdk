@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace Ds3.Helpers.RangeTranslators
 {
-    internal interface IRangeTranslator<TFromContext, TToContext>
+    public interface IRangeTranslator<TFromContext, TToContext>
         where TFromContext : IComparable<TFromContext>
         where TToContext : IComparable<TToContext>
     {

@@ -18,6 +18,7 @@ using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace Ds3.Helpers.Transferrers
 {
@@ -32,6 +33,7 @@ namespace Ds3.Helpers.Transferrers
             IEnumerable<Range> ranges,
             Stream stream)
         {
+            Console.WriteLine("[{0}] Getting {1} with offset {2}", Thread.CurrentThread.ManagedThreadId, objectName, blobOffset);
             client.GetObject(new GetObjectRequest(bucketName, objectName, jobId, blobOffset, stream));
         }
     }

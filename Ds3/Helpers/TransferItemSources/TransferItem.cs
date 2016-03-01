@@ -15,7 +15,7 @@
 
 namespace Ds3.Helpers.TransferItemSources
 {
-    internal class TransferItem
+    public class TransferItem
     {
         public IDs3Client Client { get; private set; }
         public Blob Blob { get; private set; }
