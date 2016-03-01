@@ -13,32 +13,33 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
 using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
+using Ds3.Helpers.Strategys;
 using Ds3.Models;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 
 namespace IntegrationTestDS3
 {
     internal static class Ds3TestUtils
     {
-
         public static IDs3Client CreateClient()
         {
+            //TODO remove me
             Environment.SetEnvironmentVariable("DS3_ENDPOINT", "http://sm25-2.eng.sldomain.com");
             Environment.SetEnvironmentVariable("DS3_ACCESS_KEY", "c3BlY3RyYQ==");
-            Environment.SetEnvironmentVariable("DS3_SECRET_KEY", "uY9JtDZT");//uWvMXihc
+            Environment.SetEnvironmentVariable("DS3_SECRET_KEY", "uY9JtDZT");
             Environment.SetEnvironmentVariable("http_proxy", "");
 
             return Ds3Builder.FromEnv().Build();
         }
 
-        public static List<Ds3Object> Objects = new List<Ds3Object>
+        private static readonly List<Ds3Object> Objects = new List<Ds3Object>
         {
             new Ds3Object("beowulf.txt", 294059),
             new Ds3Object("sherlock_holmes.txt", 581881),
@@ -46,43 +47,46 @@ namespace IntegrationTestDS3
             new Ds3Object("ulysses.txt", 1540095)
         };
 
-        public static void LoadTestData(IDs3Client client, string bucketName)
+        public static void LoadTestData(IDs3Client client, string bucketName, Type helperStrategyType = null)
         {
-            PutFiles(client, bucketName, Objects, ReadResource);
+            PutFiles(client, bucketName, Objects, ReadResource, helperStrategyType);
         }
 
         /// <summary>
         /// This will get the object and return the name of the temporary file it was written to.
         /// It is up to the caller to delete the temporary file
         /// </summary>
-        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName, int retries = 5)
+        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName, int retries = 5, Type helperStrategyType = null)
         {
-            string tempFilename = Path.GetTempFileName();
+            var tempFilename = Path.GetTempFileName();
 
             using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
             {
-                
                 IDs3ClientHelpers helper = new Ds3ClientHelpers(client, getObjectRetries: retries);
 
-                var job = helper.StartReadJob(bucketName, new List<Ds3Object>{ new Ds3Object(objectName, null)});
-            
+                if (helperStrategyType == null)
+                {
+                    helperStrategyType = typeof(ReadRandomAccessHelperStrategy<string>);
+                }
+
+                var job = helper.StartReadJob(bucketName, new List<Ds3Object> { new Ds3Object(objectName, null) }, helperStrategyType);
+
                 job.Transfer(key => fileStream);
 
-                return tempFilename;   
+                return tempFilename;
             }
         }
 
-        internal static string GetSingleObjectWithRange(IDs3Client client, string bucketName, string objectName, Range range)
+        internal static string GetSingleObjectWithRange(IDs3Client client, string bucketName, string objectName, Range range, Type helperStrategyType = null)
         {
-            string tempFilename = Path.GetTempFileName();
+            var tempFilename = Path.GetTempFileName();
 
             using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
             {
-
                 IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
 
-                var job = helper.StartPartialReadJob(bucketName, new List<string>(), new List<Ds3PartialObject> { new Ds3PartialObject(range, objectName) });
-                
+                var job = helper.StartPartialReadJob(bucketName, new List<string>(), new List<Ds3PartialObject> { new Ds3PartialObject(range, objectName) }, helperStrategyType);
+
                 job.Transfer(key => fileStream);
 
                 return tempFilename;
@@ -90,17 +94,15 @@ namespace IntegrationTestDS3
         }
 
         public static void PutFiles(IDs3Client client, string bucketName, IEnumerable<Ds3Object> files,
-            Func<string, Stream> createStreamForTransferItem)
+            Func<string, Stream> createStreamForTransferItem, Type helperStrategyType = null)
         {
-
             IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
 
             helper.EnsureBucketExists(bucketName);
 
-            var job = helper.StartWriteJob(bucketName, files);
+            var job = helper.StartWriteJob(bucketName, files, helperStrategyType: helperStrategyType);
 
             job.Transfer(createStreamForTransferItem);
-
         }
 
         public static void DeleteBucket(IDs3Client client, string bucketName)
@@ -114,20 +116,20 @@ namespace IntegrationTestDS3
 
             var objs = helpers.ListObjects(bucketName);
 
-
             client.DeleteObjectList(new DeleteObjectListRequest(bucketName, objs));
             client.DeleteBucket(new DeleteBucketRequest(bucketName));
-            
         }
 
-        public static String ComputeSha1(string fileName)
+        public static string ComputeSha1(string fileName)
         {
             using (var sha1Managed = new SHA1Managed())
             using (Stream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             using (Stream sha1Stream = new CryptoStream(fileStream, sha1Managed, CryptoStreamMode.Read))
             {
-                while (sha1Stream.ReadByte() != -1);
-            
+                while (sha1Stream.ReadByte() != -1)
+                {
+                }
+
                 return Convert.ToBase64String(sha1Managed.Hash);
             }
         }
@@ -136,7 +138,5 @@ namespace IntegrationTestDS3
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("IntegrationTestDS3.TestData." + resourceName);
         }
-
-
     }
 }

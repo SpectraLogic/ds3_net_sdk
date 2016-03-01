@@ -13,22 +13,22 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
 using Ds3;
-using Ds3.Models;
-using System.IO;
-using System.Linq;
 using Ds3.Calls;
 using Ds3.Helpers;
+using Ds3.Helpers.Strategys;
+using Ds3.Models;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace IntegrationTestDS3
 {
     [TestFixture]
     internal class DataIntegrity
     {
-
         private IDs3Client _client;
         private readonly List<string> _tempFiles = new List<string>();
 
@@ -50,40 +50,57 @@ namespace IntegrationTestDS3
         [Test]
         public void SingleObjectGet()
         {
-            const string bucketName = "integrityBucket";
+            const string bucketName = "SingleObjectGet";
 
-            try
+            var writeStrategyList = new List<Type>
             {
-                Ds3TestUtils.LoadTestData(_client, bucketName);
+                null, //using the default strategy
+                typeof(WriteRandomAccessHelperStrategy),
+                typeof(WriteNoAllocateHelperStrategy),
+                typeof(WriteStreamHelperStrategy)
+            };
 
-                var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt");
+            writeStrategyList.ForEach(strategy =>
+            {
+                try
+                {
+                    Ds3TestUtils.LoadTestData(_client, bucketName, strategy);
+                    SingleObjectGetHelper(bucketName);
+                }
+                finally
+                {
+                    Ds3TestUtils.DeleteBucket(_client, bucketName);
+                }
+            });
+        }
+
+        private void SingleObjectGetHelper(string bucketName)
+        {
+            var readStrategyList = new List<Type>
+            {
+                null, //using the default strategy
+                typeof(ReadRandomAccessHelperStrategy<string>)
+            };
+
+            readStrategyList.ForEach(strategy =>
+            {
+                var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategyType: strategy);
                 _tempFiles.Add(file);
 
                 var sha1 = Ds3TestUtils.ComputeSha1(file);
-
                 Assert.AreEqual("jtpN/ZmICOS8pWseFd0+MX2CII0=", sha1);
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
+            });
         }
 
         [Test]
         public void GetPartialData()
         {
-            const string bucketName = "partialDataBucket";
+            const string bucketName = "GetPartialData";
 
             try
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
-
-                var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0,1046));
-                _tempFiles.Add(file);
-
-                var sha1 = Ds3TestUtils.ComputeSha1(file);
-
-                Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
+                GetPartialDataHelper(bucketName);
             }
             finally
             {
@@ -91,15 +108,37 @@ namespace IntegrationTestDS3
             }
         }
 
+        private void GetPartialDataHelper(string bucketName)
+        {
+            var readStrategyList = new List<Type>
+            {
+                null, //using the default strategy
+                typeof (ReadRandomAccessHelperStrategy<Ds3PartialObject>)
+            };
+
+            readStrategyList.ForEach(strategy =>
+            {
+                var file = Ds3TestUtils.GetSingleObjectWithRange(
+                    _client,
+                    bucketName,
+                    "beowulf.txt",
+                    Range.ByLength(0, 1046),
+                    strategy);
+
+                _tempFiles.Add(file);
+
+                var sha1 = Ds3TestUtils.ComputeSha1(file);
+                Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
+            });
+        }
+
         [Test]
         public void PutLargeNumberOfObjects()
         {
-
-            const string bucketName = "lotsOfFiles";
+            const string bucketName = "PutLargeNumberOfObjects";
 
             try
             {
-
                 const string content = "hi im content";
                 var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
 
@@ -113,7 +152,6 @@ namespace IntegrationTestDS3
                 Ds3TestUtils.PutFiles(_client, bucketName, objects, key => new MemoryStream(contentBytes));
 
                 Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).Objects.Count());
-
             }
             finally
             {
@@ -122,32 +160,49 @@ namespace IntegrationTestDS3
         }
 
         [Test]
-        public void TestEventEmiter()
+        public void TestJobEvents()
         {
-            const string bucketName = "eventEmitter";
+            const string bucketName = "TestJobEvents";
 
             try
             {
-                var counter = 0;
                 Ds3TestUtils.LoadTestData(_client, bucketName);
 
-                var ds3ObjList = new List<Ds3Object> 
+                var ds3ObjList = new List<Ds3Object>
                 {
                     new Ds3Object("beowulf.txt", null)
                 };
 
                 var helpers = new Ds3ClientHelpers(_client);
 
-                var job = helpers.StartReadJob(bucketName, ds3ObjList);
-
-                job.ItemCompleted += item =>
+                var readStrategyList = new List<Type>
                 {
-                    Console.WriteLine(@"Got completed event for " + item);
-                    counter++;
+                    null, //using the default strategy
+                    typeof(ReadRandomAccessHelperStrategy<string>)
                 };
-                job.Transfer(name => Stream.Null);
 
-                Assert.AreEqual(1, counter);
+                readStrategyList.ForEach(strategy =>
+                {
+                    var counter = 0;
+                    var dataTransfered = 0L;
+
+                    var job = helpers.StartReadJob(bucketName, ds3ObjList, strategy);
+
+                    job.ItemCompleted += item =>
+                    {
+                        counter++;
+                    };
+
+                    job.DataTransferred += item =>
+                    {
+                        dataTransfered += item;
+                    };
+
+                    job.Transfer(name => Stream.Null);
+
+                    Assert.AreEqual(1, counter);
+                    Assert.AreEqual(294059, dataTransfered);
+                });
             }
             finally
             {

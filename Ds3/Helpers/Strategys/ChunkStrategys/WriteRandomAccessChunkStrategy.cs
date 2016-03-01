@@ -30,6 +30,17 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
 
         private readonly object _chunksRemainingLock = new object();
         private ISet<Guid> _allocatedChunks;
+        private readonly Action<TimeSpan> _wait;
+
+        public WriteRandomAccessChunkStrategy()
+            :this(Thread.Sleep)
+        {
+        }
+
+        public WriteRandomAccessChunkStrategy(Action<TimeSpan> wait)
+        {
+            this._wait = wait;
+        }
 
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
         {
@@ -82,7 +93,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 }
 
                 // Return the current batch.
-                Console.WriteLine("[{0}] yield return", Thread.CurrentThread.ManagedThreadId);
+                Console.WriteLine("[{0}] yield return with {1} blobs", Thread.CurrentThread.ManagedThreadId, transferItems.Length);
                 yield return transferItems;
             }
         }
@@ -110,7 +121,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             return transferItem.ToArray();
         }
 
-        private static JobObjectList AllocateChunk(IDs3Client client, Guid chunkId)
+        private JobObjectList AllocateChunk(IDs3Client client, Guid chunkId)
         {
             JobObjectList chunk = null;
             var chunkGone = false;
@@ -125,7 +136,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                         {
                             chunk = allocatedChunk;
                         },
-                        Thread.Sleep,
+                        this._wait,
                         () =>
                         {
                             chunkGone = true;

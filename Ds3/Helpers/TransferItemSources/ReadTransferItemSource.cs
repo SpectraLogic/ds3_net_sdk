@@ -22,6 +22,7 @@ using Ds3.Runtime;
 
 namespace Ds3.Helpers.TransferItemSources
 {
+    //TODO delete this class
     internal class ReadTransferItemSource : ITransferItemSource
     {
         private readonly object _blobsRemainingLock = new object();

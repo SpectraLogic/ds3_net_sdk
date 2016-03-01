@@ -17,6 +17,7 @@ using System.Collections.Generic;
 
 namespace Ds3.Helpers.TransferItemSources
 {
+    //TODO delete this class
     internal interface ITransferItemSource
     {
         IEnumerable<TransferItem> EnumerateAvailableTransfers();

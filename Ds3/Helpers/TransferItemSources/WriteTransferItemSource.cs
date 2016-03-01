@@ -22,6 +22,7 @@ using System.Threading;
 
 namespace Ds3.Helpers.TransferItemSources
 {
+    //TODO delete this class
     internal class WriteTransferItemSource : ITransferItemSource
     {
         private readonly Action<TimeSpan> _wait;
