@@ -19,6 +19,7 @@ using Ds3.Helpers;
 using Ds3.Helpers.Strategys;
 using Ds3.Models;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -137,6 +138,41 @@ namespace IntegrationTestDS3
         public static Stream ReadResource(string resourceName)
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("IntegrationTestDS3.TestData." + resourceName);
+        }
+
+        public static void UsingAllWriteStrategys(Action<Type> action)
+        {
+            var writeStrategyList = new List<Type>
+            {
+                null, //using the default strategy
+                typeof(WriteRandomAccessHelperStrategy),
+                typeof(WriteNoAllocateHelperStrategy),
+                typeof(WriteStreamHelperStrategy)
+            };
+
+            writeStrategyList.ForEach(action);
+        }
+
+        public static void UsingAllStringReadStrategys(Action<Type> action)
+        {
+            var writeStrategyList = new List<Type>
+            {
+                null, //using the default strategy
+                typeof(ReadRandomAccessHelperStrategy<string>)
+            };
+
+            writeStrategyList.ForEach(action);
+        }
+        
+        public static void UsingAllDs3PartialObjectReadStrategys(Action<Type> action)
+        {
+            var writeStrategyList = new List<Type>
+            {
+                null, //using the default strategy
+                typeof(ReadRandomAccessHelperStrategy<Ds3PartialObject>)
+            };
+
+            writeStrategyList.ForEach(action);
         }
     }
 }

@@ -50,45 +50,25 @@ namespace IntegrationTestDS3
         [Test]
         public void SingleObjectGet()
         {
-            const string bucketName = "SingleObjectGet";
-
-            var writeStrategyList = new List<Type>
+            Ds3TestUtils.UsingAllWriteStrategys(writeStrategy =>
             {
-                null, //using the default strategy
-                typeof(WriteRandomAccessHelperStrategy),
-                typeof(WriteNoAllocateHelperStrategy),
-                typeof(WriteStreamHelperStrategy)
-            };
-
-            writeStrategyList.ForEach(strategy =>
-            {
+                const string bucketName = "SingleObjectGet";
                 try
                 {
-                    Ds3TestUtils.LoadTestData(_client, bucketName, strategy);
-                    SingleObjectGetHelper(bucketName);
+                    Ds3TestUtils.LoadTestData(_client, bucketName, writeStrategy);
+                    Ds3TestUtils.UsingAllStringReadStrategys(readStrategy =>
+                    {
+                        var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategyType: readStrategy);
+                        _tempFiles.Add(file);
+
+                        var sha1 = Ds3TestUtils.ComputeSha1(file);
+                        Assert.AreEqual("jtpN/ZmICOS8pWseFd0+MX2CII0=", sha1);
+                    });
                 }
                 finally
                 {
                     Ds3TestUtils.DeleteBucket(_client, bucketName);
                 }
-            });
-        }
-
-        private void SingleObjectGetHelper(string bucketName)
-        {
-            var readStrategyList = new List<Type>
-            {
-                null, //using the default strategy
-                typeof(ReadRandomAccessHelperStrategy<string>)
-            };
-
-            readStrategyList.ForEach(strategy =>
-            {
-                var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategyType: strategy);
-                _tempFiles.Add(file);
-
-                var sha1 = Ds3TestUtils.ComputeSha1(file);
-                Assert.AreEqual("jtpN/ZmICOS8pWseFd0+MX2CII0=", sha1);
             });
         }
 
@@ -100,36 +80,19 @@ namespace IntegrationTestDS3
             try
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
-                GetPartialDataHelper(bucketName);
+                Ds3TestUtils.UsingAllDs3PartialObjectReadStrategys(strategy =>
+                {
+                    var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0, 1046), strategy);
+                    _tempFiles.Add(file);
+
+                    var sha1 = Ds3TestUtils.ComputeSha1(file);
+                    Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
+                });
             }
             finally
             {
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
-        }
-
-        private void GetPartialDataHelper(string bucketName)
-        {
-            var readStrategyList = new List<Type>
-            {
-                null, //using the default strategy
-                typeof (ReadRandomAccessHelperStrategy<Ds3PartialObject>)
-            };
-
-            readStrategyList.ForEach(strategy =>
-            {
-                var file = Ds3TestUtils.GetSingleObjectWithRange(
-                    _client,
-                    bucketName,
-                    "beowulf.txt",
-                    Range.ByLength(0, 1046),
-                    strategy);
-
-                _tempFiles.Add(file);
-
-                var sha1 = Ds3TestUtils.ComputeSha1(file);
-                Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
-            });
         }
 
         [Test]
@@ -175,13 +138,7 @@ namespace IntegrationTestDS3
 
                 var helpers = new Ds3ClientHelpers(_client);
 
-                var readStrategyList = new List<Type>
-                {
-                    null, //using the default strategy
-                    typeof(ReadRandomAccessHelperStrategy<string>)
-                };
-
-                readStrategyList.ForEach(strategy =>
+                Ds3TestUtils.UsingAllStringReadStrategys(strategy =>
                 {
                     var counter = 0;
                     var dataTransfered = 0L;
