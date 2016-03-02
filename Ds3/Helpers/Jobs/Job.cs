@@ -25,6 +25,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Ds3.Helpers.Strategys.ChunkStrategys;
+using Ds3.Helpers.Strategys.StreamFactory;
 
 namespace Ds3.Helpers.Jobs
 {
@@ -41,7 +43,8 @@ namespace Ds3.Helpers.Jobs
         protected int _maxParallelRequests = 12;
 
         protected CancellationToken _cancellationToken = CancellationToken.None;
-        private readonly IHelperStrategy<TItem> _helperStrategy;
+        private readonly IChunkStrategy _chunkStrategy;
+        private readonly IStreamFactory<TItem> _streamFactory; 
         private readonly IDs3Client _client;
         private readonly JobResponse _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
@@ -80,7 +83,8 @@ namespace Ds3.Helpers.Jobs
             this._jobResponse = jobResponse;
             this.BucketName = bucketName;
             this.JobId = jobId;
-            this._helperStrategy = helperStrategy;
+            this._chunkStrategy = helperStrategy.GetChunkStrategy();
+            this._streamFactory = helperStrategy.GetStreamFactory();
             this._transferrer = transferrer;
             this._rangesForRequests = rangesForRequests;
             this._rangeTranslator = rangeTranslator;
@@ -89,7 +93,7 @@ namespace Ds3.Helpers.Jobs
             this._itemTracker.DataTransferred += size => this.DataTransferred.Call(size);
             this._itemTracker.ItemCompleted += item =>
             {
-                this._helperStrategy.GetStreamFactory().CloseFile(item);
+                this._streamFactory.CloseStream(item);
                 this.ItemCompleted.Call(item);
             };
         }
@@ -97,12 +101,11 @@ namespace Ds3.Helpers.Jobs
         public void Transfer(Func<TItem, Stream> createStreamForTransferItem)
         {
             this._createStreamForTransferItem = createStreamForTransferItem;
-            var chunkStrategy = this._helperStrategy.GetChunkStrategy();
 
             Parallel.ForEach(
                 this._maxParallelRequests,
                 this._cancellationToken,
-                chunkStrategy.GetNextTransferItems(this._client, this._jobResponse),
+                this._chunkStrategy.GetNextTransferItems(this._client, this._jobResponse),
                 item =>
                 {
                     try
@@ -112,11 +115,11 @@ namespace Ds3.Helpers.Jobs
                     }
                     catch (Exception)
                     {
-                        chunkStrategy.Stop();
+                        this._chunkStrategy.Stop();
                         throw;
                     }
                     Console.WriteLine("[{0}] complete blob", Thread.CurrentThread.ManagedThreadId);
-                    chunkStrategy.CompleteBlob(item.Blob);
+                    this._chunkStrategy.CompleteBlob(item.Blob);
                     this._cancellationToken.ThrowIfCancellationRequested();
                 }
             );
@@ -127,7 +130,7 @@ namespace Ds3.Helpers.Jobs
             var ranges = this._rangesForRequests[blob];
             var blobLength = ranges.Sum(r => r.Length);
 
-            var stream = this._helperStrategy.GetStreamFactory().CreateStream(_createStreamForTransferItem, this._rangeTranslator, blob, blobLength);
+            var stream = this._streamFactory.CreateStream(_createStreamForTransferItem, this._rangeTranslator, blob, blobLength);
 
             this._transferrer.Transfer(
                 client,
@@ -139,7 +142,7 @@ namespace Ds3.Helpers.Jobs
                 stream
             );
 
-            this._helperStrategy.GetStreamFactory().CloseBlob(blob);
+            this._streamFactory.CloseBlob(blob);
 
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, blobLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))

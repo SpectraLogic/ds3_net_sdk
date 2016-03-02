@@ -16,7 +16,6 @@
 using Ds3.Helpers.Strategys.ChunkStrategys;
 using Ds3.Helpers.Strategys.StreamFactory;
 using System;
-using Ds3.Models;
 
 namespace Ds3.Helpers.Strategys
 {
@@ -24,34 +23,26 @@ namespace Ds3.Helpers.Strategys
                 where TItem : IComparable<TItem>
 
     {
-        private readonly object _lock = new object();
-        private IChunkStrategy _readRandomAccessChunkStrategy = null;
-        private readonly int _retryAfter;
-        private IStreamFactory<TItem> _readRandomAccessStreamFactory;
+        private readonly IChunkStrategy _readRandomAccessChunkStrategy;
+        private readonly IStreamFactory<TItem> _readRandomAccessStreamFactory;
 
         public ReadRandomAccessHelperStrategy(int retyrAfter)
         {
-            this._retryAfter = retyrAfter;
+            this._readRandomAccessChunkStrategy =
+                new ReadRandomAccessChunkStrategy(retyrAfter);
+
+            this._readRandomAccessStreamFactory =
+                new ReadRandomAccessStreamFactory<TItem>();
         }
 
         public IChunkStrategy GetChunkStrategy()
         {
-            lock (_lock)
-            {
-                return
-                this._readRandomAccessChunkStrategy ?? (this._readRandomAccessChunkStrategy =
-                    new ReadRandomAccessChunkStrategy(this._retryAfter));
-            }
+            return this._readRandomAccessChunkStrategy;
         }
 
         public IStreamFactory<TItem> GetStreamFactory()
         {
-            lock (_lock)
-            {
-                return
-                this._readRandomAccessStreamFactory ?? (this._readRandomAccessStreamFactory =
-                    new ReadRandomAccessStreamFactory<TItem>());
-            }
+            return this._readRandomAccessStreamFactory;
         }
     }
 }

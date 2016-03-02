@@ -51,7 +51,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
             // no blobs to close with this implementation
         }
 
-        public void CloseFile(TItem item)
+        public void CloseStream(TItem item)
         {
             _resourceStore.Close(item);
         }

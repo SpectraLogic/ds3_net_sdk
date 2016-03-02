@@ -15,33 +15,28 @@
 
 using Ds3.Helpers.Strategys.ChunkStrategys;
 using Ds3.Helpers.Strategys.StreamFactory;
-using System;
 
 namespace Ds3.Helpers.Strategys
 {
     public class WriteStreamHelperStrategy : IHelperStrategy<string>
     {
-        private readonly object _lock = new object();
-        private IChunkStrategy _writeStreamChunkStrategy;
-        private IStreamFactory<string> _writeStreamStreamFactory;
+        private readonly IChunkStrategy _writeStreamChunkStrategy;
+        private readonly IStreamFactory<string> _writeStreamStreamFactory;
+
+        public WriteStreamHelperStrategy()
+        {
+            this._writeStreamChunkStrategy = new WriteStreamChunkStrategy();
+            this._writeStreamStreamFactory = new WriteStreamStreamFactory();
+        }
 
         public IChunkStrategy GetChunkStrategy()
         {
-            lock (_lock)
-            {
-                return this._writeStreamChunkStrategy ??
-                    (this._writeStreamChunkStrategy = new WriteStreamChunkStrategy());
-            }
+            return this._writeStreamChunkStrategy;
         }
 
         public IStreamFactory<string> GetStreamFactory()
         {
-            lock (_lock)
-            {
-                return this._writeStreamStreamFactory ??
-                       (this._writeStreamStreamFactory = new WriteStreamStreamFactory());
-                       //(this._writeStreamStreamFactory = new WriteRandomAccessStreamFactory());
-            }
+            return this._writeStreamStreamFactory;
         }
     }
 }

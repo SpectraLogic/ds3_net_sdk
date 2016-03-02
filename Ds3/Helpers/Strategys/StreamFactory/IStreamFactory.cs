@@ -40,7 +40,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
         /// <summary>
         ///
         /// </summary>
-        /// <param name="file"></param>
-        void CloseFile(TItem file);
+        /// <param name="item"></param>
+        void CloseStream(TItem item);
     }
 }

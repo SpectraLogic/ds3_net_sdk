@@ -20,26 +20,23 @@ namespace Ds3.Helpers.Strategys
 {
     public class WriteNoAllocateHelperStrategy : IHelperStrategy<string>
     {
-        private readonly object _lock = new object();
-        private IChunkStrategy _writeNoAllocateChunkStrategy;
-        private IStreamFactory<string> _writeRandomAccessStreamFactory;
+        private readonly IChunkStrategy _writeNoAllocateChunkStrategy;
+        private readonly IStreamFactory<string> _writeRandomAccessStreamFactory;
+
+        public WriteNoAllocateHelperStrategy()
+        {
+            this._writeNoAllocateChunkStrategy = new WriteNoAllocateChunkStrategy();
+            this._writeRandomAccessStreamFactory = new WriteRandomAccessStreamFactory();
+        }
 
         public IChunkStrategy GetChunkStrategy()
         {
-            lock (_lock)
-            {
-                return this._writeNoAllocateChunkStrategy ??
-                       (this._writeNoAllocateChunkStrategy = new WriteNoAllocateChunkStrategy());
-            }
+            return this._writeNoAllocateChunkStrategy;
         }
 
         public IStreamFactory<string> GetStreamFactory()
         {
-            lock (_lock)
-            {
-                return this._writeRandomAccessStreamFactory ??
-                       (this._writeRandomAccessStreamFactory = new WriteRandomAccessStreamFactory());
-            }
+            return this._writeRandomAccessStreamFactory;
         }
     }
 }

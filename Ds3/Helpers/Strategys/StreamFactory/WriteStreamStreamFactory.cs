@@ -62,7 +62,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
             //no blobs to close
         }
 
-        public void CloseFile(string item)
+        public void CloseStream(string item)
         {
             lock (this._lock)
             {

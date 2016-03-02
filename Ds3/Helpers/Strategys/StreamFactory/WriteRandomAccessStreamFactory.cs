@@ -62,9 +62,9 @@ namespace Ds3.Helpers.Strategys.StreamFactory
             }
         }
 
-        public void CloseFile(string file)
+        public void CloseStream(string item)
         {
-            //no file to close with this implementation
+            //no stream to close with this implementation
         }
     }
 }
