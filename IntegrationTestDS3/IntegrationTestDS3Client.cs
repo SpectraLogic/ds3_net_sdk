@@ -46,7 +46,7 @@ namespace IntegrationTestDs3
         private static string FOLDER = "joyce";
         private static string BIG = "big";
         private static string BIGFORMAXBLOB = "bigForMaxBlob";
-        private static long MAXBLOBSIZE = 10 * 1024 * 1024;
+        private const long BlobSize = 10*1024*1024;
 
         private string testDirectorySrc { get; set; }
         private string testDirectoryBigFolder { get; set; }
@@ -98,40 +98,35 @@ namespace IntegrationTestDs3
 
             foreach (var book in BOOKS)
             {
-                TextWriter writer = new StreamWriter(testDirectorySrc + book);
+                var writer = File.OpenWrite(testDirectorySrc + book);
                 using (var bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
                 {
-                    using (var booktext = new StreamReader(bookstream))
-                    {
-                        writer.Write(booktext);
-                    }
+                    bookstream.CopyTo(writer);
+                    bookstream.Seek(0, SeekOrigin.Begin);
                 }
                 writer.Close();
             }
             foreach (var book in JOYCEBOOKS)
             {
-                TextWriter writer = new StreamWriter(testDirectorySrcFolder + book);
+                var writer = File.OpenWrite(testDirectorySrcFolder + book);
                 using (var bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
                 {
-                    using (var booktext = new StreamReader(bookstream))
-                    {
-                        writer.Write(booktext);
-                    }
+                    bookstream.CopyTo(writer);
+                    bookstream.Seek(0, SeekOrigin.Begin);
                 }
                 writer.Close();
             }
             foreach (var bigFile in BIGFILES)
             {
-                TextWriter writer = new StreamWriter(testDirectoryBigFolder + bigFile);
-                TextWriter writerForMaxBlob = new StreamWriter(testDirectoryBigFolderForMaxBlob + bigFile + "_maxBlob");
+                var writer = File.OpenWrite(testDirectoryBigFolder + bigFile);
+                var writerForMaxBlob = File.OpenWrite(testDirectoryBigFolderForMaxBlob + bigFile + "_maxBlob");
 
                 using (var bookstream = ReadResource("IntegrationTestDS3.TestData." + bigFile))
                 {
-                    using (var booktext = new StreamReader(bookstream))
-                    {
-                        writer.Write(booktext);
-                        writerForMaxBlob.Write(booktext);
-                    }
+                    bookstream.CopyTo(writer);
+                    bookstream.Seek(0, SeekOrigin.Begin);
+                    bookstream.CopyTo(writerForMaxBlob);
+                    bookstream.Seek(0, SeekOrigin.Begin);
                 }
 
                 writer.Close();
@@ -348,7 +343,7 @@ namespace IntegrationTestDs3
                 // Creates a bulk job with the server based on the files in a directory (recursively).
                 var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder);
                 Assert.Greater(directoryObjects.Count(), 0);
-                var job = _helpers.StartWriteJob(bucketName, directoryObjects, MAXBLOBSIZE);
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects, BlobSize);
 
                 // Transfer all of the files.
                 job.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder));
@@ -373,7 +368,7 @@ namespace IntegrationTestDs3
                 var directoryObjects =
                     FileHelpers.ListObjectsForDirectory(testDirectoryBigFolderForMaxBlob, string.Empty).ToList();
                 var bulkResult =
-                    _client.BulkPut(new BulkPutRequest(bucketName, directoryObjects).WithMaxBlobSize(MAXBLOBSIZE));
+                    _client.BulkPut(new BulkPutRequest(bucketName, directoryObjects).WithMaxBlobSize(BlobSize));
 
                 var chunkIds = new HashSet<Guid>();
                 foreach (var obj in bulkResult.ObjectLists)
