@@ -29,7 +29,7 @@ namespace Ds3.Helpers.Jobs
         public static IJob Create(
             IDs3Client client,
             JobResponse jobResponse,
-            object helperStrategyInstance,
+            IHelperStrategy<string> helperStrategy,
             ITransferrer transferrer)
         {
             var blobs = Blob.Convert(jobResponse);
@@ -39,7 +39,7 @@ namespace Ds3.Helpers.Jobs
                 jobResponse,
                 jobResponse.BucketName,
                 jobResponse.JobId,
-                (IHelperStrategy<string>)helperStrategyInstance,
+                helperStrategy,
                 transferrer,
                 rangesForRequests,
                 blobs

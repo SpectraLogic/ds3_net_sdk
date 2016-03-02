@@ -58,7 +58,7 @@ namespace IntegrationTestDS3
                     Ds3TestUtils.LoadTestData(_client, bucketName, writeStrategy);
                     Ds3TestUtils.UsingAllStringReadStrategys(readStrategy =>
                     {
-                        var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategyType: readStrategy);
+                        var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategy: readStrategy);
                         _tempFiles.Add(file);
 
                         var sha1 = Ds3TestUtils.ComputeSha1(file);

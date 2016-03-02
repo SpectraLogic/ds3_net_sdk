@@ -31,7 +31,7 @@ namespace Ds3.Helpers.Jobs
             JobResponse jobResponse,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
-            object helperStrategyInstance,
+            IHelperStrategy<Ds3PartialObject> helperStrategy,
             int getObjectRetries = 5)
         {
             var blobs = Blob.Convert(jobResponse).ToList();
@@ -43,7 +43,7 @@ namespace Ds3.Helpers.Jobs
                 jobResponse,
                 jobResponse.BucketName,
                 jobResponse.JobId,
-                (IHelperStrategy<Ds3PartialObject>)helperStrategyInstance,
+                helperStrategy,
                 PartialObjectRangeUtilities.RangesForRequests(blobs, allItems),
                 allItems,
                 allItems.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po)),

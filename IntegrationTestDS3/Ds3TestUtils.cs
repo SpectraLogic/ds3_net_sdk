@@ -48,16 +48,16 @@ namespace IntegrationTestDS3
             new Ds3Object("ulysses.txt", 1540095)
         };
 
-        public static void LoadTestData(IDs3Client client, string bucketName, Type helperStrategyType = null)
+        public static void LoadTestData(IDs3Client client, string bucketName, IHelperStrategy<string> helperStrategy = null)
         {
-            PutFiles(client, bucketName, Objects, ReadResource, helperStrategyType);
+            PutFiles(client, bucketName, Objects, ReadResource, helperStrategy);
         }
 
         /// <summary>
         /// This will get the object and return the name of the temporary file it was written to.
         /// It is up to the caller to delete the temporary file
         /// </summary>
-        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName, int retries = 5, Type helperStrategyType = null)
+        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName, int retries = 5, IHelperStrategy<string> helperStrategy = null)
         {
             var tempFilename = Path.GetTempFileName();
 
@@ -65,12 +65,12 @@ namespace IntegrationTestDS3
             {
                 IDs3ClientHelpers helper = new Ds3ClientHelpers(client, getObjectRetries: retries);
 
-                if (helperStrategyType == null)
+                if (helperStrategy == null)
                 {
-                    helperStrategyType = typeof(ReadRandomAccessHelperStrategy<string>);
+                    helperStrategy = new ReadRandomAccessHelperStrategy<string>(-1);
                 }
 
-                var job = helper.StartReadJob(bucketName, new List<Ds3Object> { new Ds3Object(objectName, null) }, helperStrategyType);
+                var job = helper.StartReadJob(bucketName, new List<Ds3Object> { new Ds3Object(objectName, null) }, helperStrategy);
 
                 job.Transfer(key => fileStream);
 
@@ -78,7 +78,7 @@ namespace IntegrationTestDS3
             }
         }
 
-        internal static string GetSingleObjectWithRange(IDs3Client client, string bucketName, string objectName, Range range, Type helperStrategyType = null)
+        internal static string GetSingleObjectWithRange(IDs3Client client, string bucketName, string objectName, Range range, IHelperStrategy<Ds3PartialObject> helperStrategy = null)
         {
             var tempFilename = Path.GetTempFileName();
 
@@ -86,7 +86,12 @@ namespace IntegrationTestDS3
             {
                 IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
 
-                var job = helper.StartPartialReadJob(bucketName, new List<string>(), new List<Ds3PartialObject> { new Ds3PartialObject(range, objectName) }, helperStrategyType);
+                if (helperStrategy == null)
+                {
+                    helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(-1);
+                }
+
+                var job = helper.StartPartialReadJob(bucketName, new List<string>(), new List<Ds3PartialObject> { new Ds3PartialObject(range, objectName) }, helperStrategy);
 
                 job.Transfer(key => fileStream);
 
@@ -95,13 +100,13 @@ namespace IntegrationTestDS3
         }
 
         public static void PutFiles(IDs3Client client, string bucketName, IEnumerable<Ds3Object> files,
-            Func<string, Stream> createStreamForTransferItem, Type helperStrategyType = null)
+            Func<string, Stream> createStreamForTransferItem, IHelperStrategy<string> helperStrategy = null)
         {
             IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
 
             helper.EnsureBucketExists(bucketName);
 
-            var job = helper.StartWriteJob(bucketName, files, helperStrategyType: helperStrategyType);
+            var job = helper.StartWriteJob(bucketName, files, helperStrategy: helperStrategy);
 
             job.Transfer(createStreamForTransferItem);
         }
@@ -140,36 +145,36 @@ namespace IntegrationTestDS3
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("IntegrationTestDS3.TestData." + resourceName);
         }
 
-        public static void UsingAllWriteStrategys(Action<Type> action)
+        public static void UsingAllWriteStrategys(Action<IHelperStrategy<string>> action)
         {
-            var writeStrategyList = new List<Type>
+            var writeStrategyList = new List<IHelperStrategy<string>>
             {
                 null, //using the default strategy
-                typeof(WriteRandomAccessHelperStrategy),
-                typeof(WriteNoAllocateHelperStrategy),
-                typeof(WriteStreamHelperStrategy)
+                new WriteRandomAccessHelperStrategy(),
+                new WriteNoAllocateHelperStrategy(),
+                new WriteStreamHelperStrategy()
             };
 
             writeStrategyList.ForEach(action);
         }
 
-        public static void UsingAllStringReadStrategys(Action<Type> action)
+        public static void UsingAllStringReadStrategys(Action<IHelperStrategy<string>> action)
         {
-            var writeStrategyList = new List<Type>
+            var writeStrategyList = new List<IHelperStrategy<string>>
             {
                 null, //using the default strategy
-                typeof(ReadRandomAccessHelperStrategy<string>)
+                new ReadRandomAccessHelperStrategy<string>(-1)
             };
 
             writeStrategyList.ForEach(action);
         }
         
-        public static void UsingAllDs3PartialObjectReadStrategys(Action<Type> action)
+        public static void UsingAllDs3PartialObjectReadStrategys(Action<IHelperStrategy<Ds3PartialObject>> action)
         {
-            var writeStrategyList = new List<Type>
+            var writeStrategyList = new List<IHelperStrategy<Ds3PartialObject>>
             {
                 null, //using the default strategy
-                typeof(ReadRandomAccessHelperStrategy<Ds3PartialObject>)
+                new ReadRandomAccessHelperStrategy<Ds3PartialObject>(-1)
             };
 
             writeStrategyList.ForEach(action);

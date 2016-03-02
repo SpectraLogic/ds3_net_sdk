@@ -23,6 +23,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers
@@ -274,6 +275,8 @@ namespace TestDs3.Helpers
             job.DataTransferred += dataTransfers.Enqueue;
             job.ItemCompleted += itemsCompleted.Enqueue;
 
+            //TODO need to find out why fail with more threads
+            job.WithMaxParallelRequests(1);
             job.Transfer(key => streams[key]);
 
             node1Client.VerifyAll();

@@ -47,7 +47,7 @@ namespace Ds3.Helpers
             this._jobWaitTime = jobWaitTime;
         }
 
-        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null, Type helperStrategyType = null)
+        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null, IHelperStrategy<string> helperStrategy = null)
         {
             var request = new BulkPutRequest(
                 bucket,
@@ -77,29 +77,35 @@ namespace Ds3.Helpers
                 }
             } while (jobResponse == null);
 
-            var helperStrategyInstance = Activator.CreateInstance(helperStrategyType ?? typeof(WriteRandomAccessHelperStrategy));
+            if (helperStrategy == null)
+            {
+                helperStrategy = new WriteRandomAccessHelperStrategy();
+            }
 
             return FullObjectJob.Create(
                 this._client,
                 jobResponse,
-                helperStrategyInstance,
+                helperStrategy,
                 new WriteTransferrer()
             );
         }
 
-        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, Type helperStrategyType = null)
+        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null)
         {
             var jobResponse = this._client.BulkGet(
                 new BulkGetRequest(bucket, VerifyObjectCount(objectsToRead))
                     .WithChunkOrdering(ChunkOrdering.None)
             );
 
-            var helperStrategyInstance = Activator.CreateInstance(helperStrategyType ?? typeof(ReadRandomAccessHelperStrategy<string>), this._retryAfter);
+            if (helperStrategy == null)
+            {
+                helperStrategy = new ReadRandomAccessHelperStrategy<string>(this._retryAfter);
+            }
 
             return FullObjectJob.Create(
                 this._client,
                 jobResponse,
-                helperStrategyInstance,
+                helperStrategy,
                 new PartialDataTransferrerDecorator(new ReadTransferrer(), _getObjectRetries)
             );
         }
@@ -108,7 +114,7 @@ namespace Ds3.Helpers
             string bucket,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
-            Type helperStrategyType = null
+            IHelperStrategy<Ds3PartialObject> helperStrategy = null
             )
         {
             var partialObjectList = new SortedSet<Ds3PartialObject>(partialObjects);
@@ -122,14 +128,17 @@ namespace Ds3.Helpers
                     .WithChunkOrdering(ChunkOrdering.None)
             );
 
-            var helperStrategyInstance = Activator.CreateInstance(helperStrategyType ?? typeof(ReadRandomAccessHelperStrategy<Ds3PartialObject>), this._retryAfter);
+            if (helperStrategy == null)
+            {
+                helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(this._retryAfter);
+            }
 
             return PartialReadJob.Create(
                 this._client,
                 jobResponse,
                 fullObjectList,
                 partialObjectList,
-                helperStrategyInstance,
+                helperStrategy,
                 _getObjectRetries
             );
         }
@@ -144,9 +153,9 @@ namespace Ds3.Helpers
             return objectList;
         }
 
-        public IJob StartReadAllJob(string bucket, Type helperStrategyType = null)
+        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null)
         {
-            return this.StartReadJob(bucket, this.ListObjects(bucket), helperStrategyType);
+            return this.StartReadJob(bucket, this.ListObjects(bucket), helperStrategy);
         }
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName)
@@ -185,7 +194,7 @@ namespace Ds3.Helpers
             }
         }
 
-        public IJob RecoverWriteJob(Guid jobId, Type helperStrategyType = null)
+        public IJob RecoverWriteJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
         {
             var jobResponse = this._client.ModifyJob(new ModifyJobRequest(jobId));
             if (jobResponse.RequestType != JobTypePut)
@@ -193,12 +202,15 @@ namespace Ds3.Helpers
                 throw new InvalidOperationException(Resources.ExpectedPutJobButWasGetJobException);
             }
 
-            var helperStrategyInstance = Activator.CreateInstance(helperStrategyType ?? typeof(WriteRandomAccessHelperStrategy));
+            if (helperStrategy == null)
+            {
+                helperStrategy = new WriteRandomAccessHelperStrategy();
+            }
 
             return FullObjectJob.Create(
                 this._client,
                 jobResponse,
-                helperStrategyInstance,
+                helperStrategy,
                 new WriteTransferrer()
             );
         }
