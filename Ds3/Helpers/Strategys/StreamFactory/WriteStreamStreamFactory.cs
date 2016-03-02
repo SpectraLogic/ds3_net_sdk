@@ -37,7 +37,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                     Console.WriteLine("[{0}] Restore a saved stream for {1}", Thread.CurrentThread.ManagedThreadId, blob.Context);
                     if (stream.Position != blob.Range.Start)
                     {
-                        throw new Exception("Stream position does not match blob position");
+                         throw new StreamFactoryException("Stream position does not match blob position");
                     }
 
                     Console.WriteLine("[{0}] setting the stream length {1}", Thread.CurrentThread.ManagedThreadId, length);
@@ -49,7 +49,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 var innerStream = createStreamForTransferItem(blob.Context);
                 if (innerStream.Position != blob.Range.Start)
                 {
-                    throw new Exception("Stream position does not match blob position");
+                    throw new StreamFactoryException("Stream position does not match blob position");
                 }
                 stream = new PutObjectRequestStream(innerStream, length);
                 this._streamStore.Add(blob.Context, stream);

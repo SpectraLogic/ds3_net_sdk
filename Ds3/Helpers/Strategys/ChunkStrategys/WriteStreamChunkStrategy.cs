@@ -161,13 +161,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 try
                 {
                     // return the first chunk that has not been allocated yet
-                    var first = item.Value.First(it =>
-                    {
-                        //TODO can be replace with !this._allocatedChunks[it]
-                        bool value;
-                        this._allocatedChunks.TryGetValue(it, out value);
-                        return value == false;
-                    });
+                    var first = item.Value.First(it => !this._allocatedChunks[it]);
 
                     result.Add(first);
                 }
