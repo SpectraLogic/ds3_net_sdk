@@ -22,7 +22,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
     public interface IStreamFactory<TItem> where TItem : IComparable<TItem>
     {
         /// <summary>
-        ///
+        /// Create a new stream for every blob returned by GetNextTransferItems
         /// </summary>
         /// <param name="createStreamForTransferItem"></param>
         /// <param name="rangeTranslator"></param>

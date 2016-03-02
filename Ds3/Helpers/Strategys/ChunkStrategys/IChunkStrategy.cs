@@ -22,7 +22,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
     public interface IChunkStrategy
     {
         /// <summary>
-        ///
+        /// Allocate chunks using a specific strategy and returning allocated blobs
         /// </summary>
         /// <param name="client"></param>
         /// <param name="jobResponse"></param>
