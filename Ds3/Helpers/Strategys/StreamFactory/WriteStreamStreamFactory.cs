@@ -22,7 +22,10 @@ using System.Threading;
 
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
-    internal class WriteStreamStreamFactory : IStreamFactory<string>
+    /// <summary>
+    /// Create one stream and transfer blobs inorder without seeking
+    /// </summary>
+    public class WriteStreamStreamFactory : IStreamFactory<string>
     {
         private readonly object _lock = new object();
         private readonly Dictionary<string, Stream> _streamStore = new Dictionary<string, Stream>();
@@ -77,8 +80,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 Stream stream;
                 if (!this._streamStore.TryGetValue(item, out stream))
                 {
-                    Console.WriteLine("[{0}] ERROR stream not found!", Thread.CurrentThread.ManagedThreadId);
-                    throw new Exception("ERROR stream not found!");
+                    throw new StreamNotFoundException(string.Format("Stream not found for {0}", item));
                 }
 
                 stream.Close();

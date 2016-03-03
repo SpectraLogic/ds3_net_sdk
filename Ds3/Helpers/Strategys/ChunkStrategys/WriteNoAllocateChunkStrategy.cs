@@ -20,7 +20,11 @@ using System.Linq;
 
 namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
-    internal class WriteNoAllocateChunkStrategy : IChunkStrategy
+    /// <summary>
+    /// The WriteNoAllocateChunkStrategy will return all the blobs that were returned in the JobResponse
+    /// without allocate cache space for them in BlackPearl
+    /// </summary>
+    public class WriteNoAllocateChunkStrategy : IChunkStrategy
     {
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
         {

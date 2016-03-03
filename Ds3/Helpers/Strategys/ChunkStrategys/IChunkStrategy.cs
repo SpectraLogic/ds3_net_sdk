@@ -30,13 +30,13 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse);
 
         /// <summary>
-        ///
+        /// Marks a blob as complete
         /// </summary>
         /// <param name="blob"></param>
         void CompleteBlob(Blob blob);
 
         /// <summary>
-        ///
+        /// Send a stop signal
         /// </summary>
         void Stop();
     }

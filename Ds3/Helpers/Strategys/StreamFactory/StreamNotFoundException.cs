@@ -17,9 +17,9 @@ using System;
 
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
-    public class StreamFactoryException : Exception
+    class StreamNotFoundException : Exception
     {
-        public StreamFactoryException(string message) : base(message)
+        public StreamNotFoundException(string message) : base(message)
         {
         }
     }

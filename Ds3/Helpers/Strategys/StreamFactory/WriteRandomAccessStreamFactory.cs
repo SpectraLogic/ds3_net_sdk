@@ -22,7 +22,10 @@ using System.Threading;
 
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
-    internal class WriteRandomAccessStreamFactory : IStreamFactory<string>
+    /// <summary>
+    /// Create one stream and transfer blobs in parallel using stream seeking
+    /// </summary>
+    public class WriteRandomAccessStreamFactory : IStreamFactory<string>
     {
         private readonly object _lock = new object();
         private readonly Dictionary<Blob, Stream> _streamStore = new Dictionary<Blob, Stream>();
@@ -32,13 +35,15 @@ namespace Ds3.Helpers.Strategys.StreamFactory
             lock (this._lock)
             {
                 Stream stream;
-                if (this._streamStore.TryGetValue(blob, out stream)) //in case the blob length is bigger than the copy buffer size
+                /* if the blob length is bigger than the copy buffer size we want to reuse the stream for that blob */
+                if (this._streamStore.TryGetValue(blob, out stream))
                 {
                     Console.WriteLine("[{0}] Restore a saved stream for {1} blob [{2}:{3}=>{4}]", Thread.CurrentThread.ManagedThreadId, blob.Context, blob.Range.Start, blob.Range.End, blob.Range.Length);
                     return stream;
                 }
 
                 Console.WriteLine("[{0}] Create a stream for {1} blob [{2}:{3}=>{4}]", Thread.CurrentThread.ManagedThreadId, blob.Context, blob.Range.Start, blob.Range.End, blob.Range.Length);
+                // Create a new stream for the transfered blob
                 stream = new PutObjectRequestStream(createStreamForTransferItem(blob.Context), blob.Range.Start, length);
 
                 this._streamStore.Add(blob, stream);
@@ -54,8 +59,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 Stream stream;
                 if (!this._streamStore.TryGetValue(blob, out stream))
                 {
-                    Console.WriteLine("[{0}] ERROR stream not found!", Thread.CurrentThread.ManagedThreadId);
-                    throw new Exception("ERROR stream not found!");
+                    throw new StreamNotFoundException(string.Format("Stream not found for blob ({0}, {1}:{2})", blob.Context, blob.Range.Start, blob.Range.End));
                 }
 
                 stream.Close();

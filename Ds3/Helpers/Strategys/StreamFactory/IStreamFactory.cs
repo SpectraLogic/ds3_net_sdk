@@ -32,13 +32,13 @@ namespace Ds3.Helpers.Strategys.StreamFactory
         Stream CreateStream(Func<TItem, Stream> createStreamForTransferItem, IRangeTranslator<Blob, TItem> rangeTranslator, Blob blob, long length);
 
         /// <summary>
-        ///
+        /// If a blob to stream strategy has been chosen than close the stream that associated with the completed blob
         /// </summary>
         /// <param name="blob"></param>
         void CloseBlob(Blob blob);
 
         /// <summary>
-        ///
+        /// If a stream to stream strategy has been chosen than close the stream that associated with the completed stream
         /// </summary>
         /// <param name="item"></param>
         void CloseStream(TItem item);

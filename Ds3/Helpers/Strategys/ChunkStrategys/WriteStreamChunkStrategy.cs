@@ -23,7 +23,10 @@ using System.Threading;
 
 namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
-    internal class WriteStreamChunkStrategy : IChunkStrategy
+    /// <summary>
+    /// The WriteStreamChunkStrategy will allocate chunk at a time for each stream in the job and return the allocated blobs
+    /// </summary>
+    public class WriteStreamChunkStrategy : IChunkStrategy
     {
         private IDs3Client _client;
         private readonly object _lock = new object();
@@ -58,6 +61,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             return EnumerateTransferItemBatches().SelectMany(it => it);
         }
 
+        //TODO delete me
         private static void Print(Dictionary<string, IList<Guid>> streamToChunkDictionary)
         {
             foreach (var stream in streamToChunkDictionary)
@@ -70,6 +74,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             }
         }
 
+        /* Return a dictionary mapping a string (stream name) to all of that stream chunks */
         private Dictionary<string, IList<Guid>> GetStreamToChunksDictionary()
         {
             var result = new Dictionary<string, IList<Guid>>();
@@ -104,18 +109,18 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         {
             Console.WriteLine("This is thread {0}", Thread.CurrentThread.ManagedThreadId);
 
-            //while (true)
+            // If the wait handle resumed because of _numberInProgress, continue iterating (that's the 0 == ...).
+            // Otherwise it resumed because of the stop, so we'll terminate.
             while (0 == WaitHandle.WaitAny(new[] { this._numberInProgress.WaitHandle, this._stopEvent.WaitHandle }))
             {
                 Console.WriteLine("[{0}] [{1}] in while", Thread.CurrentThread.ManagedThreadId, "WriteStreamChunkStrategy");
-                // Get the current batch of transfer items.
 
                 TransferItem[] transferItems;
                 lock (this._lock)
                 {
                     if (_currentTransferItemsList.Count == 0)
                     {
-                        var nextStreamsChunkToAllocate = GetNextStreamsChunkToAllocate();
+                        var nextStreamsChunkToAllocate = GetNextStreamsChunkToAllocate(); //get the next chunk for each stream
                         if (nextStreamsChunkToAllocate.Count == 0)
                         {
                             Console.WriteLine("[{0}] [{1}] yield break", Thread.CurrentThread.ManagedThreadId, "WriteStreamChunkStrategy");
@@ -127,7 +132,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                     }
 
                     transferItems = GetNextItemsFromList(_currentTransferItemsList);
-                    _numberInProgress.Reset(transferItems.Length);
+                    _numberInProgress.Reset(transferItems.Length); //reset the counter to the number of blobs we are going to transfer
                 }
 
                 // Return the current batch.
@@ -136,13 +141,13 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             }
         }
 
-        private TransferItem[] GetNextItemsFromList(IEnumerable<TransferItem> currentTransferItemsList)
+        private static TransferItem[] GetNextItemsFromList(IEnumerable<TransferItem> currentTransferItemsList)
         {
             var result = new HashSet<TransferItem>();
 
             foreach (var item in currentTransferItemsList)
             {
-                if (!result.Select(r => r.Blob.Context).Contains(item.Blob.Context))
+                if (!result.Select(transferItem => transferItem.Blob.Context).Contains(item.Blob.Context))
                 {
                     Console.WriteLine("[{0}] Adding file {1} blob {2}:{3}", Thread.CurrentThread.ManagedThreadId, item.Blob.Context, item.Blob.Range.Start, item.Blob.Range.End);
                     result.Add(item);
@@ -162,7 +167,6 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 {
                     // return the first chunk that has not been allocated yet
                     var first = item.Value.First(it => !this._allocatedChunks[it]);
-
                     result.Add(first);
                 }
                 catch (InvalidOperationException)
@@ -229,7 +233,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             Console.WriteLine("[{0}] BEFORE _currentTransferItemsList size {1}", Thread.CurrentThread.ManagedThreadId, _currentTransferItemsList.Count);
             lock (_lock)
             {
-                var toDelete = _currentTransferItemsList.FirstOrDefault(item => item.Blob == blob);
+                var toDelete = _currentTransferItemsList.First(item => item.Blob == blob);
                 _currentTransferItemsList.Remove(toDelete);
             }
             Console.WriteLine("[{0}] AFTER _currentTransferItemsList size {1}", Thread.CurrentThread.ManagedThreadId, _currentTransferItemsList.Count);

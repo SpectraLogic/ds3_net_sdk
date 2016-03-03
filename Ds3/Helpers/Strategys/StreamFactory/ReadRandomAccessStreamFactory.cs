@@ -20,7 +20,11 @@ using System.IO;
 
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
-    internal class ReadRandomAccessStreamFactory<TItem> : IStreamFactory<TItem>
+    /// <summary>
+    /// Create one stream and receiving blobs in parallel using stream seeking
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
+    public class ReadRandomAccessStreamFactory<TItem> : IStreamFactory<TItem>
                 where TItem : IComparable<TItem>
 
     {

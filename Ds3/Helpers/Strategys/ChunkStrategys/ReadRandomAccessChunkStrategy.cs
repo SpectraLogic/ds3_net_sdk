@@ -23,7 +23,10 @@ using System.Threading;
 
 namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
-    internal class ReadRandomAccessChunkStrategy : IChunkStrategy
+    /// <summary>
+    /// The ReadRandomAccessChunkStrategy will get the available job chunks and allocate those chunks
+    /// </summary>
+    public class ReadRandomAccessChunkStrategy : IChunkStrategy
     {
         private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
@@ -129,7 +132,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             });
         }
 
-        public new void CompleteBlob(Blob blob)
+        public void CompleteBlob(Blob blob)
         {
             lock (this._blobsRemainingLock)
             {
@@ -138,7 +141,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             this._numberInProgress.Signal();
         }
 
-        public new void Stop()
+        public void Stop()
         {
             this._stopEvent.Set();
         }

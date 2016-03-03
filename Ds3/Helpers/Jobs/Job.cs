@@ -39,7 +39,6 @@ namespace Ds3.Helpers.Jobs
         protected readonly IRangeTranslator<Blob, TItem> _rangeTranslator;
         protected readonly JobItemTracker<TItem> _itemTracker;
 
-        //protected IResourceStore<TItem, Stream> _resourceStore;
         protected int _maxParallelRequests = 12;
 
         protected CancellationToken _cancellationToken = CancellationToken.None;

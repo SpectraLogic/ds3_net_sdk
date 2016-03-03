@@ -23,13 +23,16 @@ using System.Threading;
 
 namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
-    internal class WriteRandomAccessChunkStrategy : IChunkStrategy
+    /// <summary>
+    /// The WriteRandomAccessChunkStrategy will allocate chunks as needed and return the allocated blobs
+    /// </summary>
+    public class WriteRandomAccessChunkStrategy : IChunkStrategy
     {
         private IDs3Client _client;
         private JobResponse _jobResponse;
 
         private readonly object _chunksRemainingLock = new object();
-        private ISet<Guid> _allocatedChunks;
+        private ISet<Guid> _toAllocateChunks;
         private readonly Action<TimeSpan> _wait;
 
         public WriteRandomAccessChunkStrategy()
@@ -54,7 +57,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 Console.WriteLine("[{0}] number of chunks is {1}", Thread.CurrentThread.ManagedThreadId, jobResponse.ObjectLists.Count());
                 Console.WriteLine("[{0}] number of blobs is {1}", Thread.CurrentThread.ManagedThreadId, Blob.Convert(jobResponse).Count());
 
-                _allocatedChunks = new HashSet<Guid>(jobResponse.ObjectLists.Select(chunk => chunk.ChunkId));
+                _toAllocateChunks = new HashSet<Guid>(jobResponse.ObjectLists.Select(chunk => chunk.ChunkId));
             }
 
             // Flatten all batches into a single enumerable.
@@ -75,6 +78,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         {
             Console.WriteLine("This is thread {0}", Thread.CurrentThread.ManagedThreadId);
 
+            //Loop as long as we still have unallocated chunks
             while (true)
             {
                 Console.WriteLine("[{0}] in while", Thread.CurrentThread.ManagedThreadId);
@@ -83,13 +87,13 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 TransferItem[] transferItems;
                 lock (this._chunksRemainingLock)
                 {
-                    if (this._allocatedChunks.Count == 0)
+                    if (this._toAllocateChunks.Count == 0)
                     {
                         Console.WriteLine("[{0}] yield break", Thread.CurrentThread.ManagedThreadId);
                         yield break;
                     }
                     Console.WriteLine("[{0}] GetNextTransfers", Thread.CurrentThread.ManagedThreadId);
-                    transferItems = GetNextTransfers();
+                    transferItems = GetNextTransfers(); //get the next chunk to transfer
                 }
 
                 // Return the current batch.
@@ -102,7 +106,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         {
             var clientFactory = this._client.BuildFactory(this._jobResponse.Nodes);
             var transferItem = new HashSet<TransferItem>();
-            var chunkId = this._allocatedChunks.First();
+            var chunkId = this._toAllocateChunks.First(); //take the fist chunk in the set to allocate
             var allocatedChunk = AllocateChunk(this._client, chunkId);
 
             if (allocatedChunk != null)
@@ -116,7 +120,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                         transferItem.Add(new TransferItem(transferClient, blob));
                     }
                 }
-                this._allocatedChunks.Remove(chunkId);
+                this._toAllocateChunks.Remove(chunkId); //remove the allocated chunk from the set
             }
             return transferItem.ToArray();
         }
@@ -128,7 +132,6 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             while (chunk == null && !chunkGone)
             {
                 Console.WriteLine("[{0}] AllocateJobChunkRequest for chunkId {1}", Thread.CurrentThread.ManagedThreadId, chunkId);
-                // This is an idempotent operation, so we don't care if it's already allocated.
                 client
                     .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
                     .Match(
