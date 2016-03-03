@@ -35,10 +35,9 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 if (this._streamStore.TryGetValue(blob.Context, out stream))
                 {
                     Console.WriteLine("[{0}] Restore a saved stream for {1}", Thread.CurrentThread.ManagedThreadId, blob.Context);
-                    if (stream.Position != blob.Range.Start)
-                    {
-                         throw new StreamFactoryException("Stream position does not match blob position");
-                    }
+
+                    //TODO add a way to check the position of the stream when using a non seeking stream
+                    //CheckStreamPosition(blob, stream);
 
                     Console.WriteLine("[{0}] setting the stream length {1}", Thread.CurrentThread.ManagedThreadId, length);
                     stream.SetLength(length);
@@ -47,13 +46,21 @@ namespace Ds3.Helpers.Strategys.StreamFactory
 
                 Console.WriteLine("[{0}] Create a stream for {1}", Thread.CurrentThread.ManagedThreadId, blob.Context);
                 var innerStream = createStreamForTransferItem(blob.Context);
-                if (innerStream.Position != blob.Range.Start)
-                {
-                    throw new StreamFactoryException("Stream position does not match blob position");
-                }
+
+                //TODO add a way to check the position of the stream when using a non seeking stream
+                //CheckStreamPosition(blob, innerStream);
+
                 stream = new PutObjectRequestStream(innerStream, length);
                 this._streamStore.Add(blob.Context, stream);
                 return stream;
+            }
+        }
+
+        private static void CheckStreamPosition(Blob blob, Stream stream)
+        {
+            if (stream.Position != blob.Range.Start)
+            {
+                throw new StreamFactoryException("Stream position does not match blob position");
             }
         }
 

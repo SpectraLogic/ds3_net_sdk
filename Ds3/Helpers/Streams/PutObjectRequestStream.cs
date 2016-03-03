@@ -100,7 +100,6 @@ namespace Ds3.Helpers.Streams
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            Console.WriteLine("[{0}] stream position {1}", Thread.CurrentThread.ManagedThreadId, Position);
             if (_totalBytesRead == this._streamLength)
             {
                 this._totalBytesRead = 0;

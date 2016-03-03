@@ -25,8 +25,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Ds3.Helpers.Strategys;
 
 // using TestDs3.Lang;
 
@@ -46,7 +48,7 @@ namespace IntegrationTestDs3
         private static string FOLDER = "joyce";
         private static string BIG = "big";
         private static string BIGFORMAXBLOB = "bigForMaxBlob";
-        private const long BlobSize = 10*1024*1024;
+        private const long BlobSize = 10 * 1024 * 1024;
 
         private string testDirectorySrc { get; set; }
         private string testDirectoryBigFolder { get; set; }
@@ -189,7 +191,7 @@ namespace IntegrationTestDs3
                 var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
                 Assert.IsNotEmpty(directoryObjects);
                 var testObject = directoryObjects.First();
-                var ds3Objs = new List<Ds3Object> {testObject};
+                var ds3Objs = new List<Ds3Object> { testObject };
 
                 // create or ensure bucket
                 _helpers.EnsureBucketExists(bucketName);
@@ -227,7 +229,7 @@ namespace IntegrationTestDs3
                 const string testChecksumCrc32C = "4waSgw==";
 
                 var testObject = new Ds3Object("numbers.txt", 9);
-                var ds3Objs = new List<Ds3Object> {testObject};
+                var ds3Objs = new List<Ds3Object> { testObject };
 
                 using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
                 {
@@ -396,7 +398,7 @@ namespace IntegrationTestDs3
                         retryAfter =>
                         {
                             // if we did not got some chunks than sleep and retry.  This could mean that the cache is full
-                            Thread.Sleep((int) (retryAfter.TotalMilliseconds*1000));
+                            Thread.Sleep((int)(retryAfter.TotalMilliseconds * 1000));
                         });
                 }
 
@@ -425,8 +427,8 @@ namespace IntegrationTestDs3
                 var newFile = File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", folder, PREFIX, fileName)));
 
                 Assert.AreEqual(
-                    System.Security.Cryptography.MD5.Create().ComputeHash(origFile),
-                    System.Security.Cryptography.MD5.Create().ComputeHash(newFile)
+                    MD5.Create().ComputeHash(origFile),
+                    MD5.Create().ComputeHash(newFile)
                     );
 
                 origFile.Close();
@@ -790,6 +792,38 @@ namespace IntegrationTestDs3
             foreach (var file in Directory.GetFiles(dir))
             {
                 File.Delete(file);
+            }
+        }
+
+        [Test]
+        public void TestChecksumStreaming()
+        {
+            const string bucketName = "TestChecksumStreaming";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                _helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var bigFile = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder).First(obj => obj.Name.Equals(BIGFILES.First()));
+                var directoryObjects = new List<Ds3Object> {bigFile};
+
+                Assert.Greater(directoryObjects.Count(), 0);
+
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects, BlobSize, new WriteStreamHelperStrategy());
+
+                var md5 = MD5.Create();
+                var fileStream = File.OpenRead(testDirectoryBigFolder + BIGFILES.First());
+                var sha1Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
+
+                job.Transfer(foo => sha1Stream);
+                sha1Stream.FlushFinalBlock();
+
+                Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
     }
