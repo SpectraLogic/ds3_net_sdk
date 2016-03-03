@@ -819,8 +819,7 @@ namespace IntegrationTestDs3
                 job.Transfer(foo => md5Stream);
                 md5Stream.FlushFinalBlock();
 
-                //TODO fill this md5 string once the test is over
-                Assert.AreEqual("", Convert.ToBase64String(md5.Hash));
+                Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
             }
             finally
             {

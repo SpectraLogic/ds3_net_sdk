@@ -76,7 +76,8 @@ namespace LongRunningIntegrationTestDs3
                 job.Transfer(foo => mds5Stream);
                 mds5Stream.FlushFinalBlock();
 
-                Assert.AreEqual("GP0AMcN6lX8jwi8pLvYbng==", Convert.ToBase64String(md5.Hash));
+                //TODO fill in the missing checksum
+                Assert.AreEqual("", Convert.ToBase64String(md5.Hash));
             }
             finally
             {
