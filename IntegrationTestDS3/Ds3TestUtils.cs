@@ -39,7 +39,8 @@ namespace IntegrationTestDS3
             const int defaultCopyBufferSize = 1 * 1024 * 1024;
             return Ds3Builder.FromEnv().
                 WithCopyBufferSize(copyBufferSize ?? defaultCopyBufferSize).
-                WithReadWriteTimeout(24 * 60 * 60 * 1000).
+                WithReadWriteTimeout(24 * 60 * 60 * 1000). //TODO delete me
+                WithRequestTimeout(24 * 60 * 60 * 1000). //TODO delete me
                 Build();
         }
 

@@ -64,17 +64,18 @@ namespace LongRunningIntegrationTestDs3
                 // Creates a bucket if it does not already exist.
                 _helpers.EnsureBucketExists(bucketName);
 
-                const long streamLength = 150L * 1024L * 1024L * 1024L; //that way we enforce at 2 chunks
+                const long streamLength = 150L * 1024L * 1024L * 1024L; //that way we enforce that we get 2 chunks
                 var directoryObjects = new List<Ds3Object> { new Ds3Object("bigFile", streamLength) };
 
-                var job = _helpers.StartWriteJob(bucketName, directoryObjects, helperStrategy: new WriteStreamHelperStrategy());
+                const long blobSize = 1L * 1024L * 1024L * 1024L;
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects, blobSize, new WriteStreamHelperStrategy());
 
                 var md5 = MD5.Create();
                 var fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value);
-                var mds5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
+                var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
 
-                job.Transfer(foo => mds5Stream);
-                mds5Stream.FlushFinalBlock();
+                job.Transfer(foo => md5Stream);
+                md5Stream.FlushFinalBlock();
 
                 //TODO fill in the missing checksum
                 Assert.AreEqual("", Convert.ToBase64String(md5.Hash));
@@ -85,6 +86,63 @@ namespace LongRunningIntegrationTestDs3
                 //Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
+
+        [Test]
+        public void TestChecksumStreamingWithMultiStreams()
+        {
+            const string bucketName = "TestChecksumStreamingWithMultiStreams";
+
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                _helpers.EnsureBucketExists(bucketName);
+
+                /* using 1GB file with 100MB blobs size so each stream will have 1 chunk with 10 blobs */
+                const long streamLength = 1L * 1024L * 1024L * 1024L;
+                const long blobSize = 100L * 1024L * 1024L;
+
+                var directoryObjects = new List<Ds3Object>
+                {
+                    new Ds3Object("bigFile1", streamLength),
+                    new Ds3Object("bigFile2", streamLength),
+                    new Ds3Object("bigFile3", streamLength)
+                };
+
+                
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects, blobSize, new WriteStreamHelperStrategy());
+
+                var cryptoStreams = new Dictionary<string, CryptoStream>();
+                var md5s = new Dictionary<string, MD5>();
+
+                directoryObjects.ForEach(obj =>
+                {
+                    var md5 = MD5.Create();
+                    var fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value);
+                    var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
+
+                    cryptoStreams.Add(obj.Name, md5Stream);
+                    md5s.Add(obj.Name, md5);
+                });
+
+                job.Transfer(fileName => cryptoStreams[fileName]);
+
+                foreach (var stream in cryptoStreams.Select(pair => pair.Value))
+                {
+                    stream.FlushFinalBlock();
+                }
+
+                foreach (var md5 in md5s.Select(pair => pair.Value))
+                {
+                    Assert.AreEqual("Rt83cCvGZHQGu3eRIdfJIQ==", Convert.ToBase64String(md5.Hash));
+                }
+
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
     }
 
     internal class ChecksumStream : Stream
