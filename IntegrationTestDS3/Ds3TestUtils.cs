@@ -19,7 +19,6 @@ using Ds3.Helpers;
 using Ds3.Helpers.Strategys;
 using Ds3.Models;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -27,9 +26,9 @@ using System.Security.Cryptography;
 
 namespace IntegrationTestDS3
 {
-    internal static class Ds3TestUtils
+    public static class Ds3TestUtils
     {
-        public static IDs3Client CreateClient()
+        public static IDs3Client CreateClient(int? copyBufferSize = null)
         {
             //TODO remove me
             Environment.SetEnvironmentVariable("DS3_ENDPOINT", "http://sm25-2.eng.sldomain.com");
@@ -37,7 +36,11 @@ namespace IntegrationTestDS3
             Environment.SetEnvironmentVariable("DS3_SECRET_KEY", "uY9JtDZT");
             Environment.SetEnvironmentVariable("http_proxy", "");
 
-            return Ds3Builder.FromEnv().Build();
+            const int defaultCopyBufferSize = 1 * 1024 * 1024;
+            return Ds3Builder.FromEnv().
+                WithCopyBufferSize(copyBufferSize ?? defaultCopyBufferSize).
+                WithReadWriteTimeout(24 * 60 * 60 * 1000).
+                Build();
         }
 
         private static readonly List<Ds3Object> Objects = new List<Ds3Object>
@@ -168,7 +171,7 @@ namespace IntegrationTestDS3
 
             writeStrategyList.ForEach(action);
         }
-        
+
         public static void UsingAllDs3PartialObjectReadStrategys(Action<IHelperStrategy<Ds3PartialObject>> action)
         {
             var writeStrategyList = new List<IHelperStrategy<Ds3PartialObject>>

@@ -796,9 +796,9 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        public void TestChecksumStreaming()
+        public void TestChecksumStreamingWithMultiBlobs()
         {
-            const string bucketName = "TestChecksumStreaming";
+            const string bucketName = "TestChecksumStreamingWithMultiBlobs";
             try
             {
                 // Creates a bucket if it does not already exist.
@@ -814,12 +814,13 @@ namespace IntegrationTestDs3
 
                 var md5 = MD5.Create();
                 var fileStream = File.OpenRead(testDirectoryBigFolder + BIGFILES.First());
-                var sha1Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
+                var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
 
-                job.Transfer(foo => sha1Stream);
-                sha1Stream.FlushFinalBlock();
+                job.Transfer(foo => md5Stream);
+                md5Stream.FlushFinalBlock();
 
-                Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+                //TODO fill this md5 string once the test is over
+                Assert.AreEqual("", Convert.ToBase64String(md5.Hash));
             }
             finally
             {

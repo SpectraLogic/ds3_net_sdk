@@ -96,33 +96,6 @@ namespace IntegrationTestDS3
         }
 
         [Test]
-        public void PutLargeNumberOfObjects()
-        {
-            const string bucketName = "PutLargeNumberOfObjects";
-
-            try
-            {
-                const string content = "hi im content";
-                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
-
-                var objects = new List<Ds3Object>();
-
-                for (var i = 0; i < 1000; i++)
-                {
-                    objects.Add(new Ds3Object(Guid.NewGuid().ToString(), contentBytes.Length));
-                }
-
-                Ds3TestUtils.PutFiles(_client, bucketName, objects, key => new MemoryStream(contentBytes));
-
-                Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).Objects.Count());
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
-        }
-
-        [Test]
         public void TestJobEvents()
         {
             const string bucketName = "TestJobEvents";
