@@ -77,13 +77,11 @@ namespace LongRunningIntegrationTestDs3
                 job.Transfer(foo => md5Stream);
                 md5Stream.FlushFinalBlock();
 
-                //TODO fill in the missing checksum
-                Assert.AreEqual("", Convert.ToBase64String(md5.Hash));
+                Assert.AreEqual("6pqugiiIUgxPkHfKKgq52A==", Convert.ToBase64String(md5.Hash));
             }
             finally
             {
-                //TODO delete the bucket
-                //Ds3TestUtils.DeleteBucket(_client, bucketName);
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
 
