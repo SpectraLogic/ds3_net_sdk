@@ -13,18 +13,17 @@
  * ****************************************************************************
  */
 
+using Ds3;
+using Ds3.Calls;
+using Ds3.Models;
+using Ds3.Runtime;
+using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Moq;
-using Ds3;
-using Ds3.Calls;
-using Ds3.Models;
-using Ds3.Runtime;
-using NUnit.Framework;
-
 
 namespace TestDs3.Helpers
 {
@@ -159,7 +158,7 @@ namespace TestDs3.Helpers
             Mock<IDs3Client> client,
             string objectName,
             long offset,
-            string payload,           
+            string payload,
             params Ds3.Models.Range[] byteRanges
             )
         {
@@ -172,9 +171,10 @@ namespace TestDs3.Helpers
                     byteRanges
                     )))
                 .Returns(new GetObjectResponse(new Dictionary<string, string>()))
-                .Callback<GetObjectRequest>(r => {
-                                                     Console.WriteLine("Writing \"" + payload + "\" to stream");
-                                                     WriteToStream(r.DestinationStream, payload);
+                .Callback<GetObjectRequest>(r =>
+                {
+                    Console.WriteLine("Writing \"" + payload + "\" to stream");
+                    WriteToStream(r.DestinationStream, payload);
                 });
         }
 
