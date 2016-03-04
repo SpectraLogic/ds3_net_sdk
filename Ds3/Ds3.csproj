@@ -91,7 +91,6 @@
     <Compile Include="Helpers\Strategys\ChunkStrategys\ReadRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\WriteNoAllocateChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\StreamFactory\ReadRandomAccessStreamFactory.cs" />
-    <Compile Include="Helpers\Strategys\StreamFactory\StreamFactoryException.cs" />
     <Compile Include="Helpers\Strategys\StreamFactory\StreamNotFoundException.cs" />
     <Compile Include="Helpers\Strategys\StreamFactory\WriteRandomAccessStreamFactory.cs" />
     <Compile Include="Helpers\Strategys\StreamFactory\WriteStreamStreamFactory.cs" />
