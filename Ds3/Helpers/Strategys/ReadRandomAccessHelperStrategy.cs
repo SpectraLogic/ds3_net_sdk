@@ -19,6 +19,10 @@ using System;
 
 namespace Ds3.Helpers.Strategys
 {
+    /// <summary>
+    /// The ReadRandomAccessHelperStrategy bundle ReadRandomAccessChunkStrategy with ReadRandomAccessStreamFactory
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
     public class ReadRandomAccessHelperStrategy<TItem> : IHelperStrategy<TItem>
                 where TItem : IComparable<TItem>
 

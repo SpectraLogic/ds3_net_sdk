@@ -18,6 +18,9 @@ using Ds3.Helpers.Strategys.StreamFactory;
 
 namespace Ds3.Helpers.Strategys
 {
+    /// <summary>
+    /// The WriteStreamHelperStrategy bundle WriteStreamChunkStrategy with WriteStreamStreamFactory
+    /// </summary>
     public class WriteStreamHelperStrategy : IHelperStrategy<string>
     {
         private readonly IChunkStrategy _writeStreamChunkStrategy;
