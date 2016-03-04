@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Ds3.Helpers.Streams
 {
@@ -46,7 +45,6 @@ namespace Ds3.Helpers.Streams
             {
                 if (this._values.TryGetValue(key, out result))
                 {
-                    Console.WriteLine("[{0}] got a used stream for {1}", Thread.CurrentThread.ManagedThreadId, key);
                     lck = this._locks[key];
                 }
                 else
@@ -57,7 +55,6 @@ namespace Ds3.Helpers.Streams
                     }
                     else
                     {
-                        Console.WriteLine("[{0}] Create new stream for {1}", Thread.CurrentThread.ManagedThreadId, key);
                         result = this._makeResource(key);
                         lck = new object();
                         this._values[key] = result;

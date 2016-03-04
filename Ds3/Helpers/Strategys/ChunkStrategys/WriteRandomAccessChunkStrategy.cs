@@ -46,16 +46,11 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
 
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
         {
-            Console.WriteLine("[{0}] GetNextTransferItems", Thread.CurrentThread.ManagedThreadId);
-
             this._client = client;
             this._jobResponse = jobResponse;
 
             lock (this._chunksRemainingLock)
             {
-                Console.WriteLine("[{0}] number of chunks is {1}", Thread.CurrentThread.ManagedThreadId, jobResponse.ObjectLists.Count());
-                Console.WriteLine("[{0}] number of blobs is {1}", Thread.CurrentThread.ManagedThreadId, Blob.Convert(jobResponse).Count());
-
                 _toAllocateChunks = new HashSet<Guid>(jobResponse.ObjectLists.Select(chunk => chunk.ChunkId));
             }
 
@@ -75,28 +70,21 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
 
         private IEnumerable<IEnumerable<TransferItem>> EnumerateTransferItemBatches()
         {
-            Console.WriteLine("This is thread {0}", Thread.CurrentThread.ManagedThreadId);
-
             //Loop as long as we still have unallocated chunks
             while (true)
             {
-                Console.WriteLine("[{0}] in while", Thread.CurrentThread.ManagedThreadId);
                 // Get the current batch of transfer items.
-
                 TransferItem[] transferItems;
                 lock (this._chunksRemainingLock)
                 {
                     if (this._toAllocateChunks.Count == 0)
                     {
-                        Console.WriteLine("[{0}] yield break", Thread.CurrentThread.ManagedThreadId);
                         yield break;
                     }
-                    Console.WriteLine("[{0}] GetNextTransfers", Thread.CurrentThread.ManagedThreadId);
                     transferItems = GetNextTransfers(); //get the next chunk to transfer
                 }
 
                 // Return the current batch.
-                Console.WriteLine("[{0}] yield return with {1} blobs", Thread.CurrentThread.ManagedThreadId, transferItems.Length);
                 yield return transferItems;
             }
         }
@@ -130,7 +118,6 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             var chunkGone = false;
             while (chunk == null && !chunkGone)
             {
-                Console.WriteLine("[{0}] AllocateJobChunkRequest for chunkId {1}", Thread.CurrentThread.ManagedThreadId, chunkId);
                 client
                     .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
                     .Match(

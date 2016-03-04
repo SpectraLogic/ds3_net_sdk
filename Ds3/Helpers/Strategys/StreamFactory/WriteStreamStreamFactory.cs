@@ -18,7 +18,6 @@ using Ds3.Helpers.Streams;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
@@ -37,17 +36,13 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 Stream stream;
                 if (this._streamStore.TryGetValue(blob.Context, out stream))
                 {
-                    Console.WriteLine("[{0}] Restore a saved stream for {1}", Thread.CurrentThread.ManagedThreadId, blob.Context);
-
                     //TODO add a way to check the position of the stream when using a non seeking stream
                     //CheckStreamPosition(blob, stream);
 
-                    Console.WriteLine("[{0}] setting the stream length {1}", Thread.CurrentThread.ManagedThreadId, length);
                     stream.SetLength(length);
                     return stream;
                 }
 
-                Console.WriteLine("[{0}] Create a stream for {1}", Thread.CurrentThread.ManagedThreadId, blob.Context);
                 var innerStream = createStreamForTransferItem(blob.Context);
 
                 //TODO add a way to check the position of the stream when using a non seeking stream
@@ -76,7 +71,6 @@ namespace Ds3.Helpers.Strategys.StreamFactory
         {
             lock (this._lock)
             {
-                Console.WriteLine("[{0}] Closing the stream for {1}", Thread.CurrentThread.ManagedThreadId, item);
                 Stream stream;
                 if (!this._streamStore.TryGetValue(item, out stream))
                 {

@@ -13,9 +13,7 @@
  * ****************************************************************************
  */
 
-using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Ds3.Lang
 {
@@ -33,14 +31,12 @@ namespace Ds3.Lang
         {
             lock (this._lock)
             {
-                Console.WriteLine("Get next item for thread {0}", Thread.CurrentThread.ManagedThreadId);
                 if (this._items.MoveNext())
                 {
                     it = this._items.Current;
                     return true;
                 }
 
-                Console.WriteLine("no more items for thread {0}", Thread.CurrentThread.ManagedThreadId);
                 return false;
             }
         }

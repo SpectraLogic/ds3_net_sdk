@@ -44,7 +44,6 @@ namespace Ds3.Lang
                         {
                             action(it);
                         }
-                        Console.WriteLine("[{0}] is DONE", Thread.CurrentThread.ManagedThreadId);
                     }
                     catch (Exception e)
                     {

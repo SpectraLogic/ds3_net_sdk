@@ -17,6 +17,8 @@ using Ds3.Calls;
 using Ds3.Helpers.ProgressTrackers;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.Strategys;
+using Ds3.Helpers.Strategys.ChunkStrategys;
+using Ds3.Helpers.Strategys.StreamFactory;
 using Ds3.Helpers.Transferrers;
 using Ds3.Lang;
 using Ds3.Models;
@@ -25,8 +27,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Ds3.Helpers.Strategys.ChunkStrategys;
-using Ds3.Helpers.Strategys.StreamFactory;
 
 namespace Ds3.Helpers.Jobs
 {
@@ -34,16 +34,14 @@ namespace Ds3.Helpers.Jobs
         where TSelf : IBaseJob<TSelf, TItem>
         where TItem : IComparable<TItem>
     {
-        protected readonly ITransferrer _transferrer;
-        protected readonly ILookup<Blob, Range> _rangesForRequests;
-        protected readonly IRangeTranslator<Blob, TItem> _rangeTranslator;
-        protected readonly JobItemTracker<TItem> _itemTracker;
-
-        protected int _maxParallelRequests = 12;
-
-        protected CancellationToken _cancellationToken = CancellationToken.None;
+        private readonly ITransferrer _transferrer;
+        private readonly ILookup<Blob, Range> _rangesForRequests;
+        private readonly IRangeTranslator<Blob, TItem> _rangeTranslator;
+        private readonly JobItemTracker<TItem> _itemTracker;
+        private int _maxParallelRequests = 12;
+        private CancellationToken _cancellationToken = CancellationToken.None;
         private readonly IChunkStrategy _chunkStrategy;
-        private readonly IStreamFactory<TItem> _streamFactory; 
+        private readonly IStreamFactory<TItem> _streamFactory;
         private readonly IDs3Client _client;
         private readonly JobResponse _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
@@ -109,7 +107,6 @@ namespace Ds3.Helpers.Jobs
                 {
                     try
                     {
-                        Console.WriteLine("[{0}] Transferring blob", Thread.CurrentThread.ManagedThreadId);
                         this.TransferBlob(item.Client, item.Blob);
                     }
                     catch (Exception)
@@ -117,7 +114,6 @@ namespace Ds3.Helpers.Jobs
                         this._chunkStrategy.Stop();
                         throw;
                     }
-                    Console.WriteLine("[{0}] complete blob", Thread.CurrentThread.ManagedThreadId);
                     this._chunkStrategy.CompleteBlob(item.Blob);
                     this._cancellationToken.ThrowIfCancellationRequested();
                 }

@@ -30,17 +30,10 @@ namespace IntegrationTestDS3
     {
         public static IDs3Client CreateClient(int? copyBufferSize = null)
         {
-            //TODO remove me
-            Environment.SetEnvironmentVariable("DS3_ENDPOINT", "http://sm25-2.eng.sldomain.com");
-            Environment.SetEnvironmentVariable("DS3_ACCESS_KEY", "c3BlY3RyYQ==");
-            Environment.SetEnvironmentVariable("DS3_SECRET_KEY", "uY9JtDZT");
-            Environment.SetEnvironmentVariable("http_proxy", "");
-
             const int defaultCopyBufferSize = 1 * 1024 * 1024;
+
             return Ds3Builder.FromEnv().
                 WithCopyBufferSize(copyBufferSize ?? defaultCopyBufferSize).
-                WithReadWriteTimeout(24 * 60 * 60 * 1000). //TODO delete me
-                WithRequestTimeout(24 * 60 * 60 * 1000). //TODO delete me
                 Build();
         }
 

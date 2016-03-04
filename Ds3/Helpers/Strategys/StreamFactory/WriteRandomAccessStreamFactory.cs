@@ -18,7 +18,6 @@ using Ds3.Helpers.Streams;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
@@ -38,11 +37,9 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 /* if the blob length is bigger than the copy buffer size we want to reuse the stream for that blob */
                 if (this._streamStore.TryGetValue(blob, out stream))
                 {
-                    Console.WriteLine("[{0}] Restore a saved stream for {1} blob [{2}:{3}=>{4}]", Thread.CurrentThread.ManagedThreadId, blob.Context, blob.Range.Start, blob.Range.End, blob.Range.Length);
                     return stream;
                 }
 
-                Console.WriteLine("[{0}] Create a stream for {1} blob [{2}:{3}=>{4}]", Thread.CurrentThread.ManagedThreadId, blob.Context, blob.Range.Start, blob.Range.End, blob.Range.Length);
                 // Create a new stream for the transfered blob
                 stream = new PutObjectRequestStream(createStreamForTransferItem(blob.Context), blob.Range.Start, length);
 
@@ -55,7 +52,6 @@ namespace Ds3.Helpers.Strategys.StreamFactory
         {
             lock (_lock)
             {
-                Console.WriteLine("[{0}] Closing the stream for {1} blob start {2}", Thread.CurrentThread.ManagedThreadId, blob.Context, blob.Range.Start);
                 Stream stream;
                 if (!this._streamStore.TryGetValue(blob, out stream))
                 {
