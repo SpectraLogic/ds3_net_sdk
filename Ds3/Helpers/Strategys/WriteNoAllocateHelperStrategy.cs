@@ -18,6 +18,9 @@ using Ds3.Helpers.Strategys.StreamFactory;
 
 namespace Ds3.Helpers.Strategys
 {
+    /// <summary>
+    /// The WriteNoAllocateHelperStrategy bundle WriteNoAllocateChunkStrategy with WriteRandomAccessStreamFactory
+    /// </summary>
     public class WriteNoAllocateHelperStrategy : IHelperStrategy<string>
     {
         private readonly IChunkStrategy _writeNoAllocateChunkStrategy;

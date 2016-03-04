@@ -19,6 +19,10 @@ using Ds3.Helpers.Strategys.StreamFactory;
 
 namespace Ds3.Helpers.Strategys
 {
+    /// <summary>
+    /// The IHelperStrategy bundle a chunkStrategy and StreamFactory to one Strategy.
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
     public interface IHelperStrategy<TItem> where TItem : IComparable<TItem>
     {
         IChunkStrategy GetChunkStrategy();
