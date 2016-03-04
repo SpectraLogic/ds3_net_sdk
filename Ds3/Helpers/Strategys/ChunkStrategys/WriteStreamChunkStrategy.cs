@@ -23,7 +23,7 @@ using System.Threading;
 namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
     /// <summary>
-    /// The WriteStreamChunkStrategy will allocate chunk at a time for each stream in the job and return the allocated blobs
+    /// The WriteStreamChunkStrategy will allocate chunks one at a time for each stream in the job and return the allocated blobs
     /// </summary>
     public class WriteStreamChunkStrategy : IChunkStrategy
     {

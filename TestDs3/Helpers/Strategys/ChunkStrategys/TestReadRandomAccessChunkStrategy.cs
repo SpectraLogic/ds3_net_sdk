@@ -241,7 +241,6 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(GetAvailableJobChunksResponse.RetryAfter(
                     TimeSpan.FromMinutes(0)));
 
-            //var transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 0, initialJobResponse);
             var source = new ReadRandomAccessChunkStrategy(0, _ => { });
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
@@ -258,7 +257,6 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 }
             }
 
-            //transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 1, initialJobResponse);
             source = new ReadRandomAccessChunkStrategy(1, _ => { });
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
@@ -275,7 +273,6 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 }
             }
 
-            //transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 2, initialJobResponse);
             source = new ReadRandomAccessChunkStrategy(2, _ => { });
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
@@ -292,7 +289,6 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 }
             }
 
-            //transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 100, initialJobResponse);
             source = new ReadRandomAccessChunkStrategy(100, _ => { });
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
@@ -340,7 +336,6 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                     return GetAvailableJobChunksResponse.RetryAfter(TimeSpan.FromSeconds(0));
                 });
 
-            //var transferItemSource = new ReadTransferItemSource(_ => { retryAfter--; }, client.Object, retryAfter, initialJobResponse);
             var source = new ReadRandomAccessChunkStrategy(retryAfter, _ => { retryAfter--; });
 
 

@@ -36,29 +36,15 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 Stream stream;
                 if (this._streamStore.TryGetValue(blob.Context, out stream))
                 {
-                    //TODO add a way to check the position of the stream when using a non seeking stream
-                    //CheckStreamPosition(blob, stream);
-
                     stream.SetLength(length);
                     return stream;
                 }
 
                 var innerStream = createStreamForTransferItem(blob.Context);
 
-                //TODO add a way to check the position of the stream when using a non seeking stream
-                //CheckStreamPosition(blob, innerStream);
-
                 stream = new PutObjectRequestStream(innerStream, length);
                 this._streamStore.Add(blob.Context, stream);
                 return stream;
-            }
-        }
-
-        private static void CheckStreamPosition(Blob blob, Stream stream)
-        {
-            if (stream.Position != blob.Range.Start)
-            {
-                throw new StreamFactoryException("Stream position does not match blob position");
             }
         }
 
