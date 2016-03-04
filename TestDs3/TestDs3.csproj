@@ -73,6 +73,10 @@
     <Compile Include="Helpers\Strategys\ChunkStrategys\TestWriteNoAllocateChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\TestWriteRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\TestWriteStreamChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategys\StreamFactory\BlobsStub.cs" />
+    <Compile Include="Helpers\Strategys\StreamFactory\TestWriteRandomAccessStreamFactory.cs" />
+    <Compile Include="Helpers\Strategys\StreamFactory\TestWriteStreamStreamFactory.cs" />
+    <Compile Include="Helpers\Strategys\TestHelperStrategy.cs" />
     <Compile Include="Helpers\Streams\TestPutObjectRequestStream.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\TransferItemSourceHelpers.cs" />
     <Compile Include="Helpers\Transferrers\TestPartialDataTransferrerDecorator.cs" />

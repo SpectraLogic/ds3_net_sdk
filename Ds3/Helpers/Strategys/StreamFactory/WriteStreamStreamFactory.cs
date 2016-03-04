@@ -23,7 +23,7 @@ using System.Threading;
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
     /// <summary>
-    /// Create one stream and transfer blobs inorder without seeking
+    /// Create one stream and transfer blobs in order without seeking
     /// </summary>
     public class WriteStreamStreamFactory : IStreamFactory<string>
     {

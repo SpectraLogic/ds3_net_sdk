@@ -23,7 +23,7 @@ using System.Threading;
 namespace Ds3.Helpers.Strategys.StreamFactory
 {
     /// <summary>
-    /// Create one stream and transfer blobs in parallel using stream seeking
+    /// Create a stream for each blob and transfer blobs in parallel
     /// </summary>
     public class WriteRandomAccessStreamFactory : IStreamFactory<string>
     {
