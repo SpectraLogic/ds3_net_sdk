@@ -13,22 +13,22 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
 using Ds3;
-using Ds3.Models;
-using System.IO;
-using System.Linq;
 using Ds3.Calls;
 using Ds3.Helpers;
+using Ds3.Helpers.Strategys;
+using Ds3.Models;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace IntegrationTestDS3
 {
     [TestFixture]
     internal class DataIntegrity
     {
-
         private IDs3Client _client;
         private readonly List<string> _tempFiles = new List<string>();
 
@@ -50,70 +50,44 @@ namespace IntegrationTestDS3
         [Test]
         public void SingleObjectGet()
         {
-            const string bucketName = "integrityBucket";
-
-            try
+            Ds3TestUtils.UsingAllWriteStrategys(writeStrategy =>
             {
-                Ds3TestUtils.LoadTestData(_client, bucketName);
+                const string bucketName = "SingleObjectGet";
+                try
+                {
+                    Ds3TestUtils.LoadTestData(_client, bucketName, writeStrategy);
+                    Ds3TestUtils.UsingAllStringReadStrategys(readStrategy =>
+                    {
+                        var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategy: readStrategy);
+                        _tempFiles.Add(file);
 
-                var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt");
-                _tempFiles.Add(file);
-
-                var sha1 = Ds3TestUtils.ComputeSha1(file);
-
-                Assert.AreEqual("jtpN/ZmICOS8pWseFd0+MX2CII0=", sha1);
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
+                        var sha1 = Ds3TestUtils.ComputeSha1(file);
+                        Assert.AreEqual("jtpN/ZmICOS8pWseFd0+MX2CII0=", sha1);
+                    });
+                }
+                finally
+                {
+                    Ds3TestUtils.DeleteBucket(_client, bucketName);
+                }
+            });
         }
 
         [Test]
         public void GetPartialData()
         {
-            const string bucketName = "partialDataBucket";
+            const string bucketName = "GetPartialData";
 
             try
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
-
-                var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0,1046));
-                _tempFiles.Add(file);
-
-                var sha1 = Ds3TestUtils.ComputeSha1(file);
-
-                Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
-        }
-
-        [Test]
-        public void PutLargeNumberOfObjects()
-        {
-
-            const string bucketName = "lotsOfFiles";
-
-            try
-            {
-
-                const string content = "hi im content";
-                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
-
-                var objects = new List<Ds3Object>();
-
-                for (var i = 0; i < 1000; i++)
+                Ds3TestUtils.UsingAllDs3PartialObjectReadStrategys(strategy =>
                 {
-                    objects.Add(new Ds3Object(Guid.NewGuid().ToString(), contentBytes.Length));
-                }
+                    var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0, 1046), strategy);
+                    _tempFiles.Add(file);
 
-                Ds3TestUtils.PutFiles(_client, bucketName, objects, key => new MemoryStream(contentBytes));
-
-                Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).Objects.Count());
-
+                    var sha1 = Ds3TestUtils.ComputeSha1(file);
+                    Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
+                });
             }
             finally
             {
@@ -122,32 +96,43 @@ namespace IntegrationTestDS3
         }
 
         [Test]
-        public void TestEventEmiter()
+        public void TestJobEvents()
         {
-            const string bucketName = "eventEmitter";
+            const string bucketName = "TestJobEvents";
 
             try
             {
-                var counter = 0;
                 Ds3TestUtils.LoadTestData(_client, bucketName);
 
-                var ds3ObjList = new List<Ds3Object> 
+                var ds3ObjList = new List<Ds3Object>
                 {
                     new Ds3Object("beowulf.txt", null)
                 };
 
                 var helpers = new Ds3ClientHelpers(_client);
 
-                var job = helpers.StartReadJob(bucketName, ds3ObjList);
-
-                job.ItemCompleted += item =>
+                Ds3TestUtils.UsingAllStringReadStrategys(strategy =>
                 {
-                    Console.WriteLine(@"Got completed event for " + item);
-                    counter++;
-                };
-                job.Transfer(name => Stream.Null);
+                    var counter = 0;
+                    var dataTransfered = 0L;
 
-                Assert.AreEqual(1, counter);
+                    var job = helpers.StartReadJob(bucketName, ds3ObjList, strategy);
+
+                    job.ItemCompleted += item =>
+                    {
+                        counter++;
+                    };
+
+                    job.DataTransferred += item =>
+                    {
+                        dataTransfered += item;
+                    };
+
+                    job.Transfer(name => Stream.Null);
+
+                    Assert.AreEqual(1, counter);
+                    Assert.AreEqual(294059, dataTransfered);
+                });
             }
             finally
             {

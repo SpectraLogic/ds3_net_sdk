@@ -16,12 +16,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace Ds3.Lang
 {
-    internal class Parallel
+    internal static class Parallel
     {
         public static void ForEach<T>(
             int threadPoolSize,
@@ -37,7 +36,7 @@ namespace Ds3.Lang
                 {
                     try
                     {
-                        T it = default(T);
+                        var it = default(T);
                         while (
                             exceptionsThrown.Count == 0
                             && !cancellationToken.IsCancellationRequested
@@ -52,7 +51,7 @@ namespace Ds3.Lang
                     }
                 };
                 var threads = new List<Thread>();
-                for (int i = 0; i < threadPoolSize; i++)
+                for (var i = 0; i < threadPoolSize; i++)
                 {
                     var thread = new Thread(ts);
                     thread.Start();

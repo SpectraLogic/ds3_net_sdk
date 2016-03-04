@@ -13,14 +13,18 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
+using Ds3.Helpers;
+using Ds3.Models;
 
-namespace Ds3.Helpers.TransferItemSources
+namespace TestDs3.Helpers.Strategys.StreamFactory
 {
-    internal interface ITransferItemSource
+    public static class BlobsStub
     {
-        IEnumerable<TransferItem> EnumerateAvailableTransfers();
-        void CompleteBlob(Blob blob);
-        void Stop();
+        public static readonly Blob Blob1 = new Blob(Range.ByLength(0, 15), "bar");
+        public const int Blob1Length = 15;
+        public static readonly Blob Blob2 = new Blob(Range.ByLength(15, 10), "bar");
+        public const int Blob2Length = 10;
+        public static readonly Blob Blob3 = new Blob(Range.ByLength(0, 20), "foo");
+        public const int Blob3Length = 20;
     }
 }

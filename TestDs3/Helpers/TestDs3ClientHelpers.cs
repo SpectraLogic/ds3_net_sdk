@@ -240,11 +240,11 @@ namespace TestDs3.Helpers
                 .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
                 .Returns(node2Client.Object);
 
-            var streams = new Dictionary<string, MockStream>
+            var streams = new Dictionary<string, string>
             {
-                { "bar", new MockStream("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ") },
-                { "foo", new MockStream("abcdefghijklmnopqrst") },
-                { "hello", new MockStream("ABCDefGHIJ") },
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
             };
             var ds3Objects = Stubs
                 .ObjectNames
@@ -274,7 +274,7 @@ namespace TestDs3.Helpers
             job.DataTransferred += dataTransfers.Enqueue;
             job.ItemCompleted += itemsCompleted.Enqueue;
 
-            job.Transfer(key => streams[key]);
+            job.Transfer(key => new MockStream(streams[key]));
 
             node1Client.VerifyAll();
             node2Client.VerifyAll();
@@ -385,11 +385,11 @@ namespace TestDs3.Helpers
                 Stubs.ReadFailureChunk(null, false)
             );
             var availableJobResponse = Stubs.BuildJobResponse(
-            
+
                 Stubs.ReadFailureChunk(Stubs.NodeId1, true)
             );
 
-            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);            
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
             MockHelpers.SetupGetObjectWithContentLengthMismatchException(node1Client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L); // The initial request is for all 20 bytes, but only the first 10 will be sent
             MockHelpers.SetupGetObject(node1Client, "bar", 0L, "JLMNOPQRSTU", Range.ByPosition(9L, 19L));  // The client will request the full last byte based off of when the client fails
 
@@ -397,7 +397,7 @@ namespace TestDs3.Helpers
             clientFactory
                 .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
                 .Returns(node1Client.Object);
-            
+
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
@@ -427,7 +427,7 @@ namespace TestDs3.Helpers
             var streams = new ConcurrentDictionary<string, MockStream>();
             job.Transfer(key => streams.GetOrAdd(key, k => new MockStream()));
 
-            node1Client.VerifyAll();            
+            node1Client.VerifyAll();
             clientFactory.VerifyAll();
             client.VerifyAll();
 

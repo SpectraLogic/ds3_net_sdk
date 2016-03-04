@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace Ds3.Helpers
 {
-    internal class Blob : ContextRange<string>
+    public class Blob : ContextRange<string>
     {
         public Blob(Range range, string objectName)
             : base(range, objectName)

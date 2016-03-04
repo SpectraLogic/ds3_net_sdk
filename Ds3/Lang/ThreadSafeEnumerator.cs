@@ -36,10 +36,8 @@ namespace Ds3.Lang
                     it = this._items.Current;
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
         }
     }

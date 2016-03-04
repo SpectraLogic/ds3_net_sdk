@@ -32,7 +32,7 @@ namespace Ds3.Helpers.Streams
         {
             this._makeResource = makeResource;
         }
-        
+
         public void Access(TKey key, Action<TDisposable> action)
         {
             if (this._disposed)

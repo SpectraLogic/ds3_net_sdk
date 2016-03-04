@@ -15,18 +15,20 @@
 
 using Ds3;
 using Ds3.Calls;
-using Ds3.Models;
 using Ds3.Helpers;
 using Ds3.Helpers.Streams;
+using Ds3.Models;
+using IntegrationTestDS3;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
 using System.Threading;
-using IntegrationTestDS3;
+using System.Threading.Tasks;
+using Ds3.Helpers.Strategys;
 
 // using TestDs3.Lang;
 
@@ -42,12 +44,11 @@ namespace IntegrationTestDs3
         private string[] BIGFILES = { "big_book_file.txt" };
 
         private static string TESTDIR = "TestObjectData";
-        private static string TESTBUCKET = "TestBucket" + DateTime.Now.Ticks;
         private static string PREFIX = "test_";
         private static string FOLDER = "joyce";
         private static string BIG = "big";
         private static string BIGFORMAXBLOB = "bigForMaxBlob";
-        private static long MAXBLOBSIZE = 10 * 1024 * 1024;
+        private const long BlobSize = 10 * 1024 * 1024;
 
         private string testDirectorySrc { get; set; }
         private string testDirectoryBigFolder { get; set; }
@@ -67,7 +68,6 @@ namespace IntegrationTestDs3
         [TestFixtureSetUp]
         public void Startup()
         {
-
             _client = Ds3TestUtils.CreateClient();
             _helpers = new Ds3ClientHelpers(_client);
 
@@ -76,9 +76,9 @@ namespace IntegrationTestDs3
 
         private void SetupTestData()
         {
-            string root = Path.GetTempPath() + TESTDIR + Path.DirectorySeparatorChar;
+            var root = Path.GetTempPath() + TESTDIR + Path.DirectorySeparatorChar;
             testDirectorySrc = root + "src" + Path.DirectorySeparatorChar;
-            string testDirectorySrcFolder = root + "src" + Path.DirectorySeparatorChar + FOLDER + Path.DirectorySeparatorChar;
+            var testDirectorySrcFolder = root + "src" + Path.DirectorySeparatorChar + FOLDER + Path.DirectorySeparatorChar;
             testDirectoryDest = root + "dest" + Path.DirectorySeparatorChar;
             testDirectoryDestPrefix = root + "destPrefix" + Path.DirectorySeparatorChar;
 
@@ -100,40 +100,35 @@ namespace IntegrationTestDs3
 
             foreach (var book in BOOKS)
             {
-                TextWriter writer = new StreamWriter(testDirectorySrc + book);
-                using (Stream bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
+                var writer = File.OpenWrite(testDirectorySrc + book);
+                using (var bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
                 {
-                    using (StreamReader booktext = new StreamReader(bookstream))
-                    {
-                        writer.Write(booktext);
-                    }
+                    bookstream.CopyTo(writer);
+                    bookstream.Seek(0, SeekOrigin.Begin);
                 }
                 writer.Close();
             }
             foreach (var book in JOYCEBOOKS)
             {
-                TextWriter writer = new StreamWriter(testDirectorySrcFolder + book);
-                using (Stream bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
+                var writer = File.OpenWrite(testDirectorySrcFolder + book);
+                using (var bookstream = ReadResource("IntegrationTestDS3.TestData." + book))
                 {
-                    using (StreamReader booktext = new StreamReader(bookstream))
-                    {
-                        writer.Write(booktext);
-                    }
+                    bookstream.CopyTo(writer);
+                    bookstream.Seek(0, SeekOrigin.Begin);
                 }
                 writer.Close();
             }
             foreach (var bigFile in BIGFILES)
             {
-                TextWriter writer = new StreamWriter(testDirectoryBigFolder + bigFile);
-                TextWriter writerForMaxBlob = new StreamWriter(testDirectoryBigFolderForMaxBlob + bigFile + "_maxBlob");
+                var writer = File.OpenWrite(testDirectoryBigFolder + bigFile);
+                var writerForMaxBlob = File.OpenWrite(testDirectoryBigFolderForMaxBlob + bigFile + "_maxBlob");
 
-                using (Stream bookstream = ReadResource("IntegrationTestDS3.TestData." + bigFile))
+                using (var bookstream = ReadResource("IntegrationTestDS3.TestData." + bigFile))
                 {
-                    using (StreamReader booktext = new StreamReader(bookstream))
-                    {
-                        writer.Write(booktext);
-                        writerForMaxBlob.Write(booktext);
-                    }
+                    bookstream.CopyTo(writer);
+                    bookstream.Seek(0, SeekOrigin.Begin);
+                    bookstream.CopyTo(writerForMaxBlob);
+                    bookstream.Seek(0, SeekOrigin.Begin);
                 }
 
                 writer.Close();
@@ -153,8 +148,8 @@ namespace IntegrationTestDs3
         [Test]
         public void DoIntegrationPing()
         {
-            VerifySystemHealthRequest request = new VerifySystemHealthRequest();
-            VerifySystemHealthResponse response = _client.VerifySystemHealth(request);
+            var request = new VerifySystemHealthRequest();
+            var response = _client.VerifySystemHealth(request);
 
             Assert.GreaterOrEqual(response.MillisToVerify, 0);
         }
@@ -163,214 +158,262 @@ namespace IntegrationTestDs3
         public void GetSystemInfo()
         {
             // get valid data and populate properties
-            GetSystemInformationRequest request = new GetSystemInformationRequest();
-            GetSystemInformationResponse response = _client.GetSystemInformation(request);
+            var request = new GetSystemInformationRequest();
+            var response = _client.GetSystemInformation(request);
             Assert.IsNotNullOrEmpty(response.BuildVersion);
             BuildBranch = response.BuildBranch;
             BuildRev = response.BuildRev;
             BuildVersion = response.BuildVersion;
         }
+
         #endregion ping
 
         #region independent tests
-        /* Assume SetUp has completed 
+
+        /* Assume SetUp has completed
         ** but does not rely on others
         **/
 
         [Test]
         public void TestPutWithChecksum()
         {
+            const string bucketName = "TestPutWithChecksum";
+
             //This test is supported only for BP 1.2
-            if (!isTestSupported(_client, 1.2))
+            if (!IsTestSupported(_client, 1.2))
             {
                 Assert.Ignore();
             }
 
-            // grab a file
-            var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
-            Assert.IsNotEmpty(directoryObjects);
-            Ds3Object testObject = directoryObjects.First<Ds3Object>();
-            var ds3Objs = new List<Ds3Object>();
-            ds3Objs.Add(testObject);
+            try
+            {
+                // grab a file
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
+                Assert.IsNotEmpty(directoryObjects);
+                var testObject = directoryObjects.First();
+                var ds3Objs = new List<Ds3Object> { testObject };
 
-            // create or ensure bucket
-            _helpers.EnsureBucketExists(TESTBUCKET);
-            // create a job
-            var job = _helpers.StartWriteJob(TESTBUCKET, ds3Objs);
+                // create or ensure bucket
+                _helpers.EnsureBucketExists(bucketName);
+                // create a job
+                var job = _helpers.StartWriteJob(bucketName, ds3Objs);
 
-            // instantiate a PutObjectRequest
-            FileStream fs = File.Open(testDirectorySrc + Path.DirectorySeparatorChar + testObject.Name, FileMode.Open);
-            PutObjectRequest putRequest = new PutObjectRequest(TESTBUCKET, testObject.Name, job.JobId, 0L, fs);
-            putRequest.WithChecksum(Checksum.Compute, Checksum.ChecksumType.Crc32C);
-            _client.PutObject(putRequest);
-            fs.Close();
-
-            //clean up
-            DeleteObject(TESTBUCKET, testObject.Name);
+                // instantiate a PutObjectRequest
+                var fs = File.Open(testDirectorySrc + Path.DirectorySeparatorChar + testObject.Name,
+                    FileMode.Open);
+                var putRequest = new PutObjectRequest(bucketName, testObject.Name, job.JobId, 0L, fs);
+                putRequest.WithChecksum(Checksum.Compute, Checksum.ChecksumType.Crc32C);
+                _client.PutObject(putRequest);
+                fs.Close();
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
         public void TestPutWithSuppliedChecksum()
         {
+            const string bucketName = "TestPutWithSuppliedChecksum";
             //This test is supported only for BP 1.2
-            if (!isTestSupported(_client, 1.2))
+            if (!IsTestSupported(_client, 1.2))
             {
                 Assert.Ignore();
             }
 
-            // "123456789" has a well known checksum
-            string content = "123456789";
-            string testChecksumCrc32C = "4waSgw==";
-
-            Ds3Object testObject = new Ds3Object("numbers.txt", 9);
-            var ds3Objs = new List<Ds3Object> {testObject};
-
-            using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
+            try
             {
-                // create or ensure bucket
-                _helpers.EnsureBucketExists(TESTBUCKET);
-                // create a job
-                var job = _helpers.StartWriteJob(TESTBUCKET, ds3Objs);
-                PutObjectRequest putRequest = new PutObjectRequest(TESTBUCKET, testObject.Name, job.JobId, 0L, stream);
-                putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(testChecksumCrc32C)), Checksum.ChecksumType.Crc32C);
-                _client.PutObject(putRequest);
+                // "123456789" has a well known checksum
+                const string content = "123456789";
+                const string testChecksumCrc32C = "4waSgw==";
+
+                var testObject = new Ds3Object("numbers.txt", 9);
+                var ds3Objs = new List<Ds3Object> { testObject };
+
+                using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
+                {
+                    // create or ensure bucket
+                    _helpers.EnsureBucketExists(bucketName);
+                    // create a job
+                    var job = _helpers.StartWriteJob(bucketName, ds3Objs);
+                    var putRequest = new PutObjectRequest(bucketName, testObject.Name, job.JobId, 0L,
+                        stream);
+                    putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(testChecksumCrc32C)),
+                        Checksum.ChecksumType.Crc32C);
+                    _client.PutObject(putRequest);
+                }
             }
-            //clean up
-            DeleteObject(TESTBUCKET, testObject.Name);
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
-        private bool isTestSupported(IDs3Client client, double supportedBlackPearlVersion)
+        private static bool IsTestSupported(IDs3Client client, double supportedBlackPearlVersion)
         {
             var buildInfo = client.GetSystemInformation(new GetSystemInformationRequest()).BuildVersion;
             var buildInfoArr = buildInfo.Split('.');
             var version = double.Parse(string.Format("{0}.{1}", buildInfoArr[0], buildInfoArr[1]));
 
             return version == supportedBlackPearlVersion;
-    }
+        }
 
-    [Test]
+        [Test]
         [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
         public void TestPutWithBadChecksum()
         {
-            // "123456789" has a well known checksum
-            string content = "123456789";
-            string testBadChecksumCrc32C = "4awSwg=="; // transposed two pairs
-
-            Ds3Object testObject = new Ds3Object("numbers_badcrc.txt", 9);
-            var ds3Objs = new List<Ds3Object>();
-            ds3Objs.Add(testObject);
-
-
-            using (MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
+            const string bucketName = "TestPutWithBadChecksum";
+            try
             {
-                // create or ensure bucket
-                _helpers.EnsureBucketExists(TESTBUCKET);
-                // create a job
-                var job = _helpers.StartWriteJob(TESTBUCKET, ds3Objs);
-                PutObjectRequest putRequest = new PutObjectRequest(TESTBUCKET, testObject.Name, job.JobId, 0L, stream);
-                putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(testBadChecksumCrc32C)), Checksum.ChecksumType.Crc32C);
-                _client.PutObject(putRequest);
+                // "123456789" has a well known checksum
+                const string content = "123456789";
+                const string testBadChecksumCrc32C = "4awSwg=="; // transposed two pairs
+
+                var testObject = new Ds3Object("numbers_badcrc.txt", 9);
+                var ds3Objs = new List<Ds3Object> { testObject };
+
+                using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
+                {
+                    // create or ensure bucket
+                    _helpers.EnsureBucketExists(bucketName);
+                    // create a job
+                    var job = _helpers.StartWriteJob(bucketName, ds3Objs);
+                    var putRequest = new PutObjectRequest(bucketName, testObject.Name, job.JobId, 0L,
+                        stream);
+                    putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(testBadChecksumCrc32C)),
+                        Checksum.ChecksumType.Crc32C);
+                    _client.PutObject(putRequest);
+                }
             }
-            // CURRENT SIMULATOR CREATES THIS OBJECT -- PROBABLY SHOULD NOT
-            DeleteObject(TESTBUCKET, testObject.Name);
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
         public void TestSpecialCharacterInObjectName()
         {
-            var bucketName = TESTBUCKET;
-            _helpers.EnsureBucketExists(bucketName);
-
-            var fileName = "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMAC HD.avb";
-            var obj = new Ds3Object(fileName, 1024);
-            var objs = new List<Ds3Object>();
-            objs.Add(obj);
-            var job = _helpers.StartWriteJob(bucketName, objs);
-
-            job.Transfer(key =>
+            const string bucketName = "TestSpecialCharacterInObjectName";
+            try
             {
-                var data = new byte[1024];
-                var stream = new MemoryStream(data);
-                for (int i = 0; i < 1024; i++)
+                _helpers.EnsureBucketExists(bucketName);
+
+                const string fileName = "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMAC HD.avb";
+                var obj = new Ds3Object(fileName, 1024);
+                var objs = new List<Ds3Object> { obj };
+                var job = _helpers.StartWriteJob(bucketName, objs);
+
+                job.Transfer(key =>
                 {
-                    stream.WriteByte(97);
-                }
+                    var data = new byte[1024];
+                    var stream = new MemoryStream(data);
+                    for (var i = 0; i < 1024; i++)
+                    {
+                        stream.WriteByte(97);
+                    }
 
-                stream.Seek(0, SeekOrigin.Begin);
+                    stream.Seek(0, SeekOrigin.Begin);
 
-                return stream;
-            });
+                    return stream;
+                });
 
-            // Is it there?
-            var putfile = from f in ListBucketObjects()
-                          where f.Name == fileName
-                          select f;
-            Assert.AreEqual(1, putfile.Count());
-            DeleteObject(bucketName, fileName);
+                // Is it there?
+                var putfile =
+                    from f in ListBucketObjects(bucketName)
+                    where f.Name == fileName
+                    select f;
+
+                Assert.AreEqual(1, putfile.Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
         public void TestBulkPutWithBlob()
         {
-            // Creates a bucket if it does not already exist.
-            _helpers.EnsureBucketExists(TESTBUCKET);
+            const string bucketName = "TestBulkPutWithBlob";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                _helpers.EnsureBucketExists(bucketName);
 
-            // Creates a bulk job with the server based on the files in a directory (recursively).
-            var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder, string.Empty);
-            Assert.Greater(directoryObjects.Count(), 0);
-            IJob job = _helpers.StartWriteJob(TESTBUCKET, directoryObjects, MAXBLOBSIZE);
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder);
+                Assert.Greater(directoryObjects.Count(), 0);
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects, BlobSize);
 
-            // Transfer all of the files.
-            job.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder, string.Empty));
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(testDirectoryBigFolder));
 
-            VerifyFiles(testDirectoryBigFolder);
+                VerifyFiles(bucketName, testDirectoryBigFolder);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
         public void TestPutObjectWithMaxBlob()
         {
-            // Creates a bucket if it does not already exist.
-            _helpers.EnsureBucketExists(TESTBUCKET);
-
-            var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolderForMaxBlob, string.Empty).ToList();
-            var bulkResult = _client.BulkPut(new BulkPutRequest(TESTBUCKET, directoryObjects).WithMaxBlobSize(MAXBLOBSIZE));
-
-            var chunkIds = new HashSet<Guid>();
-            foreach (var obj in bulkResult.ObjectLists)
+            const string bucketName = "TestPutObjectWithMaxBlob";
+            try
             {
-                chunkIds.Add(obj.ChunkId);
-            }
+                // Creates a bucket if it does not already exist.
+                _helpers.EnsureBucketExists(bucketName);
 
-            while (chunkIds.Count > 0)
+                var directoryObjects =
+                    FileHelpers.ListObjectsForDirectory(testDirectoryBigFolderForMaxBlob, string.Empty).ToList();
+                var bulkResult =
+                    _client.BulkPut(new BulkPutRequest(bucketName, directoryObjects).WithMaxBlobSize(BlobSize));
+
+                var chunkIds = new HashSet<Guid>();
+                foreach (var obj in bulkResult.ObjectLists)
+                {
+                    chunkIds.Add(obj.ChunkId);
+                }
+
+                while (chunkIds.Count > 0)
+                {
+                    var availableChunks =
+                        _client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(bulkResult.JobId));
+
+                    availableChunks.Match(
+                        (time, response) =>
+                        {
+                            // for each chunk that is available, check to make sure
+                            // we have not sent it, and if not, send that object
+                            AsyncUpload(_client, chunkIds, response, bulkResult);
+                        },
+                        () =>
+                        {
+                            throw new InvalidOperationException(
+                                "The job went away as we were trying to acquire chunk information");
+                        },
+                        retryAfter =>
+                        {
+                            // if we did not got some chunks than sleep and retry.  This could mean that the cache is full
+                            Thread.Sleep((int)(retryAfter.TotalMilliseconds * 1000));
+                        });
+                }
+
+                VerifyFiles(bucketName, testDirectoryBigFolderForMaxBlob);
+            }
+            finally
             {
-                var availableChunks = _client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(bulkResult.JobId));
-
-                availableChunks.Match(
-                    (time, response) =>
-                    {
-                        // for each chunk that is available, check to make sure
-                        // we have not sent it, and if not, send that object
-                        AsyncUpload(_client, chunkIds, response, bulkResult);
-                    },
-                    () =>
-                    {
-                        throw new InvalidOperationException(
-                            "The job went away as we were trying to acquire chunk information");
-                    },
-                    retryAfter =>
-                    {
-                        // if we did not got some chunks than sleep and retry.  This could mean that the cache is full
-                        Thread.Sleep((int)(retryAfter.TotalMilliseconds * 1000));
-                    });
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
-
-            VerifyFiles(testDirectoryBigFolderForMaxBlob);
         }
 
-        private void VerifyFiles(string folder)
+        private void VerifyFiles(string bucketName, string folder)
         {
             // Creates a bulk job with all of the objects in the bucket.
-            IJob job = _helpers.StartReadAllJob(TESTBUCKET);
+            var job = _helpers.StartReadAllJob(bucketName);
 
             // Transfer all of the files.
             job.Transfer(FileHelpers.BuildFileGetter(folder, PREFIX));
@@ -384,8 +427,8 @@ namespace IntegrationTestDs3
                 var newFile = File.OpenRead(Path.GetFullPath(string.Format("{0}{1}{2}", folder, PREFIX, fileName)));
 
                 Assert.AreEqual(
-                    System.Security.Cryptography.MD5.Create().ComputeHash(origFile),
-                    System.Security.Cryptography.MD5.Create().ComputeHash(newFile)
+                    MD5.Create().ComputeHash(origFile),
+                    MD5.Create().ComputeHash(newFile)
                     );
 
                 origFile.Close();
@@ -431,126 +474,180 @@ namespace IntegrationTestDs3
             fileToPut.Close();
         }
 
-
-        #endregion
-
-        #region sequential tests
-        /*  Nunit runs tests in lex order  
-        ** so one test can be contingent on predecessors
-        ** Test0900 cleans up test bucket
-        **/
-        [Test]
-        public void Test0050BulkPutNoPrefix()
-        {
-            // Creates a bucket if it does not already exist.
-            _helpers.EnsureBucketExists(TESTBUCKET);
-
-            var antefolder = ListBucketObjects();
-            int antefoldercount = antefolder.Count();
-
-            // Creates a bulk job with the server based on the files in a directory (recursively).
-            var directoryobjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc, string.Empty);
-            Assert.Greater(directoryobjects.Count(), 0);
-            IJob job = _helpers.StartWriteJob(TESTBUCKET, directoryobjects);
-
-            // Transfer all of the files.
-            job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, string.Empty));
-
-            // all files there?
-            var postfolder = ListBucketObjects();
-            int postfoldercount = postfolder.Count();
-            Assert.AreEqual(postfoldercount - antefoldercount, directoryobjects.Count());
-        }
+        #endregion independent tests
 
         [Test]
-        public void Test0060BulkPutWithPrefix()
+        public void TestBulkPutNoPrefix()
         {
-            // Creates a bucket if it does not already exist.
-            _helpers.EnsureBucketExists(TESTBUCKET);
-
-            var antefolder = ListBucketObjects();
-            int antefoldercount = antefolder.Count();
-
-            // Creates a bulk job with the server based on the files in a directory (recursively).
-            var directoryobjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc, PREFIX);
-            Assert.Greater(directoryobjects.Count(), 0);
-            IJob job = _helpers.StartWriteJob(TESTBUCKET, directoryobjects);
-
-            // Transfer all of the files.
-            job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, PREFIX));
-
-            // put all files?
-            var postfolder = ListBucketObjects();
-            int postfoldercount = postfolder.Count();
-            Assert.AreEqual(postfoldercount - antefoldercount, directoryobjects.Count());
-        }
-
-        [Test]
-        public void Test0110BulkGetWithPrefix()
-        {
-
-            var antefolder = FileHelpers.ListObjectsForDirectory(testDirectoryDestPrefix, PREFIX);
-            int antefoldercount = antefolder.Count();
-
-            // Creates a bulk job with all of the objects in the bucket.
-            IJob job = _helpers.StartReadAllJob(TESTBUCKET);
-
-            // Transfer all of the files.
-            job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDestPrefix, PREFIX));
-
-            var postfolder = FileHelpers.ListObjectsForDirectory(testDirectoryDestPrefix, PREFIX);
-            int postfoldercount = postfolder.Count();
-            Assert.Greater(postfoldercount, antefoldercount);
-        }
-
-        [Test]
-        public void Test0120BulkGetWithoutPrefix()
-        {
-
-            var antefolder = FileHelpers.ListObjectsForDirectory(testDirectoryDest, string.Empty);
-            int antefoldercount = antefolder.Count();
-
-            // Creates a bulk job with all of the objects in the bucket.
-            IJob job = _helpers.StartReadAllJob(TESTBUCKET);
-
-            // Transfer all of the files.
-            job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDest, string.Empty));
-
-            var postfolder = FileHelpers.ListObjectsForDirectory(testDirectoryDest, string.Empty);
-            int postfoldercount = postfolder.Count();
-            Assert.Greater(postfoldercount, antefoldercount);
-        }
-
-        [Test]
-        public void Test0500DeleteFolder()
-        {
-            // now it's there
-            var antefolder = ListBucketObjects();
-            int antefoldercount = antefolder.Count();
-            Assert.Greater(antefoldercount, 0);
-
-            // get all with folder name
-            IEnumerable<Ds3Object> folderitems = (from o in antefolder
-                                                  where o.Name.StartsWith(FOLDER)
-                                                  select o);
-            int foldercount = folderitems.Count();
-            Assert.Greater(foldercount, 0);
-
-            // delete it
-            DeleteFolderRequest request = new DeleteFolderRequest(TESTBUCKET, FOLDER);
-            _client.DeleteFolder(request);
-
-            // now it's gone
-            var postfolder = ListBucketObjects();
-            int postfoldercount = postfolder.Count();
-            Assert.AreEqual(antefoldercount - postfoldercount, foldercount);
-        }
-
-        IEnumerable<Ds3Object> ListBucketObjects()
-        {
-            var request = new GetObjectsRequest()
+            Ds3TestUtils.UsingAllWriteStrategys(strategy =>
             {
-                BucketId = TESTBUCKET
+                const string bucketName = "TestBulkPutNoPrefix";
+                try
+                {
+                    // Creates a bucket if it does not already exist.
+                    _helpers.EnsureBucketExists(bucketName);
+
+                    // Creates a bulk job with the server based on the files in a directory (recursively).
+                    var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
+                    Assert.Greater(directoryObjects.Count(), 0);
+                    var job = _helpers.StartWriteJob(bucketName, directoryObjects, helperStrategy: strategy);
+
+                    // Transfer all of the files.
+                    job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc));
+
+                    // all files there?
+                    var folderCount = ListBucketObjects(bucketName).Count();
+                    Assert.AreEqual(folderCount, directoryObjects.Count());
+                }
+                finally
+                {
+                    Ds3TestUtils.DeleteBucket(_client, bucketName);
+                }
+            });
+        }
+
+        [Test]
+        public void TestBulkPutWithPrefix()
+        {
+            const string bucketName = "TestBulkPutWithPrefix";
+            Ds3TestUtils.UsingAllWriteStrategys(strategy =>
+            {
+                try
+                {
+                    // Creates a bucket if it does not already exist.
+                    _helpers.EnsureBucketExists(bucketName);
+
+                    // Creates a bulk job with the server based on the files in a directory (recursively).
+                    var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc, PREFIX);
+                    Assert.Greater(directoryObjects.Count(), 0);
+                    var job = _helpers.StartWriteJob(bucketName, directoryObjects, helperStrategy: strategy);
+
+                    // Transfer all of the files.
+                    job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, PREFIX));
+
+                    // put all files?
+                    var folderCount = ListBucketObjects(bucketName).Count();
+                    Assert.AreEqual(folderCount, directoryObjects.Count());
+                }
+                finally
+                {
+                    Ds3TestUtils.DeleteBucket(_client, bucketName);
+                }
+            });
+        }
+
+        [Test]
+        public void TestBulkGetWithPrefix()
+        {
+            const string bucketName = "TestBulkGetWithPrefix";
+
+            Ds3TestUtils.UsingAllStringReadStrategys(strategy =>
+            {
+                try
+                {
+                    Ds3TestUtils.LoadTestData(_client, bucketName);
+
+                    // Creates a bulk job with all of the objects in the bucket.
+                    var job = _helpers.StartReadAllJob(bucketName, strategy);
+
+                    // Transfer all of the files.
+                    job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDestPrefix, PREFIX));
+
+                    var postFolder = FileHelpers.ListObjectsForDirectory(testDirectoryDestPrefix, PREFIX);
+                    var postFolderCount = postFolder.Count();
+                    Assert.AreEqual(postFolderCount, ListBucketObjects(bucketName).Count());
+                }
+                finally
+                {
+                    Ds3TestUtils.DeleteBucket(_client, bucketName);
+                    DeleteFilesFromLocalDirectory(testDirectoryDestPrefix);
+                }
+            });
+        }
+
+        [Test]
+        public void TestBulkGetWithoutPrefix()
+        {
+            const string bucketName = "TestBulkGetWithoutPrefix";
+
+            Ds3TestUtils.UsingAllStringReadStrategys(strategy =>
+            {
+                try
+                {
+                    Ds3TestUtils.LoadTestData(_client, bucketName);
+
+                    // Creates a bulk job with all of the objects in the bucket.
+                    var job = _helpers.StartReadAllJob(bucketName, strategy);
+
+                    // Transfer all of the files.
+                    job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDest));
+
+                    var postFolder = FileHelpers.ListObjectsForDirectory(testDirectoryDest);
+                    var postFolderCount = postFolder.Count();
+                    Assert.AreEqual(postFolderCount, ListBucketObjects(bucketName).Count());
+                }
+                finally
+                {
+                    Ds3TestUtils.DeleteBucket(_client, bucketName);
+                    DeleteFilesFromLocalDirectory(testDirectoryDest);
+                }
+            });
+        }
+
+        [Test]
+        public void TestDeleteFolder()
+        {
+            const string bucketName = "TestDeleteFolder";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                _helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
+                Assert.Greater(directoryObjects.Count(), 0);
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects);
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc));
+
+                // all files there?
+                var folderCount = ListBucketObjects(bucketName).Count();
+                Assert.AreEqual(folderCount, directoryObjects.Count());
+
+                // now it's there
+                var anteFolder = ListBucketObjects(bucketName);
+                var anteFolderCount = anteFolder.Count();
+                Assert.Greater(anteFolderCount, 0);
+
+                // get all with folder name
+                var folderItems =
+                    from o in anteFolder
+                    where o.Name.StartsWith(FOLDER)
+                    select o;
+
+                folderCount = folderItems.Count();
+                Assert.Greater(folderCount, 0);
+
+                // delete it
+                var request = new DeleteFolderRequest(bucketName, FOLDER);
+                _client.DeleteFolder(request);
+
+                // now it's gone
+                var postFolderCount = ListBucketObjects(bucketName).Count();
+                Assert.AreEqual(anteFolderCount - postFolderCount, folderCount);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        private IEnumerable<Ds3Object> ListBucketObjects(string bucketName)
+        {
+            var request = new GetObjectsRequest
+            {
+                BucketId = bucketName
             };
             return _client.GetObjects(request).Objects;
         }
@@ -566,96 +663,168 @@ namespace IntegrationTestDs3
             _client.DeleteFolder(request);
         }
         **/
+
         [Test]
         [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
-        public void Test0520GetBadBucket()
+        public void TestGetBadBucket()
         {
             var request = new GetBucketRequest("NoBucket" + DateTime.Now.Ticks);
             _client.GetBucket(request);
         }
 
         [Test]
-        public void Test0910DeleteObject()
+        public void TestDeleteObject()
         {
-            var antefolder = ListBucketObjects();
-            int antefoldercount = antefolder.Count();
-            // delete the first book
-            string book = BOOKS.First<string>();
-            DeleteObject(TESTBUCKET, book);
+            const string bucketName = "TestDeleteObject";
+            try
+            {
+                Ds3TestUtils.LoadTestData(_client, bucketName);
 
-            // one less ?
-            var postfolder = ListBucketObjects();
-            int postfoldercount = postfolder.Count();
-            Assert.AreEqual(antefoldercount - postfoldercount, 1);
+                var anteFolderCount = ListBucketObjects(bucketName).Count();
+                // delete the first book
+                var book = BOOKS.First();
+                DeleteObject(bucketName, book);
+
+                // one less ?
+                var postFolderCount = ListBucketObjects(bucketName).Count();
+                Assert.AreEqual(anteFolderCount - postFolderCount, 1);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
         [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
-        public void Test0915DeleteDeletedObject()
+        public void TestDeleteDeletedObject()
         {
-            // delete the first book, again
-            string book = BOOKS.First<string>();
-            DeleteObject(TESTBUCKET, book);
+            const string bucketName = "TestDeleteDeletedObject";
+            try
+            {
+                Ds3TestUtils.LoadTestData(_client, bucketName);
+
+                var anteFolderCount = ListBucketObjects(bucketName).Count();
+                // delete the first book
+                var book = BOOKS.First();
+                DeleteObject(bucketName, book);
+
+                // one less ?
+                var postFolderCount = ListBucketObjects(bucketName).Count();
+                Assert.AreEqual(anteFolderCount - postFolderCount, 1);
+
+                book = BOOKS.First();
+                DeleteObject(bucketName, book);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
-        public void Test0920DeleteObjectWithPrefix()
+        public void TestDeleteObjectWithPrefix()
         {
-            var antefolder = ListBucketObjects();
-            int antefoldercount = antefolder.Count();
-            // delete the dirst book
-            string book = BOOKS.First<string>();
-            DeleteObject(TESTBUCKET, PREFIX + book);
+            const string bucketName = "TestDeleteObjectWithPrefix";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                _helpers.EnsureBucketExists(bucketName);
 
-            // one less ?
-            var postfolder = ListBucketObjects();
-            int postfoldercount = postfolder.Count();
-            Assert.AreEqual(antefoldercount - postfoldercount, 1);
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc, PREFIX);
+                Assert.Greater(directoryObjects.Count(), 0);
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects);
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc, PREFIX));
+
+                // put all files?
+                var folderCount = ListBucketObjects(bucketName).Count();
+                Assert.AreEqual(folderCount, directoryObjects.Count());
+
+                var anteFolderCount = ListBucketObjects(bucketName).Count();
+
+                // delete the first book
+                var book = BOOKS.First();
+                DeleteObject(bucketName, PREFIX + book);
+
+                // one less ?
+                var postFolderCount = ListBucketObjects(bucketName).Count();
+                Assert.AreEqual(anteFolderCount - postFolderCount, 1);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
-        public void Test0990CleanUp()
+        public void TestCleanUp()
         {
-            var items = _helpers.ListObjects(TESTBUCKET);
+            const string bucketName = "TestCleanUp";
+            Ds3TestUtils.LoadTestData(_client, bucketName);
+
+            var items = _helpers.ListObjects(bucketName);
 
             // Loop through all of the objects in the bucket.
             foreach (var obj in items)
             {
-                DeleteObject(TESTBUCKET, obj.Name);
+                DeleteObject(bucketName, obj.Name);
             }
-            DeleteBucket(TESTBUCKET);
+            DeleteBucket(bucketName);
         }
 
-        void DeleteObject(string bucketname, string objectName)
+        private void DeleteObject(string bucketname, string objectName)
         {
             var request = new DeleteObjectRequest(bucketname, objectName);
             _client.DeleteObject(request);
         }
 
-        void DeleteBucket(string bucketname)
+        private void DeleteBucket(string bucketname)
         {
             var request = new DeleteBucketRequest(bucketname);
             _client.DeleteBucket(request);
         }
 
-
-        #endregion sequential tests
-
-        [TestFixtureTearDown]
-        public void CleanUp()
+        private static void DeleteFilesFromLocalDirectory(string dir)
         {
-            // sequential tests will delete TESTBUCKET
-            // individual tests will not
-            // so create if necessary , then delete
-            _helpers.EnsureBucketExists(TESTBUCKET);
-            var items = _helpers.ListObjects(TESTBUCKET);
-
-            // Loop through all of the objects in the bucket.
-            foreach (var obj in items)
+            foreach (var file in Directory.GetFiles(dir))
             {
-                DeleteObject(TESTBUCKET, obj.Name);
+                File.Delete(file);
             }
-            DeleteBucket(TESTBUCKET);
+        }
+
+        [Test]
+        public void TestChecksumStreamingWithMultiBlobs()
+        {
+            const string bucketName = "TestChecksumStreamingWithMultiBlobs";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                _helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var bigFile = FileHelpers.ListObjectsForDirectory(testDirectoryBigFolder).First(obj => obj.Name.Equals(BIGFILES.First()));
+                var directoryObjects = new List<Ds3Object> {bigFile};
+
+                Assert.Greater(directoryObjects.Count(), 0);
+
+                var job = _helpers.StartWriteJob(bucketName, directoryObjects, BlobSize, new WriteStreamHelperStrategy());
+
+                var md5 = MD5.Create();
+                var fileStream = File.OpenRead(testDirectoryBigFolder + BIGFILES.First());
+                var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
+
+                job.Transfer(foo => md5Stream);
+                md5Stream.FlushFinalBlock();
+
+                Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
     }
 }

@@ -13,9 +13,9 @@
  * ****************************************************************************
  */
 
-namespace Ds3.Helpers.TransferItemSources
+namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
-    internal class TransferItem
+    public class TransferItem
     {
         public IDs3Client Client { get; private set; }
         public Blob Blob { get; private set; }

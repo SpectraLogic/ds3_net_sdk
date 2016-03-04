@@ -154,7 +154,7 @@ namespace Ds3.Runtime
                         httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
                         break;
                     case Checksum.ChecksumType.Sha256:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-256 checksum is {0}",chucksumValue));
+                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-256 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
                         break;
                     case Checksum.ChecksumType.Sha512:
@@ -186,7 +186,7 @@ namespace Ds3.Runtime
             {
                 httpRequest.AddRange(byteRange.Start, byteRange.End);
             }
-            
+
             foreach (var header in request.Headers)
             {
                 httpRequest.Headers.Add(header.Key, header.Value);
@@ -199,7 +199,7 @@ namespace Ds3.Runtime
                 {
                     using (var requestStream = httpRequest.GetRequestStream())
                     {
-                        if (content.Position != 0)
+                        if (content.CanSeek && content.Position != 0)
                         {
                             content.Seek(0, SeekOrigin.Begin);
                         }
@@ -243,7 +243,8 @@ namespace Ds3.Runtime
 
         private string CreateHostString(Uri endpoint)
         {
-            if(endpoint.Port > 0) {
+            if (endpoint.Port > 0)
+            {
                 return endpoint.Host + ":" + endpoint.Port;
             }
             return endpoint.Host;

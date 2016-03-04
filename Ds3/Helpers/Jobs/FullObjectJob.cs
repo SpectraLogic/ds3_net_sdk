@@ -15,7 +15,7 @@
 
 using Ds3.Calls;
 using Ds3.Helpers.RangeTranslators;
-using Ds3.Helpers.TransferItemSources;
+using Ds3.Helpers.Strategys;
 using Ds3.Helpers.Transferrers;
 using Ds3.Models;
 using System;
@@ -27,38 +27,45 @@ namespace Ds3.Helpers.Jobs
     internal class FullObjectJob : Job<IJob, string>, IJob
     {
         public static IJob Create(
+            IDs3Client client,
             JobResponse jobResponse,
-            ITransferItemSource transferItemSource,
+            IHelperStrategy<string> helperStrategy,
             ITransferrer transferrer)
         {
             var blobs = Blob.Convert(jobResponse);
             var rangesForRequests = blobs.ToLookup(b => b, b => b.Range);
             return new FullObjectJob(
+                client,
+                jobResponse,
                 jobResponse.BucketName,
                 jobResponse.JobId,
-                transferItemSource,
+                helperStrategy,
                 transferrer,
                 rangesForRequests,
                 blobs
             );
         }
 
-        public FullObjectJob(
+        private FullObjectJob(
+            IDs3Client client,
+            JobResponse jobResponse,
             string bucketName,
             Guid jobId,
-            ITransferItemSource transferItemSource,
+            IHelperStrategy<string> helperStrategy,
             ITransferrer transferrer,
             ILookup<Blob, Range> rangesForRequests,
             IEnumerable<ContextRange<string>> itemsToTrack)
                 : base(
-                    bucketName,
-                    jobId,
-                    transferItemSource,
-                    transferrer,
-                    rangesForRequests,
-                    new RequestToObjectRangeTranslator(rangesForRequests),
-                    itemsToTrack
-                )
+                      client,
+                      jobResponse,
+                      bucketName,
+                      jobId,
+                      helperStrategy,
+                      transferrer,
+                      rangesForRequests,
+                      new RequestToObjectRangeTranslator(rangesForRequests),
+                      itemsToTrack
+                      )
         {
         }
     }

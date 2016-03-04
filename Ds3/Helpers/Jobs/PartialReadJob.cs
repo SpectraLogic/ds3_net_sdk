@@ -15,7 +15,7 @@
 
 using Ds3.Calls;
 using Ds3.Helpers.RangeTranslators;
-using Ds3.Helpers.TransferItemSources;
+using Ds3.Helpers.Strategys;
 using Ds3.Helpers.Transferrers;
 using Ds3.Models;
 using System;
@@ -27,10 +27,11 @@ namespace Ds3.Helpers.Jobs
     internal class PartialReadJob : Job<IPartialReadJob, Ds3PartialObject>, IPartialReadJob
     {
         public static IPartialReadJob Create(
+            IDs3Client client,
             JobResponse jobResponse,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
-            ITransferItemSource transferItemSource,
+            IHelperStrategy<Ds3PartialObject> helperStrategy,
             int getObjectRetries = 5)
         {
             var blobs = Blob.Convert(jobResponse).ToList();
@@ -38,9 +39,11 @@ namespace Ds3.Helpers.Jobs
                 .Concat(PartialObjectRangeUtilities.ObjectPartsForFullObjects(fullObjects, blobs))
                 .ToList();
             return new PartialReadJob(
+                client,
+                jobResponse,
                 jobResponse.BucketName,
                 jobResponse.JobId,
-                transferItemSource,
+                helperStrategy,
                 PartialObjectRangeUtilities.RangesForRequests(blobs, allItems),
                 allItems,
                 allItems.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po)),
@@ -48,24 +51,27 @@ namespace Ds3.Helpers.Jobs
             );
         }
 
-        public PartialReadJob(
+        private PartialReadJob(
+            IDs3Client client,
+            JobResponse jobResponse,
             string bucketName,
             Guid jobId,
-            ITransferItemSource transferItemSource,
+            IHelperStrategy<Ds3PartialObject> helperStrategy,
             ILookup<Blob, Range> rangesForRequests,
             IEnumerable<Ds3PartialObject> allItems,
             IEnumerable<ContextRange<Ds3PartialObject>> itemsToTrack,
             int getObjectRetries = 5)
                 : base(
-                    bucketName,
-                    jobId,
-                    transferItemSource,
-                    new PartialDataTransferrerDecorator(new PartialReadTransferrer(), getObjectRetries),
-                    rangesForRequests,
-                    new RequestToObjectRangeTranslator(rangesForRequests)
-                        .ComposedWith(new ObjectToPartRangeTranslator(allItems)),
-                    itemsToTrack
-                )
+                        client,
+                        jobResponse,
+                        bucketName,
+                        jobId,
+                        helperStrategy,
+                        new PartialDataTransferrerDecorator(new PartialReadTransferrer(), getObjectRetries),
+                        rangesForRequests,
+                        new RequestToObjectRangeTranslator(rangesForRequests).ComposedWith(new ObjectToPartRangeTranslator(allItems)),
+                        itemsToTrack
+                      )
         {
             this.AllItems = allItems;
         }

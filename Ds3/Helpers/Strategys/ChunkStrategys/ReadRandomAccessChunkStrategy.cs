@@ -1,70 +1,62 @@
 ﻿/*
- * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
- *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
- *   this file except in compliance with the License. A copy of the License is located at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- *   or in the "license" file accompanying this file.
- *   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
- *   CONDITIONS OF ANY KIND, either express or implied. See the License for the
- *   specific language governing permissions and limitations under the License.
- * ****************************************************************************
- */
+* ******************************************************************************
+*   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+*   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+*   this file except in compliance with the License. A copy of the License is located at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+*   or in the "license" file accompanying this file.
+*   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+*   CONDITIONS OF ANY KIND, either express or implied. See the License for the
+*   specific language governing permissions and limitations under the License.
+* ****************************************************************************
+*/
 
 using Ds3.Calls;
+using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Ds3.Runtime;
 
-namespace Ds3.Helpers.TransferItemSources
+namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
-    internal class ReadTransferItemSource : ITransferItemSource
+    /// <summary>
+    /// The ReadRandomAccessChunkStrategy will get the available job chunks and allocate those chunks
+    /// </summary>
+    public class ReadRandomAccessChunkStrategy : IChunkStrategy
     {
         private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
-        private readonly IDs3Client _client;
         private readonly int _retryAfter; // Negative _retryAfter value represent infinity retries
         public int RetryAfterLeft { get; private set; } // The number of retries left
-        private readonly Guid _jobId;
-        private readonly ISet<Blob> _blobsRemaining;
+        private Guid _jobId;
+        private ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
+        private IDs3Client _client;
 
-        public ReadTransferItemSource(
-            IDs3Client client,
-            int retryAfter,
-            JobResponse initialJobResponse)
-            : this(Thread.Sleep, client, retryAfter, initialJobResponse)
+        public ReadRandomAccessChunkStrategy(int retryAfter)
+            : this(retryAfter, Thread.Sleep)
         {
         }
 
-        public ReadTransferItemSource(
-            Action<TimeSpan> wait,
-            IDs3Client client,
-            JobResponse initialJobResponse)
-            : this(wait, client, -1, initialJobResponse)
+        public ReadRandomAccessChunkStrategy(int retryAfter, Action<TimeSpan> wait)
         {
-        }
-
-        public ReadTransferItemSource(
-            Action<TimeSpan> wait,
-            IDs3Client client,
-            int retryAfter,
-            JobResponse initialJobResponse)
-        {
-            this._wait = wait;
-            this._client = client;
             this._retryAfter = RetryAfterLeft = retryAfter;
-            this._jobId = initialJobResponse.JobId;
-            this._blobsRemaining = new HashSet<Blob>(Blob.Convert(initialJobResponse));
+            this._wait = wait;
         }
 
-        public IEnumerable<TransferItem> EnumerateAvailableTransfers()
+        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
         {
+            this._client = client;
+            this._jobId = jobResponse.JobId;
+            lock (this._blobsRemainingLock)
+            {
+                this._blobsRemaining = new HashSet<Blob>(Blob.Convert(jobResponse));
+            }
+
             // Flatten all batches into a single enumerable.
             return EnumerateTransferItemBatches().SelectMany(it => it);
         }
@@ -121,7 +113,7 @@ namespace Ds3.Helpers.TransferItemSources
                 ).ToArray();
                 if (result.Length == 0)
                 {
-                    this._wait(ts);
+                    _wait(ts);
                 }
                 RetryAfterLeft = _retryAfter; // Reset the number of retries to the initial value
                 return result;
@@ -134,7 +126,7 @@ namespace Ds3.Helpers.TransferItemSources
                 }
                 RetryAfterLeft--;
 
-                this._wait(ts);
+                _wait(ts);
                 return new TransferItem[0];
             });
         }
