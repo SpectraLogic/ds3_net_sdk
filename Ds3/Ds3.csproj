@@ -123,10 +123,7 @@
     <Compile Include="Helpers\RangeTranslators\PartialObjectRangeUtilities.cs" />
     <Compile Include="Helpers\Streams\IResourceStore.cs" />
     <Compile Include="Helpers\Transferrers\ITransferer.cs" />
-    <Compile Include="Helpers\TransferItemSources\ReadTransferItemSource.cs" />
-    <Compile Include="Helpers\TransferItemSources\TransferItem.cs" />
-    <Compile Include="Helpers\TransferItemSources\ITransferItemSource.cs" />
-    <Compile Include="Helpers\TransferItemSources\WriteTransferItemSource.cs" />
+    <Compile Include="Helpers\Strategys\ChunkStrategys\TransferItem.cs" />
     <Compile Include="Helpers\Streams\ResourceStore.cs" />
     <Compile Include="Helpers\Transferrers\PartialReadTransferrer.cs" />
     <Compile Include="Helpers\Transferrers\ReadTransferrer.cs" />
@@ -244,7 +241,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helpers\TransferItemSources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

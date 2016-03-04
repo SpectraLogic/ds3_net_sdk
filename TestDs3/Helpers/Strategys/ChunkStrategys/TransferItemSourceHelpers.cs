@@ -14,18 +14,16 @@
  */
 
 using Ds3;
-using Ds3.Calls;
 using Ds3.Helpers;
-using Ds3.Helpers.TransferItemSources;
-using Ds3.Models;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Ds3.Helpers.Strategys.ChunkStrategys;
 using Range = Ds3.Models.Range;
 
-namespace TestDs3.Helpers.TransferItemSources
+namespace TestDs3.Helpers.Strategys.ChunkStrategys
 {
     [TestFixture]
     public class TransferItemSourceHelpers

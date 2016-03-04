@@ -14,7 +14,6 @@
 */
 
 using Ds3.Calls;
-using Ds3.Helpers.TransferItemSources;
 using System.Collections.Generic;
 
 namespace Ds3.Helpers.Strategys.ChunkStrategys

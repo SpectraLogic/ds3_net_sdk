@@ -13,31 +13,32 @@
  * ****************************************************************************
  */
 
-using Ds3;
-using Ds3.Calls;
-using Ds3.Helpers;
-using Ds3.Helpers.TransferItemSources;
-using Moq;
-using NUnit.Framework;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ds3;
+using Ds3.Calls;
+using Ds3.Helpers;
+using Ds3.Helpers.Strategys.ChunkStrategys;
+using Ds3.Models;
 using Ds3.Runtime;
+using Moq;
+using NUnit.Framework;
+using Range = Ds3.Models.Range;
 
-namespace TestDs3.Helpers.TransferItemSources
+namespace TestDs3.Helpers.Strategys.ChunkStrategys
 {
-    using Ds3.Models;
-    using System.Diagnostics;
     using Stubs = JobResponseStubs;
 
     [TestFixture]
-    public class TestReadTransferItemSource
+    public class TestReadRandomAccessChunkStrategy
     {
-        [Test, Timeout(1000)]
-        public void EnumerateTransfersCanBeStopped()
+        [Test]
+        public void TestGetNextTransferItemsCanBeStopped()
         {
             var initialJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),
@@ -53,24 +54,24 @@ namespace TestDs3.Helpers.TransferItemSources
                 .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
                 .Returns(factory.Object);
             client
-                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
                 .Returns(GetAvailableJobChunksResponse.Success(
                     TimeSpan.FromMinutes(5),
                     Stubs.BuildJobResponse(Stubs.Chunk1(Stubs.NodeId1, true, true))
                 ));
 
-            var transferItemSource = new ReadTransferItemSource(_ => {}, client.Object, initialJobResponse);
+            var source = new ReadRandomAccessChunkStrategy(-1, _ => { });
 
             var readyToStop = new ManualResetEventSlim();
             var task = Task.Run(() =>
             {
                 readyToStop.Wait();
                 Thread.Sleep(130);
-                transferItemSource.Stop();
+                source.Stop();
             });
-            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
-                for (int i = 0; i < 2; i++)
+                for (var i = 0; i < 2; i++)
                 {
                     Assert.True(transfers.MoveNext());
                 }
@@ -83,8 +84,8 @@ namespace TestDs3.Helpers.TransferItemSources
             task.Wait();
         }
 
-        [Test, Timeout(10000)]
-        public void EnumerateTransfersStreamsNewlyAvailableTransferItems()
+        [Test]
+        public void TestGetNextTransferItems()
         {
             var jobResponse1 = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),
@@ -126,17 +127,17 @@ namespace TestDs3.Helpers.TransferItemSources
             };
             var chunkResponseQueue = new Queue<GetAvailableJobChunksResponse>(chunkResponses);
             client
-                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
                 .Returns(() =>
                 {
                     var r = chunkResponseQueue.Dequeue();
-                    actionSequence.Enqueue(new { Item = (object)r, Type = "Allocated"});
+                    actionSequence.Enqueue(new { Item = (object)r, Type = "Allocated" });
                     return r;
                 });
 
             var sleeps = new List<TimeSpan>();
 
-            var source = new ReadTransferItemSource(sleeps.Add, client.Object, jobResponse1);
+            var source = new ReadRandomAccessChunkStrategy(-1, sleeps.Add);
 
             var blobs = new[]
             {
@@ -150,7 +151,7 @@ namespace TestDs3.Helpers.TransferItemSources
             var producerConsumer = new ProducerConsumer(1);
             var completeBlobsTask = Task.Run(() =>
             {
-                for (int i = 0; i < blobs.Length; i++)
+                for (var i = 0; i < blobs.Length; i++)
                 {
                     producerConsumer.Read(() =>
                         actionSequence.Enqueue(new { Item = (object)blobs[i], Type = "Completed" })
@@ -168,8 +169,7 @@ namespace TestDs3.Helpers.TransferItemSources
                     new TransferItem(node2Client, blobs[4]),
                     new TransferItem(node2Client, blobs[5]),
                 },
-                source
-                    .EnumerateAvailableTransfers()
+                source.GetNextTransferItems(client.Object, jobResponse1)
                     .Select(ti =>
                     {
                         producerConsumer.Write(() =>
@@ -225,7 +225,7 @@ namespace TestDs3.Helpers.TransferItemSources
         }
 
         [Test]
-        public void TestEnumerateTransfersSetRetryAfter()
+        public void TestGetNextTransferItemsSetRetryAfter()
         {
             var initialJobResponse = Stubs.BuildJobResponse(Stubs.Chunk1(null, false, false));
             var factory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
@@ -237,70 +237,74 @@ namespace TestDs3.Helpers.TransferItemSources
                 .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
                 .Returns(factory.Object);
             client
-                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
                 .Returns(GetAvailableJobChunksResponse.RetryAfter(
                     TimeSpan.FromMinutes(0)));
 
-            var transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 0, initialJobResponse);
-            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            //var transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 0, initialJobResponse);
+            var source = new ReadRandomAccessChunkStrategy(0, _ => { });
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfterLeft == 0);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
 
-            transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 1, initialJobResponse);
-            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            //transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 1, initialJobResponse);
+            source = new ReadRandomAccessChunkStrategy(1, _ => { });
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 1);
+                    Assert.True(source.RetryAfterLeft == 1);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
 
-            transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 2, initialJobResponse);
-            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            //transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 2, initialJobResponse);
+            source = new ReadRandomAccessChunkStrategy(2, _ => { });
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 2);
+                    Assert.True(source.RetryAfterLeft == 2);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
 
-            transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 100, initialJobResponse);
-            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            //transferItemSource = new ReadTransferItemSource(_ => { }, client.Object, 100, initialJobResponse);
+            source = new ReadRandomAccessChunkStrategy(100, _ => { });
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 100);
+                    Assert.True(source.RetryAfterLeft == 100);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(transferItemSource.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
@@ -323,7 +327,7 @@ namespace TestDs3.Helpers.TransferItemSources
                 .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
                 .Returns(factory.Object);
             client
-                .Setup(c => c.GetAvailableJobChunks(AvailableChunks(Stubs.JobId)))
+                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
                 .Returns(() =>
                 {
                     if (retryAfter == 1) //after 4 retires we want to success
@@ -336,16 +340,23 @@ namespace TestDs3.Helpers.TransferItemSources
                     return GetAvailableJobChunksResponse.RetryAfter(TimeSpan.FromSeconds(0));
                 });
 
-            var transferItemSource = new ReadTransferItemSource(_ => { retryAfter--; }, client.Object, retryAfter, initialJobResponse);
+            //var transferItemSource = new ReadTransferItemSource(_ => { retryAfter--; }, client.Object, retryAfter, initialJobResponse);
+            var source = new ReadRandomAccessChunkStrategy(retryAfter, _ => { retryAfter--; });
 
 
-            using (var transfers = transferItemSource.EnumerateAvailableTransfers().GetEnumerator())
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
-                Assert.True(transferItemSource.RetryAfterLeft == 5);
+                Assert.True(source.RetryAfterLeft == 5);
                 transfers.MoveNext();
-                Assert.True(transferItemSource.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
+                Assert.True(source.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
                 transfers.MoveNext();
             }
+        }
+
+
+        private static ConcurrentQueue<T> Queue<T>(T example)
+        {
+            return new ConcurrentQueue<T>();
         }
 
         private class ProducerConsumer
@@ -372,19 +383,6 @@ namespace TestDs3.Helpers.TransferItemSources
                 action();
                 this._writerSemaphore.Release();
             }
-        }
-
-        private static ConcurrentQueue<T> Queue<T>(T example)
-        {
-            return new ConcurrentQueue<T>();
-        }
-
-        private static GetAvailableJobChunksRequest AvailableChunks(Guid jobId)
-        {
-            return Match.Create(
-                r => r.JobId == jobId,
-                () => new GetAvailableJobChunksRequest(jobId)
-            );
         }
     }
 }

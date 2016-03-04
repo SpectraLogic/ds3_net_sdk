@@ -14,7 +14,6 @@
 */
 
 using Ds3.Calls;
-using Ds3.Helpers.TransferItemSources;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;

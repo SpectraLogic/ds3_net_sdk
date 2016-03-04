@@ -14,7 +14,6 @@
 */
 
 using Ds3.Calls;
-using Ds3.Helpers.TransferItemSources;
 using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
@@ -31,7 +30,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
         private readonly int _retryAfter; // Negative _retryAfter value represent infinity retries
-        private int RetryAfterLeft { get; set; } // The number of retries left
+        public int RetryAfterLeft { get; private set; } // The number of retries left
         private Guid _jobId;
         private ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);

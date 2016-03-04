@@ -13,7 +13,7 @@
  * ****************************************************************************
  */
 
-namespace Ds3.Helpers.TransferItemSources
+namespace Ds3.Helpers.Strategys.ChunkStrategys
 {
     public class TransferItem
     {

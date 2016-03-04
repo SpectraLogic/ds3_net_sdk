@@ -14,7 +14,6 @@
 */
 
 using Ds3.Calls;
-using Ds3.Helpers.TransferItemSources;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
@@ -36,6 +35,17 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
         private List<TransferItem> _currentTransferItemsList = new List<TransferItem>();
+        private readonly Action<TimeSpan> _wait;
+
+        public WriteStreamChunkStrategy()
+            :this(Thread.Sleep)
+        {
+        }
+
+        public WriteStreamChunkStrategy(Action<TimeSpan> wait)
+        {
+            this._wait = wait;
+        }
 
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
         {
@@ -201,7 +211,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 ).ToList();
         }
 
-        private static JobObjectList AllocateChunk(IDs3Client client, Guid chunkId, IDictionary<Guid, bool> allocatedChunks)
+        private JobObjectList AllocateChunk(IDs3Client client, Guid chunkId, IDictionary<Guid, bool> allocatedChunks)
         {
             JobObjectList chunk = null;
             var chunkGone = false;
@@ -217,7 +227,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                             allocatedChunks[chunkId] = true; //mark this chunk as allocated
                             chunk = allocatedChunk;
                         },
-                        Thread.Sleep,
+                        this._wait,
                         () =>
                         {
                             chunkGone = true;
