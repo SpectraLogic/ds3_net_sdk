@@ -75,7 +75,11 @@ namespace LongRunningIntegrationTestDs3
                 var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
 
                 job.Transfer(foo => md5Stream);
-                md5Stream.FlushFinalBlock();
+
+                if (!md5Stream.HasFlushedFinalBlock)
+                {
+                    md5Stream.FlushFinalBlock();
+                }
 
                 Assert.AreEqual("6pqugiiIUgxPkHfKKgq52A==", Convert.ToBase64String(md5.Hash));
             }
@@ -124,7 +128,7 @@ namespace LongRunningIntegrationTestDs3
 
                 job.Transfer(fileName => cryptoStreams[fileName]);
 
-                foreach (var stream in cryptoStreams.Select(pair => pair.Value))
+                foreach (var stream in cryptoStreams.Select(pair => pair.Value).Where(stream => !stream.HasFlushedFinalBlock))
                 {
                     stream.FlushFinalBlock();
                 }

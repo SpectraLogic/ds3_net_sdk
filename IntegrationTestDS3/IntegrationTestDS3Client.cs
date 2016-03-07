@@ -817,7 +817,10 @@ namespace IntegrationTestDs3
                 var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
 
                 job.Transfer(foo => md5Stream);
-                md5Stream.FlushFinalBlock();
+                if (!md5Stream.HasFlushedFinalBlock)
+                {
+                    md5Stream.FlushFinalBlock();
+                }
 
                 Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
             }
