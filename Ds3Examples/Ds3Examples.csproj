@@ -35,9 +35,9 @@
     <StartupObject>Ds3Examples.Ds3ExampleClient</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ds3_net_sdk, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\ds3_net_sdk.1.1.0.0\lib\net40\ds3_net_sdk.dll</HintPath>
+    <Reference Include="ds3_net_sdk, Version=1.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ds3_net_sdk.1.2.4.0\lib\net40\ds3_net_sdk.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
