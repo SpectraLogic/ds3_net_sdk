@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="BulkGetExample.cs" />
     <Compile Include="BulkPutExample.cs" />
+    <Compile Include="BulkPutWithStreamStrategyExample.cs" />
     <Compile Include="Ds3ExampleClient.cs" />
     <Compile Include="ListBucketsExample.cs" />
     <Compile Include="ListObjectsExample.cs" />
