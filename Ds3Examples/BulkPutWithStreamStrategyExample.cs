@@ -44,19 +44,19 @@ namespace Ds3Examples
             // Set up the high-level abstractions.
             IDs3ClientHelpers helpers = new Ds3ClientHelpers(client);
 
-            const string bucket = "bucket-name";
+            const string bucketName = "BulkPutWithStreamStrategy";
             const string directory = "TestData";
 
             // Creates a bucket if it does not already exist.
-            helpers.EnsureBucketExists(bucket);
-            if (ClientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("Bucket exists: {0}", bucket)); }
+            helpers.EnsureBucketExists(bucketName);
+            if (ClientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("Bucket exists: {0}", bucketName)); }
 
             // Creates a bulk job with the server based on the files in a directory (recursively).
             var directoryObjects = FileHelpers.ListObjectsForDirectory(directory).ToList();
-            var job = helpers.StartWriteJob(bucket, directoryObjects, helperStrategy: new WriteStreamHelperStrategy());
+            var job = helpers.StartWriteJob(bucketName, directoryObjects, helperStrategy: new WriteStreamHelperStrategy());
 
             // Tracing example
-            if (ClientSwitch.TraceInfo) { Trace.WriteLine(string.Format("StartWriteJob({0})", bucket)); }
+            if (ClientSwitch.TraceInfo) { Trace.WriteLine(string.Format("StartWriteJob({0})", bucketName)); }
             if (ClientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("Add files from: {0}", directory)); }
 
             // Keep the job id around. This is useful for job recovery in the case of a failure.
