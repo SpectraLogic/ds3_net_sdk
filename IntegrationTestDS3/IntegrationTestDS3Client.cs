@@ -300,7 +300,7 @@ namespace IntegrationTestDs3
             {
                 _helpers.EnsureBucketExists(bucketName);
 
-                const string fileName = "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMAC HD.avb";
+                const string fileName = "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMA+C HD.avb";
                 var obj = new Ds3Object(fileName, 1024);
                 var objs = new List<Ds3Object> { obj };
                 var job = _helpers.StartWriteJob(bucketName, objs);
@@ -326,6 +326,18 @@ namespace IntegrationTestDs3
                     select f;
 
                 Assert.AreEqual(1, putfile.Count());
+
+                // Does a query param escape properly?
+                GetObjectsRequest getObjectsWithNameRequest = new GetObjectsRequest();
+                getObjectsWithNameRequest.ObjectName = fileName;
+                var getObjectsResponse = _client.GetObjects(getObjectsWithNameRequest);
+
+                var filename =
+                    from f in getObjectsResponse.Objects
+                    where f.Name == fileName
+                    select f;
+
+                Assert.AreEqual(1, filename.Count());
             }
             finally
             {
