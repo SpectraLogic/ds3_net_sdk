@@ -300,7 +300,7 @@ namespace IntegrationTestDs3
             {
                 _helpers.EnsureBucketExists(bucketName);
 
-                const string fileName = "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMA+C HD.avb";
+                const string fileName = "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMAC HD.avb";
                 var obj = new Ds3Object(fileName, 1024);
                 var objs = new List<Ds3Object> { obj };
                 var job = _helpers.StartWriteJob(bucketName, objs);
@@ -326,6 +326,40 @@ namespace IntegrationTestDs3
                     select f;
 
                 Assert.AreEqual(1, putfile.Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+
+        [Test]
+        public void TestPlusCharacterInQueryParam()
+        {
+            const string bucketName = "TestPlusCharacterInQueryParam";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+
+                const string fileName = "Test+Plus+Character";
+                var obj = new Ds3Object(fileName, 1024);
+                var objs = new List<Ds3Object> { obj };
+                var job = _helpers.StartWriteJob(bucketName, objs);
+
+                job.Transfer(key =>
+                {
+                    var data = new byte[1024];
+                    var stream = new MemoryStream(data);
+                    for (var i = 0; i < 1024; i++)
+                    {
+                        stream.WriteByte(97);
+                    }
+
+                    stream.Seek(0, SeekOrigin.Begin);
+
+                    return stream;
+                });
 
                 // Does a query param escape properly?
                 GetObjectsRequest getObjectsWithNameRequest = new GetObjectsRequest();
