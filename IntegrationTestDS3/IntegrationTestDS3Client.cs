@@ -333,6 +333,52 @@ namespace IntegrationTestDs3
             }
         }
 
+
+        [Test]
+        public void TestPlusCharacterInQueryParam()
+        {
+            const string bucketName = "TestPlusCharacterInQueryParam";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+
+                const string fileName = "Test+Plus+Character";
+                var obj = new Ds3Object(fileName, 1024);
+                var objs = new List<Ds3Object> { obj };
+                var job = _helpers.StartWriteJob(bucketName, objs);
+
+                job.Transfer(key =>
+                {
+                    var data = new byte[1024];
+                    var stream = new MemoryStream(data);
+                    for (var i = 0; i < 1024; i++)
+                    {
+                        stream.WriteByte(97);
+                    }
+
+                    stream.Seek(0, SeekOrigin.Begin);
+
+                    return stream;
+                });
+
+                // Does a query param escape properly?
+                GetObjectsRequest getObjectsWithNameRequest = new GetObjectsRequest();
+                getObjectsWithNameRequest.ObjectName = fileName;
+                var getObjectsResponse = _client.GetObjects(getObjectsWithNameRequest);
+
+                var filename =
+                    from f in getObjectsResponse.Objects
+                    where f.Name == fileName
+                    select f;
+
+                Assert.AreEqual(1, filename.Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
         [Test]
         public void TestBulkPutWithBlob()
         {
