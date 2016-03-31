@@ -38,7 +38,7 @@ namespace Ds3.Runtime
         /// <returns></returns>
         public static string PercentEncodePath(string path)
         {
-            return PercentEncodePath(path, '/');
+            return PercentEncodePath(path, '/', '+');
         }
 
         /// <summary>
