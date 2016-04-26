@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,51 +13,24 @@
  * ****************************************************************************
  */
 
-using System;
+// This code is auto-generated, do not modify
+using System.Net;
+using System.IO;
 using System.Collections.Generic;
-
 using Ds3.Models;
+
+using Ds3.Runtime;
+using System;
 
 namespace Ds3.Calls
 {
     public class GetBucketResponse
     {
-        public string Name { get; private set; }
-        public string Prefix { get; private set; }
-        public string Marker { get; private set; }
-        public int MaxKeys { get; private set; }
-        public bool IsTruncated { get; private set; }
-        public string Delimiter { get; private set; }
-        public string NextMarker { get; private set; }
-        public DateTime CreationDate { get; private set; }
-        public IEnumerable<Ds3ObjectInfo> Objects { get; private set; }
-        public IDictionary<string, string> Metadata { get; private set; }
-        public IEnumerable<string> CommonPrefixes { get; private set; }
+        public ListBucketResult ResponsePayload { get; private set; }
 
-        public GetBucketResponse(
-            string name,
-            string prefix,
-            string marker,
-            int maxKeys,
-            bool isTruncated,
-            string delimiter,
-            string nextMarker,
-            DateTime creationDate,
-            IEnumerable<Ds3ObjectInfo> objects,
-            IDictionary<string, string> metadata,
-            IEnumerable<string> commonPrefixes)
+        public GetBucketResponse(ListBucketResult responsePayload)
         {
-            this.Name = name;
-            this.Prefix = prefix;
-            this.Marker = marker;
-            this.MaxKeys = maxKeys;
-            this.IsTruncated = isTruncated;
-            this.Delimiter = delimiter;
-            this.NextMarker = nextMarker;
-            this.CreationDate = creationDate;
-            this.Objects = objects;
-            this.Metadata = metadata;
-            this.CommonPrefixes = commonPrefixes;
+            this.ResponsePayload = responsePayload;
         }
     }
 }

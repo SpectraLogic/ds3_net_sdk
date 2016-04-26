@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,22 +13,20 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Ds3.Models
 {
     public class Bucket
     {
-        public string Name { get; private set; }
-        public string CreationDate { get; private set; }
-
-        internal Bucket(string name, string creationDate)
-        {
-            this.Name = name;
-            this.CreationDate = creationDate;
-        }
+        public DateTime CreationDate { get; set; }
+        public Guid DataPolicyId { get; set; }
+        public Guid Id { get; set; }
+        public Long? LastPreferredChunkSizeInBytes { get; set; }
+        public Long? LogicalUsedCapacity { get; set; }
+        public string Name { get; set; }
+        public Guid UserId { get; set; }
     }
 }

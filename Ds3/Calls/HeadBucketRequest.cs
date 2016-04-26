@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,15 +13,27 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+using System.Net;
+
 namespace Ds3.Calls
 {
     public class HeadBucketRequest : Ds3Request
     {
+        
+        public string BucketName { get; private set; }
+
+        
+        public HeadBucketRequest(string bucketName) {
+            this.BucketName = bucketName;
+            
+        }
+
         internal override HttpVerb Verb
         {
             get
             {
-                return HttpVerb.HEAD;
+                return HttpVerb.HEAD
             }
         }
 
@@ -31,13 +43,6 @@ namespace Ds3.Calls
             {
                 return "/" + BucketName;
             }
-        }
-
-        public string BucketName { get; private set; }
-
-        public HeadBucketRequest(string bucketName)
-        {
-            this.BucketName = bucketName;
         }
     }
 }

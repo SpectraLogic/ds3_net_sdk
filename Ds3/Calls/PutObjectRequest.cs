@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,26 +26,15 @@ namespace Ds3.Calls
 {
     public class PutObjectRequest : Ds3Request
     {
-        private readonly Stream _content;
+        private readonly Stream RequestPayload;
+
+        
+        public string BucketName { get; private set; }
+
+        public string ObjectName { get; private set; }
+
         private Checksum _checksum = Checksum.None;
         private Checksum.ChecksumType _checksumType;
-        private IDictionary<string, string> _metadata = new Dictionary<string, string>();
-
-        internal override HttpVerb Verb
-        {
-            get
-            {
-                return HttpVerb.PUT;
-            }
-        }
-
-        internal override string Path
-        {
-            get
-            {
-                return "/" + BucketName + "/" + ObjectName;
-            }
-        }
 
         internal override Checksum ChecksumValue
         {
@@ -68,6 +58,7 @@ namespace Ds3.Calls
             this._checksumType = checksumType;
             return this;
         }
+        private IDictionary<string, string> _metadata = new Dictionary<string, string>();
 
         public IDictionary<string, string> Metadata
         {
@@ -88,30 +79,73 @@ namespace Ds3.Calls
             this._metadata = metadata;
             return this;
         }
+        
+        private Guid _job;
+        public Guid Job
+        {
+            get { return _job; }
+            set { WithJob(value); }
+        }
+
+        public PutObjectRequest WithJob(Guid job)
+        {
+            this._job = job;
+            if (job != null) {
+                this.QueryParams.Add("job", job.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("job");
+            }
+            return this;
+        }
+
+        private long _offset;
+        public long Offset
+        {
+            get { return _offset; }
+            set { WithOffset(value); }
+        }
+
+        public PutObjectRequest WithOffset(long offset)
+        {
+            this._offset = offset;
+            if (offset != null) {
+                this.QueryParams.Add("offset", Offset.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("offset");
+            }
+            return this;
+        }
+
+        public PutObjectRequest(string bucketName, string objectName, Stream requestPayload) {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this.RequestPayload = requestPayload;
+            
+        }
+
+        internal override HttpVerb Verb
+        {
+            get
+            {
+                return HttpVerb.PUT
+            }
+        }
+
+        internal override string Path
+        {
+            get
+            {
+                return "/" + BucketName + "/" + ObjectName;
+            }
+        }
 
         internal override Stream GetContentStream()
         {
-            return _content;
-        }
-
-        public string BucketName { get; private set; }
-        public string ObjectName { get; private set; }
-        public Guid JobId { get; private set; }
-        public long Offset { get; private set; }
-
-        public PutObjectRequest(string bucketName, string objectName, Guid jobId, long offset, Stream content)
-        {
-            this.BucketName = bucketName;
-            this.ObjectName = objectName;
-            this.JobId = jobId;
-            this.Offset = offset;
-            this._content = content;
-
-            if (jobId != Guid.Empty)
-            {
-                QueryParams.Add("job", jobId.ToString());
-                QueryParams.Add("offset", offset.ToString());
-            }
+            return RequestPayload;
         }
     }
 }

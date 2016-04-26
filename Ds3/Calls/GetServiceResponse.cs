@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,21 +13,24 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+using System.Net;
+using System.IO;
 using System.Collections.Generic;
-
 using Ds3.Models;
+
+using Ds3.Runtime;
+using System;
 
 namespace Ds3.Calls
 {
     public class GetServiceResponse
     {
-        public Owner Owner { get; private set; }
-        public List<Bucket> Buckets { get; private set; }
+        public ListAllMyBucketsResult ResponsePayload { get; private set; }
 
-        public GetServiceResponse(Owner owner, List<Bucket> buckets)
+        public GetServiceResponse(ListAllMyBucketsResult responsePayload)
         {
-            this.Owner = owner;
-            this.Buckets = buckets;
+            this.ResponsePayload = responsePayload;
         }
     }
 }

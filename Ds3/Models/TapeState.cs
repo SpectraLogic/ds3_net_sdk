@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,28 +13,34 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+
 namespace Ds3.Models
 {
     public enum TapeState
     {
-        Normal,
-        Bad,
-        BarCodeMissing,
-        DataCheckpointMissing,
-        EjectFromEePending,
-        EjectToEeInProgress,
-        Ejected,
-        Foreign,
-        FormatInProgress,
-        FormatPending,
-        ImportInProgress,
-        Lost,
-        LtfsWithForeignData,
-        Offline,
-        OnlineInProgress,
-        OnlinePending,
-        PendingInspection,
-        SerialNumberMismatch,
-        Unknown
+        NORMAL,
+        OFFLINE,
+        ONLINE_PENDING,
+        ONLINE_IN_PROGRESS,
+        PENDING_INSPECTION,
+        UNKNOWN,
+        DATA_CHECKPOINT_FAILURE,
+        DATA_CHECKPOINT_FAILURE_DUE_TO_READ_ONLY,
+        DATA_CHECKPOINT_MISSING,
+        LTFS_WITH_FOREIGN_DATA,
+        FOREIGN,
+        IMPORT_PENDING,
+        IMPORT_IN_PROGRESS,
+        INCOMPATIBLE,
+        LOST,
+        BAD,
+        SERIAL_NUMBER_MISMATCH,
+        BAR_CODE_MISSING,
+        FORMAT_PENDING,
+        FORMAT_IN_PROGRESS,
+        EJECT_TO_EE_IN_PROGRESS,
+        EJECT_FROM_EE_PENDING,
+        EJECTED
     }
 }
