@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using Ds3.Runtime;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Ds3.Calls
         
         public string BucketName { get; private set; }
 
-        public List<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> Objects { get; private set; }
         public long? MaxUploadSize { get; private set; }
 
         public PutBulkJobSpectraS3Request WithMaxUploadSize(long maxUploadSize)
@@ -50,7 +51,7 @@ namespace Ds3.Calls
         {
             this._aggregating = aggregating;
             if (aggregating != null) {
-                this.QueryParams.Add("aggregating", aggregating.ToString());
+                this.QueryParams.Add("aggregating", Aggregating.ToString());
             }
             else
             {
@@ -70,7 +71,7 @@ namespace Ds3.Calls
         {
             this._ignoreNamingConflicts = ignoreNamingConflicts;
             if (ignoreNamingConflicts != null) {
-                this.QueryParams.Add("ignore_naming_conflicts", ignoreNamingConflicts.ToString());
+                this.QueryParams.Add("ignore_naming_conflicts", IgnoreNamingConflicts.ToString());
             }
             else
             {
@@ -110,7 +111,7 @@ namespace Ds3.Calls
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", priority.ToString());
+                this.QueryParams.Add("priority", Priority.ToString());
             }
             else
             {
@@ -119,12 +120,12 @@ namespace Ds3.Calls
             return this;
         }
 
-        public PutBulkJobSpectraS3Request(string bucketName, List<Ds3Object> objects) {
+        public PutBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {
             this.BucketName = bucketName;
             this.Objects = objects;
             this.QueryParams.Add("operation", "start_bulk_put");
             
-            if (!objects.TrueForAll(obj => obj.Size.HasValue))
+            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
             {
                 throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
             }
@@ -147,7 +148,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

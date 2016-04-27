@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 
@@ -41,7 +43,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/job/" + jobId.ToString();
+                return "/_rest_/job/" + JobId.ToString();
             }
         }
     }

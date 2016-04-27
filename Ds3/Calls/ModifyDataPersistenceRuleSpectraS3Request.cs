@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._isolationLevel = isolationLevel;
             if (isolationLevel != null) {
-                this.QueryParams.Add("isolation_level", isolationLevel.ToString());
+                this.QueryParams.Add("isolation_level", IsolationLevel.ToString());
             }
             else
             {
@@ -75,7 +77,7 @@ namespace Ds3.Calls
         {
             this._type = type;
             if (type != null) {
-                this.QueryParams.Add("type", type.ToString());
+                this.QueryParams.Add("type", Type.ToString());
             }
             else
             {
@@ -93,7 +95,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

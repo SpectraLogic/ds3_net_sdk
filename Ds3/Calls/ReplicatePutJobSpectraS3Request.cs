@@ -14,6 +14,7 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 using System;
 using System.IO;
 
@@ -38,7 +39,7 @@ namespace Ds3.Calls
         {
             this._conflictResolutionMode = conflictResolutionMode;
             if (conflictResolutionMode != null) {
-                this.QueryParams.Add("conflict_resolution_mode", conflictResolutionMode.ToString());
+                this.QueryParams.Add("conflict_resolution_mode", ConflictResolutionMode.ToString());
             }
             else
             {
@@ -58,7 +59,7 @@ namespace Ds3.Calls
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", priority.ToString());
+                this.QueryParams.Add("priority", Priority.ToString());
             }
             else
             {
@@ -80,7 +81,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

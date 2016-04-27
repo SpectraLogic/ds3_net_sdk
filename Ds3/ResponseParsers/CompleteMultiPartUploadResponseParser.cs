@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                         XmlExtensions
                             .ReadDocument(stream)
                             .ElementOrThrow("CompleteMultipartUploadResult")
-                            .Select(CompleteMultipartUploadResultParser)
+                            .Select(ModelParsers.ParseCompleteMultipartUploadResult)
                             .ToList()
                     );
                 }

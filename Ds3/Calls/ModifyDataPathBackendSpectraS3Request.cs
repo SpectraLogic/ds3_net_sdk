@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             this._activated = activated;
             if (activated != null) {
-                this.QueryParams.Add("activated", activated.ToString());
+                this.QueryParams.Add("activated", Activated.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             this._autoInspect = autoInspect;
             if (autoInspect != null) {
-                this.QueryParams.Add("auto_inspect", autoInspect.ToString());
+                this.QueryParams.Add("auto_inspect", AutoInspect.ToString());
             }
             else
             {
@@ -93,7 +95,7 @@ namespace Ds3.Calls
         {
             this._defaultImportConflictResolutionMode = defaultImportConflictResolutionMode;
             if (defaultImportConflictResolutionMode != null) {
-                this.QueryParams.Add("default_import_conflict_resolution_mode", defaultImportConflictResolutionMode.ToString());
+                this.QueryParams.Add("default_import_conflict_resolution_mode", DefaultImportConflictResolutionMode.ToString());
             }
             else
             {
@@ -113,7 +115,7 @@ namespace Ds3.Calls
         {
             this._unavailableMediaPolicy = unavailableMediaPolicy;
             if (unavailableMediaPolicy != null) {
-                this.QueryParams.Add("unavailable_media_policy", unavailableMediaPolicy.ToString());
+                this.QueryParams.Add("unavailable_media_policy", UnavailableMediaPolicy.ToString());
             }
             else
             {
@@ -170,7 +172,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

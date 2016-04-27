@@ -55,7 +55,7 @@ namespace Ds3.Calls
             this.BucketId = bucketId;
             this.DestinationStream = destinationStream;
             
-            this.QueryParams.Add("bucket_id", bucketId.ToString());
+            this.QueryParams.Add("bucket_id", BucketId.ToString());
 
         }
 
@@ -63,7 +63,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

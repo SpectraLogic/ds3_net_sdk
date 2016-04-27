@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._force = force;
             if (force != null) {
-                this.QueryParams.Add("force", force.ToString());
+                this.QueryParams.Add("force", Force.ToString());
             }
             else
             {
@@ -54,7 +56,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 
@@ -62,7 +64,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape/" + tapeId.ToString();
+                return "/_rest_/tape/" + TapeId.ToString();
             }
         }
     }

@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             this._groupId = groupId;
             if (groupId != null) {
-                this.QueryParams.Add("group_id", groupId.ToString());
+                this.QueryParams.Add("group_id", GroupId.ToString());
             }
             else
             {
@@ -53,7 +55,7 @@ namespace Ds3.Calls
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", lastPage.ToString());
+                this.QueryParams.Add("last_page", LastPage.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             this._memberGroupId = memberGroupId;
             if (memberGroupId != null) {
-                this.QueryParams.Add("member_group_id", memberGroupId.ToString());
+                this.QueryParams.Add("member_group_id", MemberGroupId.ToString());
             }
             else
             {
@@ -93,7 +95,7 @@ namespace Ds3.Calls
         {
             this._memberUserId = memberUserId;
             if (memberUserId != null) {
-                this.QueryParams.Add("member_user_id", memberUserId.ToString());
+                this.QueryParams.Add("member_user_id", MemberUserId.ToString());
             }
             else
             {
@@ -153,7 +155,7 @@ namespace Ds3.Calls
         {
             this._pageStartMarker = pageStartMarker;
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
             }
             else
             {
@@ -170,7 +172,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

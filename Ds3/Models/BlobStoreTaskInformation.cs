@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -24,14 +25,14 @@ namespace Ds3.Models
         public DateTime DateScheduled { get; set; }
         public DateTime? DateStarted { get; set; }
         public string Description { get; set; }
-        public Guid DriveId { get; set; }
+        public Guid? DriveId { get; set; }
         public Duration DurationInProgress { get; set; }
         public Duration DurationScheduled { get; set; }
         public long Id { get; set; }
         public string Name { get; set; }
-        public Guid PoolId { get; set; }
+        public Guid? PoolId { get; set; }
         public Priority Priority { get; set; }
         public BlobStoreTaskState State { get; set; }
-        public Guid TapeId { get; set; }
+        public Guid? TapeId { get; set; }
     }
 }

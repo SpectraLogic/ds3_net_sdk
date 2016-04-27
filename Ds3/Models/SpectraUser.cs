@@ -16,13 +16,14 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
     public class SpectraUser
     {
         public string AuthId { get; set; }
-        public Guid DefaultDataPolicyId { get; set; }
+        public Guid? DefaultDataPolicyId { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string SecretKey { get; set; }

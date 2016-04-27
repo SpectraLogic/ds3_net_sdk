@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                         XmlExtensions
                             .ReadDocument(stream)
                             .ElementOrThrow("Data")
-                            .Select(S3ObjectParser)
+                            .Select(ModelParsers.ParseS3Object)
                             .ToList()
                     );
                 }

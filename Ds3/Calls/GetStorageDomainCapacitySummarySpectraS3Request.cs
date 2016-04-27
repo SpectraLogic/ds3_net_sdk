@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._poolHealth = poolHealth;
             if (poolHealth != null) {
-                this.QueryParams.Add("pool_health", poolHealth.ToString());
+                this.QueryParams.Add("pool_health", PoolHealth.ToString());
             }
             else
             {
@@ -55,7 +57,7 @@ namespace Ds3.Calls
         {
             this._poolState = poolState;
             if (poolState != null) {
-                this.QueryParams.Add("pool_state", poolState.ToString());
+                this.QueryParams.Add("pool_state", PoolState.ToString());
             }
             else
             {
@@ -75,7 +77,7 @@ namespace Ds3.Calls
         {
             this._poolType = poolType;
             if (poolType != null) {
-                this.QueryParams.Add("pool_type", poolType.ToString());
+                this.QueryParams.Add("pool_type", PoolType.ToString());
             }
             else
             {
@@ -95,7 +97,7 @@ namespace Ds3.Calls
         {
             this._tapeState = tapeState;
             if (tapeState != null) {
-                this.QueryParams.Add("tape_state", tapeState.ToString());
+                this.QueryParams.Add("tape_state", TapeState.ToString());
             }
             else
             {
@@ -115,7 +117,7 @@ namespace Ds3.Calls
         {
             this._tapeType = tapeType;
             if (tapeType != null) {
-                this.QueryParams.Add("tape_type", tapeType.ToString());
+                this.QueryParams.Add("tape_type", TapeType.ToString());
             }
             else
             {
@@ -127,7 +129,7 @@ namespace Ds3.Calls
         public GetStorageDomainCapacitySummarySpectraS3Request(Guid storageDomainId) {
             this.StorageDomainId = storageDomainId;
             
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
 
         }
 
@@ -135,7 +137,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

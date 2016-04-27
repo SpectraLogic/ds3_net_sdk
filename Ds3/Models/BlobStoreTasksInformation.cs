@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {

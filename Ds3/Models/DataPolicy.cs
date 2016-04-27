@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -24,7 +25,7 @@ namespace Ds3.Models
         public bool BlobbingEnabled { get; set; }
         public ChecksumType.Type ChecksumType { get; set; }
         public DateTime CreationDate { get; set; }
-        public Long? DefaultBlobSize { get; set; }
+        public long? DefaultBlobSize { get; set; }
         public Priority DefaultGetJobPriority { get; set; }
         public Priority DefaultPutJobPriority { get; set; }
         public Priority DefaultVerifyJobPriority { get; set; }

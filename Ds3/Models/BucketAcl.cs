@@ -16,15 +16,16 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
     public class BucketAcl
     {
-        public Guid BucketId { get; set; }
-        public Guid GroupId { get; set; }
+        public Guid? BucketId { get; set; }
+        public Guid? GroupId { get; set; }
         public Guid Id { get; set; }
         public BucketAclPermission Permission { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

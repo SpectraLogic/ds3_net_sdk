@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -23,7 +24,7 @@ namespace Ds3.Models
     {
         public Guid GroupId { get; set; }
         public Guid Id { get; set; }
-        public Guid MemberGroupId { get; set; }
-        public Guid MemberUserId { get; set; }
+        public Guid? MemberGroupId { get; set; }
+        public Guid? MemberUserId { get; set; }
     }
 }

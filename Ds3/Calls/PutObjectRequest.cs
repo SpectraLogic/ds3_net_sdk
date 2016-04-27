@@ -91,7 +91,7 @@ namespace Ds3.Calls
         {
             this._job = job;
             if (job != null) {
-                this.QueryParams.Add("job", job.ToString());
+                this.QueryParams.Add("job", Job.ToString());
             }
             else
             {
@@ -131,7 +131,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

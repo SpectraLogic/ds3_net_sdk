@@ -14,13 +14,7 @@
  */
 
 // This code is auto-generated, do not modify
-using System.Net;
-using System.IO;
-using System.Collections.Generic;
 using Ds3.Models;
-
-using Ds3.Runtime;
-using System;
 
 namespace Ds3.Calls
 {

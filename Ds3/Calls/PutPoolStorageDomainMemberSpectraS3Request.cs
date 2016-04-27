@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -37,7 +39,7 @@ namespace Ds3.Calls
         {
             this._writePreference = writePreference;
             if (writePreference != null) {
-                this.QueryParams.Add("write_preference", writePreference.ToString());
+                this.QueryParams.Add("write_preference", WritePreference.ToString());
             }
             else
             {
@@ -50,9 +52,9 @@ namespace Ds3.Calls
             this.PoolPartitionId = poolPartitionId;
             this.StorageDomainId = storageDomainId;
             
-            this.QueryParams.Add("pool_partition_id", poolPartitionId.ToString());
+            this.QueryParams.Add("pool_partition_id", PoolPartitionId.ToString());
 
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
 
         }
 
@@ -60,7 +62,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

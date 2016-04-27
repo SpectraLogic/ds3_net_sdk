@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -73,7 +75,7 @@ namespace Ds3.Calls
             this.ObjectName = objectName;
             this.UploadId = uploadId;
             
-            this.QueryParams.Add("upload_id", uploadId.ToString());
+            this.QueryParams.Add("upload_id", UploadId.ToString());
 
         }
 
@@ -81,7 +83,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

@@ -16,15 +16,16 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
     public class NamedDetailedTape
     {
         public bool AssignedToStorageDomain { get; set; }
-        public Long? AvailableRawCapacity { get; set; }
+        public long? AvailableRawCapacity { get; set; }
         public string BarCode { get; set; }
-        public Guid BucketId { get; set; }
+        public Guid? BucketId { get; set; }
         public string DescriptionForIdentification { get; set; }
         public DateTime? EjectDate { get; set; }
         public string EjectLabel { get; set; }
@@ -37,13 +38,13 @@ namespace Ds3.Models
         public DateTime? LastModified { get; set; }
         public DateTime? LastVerified { get; set; }
         public DetailedTapeFailure MostRecentFailure { get; set; }
-        public Guid PartitionId { get; set; }
+        public Guid? PartitionId { get; set; }
         public TapeState? PreviousState { get; set; }
         public string SerialNumber { get; set; }
         public TapeState State { get; set; }
-        public Guid StorageDomainId { get; set; }
+        public Guid? StorageDomainId { get; set; }
         public bool TakeOwnershipPending { get; set; }
-        public Long? TotalRawCapacity { get; set; }
+        public long? TotalRawCapacity { get; set; }
         public TapeType Type { get; set; }
         public Priority? VerifyPending { get; set; }
         public bool WriteProtected { get; set; }

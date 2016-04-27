@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", lastPage.ToString());
+                this.QueryParams.Add("last_page", LastPage.ToString());
             }
             else
             {
@@ -93,7 +95,7 @@ namespace Ds3.Calls
         {
             this._pageStartMarker = pageStartMarker;
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
             }
             else
             {
@@ -113,7 +115,7 @@ namespace Ds3.Calls
         {
             this._partitionId = partitionId;
             if (partitionId != null) {
-                this.QueryParams.Add("partition_id", partitionId.ToString());
+                this.QueryParams.Add("partition_id", PartitionId.ToString());
             }
             else
             {
@@ -153,7 +155,7 @@ namespace Ds3.Calls
         {
             this._state = state;
             if (state != null) {
-                this.QueryParams.Add("state", state.ToString());
+                this.QueryParams.Add("state", State.ToString());
             }
             else
             {
@@ -173,7 +175,7 @@ namespace Ds3.Calls
         {
             this._type = type;
             if (type != null) {
-                this.QueryParams.Add("type", type.ToString());
+                this.QueryParams.Add("type", Type.ToString());
             }
             else
             {
@@ -190,7 +192,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

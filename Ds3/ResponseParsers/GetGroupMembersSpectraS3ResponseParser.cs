@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                         XmlExtensions
                             .ReadDocument(stream)
                             .ElementOrThrow("Data")
-                            .Select(GroupMemberListParser)
+                            .Select(ModelParsers.ParseGroupMemberList)
                             .ToList()
                     );
                 }

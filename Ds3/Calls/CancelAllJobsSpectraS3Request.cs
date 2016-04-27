@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             this._bucketId = bucketId;
             if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", bucketId.ToString());
+                this.QueryParams.Add("bucket_id", BucketId.ToString());
             }
             else
             {
@@ -53,7 +55,7 @@ namespace Ds3.Calls
         {
             this._force = force;
             if (force != null) {
-                this.QueryParams.Add("force", force.ToString());
+                this.QueryParams.Add("force", Force.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             this._requestType = requestType;
             if (requestType != null) {
-                this.QueryParams.Add("request_type", requestType.ToString());
+                this.QueryParams.Add("request_type", RequestType.ToString());
             }
             else
             {
@@ -90,7 +92,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.DELETE
+                return HttpVerb.DELETE;
             }
         }
 

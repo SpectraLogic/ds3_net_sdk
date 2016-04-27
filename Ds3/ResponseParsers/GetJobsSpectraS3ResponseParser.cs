@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                         XmlExtensions
                             .ReadDocument(stream)
                             .ElementOrThrow("Jobs")
-                            .Select(JobListParser)
+                            .Select(ModelParsers.ParseJobList)
                             .ToList()
                     );
                 }

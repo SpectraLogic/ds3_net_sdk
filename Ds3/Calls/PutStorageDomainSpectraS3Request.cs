@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -55,7 +57,7 @@ namespace Ds3.Calls
         {
             this._autoEjectUponJobCancellation = autoEjectUponJobCancellation;
             if (autoEjectUponJobCancellation != null) {
-                this.QueryParams.Add("auto_eject_upon_job_cancellation", autoEjectUponJobCancellation.ToString());
+                this.QueryParams.Add("auto_eject_upon_job_cancellation", AutoEjectUponJobCancellation.ToString());
             }
             else
             {
@@ -75,7 +77,7 @@ namespace Ds3.Calls
         {
             this._autoEjectUponJobCompletion = autoEjectUponJobCompletion;
             if (autoEjectUponJobCompletion != null) {
-                this.QueryParams.Add("auto_eject_upon_job_completion", autoEjectUponJobCompletion.ToString());
+                this.QueryParams.Add("auto_eject_upon_job_completion", AutoEjectUponJobCompletion.ToString());
             }
             else
             {
@@ -95,7 +97,7 @@ namespace Ds3.Calls
         {
             this._autoEjectUponMediaFull = autoEjectUponMediaFull;
             if (autoEjectUponMediaFull != null) {
-                this.QueryParams.Add("auto_eject_upon_media_full", autoEjectUponMediaFull.ToString());
+                this.QueryParams.Add("auto_eject_upon_media_full", AutoEjectUponMediaFull.ToString());
             }
             else
             {
@@ -115,7 +117,7 @@ namespace Ds3.Calls
         {
             this._ltfsFileNaming = ltfsFileNaming;
             if (ltfsFileNaming != null) {
-                this.QueryParams.Add("ltfs_file_naming", ltfsFileNaming.ToString());
+                this.QueryParams.Add("ltfs_file_naming", LtfsFileNaming.ToString());
             }
             else
             {
@@ -175,7 +177,7 @@ namespace Ds3.Calls
         {
             this._mediaEjectionAllowed = mediaEjectionAllowed;
             if (mediaEjectionAllowed != null) {
-                this.QueryParams.Add("media_ejection_allowed", mediaEjectionAllowed.ToString());
+                this.QueryParams.Add("media_ejection_allowed", MediaEjectionAllowed.ToString());
             }
             else
             {
@@ -195,7 +197,7 @@ namespace Ds3.Calls
         {
             this._verifyPriorToAutoEject = verifyPriorToAutoEject;
             if (verifyPriorToAutoEject != null) {
-                this.QueryParams.Add("verify_prior_to_auto_eject", verifyPriorToAutoEject.ToString());
+                this.QueryParams.Add("verify_prior_to_auto_eject", VerifyPriorToAutoEject.ToString());
             }
             else
             {
@@ -215,7 +217,7 @@ namespace Ds3.Calls
         {
             this._writeOptimization = writeOptimization;
             if (writeOptimization != null) {
-                this.QueryParams.Add("write_optimization", writeOptimization.ToString());
+                this.QueryParams.Add("write_optimization", WriteOptimization.ToString());
             }
             else
             {
@@ -235,7 +237,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

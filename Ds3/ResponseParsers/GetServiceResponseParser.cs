@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                         XmlExtensions
                             .ReadDocument(stream)
                             .ElementOrThrow("ListAllMyBucketsResult")
-                            .Select(ListAllMyBucketsResultParser)
+                            .Select(ModelParsers.ParseListAllMyBucketsResult)
                             .ToList()
                     );
                 }

@@ -14,6 +14,7 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 using System;
 using System.IO;
 
@@ -42,7 +43,7 @@ namespace Ds3.Calls
             
             this.QueryParams.Add("part_number", PartNumber.ToString());
 
-            this.QueryParams.Add("upload_id", uploadId.ToString());
+            this.QueryParams.Add("upload_id", UploadId.ToString());
 
         }
 
@@ -50,7 +51,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

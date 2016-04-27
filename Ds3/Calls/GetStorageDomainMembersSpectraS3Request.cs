@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", lastPage.ToString());
+                this.QueryParams.Add("last_page", LastPage.ToString());
             }
             else
             {
@@ -93,7 +95,7 @@ namespace Ds3.Calls
         {
             this._pageStartMarker = pageStartMarker;
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
             }
             else
             {
@@ -113,7 +115,7 @@ namespace Ds3.Calls
         {
             this._poolPartitionId = poolPartitionId;
             if (poolPartitionId != null) {
-                this.QueryParams.Add("pool_partition_id", poolPartitionId.ToString());
+                this.QueryParams.Add("pool_partition_id", PoolPartitionId.ToString());
             }
             else
             {
@@ -133,7 +135,7 @@ namespace Ds3.Calls
         {
             this._state = state;
             if (state != null) {
-                this.QueryParams.Add("state", state.ToString());
+                this.QueryParams.Add("state", State.ToString());
             }
             else
             {
@@ -153,7 +155,7 @@ namespace Ds3.Calls
         {
             this._storageDomainId = storageDomainId;
             if (storageDomainId != null) {
-                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+                this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
             }
             else
             {
@@ -173,7 +175,7 @@ namespace Ds3.Calls
         {
             this._tapePartitionId = tapePartitionId;
             if (tapePartitionId != null) {
-                this.QueryParams.Add("tape_partition_id", tapePartitionId.ToString());
+                this.QueryParams.Add("tape_partition_id", TapePartitionId.ToString());
             }
             else
             {
@@ -193,7 +195,7 @@ namespace Ds3.Calls
         {
             this._tapeType = tapeType;
             if (tapeType != null) {
-                this.QueryParams.Add("tape_type", tapeType.ToString());
+                this.QueryParams.Add("tape_type", TapeType.ToString());
             }
             else
             {
@@ -213,7 +215,7 @@ namespace Ds3.Calls
         {
             this._writePreference = writePreference;
             if (writePreference != null) {
-                this.QueryParams.Add("write_preference", writePreference.ToString());
+                this.QueryParams.Add("write_preference", WritePreference.ToString());
             }
             else
             {
@@ -230,7 +232,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

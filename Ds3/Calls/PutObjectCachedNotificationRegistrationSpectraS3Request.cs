@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._format = format;
             if (format != null) {
-                this.QueryParams.Add("format", format.ToString());
+                this.QueryParams.Add("format", Format.ToString());
             }
             else
             {
@@ -55,7 +57,7 @@ namespace Ds3.Calls
         {
             this._jobId = jobId;
             if (jobId != null) {
-                this.QueryParams.Add("job_id", jobId.ToString());
+                this.QueryParams.Add("job_id", JobId.ToString());
             }
             else
             {
@@ -75,7 +77,7 @@ namespace Ds3.Calls
         {
             this._namingConvention = namingConvention;
             if (namingConvention != null) {
-                this.QueryParams.Add("naming_convention", namingConvention.ToString());
+                this.QueryParams.Add("naming_convention", NamingConvention.ToString());
             }
             else
             {
@@ -95,7 +97,7 @@ namespace Ds3.Calls
         {
             this._notificationHttpMethod = notificationHttpMethod;
             if (notificationHttpMethod != null) {
-                this.QueryParams.Add("notification_http_method", notificationHttpMethod.ToString());
+                this.QueryParams.Add("notification_http_method", NotificationHttpMethod.ToString());
             }
             else
             {
@@ -115,7 +117,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._blobbingEnabled = blobbingEnabled;
             if (blobbingEnabled != null) {
-                this.QueryParams.Add("blobbing_enabled", blobbingEnabled.ToString());
+                this.QueryParams.Add("blobbing_enabled", BlobbingEnabled.ToString());
             }
             else
             {
@@ -55,7 +57,7 @@ namespace Ds3.Calls
         {
             this._checksumType = checksumType;
             if (checksumType != null) {
-                this.QueryParams.Add("checksum_type", checksumType.ToString());
+                this.QueryParams.Add("checksum_type", ChecksumType.ToString());
             }
             else
             {
@@ -64,14 +66,14 @@ namespace Ds3.Calls
             return this;
         }
 
-        private Long? _defaultBlobSize;
-        public Long? DefaultBlobSize
+        private long? _defaultBlobSize;
+        public long? DefaultBlobSize
         {
             get { return _defaultBlobSize; }
             set { WithDefaultBlobSize(value); }
         }
 
-        public PutDataPolicySpectraS3Request WithDefaultBlobSize(Long? defaultBlobSize)
+        public PutDataPolicySpectraS3Request WithDefaultBlobSize(long? defaultBlobSize)
         {
             this._defaultBlobSize = defaultBlobSize;
             if (defaultBlobSize != null) {
@@ -95,7 +97,7 @@ namespace Ds3.Calls
         {
             this._defaultGetJobPriority = defaultGetJobPriority;
             if (defaultGetJobPriority != null) {
-                this.QueryParams.Add("default_get_job_priority", defaultGetJobPriority.ToString());
+                this.QueryParams.Add("default_get_job_priority", DefaultGetJobPriority.ToString());
             }
             else
             {
@@ -115,7 +117,7 @@ namespace Ds3.Calls
         {
             this._defaultPutJobPriority = defaultPutJobPriority;
             if (defaultPutJobPriority != null) {
-                this.QueryParams.Add("default_put_job_priority", defaultPutJobPriority.ToString());
+                this.QueryParams.Add("default_put_job_priority", DefaultPutJobPriority.ToString());
             }
             else
             {
@@ -135,7 +137,7 @@ namespace Ds3.Calls
         {
             this._defaultVerifyJobPriority = defaultVerifyJobPriority;
             if (defaultVerifyJobPriority != null) {
-                this.QueryParams.Add("default_verify_job_priority", defaultVerifyJobPriority.ToString());
+                this.QueryParams.Add("default_verify_job_priority", DefaultVerifyJobPriority.ToString());
             }
             else
             {
@@ -155,7 +157,7 @@ namespace Ds3.Calls
         {
             this._endToEndCrcRequired = endToEndCrcRequired;
             if (endToEndCrcRequired != null) {
-                this.QueryParams.Add("end_to_end_crc_required", endToEndCrcRequired.ToString());
+                this.QueryParams.Add("end_to_end_crc_required", EndToEndCrcRequired.ToString());
             }
             else
             {
@@ -175,7 +177,7 @@ namespace Ds3.Calls
         {
             this._rebuildPriority = rebuildPriority;
             if (rebuildPriority != null) {
-                this.QueryParams.Add("rebuild_priority", rebuildPriority.ToString());
+                this.QueryParams.Add("rebuild_priority", RebuildPriority.ToString());
             }
             else
             {
@@ -195,7 +197,7 @@ namespace Ds3.Calls
         {
             this._versioning = versioning;
             if (versioning != null) {
-                this.QueryParams.Add("versioning", versioning.ToString());
+                this.QueryParams.Add("versioning", Versioning.ToString());
             }
             else
             {
@@ -215,7 +217,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

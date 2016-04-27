@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -23,7 +24,7 @@ namespace Ds3.Models
     {
         public bool AssignedToStorageDomain { get; set; }
         public long AvailableCapacity { get; set; }
-        public Guid BucketId { get; set; }
+        public Guid? BucketId { get; set; }
         public string Guid { get; set; }
         public PoolHealth Health { get; set; }
         public Guid Id { get; set; }
@@ -32,12 +33,12 @@ namespace Ds3.Models
         public DateTime? LastVerified { get; set; }
         public string Mountpoint { get; set; }
         public string Name { get; set; }
-        public Guid PartitionId { get; set; }
+        public Guid? PartitionId { get; set; }
         public bool PoweredOn { get; set; }
         public Quiesced Quiesced { get; set; }
         public long ReservedCapacity { get; set; }
         public PoolState State { get; set; }
-        public Guid StorageDomainId { get; set; }
+        public Guid? StorageDomainId { get; set; }
         public long TotalCapacity { get; set; }
         public PoolType Type { get; set; }
         public long UsedCapacity { get; set; }

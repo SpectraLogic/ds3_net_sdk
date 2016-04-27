@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using Ds3.Runtime;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Ds3.Calls
         
         public Guid StorageDomainId { get; private set; }
 
-        public List<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
         private Guid _bucketId;
@@ -42,7 +43,7 @@ namespace Ds3.Calls
         {
             this._bucketId = bucketId;
             if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", bucketId.ToString());
+                this.QueryParams.Add("bucket_id", BucketId.ToString());
             }
             else
             {
@@ -91,14 +92,14 @@ namespace Ds3.Calls
             return this;
         }
 
-        public EjectStorageDomainSpectraS3Request(List<Ds3Object> objects, Guid storageDomainId) {
+        public EjectStorageDomainSpectraS3Request(IEnumerable<Ds3Object> objects, Guid storageDomainId) {
             this.StorageDomainId = storageDomainId;
             this.Objects = objects;
             this.QueryParams.Add("operation", "eject");
             
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
 
-            if (!objects.TrueForAll(obj => obj.Size.HasValue))
+            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
             {
                 throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
             }
@@ -121,7 +122,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

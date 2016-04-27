@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -47,7 +49,7 @@ namespace Ds3.Calls
         public GetJobChunksReadyForClientProcessingSpectraS3Request(Guid job) {
             this.Job = job;
             
-            this.QueryParams.Add("job", job.ToString());
+            this.QueryParams.Add("job", Job.ToString());
 
         }
 
@@ -55,7 +57,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

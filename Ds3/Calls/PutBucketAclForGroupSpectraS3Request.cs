@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,11 +35,11 @@ namespace Ds3.Calls
             this.GroupId = groupId;
             this.Permission = permission;
             
-            this.QueryParams.Add("bucket_id", bucketId.ToString());
+            this.QueryParams.Add("bucket_id", BucketId.ToString());
 
-            this.QueryParams.Add("group_id", groupId.ToString());
+            this.QueryParams.Add("group_id", GroupId.ToString());
 
-            this.QueryParams.Add("permission", permission.ToString());
+            this.QueryParams.Add("permission", Permission.ToString());
 
         }
 
@@ -45,7 +47,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

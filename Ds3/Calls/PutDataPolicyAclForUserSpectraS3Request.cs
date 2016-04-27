@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -30,9 +32,9 @@ namespace Ds3.Calls
             this.DataPolicyId = dataPolicyId;
             this.UserId = userId;
             
-            this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
+            this.QueryParams.Add("data_policy_id", DataPolicyId.ToString());
 
-            this.QueryParams.Add("user_id", userId.ToString());
+            this.QueryParams.Add("user_id", UserId.ToString());
 
         }
 
@@ -40,7 +42,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

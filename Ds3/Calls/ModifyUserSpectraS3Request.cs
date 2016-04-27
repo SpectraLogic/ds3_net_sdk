@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._defaultDataPolicyId = defaultDataPolicyId;
             if (defaultDataPolicyId != null) {
-                this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId.ToString());
+                this.QueryParams.Add("default_data_policy_id", DefaultDataPolicyId.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 
@@ -81,7 +83,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/user/" + userId.ToString();
+                return "/_rest_/user/" + UserId.ToString();
             }
         }
     }

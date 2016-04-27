@@ -16,16 +16,17 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
     public class StorageDomainMember
     {
         public Guid Id { get; set; }
-        public Guid PoolPartitionId { get; set; }
+        public Guid? PoolPartitionId { get; set; }
         public StorageDomainMemberState State { get; set; }
         public Guid StorageDomainId { get; set; }
-        public Guid TapePartitionId { get; set; }
+        public Guid? TapePartitionId { get; set; }
         public TapeType? TapeType { get; set; }
         public WritePreferenceLevel WritePreference { get; set; }
     }

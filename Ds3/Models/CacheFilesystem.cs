@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -25,7 +26,7 @@ namespace Ds3.Models
         public double AutoReclaimTerminateThreshold { get; set; }
         public double BurstThreshold { get; set; }
         public Guid Id { get; set; }
-        public Long? MaxCapacityInBytes { get; set; }
+        public long? MaxCapacityInBytes { get; set; }
         public Double? MaxPercentUtilizationOfFilesystem { get; set; }
         public Guid NodeId { get; set; }
         public string Path { get; set; }

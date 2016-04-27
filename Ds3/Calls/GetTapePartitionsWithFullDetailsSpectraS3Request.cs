@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             this._importExportConfiguration = importExportConfiguration;
             if (importExportConfiguration != null) {
-                this.QueryParams.Add("import_export_configuration", importExportConfiguration.ToString());
+                this.QueryParams.Add("import_export_configuration", ImportExportConfiguration.ToString());
             }
             else
             {
@@ -53,7 +55,7 @@ namespace Ds3.Calls
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", lastPage.ToString());
+                this.QueryParams.Add("last_page", LastPage.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             this._libraryId = libraryId;
             if (libraryId != null) {
-                this.QueryParams.Add("library_id", libraryId.ToString());
+                this.QueryParams.Add("library_id", LibraryId.ToString());
             }
             else
             {
@@ -153,7 +155,7 @@ namespace Ds3.Calls
         {
             this._pageStartMarker = pageStartMarker;
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
             }
             else
             {
@@ -173,7 +175,7 @@ namespace Ds3.Calls
         {
             this._quiesced = quiesced;
             if (quiesced != null) {
-                this.QueryParams.Add("quiesced", quiesced.ToString());
+                this.QueryParams.Add("quiesced", Quiesced.ToString());
             }
             else
             {
@@ -213,7 +215,7 @@ namespace Ds3.Calls
         {
             this._state = state;
             if (state != null) {
-                this.QueryParams.Add("state", state.ToString());
+                this.QueryParams.Add("state", State.ToString());
             }
             else
             {
@@ -232,7 +234,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

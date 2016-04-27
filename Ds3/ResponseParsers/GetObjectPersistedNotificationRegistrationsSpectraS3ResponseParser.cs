@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                         XmlExtensions
                             .ReadDocument(stream)
                             .ElementOrThrow("Data")
-                            .Select(S3ObjectPersistedNotificationRegistrationListParser)
+                            .Select(ModelParsers.ParseS3ObjectPersistedNotificationRegistrationList)
                             .ToList()
                     );
                 }

@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -56,13 +58,13 @@ namespace Ds3.Calls
             this.StorageDomainId = storageDomainId;
             this.Type = type;
             
-            this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
+            this.QueryParams.Add("data_policy_id", DataPolicyId.ToString());
 
-            this.QueryParams.Add("isolation_level", isolationLevel.ToString());
+            this.QueryParams.Add("isolation_level", IsolationLevel.ToString());
 
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
 
-            this.QueryParams.Add("type", type.ToString());
+            this.QueryParams.Add("type", Type.ToString());
 
         }
 
@@ -70,7 +72,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

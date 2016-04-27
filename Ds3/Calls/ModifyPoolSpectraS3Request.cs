@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._partitionId = partitionId;
             if (partitionId != null) {
-                this.QueryParams.Add("partition_id", partitionId.ToString());
+                this.QueryParams.Add("partition_id", PartitionId.ToString());
             }
             else
             {
@@ -55,7 +57,7 @@ namespace Ds3.Calls
         {
             this._quiesced = quiesced;
             if (quiesced != null) {
-                this.QueryParams.Add("quiesced", quiesced.ToString());
+                this.QueryParams.Add("quiesced", Quiesced.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

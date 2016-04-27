@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -31,6 +32,6 @@ namespace Ds3.Models
         public string NotificationEndPoint { get; set; }
         public RequestType NotificationHttpMethod { get; set; }
         public int NumberOfFailuresSinceLastSuccess { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,7 +35,7 @@ namespace Ds3.Calls
         {
             this._bucketId = bucketId;
             if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", bucketId.ToString());
+                this.QueryParams.Add("bucket_id", BucketId.ToString());
             }
             else
             {
@@ -53,7 +55,7 @@ namespace Ds3.Calls
         {
             this._chunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
             if (chunkClientProcessingOrderGuarantee != null) {
-                this.QueryParams.Add("chunk_client_processing_order_guarantee", chunkClientProcessingOrderGuarantee.ToString());
+                this.QueryParams.Add("chunk_client_processing_order_guarantee", ChunkClientProcessingOrderGuarantee.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", lastPage.ToString());
+                this.QueryParams.Add("last_page", LastPage.ToString());
             }
             else
             {
@@ -153,7 +155,7 @@ namespace Ds3.Calls
         {
             this._pageStartMarker = pageStartMarker;
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
             }
             else
             {
@@ -173,7 +175,7 @@ namespace Ds3.Calls
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", priority.ToString());
+                this.QueryParams.Add("priority", Priority.ToString());
             }
             else
             {
@@ -193,7 +195,7 @@ namespace Ds3.Calls
         {
             this._rechunked = rechunked;
             if (rechunked != null) {
-                this.QueryParams.Add("rechunked", rechunked.ToString());
+                this.QueryParams.Add("rechunked", Rechunked.ToString());
             }
             else
             {
@@ -213,7 +215,7 @@ namespace Ds3.Calls
         {
             this._requestType = requestType;
             if (requestType != null) {
-                this.QueryParams.Add("request_type", requestType.ToString());
+                this.QueryParams.Add("request_type", RequestType.ToString());
             }
             else
             {
@@ -233,7 +235,7 @@ namespace Ds3.Calls
         {
             this._truncated = truncated;
             if (truncated != null) {
-                this.QueryParams.Add("truncated", truncated.ToString());
+                this.QueryParams.Add("truncated", Truncated.ToString());
             }
             else
             {
@@ -253,7 +255,7 @@ namespace Ds3.Calls
         {
             this._userId = userId;
             if (userId != null) {
-                this.QueryParams.Add("user_id", userId.ToString());
+                this.QueryParams.Add("user_id", UserId.ToString());
             }
             else
             {
@@ -270,7 +272,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

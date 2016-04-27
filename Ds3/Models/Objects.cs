@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -23,7 +24,7 @@ namespace Ds3.Models
     {
         public Guid ChunkId { get; set; }
         public int ChunkNumber { get; set; }
-        public Guid NodeId { get; set; }
+        public Guid? NodeId { get; set; }
         public IEnumerable<BulkObject> Objects { get; set; }
     }
 }

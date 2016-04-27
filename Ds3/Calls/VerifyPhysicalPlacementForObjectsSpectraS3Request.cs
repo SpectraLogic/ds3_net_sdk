@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using Ds3.Runtime;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Ds3.Calls
         
         public string BucketName { get; private set; }
 
-        public List<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
         private Guid _storageDomainId;
@@ -42,7 +43,7 @@ namespace Ds3.Calls
         {
             this._storageDomainId = storageDomainId;
             if (storageDomainId != null) {
-                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+                this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
             }
             else
             {
@@ -51,12 +52,12 @@ namespace Ds3.Calls
             return this;
         }
 
-        public VerifyPhysicalPlacementForObjectsSpectraS3Request(string bucketName, List<Ds3Object> objects) {
+        public VerifyPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {
             this.BucketName = bucketName;
             this.Objects = objects;
             this.QueryParams.Add("operation", "verify_physical_placement");
             
-            if (!objects.TrueForAll(obj => obj.Size.HasValue))
+            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
             {
                 throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
             }
@@ -79,7 +80,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

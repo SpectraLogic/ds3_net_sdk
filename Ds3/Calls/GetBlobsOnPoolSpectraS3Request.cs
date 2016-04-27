@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using Ds3.Runtime;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,15 +29,15 @@ namespace Ds3.Calls
         
         public string Pool { get; private set; }
 
-        public List<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
-        public GetBlobsOnPoolSpectraS3Request(List<Ds3Object> objects, string pool) {
+        public GetBlobsOnPoolSpectraS3Request(IEnumerable<Ds3Object> objects, string pool) {
             this.Pool = pool;
             this.Objects = objects;
             this.QueryParams.Add("operation", "get_physical_placement");
             
-            if (!objects.TrueForAll(obj => obj.Size.HasValue))
+            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
             {
                 throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
             }
@@ -59,7 +60,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.GET
+                return HttpVerb.GET;
             }
         }
 

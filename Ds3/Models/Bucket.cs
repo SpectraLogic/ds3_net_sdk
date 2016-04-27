@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -24,8 +25,8 @@ namespace Ds3.Models
         public DateTime CreationDate { get; set; }
         public Guid DataPolicyId { get; set; }
         public Guid Id { get; set; }
-        public Long? LastPreferredChunkSizeInBytes { get; set; }
-        public Long? LogicalUsedCapacity { get; set; }
+        public long? LastPreferredChunkSizeInBytes { get; set; }
+        public long? LogicalUsedCapacity { get; set; }
         public string Name { get; set; }
         public Guid UserId { get; set; }
     }

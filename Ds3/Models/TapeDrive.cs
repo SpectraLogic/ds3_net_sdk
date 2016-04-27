@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
@@ -28,7 +29,7 @@ namespace Ds3.Models
         public Guid PartitionId { get; set; }
         public string SerialNumber { get; set; }
         public TapeDriveState State { get; set; }
-        public Guid TapeId { get; set; }
+        public Guid? TapeId { get; set; }
         public TapeDriveType Type { get; set; }
     }
 }

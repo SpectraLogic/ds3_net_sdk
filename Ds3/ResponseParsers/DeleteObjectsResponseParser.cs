@@ -37,7 +37,7 @@ namespace Ds3.ResponseParsers
                         XmlExtensions
                             .ReadDocument(stream)
                             .ElementOrThrow("DeleteResult")
-                            .Select(DeleteResultParser)
+                            .Select(ModelParsers.ParseDeleteResult)
                             .ToList()
                     );
                 }

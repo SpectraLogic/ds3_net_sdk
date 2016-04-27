@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -39,7 +41,7 @@ namespace Ds3.Calls
         {
             this._writePreference = writePreference;
             if (writePreference != null) {
-                this.QueryParams.Add("write_preference", writePreference.ToString());
+                this.QueryParams.Add("write_preference", WritePreference.ToString());
             }
             else
             {
@@ -53,11 +55,11 @@ namespace Ds3.Calls
             this.TapePartitionId = tapePartitionId;
             this.TapeType = tapeType;
             
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
 
-            this.QueryParams.Add("tape_partition_id", tapePartitionId.ToString());
+            this.QueryParams.Add("tape_partition_id", TapePartitionId.ToString());
 
-            this.QueryParams.Add("tape_type", tapeType.ToString());
+            this.QueryParams.Add("tape_type", TapeType.ToString());
 
         }
 
@@ -65,7 +67,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

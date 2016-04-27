@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -33,11 +35,11 @@ namespace Ds3.Calls
             this.PartitionId = partitionId;
             this.TapeType = tapeType;
             
-            this.QueryParams.Add("density", density.ToString());
+            this.QueryParams.Add("density", Density.ToString());
 
-            this.QueryParams.Add("partition_id", partitionId.ToString());
+            this.QueryParams.Add("partition_id", PartitionId.ToString());
 
-            this.QueryParams.Add("tape_type", tapeType.ToString());
+            this.QueryParams.Add("tape_type", TapeType.ToString());
 
         }
 
@@ -45,7 +47,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

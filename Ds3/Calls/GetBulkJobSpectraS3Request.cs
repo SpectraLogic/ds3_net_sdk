@@ -53,7 +53,7 @@ namespace Ds3.Calls
         {
             this._aggregating = aggregating;
             if (aggregating != null) {
-                this.QueryParams.Add("aggregating", aggregating.ToString());
+                this.QueryParams.Add("aggregating", Aggregating.ToString());
             }
             else
             {
@@ -93,7 +93,7 @@ namespace Ds3.Calls
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", priority.ToString());
+                this.QueryParams.Add("priority", Priority.ToString());
             }
             else
             {
@@ -119,7 +119,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 

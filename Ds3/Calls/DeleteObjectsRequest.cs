@@ -16,6 +16,7 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using Ds3.Runtime;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Ds3.Calls
         
         public string BucketName { get; private set; }
 
-        public List<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
         private bool _rollBack;
@@ -42,7 +43,7 @@ namespace Ds3.Calls
         {
             this._rollBack = rollBack;
             if (rollBack != null) {
-                this.QueryParams.Add("roll_back", rollBack.ToString());
+                this.QueryParams.Add("roll_back", RollBack.ToString());
             }
             else
             {
@@ -51,7 +52,7 @@ namespace Ds3.Calls
             return this;
         }
 
-        public DeleteObjectsRequest(string bucketName, List<Ds3Object> objects) {
+        public DeleteObjectsRequest(string bucketName, IEnumerable<Ds3Object> objects)
         {
             this.BucketName = bucketName;
             this.Objects = objects;
@@ -65,8 +66,8 @@ namespace Ds3.Calls
             return new XDocument()
                 .AddFluent(
                     new XElement("Delete").AddAllFluent(
-                        from object in this.Objects
-                        select new XElement("Object").AddFluent(new XElement("Key").SetValueFluent(object.Name))
+                        from curObject in this.Objects
+                        select new XElement("Object").AddFluent(new XElement("Key").SetValueFluent(curObject.Name))
                     )
                 )
                 .WriteToMemoryStream();
@@ -81,7 +82,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.POST
+                return HttpVerb.POST;
             }
         }
 

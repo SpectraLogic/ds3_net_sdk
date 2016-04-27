@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -37,7 +39,7 @@ namespace Ds3.Calls
         {
             this._rollBack = rollBack;
             if (rollBack != null) {
-                this.QueryParams.Add("roll_back", rollBack.ToString());
+                this.QueryParams.Add("roll_back", RollBack.ToString());
             }
             else
             {
@@ -56,7 +58,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.DELETE
+                return HttpVerb.DELETE;
             }
         }
 

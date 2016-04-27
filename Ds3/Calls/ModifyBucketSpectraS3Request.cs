@@ -14,6 +14,8 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
@@ -35,7 +37,7 @@ namespace Ds3.Calls
         {
             this._dataPolicyId = dataPolicyId;
             if (dataPolicyId != null) {
-                this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
+                this.QueryParams.Add("data_policy_id", DataPolicyId.ToString());
             }
             else
             {
@@ -55,7 +57,7 @@ namespace Ds3.Calls
         {
             this._userId = userId;
             if (userId != null) {
-                this.QueryParams.Add("user_id", userId.ToString());
+                this.QueryParams.Add("user_id", UserId.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return HttpVerb.PUT
+                return HttpVerb.PUT;
             }
         }
 
