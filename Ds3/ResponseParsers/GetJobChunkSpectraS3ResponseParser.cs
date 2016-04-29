@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetJobChunkSpectraS3Response(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("Objects")
-                            .Select(ModelParsers.ParseObjects)
-                            .ToList()
+                        ModelParsers.ParseObjects(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Objects"))
                     );
                 }
             }

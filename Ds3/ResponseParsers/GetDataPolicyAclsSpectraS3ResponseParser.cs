@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetDataPolicyAclsSpectraS3Response(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("Data")
-                            .Select(ModelParsers.ParseDataPolicyAclList)
-                            .ToList()
+                        ModelParsers.ParseDataPolicyAclList(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
                     );
                 }
             }

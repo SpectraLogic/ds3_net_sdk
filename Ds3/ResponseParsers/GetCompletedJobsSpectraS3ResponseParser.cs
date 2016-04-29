@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetCompletedJobsSpectraS3Response(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("Data")
-                            .Select(ModelParsers.ParseCompletedJobList)
-                            .ToList()
+                        ModelParsers.ParseCompletedJobList(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
                     );
                 }
             }

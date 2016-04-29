@@ -140,7 +140,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/object_lost_notification_registration/" + NotificationId.ToString();
+                return "/_rest_/object_lost_notification_registration/";
             }
         }
     }

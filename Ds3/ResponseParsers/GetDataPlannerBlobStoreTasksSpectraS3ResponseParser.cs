@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetDataPlannerBlobStoreTasksSpectraS3Response(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("Data")
-                            .Select(ModelParsers.ParseBlobStoreTasksInformation)
-                            .ToList()
+                        ModelParsers.ParseBlobStoreTasksInformation(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
                     );
                 }
             }

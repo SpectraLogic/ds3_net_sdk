@@ -43,7 +43,7 @@ namespace Ds3.Helpers.Jobs
         private readonly IChunkStrategy _chunkStrategy;
         private readonly IStreamFactory<TItem> _streamFactory;
         private readonly IDs3Client _client;
-        private readonly JobResponse _jobResponse;
+        private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
 
         public event Action<long> DataTransferred;
@@ -67,7 +67,7 @@ namespace Ds3.Helpers.Jobs
 
         protected Job(
             IDs3Client client,
-            JobResponse jobResponse,
+            MasterObjectList jobResponse,
             string bucketName,
             Guid jobId,
             IHelperStrategy<TItem> helperStrategy,

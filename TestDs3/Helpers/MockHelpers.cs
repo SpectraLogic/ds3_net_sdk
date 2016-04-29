@@ -63,48 +63,48 @@ namespace TestDs3.Helpers
             stream.Write(buffer, 0, buffer.Length);
         }
 
-        public static BulkGetRequest ItIsBulkGetRequest(
+        public static GetBulkJobSpectraS3Request ItIsBulkGetRequest(
             string bucketName,
-            ChunkOrdering chunkOrdering,
+            JobChunkClientProcessingOrderGuarantee chunkOrdering,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects)
         {
             return Match.Create(
                 r =>
                     r.BucketName == bucketName
-                    && r.ChunkOrder == chunkOrdering
+                    && r.ChunkClientProcessingOrderGuarantee == chunkOrdering
                     && r.FullObjects.Sorted().SequenceEqual(fullObjects.Sorted())
                     && r.PartialObjects.Sorted().SequenceEqual(partialObjects.Sorted()),
-                () => new BulkGetRequest(bucketName, fullObjects, partialObjects)
-                    .WithChunkOrdering(chunkOrdering)
+                () => new GetBulkJobSpectraS3Request(bucketName, fullObjects, partialObjects)
+                    .WithChunkClientProcessingOrderGuarantee(chunkOrdering)
                 );
         }
 
-        public static BulkPutRequest ItIsBulkPutRequest(string bucketName, IEnumerable<Ds3Object> objects, long? maxBlobSize)
+        public static PutBulkJobSpectraS3Request ItIsBulkPutRequest(string bucketName, IEnumerable<Ds3Object> objects, long? maxBlobSize)
         {
             return Match.Create(
                 r =>
                     r.BucketName == bucketName
-                    && r.MaxBlobSize == maxBlobSize
+                    && r.MaxUploadSize == maxBlobSize
                     && r.Objects.Select(o => new { o.Name, o.Size })
                         .SequenceEqual(objects.Select(o => new { o.Name, o.Size })),
-                () => new BulkPutRequest(bucketName, objects.ToList())
+                () => new PutBulkJobSpectraS3Request(bucketName, objects.ToList())
                 );
         }
 
-        public static GetAvailableJobChunksRequest ItIsGetAvailableJobChunksRequest(Guid jobId)
+        public static GetJobChunksReadyForClientProcessingSpectraS3Request ItIsGetAvailableJobChunksRequest(Guid jobId)
         {
             return Match.Create(
-                it => it.JobId == jobId,
-                () => new GetAvailableJobChunksRequest(jobId)
+                it => it.Job == jobId,
+                () => new GetJobChunksReadyForClientProcessingSpectraS3Request(jobId)
                 );
         }
 
-        public static AllocateJobChunkRequest ItIsAllocateRequest(Guid chunkId)
+        public static AllocateJobChunkSpectraS3Request ItIsAllocateRequest(Guid chunkId)
         {
             return Match.Create(
-                it => it.ChunkId == chunkId,
-                () => new AllocateJobChunkRequest(chunkId)
+                it => it.JobChunkId == chunkId,
+                () => new AllocateJobChunkSpectraS3Request(chunkId)
                 );
         }
 
@@ -119,15 +119,15 @@ namespace TestDs3.Helpers
                 it =>
                     it.BucketName == bucketName
                     && it.ObjectName == objectName
-                    && it.JobId == jobId
+                    && it.Job == jobId
                     && it.Offset == offset
                     && it.GetByteRanges().SequenceEqual(byteRanges),
                 () => new GetObjectRequest(
                     bucketName,
                     objectName,
+                    It.IsAny<Stream>(),
                     jobId,
-                    offset,
-                    It.IsAny<Stream>()
+                    offset
                     )
                 );
         }
@@ -142,15 +142,15 @@ namespace TestDs3.Helpers
                 it =>
                     it.BucketName == bucketName
                     && it.ObjectName == objectName
-                    && it.JobId == jobId
+                    && it.Job == jobId
                     && it.Offset == offset,
                 () => new PutObjectRequest(
                     bucketName,
                     objectName,
-                    jobId,
-                    offset,
                     It.IsAny<Stream>()
                     )
+                    .WithJob(jobId)
+                    .WithOffset(offset)
                 );
         }
 
@@ -170,7 +170,7 @@ namespace TestDs3.Helpers
                     offset,
                     byteRanges
                     )))
-                .Returns(new GetObjectResponse(new Dictionary<string, string>()))
+                .Returns(new GetObjectSpectraS3Response(new Dictionary<string, string>()))
                 .Callback<GetObjectRequest>(r =>
                 {
                     Console.WriteLine("Writing \"" + payload + "\" to stream");
@@ -207,27 +207,41 @@ namespace TestDs3.Helpers
             Assert.AreEqual(size, contents.Size);
         }
 
-        public static GetBucketResponse CreateGetBucketResponse(string marker, bool isTruncated, string nextMarker, IEnumerable<Ds3ObjectInfo> ds3objectInfos)
+        public static GetBucketSpectraS3Response CreateGetBucketResponse(string marker, bool isTruncated, string nextMarker, IEnumerable<Contents> ds3objectInfos)
         {
             return new GetBucketResponse(
-                name: "mybucket",
-                prefix: "",
-                marker: marker,
-                maxKeys: 2,
-                isTruncated: isTruncated,
-                delimiter: "",
-                nextMarker: nextMarker,
-                creationDate: DateTime.Now,
-                objects: ds3objectInfos,
-                metadata: new Dictionary<string, string>(),
-                commonPrefixes: Enumerable.Empty<string>()
+                new ListBucketResult()
+                {
+                    Name = "mybucket",
+                    Prefix = "",
+                    Marker = marker,
+                    MaxKeys = 2,
+                    Truncated = isTruncated,
+                    Delimiter = "",
+                    NextMarker = nextMarker,
+                    CreationDate = DateTime.Now,
+                    Objects = ds3objectInfos,
+                    CommonPrefixes = Enumerable.Empty<string>(),
+                    Metadata = new Dictionary<string, string>()
+                }
+                
                 );
         }
 
-        public static Ds3ObjectInfo BuildDs3Object(string key, string eTag, string lastModified, long size)
+        public static Contents BuildDs3Object(string key, string eTag, string lastModified, long size)
         {
-            var owner = new Owner("person@spectralogic.com", "75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a");
-            return new Ds3ObjectInfo(key, size, owner, eTag, "STANDARD", DateTime.Parse(lastModified));
+            User owner = new User();
+            owner.DisplayName = "person@spectralogic.com";
+            owner.Id = Guid.Parse("75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a");
+
+            Contents contents = new Contents();
+            contents.Key = key;
+            contents.Size = size;
+            contents.Owner = owner;
+            contents.ETag = eTag;
+            contents.StorageClass = "STANDARD";
+            contents.LastModified = DateTime.Parse(lastModified);
+            return contents;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Ds3.Helpers.Transferrers
             Stream stream)
         {
             client.GetObject(
-                new GetObjectRequest(bucketName, objectName, jobId, blobOffset, stream)
+                new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset)
                     .WithByteRanges(ranges)
             );
         }

@@ -14,6 +14,7 @@
 */
 
 using Ds3.Calls;
+using Ds3.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,14 +26,14 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
     /// </summary>
     public class WriteNoAllocateChunkStrategy : IChunkStrategy
     {
-        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
+        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
         {
             var clientFactory = client.BuildFactory(jobResponse.Nodes);
             return
-                from chunk in jobResponse.ObjectLists
+                from chunk in jobResponse.Objects
                 let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
                 from jobObject in chunk.Objects
-                where !jobObject.InCache
+                where !(bool)jobObject.InCache
                 select new TransferItem(transferClient, Blob.Convert(jobObject));
         }
 

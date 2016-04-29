@@ -37,14 +37,14 @@ namespace Ds3.Calls
             return Stream.Null;
         }
 
-        internal virtual Checksum ChecksumValue
+        internal virtual ChecksumType ChecksumValue
         {
-            get { return Checksum.None; }
+            get { return ChecksumType.None; }
         }
 
-        internal virtual Checksum.ChecksumType ChecksumType
+        internal virtual ChecksumType.Type Type
         {
-            get { return Checksum.ChecksumType.None; }
+            get { return ChecksumType.Type.NONE; }
         }
 
         internal virtual IEnumerable<Range> GetByteRanges()

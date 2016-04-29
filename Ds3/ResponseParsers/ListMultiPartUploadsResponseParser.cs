@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new ListMultiPartUploadsResponse(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("ListMultipartUploadsResult")
-                            .Select(ModelParsers.ParseListMultiPartUploadsResult)
-                            .ToList()
+                        ModelParsers.ParseListMultiPartUploadsResult(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("ListMultipartUploadsResult"))
                     );
                 }
             }

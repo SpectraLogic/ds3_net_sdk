@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2E3B60DF-90D5-4275-8CD8-AE21150F4424}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>packages</RootNamespace>
+    <AssemblyName>packages</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Moq.4.2.1402.2112\Moq.4.2.1402.2112.nupkg" />
+    <None Include="Moq.4.2.1402.2112\Moq.4.2.1402.2112.nuspec" />
+    <None Include="NUnit.2.6.3\NUnit.2.6.3.nupkg" />
+    <None Include="NUnit.2.6.3\NUnit.2.6.3.nuspec" />
+    <None Include="NUnit.Runners.2.6.3\NUnit.Runners.2.6.3.nupkg" />
+    <None Include="NUnit.Runners.2.6.3\NUnit.Runners.2.6.3.nuspec" />
+    <None Include="NUnit.Runners.2.6.3\tools\agent.conf" />
+    <None Include="NUnit.Runners.2.6.3\tools\agent.log.conf" />
+    <None Include="NUnit.Runners.2.6.3\tools\launcher.log.conf" />
+    <None Include="NUnit.Runners.2.6.3\tools\nunit-agent-x86.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\nunit-agent.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\nunit-console-x86.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\nunit-console.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\nunit-x86.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\nunit.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\pnunit-agent.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\pnunit-launcher.exe.config" />
+    <None Include="NUnit.Runners.2.6.3\tools\runpnunit.bat" />
+    <None Include="NUnit.Runners.2.6.3\tools\test.conf" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="OpenCover.4.5.2506\docs\Usage.rtf" />
+    <None Include="OpenCover.4.5.2506\License.rtf" />
+    <None Include="OpenCover.4.5.2506\log4net.config" />
+    <None Include="OpenCover.4.5.2506\MSBuild\OpenCover.targets" />
+    <None Include="OpenCover.4.5.2506\OpenCover.4.5.2506.nupkg" />
+    <None Include="OpenCover.4.5.2506\OpenCover.4.5.2506.nuspec" />
+    <None Include="OpenCover.4.5.2506\OpenCover.Console.exe.config" />
+    <None Include="OpenCover.4.5.2506\transform\transform.ps1" />
+    <None Include="ReportGenerator.1.9.1.0\ReportGenerator.1.9.1.0.nupkg" />
+    <None Include="ReportGenerator.1.9.1.0\ReportGenerator.1.9.1.0.nuspec" />
+    <None Include="repositories.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Moq.4.2.1402.2112\lib\net35\Moq.dll" />
+    <Content Include="Moq.4.2.1402.2112\lib\net35\Moq.xml" />
+    <Content Include="Moq.4.2.1402.2112\lib\net40\Moq.dll" />
+    <Content Include="Moq.4.2.1402.2112\lib\net40\Moq.xml" />
+    <Content Include="Moq.4.2.1402.2112\lib\sl4\Moq.Silverlight.dll" />
+    <Content Include="Moq.4.2.1402.2112\lib\sl4\Moq.Silverlight.xml" />
+    <Content Include="NUnit.2.6.3\lib\nunit.framework.dll" />
+    <Content Include="NUnit.2.6.3\lib\nunit.framework.xml" />
+    <Content Include="NUnit.2.6.3\license.txt" />
+    <Content Include="NUnit.Runners.2.6.3\license.txt" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Circles\Failure.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Circles\Ignored.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Circles\Inconclusive.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Circles\Skipped.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Circles\Success.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Classic\Failure.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Classic\Ignored.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Classic\Inconclusive.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Classic\Skipped.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Classic\Success.jpg" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Default\Failure.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Default\Ignored.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Default\Inconclusive.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Default\Skipped.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Default\Success.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Visual Studio\Failure.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Visual Studio\Ignored.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Visual Studio\Inconclusive.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Visual Studio\SeriousWarning.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Visual Studio\Skipped.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\Images\Tree\Visual Studio\Success.png" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\log4net.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\nunit-console-runner.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\nunit-gui-runner.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\nunit.core.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\nunit.core.interfaces.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\nunit.uiexception.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\nunit.uikit.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\lib\nunit.util.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit-agent-x86.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit-agent.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit-console-x86.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit-console.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit-editor.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit-x86.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\nunit.framework.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\pnunit-agent.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\pnunit-launcher.exe" />
+    <Content Include="NUnit.Runners.2.6.3\tools\pnunit.framework.dll" />
+    <Content Include="NUnit.Runners.2.6.3\tools\pnunit.tests.dll" />
+    <Content Include="OpenCover.4.5.2506\Autofac.Configuration.dll" />
+    <Content Include="OpenCover.4.5.2506\Autofac.dll" />
+    <Content Include="OpenCover.4.5.2506\docs\ReleaseNotes.txt" />
+    <Content Include="OpenCover.4.5.2506\Gendarme.Framework.dll" />
+    <Content Include="OpenCover.4.5.2506\Gendarme.Rules.Maintainability.dll" />
+    <Content Include="OpenCover.4.5.2506\log4net.dll" />
+    <Content Include="OpenCover.4.5.2506\Mono.Cecil.dll" />
+    <Content Include="OpenCover.4.5.2506\Mono.Cecil.Pdb.dll" />
+    <Content Include="OpenCover.4.5.2506\MSBuild\OpenCover.MSBuild.dll" />
+    <Content Include="OpenCover.4.5.2506\OpenCover.Console.exe" />
+    <Content Include="OpenCover.4.5.2506\OpenCover.Extensions.dll" />
+    <Content Include="OpenCover.4.5.2506\OpenCover.Framework.dll" />
+    <Content Include="OpenCover.4.5.2506\readme.txt" />
+    <Content Include="OpenCover.4.5.2506\Samples\x86\OpenCover.Simple.Target.exe" />
+    <Content Include="OpenCover.4.5.2506\transform\simple_report.xslt" />
+    <Content Include="OpenCover.4.5.2506\x86\OpenCover.Profiler.dll" />
+    <Content Include="ReportGenerator.1.9.1.0\ICSharpCode.NRefactory.CSharp.dll" />
+    <Content Include="ReportGenerator.1.9.1.0\ICSharpCode.NRefactory.dll" />
+    <Content Include="ReportGenerator.1.9.1.0\LICENSE.txt" />
+    <Content Include="ReportGenerator.1.9.1.0\log4net.dll" />
+    <Content Include="ReportGenerator.1.9.1.0\Readme.txt" />
+    <Content Include="ReportGenerator.1.9.1.0\ReportGenerator.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

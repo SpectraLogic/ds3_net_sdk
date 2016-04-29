@@ -69,20 +69,20 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
-                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
+                Stubs.ObjectNames.Select(name => new Contents() { Key = name })
             );
 
             var dataTransfers = new ConcurrentQueue<long>();
@@ -159,16 +159,16 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     fullObjects,
                     partialObjects
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object)
                 .StartPartialReadJob(Stubs.BucketName, fullObjects, partialObjects);
@@ -255,17 +255,17 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkPut(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, maxBlobSize)))
-                .Returns(initialJobResponse);
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, maxBlobSize)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.AllocateJobChunk(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
             client
-                .Setup(c => c.AllocateJobChunk(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
             client
-                .Setup(c => c.AllocateJobChunk(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
 
             var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, maxBlobSize);
 
@@ -319,20 +319,20 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
-                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
+                Stubs.ObjectNames.Select(name => new Contents() { Key = name })
             );
             try
             {
@@ -403,20 +403,20 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
-                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
+                Stubs.ObjectNames.Select(name => new Contents() { Key = name })
             );
 
             var dataTransfers = new ConcurrentQueue<long>();

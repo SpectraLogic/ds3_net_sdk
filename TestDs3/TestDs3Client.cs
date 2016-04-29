@@ -67,15 +67,15 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient
-                .GetService(new GetServiceRequest());
+                .GetService(new GetServiceRequest()).ResponsePayload;
             Assert.AreEqual("ryan", response.Owner.DisplayName);
             Assert.AreEqual("ryan", response.Owner.Id);
 
-            Assert.AreEqual(expectedBuckets.Length, response.Buckets.Count);
+            Assert.AreEqual(expectedBuckets.Length, response.Buckets.ToList().Count);
             for (var i = 0; i < expectedBuckets.Length; i++)
             {
-                Assert.AreEqual(expectedBuckets[i].Key, response.Buckets[i].Name);
-                Assert.AreEqual(expectedBuckets[i].CreationDate, response.Buckets[i].CreationDate);
+                Assert.AreEqual(expectedBuckets[i].Key, response.Buckets.ToList()[i].Name);
+                Assert.AreEqual(expectedBuckets[i].CreationDate, response.Buckets.ToList()[i].CreationDate);
             }
         }
 
@@ -105,16 +105,25 @@ namespace TestDs3
         public void TestGetSystemInfo()
         {
             var xmlResponse = @"<Data><ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA</ApiVersion><BuildInformation><Branch>//BlueStorm/r1.x</Branch><Revision>1154042</Revision><Version>1.2.0</Version></BuildInformation><SerialNumber>5003048001dbd7b3</SerialNumber></Data>";
-            var expected = new GetSystemInformationResponse("91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA", "//BlueStorm/r1.x", "1154042", "1.2.0", "5003048001dbd7b3");
+            var expected = new GetSystemInformationSpectraS3Response(
+                new SystemInformation() {
+                    ApiVersion = "91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA",
+                    BuildInformation = new BuildInformation() {
+                        Branch = "//BlueStorm/r1.x",
+                        Revision = "1154042",
+                        Version = "1.2.0"
+                    },
+                    SerialNumber = "5003048001dbd7b3"
+                }).ResponsePayload;
             var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_INFORMATION", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetSystemInformation(new GetSystemInformationRequest());
-            Assert.AreEqual(response.ApiMC5, expected.ApiMC5);
-            Assert.AreEqual(response.BuildBranch, expected.BuildBranch);
-            Assert.AreEqual(response.BuildRev, expected.BuildRev);
-            Assert.AreEqual(response.BuildVersion, expected.BuildVersion);
+                .GetSystemInformationSpectraS3(new GetSystemInformationSpectraS3Request()).ResponsePayload;
+            Assert.AreEqual(response.ApiVersion, expected.ApiVersion);
+            Assert.AreEqual(response.BuildInformation.Branch, expected.BuildInformation.Branch);
+            Assert.AreEqual(response.BuildInformation.Revision, expected.BuildInformation.Revision);
+            Assert.AreEqual(response.BuildInformation.Version, expected.BuildInformation.Version);
             Assert.AreEqual(response.SerialNumber, expected.SerialNumber);
         }
 
@@ -122,13 +131,17 @@ namespace TestDs3
         public void TestVerifySystemHealth()
         {
             var xmlResponse = @"<Data><MsRequiredToVerifyDataPlannerHealth>666</MsRequiredToVerifyDataPlannerHealth></Data>";
-            var expected = new VerifySystemHealthResponse(666L);
+            var healthVarificationResult = new HealthVerificationResult();
+            healthVarificationResult.MsRequiredToVerifyDataPlannerHealth = 666L;
+            var expected = new VerifySystemHealthSpectraS3Response(healthVarificationResult);
             var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_HEALTH", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .VerifySystemHealth(new VerifySystemHealthRequest());
-            Assert.AreEqual(response.MillisToVerify, expected.MillisToVerify);
+                .VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request());
+            Assert.AreEqual(
+                response.ResponsePayload.MsRequiredToVerifyDataPlannerHealth, 
+                expected.ResponsePayload.MsRequiredToVerifyDataPlannerHealth);
         }
 
         [Test]
@@ -139,7 +152,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_HEALTH", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.ServiceUnavailable, "", _emptyHeaders)
                 .AsClient
-                .VerifySystemHealth(new VerifySystemHealthRequest());
+                .VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request());
         }
 
         [Test]
@@ -185,20 +198,21 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/remoteTest16", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetBucket(new GetBucketRequest("remoteTest16"));
+                .GetBucket(new GetBucketRequest("remoteTest16"))
+                .ResponsePayload;
             Assert.AreEqual(expected.Name, response.Name);
             Assert.AreEqual(expected.Prefix, response.Prefix);
             Assert.AreEqual(expected.Marker, response.Marker);
             Assert.AreEqual(expected.MaxKeys, response.MaxKeys);
-            Assert.AreEqual(expected.IsTruncated, response.IsTruncated);
+            Assert.AreEqual(expected.IsTruncated, response.Truncated);
 
             var responseObjects = response.Objects.ToList();
             Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
             for (var i = 0; i < expected.Objects.Length; i++)
             {
-                Assert.AreEqual(expected.Objects[i].Key, responseObjects[i].Name);
+                Assert.AreEqual(expected.Objects[i].Key, responseObjects[i].Key);
                 Assert.AreEqual(expected.Objects[i].LastModified, responseObjects[i].LastModified);
-                Assert.AreEqual(expected.Objects[i].ETag, responseObjects[i].Etag);
+                Assert.AreEqual(expected.Objects[i].ETag, responseObjects[i].ETag);
                 Assert.AreEqual(expected.Objects[i].Size, responseObjects[i].Size);
                 Assert.AreEqual(expected.Objects[i].StorageClass, responseObjects[i].StorageClass);
                 Assert.AreEqual(expected.Objects[i].Owner.ID, responseObjects[i].Owner.Id);
@@ -218,7 +232,7 @@ namespace TestDs3
                         Name = "dont_get_around_much_anymore.mp4",
                         Id = "82c8caee-9ad2-4c2c-912a-7d7f1dba850e",
                         CreationDate = DateTime.Parse("2015-08-26 16:11:51.643"),
-                        Type = DS3ObjectTypes.DATA,
+                        Type = S3ObjectType.DATA,
                         Version = 1L
                     },
                     new {
@@ -226,7 +240,7 @@ namespace TestDs3
                         Name = "is_you_is_or_is_you_aint.mp4",
                         Id = "7dad06d1-d492-497e-828d-ca8c53cf5e6d",
                         CreationDate = DateTime.Parse("2015-08-26 16:11:52.457"),
-                        Type = DS3ObjectTypes.DATA,
+                        Type = S3ObjectType.DATA,
                         Version = 1L
                     },
                     new {
@@ -234,7 +248,7 @@ namespace TestDs3
                         Name = "youre_just_in_love.mp4",
                         Id = "bcf24226-9c5e-423d-99fb-4939a61cd1fb",
                         CreationDate = DateTime.Parse("2015-08-26 16:11:52.012"),
-                        Type = DS3ObjectTypes.DATA,
+                        Type = S3ObjectType.DATA,
                         Version = 1L
                     }
                 }
@@ -249,13 +263,11 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/_rest_/object/", expectedQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetObjects(new GetObjectsRequest()
-                {
-                    BucketId = "videos",
-                    ObjectName = "%mp4"
-                });
+                .GetObjectsSpectraS3(new GetObjectsSpectraS3Request()
+                .WithBucketId("videos")
+                .WithName("%mp4"));
 
-            var responseObjects = response.Objects.ToList();
+            var responseObjects = response.ResponsePayload.S3Objects.ToList();
             Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
             for (var i = 0; i < expected.Objects.Length; i++)
             {
@@ -339,7 +351,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/coffeehouse/jk", expectedQueryParams, "")
                 .Returning(HttpStatusCode.NoContent, "", _emptyHeaders)
                 .AsClient
-                .DeleteFolder(new DeleteFolderRequest("testdelete", "coffeehouse/jk"));
+                .DeleteFolderRecursivelySpectraS3(new DeleteFolderRecursivelySpectraS3Request("testdelete", "coffeehouse/jk"));
         }
 
         [Test]
@@ -355,7 +367,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
                 .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
                 .AsClient
-                .DeleteFolder(new DeleteFolderRequest("testdelete", "badfoldername"));
+                .DeleteFolderRecursivelySpectraS3(new DeleteFolderRecursivelySpectraS3Request("testdelete", "badfoldername"));
         }
 
         [Test]
@@ -371,7 +383,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
                 .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
                 .AsClient
-                .DeleteFolder(new DeleteFolderRequest("nosuchbucket", "badfoldername"));
+                .DeleteFolderRecursivelySpectraS3(new DeleteFolderRecursivelySpectraS3Request("nosuchbucket", "badfoldername"));
         }
 
         [Test]
@@ -403,7 +415,7 @@ namespace TestDs3
                     .Expecting(HttpVerb.GET, "/bucketName/object", expectedQueryParams, "")
                     .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                     .AsClient
-                    .GetObject(new GetObjectRequest("bucketName", "object", jobId, offset, memoryStream));
+                    .GetObject(new GetObjectRequest("bucketName", "object", memoryStream, jobId, offset));
                 memoryStream.Position = 0L;
                 using (var reader = new StreamReader(memoryStream))
                 {
@@ -427,7 +439,9 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)
                 .AsClient
-                .PutObject(new PutObjectRequest("bucketName", "object", jobId, offset, HelpersForTest.StringToStream(stringRequest)));
+                .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest))
+                    .WithJob(jobId)
+                    .WithOffset(offset));
         }
 
         [Test]
@@ -451,8 +465,10 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringRequest, expectedHeaders)
                 .AsClient
-                .PutObject(new PutObjectRequest("bucketName", "object", jobId, offset, HelpersForTest.StringToStream(stringRequest))
-                .WithChecksum(Checksum.Value(Convert.FromBase64String("4waSgw==")), Checksum.ChecksumType.Crc32C));
+                .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest))
+                .WithJob(jobId)
+                .WithOffset(offset)
+                .WithChecksum(ChecksumType.Value(Convert.FromBase64String("4waSgw==")), ChecksumType.Type.CRC_32C));
         }
 
         [Test]
@@ -473,13 +489,16 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)
                 .AsClient
-                .PutObject(new PutObjectRequest("bucketName", "object", jobId, offset, putObjectRequestStream));
+                .PutObject(new PutObjectRequest("bucketName", "object", putObjectRequestStream)
+                    .WithJob(jobId)
+                    .WithOffset(offset));
         }
 
         [Test]
         public void TestBulkPut()
         {
-            RunBulkTest("start_bulk_put", (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects)), _emptyQueryParams);
+            RunBulkTest("start_bulk_put", (client, objects) => client.PutBulkJobSpectraS3(
+                new PutBulkJobSpectraS3Request("bucket8192000000", objects)).ResponsePayload, _emptyQueryParams);
         }
 
         [Test]
@@ -487,7 +506,7 @@ namespace TestDs3
         {
             RunBulkTest(
                 "start_bulk_put",
-                (client, objects) => client.BulkPut(new BulkPutRequest("bucket8192000000", objects).WithMaxBlobSize(1048576L)),
+                (client, objects) => client.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request("bucket8192000000", objects).WithMaxUploadSize(1048576L)).ResponsePayload,
                 new Dictionary<string, string> { { "max_upload_size", "1048576" } }
             );
         }
@@ -495,12 +514,12 @@ namespace TestDs3
         [Test]
         public void TestBulkGet()
         {
-            RunBulkTest("start_bulk_get", (client, objects) => client.BulkGet(new BulkGetRequest("bucket8192000000", objects)), _emptyQueryParams);
+            RunBulkTest("start_bulk_get", (client, objects) => client.GetBulkJobSpectraS3(new GetBulkJobSpectraS3Request("bucket8192000000", objects)).ResponsePayload, _emptyQueryParams);
         }
 
         private void RunBulkTest(
             string operation,
-            Func<IDs3Client, List<Ds3Object>, JobResponse> makeCall,
+            Func<IDs3Client, List<Ds3Object>, MasterObjectList> makeCall,
             IDictionary<string, string> additionalQueryParams)
         {
             var files = new[] {
@@ -543,7 +562,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/_rest_/job/1a85e743-ec8f-4789-afec-97e587a26936", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                 .AsClient;
-            CheckJobResponse(client.GetJob(new GetJobRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936"))));
+            CheckJobResponse(client.GetJobSpectraS3(new GetJobSpectraS3Request(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936"))).ResponsePayload);
         }
 
         [Test]
@@ -555,12 +574,12 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, stringResponse, _emptyHeaders)
                 .AsClient;
             var jobId = Guid.Parse("350225fb-ec92-4456-a09d-5ffb7c7830bb");
-            var job = client.GetJob(new GetJobRequest(jobId));
+            var job = client.GetJobSpectraS3(new GetJobSpectraS3Request(jobId)).ResponsePayload;
             Assert.AreEqual("avid-bucket", job.BucketName);
-            Assert.AreEqual(ChunkOrdering.InOrder, job.ChunkOrder);
+            Assert.AreEqual(JobChunkClientProcessingOrderGuarantee.IN_ORDER, job.ChunkClientProcessingOrderGuarantee);
             Assert.AreEqual(jobId, job.JobId);
             CollectionAssert.AreEqual(Enumerable.Empty<Node>(), job.Nodes);
-            CollectionAssert.AreEqual(Enumerable.Empty<JobObjectList>(), job.ObjectLists);
+            CollectionAssert.AreEqual(Enumerable.Empty<Objects>(), job.Objects);
             Assert.AreEqual("NORMAL", job.Priority);
             Assert.AreEqual("PUT", job.RequestType);
             Assert.AreEqual(new DateTime(2015, 5, 5, 17, 9, 30, 0, DateTimeKind.Utc), job.StartDate.ToUniversalTime());
@@ -574,7 +593,7 @@ namespace TestDs3
                 return reader.ReadToEnd();
         }
 
-        private static void CheckJobResponse(JobResponse response)
+        private static void CheckJobResponse(MasterObjectList response)
         {
             var expectedNodes = new[] {
                 new {
@@ -639,7 +658,7 @@ namespace TestDs3
                 Assert.AreEqual(expectedNode.HttpPort, actualNode.HttpPort);
                 Assert.AreEqual(expectedNode.HttpsPort, actualNode.HttpsPort);
             });
-            HelpersForTest.AssertCollectionsEqual(expectedObjectLists, response.ObjectLists, (expectedObjectList, actualObjectList) =>
+            HelpersForTest.AssertCollectionsEqual(expectedObjectLists, response.Objects, (expectedObjectList, actualObjectList) =>
             {
                 Assert.AreEqual(expectedObjectList.ChunkNumber, actualObjectList.ChunkNumber);
                 Assert.AreEqual(expectedObjectList.ChunkId, actualObjectList.ChunkId);
@@ -662,7 +681,7 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var jobs = client.GetJobList(new GetJobListRequest()).Jobs.ToList();
+            var jobs = client.GetJobsSpectraS3(new GetJobsSpectraS3Request()).ResponsePayload.Jobs.ToList();
             Assert.AreEqual(1, jobs.Count);
             CheckJobInfo(jobs[0]);
         }
@@ -680,12 +699,12 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var jobs = client.GetJobList(new GetJobListRequest().WithBucket("bucketName")).Jobs.ToList();
+            var jobs = client.GetJobsSpectraS3(new GetJobsSpectraS3Request().WithBucketId("bucketName")).ResponsePayload.Jobs.ToList();
             Assert.AreEqual(1, jobs.Count);
             CheckJobInfo(jobs[0]);
         }
 
-        private static void CheckJobInfo(JobInfo jobInfo)
+        private static void CheckJobInfo(Job jobInfo)
         {
             Assert.AreEqual("bucketName", jobInfo.BucketName);
             Assert.AreEqual(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51"), jobInfo.JobId);
@@ -703,8 +722,8 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
-            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
-            JobObjectList chunkResult = null;
+            var response = client.AllocateJobChunkSpectraS3(new AllocateJobChunkSpectraS3Request(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            Objects chunkResult = null;
             response.Match(
                 chunk => chunkResult = chunk,
                 retryAfter => Assert.Fail(),
@@ -726,7 +745,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
                 .Returning(HttpStatusCode.ServiceUnavailable, "", headers)
                 .AsClient;
-            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            var response = client.AllocateJobChunkSpectraS3(new AllocateJobChunkSpectraS3Request(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
             TimeSpan? retryResult = null;
             response.Match(
                 chunk => Assert.Fail(),
@@ -745,7 +764,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
                 .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
                 .AsClient;
-            var response = client.AllocateJobChunk(new AllocateJobChunkRequest(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
+            var response = client.AllocateJobChunkSpectraS3(new AllocateJobChunkSpectraS3Request(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44")));
             var chunkIsGone = false;
             response.Match(
                 chunk => Assert.Fail(),
@@ -765,9 +784,9 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, new Dictionary<string, string> { { "retry-after", "123" } })
                 .AsClient;
 
-            var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
+            var response = client.GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
             TimeSpan timeSpan = TimeSpan.MinValue;
-            JobResponse jobChunks = null;
+            MasterObjectList jobChunks = null;
             response.Match(
                 (ts, jobResponse) => { timeSpan = ts; jobChunks = jobResponse; },
                 () => Assert.Fail(),
@@ -779,7 +798,7 @@ namespace TestDs3
                 Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"),
                 Guid.Parse("95e97010-8e70-4733-926c-aeeb21796848")
             };
-            CollectionAssert.AreEqual(expectedNodeIds, jobChunks.ObjectLists.Select(chunk => chunk.NodeId.Value));
+            CollectionAssert.AreEqual(expectedNodeIds, jobChunks.Objects.Select(chunk => chunk.NodeId.Value));
             Assert.AreEqual(TimeSpan.FromSeconds(123), timeSpan);
         }
 
@@ -792,7 +811,7 @@ namespace TestDs3
                 .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
                 .AsClient;
 
-            var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
+            var response = client.GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
             var wasJobGone = false;
             response.Match(
                 (ts, jobResponse) => Assert.Fail(),
@@ -813,7 +832,7 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, headers)
                 .AsClient;
 
-            var response = client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
+            var response = client.GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(Guid.Parse("1a85e743-ec8f-4789-afec-97e587a26936")));
             TimeSpan? retryValue = null;
             response.Match(
                 (ts, jobResponse) => Assert.Fail(),
@@ -917,27 +936,27 @@ namespace TestDs3
 
         private readonly static Tape _testTape = new Tape
         {
-            AssignedToBucket = false,
+            AssignedToStorageDomain = false,
             AvailableRawCapacity = 10000L,
             BarCode = "t1",
-            BucketId = "7a6a0b80-4c24-4f8c-9779-527e863c5470",
+            BucketId = Guid.Parse("7a6a0b80-4c24-4f8c-9779-527e863c5470"),
             DescriptionForIdentification = "A really cool tape",
             EjectDate = new DateTime(2015, 4, 13, 8, 9, 18, 443),
             EjectLabel = "Bin X",
             EjectLocation = "New Jersey",
             EjectPending = null,
             FullOfData = false,
-            Id = "11eaa8ec-e287-4852-a5f8-c06b8dd90aec",
+            Id = Guid.Parse("11eaa8ec-e287-4852-a5f8-c06b8dd90aec"),
             LastAccessed = null,
             LastCheckpoint = "",
             LastModified = new DateTime(2015, 4, 9, 8, 11, 48, 305),
             LastVerified = null,
-            PartitionId = "9d1ab9db-f488-461d-b04c-31001496c05e",
+            PartitionId = Guid.Parse("9d1ab9db-f488-461d-b04c-31001496c05e"),
             PreviousState = null,
             SerialNumber = "123456",
-            State = TapeState.Ejected,
+            State = TapeState.EJECTED,
             TotalRawCapacity = 20000,
-            Type = TapeType.Lto5,
+            Type = TapeType.LTO5,
             WriteProtected = false,
         };
 
@@ -955,15 +974,15 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var result = client.GetAggregatePhysicalPlacement(new GetAggregatePhysicalPlacementRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" }));
-            CollectionAssert.AreEqual(new[] { _testTape }, result.Tapes.ToArray(), new TapeComparer());
+            var result = client.GetPhysicalPlacementForObjectsSpectraS3(new GetPhysicalPlacementForObjectsSpectraS3Request("test_bucket", new[] {new Ds3Object("o1", null), new Ds3Object("o2", null), new Ds3Object("o3", null), new Ds3Object("o4", null) })).ResponsePayload;
+            CollectionAssert.AreEqual(new[] { _testTape }, result.Tapes.ToList(), new TapeComparer());
         }
 
-        private static readonly Ds3ObjectPlacement _testObjectPlacement = new Ds3ObjectPlacement
+        private static readonly PhysicalPlacement _testObjectPlacement = new PhysicalPlacement
         {
-            Name = "foo_object",
-            Offset = 10L,
-            Length = 20L,
+            //Name = "foo_object",
+            //Offset = 10L,
+            //Length = 20L,
             Tapes = new[] { _testTape }
         };
 
@@ -982,8 +1001,8 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var result = client.GetPhysicalPlacementForObjects(new GetPhysicalPlacementForObjectsRequest("test_bucket", new[] { "o1", "o2", "o3", "o4" }));
-            CollectionAssert.AreEqual(new[] { _testObjectPlacement }, result.ObjectPlacements.ToArray(), new Ds3ObjectPlacementComparer());
+            var result = client.GetPhysicalPlacementForObjectsSpectraS3(new GetPhysicalPlacementForObjectsSpectraS3Request("test_bucket", new[] { new Ds3Object("o1", null), new Ds3Object("o2", null), new Ds3Object("o3", null), new Ds3Object("o4", null) })).ResponsePayload.Tapes;
+            CollectionAssert.AreEqual(new[] { _testObjectPlacement }, result, new Ds3ObjectPlacementComparer());
         }
 
 
@@ -1004,7 +1023,7 @@ namespace TestDs3
             };
             var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
 
-            mockClient.BulkPut(new BulkPutRequest("bucket", inputObjects));
+            mockClient.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request("bucket", inputObjects));
         }
 
         [Test]
@@ -1028,23 +1047,23 @@ namespace TestDs3
             helpers.StartWriteJob("bucket", inputObjects);
         }
 
-        private class Ds3ObjectPlacementComparer : IComparer, IComparer<Ds3ObjectPlacement>
+        private class Ds3ObjectPlacementComparer : IComparer, IComparer<PhysicalPlacement>
         {
             public int Compare(object x, object y)
             {
-                return this.Compare(x as Ds3ObjectPlacement, y as Ds3ObjectPlacement);
+                return this.Compare(x as PhysicalPlacement, y as PhysicalPlacement);
             }
 
-            public int Compare(Ds3ObjectPlacement x, Ds3ObjectPlacement y)
+            public int Compare(PhysicalPlacement x, PhysicalPlacement y)
             {
                 if (x == null || y == null)
                 {
                     throw new ArgumentNullException();
                 }
                 return CompareChain.Of(x, y)
-                    .Value(op => op.Name)
-                    .Value(op => op.Offset)
-                    .Value(op => op.Length)
+                    //.Value(op => op.Name)
+                    //.Value(op => op.Offset)
+                    //.Value(op => op.Length)
                     .Value(op => op.Tapes, new EnumerableComparer<Tape>(new TapeComparer()))
                     .Result;
             }
@@ -1065,7 +1084,7 @@ namespace TestDs3
                 }
 
                 return CompareChain.Of(x, y)
-                    .Value(t => t.AssignedToBucket)
+                    .Value(t => t.AssignedToStorageDomain)
                     .Value(t => t.AvailableRawCapacity)
         			.Value(t => t.BarCode)
         			.Value(t => t.BucketId)

@@ -1371,7 +1371,7 @@ namespace Ds3
             }
         }
 
-        public IDs3ClientFactory BuildFactory(IEnumerable<Node> nodes)
+        public IDs3ClientFactory BuildFactory(IEnumerable<Ds3Node> nodes)
         {
             return new Ds3ClientFactory(this, nodes);
         }
@@ -1379,9 +1379,9 @@ namespace Ds3
         private class Ds3ClientFactory : IDs3ClientFactory
         {
             private readonly IDs3Client _client;
-            private readonly IDictionary<Guid, Node> _nodes;
+            private readonly IDictionary<Guid, Ds3Node> _nodes;
 
-            public Ds3ClientFactory(IDs3Client client, IEnumerable<Node> nodes)
+            public Ds3ClientFactory(IDs3Client client, IEnumerable<Ds3Node> nodes)
             {
                 this._client = client;
                 this._nodes = nodes.ToDictionary(node => node.Id);

@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new PutObjectPersistedNotificationRegistrationSpectraS3Response(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("Data")
-                            .Select(ModelParsers.ParseS3ObjectPersistedNotificationRegistration)
-                            .ToList()
+                        ModelParsers.ParseS3ObjectPersistedNotificationRegistration(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
                     );
                 }
             }

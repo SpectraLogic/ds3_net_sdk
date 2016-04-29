@@ -35,10 +35,10 @@ namespace Ds3.Helpers.Transferrers
             client.PutObject(new PutObjectRequest(
                 bucketName,
                 objectName,
-                jobId,
-                blobOffset,
                 stream
-            ));
+            )
+            .WithJob(jobId)
+            .WithOffset(blobOffset));
         }
     }
 }

@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetServiceResponse(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("ListAllMyBucketsResult")
-                            .Select(ModelParsers.ParseListAllMyBucketsResult)
-                            .ToList()
+                        ModelParsers.ParseListAllMyBucketsResult(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("ListAllMyBucketsResult"))
                     );
                 }
             }

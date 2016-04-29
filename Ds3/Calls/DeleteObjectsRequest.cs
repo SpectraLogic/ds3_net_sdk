@@ -73,9 +73,9 @@ namespace Ds3.Calls
                 .WriteToMemoryStream();
         }
 
-        internal override Checksum ChecksumValue
+        internal override ChecksumType ChecksumValue
         {
-            get { return Checksum.Compute; }
+            get { return ChecksumType.Compute; }
         }
 
         internal override HttpVerb Verb

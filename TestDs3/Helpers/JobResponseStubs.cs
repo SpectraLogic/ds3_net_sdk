@@ -17,10 +17,22 @@ namespace TestDs3.Helpers
         public static readonly Guid ChunkId1 = Guid.Parse("b63a0481-7020-4306-9a9e-384102adf901");
         public static readonly Guid ChunkId2 = Guid.Parse("ea100286-97d5-47f2-b1ee-a917262bc02d");
         public static readonly Guid ChunkId3 = Guid.Parse("8698c831-bbf4-4eb7-b7a9-22a4215771f6");
-        public static readonly Node[] Nodes = new[]
+        public static readonly Ds3Node[] Nodes = new[]
         {
-            new Node(NodeId1, "http://192.168.10.1", 80, 443),
-            new Node(NodeId2, "http://192.168.10.2", 80, 443)
+            new Ds3Node()
+            {
+                Id = NodeId1,
+                EndPoint = "http://192.168.10.1",
+                HttpPort = 80,
+                HttpsPort = 443
+            },
+            new Ds3Node()
+            {
+                Id = NodeId2,
+                EndPoint = "http://192.168.10.2",
+                HttpPort = 80,
+                HttpsPort = 443
+            }
         };
 
         public static readonly string[] PartialFailureObjectNames = new[]
@@ -35,74 +47,122 @@ namespace TestDs3.Helpers
             "hello"
         };
 
-        public static JobResponse BuildJobResponse(params JobObjectList[] chunks)
+        public static MasterObjectList BuildJobResponse(params Objects[] chunks)
         {
-            return new JobResponse(
-                BucketName,
-                JobId,
-                "HIGH",
-                "GET",
-                new DateTime(2015, 1, 11, 11, 54, 0),
-                ChunkOrdering.None,
-                Nodes,
-                chunks,
-                JobStatus.IN_PROGRESS
-            );
+            return new MasterObjectList()
+            {
+                BucketName = BucketName,
+                JobId = JobId,
+                Priority = Priority.HIGH,
+                RequestType = JobRequestType.GET,
+                StartDate = new DateTime(2015, 1, 11, 11, 54, 0),
+                ChunkClientProcessingOrderGuarantee = JobChunkClientProcessingOrderGuarantee.NONE,
+                Nodes = Nodes,
+                Objects = chunks,
+                Status = JobStatus.IN_PROGRESS
+
+            };
         }
 
-        public static JobObjectList ReadFailureChunk(Guid? nodeId, bool inCache)
+        public static Objects ReadFailureChunk(Guid? nodeId, bool inCache)
         {
-            return new JobObjectList(
-                ChunkId1,
-                1,
-                nodeId,
-                new[]
-                { 
-                    new JobObject("bar", 20, 0, inCache),
-                }
-            );
-        }
-
-        public static JobObjectList Chunk1(Guid? nodeId, bool firstInCache, bool secondInCache)
-        {
-            return new JobObjectList(
-                ChunkId1,
-                1,
-                nodeId,
-                new[]
+            return new Objects()
+            {
+                ChunkId = ChunkId1,
+                ChunkNumber = 1,
+                NodeId = nodeId,
+                Objects = new[]
                 {
-                    new JobObject("bar", 15, 0, firstInCache),
-                    new JobObject("foo", 10, 10, secondInCache),
+                    new BulkObject()
+                    {
+                        Name = "bar",
+                        Length = 20,
+                        Offset = 0,
+                        InCache = inCache
+                    }
                 }
-            );
+            };
         }
 
-        public static JobObjectList Chunk2(Guid? nodeId, bool firstInCache, bool secondInCache)
+        public static Objects Chunk1(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
-            return new JobObjectList(
-                ChunkId2,
-                2,
-                nodeId,
-                new[]
+            return new Objects()
+            {
+                ChunkId = ChunkId1,
+                ChunkNumber = 1,
+                NodeId = nodeId,
+                Objects = new[]
                 {
-                    new JobObject("foo", 10, 0, firstInCache),
-                    new JobObject("bar", 20, 15, secondInCache)
+                    new BulkObject()
+                    {
+                        Name = "bar",
+                        Length = 15,
+                        Offset = 0,
+                        InCache = firstInCache
+                    },
+                    new BulkObject()
+                    {
+                        Name = "foo",
+                        Length = 10,
+                        Offset = 10,
+                        InCache = secondInCache
+                    },
                 }
-            );
+            };
         }
 
-        public static JobObjectList Chunk3(Guid? nodeId, bool firstInCache, bool secondInCache)
+        public static Objects Chunk2(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
-            return new JobObjectList(
-                ChunkId3,
-                3,
-                nodeId,
-                new[]
+            return new Objects()
+            {
+                ChunkId = ChunkId2,
+                ChunkNumber = 2,
+                NodeId = nodeId,
+                Objects = new[]
                 {
-                    new JobObject("hello", 10, 0, firstInCache),
-                    new JobObject("bar", 11, 35, secondInCache)
+                    new BulkObject()
+                    {
+                        Name = "foo",
+                        Length = 10,
+                        Offset = 0,
+                        InCache = firstInCache
+                    },
+                    new BulkObject()
+                    {
+                        Name = "bar",
+                        Length = 20,
+                        Offset = 15,
+                        InCache = secondInCache
+                    },
                 }
-            );
+            };
+        }
+
+        public static Objects Chunk3(Guid? nodeId, bool firstInCache, bool secondInCache)
+        {
+            return new Objects()
+            {
+                ChunkId = ChunkId3,
+                ChunkNumber = 3,
+                NodeId = nodeId,
+                Objects = new[]
+                {
+                    new BulkObject()
+                    {
+                        Name = "hello",
+                        Length = 10,
+                        Offset = 0,
+                        InCache = firstInCache
+                    },
+                    new BulkObject()
+                    {
+                        Name = "bar",
+                        Length = 11,
+                        Offset = 35,
+                        InCache = secondInCache
+                    }
+                }
+            };
         }
     }
 }

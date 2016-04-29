@@ -23,8 +23,11 @@ namespace Ds3.Calls
     public class GetObjectCachedNotificationRegistrationSpectraS3Request : Ds3Request
     {
         
+        public Guid NotificationId { get; private set; }
+
         
-        public GetObjectCachedNotificationRegistrationSpectraS3Request() {
+        public GetObjectCachedNotificationRegistrationSpectraS3Request(Guid notificationId) {
+            this.NotificationId = notificationId;
             
         }
 

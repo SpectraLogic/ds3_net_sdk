@@ -48,14 +48,14 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
             client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk1(Stubs.NodeId1, false, false)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false)));
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
 
             var sleeps = new List<TimeSpan>();
 
@@ -109,14 +109,14 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
             client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk1(Stubs.NodeId1, false, true)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, true)));
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk2(Stubs.NodeId2, true, false)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, true, false)));
 
             var sleeps = new List<TimeSpan>();
 

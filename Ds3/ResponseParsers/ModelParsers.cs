@@ -47,7 +47,7 @@ namespace Ds3.ResponseParsers
             {
                 ByteOffset = ParseLong(element.Element("ByteOffset")),
                 Checksum = ParseNullableString(element.Element("Checksum")),
-                ChecksumType = ParseNullableChecksumType.Type(element.Element("ChecksumType")),
+                ChecksumType = ParseNullableChecksumType(element.Element("ChecksumType")),
                 Id = ParseGuid(element.Element("Id")),
                 Length = ParseLong(element.Element("Length")),
                 ObjectId = ParseGuid(element.Element("ObjectId"))
@@ -218,7 +218,7 @@ namespace Ds3.ResponseParsers
             return new DataPolicy
             {
                 BlobbingEnabled = ParseBool(element.Element("BlobbingEnabled")),
-                ChecksumType = ParseChecksumType.Type(element.Element("ChecksumType")),
+                ChecksumType = ParseChecksumType(element.Element("ChecksumType")),
                 CreationDate = ParseDateTime(element.Element("CreationDate")),
                 DefaultBlobSize = ParseNullableLong(element.Element("DefaultBlobSize")),
                 DefaultGetJobPriority = ParsePriority(element.Element("DefaultGetJobPriority")),
@@ -1491,7 +1491,7 @@ namespace Ds3.ResponseParsers
                 LastModified = ParseDateTime(element.Element("LastModified")),
                 Owner = ParseUser(element.Element("Owner")),
                 Size = ParseLong(element.Element("Size")),
-                StorageClass = ParseObject(element.Element("StorageClass"))
+                StorageClass = ParseString(element.Element("StorageClass"))
             };
         }
 
@@ -3114,24 +3114,28 @@ namespace Ds3.ResponseParsers
         {
             return ParseNamingConventionType(element.Value);
         }
-        public static ChecksumType? ParseNullableChecksumType(string checksumTypeOrNull)
+
+        //ChecksumType parsers
+
+        public static ChecksumType.Type? ParseNullableChecksumType(string checksumTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(checksumTypeOrNull)
-                ? (ChecksumType?) null
+                ? (ChecksumType.Type?) null
                 : ParseChecksumType(checksumTypeOrNull);
         }
 
-        public static ChecksumType ParseChecksumType(string checksumType)
+        public static ChecksumType.Type ParseChecksumType(string checksumType)
         {
-            return ParseEnumType<ChecksumType>(checksumType);
+            return
+                ParseEnumType<ChecksumType.Type>(checksumType);
         }
 
-        public static ChecksumType? ParseNullableChecksumType(XElement element)
+        public static ChecksumType.Type? ParseNullableChecksumType(XElement element)
         {
             return ParseNullableChecksumType(element.Value);
         }
 
-        public static ChecksumType ParseChecksumType(XElement element)
+        public static ChecksumType.Type ParseChecksumType(XElement element)
         {
             return ParseChecksumType(element.Value);
         }

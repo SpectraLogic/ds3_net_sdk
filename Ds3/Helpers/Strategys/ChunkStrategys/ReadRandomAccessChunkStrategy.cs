@@ -14,6 +14,7 @@
 */
 
 using Ds3.Calls;
+using Ds3.Models;
 using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             this._wait = wait;
         }
 
-        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
+        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
         {
             this._client = client;
             this._jobId = jobResponse.JobId;
@@ -99,7 +100,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         private TransferItem[] GetNextTransfers()
         {
             return this._client
-            .GetAvailableJobChunks(new GetAvailableJobChunksRequest(this._jobId))
+            .GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(this._jobId))
             .Match((ts, jobResponse) =>
             {
                 var clientFactory = this._client.BuildFactory(jobResponse.Nodes);

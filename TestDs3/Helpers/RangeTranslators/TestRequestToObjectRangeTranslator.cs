@@ -30,11 +30,11 @@ namespace TestDs3.Helpers.RangeTranslators
         {
             var blobs = new[]
             {
-                new Blob(Range.ByLength(0L, 10L), "foo"),
-                new Blob(Range.ByLength(10L, 10L), "foo"),
-                new Blob(Range.ByLength(20L, 10L), "foo"),
-                new Blob(Range.ByLength(0L, 15L), "bar"),
-                new Blob(Range.ByLength(15L, 15L), "bar"),
+                new Ds3.Helpers.Blob(Range.ByLength(0L, 10L), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(10L, 10L), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(20L, 10L), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(0L, 15L), "bar"),
+                new Ds3.Helpers.Blob(Range.ByLength(15L, 15L), "bar"),
             };
             var rt = new RequestToObjectRangeTranslator(
                 new[]

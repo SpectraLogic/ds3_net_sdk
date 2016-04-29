@@ -67,18 +67,18 @@ namespace TestDs3.Helpers.RangeTranslators
         public void RangesForRequestsReturnsExpectedLookup()
         {
             var result = PartialObjectRangeUtilities.RangesForRequests(
-                _blobs.Select(p => new Blob(p, "bar")).Concat(_blobs.Select(p => new Blob(p, "foo"))),
+                _blobs.Select(p => new Ds3.Helpers.Blob(p, "bar")).Concat(_blobs.Select(p => new Ds3.Helpers.Blob(p, "foo"))),
                 _parts1.Select(p => new Ds3PartialObject(p, "bar")).Concat(_parts2.Select(p => new Ds3PartialObject(p, "foo")))
             );
             CollectionAssert.AreEqual(
                 (
                     from cr in _expectedResults1
-                    let blob = new Blob(cr.Context, "bar")
+                    let blob = new Ds3.Helpers.Blob(cr.Context, "bar")
                     orderby blob, cr.Range
                     select new { Blob = blob, cr.Range }
                 ).Concat(
                     from cr in _expectedResults2
-                    let blob = new Blob(cr.Context, "foo")
+                    let blob = new Ds3.Helpers.Blob(cr.Context, "foo")
                     orderby blob, cr.Range
                     select new { Blob = blob, cr.Range }
                 ),
@@ -110,12 +110,12 @@ namespace TestDs3.Helpers.RangeTranslators
             var fullObjects = new[] { "foo", "bar", "baz" };
             var blobs = new[]
             {
-                new Blob(Range.ByLength(10L, 10L), "hello"),
-                new Blob(Range.ByLength(0L, 123L), "baz"),
-                new Blob(Range.ByLength(15L, 15L), "bar"),
-                new Blob(Range.ByLength(100L, 10L), "foo"),
-                new Blob(Range.ByLength(0L, 15L), "bar"),
-                new Blob(Range.ByLength(0L, 100L), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(10L, 10L), "hello"),
+                new Ds3.Helpers.Blob(Range.ByLength(0L, 123L), "baz"),
+                new Ds3.Helpers.Blob(Range.ByLength(15L, 15L), "bar"),
+                new Ds3.Helpers.Blob(Range.ByLength(100L, 10L), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(0L, 15L), "bar"),
+                new Ds3.Helpers.Blob(Range.ByLength(0L, 100L), "foo"),
             };
             CollectionAssert.AreEquivalent(
                 new[]

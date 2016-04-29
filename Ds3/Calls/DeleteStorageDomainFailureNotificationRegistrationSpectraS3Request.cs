@@ -23,8 +23,11 @@ namespace Ds3.Calls
     public class DeleteStorageDomainFailureNotificationRegistrationSpectraS3Request : Ds3Request
     {
         
+        public Guid NotificationId { get; private set; }
+
         
-        public DeleteStorageDomainFailureNotificationRegistrationSpectraS3Request() {
+        public DeleteStorageDomainFailureNotificationRegistrationSpectraS3Request(Guid notificationId) {
+            this.NotificationId = notificationId;
             
         }
 

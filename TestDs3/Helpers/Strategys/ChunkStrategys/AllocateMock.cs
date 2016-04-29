@@ -10,19 +10,19 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
 {
     public static class AllocateMock
     {
-        public static AllocateJobChunkRequest Allocate(Guid chunkId)
+        public static AllocateJobChunkSpectraS3Request Allocate(Guid chunkId)
         {
             return Match.Create(
-                r => r.ChunkId == chunkId,
-                () => new AllocateJobChunkRequest(chunkId)
+                r => r.JobChunkId == chunkId,
+                () => new AllocateJobChunkSpectraS3Request(chunkId)
             );
         }
 
-        public static GetAvailableJobChunksRequest AvailableChunks(Guid jobId)
+        public static GetJobChunksReadyForClientProcessingSpectraS3Request AvailableChunks(Guid jobId)
         {
             return Match.Create(
-                r => r.JobId == jobId,
-                () => new GetAvailableJobChunksRequest(jobId)
+                r => r.Job == jobId,
+                () => new GetJobChunksReadyForClientProcessingSpectraS3Request(jobId)
             );
         }
     }

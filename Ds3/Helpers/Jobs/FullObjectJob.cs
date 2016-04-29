@@ -28,7 +28,7 @@ namespace Ds3.Helpers.Jobs
     {
         public static IJob Create(
             IDs3Client client,
-            JobResponse jobResponse,
+            MasterObjectList jobResponse,
             IHelperStrategy<string> helperStrategy,
             ITransferrer transferrer)
         {
@@ -48,7 +48,7 @@ namespace Ds3.Helpers.Jobs
 
         private FullObjectJob(
             IDs3Client client,
-            JobResponse jobResponse,
+            MasterObjectList jobResponse,
             string bucketName,
             Guid jobId,
             IHelperStrategy<string> helperStrategy,

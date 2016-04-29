@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetTapePartitionFailureNotificationRegistrationsSpectraS3Response(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("Data")
-                            .Select(ModelParsers.ParseTapePartitionFailureNotificationRegistrationList)
-                            .ToList()
+                        ModelParsers.ParseTapePartitionFailureNotificationRegistrationList(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
                     );
                 }
             }

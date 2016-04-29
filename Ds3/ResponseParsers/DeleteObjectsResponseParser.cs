@@ -34,11 +34,8 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new DeleteObjectsResponse(
-                        XmlExtensions
-                            .ReadDocument(stream)
-                            .ElementOrThrow("DeleteResult")
-                            .Select(ModelParsers.ParseDeleteResult)
-                            .ToList()
+                        ModelParsers.ParseDeleteResult(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("DeleteResult"))
                     );
                 }
             }

@@ -23,8 +23,11 @@ namespace Ds3.Calls
     public class DeleteObjectCachedNotificationRegistrationSpectraS3Request : Ds3Request
     {
         
+        public Guid NotificationId { get; private set; }
+
         
-        public DeleteObjectCachedNotificationRegistrationSpectraS3Request() {
+        public DeleteObjectCachedNotificationRegistrationSpectraS3Request(Guid notificationId) {
+            this.NotificationId = notificationId;
             
         }
 

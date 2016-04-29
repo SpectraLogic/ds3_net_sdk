@@ -31,7 +31,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         private readonly object _lock = new object();
         private Dictionary<Guid, bool> _allocatedChunks;
         private Dictionary<string, IList<Guid>> _streamToChunkDictionary;
-        private JobResponse _jobResponse;
+        private MasterObjectList _jobResponse;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
         private List<TransferItem> _currentTransferItemsList = new List<TransferItem>();
@@ -47,14 +47,14 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             this._wait = wait;
         }
 
-        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
+        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
         {
             this._client = client;
             this._jobResponse = jobResponse;
 
             lock (this._lock)
             {
-                _allocatedChunks = new Dictionary<Guid, bool>(jobResponse.ObjectLists.Select(chunk => chunk)
+                _allocatedChunks = new Dictionary<Guid, bool>(jobResponse.Objects.Select(chunk => chunk)
                     .ToDictionary(
                         chunk => chunk.ChunkId,
                         chunk => false));
@@ -71,7 +71,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         {
             var result = new Dictionary<string, IList<Guid>>();
 
-            foreach (var chunk in _jobResponse.ObjectLists)
+            foreach (var chunk in _jobResponse.Objects)
             {
                 var chunkId = chunk.ChunkId;
                 foreach (var blob in chunk.Objects)
@@ -179,19 +179,19 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 let transferClient = clientFactory.GetClientForNodeId(allocatedChunk.NodeId)
                 from jobObject in allocatedChunk.Objects
                 let blob = Blob.Convert(jobObject)
-                where !jobObject.InCache
+                where !(bool)jobObject.InCache
                 select new TransferItem(transferClient, blob)
                 ).ToList();
         }
 
-        private JobObjectList AllocateChunk(IDs3Client client, Guid chunkId, IDictionary<Guid, bool> allocatedChunks)
+        private Objects AllocateChunk(IDs3Client client, Guid chunkId, IDictionary<Guid, bool> allocatedChunks)
         {
-            JobObjectList chunk = null;
+            Objects chunk = null;
             var chunkGone = false;
             while (chunk == null && !chunkGone)
             {
                 client
-                    .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
+                    .AllocateJobChunkSpectraS3(new AllocateJobChunkSpectraS3Request(chunkId))
                     .Match(
                         allocatedChunk =>
                         {

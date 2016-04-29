@@ -42,7 +42,7 @@ namespace Ds3.Helpers
         /// <param name="objectsToRead">The object names to get.</param>
         /// <param name="helperStrategyType"></param>
         /// <returns>An IJob implementation that can get each object per the DS3 protocol.</returns>
-        IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null);
+        IJob StartReadJob(string bucket, IEnumerable<Contents> objectsToRead, IHelperStrategy<string> helperStrategy = null);
 
         /// <summary>
         /// Runs a DS3 bulk GET request for all of the objects in a bucket.
@@ -81,7 +81,7 @@ namespace Ds3.Helpers
         /// </summary>
         /// <param name="bucketName"></param>
         /// <returns></returns>
-        IEnumerable<Ds3Object> ListObjects(string bucketName);
+        IEnumerable<Contents> ListObjects(string bucketName);
 
         /// <summary>
         /// Returns information about all of the objects in a bucket
@@ -90,7 +90,7 @@ namespace Ds3.Helpers
         /// <param name="bucketName"></param>
         /// <param name="keyPrefix"></param>
         /// <returns></returns>
-        IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix);
+        IEnumerable<Contents> ListObjects(string bucketName, string keyPrefix);
 
         /// <summary>
         /// Creates a bucket if it does not exist.
