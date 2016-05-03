@@ -90,7 +90,7 @@ namespace Ds3.Helpers
             );
         }
 
-        public IJob StartReadJob(string bucket, IEnumerable<Contents> objectsToRead, IHelperStrategy<string> helperStrategy = null)
+        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null)
         {
             var jobResponse = this._client.GetBulkJobSpectraS3(
                 new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
@@ -158,12 +158,12 @@ namespace Ds3.Helpers
             return this.StartReadJob(bucket, this.ListObjects(bucket), helperStrategy);
         }
 
-        public IEnumerable<Contents> ListObjects(string bucketName)
+        public IEnumerable<Ds3Object> ListObjects(string bucketName)
         {
             return ListObjects(bucketName, null);
         }
 
-        public IEnumerable<Contents> ListObjects(string bucketName, string keyPrefix)
+        public IEnumerable<Ds3Object> ListObjects(string bucketName, string keyPrefix)
         {
             var isTruncated = false;
             string marker = null;
@@ -180,7 +180,7 @@ namespace Ds3.Helpers
                 var responseObjects = response.Objects.ToList() as IList<Contents> ?? response.Objects.ToList();
                 foreach (var ds3Object in responseObjects)
                 {
-                    yield return ds3Object;
+                    yield return new Ds3Object(ds3Object.Key, ds3Object.Size);
                 }
             } while (isTruncated);
         }

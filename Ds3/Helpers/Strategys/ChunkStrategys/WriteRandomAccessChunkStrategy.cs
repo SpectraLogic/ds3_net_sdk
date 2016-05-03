@@ -99,7 +99,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             if (allocatedChunk != null)
             {
                 var transferClient = clientFactory.GetClientForNodeId(allocatedChunk.NodeId);
-                foreach (var jobObject in allocatedChunk.Objects)
+                foreach (var jobObject in allocatedChunk.ObjectsList)
                 {
                     var blob = Blob.Convert(jobObject);
                     if (!(bool)jobObject.InCache)

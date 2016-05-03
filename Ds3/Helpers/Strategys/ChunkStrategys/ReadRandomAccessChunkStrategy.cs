@@ -105,9 +105,9 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             {
                 var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
                 var result = (
-                    from chunk in jobResponse.ObjectLists
+                    from chunk in jobResponse.Objects
                     let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
-                    from jobObject in chunk.Objects
+                    from jobObject in chunk.ObjectsList
                     let blob = Blob.Convert(jobObject)
                     where this._blobsRemaining.Contains(blob)
                     select new TransferItem(transferClient, blob)

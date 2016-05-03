@@ -71,7 +71,7 @@ namespace TestDs3.Helpers
                 ChunkId = ChunkId1,
                 ChunkNumber = 1,
                 NodeId = nodeId,
-                Objects = new[]
+                ObjectsList = new[]
                 {
                     new BulkObject()
                     {
@@ -91,7 +91,7 @@ namespace TestDs3.Helpers
                 ChunkId = ChunkId1,
                 ChunkNumber = 1,
                 NodeId = nodeId,
-                Objects = new[]
+                ObjectsList = new[]
                 {
                     new BulkObject()
                     {
@@ -118,7 +118,7 @@ namespace TestDs3.Helpers
                 ChunkId = ChunkId2,
                 ChunkNumber = 2,
                 NodeId = nodeId,
-                Objects = new[]
+                ObjectsList = new[]
                 {
                     new BulkObject()
                     {
@@ -145,7 +145,7 @@ namespace TestDs3.Helpers
                 ChunkId = ChunkId3,
                 ChunkNumber = 3,
                 NodeId = nodeId,
-                Objects = new[]
+                ObjectsList = new[]
                 {
                     new BulkObject()
                     {

@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -16,11 +16,9 @@
 // This code is auto-generated, do not modify
 
 using Ds3.Calls;
-using Ds3.Models;
 using Ds3.Runtime;
-using System.Linq;
+using System;
 using System.Net;
-using System.Xml.Linq;
 
 namespace Ds3.ResponseParsers
 {
@@ -30,13 +28,26 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK, HttpStatusCode.ServiceUnavailable, HttpStatusCode.NotFound);
                 using (var stream = response.GetResponseStream())
                 {
-                    return new AllocateJobChunkSpectraS3Response(
-                        ModelParsers.ParseObjects(
-                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Objects"))
-                    );
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.OK:
+                            return AllocateJobChunkSpectraS3Response.Success(
+                                ModelParsers.ParseObjects(
+                                    XmlExtensions.ReadDocument(stream).ElementOrThrow("Objects"))
+                            );
+
+                        case HttpStatusCode.ServiceUnavailable:
+                            return AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromSeconds(int.Parse(response.Headers["retry-after"])));
+
+                        case HttpStatusCode.NotFound:
+                            return AllocateJobChunkSpectraS3Response.ChunkGone;
+
+                        default:
+                            throw new NotSupportedException(Resources.InvalidEnumValueException);
+                    }
                 }
             }
         }

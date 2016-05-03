@@ -82,7 +82,7 @@ namespace TestDs3.Helpers
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
-                Stubs.ObjectNames.Select(name => new Contents() { Key = name })
+                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
             );
 
             var dataTransfers = new ConcurrentQueue<long>();
@@ -332,7 +332,7 @@ namespace TestDs3.Helpers
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
-                Stubs.ObjectNames.Select(name => new Contents() { Key = name })
+                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
             );
             try
             {
@@ -356,15 +356,24 @@ namespace TestDs3.Helpers
                         marker: "",
                         nextMarker: "baz",
                         isTruncated: true,
-                        ds3objectInfos: new List<Ds3ObjectInfo> {
-                            MockHelpers.BuildDs3Object("foo", "2cde576e5f5a613e6cee466a681f4929", "2009-10-12T17:50:30.000Z", 12), MockHelpers.BuildDs3Object("bar", "f3f98ff00be128139332bcf4b772be43", "2009-10-14T17:50:31.000Z", 12)
+                        ds3objectInfos: new List<Contents> {
+                            MockHelpers.BuildDs3Object(
+                                "foo", 
+                                "2cde576e5f5a613e6cee466a681f4929", 
+                                "2009-10-12T17:50:30.000Z", 
+                                12),
+                            MockHelpers.BuildDs3Object(
+                                "bar", 
+                                "f3f98ff00be128139332bcf4b772be43", 
+                                "2009-10-14T17:50:31.000Z", 
+                                12)
                         }
                     ),
                     MockHelpers.CreateGetBucketResponse(
                         marker: "baz",
                         nextMarker: "",
                         isTruncated: false,
-                        ds3objectInfos: new List<Ds3ObjectInfo> {
+                        ds3objectInfos: new List<Contents> {
                             MockHelpers.BuildDs3Object("baz", "802d45fcb9a3f7d00f1481362edc0ec9", "2009-10-18T17:50:35.000Z", 12)
                         }
                     )
@@ -416,7 +425,7 @@ namespace TestDs3.Helpers
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
-                Stubs.ObjectNames.Select(name => new Contents() { Key = name })
+                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
             );
 
             var dataTransfers = new ConcurrentQueue<long>();

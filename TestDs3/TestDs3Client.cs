@@ -663,7 +663,7 @@ namespace TestDs3
                 Assert.AreEqual(expectedObjectList.ChunkNumber, actualObjectList.ChunkNumber);
                 Assert.AreEqual(expectedObjectList.ChunkId, actualObjectList.ChunkId);
                 Assert.AreEqual(expectedObjectList.NodeId, actualObjectList.NodeId);
-                HelpersForTest.AssertCollectionsEqual(expectedObjectList.Objects, actualObjectList.Objects, (expectedObject, actualObject) =>
+                HelpersForTest.AssertCollectionsEqual(expectedObjectList.Objects, actualObjectList.ObjectsList, (expectedObject, actualObject) =>
                 {
                     Assert.AreEqual(expectedObject.Name, actualObject.Name);
                     Assert.AreEqual(expectedObject.Length, actualObject.Length);
@@ -733,7 +733,7 @@ namespace TestDs3
             Assert.AreEqual(Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"), chunkResult.NodeId);
             Assert.AreEqual(Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44"), chunkResult.ChunkId);
             Assert.AreEqual(0, chunkResult.ChunkNumber);
-            Assert.AreEqual(14, chunkResult.Objects.Count());
+            Assert.AreEqual(14, chunkResult.ObjectsList.Count());
         }
 
         [Test]

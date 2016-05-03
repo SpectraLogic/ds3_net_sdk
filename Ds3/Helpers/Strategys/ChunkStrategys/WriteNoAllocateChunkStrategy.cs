@@ -32,7 +32,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             return
                 from chunk in jobResponse.Objects
                 let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
-                from jobObject in chunk.Objects
+                from jobObject in chunk.ObjectsList
                 where !(bool)jobObject.InCache
                 select new TransferItem(transferClient, Blob.Convert(jobObject));
         }

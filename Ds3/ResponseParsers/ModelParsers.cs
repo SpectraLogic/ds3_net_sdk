@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -1331,7 +1331,7 @@ namespace Ds3.ResponseParsers
                 ChunkId = ParseGuid(element.AttributeText("ChunkId")),
                 ChunkNumber = ParseInt(element.AttributeText("ChunkNumber")),
                 NodeId = ParseNullableGuid(element.AttributeText("NodeId")),
-                Objects = element.Elements("object").Select(ParseBulkObject).ToList()
+                ObjectsList = element.Elements("object").Select(ParseBulkObject).ToList()
             };
         }
 

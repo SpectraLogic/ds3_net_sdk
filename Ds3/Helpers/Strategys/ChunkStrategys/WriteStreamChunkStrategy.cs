@@ -74,7 +74,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             foreach (var chunk in _jobResponse.Objects)
             {
                 var chunkId = chunk.ChunkId;
-                foreach (var blob in chunk.Objects)
+                foreach (var blob in chunk.ObjectsList)
                 {
                     IList<Guid> chunks;
                     var blobName = blob.Name;
@@ -177,7 +177,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 let allocatedChunk = AllocateChunk(this._client, chunkId, this._allocatedChunks)
                 where allocatedChunk != null
                 let transferClient = clientFactory.GetClientForNodeId(allocatedChunk.NodeId)
-                from jobObject in allocatedChunk.Objects
+                from jobObject in allocatedChunk.ObjectsList
                 let blob = Blob.Convert(jobObject)
                 where !(bool)jobObject.InCache
                 select new TransferItem(transferClient, blob)

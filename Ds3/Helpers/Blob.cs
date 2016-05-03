@@ -34,7 +34,7 @@ namespace Ds3.Helpers
 
         public static IEnumerable<Blob> Convert(MasterObjectList jobResponse)
         {
-            return jobResponse.Objects.SelectMany(ol => ol.Objects).Select(Blob.Convert);
+            return jobResponse.Objects.SelectMany(ol => ol.ObjectsList).Select(Blob.Convert);
         }
     }
 }

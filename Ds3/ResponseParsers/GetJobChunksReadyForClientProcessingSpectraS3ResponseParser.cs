@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- *   Copyright 2014-2015 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -16,11 +16,10 @@
 // This code is auto-generated, do not modify
 
 using Ds3.Calls;
-using Ds3.Models;
 using Ds3.Runtime;
+using System;
 using System.Linq;
 using System.Net;
-using System.Xml.Linq;
 
 namespace Ds3.ResponseParsers
 {
@@ -30,15 +29,34 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK, HttpStatusCode.NotFound);
                 using (var stream = response.GetResponseStream())
                 {
-                    return new GetJobChunksReadyForClientProcessingSpectraS3Response(
-                        ModelParsers.ParseMasterObjectList(
-                            XmlExtensions.ReadDocument(stream).ElementOrThrow("MasterObjectList"))
-                    );
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.OK:
+                            var jobResponse = ModelParsers.ParseMasterObjectList(
+                                XmlExtensions.ReadDocument(stream).ElementOrThrow("MasterObjectList"));
+
+                            if (jobResponse.Objects.Any())
+                            {
+                                return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(RetryAfterHeader(response), jobResponse);
+                            }
+                            return GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(RetryAfterHeader(response));
+
+                        case HttpStatusCode.NotFound:
+                            return GetJobChunksReadyForClientProcessingSpectraS3Response.JobGone;
+
+                        default:
+                            throw new NotSupportedException(Resources.InvalidEnumValueException);
+                    }
                 }
             }
+        }
+
+        private static TimeSpan RetryAfterHeader(IWebResponse response)
+        {
+            return TimeSpan.FromSeconds(int.Parse(response.Headers["retry-after"]));
         }
     }
 }

@@ -439,7 +439,7 @@ namespace IntegrationTestDs3
                         {
                             // for each chunk that is available, check to make sure
                             // we have not sent it, and if not, send that object
-                            AsyncUpload(_client, chunkIds, response, bulkResult);
+                            AsyncUpload(_client, chunkIds, response, bulkResult.ResponsePayload);
                         },
                         () =>
                         {
@@ -499,10 +499,10 @@ namespace IntegrationTestDs3
                     // some objects will already be in cache.  Check to make sure that they are not, and then
                     // send the object to Spectra S3
 
-                    Parallel.ForEach(chunk,
+                    Parallel.ForEach(chunk.ObjectsList,
                         obj =>
                         {
-                            if (obj.InCache) return;
+                            if ((bool)obj.InCache) return;
                             PutObject(client, obj, bulkResult);
                         });
                     Console.WriteLine();
@@ -820,7 +820,7 @@ namespace IntegrationTestDs3
             // Loop through all of the objects in the bucket.
             foreach (var obj in items)
             {
-                DeleteObject(bucketName, obj.Key);
+                DeleteObject(bucketName, obj.Name);
             }
             DeleteBucket(bucketName);
         }

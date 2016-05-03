@@ -207,7 +207,7 @@ namespace TestDs3.Helpers
             Assert.AreEqual(size, contents.Size);
         }
 
-        public static GetBucketSpectraS3Response CreateGetBucketResponse(string marker, bool isTruncated, string nextMarker, IEnumerable<Contents> ds3objectInfos)
+        public static GetBucketResponse CreateGetBucketResponse(string marker, bool isTruncated, string nextMarker, IEnumerable<Contents> ds3objectInfos)
         {
             return new GetBucketResponse(
                 new ListBucketResult()
@@ -222,7 +222,7 @@ namespace TestDs3.Helpers
                     CreationDate = DateTime.Now,
                     Objects = ds3objectInfos,
                     CommonPrefixes = Enumerable.Empty<string>(),
-                    Metadata = new Dictionary<string, string>()
+                    //Metadata = new Dictionary<string, string>()
                 }
                 
                 );
