@@ -32,18 +32,18 @@ namespace Ds3.Calls
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
-        private bool _rollBack;
-        public bool RollBack
+        private bool? _rollBack;
+        public bool? RollBack
         {
             get { return _rollBack; }
             set { WithRollBack(value); }
         }
 
-        public DeleteObjectsRequest WithRollBack(bool rollBack)
+        public DeleteObjectsRequest WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
             if (rollBack != null) {
-                this.QueryParams.Add("roll_back", RollBack.ToString());
+                this.QueryParams.Add("roll_back", rollBack.ToString());
             }
             else
             {
@@ -55,7 +55,7 @@ namespace Ds3.Calls
         public DeleteObjectsRequest(string bucketName, IEnumerable<Ds3Object> objects)
         {
             this.BucketName = bucketName;
-            this.Objects = objects;
+            this.Objects = objects.ToList();
             
             this.QueryParams.Add("delete", null);
 

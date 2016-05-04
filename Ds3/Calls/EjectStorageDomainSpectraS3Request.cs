@@ -27,29 +27,16 @@ namespace Ds3.Calls
     public class EjectStorageDomainSpectraS3Request : Ds3Request
     {
         
-        public Guid StorageDomainId { get; private set; }
+        public string StorageDomainId { get; private set; }
 
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
-        private Guid _bucketId;
-        public Guid BucketId
+        private string _bucketId;
+        public string BucketId
         {
             get { return _bucketId; }
             set { WithBucketId(value); }
-        }
-
-        public EjectStorageDomainSpectraS3Request WithBucketId(Guid bucketId)
-        {
-            this._bucketId = bucketId;
-            if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", BucketId.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("bucket_id");
-            }
-            return this;
         }
 
         private string _ejectLabel;
@@ -59,19 +46,6 @@ namespace Ds3.Calls
             set { WithEjectLabel(value); }
         }
 
-        public EjectStorageDomainSpectraS3Request WithEjectLabel(string ejectLabel)
-        {
-            this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
-                this.QueryParams.Add("eject_label", EjectLabel);
-            }
-            else
-            {
-                this.QueryParams.Remove("eject_label");
-            }
-            return this;
-        }
-
         private string _ejectLocation;
         public string EjectLocation
         {
@@ -79,11 +53,47 @@ namespace Ds3.Calls
             set { WithEjectLocation(value); }
         }
 
+        public EjectStorageDomainSpectraS3Request WithBucketId(Guid? bucketId)
+        {
+            this._bucketId = bucketId.ToString();
+            if (bucketId != null) {
+                this.QueryParams.Add("bucket_id", bucketId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+        public EjectStorageDomainSpectraS3Request WithBucketId(string bucketId)
+        {
+            this._bucketId = bucketId;
+            if (bucketId != null) {
+                this.QueryParams.Add("bucket_id", bucketId);
+            }
+            else
+            {
+                this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+        public EjectStorageDomainSpectraS3Request WithEjectLabel(string ejectLabel)
+        {
+            this._ejectLabel = ejectLabel;
+            if (ejectLabel != null) {
+                this.QueryParams.Add("eject_label", ejectLabel);
+            }
+            else
+            {
+                this.QueryParams.Remove("eject_label");
+            }
+            return this;
+        }
         public EjectStorageDomainSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
             if (ejectLocation != null) {
-                this.QueryParams.Add("eject_location", EjectLocation);
+                this.QueryParams.Add("eject_location", ejectLocation);
             }
             else
             {
@@ -92,12 +102,26 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public EjectStorageDomainSpectraS3Request(IEnumerable<Ds3Object> objects, Guid storageDomainId) {
-            this.StorageDomainId = storageDomainId;
-            this.Objects = objects;
+            this.StorageDomainId = storageDomainId.ToString();
+            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "eject");
             
-            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+
+            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
+            {
+                throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
+            }
+        }
+
+        public EjectStorageDomainSpectraS3Request(IEnumerable<Ds3Object> objects, string storageDomainId) {
+            this.StorageDomainId = storageDomainId;
+            this.Objects = objects.ToList();
+            this.QueryParams.Add("operation", "eject");
+            
+            this.QueryParams.Add("storage_domain_id", storageDomainId);
 
             if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
             {

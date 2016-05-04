@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string DataPolicy { get; private set; }
 
         
+
+        
         public DeleteDataPolicySpectraS3Request(string dataPolicy) {
             this.DataPolicy = dataPolicy;
             

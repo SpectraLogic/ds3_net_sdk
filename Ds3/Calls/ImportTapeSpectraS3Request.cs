@@ -23,21 +23,42 @@ namespace Ds3.Calls
     public class ImportTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
 
         
-        private ImportConflictResolutionMode _conflictResolutionMode;
-        public ImportConflictResolutionMode ConflictResolutionMode
+        private ImportConflictResolutionMode? _conflictResolutionMode;
+        public ImportConflictResolutionMode? ConflictResolutionMode
         {
             get { return _conflictResolutionMode; }
             set { WithConflictResolutionMode(value); }
         }
 
-        public ImportTapeSpectraS3Request WithConflictResolutionMode(ImportConflictResolutionMode conflictResolutionMode)
+        private string _dataPolicyId;
+        public string DataPolicyId
+        {
+            get { return _dataPolicyId; }
+            set { WithDataPolicyId(value); }
+        }
+
+        private string _storageDomainId;
+        public string StorageDomainId
+        {
+            get { return _storageDomainId; }
+            set { WithStorageDomainId(value); }
+        }
+
+        private string _userId;
+        public string UserId
+        {
+            get { return _userId; }
+            set { WithUserId(value); }
+        }
+
+        public ImportTapeSpectraS3Request WithConflictResolutionMode(ImportConflictResolutionMode? conflictResolutionMode)
         {
             this._conflictResolutionMode = conflictResolutionMode;
             if (conflictResolutionMode != null) {
-                this.QueryParams.Add("conflict_resolution_mode", ConflictResolutionMode.ToString());
+                this.QueryParams.Add("conflict_resolution_mode", conflictResolutionMode.ToString());
             }
             else
             {
@@ -45,19 +66,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _dataPolicyId;
-        public Guid DataPolicyId
+        public ImportTapeSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
-            get { return _dataPolicyId; }
-            set { WithDataPolicyId(value); }
-        }
-
-        public ImportTapeSpectraS3Request WithDataPolicyId(Guid dataPolicyId)
-        {
-            this._dataPolicyId = dataPolicyId;
+            this._dataPolicyId = dataPolicyId.ToString();
             if (dataPolicyId != null) {
-                this.QueryParams.Add("data_policy_id", DataPolicyId.ToString());
+                this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
             }
             else
             {
@@ -65,19 +78,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _storageDomainId;
-        public Guid StorageDomainId
+        public ImportTapeSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
-            get { return _storageDomainId; }
-            set { WithStorageDomainId(value); }
+            this._dataPolicyId = dataPolicyId;
+            if (dataPolicyId != null) {
+                this.QueryParams.Add("data_policy_id", dataPolicyId);
+            }
+            else
+            {
+                this.QueryParams.Remove("data_policy_id");
+            }
+            return this;
         }
-
-        public ImportTapeSpectraS3Request WithStorageDomainId(Guid storageDomainId)
+        public ImportTapeSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
-            this._storageDomainId = storageDomainId;
+            this._storageDomainId = storageDomainId.ToString();
             if (storageDomainId != null) {
-                this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
             {
@@ -85,19 +102,35 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _userId;
-        public Guid UserId
+        public ImportTapeSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
-            get { return _userId; }
-            set { WithUserId(value); }
+            this._storageDomainId = storageDomainId;
+            if (storageDomainId != null) {
+                this.QueryParams.Add("storage_domain_id", storageDomainId);
+            }
+            else
+            {
+                this.QueryParams.Remove("storage_domain_id");
+            }
+            return this;
         }
-
-        public ImportTapeSpectraS3Request WithUserId(Guid userId)
+        public ImportTapeSpectraS3Request WithUserId(Guid? userId)
+        {
+            this._userId = userId.ToString();
+            if (userId != null) {
+                this.QueryParams.Add("user_id", userId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("user_id");
+            }
+            return this;
+        }
+        public ImportTapeSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
             if (userId != null) {
-                this.QueryParams.Add("user_id", UserId.ToString());
+                this.QueryParams.Add("user_id", userId);
             }
             else
             {
@@ -106,7 +139,14 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ImportTapeSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            this.QueryParams.Add("operation", "import");
+            
+        }
+
+        public ImportTapeSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "import");
             

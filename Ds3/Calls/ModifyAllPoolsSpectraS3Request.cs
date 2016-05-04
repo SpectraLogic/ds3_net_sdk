@@ -26,10 +26,12 @@ namespace Ds3.Calls
         public Quiesced Quiesced { get; private set; }
 
         
+
+        
         public ModifyAllPoolsSpectraS3Request(Quiesced quiesced) {
             this.Quiesced = quiesced;
             
-            this.QueryParams.Add("quiesced", Quiesced.ToString());
+            this.QueryParams.Add("quiesced", quiesced.ToString());
 
         }
 

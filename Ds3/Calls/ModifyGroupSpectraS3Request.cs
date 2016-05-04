@@ -37,7 +37,7 @@ namespace Ds3.Calls
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -46,6 +46,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyGroupSpectraS3Request(string group) {
             this.Group = group;
             

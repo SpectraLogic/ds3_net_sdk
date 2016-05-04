@@ -27,15 +27,26 @@ namespace Ds3.Calls
 
         public string ObjectName { get; private set; }
 
-        public Guid UploadId { get; private set; }
+        public string UploadId { get; private set; }
+
+        
 
         
         public AbortMultiPartUploadRequest(string bucketName, string objectName, Guid uploadId) {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
+            this.UploadId = uploadId.ToString();
+            
+            this.QueryParams.Add("upload_id", uploadId.ToString());
+
+        }
+
+        public AbortMultiPartUploadRequest(string bucketName, string objectName, string uploadId) {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
             this.UploadId = uploadId;
             
-            this.QueryParams.Add("upload_id", UploadId.ToString());
+            this.QueryParams.Add("upload_id", uploadId);
 
         }
 

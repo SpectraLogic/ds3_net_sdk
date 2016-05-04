@@ -23,10 +23,18 @@ namespace Ds3.Calls
     public class CleanTapeDriveSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeDriveId { get; private set; }
+        public string TapeDriveId { get; private set; }
+
+        
 
         
         public CleanTapeDriveSpectraS3Request(Guid tapeDriveId) {
+            this.TapeDriveId = tapeDriveId.ToString();
+            this.QueryParams.Add("operation", "clean");
+            
+        }
+
+        public CleanTapeDriveSpectraS3Request(string tapeDriveId) {
             this.TapeDriveId = tapeDriveId;
             this.QueryParams.Add("operation", "clean");
             

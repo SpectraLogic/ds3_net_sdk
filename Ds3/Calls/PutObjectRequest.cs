@@ -80,18 +80,25 @@ namespace Ds3.Calls
             return this;
         }
         
-        private Guid _job;
-        public Guid Job
+        private string _job;
+        public string Job
         {
             get { return _job; }
             set { WithJob(value); }
         }
 
-        public PutObjectRequest WithJob(Guid job)
+        private long? _offset;
+        public long? Offset
         {
-            this._job = job;
+            get { return _offset; }
+            set { WithOffset(value); }
+        }
+
+        public PutObjectRequest WithJob(Guid? job)
+        {
+            this._job = job.ToString();
             if (job != null) {
-                this.QueryParams.Add("job", Job.ToString());
+                this.QueryParams.Add("job", job.ToString());
             }
             else
             {
@@ -99,19 +106,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private long _offset;
-        public long Offset
+        public PutObjectRequest WithJob(string job)
         {
-            get { return _offset; }
-            set { WithOffset(value); }
+            this._job = job;
+            if (job != null) {
+                this.QueryParams.Add("job", job);
+            }
+            else
+            {
+                this.QueryParams.Remove("job");
+            }
+            return this;
         }
-
-        public PutObjectRequest WithOffset(long offset)
+        public PutObjectRequest WithOffset(long? offset)
         {
             this._offset = offset;
             if (offset != null) {
-                this.QueryParams.Add("offset", Offset.ToString());
+                this.QueryParams.Add("offset", offset.ToString());
             }
             else
             {
@@ -120,6 +131,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public PutObjectRequest(string bucketName, string objectName, Stream requestPayload) {
             this.BucketName = bucketName;
             this.ObjectName = objectName;

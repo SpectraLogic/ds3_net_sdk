@@ -26,18 +26,18 @@ namespace Ds3.Calls
         public string Pool { get; private set; }
 
         
-        private Priority _priority;
-        public Priority Priority
+        private Priority? _priority;
+        public Priority? Priority
         {
             get { return _priority; }
             set { WithPriority(value); }
         }
 
-        public CompactPoolSpectraS3Request WithPriority(Priority priority)
+        public CompactPoolSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", Priority.ToString());
+                this.QueryParams.Add("priority", priority.ToString());
             }
             else
             {
@@ -46,6 +46,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public CompactPoolSpectraS3Request(string pool) {
             this.Pool = pool;
             this.QueryParams.Add("operation", "compact");

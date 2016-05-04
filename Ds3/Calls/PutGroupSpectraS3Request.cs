@@ -26,10 +26,12 @@ namespace Ds3.Calls
         public string Name { get; private set; }
 
         
+
+        
         public PutGroupSpectraS3Request(string name) {
             this.Name = name;
             
-            this.QueryParams.Add("name", Name);
+            this.QueryParams.Add("name", name);
 
         }
 

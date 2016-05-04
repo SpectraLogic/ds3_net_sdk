@@ -31,11 +31,53 @@ namespace Ds3.Calls
             set { WithErrorMessage(value); }
         }
 
+        private bool? _lastPage;
+        public bool? LastPage
+        {
+            get { return _lastPage; }
+            set { WithLastPage(value); }
+        }
+
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        private string _partitionId;
+        public string PartitionId
+        {
+            get { return _partitionId; }
+            set { WithPartitionId(value); }
+        }
+
+        private TapePartitionFailureType? _type;
+        public TapePartitionFailureType? Type
+        {
+            get { return _type; }
+            set { WithType(value); }
+        }
+
         public GetTapePartitionFailuresSpectraS3Request WithErrorMessage(string errorMessage)
         {
             this._errorMessage = errorMessage;
             if (errorMessage != null) {
-                this.QueryParams.Add("error_message", ErrorMessage);
+                this.QueryParams.Add("error_message", errorMessage);
             }
             else
             {
@@ -43,19 +85,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private bool _lastPage;
-        public bool LastPage
-        {
-            get { return _lastPage; }
-            set { WithLastPage(value); }
-        }
-
-        public GetTapePartitionFailuresSpectraS3Request WithLastPage(bool lastPage)
+        public GetTapePartitionFailuresSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
+                this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
             {
@@ -63,19 +97,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageLength;
-        public int PageLength
-        {
-            get { return _pageLength; }
-            set { WithPageLength(value); }
-        }
-
-        public GetTapePartitionFailuresSpectraS3Request WithPageLength(int pageLength)
+        public GetTapePartitionFailuresSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
+                this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
             {
@@ -83,19 +109,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageOffset;
-        public int PageOffset
-        {
-            get { return _pageOffset; }
-            set { WithPageOffset(value); }
-        }
-
-        public GetTapePartitionFailuresSpectraS3Request WithPageOffset(int pageOffset)
+        public GetTapePartitionFailuresSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
             {
@@ -103,19 +121,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        public GetTapePartitionFailuresSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
-            get { return _pageStartMarker; }
-            set { WithPageStartMarker(value); }
-        }
-
-        public GetTapePartitionFailuresSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
-        {
-            this._pageStartMarker = pageStartMarker;
+            this._pageStartMarker = pageStartMarker.ToString();
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
             {
@@ -123,19 +133,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _partitionId;
-        public Guid PartitionId
+        public GetTapePartitionFailuresSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
-            get { return _partitionId; }
-            set { WithPartitionId(value); }
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
         }
-
-        public GetTapePartitionFailuresSpectraS3Request WithPartitionId(Guid partitionId)
+        public GetTapePartitionFailuresSpectraS3Request WithPartitionId(Guid? partitionId)
         {
-            this._partitionId = partitionId;
+            this._partitionId = partitionId.ToString();
             if (partitionId != null) {
-                this.QueryParams.Add("partition_id", PartitionId.ToString());
+                this.QueryParams.Add("partition_id", partitionId.ToString());
             }
             else
             {
@@ -143,19 +157,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapePartitionFailureType _type;
-        public TapePartitionFailureType Type
+        public GetTapePartitionFailuresSpectraS3Request WithPartitionId(string partitionId)
         {
-            get { return _type; }
-            set { WithType(value); }
+            this._partitionId = partitionId;
+            if (partitionId != null) {
+                this.QueryParams.Add("partition_id", partitionId);
+            }
+            else
+            {
+                this.QueryParams.Remove("partition_id");
+            }
+            return this;
         }
-
-        public GetTapePartitionFailuresSpectraS3Request WithType(TapePartitionFailureType type)
+        public GetTapePartitionFailuresSpectraS3Request WithType(TapePartitionFailureType? type)
         {
             this._type = type;
             if (type != null) {
-                this.QueryParams.Add("type", Type.ToString());
+                this.QueryParams.Add("type", type.ToString());
             }
             else
             {
@@ -164,6 +182,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetTapePartitionFailuresSpectraS3Request() {
             
         }

@@ -239,6 +239,7 @@
     <Compile Include="Calls\GetObjectPersistedNotificationRegistrationsSpectraS3Request.cs" />
     <Compile Include="Calls\GetObjectPersistedNotificationRegistrationsSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectRequest.cs" />
+    <Compile Include="Calls\GetObjectResponse.cs" />
     <Compile Include="Calls\GetObjectSpectraS3Request.cs" />
     <Compile Include="Calls\GetObjectSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectsSpectraS3Request.cs" />
@@ -338,6 +339,7 @@
     <Compile Include="Calls\GetUsersSpectraS3Request.cs" />
     <Compile Include="Calls\GetUsersSpectraS3Response.cs" />
     <Compile Include="Calls\HeadBucketRequest.cs" />
+    <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
     <Compile Include="Calls\ImportAllPoolsSpectraS3Request.cs" />
     <Compile Include="Calls\ImportAllTapesSpectraS3Request.cs" />
@@ -712,6 +714,7 @@
     <Compile Include="ResponseParsers\GetObjectLostNotificationRegistrationsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectPersistedNotificationRegistrationSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectPersistedNotificationRegistrationsSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetObjectResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectsWithFullDetailsSpectraS3ResponseParser.cs" />
@@ -760,6 +763,7 @@
     <Compile Include="ResponseParsers\GetTapeWithFullDetailsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetUserSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetUsersSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
     <Compile Include="ResponseParsers\ImportAllTapesSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ImportPoolSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ImportTapeSpectraS3ResponseParser.cs" />

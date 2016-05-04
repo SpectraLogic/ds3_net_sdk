@@ -23,23 +23,23 @@ namespace Ds3.Calls
     public class PutPoolStorageDomainMemberSpectraS3Request : Ds3Request
     {
         
-        public Guid PoolPartitionId { get; private set; }
+        public string PoolPartitionId { get; private set; }
 
-        public Guid StorageDomainId { get; private set; }
+        public string StorageDomainId { get; private set; }
 
         
-        private WritePreferenceLevel _writePreference;
-        public WritePreferenceLevel WritePreference
+        private WritePreferenceLevel? _writePreference;
+        public WritePreferenceLevel? WritePreference
         {
             get { return _writePreference; }
             set { WithWritePreference(value); }
         }
 
-        public PutPoolStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel writePreference)
+        public PutPoolStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
             if (writePreference != null) {
-                this.QueryParams.Add("write_preference", WritePreference.ToString());
+                this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else
             {
@@ -48,13 +48,24 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public PutPoolStorageDomainMemberSpectraS3Request(Guid poolPartitionId, Guid storageDomainId) {
+            this.PoolPartitionId = poolPartitionId.ToString();
+            this.StorageDomainId = storageDomainId.ToString();
+            
+            this.QueryParams.Add("pool_partition_id", poolPartitionId.ToString());
+
+            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+
+        }
+
+        public PutPoolStorageDomainMemberSpectraS3Request(string poolPartitionId, string storageDomainId) {
             this.PoolPartitionId = poolPartitionId;
             this.StorageDomainId = storageDomainId;
             
-            this.QueryParams.Add("pool_partition_id", PoolPartitionId.ToString());
+            this.QueryParams.Add("pool_partition_id", poolPartitionId);
 
-            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", storageDomainId);
 
         }
 

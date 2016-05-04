@@ -23,18 +23,30 @@ namespace Ds3.Calls
     public class PutUserGroupMemberSpectraS3Request : Ds3Request
     {
         
-        public Guid GroupId { get; private set; }
+        public string GroupId { get; private set; }
 
-        public Guid MemberUserId { get; private set; }
+        public string MemberUserId { get; private set; }
+
+        
 
         
         public PutUserGroupMemberSpectraS3Request(Guid groupId, Guid memberUserId) {
+            this.GroupId = groupId.ToString();
+            this.MemberUserId = memberUserId.ToString();
+            
+            this.QueryParams.Add("group_id", groupId.ToString());
+
+            this.QueryParams.Add("member_user_id", memberUserId.ToString());
+
+        }
+
+        public PutUserGroupMemberSpectraS3Request(string groupId, string memberUserId) {
             this.GroupId = groupId;
             this.MemberUserId = memberUserId;
             
-            this.QueryParams.Add("group_id", GroupId.ToString());
+            this.QueryParams.Add("group_id", groupId);
 
-            this.QueryParams.Add("member_user_id", MemberUserId.ToString());
+            this.QueryParams.Add("member_user_id", memberUserId);
 
         }
 

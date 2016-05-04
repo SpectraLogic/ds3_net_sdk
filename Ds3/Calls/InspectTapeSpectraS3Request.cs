@@ -23,21 +23,21 @@ namespace Ds3.Calls
     public class InspectTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
 
         
-        private Priority _taskPriority;
-        public Priority TaskPriority
+        private Priority? _taskPriority;
+        public Priority? TaskPriority
         {
             get { return _taskPriority; }
             set { WithTaskPriority(value); }
         }
 
-        public InspectTapeSpectraS3Request WithTaskPriority(Priority taskPriority)
+        public InspectTapeSpectraS3Request WithTaskPriority(Priority? taskPriority)
         {
             this._taskPriority = taskPriority;
             if (taskPriority != null) {
-                this.QueryParams.Add("task_priority", TaskPriority.ToString());
+                this.QueryParams.Add("task_priority", taskPriority.ToString());
             }
             else
             {
@@ -46,7 +46,14 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public InspectTapeSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            this.QueryParams.Add("operation", "inspect");
+            
+        }
+
+        public InspectTapeSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "inspect");
             

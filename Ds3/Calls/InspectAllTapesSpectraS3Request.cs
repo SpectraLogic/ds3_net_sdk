@@ -24,18 +24,18 @@ namespace Ds3.Calls
     {
         
         
-        private Priority _taskPriority;
-        public Priority TaskPriority
+        private Priority? _taskPriority;
+        public Priority? TaskPriority
         {
             get { return _taskPriority; }
             set { WithTaskPriority(value); }
         }
 
-        public InspectAllTapesSpectraS3Request WithTaskPriority(Priority taskPriority)
+        public InspectAllTapesSpectraS3Request WithTaskPriority(Priority? taskPriority)
         {
             this._taskPriority = taskPriority;
             if (taskPriority != null) {
-                this.QueryParams.Add("task_priority", TaskPriority.ToString());
+                this.QueryParams.Add("task_priority", taskPriority.ToString());
             }
             else
             {
@@ -44,6 +44,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public InspectAllTapesSpectraS3Request() {
             this.QueryParams.Add("operation", "inspect");
             

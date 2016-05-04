@@ -24,6 +24,8 @@ namespace Ds3.Calls
     {
         
         
+
+        
         public OnlineAllTapesSpectraS3Request() {
             this.QueryParams.Add("operation", "online");
             

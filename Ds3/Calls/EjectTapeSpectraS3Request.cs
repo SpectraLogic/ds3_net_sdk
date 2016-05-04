@@ -23,7 +23,7 @@ namespace Ds3.Calls
     public class EjectTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
 
         
         private string _ejectLabel;
@@ -33,19 +33,6 @@ namespace Ds3.Calls
             set { WithEjectLabel(value); }
         }
 
-        public EjectTapeSpectraS3Request WithEjectLabel(string ejectLabel)
-        {
-            this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
-                this.QueryParams.Add("eject_label", EjectLabel);
-            }
-            else
-            {
-                this.QueryParams.Remove("eject_label");
-            }
-            return this;
-        }
-
         private string _ejectLocation;
         public string EjectLocation
         {
@@ -53,11 +40,23 @@ namespace Ds3.Calls
             set { WithEjectLocation(value); }
         }
 
+        public EjectTapeSpectraS3Request WithEjectLabel(string ejectLabel)
+        {
+            this._ejectLabel = ejectLabel;
+            if (ejectLabel != null) {
+                this.QueryParams.Add("eject_label", ejectLabel);
+            }
+            else
+            {
+                this.QueryParams.Remove("eject_label");
+            }
+            return this;
+        }
         public EjectTapeSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
             if (ejectLocation != null) {
-                this.QueryParams.Add("eject_location", EjectLocation);
+                this.QueryParams.Add("eject_location", ejectLocation);
             }
             else
             {
@@ -66,7 +65,14 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public EjectTapeSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            this.QueryParams.Add("operation", "eject");
+            
+        }
+
+        public EjectTapeSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "eject");
             

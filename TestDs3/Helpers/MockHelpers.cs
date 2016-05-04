@@ -95,7 +95,7 @@ namespace TestDs3.Helpers
         public static GetJobChunksReadyForClientProcessingSpectraS3Request ItIsGetAvailableJobChunksRequest(Guid jobId)
         {
             return Match.Create(
-                it => it.Job == jobId,
+                it => it.Job == jobId.ToString(),
                 () => new GetJobChunksReadyForClientProcessingSpectraS3Request(jobId)
                 );
         }
@@ -103,7 +103,7 @@ namespace TestDs3.Helpers
         public static AllocateJobChunkSpectraS3Request ItIsAllocateRequest(Guid chunkId)
         {
             return Match.Create(
-                it => it.JobChunkId == chunkId,
+                it => it.JobChunkId == chunkId.ToString(),
                 () => new AllocateJobChunkSpectraS3Request(chunkId)
                 );
         }
@@ -119,7 +119,7 @@ namespace TestDs3.Helpers
                 it =>
                     it.BucketName == bucketName
                     && it.ObjectName == objectName
-                    && it.Job == jobId
+                    && it.Job == jobId.ToString()
                     && it.Offset == offset
                     && it.GetByteRanges().SequenceEqual(byteRanges),
                 () => new GetObjectRequest(
@@ -142,7 +142,7 @@ namespace TestDs3.Helpers
                 it =>
                     it.BucketName == bucketName
                     && it.ObjectName == objectName
-                    && it.Job == jobId
+                    && it.Job == jobId.ToString()
                     && it.Offset == offset,
                 () => new PutObjectRequest(
                     bucketName,
@@ -170,7 +170,7 @@ namespace TestDs3.Helpers
                     offset,
                     byteRanges
                     )))
-                .Returns(new GetObjectSpectraS3Response(new Dictionary<string, string>()))
+                .Returns(new GetObjectResponse(new Dictionary<string, string>()))
                 .Callback<GetObjectRequest>(r =>
                 {
                     Console.WriteLine("Writing \"" + payload + "\" to stream");

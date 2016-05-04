@@ -24,6 +24,8 @@ namespace Ds3.Calls
     {
         
         
+
+        
         public GetCacheStateSpectraS3Request() {
             
         }

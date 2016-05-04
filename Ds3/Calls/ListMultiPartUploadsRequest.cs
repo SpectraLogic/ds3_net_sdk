@@ -33,19 +33,6 @@ namespace Ds3.Calls
             set { WithDelimiter(value); }
         }
 
-        public ListMultiPartUploadsRequest WithDelimiter(string delimiter)
-        {
-            this._delimiter = delimiter;
-            if (delimiter != null) {
-                this.QueryParams.Add("delimiter", Delimiter);
-            }
-            else
-            {
-                this.QueryParams.Remove("delimiter");
-            }
-            return this;
-        }
-
         private string _keyMarker;
         public string KeyMarker
         {
@@ -53,37 +40,11 @@ namespace Ds3.Calls
             set { WithKeyMarker(value); }
         }
 
-        public ListMultiPartUploadsRequest WithKeyMarker(string keyMarker)
-        {
-            this._keyMarker = keyMarker;
-            if (keyMarker != null) {
-                this.QueryParams.Add("key_marker", KeyMarker);
-            }
-            else
-            {
-                this.QueryParams.Remove("key_marker");
-            }
-            return this;
-        }
-
-        private int _maxUploads;
-        public int MaxUploads
+        private int? _maxUploads;
+        public int? MaxUploads
         {
             get { return _maxUploads; }
             set { WithMaxUploads(value); }
-        }
-
-        public ListMultiPartUploadsRequest WithMaxUploads(int maxUploads)
-        {
-            this._maxUploads = maxUploads;
-            if (maxUploads != null) {
-                this.QueryParams.Add("max_uploads", MaxUploads.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("max_uploads");
-            }
-            return this;
         }
 
         private string _prefix;
@@ -93,19 +54,6 @@ namespace Ds3.Calls
             set { WithPrefix(value); }
         }
 
-        public ListMultiPartUploadsRequest WithPrefix(string prefix)
-        {
-            this._prefix = prefix;
-            if (prefix != null) {
-                this.QueryParams.Add("prefix", Prefix);
-            }
-            else
-            {
-                this.QueryParams.Remove("prefix");
-            }
-            return this;
-        }
-
         private string _uploadIdMarker;
         public string UploadIdMarker
         {
@@ -113,11 +61,59 @@ namespace Ds3.Calls
             set { WithUploadIdMarker(value); }
         }
 
+        public ListMultiPartUploadsRequest WithDelimiter(string delimiter)
+        {
+            this._delimiter = delimiter;
+            if (delimiter != null) {
+                this.QueryParams.Add("delimiter", delimiter);
+            }
+            else
+            {
+                this.QueryParams.Remove("delimiter");
+            }
+            return this;
+        }
+        public ListMultiPartUploadsRequest WithKeyMarker(string keyMarker)
+        {
+            this._keyMarker = keyMarker;
+            if (keyMarker != null) {
+                this.QueryParams.Add("key_marker", keyMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("key_marker");
+            }
+            return this;
+        }
+        public ListMultiPartUploadsRequest WithMaxUploads(int? maxUploads)
+        {
+            this._maxUploads = maxUploads;
+            if (maxUploads != null) {
+                this.QueryParams.Add("max_uploads", maxUploads.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_uploads");
+            }
+            return this;
+        }
+        public ListMultiPartUploadsRequest WithPrefix(string prefix)
+        {
+            this._prefix = prefix;
+            if (prefix != null) {
+                this.QueryParams.Add("prefix", prefix);
+            }
+            else
+            {
+                this.QueryParams.Remove("prefix");
+            }
+            return this;
+        }
         public ListMultiPartUploadsRequest WithUploadIdMarker(string uploadIdMarker)
         {
             this._uploadIdMarker = uploadIdMarker;
             if (uploadIdMarker != null) {
-                this.QueryParams.Add("upload_id_marker", UploadIdMarker);
+                this.QueryParams.Add("upload_id_marker", uploadIdMarker);
             }
             else
             {
@@ -126,6 +122,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ListMultiPartUploadsRequest(string bucketName) {
             this.BucketName = bucketName;
             

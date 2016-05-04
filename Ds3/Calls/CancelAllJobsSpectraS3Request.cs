@@ -24,18 +24,32 @@ namespace Ds3.Calls
     {
         
         
-        private Guid _bucketId;
-        public Guid BucketId
+        private string _bucketId;
+        public string BucketId
         {
             get { return _bucketId; }
             set { WithBucketId(value); }
         }
 
-        public CancelAllJobsSpectraS3Request WithBucketId(Guid bucketId)
+        private bool? _force;
+        public bool? Force
         {
-            this._bucketId = bucketId;
+            get { return _force; }
+            set { WithForce(value); }
+        }
+
+        private JobRequestType? _requestType;
+        public JobRequestType? RequestType
+        {
+            get { return _requestType; }
+            set { WithRequestType(value); }
+        }
+
+        public CancelAllJobsSpectraS3Request WithBucketId(Guid? bucketId)
+        {
+            this._bucketId = bucketId.ToString();
             if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", BucketId.ToString());
+                this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
             {
@@ -43,19 +57,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private bool _force;
-        public bool Force
+        public CancelAllJobsSpectraS3Request WithBucketId(string bucketId)
         {
-            get { return _force; }
-            set { WithForce(value); }
+            this._bucketId = bucketId;
+            if (bucketId != null) {
+                this.QueryParams.Add("bucket_id", bucketId);
+            }
+            else
+            {
+                this.QueryParams.Remove("bucket_id");
+            }
+            return this;
         }
-
-        public CancelAllJobsSpectraS3Request WithForce(bool force)
+        public CancelAllJobsSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
             if (force != null) {
-                this.QueryParams.Add("force", Force.ToString());
+                this.QueryParams.Add("force", force.ToString());
             }
             else
             {
@@ -63,19 +81,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private JobRequestType _requestType;
-        public JobRequestType RequestType
-        {
-            get { return _requestType; }
-            set { WithRequestType(value); }
-        }
-
-        public CancelAllJobsSpectraS3Request WithRequestType(JobRequestType requestType)
+        public CancelAllJobsSpectraS3Request WithRequestType(JobRequestType? requestType)
         {
             this._requestType = requestType;
             if (requestType != null) {
-                this.QueryParams.Add("request_type", RequestType.ToString());
+                this.QueryParams.Add("request_type", requestType.ToString());
             }
             else
             {
@@ -84,6 +94,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public CancelAllJobsSpectraS3Request() {
             
         }

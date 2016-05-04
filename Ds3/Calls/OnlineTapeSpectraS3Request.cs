@@ -23,10 +23,18 @@ namespace Ds3.Calls
     public class OnlineTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
+
+        
 
         
         public OnlineTapeSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            this.QueryParams.Add("operation", "online");
+            
+        }
+
+        public OnlineTapeSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "online");
             

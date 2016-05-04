@@ -27,14 +27,27 @@ namespace Ds3.Calls
     public class GetBlobsOnTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
 
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
+
+        
         public GetBlobsOnTapeSpectraS3Request(IEnumerable<Ds3Object> objects, Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            this.Objects = objects.ToList();
+            this.QueryParams.Add("operation", "get_physical_placement");
+            
+            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
+            {
+                throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
+            }
+        }
+
+        public GetBlobsOnTapeSpectraS3Request(IEnumerable<Ds3Object> objects, string tapeId) {
             this.TapeId = tapeId;
-            this.Objects = objects;
+            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "get_physical_placement");
             
             if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))

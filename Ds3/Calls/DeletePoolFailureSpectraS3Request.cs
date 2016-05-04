@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string PoolFailure { get; private set; }
 
         
+
+        
         public DeletePoolFailureSpectraS3Request(string poolFailure) {
             this.PoolFailure = poolFailure;
             

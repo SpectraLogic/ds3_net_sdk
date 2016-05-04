@@ -30,6 +30,7 @@ namespace Ds3
         DeleteObjectsResponse DeleteObjects(DeleteObjectsRequest request);
         GetBucketResponse GetBucket(GetBucketRequest request);
         GetServiceResponse GetService(GetServiceRequest request);
+        HeadBucketResponse HeadBucket(HeadBucketRequest request);
         InitiateMultiPartUploadResponse InitiateMultiPartUpload(InitiateMultiPartUploadRequest request);
         ListMultiPartUploadPartsResponse ListMultiPartUploadParts(ListMultiPartUploadPartsRequest request);
         ListMultiPartUploadsResponse ListMultiPartUploads(ListMultiPartUploadsRequest request);
@@ -211,8 +212,6 @@ namespace Ds3
         void PutObject(PutObjectRequest request);
         void DeleteBucket(DeleteBucketRequest request);
         void DeleteObject(DeleteObjectRequest request);
-        void GetObject(GetObjectRequest request);
-        void HeadBucket(HeadBucketRequest request);
         void HeadObject(HeadObjectRequest request);
         void DeleteBucketAclSpectraS3(DeleteBucketAclSpectraS3Request request);
         void DeleteDataPolicyAclSpectraS3(DeleteDataPolicyAclSpectraS3Request request);
@@ -260,6 +259,7 @@ namespace Ds3
         void EjectStorageDomainBlobsSpectraS3(EjectStorageDomainBlobsSpectraS3Request request);
         void ForceTapeEnvironmentRefreshSpectraS3(ForceTapeEnvironmentRefreshSpectraS3Request request);
         void ModifyAllTapePartitionsSpectraS3(ModifyAllTapePartitionsSpectraS3Request request);
+        GetObjectResponse GetObject(GetObjectRequest request);
 
         /// <summary>
         /// For multi-node support (planned), this provides a means of creating

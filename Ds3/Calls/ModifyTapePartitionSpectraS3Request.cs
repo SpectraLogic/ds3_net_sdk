@@ -26,18 +26,18 @@ namespace Ds3.Calls
         public string TapePartition { get; private set; }
 
         
-        private Quiesced _quiesced;
-        public Quiesced Quiesced
+        private Quiesced? _quiesced;
+        public Quiesced? Quiesced
         {
             get { return _quiesced; }
             set { WithQuiesced(value); }
         }
 
-        public ModifyTapePartitionSpectraS3Request WithQuiesced(Quiesced quiesced)
+        public ModifyTapePartitionSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
             if (quiesced != null) {
-                this.QueryParams.Add("quiesced", Quiesced.ToString());
+                this.QueryParams.Add("quiesced", quiesced.ToString());
             }
             else
             {
@@ -46,6 +46,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyTapePartitionSpectraS3Request(string tapePartition) {
             this.TapePartition = tapePartition;
             

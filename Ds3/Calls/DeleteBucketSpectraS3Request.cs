@@ -26,18 +26,18 @@ namespace Ds3.Calls
         public string BucketName { get; private set; }
 
         
-        private bool _force;
-        public bool Force
+        private bool? _force;
+        public bool? Force
         {
             get { return _force; }
             set { WithForce(value); }
         }
 
-        public DeleteBucketSpectraS3Request WithForce(bool force)
+        public DeleteBucketSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
             if (force != null) {
-                this.QueryParams.Add("force", Force.ToString());
+                this.QueryParams.Add("force", force.ToString());
             }
             else
             {
@@ -46,6 +46,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public DeleteBucketSpectraS3Request(string bucketName) {
             this.BucketName = bucketName;
             

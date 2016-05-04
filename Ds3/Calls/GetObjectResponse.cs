@@ -14,39 +14,22 @@
  */
 
 // This code is auto-generated, do not modify
-using Ds3.Models;
-using System;
+
 using System.Net;
+using System.IO;
+using System.Collections.Generic;
+
+using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
-    public class GetDataPolicySpectraS3Request : Ds3Request
+    public class GetObjectResponse
     {
-        
-        public string DataPolicy { get; private set; }
+        public IDictionary<string, string> Metadata { get; private set; }
 
-        
-
-        
-        public GetDataPolicySpectraS3Request(string dataPolicy) {
-            this.DataPolicy = dataPolicy;
-            
-        }
-
-        internal override HttpVerb Verb
+        public GetObjectResponse(IDictionary<string, string> metadata)
         {
-            get
-            {
-                return HttpVerb.GET;
-            }
-        }
-
-        internal override string Path
-        {
-            get
-            {
-                return "/_rest_/data_policy/" + DataPolicy;
-            }
+            this.Metadata = metadata;
         }
     }
 }

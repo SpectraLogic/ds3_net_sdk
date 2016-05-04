@@ -23,27 +23,14 @@ namespace Ds3.Calls
     public class ModifyUserSpectraS3Request : Ds3Request
     {
         
-        public Guid UserId { get; private set; }
+        public string UserId { get; private set; }
 
         
-        private Guid _defaultDataPolicyId;
-        public Guid DefaultDataPolicyId
+        private string _defaultDataPolicyId;
+        public string DefaultDataPolicyId
         {
             get { return _defaultDataPolicyId; }
             set { WithDefaultDataPolicyId(value); }
-        }
-
-        public ModifyUserSpectraS3Request WithDefaultDataPolicyId(Guid defaultDataPolicyId)
-        {
-            this._defaultDataPolicyId = defaultDataPolicyId;
-            if (defaultDataPolicyId != null) {
-                this.QueryParams.Add("default_data_policy_id", DefaultDataPolicyId.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("default_data_policy_id");
-            }
-            return this;
         }
 
         private string _name;
@@ -53,11 +40,35 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        public ModifyUserSpectraS3Request WithDefaultDataPolicyId(Guid? defaultDataPolicyId)
+        {
+            this._defaultDataPolicyId = defaultDataPolicyId.ToString();
+            if (defaultDataPolicyId != null) {
+                this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("default_data_policy_id");
+            }
+            return this;
+        }
+        public ModifyUserSpectraS3Request WithDefaultDataPolicyId(string defaultDataPolicyId)
+        {
+            this._defaultDataPolicyId = defaultDataPolicyId;
+            if (defaultDataPolicyId != null) {
+                this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId);
+            }
+            else
+            {
+                this.QueryParams.Remove("default_data_policy_id");
+            }
+            return this;
+        }
         public ModifyUserSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -66,7 +77,13 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyUserSpectraS3Request(Guid userId) {
+            this.UserId = userId.ToString();
+            
+        }
+
+        public ModifyUserSpectraS3Request(string userId) {
             this.UserId = userId;
             
         }

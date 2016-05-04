@@ -32,18 +32,30 @@ namespace Ds3.Calls
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
-        private Guid _storageDomainId;
-        public Guid StorageDomainId
+        private string _storageDomainId;
+        public string StorageDomainId
         {
             get { return _storageDomainId; }
             set { WithStorageDomainId(value); }
         }
 
-        public GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request WithStorageDomainId(Guid storageDomainId)
+        public GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
+        {
+            this._storageDomainId = storageDomainId.ToString();
+            if (storageDomainId != null) {
+                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("storage_domain_id");
+            }
+            return this;
+        }
+        public GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
             if (storageDomainId != null) {
-                this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+                this.QueryParams.Add("storage_domain_id", storageDomainId);
             }
             else
             {
@@ -52,9 +64,10 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {
             this.BucketName = bucketName;
-            this.Objects = objects;
+            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "get_physical_placement");
             
             this.QueryParams.Add("full_details", null);

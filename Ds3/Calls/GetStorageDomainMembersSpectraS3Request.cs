@@ -24,18 +24,81 @@ namespace Ds3.Calls
     {
         
         
-        private bool _lastPage;
-        public bool LastPage
+        private bool? _lastPage;
+        public bool? LastPage
         {
             get { return _lastPage; }
             set { WithLastPage(value); }
         }
 
-        public GetStorageDomainMembersSpectraS3Request WithLastPage(bool lastPage)
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        private string _poolPartitionId;
+        public string PoolPartitionId
+        {
+            get { return _poolPartitionId; }
+            set { WithPoolPartitionId(value); }
+        }
+
+        private StorageDomainMemberState? _state;
+        public StorageDomainMemberState? State
+        {
+            get { return _state; }
+            set { WithState(value); }
+        }
+
+        private string _storageDomainId;
+        public string StorageDomainId
+        {
+            get { return _storageDomainId; }
+            set { WithStorageDomainId(value); }
+        }
+
+        private string _tapePartitionId;
+        public string TapePartitionId
+        {
+            get { return _tapePartitionId; }
+            set { WithTapePartitionId(value); }
+        }
+
+        private TapeType? _tapeType;
+        public TapeType? TapeType
+        {
+            get { return _tapeType; }
+            set { WithTapeType(value); }
+        }
+
+        private WritePreferenceLevel? _writePreference;
+        public WritePreferenceLevel? WritePreference
+        {
+            get { return _writePreference; }
+            set { WithWritePreference(value); }
+        }
+
+        public GetStorageDomainMembersSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
+                this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
             {
@@ -43,19 +106,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageLength;
-        public int PageLength
-        {
-            get { return _pageLength; }
-            set { WithPageLength(value); }
-        }
-
-        public GetStorageDomainMembersSpectraS3Request WithPageLength(int pageLength)
+        public GetStorageDomainMembersSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
+                this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
             {
@@ -63,19 +118,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageOffset;
-        public int PageOffset
-        {
-            get { return _pageOffset; }
-            set { WithPageOffset(value); }
-        }
-
-        public GetStorageDomainMembersSpectraS3Request WithPageOffset(int pageOffset)
+        public GetStorageDomainMembersSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
             {
@@ -83,19 +130,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        public GetStorageDomainMembersSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
-            get { return _pageStartMarker; }
-            set { WithPageStartMarker(value); }
-        }
-
-        public GetStorageDomainMembersSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
-        {
-            this._pageStartMarker = pageStartMarker;
+            this._pageStartMarker = pageStartMarker.ToString();
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
             {
@@ -103,19 +142,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _poolPartitionId;
-        public Guid PoolPartitionId
+        public GetStorageDomainMembersSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
-            get { return _poolPartitionId; }
-            set { WithPoolPartitionId(value); }
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
         }
-
-        public GetStorageDomainMembersSpectraS3Request WithPoolPartitionId(Guid poolPartitionId)
+        public GetStorageDomainMembersSpectraS3Request WithPoolPartitionId(Guid? poolPartitionId)
         {
-            this._poolPartitionId = poolPartitionId;
+            this._poolPartitionId = poolPartitionId.ToString();
             if (poolPartitionId != null) {
-                this.QueryParams.Add("pool_partition_id", PoolPartitionId.ToString());
+                this.QueryParams.Add("pool_partition_id", poolPartitionId.ToString());
             }
             else
             {
@@ -123,19 +166,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private StorageDomainMemberState _state;
-        public StorageDomainMemberState State
+        public GetStorageDomainMembersSpectraS3Request WithPoolPartitionId(string poolPartitionId)
         {
-            get { return _state; }
-            set { WithState(value); }
+            this._poolPartitionId = poolPartitionId;
+            if (poolPartitionId != null) {
+                this.QueryParams.Add("pool_partition_id", poolPartitionId);
+            }
+            else
+            {
+                this.QueryParams.Remove("pool_partition_id");
+            }
+            return this;
         }
-
-        public GetStorageDomainMembersSpectraS3Request WithState(StorageDomainMemberState state)
+        public GetStorageDomainMembersSpectraS3Request WithState(StorageDomainMemberState? state)
         {
             this._state = state;
             if (state != null) {
-                this.QueryParams.Add("state", State.ToString());
+                this.QueryParams.Add("state", state.ToString());
             }
             else
             {
@@ -143,19 +190,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _storageDomainId;
-        public Guid StorageDomainId
+        public GetStorageDomainMembersSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
-            get { return _storageDomainId; }
-            set { WithStorageDomainId(value); }
-        }
-
-        public GetStorageDomainMembersSpectraS3Request WithStorageDomainId(Guid storageDomainId)
-        {
-            this._storageDomainId = storageDomainId;
+            this._storageDomainId = storageDomainId.ToString();
             if (storageDomainId != null) {
-                this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
             {
@@ -163,19 +202,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _tapePartitionId;
-        public Guid TapePartitionId
+        public GetStorageDomainMembersSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
-            get { return _tapePartitionId; }
-            set { WithTapePartitionId(value); }
+            this._storageDomainId = storageDomainId;
+            if (storageDomainId != null) {
+                this.QueryParams.Add("storage_domain_id", storageDomainId);
+            }
+            else
+            {
+                this.QueryParams.Remove("storage_domain_id");
+            }
+            return this;
         }
-
-        public GetStorageDomainMembersSpectraS3Request WithTapePartitionId(Guid tapePartitionId)
+        public GetStorageDomainMembersSpectraS3Request WithTapePartitionId(Guid? tapePartitionId)
         {
-            this._tapePartitionId = tapePartitionId;
+            this._tapePartitionId = tapePartitionId.ToString();
             if (tapePartitionId != null) {
-                this.QueryParams.Add("tape_partition_id", TapePartitionId.ToString());
+                this.QueryParams.Add("tape_partition_id", tapePartitionId.ToString());
             }
             else
             {
@@ -183,19 +226,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapeType _tapeType;
-        public TapeType TapeType
+        public GetStorageDomainMembersSpectraS3Request WithTapePartitionId(string tapePartitionId)
         {
-            get { return _tapeType; }
-            set { WithTapeType(value); }
+            this._tapePartitionId = tapePartitionId;
+            if (tapePartitionId != null) {
+                this.QueryParams.Add("tape_partition_id", tapePartitionId);
+            }
+            else
+            {
+                this.QueryParams.Remove("tape_partition_id");
+            }
+            return this;
         }
-
-        public GetStorageDomainMembersSpectraS3Request WithTapeType(TapeType tapeType)
+        public GetStorageDomainMembersSpectraS3Request WithTapeType(TapeType? tapeType)
         {
             this._tapeType = tapeType;
             if (tapeType != null) {
-                this.QueryParams.Add("tape_type", TapeType.ToString());
+                this.QueryParams.Add("tape_type", tapeType.ToString());
             }
             else
             {
@@ -203,19 +250,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private WritePreferenceLevel _writePreference;
-        public WritePreferenceLevel WritePreference
-        {
-            get { return _writePreference; }
-            set { WithWritePreference(value); }
-        }
-
-        public GetStorageDomainMembersSpectraS3Request WithWritePreference(WritePreferenceLevel writePreference)
+        public GetStorageDomainMembersSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
             if (writePreference != null) {
-                this.QueryParams.Add("write_preference", WritePreference.ToString());
+                this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else
             {
@@ -224,6 +263,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetStorageDomainMembersSpectraS3Request() {
             
         }

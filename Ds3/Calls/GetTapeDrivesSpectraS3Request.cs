@@ -24,104 +24,39 @@ namespace Ds3.Calls
     {
         
         
-        private bool _lastPage;
-        public bool LastPage
+        private bool? _lastPage;
+        public bool? LastPage
         {
             get { return _lastPage; }
             set { WithLastPage(value); }
         }
 
-        public GetTapeDrivesSpectraS3Request WithLastPage(bool lastPage)
-        {
-            this._lastPage = lastPage;
-            if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("last_page");
-            }
-            return this;
-        }
-
-        private int _pageLength;
-        public int PageLength
+        private int? _pageLength;
+        public int? PageLength
         {
             get { return _pageLength; }
             set { WithPageLength(value); }
         }
 
-        public GetTapeDrivesSpectraS3Request WithPageLength(int pageLength)
-        {
-            this._pageLength = pageLength;
-            if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("page_length");
-            }
-            return this;
-        }
-
-        private int _pageOffset;
-        public int PageOffset
+        private int? _pageOffset;
+        public int? PageOffset
         {
             get { return _pageOffset; }
             set { WithPageOffset(value); }
         }
 
-        public GetTapeDrivesSpectraS3Request WithPageOffset(int pageOffset)
-        {
-            this._pageOffset = pageOffset;
-            if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("page_offset");
-            }
-            return this;
-        }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        private string _pageStartMarker;
+        public string PageStartMarker
         {
             get { return _pageStartMarker; }
             set { WithPageStartMarker(value); }
         }
 
-        public GetTapeDrivesSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
-        {
-            this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("page_start_marker");
-            }
-            return this;
-        }
-
-        private Guid _partitionId;
-        public Guid PartitionId
+        private string _partitionId;
+        public string PartitionId
         {
             get { return _partitionId; }
             set { WithPartitionId(value); }
-        }
-
-        public GetTapeDrivesSpectraS3Request WithPartitionId(Guid partitionId)
-        {
-            this._partitionId = partitionId;
-            if (partitionId != null) {
-                this.QueryParams.Add("partition_id", PartitionId.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("partition_id");
-            }
-            return this;
         }
 
         private string _serialNumber;
@@ -131,11 +66,109 @@ namespace Ds3.Calls
             set { WithSerialNumber(value); }
         }
 
+        private TapeDriveState? _state;
+        public TapeDriveState? State
+        {
+            get { return _state; }
+            set { WithState(value); }
+        }
+
+        private TapeDriveType? _type;
+        public TapeDriveType? Type
+        {
+            get { return _type; }
+            set { WithType(value); }
+        }
+
+        public GetTapeDrivesSpectraS3Request WithLastPage(bool? lastPage)
+        {
+            this._lastPage = lastPage;
+            if (lastPage != null) {
+                this.QueryParams.Add("last_page", lastPage.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("last_page");
+            }
+            return this;
+        }
+        public GetTapeDrivesSpectraS3Request WithPageLength(int? pageLength)
+        {
+            this._pageLength = pageLength;
+            if (pageLength != null) {
+                this.QueryParams.Add("page_length", pageLength.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_length");
+            }
+            return this;
+        }
+        public GetTapeDrivesSpectraS3Request WithPageOffset(int? pageOffset)
+        {
+            this._pageOffset = pageOffset;
+            if (pageOffset != null) {
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_offset");
+            }
+            return this;
+        }
+        public GetTapeDrivesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
+        {
+            this._pageStartMarker = pageStartMarker.ToString();
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
+        }
+        public GetTapeDrivesSpectraS3Request WithPageStartMarker(string pageStartMarker)
+        {
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
+        }
+        public GetTapeDrivesSpectraS3Request WithPartitionId(Guid? partitionId)
+        {
+            this._partitionId = partitionId.ToString();
+            if (partitionId != null) {
+                this.QueryParams.Add("partition_id", partitionId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("partition_id");
+            }
+            return this;
+        }
+        public GetTapeDrivesSpectraS3Request WithPartitionId(string partitionId)
+        {
+            this._partitionId = partitionId;
+            if (partitionId != null) {
+                this.QueryParams.Add("partition_id", partitionId);
+            }
+            else
+            {
+                this.QueryParams.Remove("partition_id");
+            }
+            return this;
+        }
         public GetTapeDrivesSpectraS3Request WithSerialNumber(string serialNumber)
         {
             this._serialNumber = serialNumber;
             if (serialNumber != null) {
-                this.QueryParams.Add("serial_number", SerialNumber);
+                this.QueryParams.Add("serial_number", serialNumber);
             }
             else
             {
@@ -143,19 +176,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapeDriveState _state;
-        public TapeDriveState State
-        {
-            get { return _state; }
-            set { WithState(value); }
-        }
-
-        public GetTapeDrivesSpectraS3Request WithState(TapeDriveState state)
+        public GetTapeDrivesSpectraS3Request WithState(TapeDriveState? state)
         {
             this._state = state;
             if (state != null) {
-                this.QueryParams.Add("state", State.ToString());
+                this.QueryParams.Add("state", state.ToString());
             }
             else
             {
@@ -163,19 +188,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapeDriveType _type;
-        public TapeDriveType Type
-        {
-            get { return _type; }
-            set { WithType(value); }
-        }
-
-        public GetTapeDrivesSpectraS3Request WithType(TapeDriveType type)
+        public GetTapeDrivesSpectraS3Request WithType(TapeDriveType? type)
         {
             this._type = type;
             if (type != null) {
-                this.QueryParams.Add("type", Type.ToString());
+                this.QueryParams.Add("type", type.ToString());
             }
             else
             {
@@ -184,6 +201,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetTapeDrivesSpectraS3Request() {
             
         }

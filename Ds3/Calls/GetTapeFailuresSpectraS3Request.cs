@@ -31,11 +31,60 @@ namespace Ds3.Calls
             set { WithErrorMessage(value); }
         }
 
+        private bool? _lastPage;
+        public bool? LastPage
+        {
+            get { return _lastPage; }
+            set { WithLastPage(value); }
+        }
+
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        private string _tapeDriveId;
+        public string TapeDriveId
+        {
+            get { return _tapeDriveId; }
+            set { WithTapeDriveId(value); }
+        }
+
+        private string _tapeId;
+        public string TapeId
+        {
+            get { return _tapeId; }
+            set { WithTapeId(value); }
+        }
+
+        private TapeFailureType? _type;
+        public TapeFailureType? Type
+        {
+            get { return _type; }
+            set { WithType(value); }
+        }
+
         public GetTapeFailuresSpectraS3Request WithErrorMessage(string errorMessage)
         {
             this._errorMessage = errorMessage;
             if (errorMessage != null) {
-                this.QueryParams.Add("error_message", ErrorMessage);
+                this.QueryParams.Add("error_message", errorMessage);
             }
             else
             {
@@ -43,19 +92,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private bool _lastPage;
-        public bool LastPage
-        {
-            get { return _lastPage; }
-            set { WithLastPage(value); }
-        }
-
-        public GetTapeFailuresSpectraS3Request WithLastPage(bool lastPage)
+        public GetTapeFailuresSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
+                this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
             {
@@ -63,19 +104,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageLength;
-        public int PageLength
-        {
-            get { return _pageLength; }
-            set { WithPageLength(value); }
-        }
-
-        public GetTapeFailuresSpectraS3Request WithPageLength(int pageLength)
+        public GetTapeFailuresSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
+                this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
             {
@@ -83,19 +116,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageOffset;
-        public int PageOffset
-        {
-            get { return _pageOffset; }
-            set { WithPageOffset(value); }
-        }
-
-        public GetTapeFailuresSpectraS3Request WithPageOffset(int pageOffset)
+        public GetTapeFailuresSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
             {
@@ -103,19 +128,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        public GetTapeFailuresSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
-            get { return _pageStartMarker; }
-            set { WithPageStartMarker(value); }
-        }
-
-        public GetTapeFailuresSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
-        {
-            this._pageStartMarker = pageStartMarker;
+            this._pageStartMarker = pageStartMarker.ToString();
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
             {
@@ -123,19 +140,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _tapeDriveId;
-        public Guid TapeDriveId
+        public GetTapeFailuresSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
-            get { return _tapeDriveId; }
-            set { WithTapeDriveId(value); }
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
         }
-
-        public GetTapeFailuresSpectraS3Request WithTapeDriveId(Guid tapeDriveId)
+        public GetTapeFailuresSpectraS3Request WithTapeDriveId(Guid? tapeDriveId)
         {
-            this._tapeDriveId = tapeDriveId;
+            this._tapeDriveId = tapeDriveId.ToString();
             if (tapeDriveId != null) {
-                this.QueryParams.Add("tape_drive_id", TapeDriveId.ToString());
+                this.QueryParams.Add("tape_drive_id", tapeDriveId.ToString());
             }
             else
             {
@@ -143,19 +164,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _tapeId;
-        public Guid TapeId
+        public GetTapeFailuresSpectraS3Request WithTapeDriveId(string tapeDriveId)
         {
-            get { return _tapeId; }
-            set { WithTapeId(value); }
+            this._tapeDriveId = tapeDriveId;
+            if (tapeDriveId != null) {
+                this.QueryParams.Add("tape_drive_id", tapeDriveId);
+            }
+            else
+            {
+                this.QueryParams.Remove("tape_drive_id");
+            }
+            return this;
         }
-
-        public GetTapeFailuresSpectraS3Request WithTapeId(Guid tapeId)
+        public GetTapeFailuresSpectraS3Request WithTapeId(Guid? tapeId)
         {
-            this._tapeId = tapeId;
+            this._tapeId = tapeId.ToString();
             if (tapeId != null) {
-                this.QueryParams.Add("tape_id", TapeId.ToString());
+                this.QueryParams.Add("tape_id", tapeId.ToString());
             }
             else
             {
@@ -163,19 +188,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapeFailureType _type;
-        public TapeFailureType Type
+        public GetTapeFailuresSpectraS3Request WithTapeId(string tapeId)
         {
-            get { return _type; }
-            set { WithType(value); }
+            this._tapeId = tapeId;
+            if (tapeId != null) {
+                this.QueryParams.Add("tape_id", tapeId);
+            }
+            else
+            {
+                this.QueryParams.Remove("tape_id");
+            }
+            return this;
         }
-
-        public GetTapeFailuresSpectraS3Request WithType(TapeFailureType type)
+        public GetTapeFailuresSpectraS3Request WithType(TapeFailureType? type)
         {
             this._type = type;
             if (type != null) {
-                this.QueryParams.Add("type", Type.ToString());
+                this.QueryParams.Add("type", type.ToString());
             }
             else
             {
@@ -184,6 +213,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetTapeFailuresSpectraS3Request() {
             
         }

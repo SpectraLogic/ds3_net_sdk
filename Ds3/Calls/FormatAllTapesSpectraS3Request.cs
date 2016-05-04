@@ -24,18 +24,18 @@ namespace Ds3.Calls
     {
         
         
-        private bool _force;
-        public bool Force
+        private bool? _force;
+        public bool? Force
         {
             get { return _force; }
             set { WithForce(value); }
         }
 
-        public FormatAllTapesSpectraS3Request WithForce(bool force)
+        public FormatAllTapesSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
             if (force != null) {
-                this.QueryParams.Add("force", Force.ToString());
+                this.QueryParams.Add("force", force.ToString());
             }
             else
             {
@@ -44,6 +44,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public FormatAllTapesSpectraS3Request() {
             this.QueryParams.Add("operation", "format");
             

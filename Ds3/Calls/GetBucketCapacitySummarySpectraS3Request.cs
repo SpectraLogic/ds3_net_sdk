@@ -23,23 +23,51 @@ namespace Ds3.Calls
     public class GetBucketCapacitySummarySpectraS3Request : Ds3Request
     {
         
-        public Guid BucketId { get; private set; }
+        public string BucketId { get; private set; }
 
-        public Guid StorageDomainId { get; private set; }
+        public string StorageDomainId { get; private set; }
 
         
-        private PoolHealth _poolHealth;
-        public PoolHealth PoolHealth
+        private PoolHealth? _poolHealth;
+        public PoolHealth? PoolHealth
         {
             get { return _poolHealth; }
             set { WithPoolHealth(value); }
         }
 
-        public GetBucketCapacitySummarySpectraS3Request WithPoolHealth(PoolHealth poolHealth)
+        private PoolState? _poolState;
+        public PoolState? PoolState
+        {
+            get { return _poolState; }
+            set { WithPoolState(value); }
+        }
+
+        private PoolType? _poolType;
+        public PoolType? PoolType
+        {
+            get { return _poolType; }
+            set { WithPoolType(value); }
+        }
+
+        private TapeState? _tapeState;
+        public TapeState? TapeState
+        {
+            get { return _tapeState; }
+            set { WithTapeState(value); }
+        }
+
+        private TapeType? _tapeType;
+        public TapeType? TapeType
+        {
+            get { return _tapeType; }
+            set { WithTapeType(value); }
+        }
+
+        public GetBucketCapacitySummarySpectraS3Request WithPoolHealth(PoolHealth? poolHealth)
         {
             this._poolHealth = poolHealth;
             if (poolHealth != null) {
-                this.QueryParams.Add("pool_health", PoolHealth.ToString());
+                this.QueryParams.Add("pool_health", poolHealth.ToString());
             }
             else
             {
@@ -47,19 +75,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private PoolState _poolState;
-        public PoolState PoolState
-        {
-            get { return _poolState; }
-            set { WithPoolState(value); }
-        }
-
-        public GetBucketCapacitySummarySpectraS3Request WithPoolState(PoolState poolState)
+        public GetBucketCapacitySummarySpectraS3Request WithPoolState(PoolState? poolState)
         {
             this._poolState = poolState;
             if (poolState != null) {
-                this.QueryParams.Add("pool_state", PoolState.ToString());
+                this.QueryParams.Add("pool_state", poolState.ToString());
             }
             else
             {
@@ -67,19 +87,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private PoolType _poolType;
-        public PoolType PoolType
-        {
-            get { return _poolType; }
-            set { WithPoolType(value); }
-        }
-
-        public GetBucketCapacitySummarySpectraS3Request WithPoolType(PoolType poolType)
+        public GetBucketCapacitySummarySpectraS3Request WithPoolType(PoolType? poolType)
         {
             this._poolType = poolType;
             if (poolType != null) {
-                this.QueryParams.Add("pool_type", PoolType.ToString());
+                this.QueryParams.Add("pool_type", poolType.ToString());
             }
             else
             {
@@ -87,19 +99,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapeState _tapeState;
-        public TapeState TapeState
-        {
-            get { return _tapeState; }
-            set { WithTapeState(value); }
-        }
-
-        public GetBucketCapacitySummarySpectraS3Request WithTapeState(TapeState tapeState)
+        public GetBucketCapacitySummarySpectraS3Request WithTapeState(TapeState? tapeState)
         {
             this._tapeState = tapeState;
             if (tapeState != null) {
-                this.QueryParams.Add("tape_state", TapeState.ToString());
+                this.QueryParams.Add("tape_state", tapeState.ToString());
             }
             else
             {
@@ -107,19 +111,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapeType _tapeType;
-        public TapeType TapeType
-        {
-            get { return _tapeType; }
-            set { WithTapeType(value); }
-        }
-
-        public GetBucketCapacitySummarySpectraS3Request WithTapeType(TapeType tapeType)
+        public GetBucketCapacitySummarySpectraS3Request WithTapeType(TapeType? tapeType)
         {
             this._tapeType = tapeType;
             if (tapeType != null) {
-                this.QueryParams.Add("tape_type", TapeType.ToString());
+                this.QueryParams.Add("tape_type", tapeType.ToString());
             }
             else
             {
@@ -128,13 +124,24 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetBucketCapacitySummarySpectraS3Request(Guid bucketId, Guid storageDomainId) {
+            this.BucketId = bucketId.ToString();
+            this.StorageDomainId = storageDomainId.ToString();
+            
+            this.QueryParams.Add("bucket_id", bucketId.ToString());
+
+            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+
+        }
+
+        public GetBucketCapacitySummarySpectraS3Request(string bucketId, string storageDomainId) {
             this.BucketId = bucketId;
             this.StorageDomainId = storageDomainId;
             
-            this.QueryParams.Add("bucket_id", BucketId.ToString());
+            this.QueryParams.Add("bucket_id", bucketId);
 
-            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", storageDomainId);
 
         }
 

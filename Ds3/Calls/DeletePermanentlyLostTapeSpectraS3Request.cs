@@ -23,10 +23,17 @@ namespace Ds3.Calls
     public class DeletePermanentlyLostTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
+
+        
 
         
         public DeletePermanentlyLostTapeSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            
+        }
+
+        public DeletePermanentlyLostTapeSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             
         }

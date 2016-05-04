@@ -24,18 +24,18 @@ namespace Ds3.Calls
     {
         
         
-        private bool _fullDetails;
-        public bool FullDetails
+        private bool? _fullDetails;
+        public bool? FullDetails
         {
             get { return _fullDetails; }
             set { WithFullDetails(value); }
         }
 
-        public GetDataPlannerBlobStoreTasksSpectraS3Request WithFullDetails(bool fullDetails)
+        public GetDataPlannerBlobStoreTasksSpectraS3Request WithFullDetails(bool? fullDetails)
         {
             this._fullDetails = fullDetails;
             if (fullDetails != null) {
-                this.QueryParams.Add("full_details", FullDetails.ToString());
+                this.QueryParams.Add("full_details", fullDetails.ToString());
             }
             else
             {
@@ -44,6 +44,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetDataPlannerBlobStoreTasksSpectraS3Request() {
             
         }

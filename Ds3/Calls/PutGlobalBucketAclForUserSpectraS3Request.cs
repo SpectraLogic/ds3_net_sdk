@@ -25,16 +25,28 @@ namespace Ds3.Calls
         
         public BucketAclPermission Permission { get; private set; }
 
-        public Guid UserId { get; private set; }
+        public string UserId { get; private set; }
+
+        
 
         
         public PutGlobalBucketAclForUserSpectraS3Request(BucketAclPermission permission, Guid userId) {
             this.Permission = permission;
+            this.UserId = userId.ToString();
+            
+            this.QueryParams.Add("permission", permission.ToString());
+
+            this.QueryParams.Add("user_id", userId.ToString());
+
+        }
+
+        public PutGlobalBucketAclForUserSpectraS3Request(BucketAclPermission permission, string userId) {
+            this.Permission = permission;
             this.UserId = userId;
             
-            this.QueryParams.Add("permission", Permission.ToString());
+            this.QueryParams.Add("permission", permission.ToString());
 
-            this.QueryParams.Add("user_id", UserId.ToString());
+            this.QueryParams.Add("user_id", userId);
 
         }
 

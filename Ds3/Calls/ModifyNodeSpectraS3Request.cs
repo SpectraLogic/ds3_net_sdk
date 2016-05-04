@@ -33,19 +33,6 @@ namespace Ds3.Calls
             set { WithDnsName(value); }
         }
 
-        public ModifyNodeSpectraS3Request WithDnsName(string dnsName)
-        {
-            this._dnsName = dnsName;
-            if (dnsName != null) {
-                this.QueryParams.Add("dns_name", DnsName);
-            }
-            else
-            {
-                this.QueryParams.Remove("dns_name");
-            }
-            return this;
-        }
-
         private string _name;
         public string Name
         {
@@ -53,11 +40,23 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        public ModifyNodeSpectraS3Request WithDnsName(string dnsName)
+        {
+            this._dnsName = dnsName;
+            if (dnsName != null) {
+                this.QueryParams.Add("dns_name", dnsName);
+            }
+            else
+            {
+                this.QueryParams.Remove("dns_name");
+            }
+            return this;
+        }
         public ModifyNodeSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -66,6 +65,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyNodeSpectraS3Request(string node) {
             this.Node = node;
             

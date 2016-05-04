@@ -27,9 +27,10 @@ namespace Ds3.Calls
         
         public string ObjectName { get; private set; }
 
-        public Guid BucketId { get; private set; }
+        public string BucketId { get; private set; }
 
         
+
         private IEnumerable<Range> _byteRanges = Enumerable.Empty<Range>();
         public IEnumerable<Range> ByteRanges
         {
@@ -52,10 +53,18 @@ namespace Ds3.Calls
 
         public GetObjectSpectraS3Request(string objectName, Guid bucketId, Stream destinationStream) {
             this.ObjectName = objectName;
+            this.BucketId = bucketId.ToString();
+            this.DestinationStream = destinationStream;
+            
+            this.QueryParams.Add("bucket_id", bucketId.ToString());
+
+        }
+        public GetObjectSpectraS3Request(string objectName, string bucketId, Stream destinationStream) {
+            this.ObjectName = objectName;
             this.BucketId = bucketId;
             this.DestinationStream = destinationStream;
             
-            this.QueryParams.Add("bucket_id", BucketId.ToString());
+            this.QueryParams.Add("bucket_id", bucketId);
 
         }
 

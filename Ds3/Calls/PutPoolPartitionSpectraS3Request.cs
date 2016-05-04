@@ -28,13 +28,15 @@ namespace Ds3.Calls
         public PoolType Type { get; private set; }
 
         
+
+        
         public PutPoolPartitionSpectraS3Request(string name, PoolType type) {
             this.Name = name;
             this.Type = type;
             
-            this.QueryParams.Add("name", Name);
+            this.QueryParams.Add("name", name);
 
-            this.QueryParams.Add("type", Type.ToString());
+            this.QueryParams.Add("type", type.ToString());
 
         }
 

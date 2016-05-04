@@ -32,9 +32,11 @@ namespace Ds3.Calls
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
+
+        
         public GetBlobsOnPoolSpectraS3Request(IEnumerable<Ds3Object> objects, string pool) {
             this.Pool = pool;
-            this.Objects = objects;
+            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "get_physical_placement");
             
             if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))

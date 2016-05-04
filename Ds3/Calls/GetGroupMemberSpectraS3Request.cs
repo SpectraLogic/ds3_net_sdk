@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string GroupMember { get; private set; }
 
         
+
+        
         public GetGroupMemberSpectraS3Request(string groupMember) {
             this.GroupMember = groupMember;
             

@@ -24,64 +24,25 @@ namespace Ds3.Calls
     {
         
         
-        private Guid _bucketId;
-        public Guid BucketId
+        private string _bucketId;
+        public string BucketId
         {
             get { return _bucketId; }
             set { WithBucketId(value); }
         }
 
-        public GetCompletedJobsSpectraS3Request WithBucketId(Guid bucketId)
-        {
-            this._bucketId = bucketId;
-            if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", BucketId.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("bucket_id");
-            }
-            return this;
-        }
-
-        private JobChunkClientProcessingOrderGuarantee _chunkClientProcessingOrderGuarantee;
-        public JobChunkClientProcessingOrderGuarantee ChunkClientProcessingOrderGuarantee
+        private JobChunkClientProcessingOrderGuarantee? _chunkClientProcessingOrderGuarantee;
+        public JobChunkClientProcessingOrderGuarantee? ChunkClientProcessingOrderGuarantee
         {
             get { return _chunkClientProcessingOrderGuarantee; }
             set { WithChunkClientProcessingOrderGuarantee(value); }
         }
 
-        public GetCompletedJobsSpectraS3Request WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee chunkClientProcessingOrderGuarantee)
-        {
-            this._chunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
-            if (chunkClientProcessingOrderGuarantee != null) {
-                this.QueryParams.Add("chunk_client_processing_order_guarantee", ChunkClientProcessingOrderGuarantee.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("chunk_client_processing_order_guarantee");
-            }
-            return this;
-        }
-
-        private bool _lastPage;
-        public bool LastPage
+        private bool? _lastPage;
+        public bool? LastPage
         {
             get { return _lastPage; }
             set { WithLastPage(value); }
-        }
-
-        public GetCompletedJobsSpectraS3Request WithLastPage(bool lastPage)
-        {
-            this._lastPage = lastPage;
-            if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("last_page");
-            }
-            return this;
         }
 
         private string _name;
@@ -91,11 +52,115 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
+        private DateTime? _rechunked;
+        public DateTime? Rechunked
+        {
+            get { return _rechunked; }
+            set { WithRechunked(value); }
+        }
+
+        private JobRequestType? _requestType;
+        public JobRequestType? RequestType
+        {
+            get { return _requestType; }
+            set { WithRequestType(value); }
+        }
+
+        private bool? _truncated;
+        public bool? Truncated
+        {
+            get { return _truncated; }
+            set { WithTruncated(value); }
+        }
+
+        private string _userId;
+        public string UserId
+        {
+            get { return _userId; }
+            set { WithUserId(value); }
+        }
+
+        public GetCompletedJobsSpectraS3Request WithBucketId(Guid? bucketId)
+        {
+            this._bucketId = bucketId.ToString();
+            if (bucketId != null) {
+                this.QueryParams.Add("bucket_id", bucketId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+        public GetCompletedJobsSpectraS3Request WithBucketId(string bucketId)
+        {
+            this._bucketId = bucketId;
+            if (bucketId != null) {
+                this.QueryParams.Add("bucket_id", bucketId);
+            }
+            else
+            {
+                this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+        public GetCompletedJobsSpectraS3Request WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee? chunkClientProcessingOrderGuarantee)
+        {
+            this._chunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
+            if (chunkClientProcessingOrderGuarantee != null) {
+                this.QueryParams.Add("chunk_client_processing_order_guarantee", chunkClientProcessingOrderGuarantee.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("chunk_client_processing_order_guarantee");
+            }
+            return this;
+        }
+        public GetCompletedJobsSpectraS3Request WithLastPage(bool? lastPage)
+        {
+            this._lastPage = lastPage;
+            if (lastPage != null) {
+                this.QueryParams.Add("last_page", lastPage.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("last_page");
+            }
+            return this;
+        }
         public GetCompletedJobsSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -103,19 +168,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageLength;
-        public int PageLength
-        {
-            get { return _pageLength; }
-            set { WithPageLength(value); }
-        }
-
-        public GetCompletedJobsSpectraS3Request WithPageLength(int pageLength)
+        public GetCompletedJobsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
+                this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
             {
@@ -123,19 +180,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageOffset;
-        public int PageOffset
-        {
-            get { return _pageOffset; }
-            set { WithPageOffset(value); }
-        }
-
-        public GetCompletedJobsSpectraS3Request WithPageOffset(int pageOffset)
+        public GetCompletedJobsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
             {
@@ -143,19 +192,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        public GetCompletedJobsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
-            get { return _pageStartMarker; }
-            set { WithPageStartMarker(value); }
-        }
-
-        public GetCompletedJobsSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
-        {
-            this._pageStartMarker = pageStartMarker;
+            this._pageStartMarker = pageStartMarker.ToString();
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
             {
@@ -163,19 +204,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Priority _priority;
-        public Priority Priority
+        public GetCompletedJobsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
-            get { return _priority; }
-            set { WithPriority(value); }
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
         }
-
-        public GetCompletedJobsSpectraS3Request WithPriority(Priority priority)
+        public GetCompletedJobsSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", Priority.ToString());
+                this.QueryParams.Add("priority", priority.ToString());
             }
             else
             {
@@ -183,19 +228,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private DateTime _rechunked;
-        public DateTime Rechunked
-        {
-            get { return _rechunked; }
-            set { WithRechunked(value); }
-        }
-
-        public GetCompletedJobsSpectraS3Request WithRechunked(DateTime rechunked)
+        public GetCompletedJobsSpectraS3Request WithRechunked(DateTime? rechunked)
         {
             this._rechunked = rechunked;
             if (rechunked != null) {
-                this.QueryParams.Add("rechunked", Rechunked.ToString());
+                this.QueryParams.Add("rechunked", rechunked.ToString());
             }
             else
             {
@@ -203,19 +240,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private JobRequestType _requestType;
-        public JobRequestType RequestType
-        {
-            get { return _requestType; }
-            set { WithRequestType(value); }
-        }
-
-        public GetCompletedJobsSpectraS3Request WithRequestType(JobRequestType requestType)
+        public GetCompletedJobsSpectraS3Request WithRequestType(JobRequestType? requestType)
         {
             this._requestType = requestType;
             if (requestType != null) {
-                this.QueryParams.Add("request_type", RequestType.ToString());
+                this.QueryParams.Add("request_type", requestType.ToString());
             }
             else
             {
@@ -223,19 +252,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private bool _truncated;
-        public bool Truncated
-        {
-            get { return _truncated; }
-            set { WithTruncated(value); }
-        }
-
-        public GetCompletedJobsSpectraS3Request WithTruncated(bool truncated)
+        public GetCompletedJobsSpectraS3Request WithTruncated(bool? truncated)
         {
             this._truncated = truncated;
             if (truncated != null) {
-                this.QueryParams.Add("truncated", Truncated.ToString());
+                this.QueryParams.Add("truncated", truncated.ToString());
             }
             else
             {
@@ -243,19 +264,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _userId;
-        public Guid UserId
+        public GetCompletedJobsSpectraS3Request WithUserId(Guid? userId)
         {
-            get { return _userId; }
-            set { WithUserId(value); }
+            this._userId = userId.ToString();
+            if (userId != null) {
+                this.QueryParams.Add("user_id", userId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("user_id");
+            }
+            return this;
         }
-
-        public GetCompletedJobsSpectraS3Request WithUserId(Guid userId)
+        public GetCompletedJobsSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
             if (userId != null) {
-                this.QueryParams.Add("user_id", UserId.ToString());
+                this.QueryParams.Add("user_id", userId);
             }
             else
             {
@@ -264,6 +289,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetCompletedJobsSpectraS3Request() {
             
         }

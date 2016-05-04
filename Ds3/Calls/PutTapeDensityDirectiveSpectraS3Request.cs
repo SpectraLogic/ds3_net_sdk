@@ -25,21 +25,36 @@ namespace Ds3.Calls
         
         public TapeDriveType Density { get; private set; }
 
-        public Guid PartitionId { get; private set; }
+        public string PartitionId { get; private set; }
 
         public TapeType TapeType { get; private set; }
 
         
+
+        
         public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, Guid partitionId, TapeType tapeType) {
+            this.Density = density;
+            this.PartitionId = partitionId.ToString();
+            this.TapeType = tapeType;
+            
+            this.QueryParams.Add("density", density.ToString());
+
+            this.QueryParams.Add("partition_id", partitionId.ToString());
+
+            this.QueryParams.Add("tape_type", tapeType.ToString());
+
+        }
+
+        public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, string partitionId, TapeType tapeType) {
             this.Density = density;
             this.PartitionId = partitionId;
             this.TapeType = tapeType;
             
-            this.QueryParams.Add("density", Density.ToString());
+            this.QueryParams.Add("density", density.ToString());
 
-            this.QueryParams.Add("partition_id", PartitionId.ToString());
+            this.QueryParams.Add("partition_id", partitionId);
 
-            this.QueryParams.Add("tape_type", TapeType.ToString());
+            this.QueryParams.Add("tape_type", tapeType.ToString());
 
         }
 

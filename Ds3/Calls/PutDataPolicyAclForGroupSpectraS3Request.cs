@@ -23,18 +23,30 @@ namespace Ds3.Calls
     public class PutDataPolicyAclForGroupSpectraS3Request : Ds3Request
     {
         
-        public Guid DataPolicyId { get; private set; }
+        public string DataPolicyId { get; private set; }
 
-        public Guid GroupId { get; private set; }
+        public string GroupId { get; private set; }
+
+        
 
         
         public PutDataPolicyAclForGroupSpectraS3Request(Guid dataPolicyId, Guid groupId) {
+            this.DataPolicyId = dataPolicyId.ToString();
+            this.GroupId = groupId.ToString();
+            
+            this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
+
+            this.QueryParams.Add("group_id", groupId.ToString());
+
+        }
+
+        public PutDataPolicyAclForGroupSpectraS3Request(string dataPolicyId, string groupId) {
             this.DataPolicyId = dataPolicyId;
             this.GroupId = groupId;
             
-            this.QueryParams.Add("data_policy_id", DataPolicyId.ToString());
+            this.QueryParams.Add("data_policy_id", dataPolicyId);
 
-            this.QueryParams.Add("group_id", GroupId.ToString());
+            this.QueryParams.Add("group_id", groupId);
 
         }
 

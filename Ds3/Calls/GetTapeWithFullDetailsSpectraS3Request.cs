@@ -23,10 +23,19 @@ namespace Ds3.Calls
     public class GetTapeWithFullDetailsSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
+
+        
 
         
         public GetTapeWithFullDetailsSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            
+            this.QueryParams.Add("full_details", null);
+
+        }
+
+        public GetTapeWithFullDetailsSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             
             this.QueryParams.Add("full_details", null);

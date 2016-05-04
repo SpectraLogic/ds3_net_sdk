@@ -24,18 +24,67 @@ namespace Ds3.Calls
     {
         
         
-        private Guid _bucketId;
-        public Guid BucketId
+        private string _bucketId;
+        public string BucketId
         {
             get { return _bucketId; }
             set { WithBucketId(value); }
         }
 
-        public GetBucketAclsSpectraS3Request WithBucketId(Guid bucketId)
+        private string _groupId;
+        public string GroupId
         {
-            this._bucketId = bucketId;
+            get { return _groupId; }
+            set { WithGroupId(value); }
+        }
+
+        private bool? _lastPage;
+        public bool? LastPage
+        {
+            get { return _lastPage; }
+            set { WithLastPage(value); }
+        }
+
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        private BucketAclPermission? _permission;
+        public BucketAclPermission? Permission
+        {
+            get { return _permission; }
+            set { WithPermission(value); }
+        }
+
+        private string _userId;
+        public string UserId
+        {
+            get { return _userId; }
+            set { WithUserId(value); }
+        }
+
+        public GetBucketAclsSpectraS3Request WithBucketId(Guid? bucketId)
+        {
+            this._bucketId = bucketId.ToString();
             if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", BucketId.ToString());
+                this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
             {
@@ -43,19 +92,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _groupId;
-        public Guid GroupId
+        public GetBucketAclsSpectraS3Request WithBucketId(string bucketId)
         {
-            get { return _groupId; }
-            set { WithGroupId(value); }
+            this._bucketId = bucketId;
+            if (bucketId != null) {
+                this.QueryParams.Add("bucket_id", bucketId);
+            }
+            else
+            {
+                this.QueryParams.Remove("bucket_id");
+            }
+            return this;
         }
-
-        public GetBucketAclsSpectraS3Request WithGroupId(Guid groupId)
+        public GetBucketAclsSpectraS3Request WithGroupId(Guid? groupId)
         {
-            this._groupId = groupId;
+            this._groupId = groupId.ToString();
             if (groupId != null) {
-                this.QueryParams.Add("group_id", GroupId.ToString());
+                this.QueryParams.Add("group_id", groupId.ToString());
             }
             else
             {
@@ -63,19 +116,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private bool _lastPage;
-        public bool LastPage
+        public GetBucketAclsSpectraS3Request WithGroupId(string groupId)
         {
-            get { return _lastPage; }
-            set { WithLastPage(value); }
+            this._groupId = groupId;
+            if (groupId != null) {
+                this.QueryParams.Add("group_id", groupId);
+            }
+            else
+            {
+                this.QueryParams.Remove("group_id");
+            }
+            return this;
         }
-
-        public GetBucketAclsSpectraS3Request WithLastPage(bool lastPage)
+        public GetBucketAclsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
+                this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
             {
@@ -83,19 +140,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageLength;
-        public int PageLength
-        {
-            get { return _pageLength; }
-            set { WithPageLength(value); }
-        }
-
-        public GetBucketAclsSpectraS3Request WithPageLength(int pageLength)
+        public GetBucketAclsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
+                this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
             {
@@ -103,19 +152,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageOffset;
-        public int PageOffset
-        {
-            get { return _pageOffset; }
-            set { WithPageOffset(value); }
-        }
-
-        public GetBucketAclsSpectraS3Request WithPageOffset(int pageOffset)
+        public GetBucketAclsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
             {
@@ -123,19 +164,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        public GetBucketAclsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
-            get { return _pageStartMarker; }
-            set { WithPageStartMarker(value); }
-        }
-
-        public GetBucketAclsSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
-        {
-            this._pageStartMarker = pageStartMarker;
+            this._pageStartMarker = pageStartMarker.ToString();
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
             {
@@ -143,19 +176,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private BucketAclPermission _permission;
-        public BucketAclPermission Permission
+        public GetBucketAclsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
-            get { return _permission; }
-            set { WithPermission(value); }
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
         }
-
-        public GetBucketAclsSpectraS3Request WithPermission(BucketAclPermission permission)
+        public GetBucketAclsSpectraS3Request WithPermission(BucketAclPermission? permission)
         {
             this._permission = permission;
             if (permission != null) {
-                this.QueryParams.Add("permission", Permission.ToString());
+                this.QueryParams.Add("permission", permission.ToString());
             }
             else
             {
@@ -163,19 +200,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _userId;
-        public Guid UserId
+        public GetBucketAclsSpectraS3Request WithUserId(Guid? userId)
         {
-            get { return _userId; }
-            set { WithUserId(value); }
+            this._userId = userId.ToString();
+            if (userId != null) {
+                this.QueryParams.Add("user_id", userId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("user_id");
+            }
+            return this;
         }
-
-        public GetBucketAclsSpectraS3Request WithUserId(Guid userId)
+        public GetBucketAclsSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
             if (userId != null) {
-                this.QueryParams.Add("user_id", UserId.ToString());
+                this.QueryParams.Add("user_id", userId);
             }
             else
             {
@@ -184,6 +225,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetBucketAclsSpectraS3Request() {
             
         }

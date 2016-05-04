@@ -31,19 +31,6 @@ namespace Ds3.Calls
             set { WithEjectLabel(value); }
         }
 
-        public EjectAllTapesSpectraS3Request WithEjectLabel(string ejectLabel)
-        {
-            this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
-                this.QueryParams.Add("eject_label", EjectLabel);
-            }
-            else
-            {
-                this.QueryParams.Remove("eject_label");
-            }
-            return this;
-        }
-
         private string _ejectLocation;
         public string EjectLocation
         {
@@ -51,11 +38,23 @@ namespace Ds3.Calls
             set { WithEjectLocation(value); }
         }
 
+        public EjectAllTapesSpectraS3Request WithEjectLabel(string ejectLabel)
+        {
+            this._ejectLabel = ejectLabel;
+            if (ejectLabel != null) {
+                this.QueryParams.Add("eject_label", ejectLabel);
+            }
+            else
+            {
+                this.QueryParams.Remove("eject_label");
+            }
+            return this;
+        }
         public EjectAllTapesSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
             if (ejectLocation != null) {
-                this.QueryParams.Add("eject_location", EjectLocation);
+                this.QueryParams.Add("eject_location", ejectLocation);
             }
             else
             {
@@ -64,6 +63,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public EjectAllTapesSpectraS3Request() {
             this.QueryParams.Add("operation", "eject");
             

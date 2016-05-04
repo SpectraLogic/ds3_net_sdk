@@ -23,21 +23,21 @@ namespace Ds3.Calls
     public class CancelJobSpectraS3Request : Ds3Request
     {
         
-        public Guid JobId { get; private set; }
+        public string JobId { get; private set; }
 
         
-        private bool _force;
-        public bool Force
+        private bool? _force;
+        public bool? Force
         {
             get { return _force; }
             set { WithForce(value); }
         }
 
-        public CancelJobSpectraS3Request WithForce(bool force)
+        public CancelJobSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
             if (force != null) {
-                this.QueryParams.Add("force", Force.ToString());
+                this.QueryParams.Add("force", force.ToString());
             }
             else
             {
@@ -46,7 +46,13 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public CancelJobSpectraS3Request(Guid jobId) {
+            this.JobId = jobId.ToString();
+            
+        }
+
+        public CancelJobSpectraS3Request(string jobId) {
             this.JobId = jobId;
             
         }

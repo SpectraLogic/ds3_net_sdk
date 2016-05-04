@@ -27,9 +27,9 @@ namespace Ds3.Calls
     public class EjectStorageDomainBlobsSpectraS3Request : Ds3Request
     {
         
-        public Guid BucketId { get; private set; }
+        public string BucketId { get; private set; }
 
-        public Guid StorageDomainId { get; private set; }
+        public string StorageDomainId { get; private set; }
 
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
@@ -41,19 +41,6 @@ namespace Ds3.Calls
             set { WithEjectLabel(value); }
         }
 
-        public EjectStorageDomainBlobsSpectraS3Request WithEjectLabel(string ejectLabel)
-        {
-            this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
-                this.QueryParams.Add("eject_label", EjectLabel);
-            }
-            else
-            {
-                this.QueryParams.Remove("eject_label");
-            }
-            return this;
-        }
-
         private string _ejectLocation;
         public string EjectLocation
         {
@@ -61,11 +48,23 @@ namespace Ds3.Calls
             set { WithEjectLocation(value); }
         }
 
+        public EjectStorageDomainBlobsSpectraS3Request WithEjectLabel(string ejectLabel)
+        {
+            this._ejectLabel = ejectLabel;
+            if (ejectLabel != null) {
+                this.QueryParams.Add("eject_label", ejectLabel);
+            }
+            else
+            {
+                this.QueryParams.Remove("eject_label");
+            }
+            return this;
+        }
         public EjectStorageDomainBlobsSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
             if (ejectLocation != null) {
-                this.QueryParams.Add("eject_location", EjectLocation);
+                this.QueryParams.Add("eject_location", ejectLocation);
             }
             else
             {
@@ -74,17 +73,36 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public EjectStorageDomainBlobsSpectraS3Request(Guid bucketId, IEnumerable<Ds3Object> objects, Guid storageDomainId) {
-            this.BucketId = bucketId;
-            this.StorageDomainId = storageDomainId;
-            this.Objects = objects;
+            this.BucketId = bucketId.ToString();
+            this.StorageDomainId = storageDomainId.ToString();
+            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "eject");
             
             this.QueryParams.Add("blobs", null);
 
-            this.QueryParams.Add("bucket_id", BucketId.ToString());
+            this.QueryParams.Add("bucket_id", bucketId.ToString());
 
-            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+
+            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
+            {
+                throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
+            }
+        }
+
+        public EjectStorageDomainBlobsSpectraS3Request(string bucketId, IEnumerable<Ds3Object> objects, string storageDomainId) {
+            this.BucketId = bucketId;
+            this.StorageDomainId = storageDomainId;
+            this.Objects = objects.ToList();
+            this.QueryParams.Add("operation", "eject");
+            
+            this.QueryParams.Add("blobs", null);
+
+            this.QueryParams.Add("bucket_id", bucketId);
+
+            this.QueryParams.Add("storage_domain_id", storageDomainId);
 
             if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
             {

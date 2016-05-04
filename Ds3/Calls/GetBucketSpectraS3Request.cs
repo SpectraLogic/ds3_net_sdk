@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string BucketName { get; private set; }
 
         
+
+        
         public GetBucketSpectraS3Request(string bucketName) {
             this.BucketName = bucketName;
             

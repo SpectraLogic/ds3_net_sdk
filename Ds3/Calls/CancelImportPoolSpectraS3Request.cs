@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string Pool { get; private set; }
 
         
+
+        
         public CancelImportPoolSpectraS3Request(string pool) {
             this.Pool = pool;
             this.QueryParams.Add("operation", "cancel_import");

@@ -24,64 +24,25 @@ namespace Ds3.Calls
     {
         
         
-        private ChecksumType.Type _checksumType;
-        public ChecksumType.Type ChecksumType
+        private ChecksumType.Type? _checksumType;
+        public ChecksumType.Type? ChecksumType
         {
             get { return _checksumType; }
             set { WithChecksumType(value); }
         }
 
-        public GetDataPoliciesSpectraS3Request WithChecksumType(ChecksumType.Type checksumType)
-        {
-            this._checksumType = checksumType;
-            if (checksumType != null) {
-                this.QueryParams.Add("checksum_type", ChecksumType.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("checksum_type");
-            }
-            return this;
-        }
-
-        private bool _endToEndCrcRequired;
-        public bool EndToEndCrcRequired
+        private bool? _endToEndCrcRequired;
+        public bool? EndToEndCrcRequired
         {
             get { return _endToEndCrcRequired; }
             set { WithEndToEndCrcRequired(value); }
         }
 
-        public GetDataPoliciesSpectraS3Request WithEndToEndCrcRequired(bool endToEndCrcRequired)
-        {
-            this._endToEndCrcRequired = endToEndCrcRequired;
-            if (endToEndCrcRequired != null) {
-                this.QueryParams.Add("end_to_end_crc_required", EndToEndCrcRequired.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("end_to_end_crc_required");
-            }
-            return this;
-        }
-
-        private bool _lastPage;
-        public bool LastPage
+        private bool? _lastPage;
+        public bool? LastPage
         {
             get { return _lastPage; }
             set { WithLastPage(value); }
-        }
-
-        public GetDataPoliciesSpectraS3Request WithLastPage(bool lastPage)
-        {
-            this._lastPage = lastPage;
-            if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("last_page");
-            }
-            return this;
         }
 
         private string _name;
@@ -91,11 +52,68 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        public GetDataPoliciesSpectraS3Request WithChecksumType(ChecksumType.Type? checksumType)
+        {
+            this._checksumType = checksumType;
+            if (checksumType != null) {
+                this.QueryParams.Add("checksum_type", checksumType.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("checksum_type");
+            }
+            return this;
+        }
+        public GetDataPoliciesSpectraS3Request WithEndToEndCrcRequired(bool? endToEndCrcRequired)
+        {
+            this._endToEndCrcRequired = endToEndCrcRequired;
+            if (endToEndCrcRequired != null) {
+                this.QueryParams.Add("end_to_end_crc_required", endToEndCrcRequired.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("end_to_end_crc_required");
+            }
+            return this;
+        }
+        public GetDataPoliciesSpectraS3Request WithLastPage(bool? lastPage)
+        {
+            this._lastPage = lastPage;
+            if (lastPage != null) {
+                this.QueryParams.Add("last_page", lastPage.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("last_page");
+            }
+            return this;
+        }
         public GetDataPoliciesSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -103,19 +121,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageLength;
-        public int PageLength
-        {
-            get { return _pageLength; }
-            set { WithPageLength(value); }
-        }
-
-        public GetDataPoliciesSpectraS3Request WithPageLength(int pageLength)
+        public GetDataPoliciesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
+                this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
             {
@@ -123,19 +133,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageOffset;
-        public int PageOffset
-        {
-            get { return _pageOffset; }
-            set { WithPageOffset(value); }
-        }
-
-        public GetDataPoliciesSpectraS3Request WithPageOffset(int pageOffset)
+        public GetDataPoliciesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
             {
@@ -143,19 +145,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        public GetDataPoliciesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
-            get { return _pageStartMarker; }
-            set { WithPageStartMarker(value); }
+            this._pageStartMarker = pageStartMarker.ToString();
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
         }
-
-        public GetDataPoliciesSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
+        public GetDataPoliciesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
             {
@@ -164,6 +170,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetDataPoliciesSpectraS3Request() {
             
         }

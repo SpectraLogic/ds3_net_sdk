@@ -27,27 +27,14 @@ namespace Ds3.Calls
 
         public string ObjectName { get; private set; }
 
-        public Guid UploadId { get; private set; }
+        public string UploadId { get; private set; }
 
         
-        private int _maxParts;
-        public int MaxParts
+        private int? _maxParts;
+        public int? MaxParts
         {
             get { return _maxParts; }
             set { WithMaxParts(value); }
-        }
-
-        public ListMultiPartUploadPartsRequest WithMaxParts(int maxParts)
-        {
-            this._maxParts = maxParts;
-            if (maxParts != null) {
-                this.QueryParams.Add("max_parts", MaxParts.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("max_parts");
-            }
-            return this;
         }
 
         private int? _partNumberMarker;
@@ -57,11 +44,23 @@ namespace Ds3.Calls
             set { WithPartNumberMarker(value); }
         }
 
+        public ListMultiPartUploadPartsRequest WithMaxParts(int? maxParts)
+        {
+            this._maxParts = maxParts;
+            if (maxParts != null) {
+                this.QueryParams.Add("max_parts", maxParts.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_parts");
+            }
+            return this;
+        }
         public ListMultiPartUploadPartsRequest WithPartNumberMarker(int? partNumberMarker)
         {
             this._partNumberMarker = partNumberMarker;
             if (partNumberMarker != null) {
-                this.QueryParams.Add("part_number_marker", PartNumberMarker.ToString());
+                this.QueryParams.Add("part_number_marker", partNumberMarker.ToString());
             }
             else
             {
@@ -70,12 +69,22 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ListMultiPartUploadPartsRequest(string bucketName, string objectName, Guid uploadId) {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this.UploadId = uploadId.ToString();
+            
+            this.QueryParams.Add("upload_id", uploadId.ToString());
+
+        }
+
+        public ListMultiPartUploadPartsRequest(string bucketName, string objectName, string uploadId) {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.UploadId = uploadId;
             
-            this.QueryParams.Add("upload_id", UploadId.ToString());
+            this.QueryParams.Add("upload_id", uploadId);
 
         }
 

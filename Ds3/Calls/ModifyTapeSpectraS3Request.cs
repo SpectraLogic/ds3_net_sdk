@@ -23,7 +23,7 @@ namespace Ds3.Calls
     public class ModifyTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
 
         
         private string _ejectLabel;
@@ -33,19 +33,6 @@ namespace Ds3.Calls
             set { WithEjectLabel(value); }
         }
 
-        public ModifyTapeSpectraS3Request WithEjectLabel(string ejectLabel)
-        {
-            this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
-                this.QueryParams.Add("eject_label", EjectLabel);
-            }
-            else
-            {
-                this.QueryParams.Remove("eject_label");
-            }
-            return this;
-        }
-
         private string _ejectLocation;
         public string EjectLocation
         {
@@ -53,11 +40,30 @@ namespace Ds3.Calls
             set { WithEjectLocation(value); }
         }
 
+        private TapeState? _state;
+        public TapeState? State
+        {
+            get { return _state; }
+            set { WithState(value); }
+        }
+
+        public ModifyTapeSpectraS3Request WithEjectLabel(string ejectLabel)
+        {
+            this._ejectLabel = ejectLabel;
+            if (ejectLabel != null) {
+                this.QueryParams.Add("eject_label", ejectLabel);
+            }
+            else
+            {
+                this.QueryParams.Remove("eject_label");
+            }
+            return this;
+        }
         public ModifyTapeSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
             if (ejectLocation != null) {
-                this.QueryParams.Add("eject_location", EjectLocation);
+                this.QueryParams.Add("eject_location", ejectLocation);
             }
             else
             {
@@ -65,19 +71,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private TapeState _state;
-        public TapeState State
-        {
-            get { return _state; }
-            set { WithState(value); }
-        }
-
-        public ModifyTapeSpectraS3Request WithState(TapeState state)
+        public ModifyTapeSpectraS3Request WithState(TapeState? state)
         {
             this._state = state;
             if (state != null) {
-                this.QueryParams.Add("state", State.ToString());
+                this.QueryParams.Add("state", state.ToString());
             }
             else
             {
@@ -86,7 +84,13 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyTapeSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            
+        }
+
+        public ModifyTapeSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             
         }

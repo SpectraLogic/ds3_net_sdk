@@ -29,11 +29,12 @@ namespace Ds3.Calls
 
         public string ObjectName { get; private set; }
 
-        public Guid Job { get; private set; }
+        public string Job { get; private set; }
 
         public long Offset { get; private set; }
 
         
+
         private IEnumerable<Range> _byteRanges = Enumerable.Empty<Range>();
         public IEnumerable<Range> ByteRanges
         {
@@ -57,11 +58,24 @@ namespace Ds3.Calls
         public GetObjectRequest(string bucketName, string objectName, Stream destinationStream, Guid job, long offset) {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
+            this.Job = job.ToString();
+            this.Offset = offset;
+            this.DestinationStream = destinationStream;
+            
+            if (job != null)
+            {
+                QueryParams.Add("job", job.ToString());
+                QueryParams.Add("offset", offset.ToString());
+            }
+        }
+        public GetObjectRequest(string bucketName, string objectName, Stream destinationStream, string job, long offset) {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
             this.Job = job;
             this.Offset = offset;
             this.DestinationStream = destinationStream;
             
-            if (job != Guid.Empty)
+            if (job != null)
             {
                 QueryParams.Add("job", job.ToString());
                 QueryParams.Add("offset", offset.ToString());

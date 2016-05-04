@@ -23,10 +23,17 @@ namespace Ds3.Calls
     public class GetUserSpectraS3Request : Ds3Request
     {
         
-        public Guid UserId { get; private set; }
+        public string UserId { get; private set; }
+
+        
 
         
         public GetUserSpectraS3Request(Guid userId) {
+            this.UserId = userId.ToString();
+            
+        }
+
+        public GetUserSpectraS3Request(string userId) {
             this.UserId = userId;
             
         }

@@ -23,27 +23,14 @@ namespace Ds3.Calls
     public class ModifyJobSpectraS3Request : Ds3Request
     {
         
-        public Guid JobId { get; private set; }
+        public string JobId { get; private set; }
 
         
-        private DateTime _createdAt;
-        public DateTime CreatedAt
+        private DateTime? _createdAt;
+        public DateTime? CreatedAt
         {
             get { return _createdAt; }
             set { WithCreatedAt(value); }
-        }
-
-        public ModifyJobSpectraS3Request WithCreatedAt(DateTime createdAt)
-        {
-            this._createdAt = createdAt;
-            if (createdAt != null) {
-                this.QueryParams.Add("created_at", CreatedAt.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("created_at");
-            }
-            return this;
         }
 
         private string _name;
@@ -53,11 +40,30 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
+        public ModifyJobSpectraS3Request WithCreatedAt(DateTime? createdAt)
+        {
+            this._createdAt = createdAt;
+            if (createdAt != null) {
+                this.QueryParams.Add("created_at", createdAt.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("created_at");
+            }
+            return this;
+        }
         public ModifyJobSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -65,19 +71,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Priority _priority;
-        public Priority Priority
-        {
-            get { return _priority; }
-            set { WithPriority(value); }
-        }
-
-        public ModifyJobSpectraS3Request WithPriority(Priority priority)
+        public ModifyJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", Priority.ToString());
+                this.QueryParams.Add("priority", priority.ToString());
             }
             else
             {
@@ -86,7 +84,13 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyJobSpectraS3Request(Guid jobId) {
+            this.JobId = jobId.ToString();
+            
+        }
+
+        public ModifyJobSpectraS3Request(string jobId) {
             this.JobId = jobId;
             
         }

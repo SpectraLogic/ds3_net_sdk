@@ -26,18 +26,25 @@ namespace Ds3.Calls
         public string Pool { get; private set; }
 
         
-        private Guid _partitionId;
-        public Guid PartitionId
+        private string _partitionId;
+        public string PartitionId
         {
             get { return _partitionId; }
             set { WithPartitionId(value); }
         }
 
-        public ModifyPoolSpectraS3Request WithPartitionId(Guid partitionId)
+        private Quiesced? _quiesced;
+        public Quiesced? Quiesced
         {
-            this._partitionId = partitionId;
+            get { return _quiesced; }
+            set { WithQuiesced(value); }
+        }
+
+        public ModifyPoolSpectraS3Request WithPartitionId(Guid? partitionId)
+        {
+            this._partitionId = partitionId.ToString();
             if (partitionId != null) {
-                this.QueryParams.Add("partition_id", PartitionId.ToString());
+                this.QueryParams.Add("partition_id", partitionId.ToString());
             }
             else
             {
@@ -45,19 +52,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Quiesced _quiesced;
-        public Quiesced Quiesced
+        public ModifyPoolSpectraS3Request WithPartitionId(string partitionId)
         {
-            get { return _quiesced; }
-            set { WithQuiesced(value); }
+            this._partitionId = partitionId;
+            if (partitionId != null) {
+                this.QueryParams.Add("partition_id", partitionId);
+            }
+            else
+            {
+                this.QueryParams.Remove("partition_id");
+            }
+            return this;
         }
-
-        public ModifyPoolSpectraS3Request WithQuiesced(Quiesced quiesced)
+        public ModifyPoolSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
             if (quiesced != null) {
-                this.QueryParams.Add("quiesced", Quiesced.ToString());
+                this.QueryParams.Add("quiesced", quiesced.ToString());
             }
             else
             {
@@ -66,6 +77,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyPoolSpectraS3Request(string pool) {
             this.Pool = pool;
             

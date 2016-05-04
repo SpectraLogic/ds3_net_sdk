@@ -56,6 +56,11 @@ namespace Ds3
             return new GetServiceResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public HeadBucketResponse HeadBucket(HeadBucketRequest request)
+        {
+            return new HeadBucketResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public InitiateMultiPartUploadResponse InitiateMultiPartUpload(InitiateMultiPartUploadRequest request)
         {
             return new InitiateMultiPartUploadResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -979,22 +984,6 @@ namespace Ds3
             }
         }
 
-        public void GetObject(GetObjectRequest request)
-        {
-            using (var response = _netLayer.Invoke(request))
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-            }
-        }
-
-        public void HeadBucket(HeadBucketRequest request)
-        {
-            using (var response = _netLayer.Invoke(request))
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-            }
-        }
-
         public void HeadObject(HeadObjectRequest request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1369,6 +1358,11 @@ namespace Ds3
             {
                 ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
             }
+        }
+        
+        public GetObjectResponse GetObject(GetObjectRequest request)
+        {
+            return new GetObjectResponseParser(_netLayer.CopyBufferSize).Parse(request, _netLayer.Invoke(request));
         }
 
         public IDs3ClientFactory BuildFactory(IEnumerable<Ds3Node> nodes)

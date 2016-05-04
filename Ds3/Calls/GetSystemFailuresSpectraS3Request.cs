@@ -31,11 +31,46 @@ namespace Ds3.Calls
             set { WithErrorMessage(value); }
         }
 
+        private bool? _lastPage;
+        public bool? LastPage
+        {
+            get { return _lastPage; }
+            set { WithLastPage(value); }
+        }
+
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        private SystemFailureType? _type;
+        public SystemFailureType? Type
+        {
+            get { return _type; }
+            set { WithType(value); }
+        }
+
         public GetSystemFailuresSpectraS3Request WithErrorMessage(string errorMessage)
         {
             this._errorMessage = errorMessage;
             if (errorMessage != null) {
-                this.QueryParams.Add("error_message", ErrorMessage);
+                this.QueryParams.Add("error_message", errorMessage);
             }
             else
             {
@@ -43,19 +78,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private bool _lastPage;
-        public bool LastPage
-        {
-            get { return _lastPage; }
-            set { WithLastPage(value); }
-        }
-
-        public GetSystemFailuresSpectraS3Request WithLastPage(bool lastPage)
+        public GetSystemFailuresSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
             if (lastPage != null) {
-                this.QueryParams.Add("last_page", LastPage.ToString());
+                this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
             {
@@ -63,19 +90,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageLength;
-        public int PageLength
-        {
-            get { return _pageLength; }
-            set { WithPageLength(value); }
-        }
-
-        public GetSystemFailuresSpectraS3Request WithPageLength(int pageLength)
+        public GetSystemFailuresSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null) {
-                this.QueryParams.Add("page_length", PageLength.ToString());
+                this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
             {
@@ -83,19 +102,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private int _pageOffset;
-        public int PageOffset
-        {
-            get { return _pageOffset; }
-            set { WithPageOffset(value); }
-        }
-
-        public GetSystemFailuresSpectraS3Request WithPageOffset(int pageOffset)
+        public GetSystemFailuresSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null) {
-                this.QueryParams.Add("page_offset", PageOffset.ToString());
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
             {
@@ -103,19 +114,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _pageStartMarker;
-        public Guid PageStartMarker
+        public GetSystemFailuresSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
-            get { return _pageStartMarker; }
-            set { WithPageStartMarker(value); }
-        }
-
-        public GetSystemFailuresSpectraS3Request WithPageStartMarker(Guid pageStartMarker)
-        {
-            this._pageStartMarker = pageStartMarker;
+            this._pageStartMarker = pageStartMarker.ToString();
             if (pageStartMarker != null) {
-                this.QueryParams.Add("page_start_marker", PageStartMarker.ToString());
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
             {
@@ -123,19 +126,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private SystemFailureType _type;
-        public SystemFailureType Type
+        public GetSystemFailuresSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
-            get { return _type; }
-            set { WithType(value); }
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null) {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
         }
-
-        public GetSystemFailuresSpectraS3Request WithType(SystemFailureType type)
+        public GetSystemFailuresSpectraS3Request WithType(SystemFailureType? type)
         {
             this._type = type;
             if (type != null) {
-                this.QueryParams.Add("type", Type.ToString());
+                this.QueryParams.Add("type", type.ToString());
             }
             else
             {
@@ -144,6 +151,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetSystemFailuresSpectraS3Request() {
             
         }

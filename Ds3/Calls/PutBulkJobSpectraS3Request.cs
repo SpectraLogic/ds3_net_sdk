@@ -40,44 +40,18 @@ namespace Ds3.Calls
         }
 
         
-        private bool _aggregating;
-        public bool Aggregating
+        private bool? _aggregating;
+        public bool? Aggregating
         {
             get { return _aggregating; }
             set { WithAggregating(value); }
         }
 
-        public PutBulkJobSpectraS3Request WithAggregating(bool aggregating)
-        {
-            this._aggregating = aggregating;
-            if (aggregating != null) {
-                this.QueryParams.Add("aggregating", Aggregating.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("aggregating");
-            }
-            return this;
-        }
-
-        private bool _ignoreNamingConflicts;
-        public bool IgnoreNamingConflicts
+        private bool? _ignoreNamingConflicts;
+        public bool? IgnoreNamingConflicts
         {
             get { return _ignoreNamingConflicts; }
             set { WithIgnoreNamingConflicts(value); }
-        }
-
-        public PutBulkJobSpectraS3Request WithIgnoreNamingConflicts(bool ignoreNamingConflicts)
-        {
-            this._ignoreNamingConflicts = ignoreNamingConflicts;
-            if (ignoreNamingConflicts != null) {
-                this.QueryParams.Add("ignore_naming_conflicts", IgnoreNamingConflicts.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("ignore_naming_conflicts");
-            }
-            return this;
         }
 
         private string _name;
@@ -87,11 +61,42 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
+        public PutBulkJobSpectraS3Request WithAggregating(bool? aggregating)
+        {
+            this._aggregating = aggregating;
+            if (aggregating != null) {
+                this.QueryParams.Add("aggregating", aggregating.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("aggregating");
+            }
+            return this;
+        }
+        public PutBulkJobSpectraS3Request WithIgnoreNamingConflicts(bool? ignoreNamingConflicts)
+        {
+            this._ignoreNamingConflicts = ignoreNamingConflicts;
+            if (ignoreNamingConflicts != null) {
+                this.QueryParams.Add("ignore_naming_conflicts", ignoreNamingConflicts.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("ignore_naming_conflicts");
+            }
+            return this;
+        }
         public PutBulkJobSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -99,19 +104,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Priority _priority;
-        public Priority Priority
-        {
-            get { return _priority; }
-            set { WithPriority(value); }
-        }
-
-        public PutBulkJobSpectraS3Request WithPriority(Priority priority)
+        public PutBulkJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", Priority.ToString());
+                this.QueryParams.Add("priority", priority.ToString());
             }
             else
             {
@@ -120,9 +117,10 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public PutBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {
             this.BucketName = bucketName;
-            this.Objects = objects;
+            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "start_bulk_put");
             
             if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))

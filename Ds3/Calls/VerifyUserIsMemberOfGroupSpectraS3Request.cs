@@ -26,18 +26,30 @@ namespace Ds3.Calls
         public string Group { get; private set; }
 
         
-        private Guid _userId;
-        public Guid UserId
+        private string _userId;
+        public string UserId
         {
             get { return _userId; }
             set { WithUserId(value); }
         }
 
-        public VerifyUserIsMemberOfGroupSpectraS3Request WithUserId(Guid userId)
+        public VerifyUserIsMemberOfGroupSpectraS3Request WithUserId(Guid? userId)
+        {
+            this._userId = userId.ToString();
+            if (userId != null) {
+                this.QueryParams.Add("user_id", userId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("user_id");
+            }
+            return this;
+        }
+        public VerifyUserIsMemberOfGroupSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
             if (userId != null) {
-                this.QueryParams.Add("user_id", UserId.ToString());
+                this.QueryParams.Add("user_id", userId);
             }
             else
             {
@@ -46,6 +58,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public VerifyUserIsMemberOfGroupSpectraS3Request(string group) {
             this.Group = group;
             this.QueryParams.Add("operation", "verify");

@@ -23,10 +23,17 @@ namespace Ds3.Calls
     public class GetJobChunkSpectraS3Request : Ds3Request
     {
         
-        public Guid JobChunkId { get; private set; }
+        public string JobChunkId { get; private set; }
+
+        
 
         
         public GetJobChunkSpectraS3Request(Guid jobChunkId) {
+            this.JobChunkId = jobChunkId.ToString();
+            
+        }
+
+        public GetJobChunkSpectraS3Request(string jobChunkId) {
             this.JobChunkId = jobChunkId;
             
         }

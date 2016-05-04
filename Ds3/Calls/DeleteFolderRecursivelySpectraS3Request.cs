@@ -25,21 +25,21 @@ namespace Ds3.Calls
         
         public string Folder { get; private set; }
 
-        public Guid BucketId { get; private set; }
+        public string BucketId { get; private set; }
 
         
-        private bool _rollBack;
-        public bool RollBack
+        private bool? _rollBack;
+        public bool? RollBack
         {
             get { return _rollBack; }
             set { WithRollBack(value); }
         }
 
-        public DeleteFolderRecursivelySpectraS3Request WithRollBack(bool rollBack)
+        public DeleteFolderRecursivelySpectraS3Request WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
             if (rollBack != null) {
-                this.QueryParams.Add("roll_back", RollBack.ToString());
+                this.QueryParams.Add("roll_back", rollBack.ToString());
             }
             else
             {
@@ -48,11 +48,22 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder) {
+            this.Folder = folder;
+            this.BucketId = bucketId.ToString();
+            
+            this.QueryParams.Add("bucket_id", bucketId.ToString());
+
+            this.QueryParams.Add("recursive", null);
+
+        }
+
+        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder) {
             this.Folder = folder;
             this.BucketId = bucketId;
             
-            this.QueryParams.Add("bucket_id", BucketId.ToString());
+            this.QueryParams.Add("bucket_id", bucketId);
 
             this.QueryParams.Add("recursive", null);
 

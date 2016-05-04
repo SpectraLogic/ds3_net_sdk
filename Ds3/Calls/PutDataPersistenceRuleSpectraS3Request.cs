@@ -23,11 +23,11 @@ namespace Ds3.Calls
     public class PutDataPersistenceRuleSpectraS3Request : Ds3Request
     {
         
-        public Guid DataPolicyId { get; private set; }
+        public string DataPolicyId { get; private set; }
 
         public DataIsolationLevel IsolationLevel { get; private set; }
 
-        public Guid StorageDomainId { get; private set; }
+        public string StorageDomainId { get; private set; }
 
         public DataPersistenceRuleType Type { get; private set; }
 
@@ -43,7 +43,7 @@ namespace Ds3.Calls
         {
             this._minimumDaysToRetain = minimumDaysToRetain;
             if (minimumDaysToRetain != null) {
-                this.QueryParams.Add("minimum_days_to_retain", MinimumDaysToRetain.ToString());
+                this.QueryParams.Add("minimum_days_to_retain", minimumDaysToRetain.ToString());
             }
             else
             {
@@ -52,19 +52,36 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public PutDataPersistenceRuleSpectraS3Request(Guid dataPolicyId, DataIsolationLevel isolationLevel, Guid storageDomainId, DataPersistenceRuleType type) {
+            this.DataPolicyId = dataPolicyId.ToString();
+            this.IsolationLevel = isolationLevel;
+            this.StorageDomainId = storageDomainId.ToString();
+            this.Type = type;
+            
+            this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
+
+            this.QueryParams.Add("isolation_level", isolationLevel.ToString());
+
+            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+
+            this.QueryParams.Add("type", type.ToString());
+
+        }
+
+        public PutDataPersistenceRuleSpectraS3Request(string dataPolicyId, DataIsolationLevel isolationLevel, string storageDomainId, DataPersistenceRuleType type) {
             this.DataPolicyId = dataPolicyId;
             this.IsolationLevel = isolationLevel;
             this.StorageDomainId = storageDomainId;
             this.Type = type;
             
-            this.QueryParams.Add("data_policy_id", DataPolicyId.ToString());
+            this.QueryParams.Add("data_policy_id", dataPolicyId);
 
-            this.QueryParams.Add("isolation_level", IsolationLevel.ToString());
+            this.QueryParams.Add("isolation_level", isolationLevel.ToString());
 
-            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", storageDomainId);
 
-            this.QueryParams.Add("type", Type.ToString());
+            this.QueryParams.Add("type", type.ToString());
 
         }
 

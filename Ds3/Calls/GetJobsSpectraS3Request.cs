@@ -24,18 +24,25 @@ namespace Ds3.Calls
     {
         
         
-        private Guid _bucketId;
-        public Guid BucketId
+        private string _bucketId;
+        public string BucketId
         {
             get { return _bucketId; }
             set { WithBucketId(value); }
         }
 
-        public GetJobsSpectraS3Request WithBucketId(Guid bucketId)
+        private bool? _fullDetails;
+        public bool? FullDetails
         {
-            this._bucketId = bucketId;
+            get { return _fullDetails; }
+            set { WithFullDetails(value); }
+        }
+
+        public GetJobsSpectraS3Request WithBucketId(Guid? bucketId)
+        {
+            this._bucketId = bucketId.ToString();
             if (bucketId != null) {
-                this.QueryParams.Add("bucket_id", BucketId.ToString());
+                this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
             {
@@ -43,19 +50,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private bool _fullDetails;
-        public bool FullDetails
+        public GetJobsSpectraS3Request WithBucketId(string bucketId)
         {
-            get { return _fullDetails; }
-            set { WithFullDetails(value); }
+            this._bucketId = bucketId;
+            if (bucketId != null) {
+                this.QueryParams.Add("bucket_id", bucketId);
+            }
+            else
+            {
+                this.QueryParams.Remove("bucket_id");
+            }
+            return this;
         }
-
-        public GetJobsSpectraS3Request WithFullDetails(bool fullDetails)
+        public GetJobsSpectraS3Request WithFullDetails(bool? fullDetails)
         {
             this._fullDetails = fullDetails;
             if (fullDetails != null) {
-                this.QueryParams.Add("full_details", FullDetails.ToString());
+                this.QueryParams.Add("full_details", fullDetails.ToString());
             }
             else
             {
@@ -64,6 +75,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetJobsSpectraS3Request() {
             
         }

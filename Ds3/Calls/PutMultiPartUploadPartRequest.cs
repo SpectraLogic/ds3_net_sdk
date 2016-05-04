@@ -31,19 +31,34 @@ namespace Ds3.Calls
 
         public int PartNumber { get; private set; }
 
-        public Guid UploadId { get; private set; }
+        public string UploadId { get; private set; }
+
+        
 
         
         public PutMultiPartUploadPartRequest(string bucketName, string objectName, int partNumber, Stream requestPayload, Guid uploadId) {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.PartNumber = partNumber;
+            this.UploadId = uploadId.ToString();
+            this.RequestPayload = requestPayload;
+            
+            this.QueryParams.Add("part_number", partNumber.ToString());
+
+            this.QueryParams.Add("upload_id", uploadId.ToString());
+
+        }
+
+        public PutMultiPartUploadPartRequest(string bucketName, string objectName, int partNumber, Stream requestPayload, string uploadId) {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this.PartNumber = partNumber;
             this.UploadId = uploadId;
             this.RequestPayload = requestPayload;
             
-            this.QueryParams.Add("part_number", PartNumber.ToString());
+            this.QueryParams.Add("part_number", partNumber.ToString());
 
-            this.QueryParams.Add("upload_id", UploadId.ToString());
+            this.QueryParams.Add("upload_id", uploadId);
 
         }
 

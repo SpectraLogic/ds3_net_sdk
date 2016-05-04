@@ -26,18 +26,18 @@ namespace Ds3.Calls
         public string StorageDomainMember { get; private set; }
 
         
-        private WritePreferenceLevel _writePreference;
-        public WritePreferenceLevel WritePreference
+        private WritePreferenceLevel? _writePreference;
+        public WritePreferenceLevel? WritePreference
         {
             get { return _writePreference; }
             set { WithWritePreference(value); }
         }
 
-        public ModifyStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel writePreference)
+        public ModifyStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
             if (writePreference != null) {
-                this.QueryParams.Add("write_preference", WritePreference.ToString());
+                this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else
             {
@@ -46,6 +46,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyStorageDomainMemberSpectraS3Request(string storageDomainMember) {
             this.StorageDomainMember = storageDomainMember;
             

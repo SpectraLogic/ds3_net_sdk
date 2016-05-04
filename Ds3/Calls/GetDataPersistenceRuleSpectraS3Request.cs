@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string DataPersistenceRule { get; private set; }
 
         
+
+        
         public GetDataPersistenceRuleSpectraS3Request(string dataPersistenceRule) {
             this.DataPersistenceRule = dataPersistenceRule;
             

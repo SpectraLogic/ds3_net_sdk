@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string StorageDomainFailure { get; private set; }
 
         
+
+        
         public DeleteStorageDomainFailureSpectraS3Request(string storageDomainFailure) {
             this.StorageDomainFailure = storageDomainFailure;
             

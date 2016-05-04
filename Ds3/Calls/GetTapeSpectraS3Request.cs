@@ -23,10 +23,17 @@ namespace Ds3.Calls
     public class GetTapeSpectraS3Request : Ds3Request
     {
         
-        public Guid TapeId { get; private set; }
+        public string TapeId { get; private set; }
+
+        
 
         
         public GetTapeSpectraS3Request(Guid tapeId) {
+            this.TapeId = tapeId.ToString();
+            
+        }
+
+        public GetTapeSpectraS3Request(string tapeId) {
             this.TapeId = tapeId;
             
         }

@@ -26,24 +26,11 @@ namespace Ds3.Calls
         public string DataPersistenceRule { get; private set; }
 
         
-        private DataIsolationLevel _isolationLevel;
-        public DataIsolationLevel IsolationLevel
+        private DataIsolationLevel? _isolationLevel;
+        public DataIsolationLevel? IsolationLevel
         {
             get { return _isolationLevel; }
             set { WithIsolationLevel(value); }
-        }
-
-        public ModifyDataPersistenceRuleSpectraS3Request WithIsolationLevel(DataIsolationLevel isolationLevel)
-        {
-            this._isolationLevel = isolationLevel;
-            if (isolationLevel != null) {
-                this.QueryParams.Add("isolation_level", IsolationLevel.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("isolation_level");
-            }
-            return this;
         }
 
         private int? _minimumDaysToRetain;
@@ -53,11 +40,30 @@ namespace Ds3.Calls
             set { WithMinimumDaysToRetain(value); }
         }
 
+        private DataPersistenceRuleType? _type;
+        public DataPersistenceRuleType? Type
+        {
+            get { return _type; }
+            set { WithType(value); }
+        }
+
+        public ModifyDataPersistenceRuleSpectraS3Request WithIsolationLevel(DataIsolationLevel? isolationLevel)
+        {
+            this._isolationLevel = isolationLevel;
+            if (isolationLevel != null) {
+                this.QueryParams.Add("isolation_level", isolationLevel.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("isolation_level");
+            }
+            return this;
+        }
         public ModifyDataPersistenceRuleSpectraS3Request WithMinimumDaysToRetain(int? minimumDaysToRetain)
         {
             this._minimumDaysToRetain = minimumDaysToRetain;
             if (minimumDaysToRetain != null) {
-                this.QueryParams.Add("minimum_days_to_retain", MinimumDaysToRetain.ToString());
+                this.QueryParams.Add("minimum_days_to_retain", minimumDaysToRetain.ToString());
             }
             else
             {
@@ -65,19 +71,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private DataPersistenceRuleType _type;
-        public DataPersistenceRuleType Type
-        {
-            get { return _type; }
-            set { WithType(value); }
-        }
-
-        public ModifyDataPersistenceRuleSpectraS3Request WithType(DataPersistenceRuleType type)
+        public ModifyDataPersistenceRuleSpectraS3Request WithType(DataPersistenceRuleType? type)
         {
             this._type = type;
             if (type != null) {
-                this.QueryParams.Add("type", Type.ToString());
+                this.QueryParams.Add("type", type.ToString());
             }
             else
             {
@@ -86,6 +84,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ModifyDataPersistenceRuleSpectraS3Request(string dataPersistenceRule) {
             this.DataPersistenceRule = dataPersistenceRule;
             

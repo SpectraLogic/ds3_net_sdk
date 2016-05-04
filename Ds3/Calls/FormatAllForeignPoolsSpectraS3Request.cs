@@ -24,6 +24,8 @@ namespace Ds3.Calls
     {
         
         
+
+        
         public FormatAllForeignPoolsSpectraS3Request() {
             this.QueryParams.Add("operation", "format");
             

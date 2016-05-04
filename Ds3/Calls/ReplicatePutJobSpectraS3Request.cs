@@ -28,18 +28,25 @@ namespace Ds3.Calls
         public string BucketName { get; private set; }
 
         
-        private ReplicationConflictResolutionMode _conflictResolutionMode;
-        public ReplicationConflictResolutionMode ConflictResolutionMode
+        private ReplicationConflictResolutionMode? _conflictResolutionMode;
+        public ReplicationConflictResolutionMode? ConflictResolutionMode
         {
             get { return _conflictResolutionMode; }
             set { WithConflictResolutionMode(value); }
         }
 
-        public ReplicatePutJobSpectraS3Request WithConflictResolutionMode(ReplicationConflictResolutionMode conflictResolutionMode)
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
+        public ReplicatePutJobSpectraS3Request WithConflictResolutionMode(ReplicationConflictResolutionMode? conflictResolutionMode)
         {
             this._conflictResolutionMode = conflictResolutionMode;
             if (conflictResolutionMode != null) {
-                this.QueryParams.Add("conflict_resolution_mode", ConflictResolutionMode.ToString());
+                this.QueryParams.Add("conflict_resolution_mode", conflictResolutionMode.ToString());
             }
             else
             {
@@ -47,19 +54,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Priority _priority;
-        public Priority Priority
-        {
-            get { return _priority; }
-            set { WithPriority(value); }
-        }
-
-        public ReplicatePutJobSpectraS3Request WithPriority(Priority priority)
+        public ReplicatePutJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", Priority.ToString());
+                this.QueryParams.Add("priority", priority.ToString());
             }
             else
             {
@@ -68,6 +67,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public ReplicatePutJobSpectraS3Request(string bucketName, string requestPayload) {
             this.BucketName = bucketName;
             this.RequestPayload = requestPayload;

@@ -33,19 +33,6 @@ namespace Ds3.Calls
             set { WithDelimiter(value); }
         }
 
-        public GetBucketRequest WithDelimiter(string delimiter)
-        {
-            this._delimiter = delimiter;
-            if (delimiter != null) {
-                this.QueryParams.Add("delimiter", Delimiter);
-            }
-            else
-            {
-                this.QueryParams.Remove("delimiter");
-            }
-            return this;
-        }
-
         private string _marker;
         public string Marker
         {
@@ -53,37 +40,11 @@ namespace Ds3.Calls
             set { WithMarker(value); }
         }
 
-        public GetBucketRequest WithMarker(string marker)
-        {
-            this._marker = marker;
-            if (marker != null) {
-                this.QueryParams.Add("marker", Marker);
-            }
-            else
-            {
-                this.QueryParams.Remove("marker");
-            }
-            return this;
-        }
-
-        private int _maxKeys;
-        public int MaxKeys
+        private int? _maxKeys;
+        public int? MaxKeys
         {
             get { return _maxKeys; }
             set { WithMaxKeys(value); }
-        }
-
-        public GetBucketRequest WithMaxKeys(int maxKeys)
-        {
-            this._maxKeys = maxKeys;
-            if (maxKeys != null) {
-                this.QueryParams.Add("max_keys", MaxKeys.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("max_keys");
-            }
-            return this;
         }
 
         private string _prefix;
@@ -93,11 +54,47 @@ namespace Ds3.Calls
             set { WithPrefix(value); }
         }
 
+        public GetBucketRequest WithDelimiter(string delimiter)
+        {
+            this._delimiter = delimiter;
+            if (delimiter != null) {
+                this.QueryParams.Add("delimiter", delimiter);
+            }
+            else
+            {
+                this.QueryParams.Remove("delimiter");
+            }
+            return this;
+        }
+        public GetBucketRequest WithMarker(string marker)
+        {
+            this._marker = marker;
+            if (marker != null) {
+                this.QueryParams.Add("marker", marker);
+            }
+            else
+            {
+                this.QueryParams.Remove("marker");
+            }
+            return this;
+        }
+        public GetBucketRequest WithMaxKeys(int? maxKeys)
+        {
+            this._maxKeys = maxKeys;
+            if (maxKeys != null) {
+                this.QueryParams.Add("max_keys", maxKeys.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_keys");
+            }
+            return this;
+        }
         public GetBucketRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
             if (prefix != null) {
-                this.QueryParams.Add("prefix", Prefix);
+                this.QueryParams.Add("prefix", prefix);
             }
             else
             {
@@ -106,6 +103,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetBucketRequest(string bucketName) {
             this.BucketName = bucketName;
             

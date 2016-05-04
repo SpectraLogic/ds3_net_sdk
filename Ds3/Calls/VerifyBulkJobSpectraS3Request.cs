@@ -32,24 +32,11 @@ namespace Ds3.Calls
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
-        private bool _aggregating;
-        public bool Aggregating
+        private bool? _aggregating;
+        public bool? Aggregating
         {
             get { return _aggregating; }
             set { WithAggregating(value); }
-        }
-
-        public VerifyBulkJobSpectraS3Request WithAggregating(bool aggregating)
-        {
-            this._aggregating = aggregating;
-            if (aggregating != null) {
-                this.QueryParams.Add("aggregating", Aggregating.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("aggregating");
-            }
-            return this;
         }
 
         private string _name;
@@ -59,11 +46,30 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
+        public VerifyBulkJobSpectraS3Request WithAggregating(bool? aggregating)
+        {
+            this._aggregating = aggregating;
+            if (aggregating != null) {
+                this.QueryParams.Add("aggregating", aggregating.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("aggregating");
+            }
+            return this;
+        }
         public VerifyBulkJobSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -71,19 +77,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Priority _priority;
-        public Priority Priority
-        {
-            get { return _priority; }
-            set { WithPriority(value); }
-        }
-
-        public VerifyBulkJobSpectraS3Request WithPriority(Priority priority)
+        public VerifyBulkJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", Priority.ToString());
+                this.QueryParams.Add("priority", priority.ToString());
             }
             else
             {
@@ -92,9 +90,10 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public VerifyBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {
             this.BucketName = bucketName;
-            this.Objects = objects;
+            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "start_bulk_verify");
             
             if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))

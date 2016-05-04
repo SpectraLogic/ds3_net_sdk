@@ -26,18 +26,39 @@ namespace Ds3.Calls
         public string NotificationEndPoint { get; private set; }
 
         
-        private HttpResponseFormatType _format;
-        public HttpResponseFormatType Format
+        private HttpResponseFormatType? _format;
+        public HttpResponseFormatType? Format
         {
             get { return _format; }
             set { WithFormat(value); }
         }
 
-        public PutObjectCachedNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType format)
+        private string _jobId;
+        public string JobId
+        {
+            get { return _jobId; }
+            set { WithJobId(value); }
+        }
+
+        private NamingConventionType? _namingConvention;
+        public NamingConventionType? NamingConvention
+        {
+            get { return _namingConvention; }
+            set { WithNamingConvention(value); }
+        }
+
+        private RequestType? _notificationHttpMethod;
+        public RequestType? NotificationHttpMethod
+        {
+            get { return _notificationHttpMethod; }
+            set { WithNotificationHttpMethod(value); }
+        }
+
+        public PutObjectCachedNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType? format)
         {
             this._format = format;
             if (format != null) {
-                this.QueryParams.Add("format", Format.ToString());
+                this.QueryParams.Add("format", format.ToString());
             }
             else
             {
@@ -45,19 +66,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Guid _jobId;
-        public Guid JobId
+        public PutObjectCachedNotificationRegistrationSpectraS3Request WithJobId(Guid? jobId)
         {
-            get { return _jobId; }
-            set { WithJobId(value); }
-        }
-
-        public PutObjectCachedNotificationRegistrationSpectraS3Request WithJobId(Guid jobId)
-        {
-            this._jobId = jobId;
+            this._jobId = jobId.ToString();
             if (jobId != null) {
-                this.QueryParams.Add("job_id", JobId.ToString());
+                this.QueryParams.Add("job_id", jobId.ToString());
             }
             else
             {
@@ -65,19 +78,23 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private NamingConventionType _namingConvention;
-        public NamingConventionType NamingConvention
+        public PutObjectCachedNotificationRegistrationSpectraS3Request WithJobId(string jobId)
         {
-            get { return _namingConvention; }
-            set { WithNamingConvention(value); }
+            this._jobId = jobId;
+            if (jobId != null) {
+                this.QueryParams.Add("job_id", jobId);
+            }
+            else
+            {
+                this.QueryParams.Remove("job_id");
+            }
+            return this;
         }
-
-        public PutObjectCachedNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType namingConvention)
+        public PutObjectCachedNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType? namingConvention)
         {
             this._namingConvention = namingConvention;
             if (namingConvention != null) {
-                this.QueryParams.Add("naming_convention", NamingConvention.ToString());
+                this.QueryParams.Add("naming_convention", namingConvention.ToString());
             }
             else
             {
@@ -85,19 +102,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private RequestType _notificationHttpMethod;
-        public RequestType NotificationHttpMethod
-        {
-            get { return _notificationHttpMethod; }
-            set { WithNotificationHttpMethod(value); }
-        }
-
-        public PutObjectCachedNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType notificationHttpMethod)
+        public PutObjectCachedNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType? notificationHttpMethod)
         {
             this._notificationHttpMethod = notificationHttpMethod;
             if (notificationHttpMethod != null) {
-                this.QueryParams.Add("notification_http_method", NotificationHttpMethod.ToString());
+                this.QueryParams.Add("notification_http_method", notificationHttpMethod.ToString());
             }
             else
             {
@@ -106,10 +115,11 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public PutObjectCachedNotificationRegistrationSpectraS3Request(string notificationEndPoint) {
             this.NotificationEndPoint = notificationEndPoint;
             
-            this.QueryParams.Add("notification_end_point", NotificationEndPoint);
+            this.QueryParams.Add("notification_end_point", notificationEndPoint);
 
         }
 

@@ -42,24 +42,11 @@ namespace Ds3.Calls
         }
 
         
-        private bool _aggregating;
-        public bool Aggregating
+        private bool? _aggregating;
+        public bool? Aggregating
         {
             get { return _aggregating; }
             set { WithAggregating(value); }
-        }
-
-        public GetBulkJobSpectraS3Request WithAggregating(bool aggregating)
-        {
-            this._aggregating = aggregating;
-            if (aggregating != null) {
-                this.QueryParams.Add("aggregating", Aggregating.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("aggregating");
-            }
-            return this;
         }
 
         private string _name;
@@ -69,11 +56,30 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
+        public GetBulkJobSpectraS3Request WithAggregating(bool? aggregating)
+        {
+            this._aggregating = aggregating;
+            if (aggregating != null) {
+                this.QueryParams.Add("aggregating", aggregating.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("aggregating");
+            }
+            return this;
+        }
         public GetBulkJobSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null) {
-                this.QueryParams.Add("name", Name);
+                this.QueryParams.Add("name", name);
             }
             else
             {
@@ -81,19 +87,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private Priority _priority;
-        public Priority Priority
-        {
-            get { return _priority; }
-            set { WithPriority(value); }
-        }
-
-        public GetBulkJobSpectraS3Request WithPriority(Priority priority)
+        public GetBulkJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
             if (priority != null) {
-                this.QueryParams.Add("priority", Priority.ToString());
+                this.QueryParams.Add("priority", priority.ToString());
             }
             else
             {
@@ -102,6 +100,7 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects) {
             this.BucketName = bucketName;
             this.FullObjects = fullObjects.ToList();

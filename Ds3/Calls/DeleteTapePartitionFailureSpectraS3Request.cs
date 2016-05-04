@@ -26,6 +26,8 @@ namespace Ds3.Calls
         public string TapePartitionFailure { get; private set; }
 
         
+
+        
         public DeleteTapePartitionFailureSpectraS3Request(string tapePartitionFailure) {
             this.TapePartitionFailure = tapePartitionFailure;
             

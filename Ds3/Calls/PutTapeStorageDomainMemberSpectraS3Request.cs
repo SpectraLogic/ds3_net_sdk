@@ -23,25 +23,25 @@ namespace Ds3.Calls
     public class PutTapeStorageDomainMemberSpectraS3Request : Ds3Request
     {
         
-        public Guid StorageDomainId { get; private set; }
+        public string StorageDomainId { get; private set; }
 
-        public Guid TapePartitionId { get; private set; }
+        public string TapePartitionId { get; private set; }
 
         public TapeType TapeType { get; private set; }
 
         
-        private WritePreferenceLevel _writePreference;
-        public WritePreferenceLevel WritePreference
+        private WritePreferenceLevel? _writePreference;
+        public WritePreferenceLevel? WritePreference
         {
             get { return _writePreference; }
             set { WithWritePreference(value); }
         }
 
-        public PutTapeStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel writePreference)
+        public PutTapeStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
             if (writePreference != null) {
-                this.QueryParams.Add("write_preference", WritePreference.ToString());
+                this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else
             {
@@ -50,16 +50,30 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public PutTapeStorageDomainMemberSpectraS3Request(Guid storageDomainId, Guid tapePartitionId, TapeType tapeType) {
+            this.StorageDomainId = storageDomainId.ToString();
+            this.TapePartitionId = tapePartitionId.ToString();
+            this.TapeType = tapeType;
+            
+            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+
+            this.QueryParams.Add("tape_partition_id", tapePartitionId.ToString());
+
+            this.QueryParams.Add("tape_type", tapeType.ToString());
+
+        }
+
+        public PutTapeStorageDomainMemberSpectraS3Request(string storageDomainId, string tapePartitionId, TapeType tapeType) {
             this.StorageDomainId = storageDomainId;
             this.TapePartitionId = tapePartitionId;
             this.TapeType = tapeType;
             
-            this.QueryParams.Add("storage_domain_id", StorageDomainId.ToString());
+            this.QueryParams.Add("storage_domain_id", storageDomainId);
 
-            this.QueryParams.Add("tape_partition_id", TapePartitionId.ToString());
+            this.QueryParams.Add("tape_partition_id", tapePartitionId);
 
-            this.QueryParams.Add("tape_type", TapeType.ToString());
+            this.QueryParams.Add("tape_type", tapeType.ToString());
 
         }
 

@@ -26,18 +26,32 @@ namespace Ds3.Calls
         public string NotificationEndPoint { get; private set; }
 
         
-        private HttpResponseFormatType _format;
-        public HttpResponseFormatType Format
+        private HttpResponseFormatType? _format;
+        public HttpResponseFormatType? Format
         {
             get { return _format; }
             set { WithFormat(value); }
         }
 
-        public PutJobCreatedNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType format)
+        private NamingConventionType? _namingConvention;
+        public NamingConventionType? NamingConvention
+        {
+            get { return _namingConvention; }
+            set { WithNamingConvention(value); }
+        }
+
+        private RequestType? _notificationHttpMethod;
+        public RequestType? NotificationHttpMethod
+        {
+            get { return _notificationHttpMethod; }
+            set { WithNotificationHttpMethod(value); }
+        }
+
+        public PutJobCreatedNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType? format)
         {
             this._format = format;
             if (format != null) {
-                this.QueryParams.Add("format", Format.ToString());
+                this.QueryParams.Add("format", format.ToString());
             }
             else
             {
@@ -45,19 +59,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private NamingConventionType _namingConvention;
-        public NamingConventionType NamingConvention
-        {
-            get { return _namingConvention; }
-            set { WithNamingConvention(value); }
-        }
-
-        public PutJobCreatedNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType namingConvention)
+        public PutJobCreatedNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType? namingConvention)
         {
             this._namingConvention = namingConvention;
             if (namingConvention != null) {
-                this.QueryParams.Add("naming_convention", NamingConvention.ToString());
+                this.QueryParams.Add("naming_convention", namingConvention.ToString());
             }
             else
             {
@@ -65,19 +71,11 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private RequestType _notificationHttpMethod;
-        public RequestType NotificationHttpMethod
-        {
-            get { return _notificationHttpMethod; }
-            set { WithNotificationHttpMethod(value); }
-        }
-
-        public PutJobCreatedNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType notificationHttpMethod)
+        public PutJobCreatedNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType? notificationHttpMethod)
         {
             this._notificationHttpMethod = notificationHttpMethod;
             if (notificationHttpMethod != null) {
-                this.QueryParams.Add("notification_http_method", NotificationHttpMethod.ToString());
+                this.QueryParams.Add("notification_http_method", notificationHttpMethod.ToString());
             }
             else
             {
@@ -86,10 +84,11 @@ namespace Ds3.Calls
             return this;
         }
 
+        
         public PutJobCreatedNotificationRegistrationSpectraS3Request(string notificationEndPoint) {
             this.NotificationEndPoint = notificationEndPoint;
             
-            this.QueryParams.Add("notification_end_point", NotificationEndPoint);
+            this.QueryParams.Add("notification_end_point", notificationEndPoint);
 
         }
 
