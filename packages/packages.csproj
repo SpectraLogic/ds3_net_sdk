@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Debug\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -63,7 +62,6 @@
     <None Include="NUnit.Runners.2.6.3\tools\pnunit-launcher.exe.config" />
     <None Include="NUnit.Runners.2.6.3\tools\runpnunit.bat" />
     <None Include="NUnit.Runners.2.6.3\tools\test.conf" />
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="OpenCover.4.5.2506\docs\Usage.rtf" />
     <None Include="OpenCover.4.5.2506\License.rtf" />
     <None Include="OpenCover.4.5.2506\log4net.config" />
@@ -150,11 +148,6 @@
     <Content Include="ReportGenerator.1.9.1.0\log4net.dll" />
     <Content Include="ReportGenerator.1.9.1.0\Readme.txt" />
     <Content Include="ReportGenerator.1.9.1.0\ReportGenerator.exe" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

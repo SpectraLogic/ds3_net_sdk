@@ -144,10 +144,10 @@ namespace Ds3.Runtime
             httpRequest.ReadWriteTimeout = this._readWriteTimeout;
             httpRequest.Timeout = this._requestTimeout;
 
-            var chucksumValue = ComputeChecksum(request.ChecksumValue, content, request.Type);
+            var chucksumValue = ComputeChecksum(request.ChecksumValue, content, request.CType);
             if (!string.IsNullOrEmpty(chucksumValue))
             {
-                switch (request.Type)
+                switch (request.CType)
                 {
                     case ChecksumType.Type.MD5:
                         if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("MD5 checksum is {0}", chucksumValue));

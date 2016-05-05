@@ -34,16 +34,16 @@ namespace Ds3.Calls
         public string ObjectName { get; private set; }
 
         private ChecksumType _checksum = ChecksumType.None;
-        private ChecksumType.Type _type;
+        private ChecksumType.Type _ctype;
 
         internal override ChecksumType ChecksumValue
         {
             get { return this._checksum; }
         }
 
-        internal override ChecksumType.Type Type
+        internal override ChecksumType.Type CType
         {
-            get { return this._type; }
+            get { return this._ctype; }
         }
 
         public ChecksumType Checksum
@@ -52,10 +52,10 @@ namespace Ds3.Calls
             set { this.WithChecksum(value); }
         }
 
-        public PutObjectRequest WithChecksum(ChecksumType checksum, ChecksumType.Type type = ChecksumType.Type.MD5)
+        public PutObjectRequest WithChecksum(ChecksumType checksum, ChecksumType.Type ctype = ChecksumType.Type.MD5)
         {
             this._checksum = checksum;
-            this._type = type;
+            this._ctype = ctype;
             return this;
         }
         private IDictionary<string, string> _metadata = new Dictionary<string, string>();

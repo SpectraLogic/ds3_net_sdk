@@ -42,7 +42,7 @@ namespace Ds3.Calls
             get { return ChecksumType.None; }
         }
 
-        internal virtual ChecksumType.Type Type
+        internal virtual ChecksumType.Type CType
         {
             get { return ChecksumType.Type.NONE; }
         }
