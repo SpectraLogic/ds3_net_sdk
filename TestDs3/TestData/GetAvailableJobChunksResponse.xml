@@ -1,31 +1,34 @@
-﻿<MasterObjectList BucketName="bucket8192000000" JobId="1a85e743-ec8f-4789-afec-97e587a26936" ChunkClientProcessingOrderGuarantee="IN_ORDER" Priority="NORMAL" RequestType="GET" StartDate="2014-07-01T20:12:52.000Z">
+﻿<MasterObjectList Aggregating="false" BucketName="bucket8192000000" CachedSizeInBytes="0" JobId="1a85e743-ec8f-4789-afec-97e587a26936" 
+ChunkClientProcessingOrderGuarantee="IN_ORDER" CompletedSizeInBytes="0" Naked="false" Name="Untitled" OriginalSizeInBytes="0" 
+Priority="NORMAL" RequestType="GET" Status="IN_PROGRESS" StartDate="2014-07-01T20:12:52.000Z" UserId="2ecf2320-b3b6-4073-b7b0-3894b588990c" 
+UserName="default_user_name" WriteOptimization="CAPACITY">
   <Nodes>
     <Node EndPoint="10.1.18.12" HttpPort="80" HttpsPort="443" Id="a02053b9-0147-11e4-8d6a-002590c1177c"/>
     <Node EndPoint="10.1.18.13" HttpsPort="443" Id="95e97010-8e70-4733-926c-aeeb21796848"/>
     <Node EndPoint="10.1.18.14" HttpPort="80" Id="4d5b6669-76f0-49f9-bc2a-9280f40cafa7"/>
   </Nodes>
   <Objects ChunkId="f58370c2-2538-4e78-a9f8-e4d2676bdf44" ChunkNumber="0" NodeId="a02053b9-0147-11e4-8d6a-002590c1177c">
-    <Object Name="client00obj000004-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000004-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000003-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000003-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000002-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000002-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000005-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000005-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000006-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000006-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000000-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000000-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000001-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000001-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000004-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000004-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000003-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000003-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000002-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000002-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000005-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000005-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000006-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000006-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000000-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000000-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000001-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000001-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
   </Objects>
   <Objects ChunkId="4137d768-25bb-4942-9d36-b92dfbe75e01" ChunkNumber="1" NodeId="95e97010-8e70-4733-926c-aeeb21796848">
-    <Object Name="client00obj000008-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000008-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000009-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
-    <Object Name="client00obj000009-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000007-8000000" InCache="true" Length="5368709120" Offset="0"/>
-    <Object Name="client00obj000007-8000000" InCache="true" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000008-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000008-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000009-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
+    <Object Name="client00obj000009-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000007-8000000" InCache="true" Latest="true" Version="1" Length="5368709120" Offset="0"/>
+    <Object Name="client00obj000007-8000000" InCache="true" Latest="true" Version="1" Length="2823290880" Offset="5368709120"/>
   </Objects>
 </MasterObjectList>

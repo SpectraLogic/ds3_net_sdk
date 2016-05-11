@@ -28,7 +28,7 @@ namespace Ds3.Helpers.Jobs
     {
         public static IPartialReadJob Create(
             IDs3Client client,
-            JobResponse jobResponse,
+            MasterObjectList jobResponse,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
             IHelperStrategy<Ds3PartialObject> helperStrategy,
@@ -53,7 +53,7 @@ namespace Ds3.Helpers.Jobs
 
         private PartialReadJob(
             IDs3Client client,
-            JobResponse jobResponse,
+            MasterObjectList jobResponse,
             string bucketName,
             Guid jobId,
             IHelperStrategy<Ds3PartialObject> helperStrategy,

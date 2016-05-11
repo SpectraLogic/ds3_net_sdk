@@ -40,7 +40,7 @@ namespace Ds3.ResponseParsers
             switch (jobStatus)
             {
                 case "COMPLETED": return JobStatus.COMPLETED;
-                case "CANCELLED": return JobStatus.CANCELLED;
+                case "CANCELLED": return JobStatus.CANCELED;
                 case "IN_PROGRESS": return JobStatus.IN_PROGRESS;
                 default: return JobStatus.IN_PROGRESS;
             }
@@ -64,17 +64,17 @@ namespace Ds3.ResponseParsers
                 return reader.ReadToEnd();
         }
 
-        private static Ds3Error ParseError(string responseContent)
+        private static Error ParseError(string responseContent)
         {
             try
             {
                 var root = XDocument.Parse(responseContent).ElementOrThrow("Error");
-                return new Ds3Error(
-                    root.TextOf("Code"),
-                    root.TextOf("Message"),
-                    root.TextOf("Resource"),
-                    root.TextOfOrNull("RequestId") ?? root.TextOfOrNull("ResourceId")
-                );
+                Error error = new Error();
+                error.Code = root.TextOf("Code");
+                error.Message = root.TextOf("Message");
+                error.Resource = root.TextOf("Resource");
+                error.ResourceId = ModelParsers.ParseNullableLong(root.TextOfOrNull("RequestId")) ?? ModelParsers.ParseLong(root.TextOfOrNull("ResourceId"));
+                return error;
             }
             catch (XmlException)
             {

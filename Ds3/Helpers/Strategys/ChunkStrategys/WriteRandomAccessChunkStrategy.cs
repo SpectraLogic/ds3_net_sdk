@@ -28,7 +28,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
     public class WriteRandomAccessChunkStrategy : IChunkStrategy
     {
         private IDs3Client _client;
-        private JobResponse _jobResponse;
+        private MasterObjectList _jobResponse;
 
         private readonly object _chunksRemainingLock = new object();
         private ISet<Guid> _toAllocateChunks;
@@ -44,14 +44,14 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             this._wait = wait;
         }
 
-        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
+        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
         {
             this._client = client;
             this._jobResponse = jobResponse;
 
             lock (this._chunksRemainingLock)
             {
-                _toAllocateChunks = new HashSet<Guid>(jobResponse.ObjectLists.Select(chunk => chunk.ChunkId));
+                _toAllocateChunks = new HashSet<Guid>(jobResponse.Objects.Select(chunk => chunk.ChunkId));
             }
 
             // Flatten all batches into a single enumerable.
@@ -99,10 +99,10 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             if (allocatedChunk != null)
             {
                 var transferClient = clientFactory.GetClientForNodeId(allocatedChunk.NodeId);
-                foreach (var jobObject in allocatedChunk.Objects)
+                foreach (var jobObject in allocatedChunk.ObjectsList)
                 {
                     var blob = Blob.Convert(jobObject);
-                    if (!jobObject.InCache)
+                    if (!(bool)jobObject.InCache)
                     {
                         transferItem.Add(new TransferItem(transferClient, blob));
                     }
@@ -112,14 +112,14 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             return transferItem.ToArray();
         }
 
-        private JobObjectList AllocateChunk(IDs3Client client, Guid chunkId)
+        private Objects AllocateChunk(IDs3Client client, Guid chunkId)
         {
-            JobObjectList chunk = null;
+            Objects chunk = null;
             var chunkGone = false;
             while (chunk == null && !chunkGone)
             {
                 client
-                    .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
+                    .AllocateJobChunkSpectraS3(new AllocateJobChunkSpectraS3Request(chunkId))
                     .Match(
                         allocatedChunk =>
                         {
