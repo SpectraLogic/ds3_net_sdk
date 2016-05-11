@@ -102,7 +102,6 @@ namespace Ds3.Calls
             return this;
         }
 
-        
         public EjectStorageDomainSpectraS3Request(IEnumerable<Ds3Object> objects, Guid storageDomainId) {
             this.StorageDomainId = storageDomainId.ToString();
             this.Objects = objects.ToList();
@@ -115,7 +114,6 @@ namespace Ds3.Calls
                 throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
             }
         }
-
         public EjectStorageDomainSpectraS3Request(IEnumerable<Ds3Object> objects, string storageDomainId) {
             this.StorageDomainId = storageDomainId;
             this.Objects = objects.ToList();
@@ -142,6 +140,7 @@ namespace Ds3.Calls
                 )
                 .WriteToMemoryStream();
         }
+
         internal override HttpVerb Verb
         {
             get
@@ -154,7 +153,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape/";
+                return "/_rest_/tape";
             }
         }
     }

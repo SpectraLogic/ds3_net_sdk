@@ -187,7 +187,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_library/";
+                return "/_rest_/tape_library";
             }
         }
     }

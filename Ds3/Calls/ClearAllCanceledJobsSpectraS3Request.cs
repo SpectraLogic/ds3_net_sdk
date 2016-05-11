@@ -42,7 +42,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/canceled_job/";
+                return "/_rest_/canceled_job";
             }
         }
     }

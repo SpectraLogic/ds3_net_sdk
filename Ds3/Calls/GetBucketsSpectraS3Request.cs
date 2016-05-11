@@ -211,7 +211,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/bucket/";
+                return "/_rest_/bucket";
             }
         }
     }

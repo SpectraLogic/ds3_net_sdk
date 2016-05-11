@@ -135,7 +135,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/object_cached_notification_registration/";
+                return "/_rest_/object_cached_notification_registration";
             }
         }
     }

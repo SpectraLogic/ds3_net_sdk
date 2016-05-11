@@ -242,7 +242,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/bucket_acl/";
+                return "/_rest_/bucket_acl";
             }
         }
     }

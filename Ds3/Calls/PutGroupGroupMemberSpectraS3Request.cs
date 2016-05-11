@@ -62,7 +62,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/group_member/";
+                return "/_rest_/group_member";
             }
         }
     }

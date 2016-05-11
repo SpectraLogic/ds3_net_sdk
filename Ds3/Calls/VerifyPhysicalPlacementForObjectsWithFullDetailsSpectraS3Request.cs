@@ -72,10 +72,6 @@ namespace Ds3.Calls
             
             this.QueryParams.Add("full_details", null);
 
-            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
-            {
-                throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
-            }
         }
 
         internal override Stream GetContentStream()
@@ -86,11 +82,21 @@ namespace Ds3.Calls
                         from obj in this.Objects
                         select new XElement("Object")
                             .SetAttributeValueFluent("Name", obj.Name)
-                            .SetAttributeValueFluent("Size", obj.Size.Value.ToString("D"))
+                            .SetAttributeValueFluent("Size", toDs3ObjectSize(obj))
                     )
                 )
                 .WriteToMemoryStream();
         }
+
+        internal string toDs3ObjectSize(Ds3Object ds3Object)
+        {
+            if (ds3Object.Size == null)
+            {
+                return null;
+            }
+            return ds3Object.Size.Value.ToString("D");
+        }
+
         internal override HttpVerb Verb
         {
             get

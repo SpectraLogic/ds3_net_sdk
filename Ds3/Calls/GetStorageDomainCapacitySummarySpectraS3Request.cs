@@ -149,7 +149,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/capacity_summary/";
+                return "/_rest_/capacity_summary";
             }
         }
     }

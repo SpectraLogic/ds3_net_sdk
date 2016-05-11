@@ -230,7 +230,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_failure/";
+                return "/_rest_/tape_failure";
             }
         }
     }

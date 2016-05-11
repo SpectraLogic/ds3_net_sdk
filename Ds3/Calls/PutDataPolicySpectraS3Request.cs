@@ -218,7 +218,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_policy/";
+                return "/_rest_/data_policy";
             }
         }
     }

@@ -130,7 +130,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/node/";
+                return "/_rest_/node";
             }
         }
     }

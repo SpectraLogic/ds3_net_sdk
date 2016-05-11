@@ -232,7 +232,7 @@ namespace TestDs3.Helpers
         {
             User owner = new User();
             owner.DisplayName = "person@spectralogic.com";
-            owner.Id = Guid.Parse("75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a");
+            owner.Id = Guid.Parse("75aa57f0-9aa0-c8ca-eab4-f8c24e99d10f"); //"75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a"
 
             Contents contents = new Contents();
             contents.Key = key;

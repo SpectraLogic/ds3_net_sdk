@@ -199,7 +199,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/pool_failure/";
+                return "/_rest_/pool_failure";
             }
         }
     }

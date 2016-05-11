@@ -42,7 +42,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/system_information/";
+                return "/_rest_/system_information";
             }
         }
     }

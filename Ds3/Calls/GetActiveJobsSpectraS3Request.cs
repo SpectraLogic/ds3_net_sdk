@@ -325,7 +325,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/active_job/";
+                return "/_rest_/active_job";
             }
         }
     }

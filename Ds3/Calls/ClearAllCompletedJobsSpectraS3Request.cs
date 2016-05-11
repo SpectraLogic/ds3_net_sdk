@@ -42,7 +42,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/completed_job/";
+                return "/_rest_/completed_job";
             }
         }
     }

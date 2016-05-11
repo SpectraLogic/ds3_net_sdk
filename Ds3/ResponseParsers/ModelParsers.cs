@@ -17,8 +17,8 @@
 using Ds3.Models;
 using Ds3.Runtime;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace Ds3.ResponseParsers
@@ -30,8 +30,8 @@ namespace Ds3.ResponseParsers
         {
             return new PhysicalPlacement
             {
-                Pools = element.Element("Pools").Elements("Pool").Select(ParsePool).ToList(),
-                Tapes = element.Element("Tapes").Elements("Tape").Select(ParseTape).ToList()
+                Pools = ParseEncapsulatedList(element, "Pool", "Pools", ParsePool),
+                Tapes = ParseEncapsulatedList(element, "Tape", "Tapes", ParseTape)
             };
         }
 
@@ -961,13 +961,12 @@ namespace Ds3.ResponseParsers
         {
             return new BulkObject
             {
-                Id = ParseGuid(element.Element("Id")),
-                InCache = ParseNullableBool(element.AttributeText("InCache")),
+                InCache = ParseNullableBool(element.AttributeTextOrNull("InCache")),
                 Latest = ParseBool(element.AttributeText("Latest")),
                 Length = ParseLong(element.AttributeText("Length")),
-                Name = ParseNullableString(element.AttributeText("Name")),
+                Name = ParseNullableString(element.AttributeTextOrNull("Name")),
                 Offset = ParseLong(element.AttributeText("Offset")),
-                PhysicalPlacement = ParsePhysicalPlacement(element.Element("PhysicalPlacement")),
+                PhysicalPlacement = ParseNullablePhysicalPlacement(element.Element("PhysicalPlacement")),
                 Version = ParseLong(element.AttributeText("Version"))
             };
         }
@@ -982,7 +981,7 @@ namespace Ds3.ResponseParsers
         {
             return new BulkObjectList
             {
-                Objects = element.Elements("object").Select(ParseBulkObject).ToList()
+                Objects = element.Elements("Object").Select(ParseBulkObject).ToList()
             };
         }
 
@@ -1016,8 +1015,6 @@ namespace Ds3.ResponseParsers
                 DateStarted = ParseNullableDateTime(element.Element("DateStarted")),
                 Description = ParseNullableString(element.Element("Description")),
                 DriveId = ParseNullableGuid(element.Element("DriveId")),
-                DurationInProgress = ParseNullableDuration(element.Element("DurationInProgress")),
-                DurationScheduled = ParseNullableDuration(element.Element("DurationScheduled")),
                 Id = ParseLong(element.Element("Id")),
                 Name = ParseNullableString(element.Element("Name")),
                 PoolId = ParseNullableGuid(element.Element("PoolId")),
@@ -1115,7 +1112,7 @@ namespace Ds3.ResponseParsers
         {
             return new ListBucketResult
             {
-                CommonPrefixes = element.Element("CommonPrefixes").Elements("Prefix").Select(ParseString).ToList(),
+                CommonPrefixes = ParseEncapsulatedList(element, "Prefix", "CommonPrefixes", ParseString),
                 CreationDate = ParseDateTime(element.Element("CreationDate")),
                 Delimiter = ParseNullableString(element.Element("Delimiter")),
                 Marker = ParseNullableString(element.Element("Marker")),
@@ -1138,7 +1135,7 @@ namespace Ds3.ResponseParsers
         {
             return new ListAllMyBucketsResult
             {
-                Buckets = element.Element("Buckets").Elements("Bucket").Select(ParseDs3Bucket).ToList(),
+                Buckets = ParseEncapsulatedList(element, "Bucket", "Buckets", ParseDs3Bucket),
                 Owner = ParseUser(element.Element("Owner"))
             };
         }
@@ -1299,21 +1296,21 @@ namespace Ds3.ResponseParsers
             return new Job
             {
                 Aggregating = ParseBool(element.AttributeText("Aggregating")),
-                BucketName = ParseNullableString(element.AttributeText("BucketName")),
+                BucketName = ParseNullableString(element.AttributeTextOrNull("BucketName")),
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
-                Name = ParseNullableString(element.AttributeText("Name")),
-                Nodes = element.Element("Nodes").Elements("Node").Select(ParseDs3Node).ToList(),
+                Name = ParseNullableString(element.AttributeTextOrNull("Name")),
+                Nodes = ParseEncapsulatedList(element, "Node", "Nodes", ParseDs3Node),
                 OriginalSizeInBytes = ParseLong(element.AttributeText("OriginalSizeInBytes")),
                 Priority = ParsePriority(element.AttributeText("Priority")),
                 RequestType = ParseJobRequestType(element.AttributeText("RequestType")),
                 StartDate = ParseDateTime(element.AttributeText("StartDate")),
                 Status = ParseJobStatus(element.AttributeText("Status")),
                 UserId = ParseGuid(element.AttributeText("UserId")),
-                UserName = ParseNullableString(element.AttributeText("UserName")),
+                UserName = ParseNullableString(element.AttributeTextOrNull("UserName")),
                 WriteOptimization = ParseWriteOptimization(element.AttributeText("WriteOptimization"))
             };
         }
@@ -1330,8 +1327,8 @@ namespace Ds3.ResponseParsers
             {
                 ChunkId = ParseGuid(element.AttributeText("ChunkId")),
                 ChunkNumber = ParseInt(element.AttributeText("ChunkNumber")),
-                NodeId = ParseNullableGuid(element.AttributeText("NodeId")),
-                ObjectsList = element.Elements("object").Select(ParseBulkObject).ToList()
+                NodeId = ParseNullableGuid(element.AttributeTextOrNull("NodeId")),
+                ObjectsList = element.Elements("Object").Select(ParseBulkObject).ToList()
             };
         }
 
@@ -1346,14 +1343,14 @@ namespace Ds3.ResponseParsers
             return new MasterObjectList
             {
                 Aggregating = ParseBool(element.AttributeText("Aggregating")),
-                BucketName = ParseNullableString(element.AttributeText("BucketName")),
+                BucketName = ParseNullableString(element.AttributeTextOrNull("BucketName")),
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
-                Name = ParseNullableString(element.AttributeText("Name")),
-                Nodes = element.Element("Nodes").Elements("Node").Select(ParseDs3Node).ToList(),
+                Name = ParseNullableString(element.AttributeTextOrNull("Name")),
+                Nodes = ParseEncapsulatedList(element, "Node", "Nodes", ParseDs3Node),
                 Objects = element.Elements("Objects").Select(ParseObjects).ToList(),
                 OriginalSizeInBytes = ParseLong(element.AttributeText("OriginalSizeInBytes")),
                 Priority = ParsePriority(element.AttributeText("Priority")),
@@ -1361,7 +1358,7 @@ namespace Ds3.ResponseParsers
                 StartDate = ParseDateTime(element.AttributeText("StartDate")),
                 Status = ParseJobStatus(element.AttributeText("Status")),
                 UserId = ParseGuid(element.AttributeText("UserId")),
-                UserName = ParseNullableString(element.AttributeText("UserName")),
+                UserName = ParseNullableString(element.AttributeTextOrNull("UserName")),
                 WriteOptimization = ParseWriteOptimization(element.AttributeText("WriteOptimization"))
             };
         }
@@ -1376,7 +1373,7 @@ namespace Ds3.ResponseParsers
         {
             return new JobList
             {
-                Jobs = element.Element("Jobs").Elements("Job").Select(ParseJob).ToList()
+                Jobs = element.Elements("Job").Select(ParseJob).ToList()
             };
         }
 
@@ -1413,7 +1410,7 @@ namespace Ds3.ResponseParsers
             return new ListMultiPartUploadsResult
             {
                 Bucket = ParseNullableString(element.Element("Bucket")),
-                CommonPrefixes = element.Element("CommonPrefixes").Elements("Prefix").Select(ParseString).ToList(),
+                CommonPrefixes = ParseEncapsulatedList(element, "Prefix", "CommonPrefixes", ParseString),
                 Delimiter = ParseNullableString(element.Element("Delimiter")),
                 KeyMarker = ParseNullableString(element.Element("KeyMarker")),
                 MaxUploads = ParseInt(element.Element("MaxUploads")),
@@ -1469,9 +1466,9 @@ namespace Ds3.ResponseParsers
         {
             return new Ds3Node
             {
-                EndPoint = ParseNullableString(element.AttributeText("EndPoint")),
-                HttpPort = ParseNullableInt(element.AttributeText("HttpPort")),
-                HttpsPort = ParseNullableInt(element.AttributeText("HttpsPort")),
+                EndPoint = ParseNullableString(element.AttributeTextOrNull("EndPoint")),
+                HttpPort = ParseNullableInt(element.AttributeTextOrNull("HttpPort")),
+                HttpsPort = ParseNullableInt(element.AttributeTextOrNull("HttpsPort")),
                 Id = ParseGuid(element.AttributeText("Id"))
             };
         }
@@ -1520,7 +1517,7 @@ namespace Ds3.ResponseParsers
             return new User
             {
                 DisplayName = ParseNullableString(element.Element("DisplayName")),
-                Id = ParseGuid(element.Element("iD"))
+                Id = ParseGuid(element.Element("ID"))
             };
         }
 
@@ -1534,7 +1531,7 @@ namespace Ds3.ResponseParsers
         {
             return new DetailedS3Object
             {
-                Blobs = ParseBulkObjectList(element.Element("Blobs")),
+                Blobs = ParseNullableBulkObjectList(element.Element("Blobs")),
                 BlobsBeingPersisted = ParseNullableInt(element.Element("BlobsBeingPersisted")),
                 BlobsDegraded = ParseNullableInt(element.Element("BlobsDegraded")),
                 BlobsInCache = ParseNullableInt(element.Element("BlobsInCache")),
@@ -1672,7 +1669,7 @@ namespace Ds3.ResponseParsers
         {
             return new TapeFailureList
             {
-                Failures = element.Elements("failure").Select(ParseTapeFailure).ToList()
+                Failures = element.Elements("Failure").Select(ParseTapeFailure).ToList()
             };
         }
 
@@ -1681,23 +1678,6 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseTapeFailureList(element);
-        }
-        public static Duration ParseDuration(XElement element)
-        {
-            return new Duration
-            {
-                ElapsedMillis = ParseLong(element.Element("ElapsedMillis")),
-                ElapsedMinutes = ParseInt(element.Element("ElapsedMinutes")),
-                ElapsedNanos = ParseLong(element.Element("ElapsedNanos")),
-                ElapsedSeconds = ParseInt(element.Element("ElapsedSeconds"))
-            };
-        }
-
-        public static Duration ParseNullableDuration(XElement element)
-        {
-            return element == null || element.IsEmpty
-                ? null
-                : ParseDuration(element);
         }
         public static BucketAclList ParseBucketAclList(XElement element)
         {
@@ -2288,6 +2268,10 @@ namespace Ds3.ResponseParsers
 
         public static AutoInspectMode? ParseNullableAutoInspectMode(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableAutoInspectMode(element.Value);
         }
 
@@ -2309,6 +2293,10 @@ namespace Ds3.ResponseParsers
 
         public static Priority? ParseNullablePriority(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullablePriority(element.Value);
         }
 
@@ -2330,6 +2318,10 @@ namespace Ds3.ResponseParsers
 
         public static BucketAclPermission? ParseNullableBucketAclPermission(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableBucketAclPermission(element.Value);
         }
 
@@ -2351,6 +2343,10 @@ namespace Ds3.ResponseParsers
 
         public static DataIsolationLevel? ParseNullableDataIsolationLevel(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableDataIsolationLevel(element.Value);
         }
 
@@ -2372,6 +2368,10 @@ namespace Ds3.ResponseParsers
 
         public static DataPersistenceRuleState? ParseNullableDataPersistenceRuleState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableDataPersistenceRuleState(element.Value);
         }
 
@@ -2393,6 +2393,10 @@ namespace Ds3.ResponseParsers
 
         public static DataPersistenceRuleType? ParseNullableDataPersistenceRuleType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableDataPersistenceRuleType(element.Value);
         }
 
@@ -2414,6 +2418,10 @@ namespace Ds3.ResponseParsers
 
         public static JobChunkClientProcessingOrderGuarantee? ParseNullableJobChunkClientProcessingOrderGuarantee(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableJobChunkClientProcessingOrderGuarantee(element.Value);
         }
 
@@ -2435,6 +2443,10 @@ namespace Ds3.ResponseParsers
 
         public static JobRequestType? ParseNullableJobRequestType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableJobRequestType(element.Value);
         }
 
@@ -2456,6 +2468,10 @@ namespace Ds3.ResponseParsers
 
         public static LtfsFileNamingMode? ParseNullableLtfsFileNamingMode(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableLtfsFileNamingMode(element.Value);
         }
 
@@ -2477,6 +2493,10 @@ namespace Ds3.ResponseParsers
 
         public static S3ObjectType? ParseNullableS3ObjectType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableS3ObjectType(element.Value);
         }
 
@@ -2498,6 +2518,10 @@ namespace Ds3.ResponseParsers
 
         public static StorageDomainFailureType? ParseNullableStorageDomainFailureType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableStorageDomainFailureType(element.Value);
         }
 
@@ -2519,6 +2543,10 @@ namespace Ds3.ResponseParsers
 
         public static StorageDomainMemberState? ParseNullableStorageDomainMemberState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableStorageDomainMemberState(element.Value);
         }
 
@@ -2540,6 +2568,10 @@ namespace Ds3.ResponseParsers
 
         public static SystemFailureType? ParseNullableSystemFailureType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableSystemFailureType(element.Value);
         }
 
@@ -2561,6 +2593,10 @@ namespace Ds3.ResponseParsers
 
         public static UnavailableMediaUsagePolicy? ParseNullableUnavailableMediaUsagePolicy(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableUnavailableMediaUsagePolicy(element.Value);
         }
 
@@ -2582,6 +2618,10 @@ namespace Ds3.ResponseParsers
 
         public static VersioningLevel? ParseNullableVersioningLevel(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableVersioningLevel(element.Value);
         }
 
@@ -2603,6 +2643,10 @@ namespace Ds3.ResponseParsers
 
         public static WriteOptimization? ParseNullableWriteOptimization(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableWriteOptimization(element.Value);
         }
 
@@ -2624,6 +2668,10 @@ namespace Ds3.ResponseParsers
 
         public static WritePreferenceLevel? ParseNullableWritePreferenceLevel(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableWritePreferenceLevel(element.Value);
         }
 
@@ -2645,6 +2693,10 @@ namespace Ds3.ResponseParsers
 
         public static PoolFailureType? ParseNullablePoolFailureType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullablePoolFailureType(element.Value);
         }
 
@@ -2666,6 +2718,10 @@ namespace Ds3.ResponseParsers
 
         public static PoolHealth? ParseNullablePoolHealth(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullablePoolHealth(element.Value);
         }
 
@@ -2687,6 +2743,10 @@ namespace Ds3.ResponseParsers
 
         public static PoolState? ParseNullablePoolState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullablePoolState(element.Value);
         }
 
@@ -2708,6 +2768,10 @@ namespace Ds3.ResponseParsers
 
         public static PoolType? ParseNullablePoolType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullablePoolType(element.Value);
         }
 
@@ -2729,6 +2793,10 @@ namespace Ds3.ResponseParsers
 
         public static ImportConflictResolutionMode? ParseNullableImportConflictResolutionMode(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableImportConflictResolutionMode(element.Value);
         }
 
@@ -2750,6 +2818,10 @@ namespace Ds3.ResponseParsers
 
         public static Quiesced? ParseNullableQuiesced(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableQuiesced(element.Value);
         }
 
@@ -2771,6 +2843,10 @@ namespace Ds3.ResponseParsers
 
         public static ReplicationConflictResolutionMode? ParseNullableReplicationConflictResolutionMode(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableReplicationConflictResolutionMode(element.Value);
         }
 
@@ -2792,6 +2868,10 @@ namespace Ds3.ResponseParsers
 
         public static ImportExportConfiguration? ParseNullableImportExportConfiguration(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableImportExportConfiguration(element.Value);
         }
 
@@ -2813,6 +2893,10 @@ namespace Ds3.ResponseParsers
 
         public static TapeDriveState? ParseNullableTapeDriveState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableTapeDriveState(element.Value);
         }
 
@@ -2834,6 +2918,10 @@ namespace Ds3.ResponseParsers
 
         public static TapeDriveType? ParseNullableTapeDriveType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableTapeDriveType(element.Value);
         }
 
@@ -2855,6 +2943,10 @@ namespace Ds3.ResponseParsers
 
         public static TapeFailureType? ParseNullableTapeFailureType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableTapeFailureType(element.Value);
         }
 
@@ -2876,6 +2968,10 @@ namespace Ds3.ResponseParsers
 
         public static TapePartitionFailureType? ParseNullableTapePartitionFailureType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableTapePartitionFailureType(element.Value);
         }
 
@@ -2897,6 +2993,10 @@ namespace Ds3.ResponseParsers
 
         public static TapePartitionState? ParseNullableTapePartitionState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableTapePartitionState(element.Value);
         }
 
@@ -2918,6 +3018,10 @@ namespace Ds3.ResponseParsers
 
         public static TapeState? ParseNullableTapeState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableTapeState(element.Value);
         }
 
@@ -2939,6 +3043,10 @@ namespace Ds3.ResponseParsers
 
         public static TapeType? ParseNullableTapeType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableTapeType(element.Value);
         }
 
@@ -2960,6 +3068,10 @@ namespace Ds3.ResponseParsers
 
         public static BlobStoreTaskState? ParseNullableBlobStoreTaskState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableBlobStoreTaskState(element.Value);
         }
 
@@ -2981,6 +3093,10 @@ namespace Ds3.ResponseParsers
 
         public static CacheEntryState? ParseNullableCacheEntryState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableCacheEntryState(element.Value);
         }
 
@@ -3002,6 +3118,10 @@ namespace Ds3.ResponseParsers
 
         public static JobStatus? ParseNullableJobStatus(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableJobStatus(element.Value);
         }
 
@@ -3023,6 +3143,10 @@ namespace Ds3.ResponseParsers
 
         public static RestOperationType? ParseNullableRestOperationType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableRestOperationType(element.Value);
         }
 
@@ -3044,6 +3168,10 @@ namespace Ds3.ResponseParsers
 
         public static DatabasePhysicalSpaceState? ParseNullableDatabasePhysicalSpaceState(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableDatabasePhysicalSpaceState(element.Value);
         }
 
@@ -3065,6 +3193,10 @@ namespace Ds3.ResponseParsers
 
         public static HttpResponseFormatType? ParseNullableHttpResponseFormatType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableHttpResponseFormatType(element.Value);
         }
 
@@ -3086,6 +3218,10 @@ namespace Ds3.ResponseParsers
 
         public static RequestType? ParseNullableRequestType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableRequestType(element.Value);
         }
 
@@ -3107,6 +3243,10 @@ namespace Ds3.ResponseParsers
 
         public static NamingConventionType? ParseNullableNamingConventionType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableNamingConventionType(element.Value);
         }
 
@@ -3132,6 +3272,10 @@ namespace Ds3.ResponseParsers
 
         public static ChecksumType.Type? ParseNullableChecksumType(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableChecksumType(element.Value);
         }
 
@@ -3144,6 +3288,10 @@ namespace Ds3.ResponseParsers
 
         public static Guid? ParseNullableGuid(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableGuid(element.Value);
         }
 
@@ -3168,6 +3316,10 @@ namespace Ds3.ResponseParsers
 
         public static DateTime? ParseNullableDateTime(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableDateTime(element.Value);
         }
 
@@ -3192,6 +3344,10 @@ namespace Ds3.ResponseParsers
 
         public static bool? ParseNullableBool(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableBool(element.Value);
         }
 
@@ -3216,6 +3372,10 @@ namespace Ds3.ResponseParsers
 
         public static string ParseNullableString(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableString(element.Value);
         }
 
@@ -3240,6 +3400,10 @@ namespace Ds3.ResponseParsers
 
         public static int? ParseNullableInt(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableInt(element.Value);
         }
 
@@ -3264,6 +3428,10 @@ namespace Ds3.ResponseParsers
 
         public static long? ParseNullableLong(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableLong(element.Value);
         }
 
@@ -3288,6 +3456,10 @@ namespace Ds3.ResponseParsers
 
         public static double? ParseNullableDouble(XElement element)
         {
+            if (null == element)
+            {
+                return null;
+            }
             return ParseNullableDouble(element.Value);
         }
 
@@ -3314,22 +3486,32 @@ namespace Ds3.ResponseParsers
             where T : struct
         {
             T result;
-            if (!Enum.TryParse(ConvertToPascalCase(enumString), out result))
+            if (!Enum.TryParse(enumString, out result))
             {
                 throw new ArgumentException(string.Format(Resources.InvalidValueForTypeException, typeof(T).Name));
             }
             return result;
         }
 
-        public static string ConvertToPascalCase(string uppercaseUnderscore)
+        //List Parser
+
+        public static IEnumerable<TResult> ParseEncapsulatedList<TResult>(
+            XElement element,
+            string xmlTag,
+            string encapsulatingXmlTag,
+            Func<XElement, TResult> parser)
         {
-            var sb = new StringBuilder();
-            foreach (var word in uppercaseUnderscore.Split('_'))
+            var encapsulatingElement = element.Element(encapsulatingXmlTag);
+            if (null == encapsulatingElement || encapsulatingElement.IsEmpty)
             {
-                sb.Append(word[0]);
-                sb.Append(word.Substring(1).ToLowerInvariant());
+                return Enumerable.Empty<TResult>();
             }
-            return sb.ToString();
+            var elements = encapsulatingElement.Elements(xmlTag);
+            if (null == elements)
+            {
+                return Enumerable.Empty<TResult>();
+            }
+            return elements.Select(parser).ToList();
         }
     }
 }

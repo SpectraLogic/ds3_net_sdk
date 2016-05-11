@@ -1,10 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <MasterObjectList
+  Aggregating="false"
   BucketName="avid-bucket"
   CachedSizeInBytes="1095132963"
   ChunkClientProcessingOrderGuarantee="IN_ORDER"
   CompletedSizeInBytes="0"
   JobId="350225fb-ec92-4456-a09d-5ffb7c7830bb"
+  Naked="false"
+  Name="Untitled"
   OriginalSizeInBytes="1095132963"
   Priority="NORMAL"
   RequestType="PUT"

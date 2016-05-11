@@ -168,7 +168,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/pool_partition/";
+                return "/_rest_/pool_partition";
             }
         }
     }

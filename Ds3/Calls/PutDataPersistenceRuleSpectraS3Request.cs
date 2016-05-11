@@ -97,7 +97,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_persistence_rule/";
+                return "/_rest_/data_persistence_rule";
             }
         }
     }

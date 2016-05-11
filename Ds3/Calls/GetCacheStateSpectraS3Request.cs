@@ -42,7 +42,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/cache_state/";
+                return "/_rest_/cache_state";
             }
         }
     }

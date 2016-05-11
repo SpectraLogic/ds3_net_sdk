@@ -199,7 +199,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_partition_failure/";
+                return "/_rest_/tape_partition_failure";
             }
         }
     }

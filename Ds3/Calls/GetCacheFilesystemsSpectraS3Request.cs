@@ -161,7 +161,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/cache_filesystem/";
+                return "/_rest_/cache_filesystem";
             }
         }
     }

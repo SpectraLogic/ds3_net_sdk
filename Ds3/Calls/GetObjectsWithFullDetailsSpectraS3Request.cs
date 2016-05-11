@@ -277,7 +277,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/object/";
+                return "/_rest_/object";
             }
         }
     }

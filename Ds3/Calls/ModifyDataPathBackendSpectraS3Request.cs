@@ -175,7 +175,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_path_backend/";
+                return "/_rest_/data_path_backend";
             }
         }
     }

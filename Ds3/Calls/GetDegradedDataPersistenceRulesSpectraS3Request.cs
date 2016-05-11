@@ -249,7 +249,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/degraded_data_persistence_rule/";
+                return "/_rest_/degraded_data_persistence_rule";
             }
         }
     }

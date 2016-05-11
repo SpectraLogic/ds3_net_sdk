@@ -26,8 +26,6 @@ namespace Ds3.Models
         public DateTime? DateStarted { get; set; }
         public string Description { get; set; }
         public Guid? DriveId { get; set; }
-        public Duration DurationInProgress { get; set; }
-        public Duration DurationScheduled { get; set; }
         public long Id { get; set; }
         public string Name { get; set; }
         public Guid? PoolId { get; set; }

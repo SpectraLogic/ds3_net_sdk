@@ -218,7 +218,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_drive/";
+                return "/_rest_/tape_drive";
             }
         }
     }

@@ -89,7 +89,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/storage_domain_member/";
+                return "/_rest_/storage_domain_member";
             }
         }
     }

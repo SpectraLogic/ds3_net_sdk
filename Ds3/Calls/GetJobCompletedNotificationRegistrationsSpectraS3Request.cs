@@ -161,7 +161,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/job_completed_notification_registration/";
+                return "/_rest_/job_completed_notification_registration";
             }
         }
     }

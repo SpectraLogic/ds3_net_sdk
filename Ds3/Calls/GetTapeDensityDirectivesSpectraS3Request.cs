@@ -199,7 +199,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_density_directive/";
+                return "/_rest_/tape_density_directive";
             }
         }
     }

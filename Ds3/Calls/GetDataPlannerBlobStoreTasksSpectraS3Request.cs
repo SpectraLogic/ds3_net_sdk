@@ -61,7 +61,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/blob_store_task/";
+                return "/_rest_/blob_store_task";
             }
         }
     }

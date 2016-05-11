@@ -47,7 +47,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/pool/";
+                return "/_rest_/pool";
             }
         }
     }

@@ -223,7 +223,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_policy_acl/";
+                return "/_rest_/data_policy_acl";
             }
         }
     }

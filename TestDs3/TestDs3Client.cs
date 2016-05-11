@@ -48,19 +48,28 @@ namespace TestDs3
         [Test]
         public void TestGetService()
         {
-            var responseContent = "<ListAllMyBucketsResult><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner><Buckets><Bucket><Name>testBucket2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest1</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest3</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest4</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest5</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest6</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testBucket3</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testBucket1</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testbucket</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>";
+            String id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
+            var responseContent = "<ListAllMyBucketsResult><Owner><ID>" + id + "</ID><DisplayName>ryan</DisplayName></Owner><Buckets><Bucket>"
+                + "<Name>testBucket2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest</Name>" 
+                + "<CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest1</Name><CreationDate>2013-12-11T23:20:09</CreationDate>"
+                + "</Bucket><Bucket><Name>bulkTest2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest3</Name>" 
+                + "<CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest4</Name><CreationDate>2013-12-11T23:20:09</CreationDate>"
+                + "</Bucket><Bucket><Name>bulkTest5</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest6</Name>"
+                + "<CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testBucket3</Name><CreationDate>2013-12-11T23:20:09</CreationDate>"
+                + "</Bucket><Bucket><Name>testBucket1</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testbucket</Name>"
+                + "<CreationDate>2013-12-11T23:20:09</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>";
             var expectedBuckets = new[] {
-                new { Key = "testBucket2",  CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "bulkTest",     CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "bulkTest1",    CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "bulkTest2",    CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "bulkTest3",    CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "bulkTest4",    CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "bulkTest5",    CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "bulkTest6",    CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "testBucket3",  CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "testBucket1",  CreationDate = "2013-12-11T23:20:09" },
-                new { Key = "testbucket",   CreationDate = "2013-12-11T23:20:09" }
+                new Ds3Bucket() { Name = "testBucket2",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "bulkTest",     CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "bulkTest1",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "bulkTest2",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "bulkTest3",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "bulkTest4",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "bulkTest5",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "bulkTest6",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "testBucket3",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "testBucket1",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new Ds3Bucket() { Name = "testbucket",   CreationDate = DateTime.Parse("2013-12-11T23:20:09") }
             };
 
             var response = MockNetwork
@@ -69,12 +78,12 @@ namespace TestDs3
                 .AsClient
                 .GetService(new GetServiceRequest()).ResponsePayload;
             Assert.AreEqual("ryan", response.Owner.DisplayName);
-            Assert.AreEqual("ryan", response.Owner.Id);
+            Assert.AreEqual(id, response.Owner.Id.ToString());
 
             Assert.AreEqual(expectedBuckets.Length, response.Buckets.ToList().Count);
             for (var i = 0; i < expectedBuckets.Length; i++)
             {
-                Assert.AreEqual(expectedBuckets[i].Key, response.Buckets.ToList()[i].Name);
+                Assert.AreEqual(expectedBuckets[i].Name, response.Buckets.ToList()[i].Name);
                 Assert.AreEqual(expectedBuckets[i].CreationDate, response.Buckets.ToList()[i].CreationDate);
             }
         }
@@ -104,7 +113,10 @@ namespace TestDs3
         [Test]
         public void TestGetSystemInfo()
         {
-            var xmlResponse = @"<Data><ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA</ApiVersion><BuildInformation><Branch>//BlueStorm/r1.x</Branch><Revision>1154042</Revision><Version>1.2.0</Version></BuildInformation><SerialNumber>5003048001dbd7b3</SerialNumber></Data>";
+            var xmlResponse = "<Data><ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA</ApiVersion>" 
+                + "<BackendActivated>false</BackendActivated>"
+                + "<BuildInformation><Branch>//BlueStorm/r1.x</Branch><Revision>1154042</Revision><Version>1.2.0</Version></BuildInformation>" 
+                + "<SerialNumber>5003048001dbd7b3</SerialNumber></Data>";
             var expected = new GetSystemInformationSpectraS3Response(
                 new SystemInformation() {
                     ApiVersion = "91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA",
@@ -114,28 +126,28 @@ namespace TestDs3
                         Version = "1.2.0"
                     },
                     SerialNumber = "5003048001dbd7b3"
-                }).ResponsePayload;
+                });
             var response = MockNetwork
-                .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_INFORMATION", _emptyQueryParams, "")
+                .Expecting(HttpVerb.GET, "/_rest_/system_information", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetSystemInformationSpectraS3(new GetSystemInformationSpectraS3Request()).ResponsePayload;
-            Assert.AreEqual(response.ApiVersion, expected.ApiVersion);
-            Assert.AreEqual(response.BuildInformation.Branch, expected.BuildInformation.Branch);
-            Assert.AreEqual(response.BuildInformation.Revision, expected.BuildInformation.Revision);
-            Assert.AreEqual(response.BuildInformation.Version, expected.BuildInformation.Version);
-            Assert.AreEqual(response.SerialNumber, expected.SerialNumber);
+                .GetSystemInformationSpectraS3(new GetSystemInformationSpectraS3Request());
+            Assert.AreEqual(response.ResponsePayload.ApiVersion, expected.ResponsePayload.ApiVersion);
+            Assert.AreEqual(response.ResponsePayload.BuildInformation.Branch, expected.ResponsePayload.BuildInformation.Branch);
+            Assert.AreEqual(response.ResponsePayload.BuildInformation.Revision, expected.ResponsePayload.BuildInformation.Revision);
+            Assert.AreEqual(response.ResponsePayload.BuildInformation.Version, expected.ResponsePayload.BuildInformation.Version);
+            Assert.AreEqual(response.ResponsePayload.SerialNumber, expected.ResponsePayload.SerialNumber);
         }
 
         [Test]
         public void TestVerifySystemHealth()
         {
-            var xmlResponse = @"<Data><MsRequiredToVerifyDataPlannerHealth>666</MsRequiredToVerifyDataPlannerHealth></Data>";
+            var xmlResponse = @"<Data><MsRequiredToVerifyDataPlannerHealth>666</MsRequiredToVerifyDataPlannerHealth><DatabaseFilesystemFreeSpace>NORMAL</DatabaseFilesystemFreeSpace></Data>";
             var healthVarificationResult = new HealthVerificationResult();
             healthVarificationResult.MsRequiredToVerifyDataPlannerHealth = 666L;
             var expected = new VerifySystemHealthSpectraS3Response(healthVarificationResult);
             var response = MockNetwork
-                .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_HEALTH", _emptyQueryParams, "")
+                .Expecting(HttpVerb.GET, "/_rest_/system_health", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
                 .VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request());
@@ -149,7 +161,7 @@ namespace TestDs3
         public void TestVerifySystemHealthConnectFail()
         {
             var response = MockNetwork
-                .Expecting(HttpVerb.GET, "/_rest_/SYSTEM_HEALTH", _emptyQueryParams, "")
+                .Expecting(HttpVerb.GET, "/_rest_/system_health", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.ServiceUnavailable, "", _emptyHeaders)
                 .AsClient
                 .VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request());
@@ -158,38 +170,42 @@ namespace TestDs3
         [Test]
         public void TestGetBucket()
         {
-            var xmlResponse = "<ListBucketResult><Name>remoteTest16</Name><Prefix/><Marker/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>user/hduser/gutenberg/20417.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>674570</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/5000.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1423803</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/4300.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1573150</Size><StorageClass>STANDARD</StorageClass><Owner><ID>ryan</ID><DisplayName>ryan</DisplayName></Owner></Contents></ListBucketResult>";
-            var expected = new
+            String id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
+            var xmlResponse = "<ListBucketResult><CreationDate>2014-01-03T13:26:47.000Z</CreationDate><Name>remoteTest16</Name><CommonPrefixes/><Marker/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>user/hduser/gutenberg/20417.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>674570</Size><StorageClass>STANDARD</StorageClass><Owner>" 
+                + "<ID>" + id + "</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/5000.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1423803</Size><StorageClass>STANDARD</StorageClass><Owner>"
+                + "<ID>" + id + "</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/4300.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1573150</Size><StorageClass>STANDARD</StorageClass><Owner>"
+                + "<ID>" + id + "</ID><DisplayName>ryan</DisplayName></Owner></Contents></ListBucketResult>";
+            ListBucketResult expected = new ListBucketResult()
             {
                 Name = "remoteTest16",
-                Prefix = "",
-                Marker = "",
+                Prefix = null,
+                Marker = null,
                 MaxKeys = 1000,
-                IsTruncated = false,
+                Truncated = false,
                 Objects = new[] {
-                    new {
+                    new Contents() {
                         Key = "user/hduser/gutenberg/20417.txt.utf-8",
                         LastModified = DateTime.Parse("2014-01-03T13:26:47.000Z"),
                         ETag = "NOTRETURNED",
                         Size = 674570,
                         StorageClass = "STANDARD",
-                        Owner = new { ID = "ryan", DisplayName = "ryan" }
+                        Owner = new User() { Id = Guid.Parse(id), DisplayName = "ryan" }
                     },
-                    new {
+                    new Contents() {
                         Key = "user/hduser/gutenberg/5000.txt.utf-8",
                         LastModified = DateTime.Parse("2014-01-03T13:26:47.000Z"),
                         ETag = "NOTRETURNED",
                         Size = 1423803,
                         StorageClass = "STANDARD",
-                        Owner = new { ID = "ryan", DisplayName = "ryan" }
+                        Owner = new User() { Id = Guid.Parse(id), DisplayName = "ryan" }
                     },
-                    new {
+                    new Contents() {
                         Key = "user/hduser/gutenberg/4300.txt.utf-8",
                         LastModified = DateTime.Parse("2014-01-03T13:26:47.000Z"),
                         ETag = "NOTRETURNED",
                         Size = 1573150,
                         StorageClass = "STANDARD",
-                        Owner = new { ID = "ryan", DisplayName = "ryan" }
+                        Owner = new User() { Id = Guid.Parse(id), DisplayName = "ryan" }
                     }
                 }
             };
@@ -204,49 +220,52 @@ namespace TestDs3
             Assert.AreEqual(expected.Prefix, response.Prefix);
             Assert.AreEqual(expected.Marker, response.Marker);
             Assert.AreEqual(expected.MaxKeys, response.MaxKeys);
-            Assert.AreEqual(expected.IsTruncated, response.Truncated);
+            Assert.AreEqual(expected.Truncated, response.Truncated);
 
             var responseObjects = response.Objects.ToList();
-            Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
-            for (var i = 0; i < expected.Objects.Length; i++)
+            var expectedObjects = expected.Objects.ToList();
+            Assert.AreEqual(expectedObjects.Count, responseObjects.Count);
+            for (var i = 0; i < expectedObjects.Count; i++)
             {
-                Assert.AreEqual(expected.Objects[i].Key, responseObjects[i].Key);
-                Assert.AreEqual(expected.Objects[i].LastModified, responseObjects[i].LastModified);
-                Assert.AreEqual(expected.Objects[i].ETag, responseObjects[i].ETag);
-                Assert.AreEqual(expected.Objects[i].Size, responseObjects[i].Size);
-                Assert.AreEqual(expected.Objects[i].StorageClass, responseObjects[i].StorageClass);
-                Assert.AreEqual(expected.Objects[i].Owner.ID, responseObjects[i].Owner.Id);
-                Assert.AreEqual(expected.Objects[i].Owner.DisplayName, responseObjects[i].Owner.DisplayName);
+                Assert.AreEqual(expectedObjects[i].Key, responseObjects[i].Key);
+                Assert.AreEqual(expectedObjects[i].LastModified, responseObjects[i].LastModified);
+                Assert.AreEqual(expectedObjects[i].ETag, responseObjects[i].ETag);
+                Assert.AreEqual(expectedObjects[i].Size, responseObjects[i].Size);
+                Assert.AreEqual(expectedObjects[i].StorageClass, responseObjects[i].StorageClass);
+                Assert.AreEqual(expectedObjects[i].Owner.Id, responseObjects[i].Owner.Id);
+                Assert.AreEqual(expectedObjects[i].Owner.DisplayName, responseObjects[i].Owner.DisplayName);
             }
         }
 
         [Test]
         public void TestGetObjects()
         {
-            var xmlResponse = @"<Data><S3Object><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:51.643</CreationDate><Id>82c8caee-9ad2-4c2c-912a-7d7f1dba850e</Id><Name>dont_get_around_much_anymore.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object><S3Object><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.457</CreationDate><Id>7dad06d1-d492-497e-828d-ca8c53cf5e6d</Id><Name>is_you_is_or_is_you_aint.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object><S3Object><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.012</CreationDate><Id>bcf24226-9c5e-423d-99fb-4939a61cd1fb</Id><Name>youre_just_in_love.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object></Data>";
+            var xmlResponse = "<Data><S3Object><Latest>true</Latest><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:51.643</CreationDate><Id>82c8caee-9ad2-4c2c-912a-7d7f1dba850e</Id><Name>dont_get_around_much_anymore.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object>"
+                + "<S3Object><Latest>true</Latest><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.457</CreationDate><Id>7dad06d1-d492-497e-828d-ca8c53cf5e6d</Id><Name>is_you_is_or_is_you_aint.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object>"
+                + "<S3Object><Latest>true</Latest><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.012</CreationDate><Id>bcf24226-9c5e-423d-99fb-4939a61cd1fb</Id><Name>youre_just_in_love.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object></Data>";
             var expected = new
             {
                 Objects = new[] {
-                    new {
-                        BucketId = "b25a51b1-3dc8-4ecb-86d0-de334314e0a8",
+                    new S3Object() {
+                        BucketId = Guid.Parse("b25a51b1-3dc8-4ecb-86d0-de334314e0a8"),
                         Name = "dont_get_around_much_anymore.mp4",
-                        Id = "82c8caee-9ad2-4c2c-912a-7d7f1dba850e",
+                        Id = Guid.Parse("82c8caee-9ad2-4c2c-912a-7d7f1dba850e"),
                         CreationDate = DateTime.Parse("2015-08-26 16:11:51.643"),
                         Type = S3ObjectType.DATA,
                         Version = 1L
                     },
-                    new {
-                        BucketId = "b25a51b1-3dc8-4ecb-86d0-de334314e0a8",
+                    new S3Object() {
+                        BucketId = Guid.Parse("b25a51b1-3dc8-4ecb-86d0-de334314e0a8"),
                         Name = "is_you_is_or_is_you_aint.mp4",
-                        Id = "7dad06d1-d492-497e-828d-ca8c53cf5e6d",
+                        Id = Guid.Parse("7dad06d1-d492-497e-828d-ca8c53cf5e6d"),
                         CreationDate = DateTime.Parse("2015-08-26 16:11:52.457"),
                         Type = S3ObjectType.DATA,
                         Version = 1L
                     },
-                    new {
-                        BucketId = "b25a51b1-3dc8-4ecb-86d0-de334314e0a8",
+                    new S3Object() {
+                        BucketId = Guid.Parse("b25a51b1-3dc8-4ecb-86d0-de334314e0a8"),
                         Name = "youre_just_in_love.mp4",
-                        Id = "bcf24226-9c5e-423d-99fb-4939a61cd1fb",
+                        Id = Guid.Parse("bcf24226-9c5e-423d-99fb-4939a61cd1fb"),
                         CreationDate = DateTime.Parse("2015-08-26 16:11:52.012"),
                         Type = S3ObjectType.DATA,
                         Version = 1L
@@ -256,11 +275,11 @@ namespace TestDs3
 
             var expectedQueryParams = new Dictionary<string, string>
                 {
-                    { "bucketId", "videos" },
+                    { "bucket_id", "videos" },
                     { "name", "%mp4" }
                 };
             var response = MockNetwork
-                .Expecting(HttpVerb.GET, "/_rest_/object/", expectedQueryParams, "")
+                .Expecting(HttpVerb.GET, "/_rest_/object", expectedQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
                 .GetObjectsSpectraS3(new GetObjectsSpectraS3Request()
@@ -344,8 +363,8 @@ namespace TestDs3
         {
             var expectedQueryParams = new Dictionary<string, string>
                 {
-                    { "bucketId", "testdelete" },
-                    { "recursive", "" }
+                    { "bucket_id", "testdelete" },
+                    { "recursive", null }
                 };
             MockNetwork
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/coffeehouse/jk", expectedQueryParams, "")
@@ -360,8 +379,8 @@ namespace TestDs3
         {
             var expectedQueryParams = new Dictionary<string, string>
                 {
-                    { "bucketId", "testdelete" },
-                    { "recursive", "" }
+                    { "bucket_id", "testdelete" },
+                    { "recursive", null }
                 };
             MockNetwork
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
@@ -376,8 +395,8 @@ namespace TestDs3
         {
             var expectedQueryParams = new Dictionary<string, string>
                 {
-                    { "bucketId", "nosuchbucket" },
-                    { "recursive", "" }
+                    { "bucket_id", "nosuchbucket" },
+                    { "recursive", null }
                 };
             MockNetwork
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
@@ -578,10 +597,10 @@ namespace TestDs3
             Assert.AreEqual("avid-bucket", job.BucketName);
             Assert.AreEqual(JobChunkClientProcessingOrderGuarantee.IN_ORDER, job.ChunkClientProcessingOrderGuarantee);
             Assert.AreEqual(jobId, job.JobId);
-            CollectionAssert.AreEqual(Enumerable.Empty<Node>(), job.Nodes);
+            CollectionAssert.AreEqual(Enumerable.Empty<Objects>(), job.Nodes);
             CollectionAssert.AreEqual(Enumerable.Empty<Objects>(), job.Objects);
-            Assert.AreEqual("NORMAL", job.Priority);
-            Assert.AreEqual("PUT", job.RequestType);
+            Assert.AreEqual(Priority.NORMAL, job.Priority);
+            Assert.AreEqual(JobRequestType.PUT, job.RequestType);
             Assert.AreEqual(new DateTime(2015, 5, 5, 17, 9, 30, 0, DateTimeKind.Utc), job.StartDate.ToUniversalTime());
             Assert.AreEqual(JobStatus.COMPLETED, job.Status);
         }
@@ -596,19 +615,19 @@ namespace TestDs3
         private static void CheckJobResponse(MasterObjectList response)
         {
             var expectedNodes = new[] {
-                new {
+                new Ds3Node() {
                     EndPoint="10.1.18.12",
                     HttpPort=(int?)80,
                     HttpsPort=(int?)443,
                     Id=Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c")
                 },
-                new {
+                new Ds3Node() {
                     EndPoint="10.1.18.13",
                     HttpPort=(int?)null,
                     HttpsPort=(int?)443,
                     Id=Guid.Parse("4ecebf6f-bfd2-40a8-82a6-32fd684fd500")
                 },
-                new {
+                new Ds3Node() {
                     EndPoint="10.1.18.14",
                     HttpPort=(int?)80,
                     HttpsPort=(int?)null,
@@ -616,38 +635,38 @@ namespace TestDs3
                 },
             };
             var expectedObjectLists = new[] {
-                new {
-                    ChunkNumber=0L,
+                new Objects() {
+                    ChunkNumber=0,
                     ChunkId = Guid.Parse("f58370c2-2538-4e78-a9f8-e4d2676bdf44"),
                     NodeId=(Guid?)Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c"),
-                    Objects = new[] {
-                        new { Name="client00obj000004-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000004-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000003-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000003-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000002-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000002-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000005-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000005-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000006-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000006-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000000-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000000-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000001-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000001-8000000", Length=2823290880L, Offset=5368709120L },
+                    ObjectsList = new[] {
+                        new BulkObject() { Name="client00obj000004-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000004-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000003-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000003-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000002-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000002-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000005-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000005-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000006-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000006-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000000-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000000-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000001-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000001-8000000", Length=2823290880L, Offset=5368709120L },
                     },
                 },
-                new {
-                    ChunkNumber=1L,
+                new Objects() {
+                    ChunkNumber=1,
                     ChunkId = Guid.Parse("4137d768-25bb-4942-9d36-b92dfbe75e01"),
                     NodeId=(Guid?)null,
-                    Objects = new[] {
-                        new { Name="client00obj000008-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000008-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000009-8000000", Length=2823290880L, Offset=5368709120L },
-                        new { Name="client00obj000009-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000007-8000000", Length=5368709120L, Offset=0L },
-                        new { Name="client00obj000007-8000000", Length=2823290880L, Offset=5368709120L },
+                    ObjectsList = new[] {
+                        new BulkObject() { Name="client00obj000008-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000008-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000009-8000000", Length=2823290880L, Offset=5368709120L },
+                        new BulkObject() { Name="client00obj000009-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000007-8000000", Length=5368709120L, Offset=0L },
+                        new BulkObject() { Name="client00obj000007-8000000", Length=2823290880L, Offset=5368709120L },
                     }
                 }
             };
@@ -663,7 +682,7 @@ namespace TestDs3
                 Assert.AreEqual(expectedObjectList.ChunkNumber, actualObjectList.ChunkNumber);
                 Assert.AreEqual(expectedObjectList.ChunkId, actualObjectList.ChunkId);
                 Assert.AreEqual(expectedObjectList.NodeId, actualObjectList.NodeId);
-                HelpersForTest.AssertCollectionsEqual(expectedObjectList.Objects, actualObjectList.ObjectsList, (expectedObject, actualObject) =>
+                HelpersForTest.AssertCollectionsEqual(expectedObjectList.ObjectsList, actualObjectList.ObjectsList, (expectedObject, actualObject) =>
                 {
                     Assert.AreEqual(expectedObject.Name, actualObject.Name);
                     Assert.AreEqual(expectedObject.Length, actualObject.Length);
@@ -675,7 +694,7 @@ namespace TestDs3
         [Test]
         public void TestGetJobList()
         {
-            var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
+            var responseContent = "<Jobs><Job WriteOptimization=\"CAPACITY\" UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" OriginalSizeInBytes=\"0\" Naked=\"false\" CompletedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CachedSizeInBytes=\"0\" Aggregating=\"false\" BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
@@ -689,17 +708,23 @@ namespace TestDs3
         [Test]
         public void TestGetJobListWithBucketName()
         {
-            var responseContent = "<Jobs><Job BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
+            var responseContent = "<Jobs><Job Aggregating=\"false\" BucketName=\"bucketName\" CachedSizeInBytes=\"0\" "
+                + "ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CompletedSizeInBytes=\"0\" OriginalSizeInBytes=\"0\" "
+                + "JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Naked=\"false\" Priority=\"NORMAL\" RequestType=\"PUT\" "
+                + "UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" WriteOptimization=\"CAPACITY\" "
+                + "StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
             var queryParams = new Dictionary<string, string>
             {
-                { "bucket", "bucketName" }
+                { "bucket_id", "bucketName" }
             };
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", queryParams, "")
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var jobs = client.GetJobsSpectraS3(new GetJobsSpectraS3Request().WithBucketId("bucketName")).ResponsePayload.Jobs.ToList();
+
+            GetJobsSpectraS3Response response = client.GetJobsSpectraS3(new GetJobsSpectraS3Request().WithBucketId("bucketName"));
+            var jobs = response.ResponsePayload.Jobs.ToList();
             Assert.AreEqual(1, jobs.Count);
             CheckJobInfo(jobs[0]);
         }
@@ -708,9 +733,9 @@ namespace TestDs3
         {
             Assert.AreEqual("bucketName", jobInfo.BucketName);
             Assert.AreEqual(Guid.Parse("a4a586a1-cb80-4441-84e2-48974e982d51"), jobInfo.JobId);
-            Assert.AreEqual("NORMAL", jobInfo.Priority);
-            Assert.AreEqual("PUT", jobInfo.RequestType);
-            Assert.AreEqual("2014-05-22T18:24:00.000Z", jobInfo.StartDate);
+            Assert.AreEqual(Priority.NORMAL, jobInfo.Priority);
+            Assert.AreEqual(JobRequestType.PUT, jobInfo.RequestType);
+            Assert.AreEqual(DateTime.Parse("2014-05-22T18:24:00.000Z"), jobInfo.StartDate);
         }
 
         [Test]
@@ -948,7 +973,7 @@ namespace TestDs3
             FullOfData = false,
             Id = Guid.Parse("11eaa8ec-e287-4852-a5f8-c06b8dd90aec"),
             LastAccessed = null,
-            LastCheckpoint = "",
+            LastCheckpoint = null,
             LastModified = new DateTime(2015, 4, 9, 8, 11, 48, 305),
             LastVerified = null,
             PartitionId = Guid.Parse("9d1ab9db-f488-461d-b04c-31001496c05e"),
@@ -974,15 +999,18 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var result = client.GetPhysicalPlacementForObjectsSpectraS3(new GetPhysicalPlacementForObjectsSpectraS3Request("test_bucket", new[] {new Ds3Object("o1", null), new Ds3Object("o2", null), new Ds3Object("o3", null), new Ds3Object("o4", null) })).ResponsePayload;
+            var objects = new[] {
+                new Ds3Object("o1", null),
+                new Ds3Object("o2", null),
+                new Ds3Object("o3", null),
+                new Ds3Object("o4", null) };
+
+            var result = client.GetPhysicalPlacementForObjectsSpectraS3(new GetPhysicalPlacementForObjectsSpectraS3Request("test_bucket", objects)).ResponsePayload;
             CollectionAssert.AreEqual(new[] { _testTape }, result.Tapes.ToList(), new TapeComparer());
         }
 
         private static readonly PhysicalPlacement _testObjectPlacement = new PhysicalPlacement
         {
-            //Name = "foo_object",
-            //Offset = 10L,
-            //Length = 20L,
             Tapes = new[] { _testTape }
         };
 
@@ -993,7 +1021,7 @@ namespace TestDs3
             var queryParams = new Dictionary<string, string>
             {
                 { "operation", "get_physical_placement" },
-                { "full_details", "" },
+                { "full_details", null },
             };
             var responseContent = ReadResource(GetPhysicalPlacementFullDetailsResponseResourceName);
             var client = MockNetwork
@@ -1001,11 +1029,27 @@ namespace TestDs3
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
                 .AsClient;
 
-            var result = client.GetPhysicalPlacementForObjectsSpectraS3(new GetPhysicalPlacementForObjectsSpectraS3Request("test_bucket", new[] { new Ds3Object("o1", null), new Ds3Object("o2", null), new Ds3Object("o3", null), new Ds3Object("o4", null) })).ResponsePayload.Tapes;
-            CollectionAssert.AreEqual(new[] { _testObjectPlacement }, result, new Ds3ObjectPlacementComparer());
+            IEnumerable<Ds3Object> objects = new[] {
+                new Ds3Object("o1", null),
+                new Ds3Object("o2", null),
+                new Ds3Object("o3", null),
+                new Ds3Object("o4", null) };
+
+            GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Response response = client
+                .GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3(new GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request("test_bucket", objects));
+            IEnumerable<BulkObject> result = response.ResponsePayload.Objects.ToArray();
+
+            IEnumerable<BulkObject> expected = new[]
+            {
+                new BulkObject() {
+                    Name = "foo_object",
+                    Offset = 10L,
+                    Length = 20L,
+                    PhysicalPlacement = _testObjectPlacement
+                }
+            };
+            CollectionAssert.AreEqual(expected, result, new BulkObjectComparer());
         }
-
-
 
         [Test]
         [ExpectedException(typeof(Ds3MaxJobsException))]
@@ -1047,7 +1091,30 @@ namespace TestDs3
             helpers.StartWriteJob("bucket", inputObjects);
         }
 
-        private class Ds3ObjectPlacementComparer : IComparer, IComparer<PhysicalPlacement>
+        private class BulkObjectComparer : IComparer, IComparer<BulkObject>
+        {
+            public int Compare(object x, object y)
+            {
+                return this.Compare(x as BulkObject, y as BulkObject);
+            }
+
+            public int Compare(BulkObject x, BulkObject y)
+            {
+                if (x == null || y == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return CompareChain.Of(x, y)
+                    .Value(op => op.Name)
+                    .Value(op => op.Offset)
+                    .Value(op => op.Length)
+                    .Value(op => op.PhysicalPlacement, new PhysicalPlacementComparer())
+                    .Result;
+            }
+        }
+
+        private class PhysicalPlacementComparer : IComparer, IComparer<PhysicalPlacement>
         {
             public int Compare(object x, object y)
             {
@@ -1061,9 +1128,6 @@ namespace TestDs3
                     throw new ArgumentNullException();
                 }
                 return CompareChain.Of(x, y)
-                    //.Value(op => op.Name)
-                    //.Value(op => op.Offset)
-                    //.Value(op => op.Length)
                     .Value(op => op.Tapes, new EnumerableComparer<Tape>(new TapeComparer()))
                     .Result;
             }
@@ -1082,7 +1146,6 @@ namespace TestDs3
                 {
                     throw new ArgumentNullException();
                 }
-
                 return CompareChain.Of(x, y)
                     .Value(t => t.AssignedToStorageDomain)
                     .Value(t => t.AvailableRawCapacity)

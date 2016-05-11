@@ -73,7 +73,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/job_chunk/";
+                return "/_rest_/job_chunk";
             }
         }
     }
