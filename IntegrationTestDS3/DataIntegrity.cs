@@ -32,10 +32,15 @@ namespace IntegrationTestDS3
         private IDs3Client _client;
         private readonly List<string> _tempFiles = new List<string>();
 
+        private static string FixtureName = "data_integrity";
+        private static TempStorageIds EnvStorageIds;
+
         [SetUp]
         public void Setup()
         {
             _client = Ds3TestUtils.CreateClient();
+            Guid dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+            EnvStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
         }
 
         [TearDown]
@@ -45,6 +50,7 @@ namespace IntegrationTestDS3
             {
                 File.Delete(file);
             }
+            TempStorageUtil.TearDown(FixtureName, EnvStorageIds, _client);
         }
 
         [Test]

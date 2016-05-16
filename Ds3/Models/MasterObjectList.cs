@@ -30,7 +30,7 @@ namespace Ds3.Models
         public Guid JobId { get; set; }
         public bool Naked { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Ds3Node> Nodes { get; set; }
+        public IEnumerable<JobNode> Nodes { get; set; }
         public IEnumerable<Objects> Objects { get; set; }
         public long OriginalSizeInBytes { get; set; }
         public Priority Priority { get; set; }
@@ -39,6 +39,5 @@ namespace Ds3.Models
         public JobStatus Status { get; set; }
         public Guid UserId { get; set; }
         public string UserName { get; set; }
-        public WriteOptimization WriteOptimization { get; set; }
     }
 }

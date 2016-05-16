@@ -111,7 +111,7 @@ namespace Ds3.Runtime
             {
                 builder.Append(delimiter);
                 builder.Append(keyValuePair.Key);
-                if (keyValuePair.Value.Length > 0)
+                if (keyValuePair.Value != null && keyValuePair.Value.Length > 0)
                 {
                     builder.Append('=');
                     builder.Append(keyValuePair.Value);

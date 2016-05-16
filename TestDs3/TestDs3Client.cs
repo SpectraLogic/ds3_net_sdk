@@ -29,6 +29,7 @@ using System.Reflection;
 using Moq;
 using TestDs3.Helpers;
 using TestDs3.Lang;
+using System.Text;
 
 namespace TestDs3
 {
@@ -48,7 +49,7 @@ namespace TestDs3
         [Test]
         public void TestGetService()
         {
-            String id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
+            string id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
             var responseContent = "<ListAllMyBucketsResult><Owner><ID>" + id + "</ID><DisplayName>ryan</DisplayName></Owner><Buckets><Bucket>"
                 + "<Name>testBucket2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest</Name>" 
                 + "<CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest1</Name><CreationDate>2013-12-11T23:20:09</CreationDate>"
@@ -59,17 +60,17 @@ namespace TestDs3
                 + "</Bucket><Bucket><Name>testBucket1</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>testbucket</Name>"
                 + "<CreationDate>2013-12-11T23:20:09</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>";
             var expectedBuckets = new[] {
-                new Ds3Bucket() { Name = "testBucket2",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "bulkTest",     CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "bulkTest1",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "bulkTest2",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "bulkTest3",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "bulkTest4",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "bulkTest5",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "bulkTest6",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "testBucket3",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "testBucket1",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
-                new Ds3Bucket() { Name = "testbucket",   CreationDate = DateTime.Parse("2013-12-11T23:20:09") }
+                new BucketDetails() { Name = "testBucket2",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "bulkTest",     CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "bulkTest1",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "bulkTest2",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "bulkTest3",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "bulkTest4",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "bulkTest5",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "bulkTest6",    CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "testBucket3",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "testBucket1",  CreationDate = DateTime.Parse("2013-12-11T23:20:09") },
+                new BucketDetails() { Name = "testbucket",   CreationDate = DateTime.Parse("2013-12-11T23:20:09") }
             };
 
             var response = MockNetwork
@@ -615,19 +616,19 @@ namespace TestDs3
         private static void CheckJobResponse(MasterObjectList response)
         {
             var expectedNodes = new[] {
-                new Ds3Node() {
+                new JobNode() {
                     EndPoint="10.1.18.12",
                     HttpPort=(int?)80,
                     HttpsPort=(int?)443,
                     Id=Guid.Parse("a02053b9-0147-11e4-8d6a-002590c1177c")
                 },
-                new Ds3Node() {
+                new JobNode() {
                     EndPoint="10.1.18.13",
                     HttpPort=(int?)null,
                     HttpsPort=(int?)443,
                     Id=Guid.Parse("4ecebf6f-bfd2-40a8-82a6-32fd684fd500")
                 },
-                new Ds3Node() {
+                new JobNode() {
                     EndPoint="10.1.18.14",
                     HttpPort=(int?)80,
                     HttpsPort=(int?)null,

@@ -267,7 +267,7 @@ namespace Ds3.Runtime
                 from kvp in queryParams
                 orderby kvp.Key
                 let encodedKey = HttpHelper.PercentEncodePath(kvp.Key, _noChars)
-                select kvp.Value.Length > 0
+                select kvp.Value != null && kvp.Value.Length > 0
                     ? encodedKey + "=" + HttpHelper.PercentEncodePath(kvp.Value, _noChars)
                     : encodedKey
             );

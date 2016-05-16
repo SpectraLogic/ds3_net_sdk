@@ -20,11 +20,11 @@ using System.Collections.Generic;
 
 namespace Ds3.Models
 {
-    public class Duration
+    public class JobNode
     {
-        public long ElapsedMillis { get; set; }
-        public int ElapsedMinutes { get; set; }
-        public long ElapsedNanos { get; set; }
-        public int ElapsedSeconds { get; set; }
+        public string EndPoint { get; set; }
+        public int? HttpPort { get; set; }
+        public int? HttpsPort { get; set; }
+        public Guid Id { get; set; }
     }
 }

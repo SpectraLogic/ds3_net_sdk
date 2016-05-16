@@ -63,6 +63,9 @@ namespace IntegrationTestDs3
         public string BuildVersion { private set; get; }
         public string BuildBranch { private set; get; }
 
+        private static string FixtureName = "integration_test_ds3client";
+        private static TempStorageIds EnvStorageIds;
+
         #region setup
 
         [TestFixtureSetUp]
@@ -72,6 +75,15 @@ namespace IntegrationTestDs3
             _helpers = new Ds3ClientHelpers(_client);
 
             SetupTestData();
+
+            Guid dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+            EnvStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
+        }
+
+        [TestFixtureTearDown]
+        public void Teardown()
+        {
+            TempStorageUtil.TearDown(FixtureName, EnvStorageIds, _client);
         }
 
         private void SetupTestData()

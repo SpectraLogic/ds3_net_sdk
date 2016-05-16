@@ -52,9 +52,11 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ABMTestHelper.cs" />
     <Compile Include="DataIntegrity.cs" />
     <Compile Include="Ds3TestUtils.cs" />
     <Compile Include="IntegrationTestDS3Client.cs" />
+    <Compile Include="TempStorageUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\beowulf.txt" />

@@ -20,11 +20,9 @@ using System.Collections.Generic;
 
 namespace Ds3.Models
 {
-    public class Ds3Node
+    public class BucketDetails
     {
-        public string EndPoint { get; set; }
-        public int? HttpPort { get; set; }
-        public int? HttpsPort { get; set; }
-        public Guid Id { get; set; }
+        public DateTime CreationDate { get; set; }
+        public string Name { get; set; }
     }
 }

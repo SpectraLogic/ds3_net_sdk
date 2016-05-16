@@ -51,7 +51,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Ds3Node>>()))
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
                 .Returns(factory.Object);
             client
                 .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
@@ -234,7 +234,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Ds3Node>>()))
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
                 .Returns(factory.Object);
             client
                 .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
@@ -320,7 +320,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Ds3Node>>()))
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
                 .Returns(factory.Object);
             client
                 .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
