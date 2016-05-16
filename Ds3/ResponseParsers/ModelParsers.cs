@@ -961,6 +961,7 @@ namespace Ds3.ResponseParsers
         {
             return new BulkObject
             {
+                Id = ParseNullableGuid(element.Element("Id")),
                 InCache = ParseNullableBool(element.AttributeTextOrNull("InCache")),
                 Latest = ParseBool(element.AttributeText("Latest")),
                 Length = ParseLong(element.AttributeText("Length")),
@@ -1093,27 +1094,27 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseCacheInformation(element);
         }
-        public static Ds3Bucket ParseDs3Bucket(XElement element)
+        public static BucketDetails ParseBucketDetails(XElement element)
         {
-            return new Ds3Bucket
+            return new BucketDetails
             {
                 CreationDate = ParseDateTime(element.Element("CreationDate")),
                 Name = ParseNullableString(element.Element("Name"))
             };
         }
 
-        public static Ds3Bucket ParseNullableDs3Bucket(XElement element)
+        public static BucketDetails ParseNullableBucketDetails(XElement element)
         {
             return element == null || element.IsEmpty
                 ? null
-                : ParseDs3Bucket(element);
+                : ParseBucketDetails(element);
         }
         public static ListBucketResult ParseListBucketResult(XElement element)
         {
             return new ListBucketResult
             {
                 CommonPrefixes = ParseEncapsulatedList(element, "Prefix", "CommonPrefixes", ParseString),
-                CreationDate = ParseDateTime(element.Element("CreationDate")),
+                CreationDate = ParseNullableDateTime(element.Element("CreationDate")),
                 Delimiter = ParseNullableString(element.Element("Delimiter")),
                 Marker = ParseNullableString(element.Element("Marker")),
                 MaxKeys = ParseInt(element.Element("MaxKeys")),
@@ -1135,7 +1136,7 @@ namespace Ds3.ResponseParsers
         {
             return new ListAllMyBucketsResult
             {
-                Buckets = ParseEncapsulatedList(element, "Bucket", "Buckets", ParseDs3Bucket),
+                Buckets = ParseEncapsulatedList(element, "Bucket", "Buckets", ParseBucketDetails),
                 Owner = ParseUser(element.Element("Owner"))
             };
         }
@@ -1303,7 +1304,7 @@ namespace Ds3.ResponseParsers
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
-                Nodes = ParseEncapsulatedList(element, "Node", "Nodes", ParseDs3Node),
+                Nodes = ParseEncapsulatedList(element, "Node", "Nodes", ParseJobNode),
                 OriginalSizeInBytes = ParseLong(element.AttributeText("OriginalSizeInBytes")),
                 Priority = ParsePriority(element.AttributeText("Priority")),
                 RequestType = ParseJobRequestType(element.AttributeText("RequestType")),
@@ -1350,7 +1351,7 @@ namespace Ds3.ResponseParsers
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
-                Nodes = ParseEncapsulatedList(element, "Node", "Nodes", ParseDs3Node),
+                Nodes = ParseEncapsulatedList(element, "Node", "Nodes", ParseJobNode),
                 Objects = element.Elements("Objects").Select(ParseObjects).ToList(),
                 OriginalSizeInBytes = ParseLong(element.AttributeText("OriginalSizeInBytes")),
                 Priority = ParsePriority(element.AttributeText("Priority")),
@@ -1358,8 +1359,7 @@ namespace Ds3.ResponseParsers
                 StartDate = ParseDateTime(element.AttributeText("StartDate")),
                 Status = ParseJobStatus(element.AttributeText("Status")),
                 UserId = ParseGuid(element.AttributeText("UserId")),
-                UserName = ParseNullableString(element.AttributeTextOrNull("UserName")),
-                WriteOptimization = ParseWriteOptimization(element.AttributeText("WriteOptimization"))
+                UserName = ParseNullableString(element.AttributeTextOrNull("UserName"))
             };
         }
 
@@ -1462,9 +1462,9 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseMultiPartUploadPart(element);
         }
-        public static Ds3Node ParseDs3Node(XElement element)
+        public static JobNode ParseJobNode(XElement element)
         {
-            return new Ds3Node
+            return new JobNode
             {
                 EndPoint = ParseNullableString(element.AttributeTextOrNull("EndPoint")),
                 HttpPort = ParseNullableInt(element.AttributeTextOrNull("HttpPort")),
@@ -1473,11 +1473,11 @@ namespace Ds3.ResponseParsers
             };
         }
 
-        public static Ds3Node ParseNullableDs3Node(XElement element)
+        public static JobNode ParseNullableJobNode(XElement element)
         {
             return element == null || element.IsEmpty
                 ? null
-                : ParseDs3Node(element);
+                : ParseJobNode(element);
         }
         public static Contents ParseContents(XElement element)
         {
@@ -1485,7 +1485,7 @@ namespace Ds3.ResponseParsers
             {
                 ETag = ParseNullableString(element.Element("ETag")),
                 Key = ParseNullableString(element.Element("Key")),
-                LastModified = ParseDateTime(element.Element("LastModified")),
+                LastModified = ParseNullableDateTime(element.Element("LastModified")),
                 Owner = ParseUser(element.Element("Owner")),
                 Size = ParseLong(element.Element("Size")),
                 StorageClass = ParseString(element.Element("StorageClass"))

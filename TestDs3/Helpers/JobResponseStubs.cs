@@ -17,16 +17,16 @@ namespace TestDs3.Helpers
         public static readonly Guid ChunkId1 = Guid.Parse("b63a0481-7020-4306-9a9e-384102adf901");
         public static readonly Guid ChunkId2 = Guid.Parse("ea100286-97d5-47f2-b1ee-a917262bc02d");
         public static readonly Guid ChunkId3 = Guid.Parse("8698c831-bbf4-4eb7-b7a9-22a4215771f6");
-        public static readonly Ds3Node[] Nodes = new[]
+        public static readonly JobNode[] Nodes = new[]
         {
-            new Ds3Node()
+            new JobNode()
             {
                 Id = NodeId1,
                 EndPoint = "http://192.168.10.1",
                 HttpPort = 80,
                 HttpsPort = 443
             },
-            new Ds3Node()
+            new JobNode()
             {
                 Id = NodeId2,
                 EndPoint = "http://192.168.10.2",

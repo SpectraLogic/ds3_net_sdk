@@ -30,7 +30,7 @@ namespace Ds3.Models
         public Guid JobId { get; set; }
         public bool Naked { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Ds3Node> Nodes { get; set; }
+        public IEnumerable<JobNode> Nodes { get; set; }
         public long OriginalSizeInBytes { get; set; }
         public Priority Priority { get; set; }
         public JobRequestType RequestType { get; set; }

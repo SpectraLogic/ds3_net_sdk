@@ -22,7 +22,7 @@ namespace Ds3.Models
 {
     public class ListAllMyBucketsResult
     {
-        public IEnumerable<Ds3Bucket> Buckets { get; set; }
+        public IEnumerable<BucketDetails> Buckets { get; set; }
         public User Owner { get; set; }
     }
 }

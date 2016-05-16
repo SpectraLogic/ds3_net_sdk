@@ -503,6 +503,7 @@
     <Compile Include="Models\BucketAcl.cs" />
     <Compile Include="Models\BucketAclList.cs" />
     <Compile Include="Models\BucketAclPermission.cs" />
+    <Compile Include="Models\BucketDetails.cs" />
     <Compile Include="Models\BucketList.cs" />
     <Compile Include="Models\BuildInformation.cs" />
     <Compile Include="Models\BulkObject.cs" />
@@ -540,9 +541,6 @@
     <Compile Include="Models\DetailedTapeFailure.cs" />
     <Compile Include="Models\DetailedTapeFailureList.cs" />
     <Compile Include="Models\DetailedTapePartition.cs" />
-    <Compile Include="Models\Ds3Bucket.cs" />
-    <Compile Include="Models\Ds3Node.cs" />
-    <Compile Include="Models\Duration.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\GroupList.cs" />
@@ -560,6 +558,7 @@
     <Compile Include="Models\JobCreatedNotificationRegistration.cs" />
     <Compile Include="Models\JobCreatedNotificationRegistrationList.cs" />
     <Compile Include="Models\JobList.cs" />
+    <Compile Include="Models\JobNode.cs" />
     <Compile Include="Models\JobRequestType.cs" />
     <Compile Include="Models\ListAllMyBucketsResult.cs" />
     <Compile Include="Models\ListBucketResult.cs" />
