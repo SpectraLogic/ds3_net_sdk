@@ -29,6 +29,7 @@ using System.Reflection;
 using Moq;
 using TestDs3.Helpers;
 using TestDs3.Lang;
+using System.Text;
 
 namespace TestDs3
 {
@@ -48,7 +49,7 @@ namespace TestDs3
         [Test]
         public void TestGetService()
         {
-            String id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
+            string id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
             var responseContent = "<ListAllMyBucketsResult><Owner><ID>" + id + "</ID><DisplayName>ryan</DisplayName></Owner><Buckets><Bucket>"
                 + "<Name>testBucket2</Name><CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest</Name>" 
                 + "<CreationDate>2013-12-11T23:20:09</CreationDate></Bucket><Bucket><Name>bulkTest1</Name><CreationDate>2013-12-11T23:20:09</CreationDate>"
