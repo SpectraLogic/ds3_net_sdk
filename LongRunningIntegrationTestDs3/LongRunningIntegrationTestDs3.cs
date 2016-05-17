@@ -46,7 +46,7 @@ namespace LongRunningIntegrationTestDs3
 
                 Ds3TestUtils.PutFiles(_client, bucketName, objects, key => new MemoryStream(contentBytes));
 
-                Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).Objects.Count());
+                Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).ResponsePayload.Objects.Count());
             }
             finally
             {
