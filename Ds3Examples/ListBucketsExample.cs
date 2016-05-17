@@ -45,7 +45,7 @@ namespace Ds3Examples
             if (clientSwitch.TraceInfo) { Trace.WriteLine("List all buckets"); }
 
             // Loop through all of the objects in the bucket.
-            foreach (var bucket in client.GetService(new GetServiceRequest()).Buckets)
+            foreach (var bucket in client.GetService(new GetServiceRequest()).ResponsePayload.Buckets)
             {
                 if (clientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("Bucket '{0}'.", bucket.Name)); }
                 Console.WriteLine("Bucket '{0}'.", bucket.Name);

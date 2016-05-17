@@ -48,12 +48,15 @@ namespace Ds3Examples
 
         protected string runPing()
         {
-            var verify = VerifySystemHealth();
-            Console.WriteLine("VerifySystemHealth() -- {0}ms", verify.MillisToVerify);
+            VerifySystemHealthSpectraS3Response verifySysHealthResponse = VerifySystemHealth();
+            HealthVerificationResult verify = verifySysHealthResponse.ResponsePayload;
+            Console.WriteLine("VerifySystemHealth() -- {0}ms", verify.MsRequiredToVerifyDataPlannerHealth);
 
-            GetSystemInformationResponse sysinf = GetSystemInfo();
+            GetSystemInformationSpectraS3Response sysInfoResponse = GetSystemInfo();
+            SystemInformation sysinf = sysInfoResponse.ResponsePayload;
 
-            return string.Format("Object 'MC5: {0}' | SN: {1} | BuildVer: {2} | BuildRev: {3} | BuildPath: {4} ", sysinf.ApiMC5, sysinf.SerialNumber, sysinf.BuildVersion, sysinf.BuildRev, sysinf.BuildBranch);
+            return string.Format("Object 'ApiVer: {0}' | BackendAct: {1} | SN: {2} | BuildVer: {3} | BuildRev: {4} | BuildPath: {5} ", sysinf.ApiVersion, 
+                sysinf.BackendActivated, sysinf.SerialNumber, sysinf.BuildInformation.Version, sysinf.BuildInformation.Revision, sysinf.BuildInformation.Branch);
         }
 
         protected void runCreateBucket(string bucket)
@@ -128,7 +131,7 @@ namespace Ds3Examples
 
         protected void runPutWithChecksum(string bucket, string srcDirectory, string filename, 
                                           string hashString = null, 
-                                          Checksum.ChecksumType checksumType = Checksum.ChecksumType.Md5)
+                                          ChecksumType.Type checksumType = ChecksumType.Type.MD5)
         {
             _helpers.EnsureBucketExists(bucket);
 
@@ -142,16 +145,19 @@ namespace Ds3Examples
 
             // instantiate a PutObjectRequest
             FileStream fs = File.Open(srcDirectory + Path.DirectorySeparatorChar + filename, FileMode.Open);
-            PutObjectRequest putRequest = new PutObjectRequest(bucket, filename, job.JobId, 0L, fs);
+            PutObjectRequest putRequest = new PutObjectRequest(bucket, filename, fs)
+                .WithJob(job.JobId)
+                .WithOffset(0L);
+
             if (string.IsNullOrEmpty(hashString))
             {
                 // Compute checksum
-                putRequest.WithChecksum(Checksum.Compute, checksumType);
+                putRequest.WithChecksum(ChecksumType.Compute, checksumType);
             }
             else
             {
                 // or pass in a precomputed Base64 string representation of the hash
-                putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(hashString)), checksumType);
+                putRequest.WithChecksum(ChecksumType.Value(Convert.FromBase64String(hashString)), checksumType);
             }
             _client.PutObject(putRequest);
             fs.Close();
@@ -204,11 +210,11 @@ namespace Ds3Examples
 
         public void runDeleteFolder(string bucketname, string folderName)
         {
-            var request = new Ds3.Calls.DeleteFolderRequest(bucketname, folderName);
-            _client.DeleteFolder(request);
+            var request = new Ds3.Calls.DeleteFolderRecursivelySpectraS3Request(bucketname, folderName);
+            _client.DeleteFolderRecursivelySpectraS3(request);
         }
 
-        protected long runListObjects(string bucket)
+        protected int runListObjects(string bucket)
         {
             var items = _helpers.ListObjects(bucket);
 
@@ -238,27 +244,27 @@ namespace Ds3Examples
 
         protected long runListBuckets()
         {
-            var buckets = _client.GetService(new GetServiceRequest()).Buckets;
+            var buckets = _client.GetService(new GetServiceRequest()).ResponsePayload.Buckets;
             foreach (var bucket in buckets)
             {
                 Console.WriteLine("Bucket '{0}'.", bucket.Name);
             }
-            return buckets.Count;
+            return buckets.Count();
         }
 
         protected bool runListAll()
         {
-            var buckets = _client.GetService(new GetServiceRequest()).Buckets;
+            var buckets = _client.GetService(new GetServiceRequest()).ResponsePayload.Buckets;
             foreach (var bucket in buckets)
             {
                 runListObjects(bucket.Name);
             }
-            return buckets.Count > 0;
+            return buckets.Count() > 0;
         }
 
         protected bool runCleanAll(string match)
         {
-            var buckets = _client.GetService(new GetServiceRequest()).Buckets;
+            var buckets = _client.GetService(new GetServiceRequest()).ResponsePayload.Buckets;
             var matchbuckets = from b in buckets
                                where b.Name.StartsWith(match)
                                select b;
@@ -267,12 +273,12 @@ namespace Ds3Examples
                 runDeleteObjects(bucket.Name);
                 runDeleteBucket(bucket.Name);
             }
-            return buckets.Count > 0;
+            return buckets.Count() > 0;
         }
 
-        protected bool runGetObjects(string bucket, string name, string objid, long length, long offset, DS3ObjectTypes type, long version)
+        protected bool runGetObjects(string bucket, string name, int length, int offset, S3ObjectType type, long version)
         {
-            var items = GetObjects(bucket, name, objid, length, offset, type, version);
+            var items = GetObjects(bucket, name, length, offset, type, version);
 
             // Loop through all of the objects in the bucket.
             foreach (var obj in items)
@@ -295,35 +301,34 @@ namespace Ds3Examples
         }
 
 
-        public IEnumerable<DS3GetObjectsInfo> GetObjects(string bucketName, string objectName, string ds3ObjectId, long length, long offset, DS3ObjectTypes type, long version)
+        public IEnumerable<S3Object> GetObjects(string bucketName, string objectName, int length, int offset, S3ObjectType type, long version)
         {
-            var request = new Ds3.Calls.GetObjectsRequest()
+            var request = new Ds3.Calls.GetObjectsSpectraS3Request()
             {
                 BucketId = bucketName,
-                ObjectName = objectName,
-                ObjectId = ds3ObjectId,
-                Length = length,
-                Offset = offset,
-                ObjectType = type,
+                Name = objectName,
+                PageLength = length,
+                PageOffset = offset,
+                Type = type,
                 Version = version
             };
-            var response = _client.GetObjects(request);
-            foreach (var ds3Object in response.Objects)
+            var response = _client.GetObjectsSpectraS3(request);
+            foreach (var ds3Object in response.ResponsePayload.S3Objects)
             {
                 yield return ds3Object;
             }
         }
   
-        public GetSystemInformationResponse GetSystemInfo()
+        public GetSystemInformationSpectraS3Response GetSystemInfo()
         {
-            var request = new Ds3.Calls.GetSystemInformationRequest();
-            return _client.GetSystemInformation(request);
+            var request = new Ds3.Calls.GetSystemInformationSpectraS3Request();
+            return _client.GetSystemInformationSpectraS3(request);
         }
 
-        public VerifySystemHealthResponse VerifySystemHealth()
+        public VerifySystemHealthSpectraS3Response VerifySystemHealth()
         {
-            var request = new Ds3.Calls.VerifySystemHealthRequest();
-            return _client.VerifySystemHealth(request);
+            var request = new Ds3.Calls.VerifySystemHealthSpectraS3Request();
+            return _client.VerifySystemHealthSpectraS3(request);
         }
 
 
@@ -404,10 +409,10 @@ namespace Ds3Examples
                 exampleClient.runPut(bucket, testSourceDirectory, testSourceFile);
 
                 // put a single file into the bucket with precomputed checksum
-                exampleClient.runPutWithChecksum(bucket, testSourceDirectory, testChecksumFile, testChecksumCrc32C, Checksum.ChecksumType.Crc32C);
+                exampleClient.runPutWithChecksum(bucket, testSourceDirectory, testChecksumFile, testChecksumCrc32C, ChecksumType.Type.CRC_32C);
 
                 // put a single file into the bucket with dynamically generated checksum
-                exampleClient.runPutWithChecksum(bucket, testSourceDirectory, testSourceFile2, string.Empty, Checksum.ChecksumType.Md5);
+                exampleClient.runPutWithChecksum(bucket, testSourceDirectory, testSourceFile2, string.Empty, ChecksumType.Type.MD5);
 
                 // put a file into the bucket from stream
                 exampleClient.runPutFromStream(bucket, binaryFile, binaryFileSize);
@@ -442,19 +447,18 @@ namespace Ds3Examples
 
                 // get object list
                 Console.WriteLine("Objects in {0}:", bucket);
-                long objectCount = exampleClient.runListObjects(bucket);
+                int objectCount = exampleClient.runListObjects(bucket);
                 
                 // get object list in pages
                 Console.WriteLine("Objects in {0}:", bucket);
-                string objId = null;
                 string objectName = null;
-                DS3ObjectTypes type = DS3ObjectTypes.ALL;
+                S3ObjectType type = S3ObjectType.DATA;
                 long version = 1L;
-                long pageSize = objectCount / 3L;
-                for (long offset = 0L; offset < objectCount; offset += pageSize)
+                int pageSize = objectCount / 3;
+                for (int offset = 0; offset < objectCount; offset += pageSize)
                 {
                     Console.WriteLine(string.Format("Get {0} (offset = {1})", bucket, offset));
-                    exampleClient.runGetObjects(bucket, objectName, objId, pageSize, offset, type, version);
+                    exampleClient.runGetObjects(bucket, objectName, pageSize, offset, type, version);
                 }
 
                 #endregion listobjects
