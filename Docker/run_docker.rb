@@ -28,11 +28,12 @@ users.each do | user_entry |
 end
 
 # None of the "/users" responses include the S3 keys.  For that, you have to
-# make a separate "/s3v/keys" request which is setup to return an array
+# make a separate "/ds3/keys" request which is setup to return an array
 # of S3 authid/secretkey pairs in case we ever allow more than one pair per
 # user.
-response = connection.get("/s3v/keys?user_id=#{spectra_user["id"]}")
+response = connection.get("/ds3/keys?user_id=#{spectra_user["id"]}")
 spectra_user_keys = JSON.parse(response.body)["data"][0]
+abort("Spectra User keys not found.") if spectra_user_keys.nil?
 
 ENV["DOCKER_REPO"] = ENV["DOCKER_REPO"] || "denverm80/spectra_sandbox"
 ENV["DS3_ENDPOINT"] = "http://sm2u-11.eng.sldomain.com"
