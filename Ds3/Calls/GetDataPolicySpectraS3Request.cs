@@ -23,13 +23,18 @@ namespace Ds3.Calls
     public class GetDataPolicySpectraS3Request : Ds3Request
     {
         
-        public string DataPolicy { get; private set; }
+        public string DataPolicyId { get; private set; }
 
         
 
         
-        public GetDataPolicySpectraS3Request(string dataPolicy) {
-            this.DataPolicy = dataPolicy;
+        public GetDataPolicySpectraS3Request(Guid dataPolicyId) {
+            this.DataPolicyId = dataPolicyId.ToString();
+            
+        }
+
+        public GetDataPolicySpectraS3Request(string dataPolicyId) {
+            this.DataPolicyId = dataPolicyId;
             
         }
 
@@ -45,7 +50,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_policy/" + DataPolicy;
+                return "/_rest_/data_policy/" + DataPolicyId.ToString();
             }
         }
     }
