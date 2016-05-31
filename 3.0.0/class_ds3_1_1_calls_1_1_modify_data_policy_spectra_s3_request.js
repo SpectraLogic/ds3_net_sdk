@@ -1,0 +1,28 @@
+var class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request =
+[
+    [ "ModifyDataPolicySpectraS3Request", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a9581b597fdfc72f9ed3907019588ff7f", null ],
+    [ "ModifyDataPolicySpectraS3Request", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a10930555eb7f9136e365e2d29b1cf5c2", null ],
+    [ "WithBlobbingEnabled", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a7ea7c6cf9711eb9cfcd6f0d3f812f63e", null ],
+    [ "WithChecksumType", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a2c936be28bf090795068a5636369eab3", null ],
+    [ "WithDefaultBlobSize", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#aa3be30ed8739c510779d967e5f263157", null ],
+    [ "WithDefaultGetJobPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a097909d0644bba71812680c5e444d7e8", null ],
+    [ "WithDefaultPutJobPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a5444aa7f2e016001af995584e621cde8", null ],
+    [ "WithDefaultVerifyJobPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a75a825a95736f11b57a42f78badfe80d", null ],
+    [ "WithEndToEndCrcRequired", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a85f45c2196f1db63d04cf0a0c151768b", null ],
+    [ "WithName", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a4b5cea2698039b31a93f3f008fd54342", null ],
+    [ "WithRebuildPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a351b191192833a5e63a37aff87044dfd", null ],
+    [ "WithVersioning", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a1ba6a623e9bf1e1720a85fc2f49bf3dc", null ],
+    [ "BlobbingEnabled", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#ae9334d31d980317b43a0ae1ecde1c9b6", null ],
+    [ "ChecksumType", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#aaba19defae98a6b906ce4a3ececcd85a", null ],
+    [ "DataPolicyId", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a955a44711606feeb992aad820336c44a", null ],
+    [ "DefaultBlobSize", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#aecb8377ae9bf6ee040ce0974544ce860", null ],
+    [ "DefaultGetJobPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#ac153cafff14e88b0bb7d7c9de1528d4f", null ],
+    [ "DefaultPutJobPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a223c791023d94b048106faacc7f5e357", null ],
+    [ "DefaultVerifyJobPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a122c722a3b1270b840b671c11327b5fb", null ],
+    [ "EndToEndCrcRequired", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#aa5b0a175a285ee3150dee1cd0f7f3139", null ],
+    [ "Name", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#ac2c75db5a722117c5a7ca5c8271f8db5", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#aa656af3d8551d5847cc68cf5c8fb7c19", null ],
+    [ "RebuildPriority", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#a46dc6c104b7db0fdb96c4eeb391bc49f", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#ac55d996665b5579b5ceae2980970ca4b", null ],
+    [ "Versioning", "class_ds3_1_1_calls_1_1_modify_data_policy_spectra_s3_request.html#ad81159254e0f87efac918e9419a31e79", null ]
+];

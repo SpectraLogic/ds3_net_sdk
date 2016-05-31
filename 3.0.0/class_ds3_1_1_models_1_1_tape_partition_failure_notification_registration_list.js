@@ -1,0 +1,4 @@
+var class_ds3_1_1_models_1_1_tape_partition_failure_notification_registration_list =
+[
+    [ "TapePartitionFailureNotificationRegistrations", "class_ds3_1_1_models_1_1_tape_partition_failure_notification_registration_list.html#a9d2a2ff58bd7c12aae098a157afed6fc", null ]
+];

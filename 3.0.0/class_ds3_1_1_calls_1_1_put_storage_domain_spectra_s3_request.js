@@ -1,0 +1,27 @@
+var class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request =
+[
+    [ "PutStorageDomainSpectraS3Request", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a36cb706961c8b37e9211997cac1523cd", null ],
+    [ "WithAutoEjectUponCron", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a10b6a9624c9f7e261ff769c7963c52c7", null ],
+    [ "WithAutoEjectUponJobCancellation", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#aaa93fcd16f7558808cd1861aeb05185e", null ],
+    [ "WithAutoEjectUponJobCompletion", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a85f475654813f44a86dc589b86689774", null ],
+    [ "WithAutoEjectUponMediaFull", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a7fb66979f85aabbc1db2080a16c61c5c", null ],
+    [ "WithLtfsFileNaming", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a9521786bc4dff072c596460a2ac27d23", null ],
+    [ "WithMaximumAutoVerificationFrequencyInDays", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a88f92638986b202395e84396586ac494", null ],
+    [ "WithMaxTapeFragmentationPercent", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a62cde57716ed819d1030768b37f93998", null ],
+    [ "WithMediaEjectionAllowed", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a5ec93d79a068fae28f91d7876e808b79", null ],
+    [ "WithVerifyPriorToAutoEject", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#aa06dda61db2fa5976debc160c430515e", null ],
+    [ "WithWriteOptimization", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a9df1b88fc0e6e2365b0a4d682a20b275", null ],
+    [ "AutoEjectUponCron", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#aea750543daea95a83befc2f38ee5a3f8", null ],
+    [ "AutoEjectUponJobCancellation", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a2f61a11f7d04d7308ad5c0e9f47baeba", null ],
+    [ "AutoEjectUponJobCompletion", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a4786cc348aa633412cb157ade864ae7c", null ],
+    [ "AutoEjectUponMediaFull", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a5462f4dd9b38926bd4320b0e2719bc51", null ],
+    [ "LtfsFileNaming", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a769a9620c4a809887e1d58e59a41db70", null ],
+    [ "MaximumAutoVerificationFrequencyInDays", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a3f87aa41c0d6aa64f56bd19858c8f5c1", null ],
+    [ "MaxTapeFragmentationPercent", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#af32b1f20066cadb9b8eb725b8dc6775a", null ],
+    [ "MediaEjectionAllowed", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a7cff00526c263b50fb592a98e860bb54", null ],
+    [ "Name", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#ab33b206d39431564a6b6aa86057805ed", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a0b747a38467bd4f6d23e793056a3e26b", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#ac7c9c674601b18271a8805800a06dd0a", null ],
+    [ "VerifyPriorToAutoEject", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a62a1d1856265302679cdd2df370adc10", null ],
+    [ "WriteOptimization", "class_ds3_1_1_calls_1_1_put_storage_domain_spectra_s3_request.html#a3144d1b9f383c774ed999d6b42cd81d4", null ]
+];

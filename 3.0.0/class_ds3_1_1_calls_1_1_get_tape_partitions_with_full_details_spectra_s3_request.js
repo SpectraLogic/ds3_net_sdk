@@ -1,0 +1,28 @@
+var class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request =
+[
+    [ "GetTapePartitionsWithFullDetailsSpectraS3Request", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a45ea2f47144fcf9db11a6c02b5db4e67", null ],
+    [ "WithImportExportConfiguration", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#adb6064c8363329c79cdf05ed3a047248", null ],
+    [ "WithLastPage", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#aa32dfbad3966c90d6f0173a79a1f122c", null ],
+    [ "WithLibraryId", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#ae983ba3405169c718ec7df40b95e3df9", null ],
+    [ "WithLibraryId", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a727b63d97d12a6532a79fd79af6c4ebe", null ],
+    [ "WithName", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a64be51c20187ce0831f7c4cac6ab653f", null ],
+    [ "WithPageLength", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a65bf452bc4f4a275436eef5cd4ff2b77", null ],
+    [ "WithPageOffset", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a70c6bee85f75e21132863bf9861d210e", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a1627479ccf948c6cd58f2f6352b106fc", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#ae16d790722680764fa1d0102d326bf34", null ],
+    [ "WithQuiesced", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#afa618ae43fbeccc05ac2fdb7cb1cc34d", null ],
+    [ "WithSerialNumber", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#ae123e28ef3b6ce8ca36c73e5df2dfd26", null ],
+    [ "WithState", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a9de7085610a8a3916a2e9c929a53f77b", null ],
+    [ "ImportExportConfiguration", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a52fd552e48cb432bc7d38a37a0f21bb9", null ],
+    [ "LastPage", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#afbf4f4933e617c25e0263beaaecacd7f", null ],
+    [ "LibraryId", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#afc44bea0ac916cb74132a0348a647018", null ],
+    [ "Name", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#ae8e4d05356a30b98931c37f5aab130cf", null ],
+    [ "PageLength", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a7ab6fb849f6237d8d108f76b6be0df30", null ],
+    [ "PageOffset", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a332231e16a593ec6f666e9ebcaf3c7ae", null ],
+    [ "PageStartMarker", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a4db9864f3e83ae3220b49609603fb449", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#aa66d2d61abe78be55f26c439fe21cc4b", null ],
+    [ "Quiesced", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a54748cd9d8e88b32443bacc13819c61b", null ],
+    [ "SerialNumber", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a0a3db840a596df310df470294c83a347", null ],
+    [ "State", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#a2716d8663bf334d23508e1c5af355b3e", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_get_tape_partitions_with_full_details_spectra_s3_request.html#aeb571e07e01fedba3567ff8971ccf039", null ]
+];
