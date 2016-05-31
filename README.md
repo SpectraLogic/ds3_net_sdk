@@ -70,10 +70,10 @@ Your project should now reference the SDK and be able to use its API.
 The SDK consists of two levels of abstraction:
 
 1. A high level interface
-   ([`Ds3.Helpers.IDs3ClientHelpers`](http://spectralogic.github.io/ds3_net_sdk/api/interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html))
+   ([`Ds3.Helpers.IDs3ClientHelpers`](http://spectralogic.github.io/ds3_net_sdk/3.0.0/interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html))
    that abstracts several very common application requirements.
 2. The core client interface
-   ([`Ds3.IDs3Client`](http://spectralogic.github.io/ds3_net_sdk/api/interface_ds3_1_1_i_ds3_client.html))
+   ([`Ds3.IDs3Client`](http://spectralogic.github.io/ds3_net_sdk/3.0.0/interface_ds3_1_1_i_ds3_client.html))
    whose method calls each result in exactly one HTTP request.
 
 
@@ -86,7 +86,7 @@ As an example, the standard Amazon S3 request to list objects in a bucket only
 returns 1,000 results at a time and must be called repeatedly with paging
 parameters to get a complete list. Since the code to do this will likely be the
 same regardless of the application, we've created the
-[`ListObjects`](http://spectralogic.github.io/ds3_net_sdk/api/interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html#aa5255c4e1bc7b4fe515dea0e6d519147)
+[`ListObjects`](http://spectralogic.github.io/ds3_net_sdk/3.0.0/interface_ds3_1_1_helpers_1_1_i_ds3_client_helpers.html#aa5255c4e1bc7b4fe515dea0e6d519147)
 method to handle this paging for you.
 
 ## Instantiating the API
