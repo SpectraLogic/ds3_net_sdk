@@ -13,36 +13,20 @@
  * ****************************************************************************
  */
 
-using Ds3.Calls;
-using Ds3.Models;
-using System;
 using System.Collections.Generic;
-using System.IO;
+using Ds3.Helpers;
 
-namespace Ds3.Helpers.Transferrers
+namespace IntegrationTestDS3
 {
-    internal class PartialReadTransferrer : ITransferrer
+    public class MetadataAccess : IMetadataAccess
     {
-        public void Transfer(
-            IDs3Client client,
-            string bucketName,
-            string objectName,
-            long blobOffset,
-            Guid jobId,
-            IEnumerable<Range> ranges,
-            Stream stream,
-            IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener)
+        public IDictionary<string, string> getMetadataValue(string filename)
         {
-            var response = client.GetObject(
-                new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset)
-                    .WithByteRanges(ranges)
-            );
-
-            if (blobOffset == 0)
+            var metadataValue = new Dictionary<string, string>
             {
-                metadataListener?.Invoke(objectName, response.Metadata);
-            }
+                {"name", filename}
+            };
+            return metadataValue;
         }
     }
 }

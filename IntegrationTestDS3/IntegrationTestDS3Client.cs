@@ -891,5 +891,46 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
+
+        [Test]
+        public void TestJobWithMetadata()
+        {
+            const string bucketName = "TestJobWithMetadata";
+
+            try
+            {
+                // grab a file
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
+                Assert.IsNotEmpty(directoryObjects);
+                var testObject = directoryObjects.Where(o => o.Name.Equals("beowulf.txt"));
+ 
+                // create or ensure bucket
+                _helpers.EnsureBucketExists(bucketName);
+                
+                // create a job with metadata
+                var job = _helpers.StartWriteJob(bucketName, testObject);
+                job.WithMetadata(new MetadataAccess());
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc));
+
+                // Creates a bulk job with all of the objects in the bucket.
+                job = _helpers.StartReadAllJob(bucketName);
+
+                //add metadata listener
+                job.MetadataListener += (fileName, metadata) =>
+                {
+                    Assert.AreEqual(fileName, "beowulf.txt");
+                    Assert.AreEqual(metadata, new Dictionary<string, string> {{"name", "beowulf.txt"}});
+                };
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDest));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
     }
 }

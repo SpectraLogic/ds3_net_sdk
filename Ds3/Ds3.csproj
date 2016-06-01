@@ -478,6 +478,7 @@
     <Compile Include="Calls\VerifyTapeSpectraS3Response.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
+    <Compile Include="Helpers\IMetadataAccess.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\IChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\WriteRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\ReadRandomAccessChunkStrategy.cs" />

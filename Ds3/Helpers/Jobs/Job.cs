@@ -45,10 +45,12 @@ namespace Ds3.Helpers.Jobs
         private readonly IDs3Client _client;
         private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
+        private IMetadataAccess _metadataAccess;
 
         public event Action<long> DataTransferred;
-
         public event Action<TItem> ItemCompleted;
+        public event Action<string, IDictionary<string, string>> MetadataListener;
+
 
         public Guid JobId { get; private set; }
         public string BucketName { get; private set; }
@@ -62,6 +64,12 @@ namespace Ds3.Helpers.Jobs
         public TSelf WithCancellationToken(CancellationToken cancellationToken)
         {
             this._cancellationToken = cancellationToken;
+            return (TSelf)(IBaseJob<TSelf, TItem>)this;
+        }
+
+        public TSelf WithMetadata(IMetadataAccess metadataAccess)
+        {
+            this._metadataAccess = metadataAccess;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
@@ -134,7 +142,9 @@ namespace Ds3.Helpers.Jobs
                 blob.Range.Start,
                 this.JobId,
                 ranges,
-                stream
+                stream,
+                _metadataAccess,
+                MetadataListener
             );
 
             this._streamFactory.CloseBlob(blob);
