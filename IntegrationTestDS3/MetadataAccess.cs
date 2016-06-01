@@ -20,7 +20,7 @@ namespace IntegrationTestDS3
 {
     public class MetadataAccess : IMetadataAccess
     {
-        public IDictionary<string, string> getMetadataValue(string filename)
+        public IDictionary<string, string> GetMetadataValue(string filename)
         {
             var metadataValue = new Dictionary<string, string>
             {

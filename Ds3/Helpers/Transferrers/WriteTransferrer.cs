@@ -40,7 +40,7 @@ namespace Ds3.Helpers.Transferrers
 
             if (blobOffset == 0 && metadataAccess != null)
             {
-                request.WithMetadata(metadataAccess.getMetadataValue(objectName));
+                request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
             }
 
             client.PutObject(request);
