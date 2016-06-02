@@ -23,6 +23,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Ds3.Runtime;
 using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers
@@ -452,6 +453,70 @@ namespace TestDs3.Helpers
             );
             CollectionAssert.AreEquivalent(new[] { 20L }, dataTransfers);
             CollectionAssert.AreEquivalent(Stubs.PartialFailureObjectNames, itemsCompleted);
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3AssertException))]
+        public void WithMetadataBeforeTransferException()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(
+                            Stubs.Chunk1(null, false, false),
+                            Stubs.Chunk2(null, false, false),
+                            Stubs.Chunk3(null, false, false)
+                        );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node1Client, "hello", 0L, "ABCDefGHIJ");
+            MockHelpers.SetupPutObject(node1Client, "bar", 35L, "zABCDEFGHIJ");
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupPutObject(node2Client, "foo", 10L, "klmnopqrst");
+            MockHelpers.SetupPutObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupPutObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy");
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var streams = new Dictionary<string, string>
+            {
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
+            };
+            var ds3Objects = Stubs
+                .ObjectNames
+                .Select(name => new Ds3Object(name, streams[name].Length));
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, null)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects);
+
+            job.Transfer(key => new MockStream(streams[key]));
+
+            // Must always be called before the Transfer method. 
+            // This is will throw Ds3AssertException
+            job.WithMetadata(null);
         }
     }
 }

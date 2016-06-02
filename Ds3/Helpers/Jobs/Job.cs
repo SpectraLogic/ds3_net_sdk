@@ -13,7 +13,6 @@
 * ****************************************************************************
 */
 
-using Ds3.Calls;
 using Ds3.Helpers.ProgressTrackers;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.Strategys;
@@ -27,6 +26,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers.Jobs
 {
@@ -46,6 +46,7 @@ namespace Ds3.Helpers.Jobs
         private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
         private IMetadataAccess _metadataAccess;
+        private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
         public event Action<TItem> ItemCompleted;
@@ -57,18 +58,24 @@ namespace Ds3.Helpers.Jobs
 
         public TSelf WithMaxParallelRequests(int maxParallelRequests)
         {
+            if (TransferStarted) throw new Ds3AssertException("WithMaxParallelRequests Must always be called before the Transfer method.");
+
             this._maxParallelRequests = maxParallelRequests;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
         public TSelf WithCancellationToken(CancellationToken cancellationToken)
         {
+            if (TransferStarted) throw new Ds3AssertException("WithCancellationToken Must always be called before the Transfer method.");
+
             this._cancellationToken = cancellationToken;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
         public TSelf WithMetadata(IMetadataAccess metadataAccess)
         {
+            if (TransferStarted) throw new Ds3AssertException("WithMetadata Must always be called before the Transfer method.");
+
             this._metadataAccess = metadataAccess;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
@@ -93,6 +100,7 @@ namespace Ds3.Helpers.Jobs
             this._transferrer = transferrer;
             this._rangesForRequests = rangesForRequests;
             this._rangeTranslator = rangeTranslator;
+            TransferStarted = false;
 
             this._itemTracker = new JobItemTracker<TItem>(itemsToTrack);
             this._itemTracker.DataTransferred += size => this.DataTransferred.Call(size);
@@ -105,6 +113,8 @@ namespace Ds3.Helpers.Jobs
 
         public void Transfer(Func<TItem, Stream> createStreamForTransferItem)
         {
+            TransferStarted = true;
+
             this._createStreamForTransferItem = createStreamForTransferItem;
 
             Parallel.ForEach(
