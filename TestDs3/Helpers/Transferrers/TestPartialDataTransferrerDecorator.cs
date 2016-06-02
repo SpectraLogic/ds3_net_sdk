@@ -39,7 +39,7 @@ namespace TestDs3.Helpers.Transferrers
                 var stream = new MemoryStream(200);
                 var exceptionTransferrer = new ReadTransferrer();
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 0);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream);
+                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null);
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetriesException e) {
@@ -58,7 +58,7 @@ namespace TestDs3.Helpers.Transferrers
                 var stream = new MemoryStream(200);
                 var exceptionTransferrer = new ReadTransferrer();
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 1);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream);
+                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null);
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetriesException e)

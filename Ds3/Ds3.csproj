@@ -478,6 +478,7 @@
     <Compile Include="Calls\VerifyTapeSpectraS3Response.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
+    <Compile Include="Helpers\IMetadataAccess.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\IChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\WriteRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\ReadRandomAccessChunkStrategy.cs" />
@@ -829,6 +830,7 @@
     <Compile Include="ResponseParsers\VerifySystemHealthSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyUserIsMemberOfGroupSpectraS3ResponseParser.cs" />
+    <Compile Include="Runtime\Ds3AssertException.cs" />
     <Compile Include="Runtime\Ds3MaxJobsException.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\DisposableFileStream.cs" />
