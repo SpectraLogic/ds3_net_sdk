@@ -108,7 +108,7 @@ namespace Ds3
         }
 
         /// <summary>
-        /// Specifies how long to wait for an HTTP request or response to transfer.
+        /// Specifies how long to wait in milliseconds for an HTTP request or response to transfer.
         /// </summary>
         /// <param name="readWriteTimeout"></param>
         /// <returns></returns>
@@ -119,7 +119,7 @@ namespace Ds3
         }
 
         /// <summary>
-        /// Specifies how long to wait for the server to respond once the SDK has fully sent a request.
+        /// Specifies how long to wait in milliseconds for the server to respond once the HTTP request has been fully sent.
         /// </summary>
         /// <param name="requestTimeout"></param>
         /// <returns></returns>
