@@ -210,4 +210,7 @@
   <data name="TooManyRetriesForPartialData" xml:space="preserve">
     <value>Exhausted retries for retrieving data when partial data was received.</value>
   </data>
+  <data name="ExpectedGetJobButWasPutJobException" xml:space="preserve">
+    <value>Expected a GET job, but was a PUT job.</value>
+  </data>
 </root>

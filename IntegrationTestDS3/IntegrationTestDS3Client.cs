@@ -932,5 +932,142 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
+
+        [Test]
+        public void PutObjectsWithResume()
+        {
+            const string bucketName = "PutObjectsWithResume";
+            const int numberOfObjects = 1000;
+
+            try
+            {
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var objects = new List<Ds3Object>();
+
+                for (var i = 0; i < numberOfObjects; i++)
+                {
+                    objects.Add(new Ds3Object("File" + i, contentBytes.Length));
+                }
+
+                _helpers.EnsureBucketExists(bucketName);
+                var job = _helpers.StartWriteJob(bucketName, objects);
+
+                var cancellationTokenSource = new CancellationTokenSource();
+                job.WithCancellationToken(cancellationTokenSource.Token);
+
+                var filesTransfered = 0;
+                job.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+
+                var thread = new Thread(() =>
+                {
+                    job.Transfer(key => new MemoryStream(contentBytes));
+                });
+                thread.Start();
+
+                //give the thread a sec to start
+                Thread.Sleep(1000);
+
+                //cancel the job
+                cancellationTokenSource.Cancel();
+
+                //wait for the thread to finish
+                thread.Join();
+
+                Assert.Less(filesTransfered, numberOfObjects);
+
+                //resume the job
+                var resumedJob = _helpers.RecoverWriteJob(job.JobId);
+
+                resumedJob.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+                resumedJob.Transfer(key => new MemoryStream(contentBytes));
+
+                Assert.AreEqual(numberOfObjects, filesTransfered);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void GetObjectsWithResume()
+        {
+            const string bucketName = "GetObjectsWithResume";
+            const int numberOfObjects = 1000;
+
+            try
+            {
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var objects = new List<Ds3Object>();
+
+                for (var i = 0; i < numberOfObjects; i++)
+                {
+                    objects.Add(new Ds3Object("File" + i, contentBytes.Length));
+                }
+
+                _helpers.EnsureBucketExists(bucketName);
+
+                //upload test files
+                var putJob = _helpers.StartWriteJob(bucketName, objects);
+                putJob.Transfer(key => new MemoryStream(contentBytes));
+
+                //start the read job
+                var getJob = _helpers.StartReadJob(bucketName, objects);
+                var cancellationTokenSource = new CancellationTokenSource();
+                getJob.WithCancellationToken(cancellationTokenSource.Token);
+
+                var filesTransfered = 0;
+                getJob.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+
+                var thread = new Thread(() =>
+                {
+                    getJob.Transfer(key => new MemoryStream(contentBytes));
+                });
+                thread.Start();
+
+                //give the thread a sec to start
+                Thread.Sleep(1000);
+
+                //cancel the job
+                cancellationTokenSource.Cancel();
+
+                //wait for the thread to finish
+                thread.Join();
+
+                Assert.Less(filesTransfered, numberOfObjects);
+
+                //resume the job
+                var resumedJob = _helpers.RecoverReadJob(getJob.JobId);
+
+                resumedJob.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+                resumedJob.Transfer(key => new MemoryStream(contentBytes));
+
+                Assert.AreEqual(numberOfObjects, filesTransfered);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
     }
 }
