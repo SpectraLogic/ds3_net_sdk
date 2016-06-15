@@ -197,6 +197,12 @@ namespace Ds3.Helpers
         public IJob RecoverWriteJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
         {
             var jobResponse = this._client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
+
+            if (jobResponse.Status == JobStatus.COMPLETED)
+            {
+                throw new InvalidOperationException(Resources.JobCompletedException);
+            }
+
             if (jobResponse.RequestType != JobTypePut)
             {
                 throw new InvalidOperationException(Resources.ExpectedPutJobButWasGetJobException);
@@ -218,6 +224,12 @@ namespace Ds3.Helpers
         public IJob RecoverReadJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
         {
             var jobResponse = this._client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
+
+            if (jobResponse.Status == JobStatus.COMPLETED)
+            {
+                throw new InvalidOperationException(Resources.JobCompletedException);
+            }
+
             if (jobResponse.RequestType != JobTypeGet)
             {
                 throw new InvalidOperationException(Resources.ExpectedGetJobButWasPutJobException);

@@ -213,4 +213,7 @@
   <data name="ExpectedGetJobButWasPutJobException" xml:space="preserve">
     <value>Expected a GET job, but was a PUT job.</value>
   </data>
+  <data name="JobCompletedException" xml:space="preserve">
+    <value>The job is already completed</value>
+  </data>
 </root>

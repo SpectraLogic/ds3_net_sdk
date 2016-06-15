@@ -223,6 +223,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The job is already completed.
+        /// </summary>
+        internal static string JobCompletedException {
+            get {
+                return ResourceManager.GetString("JobCompletedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The job went away as we were trying to acquire chunk information..
         /// </summary>
         internal static string JobGoneException {
