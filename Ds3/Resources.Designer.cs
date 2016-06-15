@@ -115,6 +115,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected a GET job, but was a PUT job..
+        /// </summary>
+        internal static string ExpectedGetJobButWasPutJobException {
+            get {
+                return ResourceManager.GetString("ExpectedGetJobButWasPutJobException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comparison argument must be of the same type..
         /// </summary>
         internal static string ExpectedObjectOfSameTypeException {
@@ -210,6 +219,15 @@ namespace Ds3 {
         internal static string InvalidValueForTypeException {
             get {
                 return ResourceManager.GetString("InvalidValueForTypeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job is already completed.
+        /// </summary>
+        internal static string JobCompletedException {
+            get {
+                return ResourceManager.GetString("JobCompletedException", resourceCulture);
             }
         }
         
