@@ -26,9 +26,9 @@ namespace Ds3.Helpers.Strategys
         private readonly IChunkStrategy _writeRandomAccessChunkStrategy;
         private readonly IStreamFactory<string> _writeRandomAccesStreamFactory;
 
-        public WriteRandomAccessHelperStrategy()
+        public WriteRandomAccessHelperStrategy(bool withAggregation)
         {
-            this._writeRandomAccessChunkStrategy = new WriteRandomAccessChunkStrategy();
+            this._writeRandomAccessChunkStrategy = new WriteRandomAccessChunkStrategy(withAggregation);
             this._writeRandomAccesStreamFactory = new WriteRandomAccessStreamFactory();
         }
 

@@ -147,7 +147,8 @@ namespace IntegrationTestDS3
             var writeStrategyList = new List<IHelperStrategy<string>>
             {
                 null, //using the default strategy
-                new WriteRandomAccessHelperStrategy(),
+                new WriteRandomAccessHelperStrategy(false), //without aggregation
+                new WriteRandomAccessHelperStrategy(true), //with aggregation
                 new WriteNoAllocateHelperStrategy(),
                 new WriteStreamHelperStrategy()
             };
