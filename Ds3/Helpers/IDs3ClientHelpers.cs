@@ -106,5 +106,14 @@ namespace Ds3.Helpers
         /// <param name="helperStrategy"></param>
         /// <returns>An IJob implementation that can put each object per the DS3 protocol.</returns>
         IJob RecoverWriteJob(Guid jobId, IHelperStrategy<string> helperStrategy = null);
+
+        /// <summary>
+        /// Determines the state of an existing bulk GET job and returns
+        /// an interface that can GET the remaining objects efficiently.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="helperStrategy"></param>
+        /// <returns>An IJob implementation that can put each object per the DS3 protocol.</returns>
+        IJob RecoverReadJob(Guid jobId, IHelperStrategy<string> helperStrategy = null);
     }
 }
