@@ -15,15 +15,15 @@
 
 using System;
 using System.IO;
-using System.Threading;
 
 namespace Ds3.Helpers.Streams
 {
-    public class PutObjectRequestStream : Stream
+    public class PutObjectRequestStream : Stream, IDisposable
     {
         private readonly Stream _stream;
         private long _streamLength;
         private long _totalBytesRead = 0;
+        private bool _disposed;
 
         public PutObjectRequestStream(Stream stream, long length)
         {
@@ -36,6 +36,27 @@ namespace Ds3.Helpers.Streams
             this._stream = stream;
             this._stream.Position = offset;
             this._streamLength = length;
+        }
+
+        public new void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _stream.Dispose();
+            }
+
+            _disposed = true;
         }
 
         public override bool CanRead
