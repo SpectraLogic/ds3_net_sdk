@@ -31,6 +31,7 @@ namespace Ds3
         GetBucketResponse GetBucket(GetBucketRequest request);
         GetServiceResponse GetService(GetServiceRequest request);
         HeadBucketResponse HeadBucket(HeadBucketRequest request);
+        HeadObjectResponse HeadObject(HeadObjectRequest request);
         InitiateMultiPartUploadResponse InitiateMultiPartUpload(InitiateMultiPartUploadRequest request);
         ListMultiPartUploadPartsResponse ListMultiPartUploadParts(ListMultiPartUploadPartsRequest request);
         ListMultiPartUploadsResponse ListMultiPartUploads(ListMultiPartUploadsRequest request);
@@ -212,7 +213,6 @@ namespace Ds3
         void PutObject(PutObjectRequest request);
         void DeleteBucket(DeleteBucketRequest request);
         void DeleteObject(DeleteObjectRequest request);
-        void HeadObject(HeadObjectRequest request);
         void DeleteBucketAclSpectraS3(DeleteBucketAclSpectraS3Request request);
         void DeleteDataPolicyAclSpectraS3(DeleteDataPolicyAclSpectraS3Request request);
         void DeleteBucketSpectraS3(DeleteBucketSpectraS3Request request);
