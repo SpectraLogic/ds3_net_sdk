@@ -61,6 +61,11 @@ namespace Ds3
             return new HeadBucketResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public HeadObjectResponse HeadObject(HeadObjectRequest request)
+        {
+            return new HeadObjectResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public InitiateMultiPartUploadResponse InitiateMultiPartUpload(InitiateMultiPartUploadRequest request)
         {
             return new InitiateMultiPartUploadResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -981,14 +986,6 @@ namespace Ds3
             using (var response = _netLayer.Invoke(request))
             {
                 ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
-            }
-        }
-
-        public void HeadObject(HeadObjectRequest request)
-        {
-            using (var response = _netLayer.Invoke(request))
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
             }
         }
 

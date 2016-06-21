@@ -341,6 +341,7 @@
     <Compile Include="Calls\HeadBucketRequest.cs" />
     <Compile Include="Calls\HeadBucketResponse.cs" />
     <Compile Include="Calls\HeadObjectRequest.cs" />
+    <Compile Include="Calls\HeadObjectResponse.cs" />
     <Compile Include="Calls\ImportAllPoolsSpectraS3Request.cs" />
     <Compile Include="Calls\ImportAllTapesSpectraS3Request.cs" />
     <Compile Include="Calls\ImportAllTapesSpectraS3Response.cs" />
@@ -764,6 +765,7 @@
     <Compile Include="ResponseParsers\GetUserSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetUsersSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\HeadBucketResponseParser.cs" />
+    <Compile Include="ResponseParsers\HeadObjectResponseParser.cs" />
     <Compile Include="ResponseParsers\ImportAllTapesSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ImportPoolSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ImportTapeSpectraS3ResponseParser.cs" />
