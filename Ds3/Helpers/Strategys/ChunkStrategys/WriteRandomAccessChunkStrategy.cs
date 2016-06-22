@@ -35,7 +35,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         private readonly Action<TimeSpan> _wait;
         private readonly bool _withAggregation;
 
-        public WriteRandomAccessChunkStrategy(bool withAggregation)
+        public WriteRandomAccessChunkStrategy(bool withAggregation = false)
             :this(Thread.Sleep, withAggregation)
         {
         }
@@ -53,7 +53,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
 
             if (_withAggregation)
             {
-                _jobResponse.Objects = GetObjectsNotInCach();
+                _jobResponse.Objects = GetObjectsNotInCache();
             }
 
             lock (this._chunksRemainingLock)
@@ -147,7 +147,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         /// this helps us when using aggregating jobs to determinate which object are related to the current running job.
         /// </summary>
         /// <returns> A new list of objects to be processed by the running job</returns>
-        private IEnumerable<Objects> GetObjectsNotInCach()
+        private IEnumerable<Objects> GetObjectsNotInCache()
         {
             var notCachedObject = new List<Objects>();
             var hasCachedObject = false;
