@@ -49,7 +49,7 @@ namespace TestDs3.Helpers.Strategys
         [Test]
         public void TestWriteRandomAccessHelperStrategy()
         {
-            var helperStrategy = new WriteRandomAccessHelperStrategy(false);
+            var helperStrategy = new WriteRandomAccessHelperStrategy();
             var chunkStrategy = helperStrategy.GetChunkStrategy();
             var streamFactory = helperStrategy.GetStreamFactory();
 
