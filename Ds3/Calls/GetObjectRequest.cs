@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,16 @@ namespace Ds3.Calls
 {
     public class GetObjectRequest : Ds3Request
     {
+        
         public string BucketName { get; private set; }
+
         public string ObjectName { get; private set; }
-        public Guid JobId { get; private set; }
+
+        public string Job { get; private set; }
+
         public long Offset { get; private set; }
+
+        
 
         private IEnumerable<Range> _byteRanges = Enumerable.Empty<Range>();
         public IEnumerable<Range> ByteRanges
@@ -35,11 +42,6 @@ namespace Ds3.Calls
             set { WithByteRanges(value); }
         }
 
-        /// <summary>
-        /// Specifies a list of ranges of bytes within the object to retrieve.
-        /// </summary>
-        /// <param name="byteRanges"></param>
-        /// <returns></returns>
         public GetObjectRequest WithByteRanges(IEnumerable<Range> byteRanges)
         {
             this._byteRanges = byteRanges;
@@ -49,6 +51,35 @@ namespace Ds3.Calls
         internal override IEnumerable<Range> GetByteRanges()
         {
             return this._byteRanges;
+        }
+
+        internal Stream DestinationStream { get; private set; }
+
+        public GetObjectRequest(string bucketName, string objectName, Stream destinationStream, Guid job, long offset) {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this.Job = job.ToString();
+            this.Offset = offset;
+            this.DestinationStream = destinationStream;
+            
+            if (job != null)
+            {
+                QueryParams.Add("job", job.ToString());
+                QueryParams.Add("offset", offset.ToString());
+            }
+        }
+        public GetObjectRequest(string bucketName, string objectName, Stream destinationStream, string job, long offset) {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this.Job = job;
+            this.Offset = offset;
+            this.DestinationStream = destinationStream;
+            
+            if (job != null)
+            {
+                QueryParams.Add("job", job.ToString());
+                QueryParams.Add("offset", offset.ToString());
+            }
         }
 
         internal override HttpVerb Verb
@@ -64,22 +95,6 @@ namespace Ds3.Calls
             get
             {
                 return "/" + BucketName + "/" + ObjectName;
-            }
-        }
-
-        internal Stream DestinationStream { get; private set; }
-
-        public GetObjectRequest(string bucketName, string ds3ObjectName, Guid jobId, long offset, Stream destinationStream)
-        {
-            this.BucketName = bucketName;
-            this.ObjectName = ds3ObjectName;
-            this.JobId = jobId;
-            this.Offset = offset;
-            this.DestinationStream = destinationStream;
-            if (jobId != Guid.Empty)
-            {
-                QueryParams.Add("job", jobId.ToString());
-                QueryParams.Add("offset", offset.ToString());
             }
         }
     }

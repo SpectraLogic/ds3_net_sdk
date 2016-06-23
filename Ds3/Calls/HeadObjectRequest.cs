@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,22 +13,35 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
+using System.Net;
+
 namespace Ds3.Calls
 {
     public class HeadObjectRequest : Ds3Request
     {
+        
         public string BucketName { get; private set; }
+
         public string ObjectName { get; private set; }
 
-        public HeadObjectRequest(string bucketName, string ds3ObjectName)
-        {
+        
+
+        
+        public HeadObjectRequest(string bucketName, string objectName) {
             this.BucketName = bucketName;
-            this.ObjectName = ds3ObjectName;
+            this.ObjectName = objectName;
+            
         }
 
         internal override HttpVerb Verb
         {
-            get { return HttpVerb.HEAD; }
+            get
+            {
+                return HttpVerb.HEAD;
+            }
         }
 
         internal override string Path

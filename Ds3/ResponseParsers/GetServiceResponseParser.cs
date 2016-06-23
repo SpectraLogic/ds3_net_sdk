@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,13 +13,14 @@
  * ****************************************************************************
  */
 
-using System.IO;
-using System.Linq;
-using System.Net;
+// This code is auto-generated, do not modify
 
 using Ds3.Calls;
 using Ds3.Models;
 using Ds3.Runtime;
+using System.Linq;
+using System.Net;
+using System.Xml.Linq;
 
 namespace Ds3.ResponseParsers
 {
@@ -27,18 +28,16 @@ namespace Ds3.ResponseParsers
     {
         public GetServiceResponse Parse(GetServiceRequest request, IWebResponse response)
         {
-            ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-            using (Stream content = response.GetResponseStream())
+            using (response)
             {
-                var root = XmlExtensions.ReadDocument(content).ElementOrThrow("ListAllMyBucketsResult");
-                var owner = root.ElementOrThrow("Owner");
-                return new GetServiceResponse(
-                    owner: new Owner(owner.ElementOrThrow("ID").Value, owner.ElementOrThrow("DisplayName").Value),
-                    buckets: (
-                        from bucket in root.ElementOrThrow("Buckets").Elements("Bucket")
-                        select new Bucket(bucket.ElementOrThrow("Name").Value, bucket.ElementOrThrow("CreationDate").Value)
-                    ).ToList()
-                );
+                ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
+                using (var stream = response.GetResponseStream())
+                {
+                    return new GetServiceResponse(
+                        ModelParsers.ParseListAllMyBucketsResult(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("ListAllMyBucketsResult"))
+                    );
+                }
             }
         }
     }

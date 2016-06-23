@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,40 +13,31 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+using Ds3.Models;
+using System;
 using System.Net;
 
 namespace Ds3.Calls
 {
     public class GetBucketRequest : Ds3Request
     {
+        
         public string BucketName { get; private set; }
+
+        
+        private string _delimiter;
+        public string Delimiter
+        {
+            get { return _delimiter; }
+            set { WithDelimiter(value); }
+        }
 
         private string _marker;
         public string Marker
         {
             get { return _marker; }
             set { WithMarker(value); }
-        }
-
-        /// <summary>
-        /// Specifies the name of the object to start with. Use
-        /// GetBucketResponse.NextMarker here if the last GetBucketResponse had
-        /// IsTruncated == true.
-        /// </summary>
-        /// <param name="marker"></param>
-        /// <returns></returns>
-        public GetBucketRequest WithMarker(string marker)
-        {
-            this._marker = marker;
-            if (marker != null)
-            {
-                this.QueryParams.Add("marker", marker);
-            }
-            else
-            {
-                this.QueryParams.Remove("marker");
-            }
-            return this;
         }
 
         private int? _maxKeys;
@@ -56,37 +47,17 @@ namespace Ds3.Calls
             set { WithMaxKeys(value); }
         }
 
-        /// <summary>
-        /// Specifies the maximum number of keys you'd like to retrieve.
-        /// </summary>
-        /// <param name="maxKeys"></param>
-        /// <returns></returns>
-        public GetBucketRequest WithMaxKeys(int? maxKeys)
+        private string _prefix;
+        public string Prefix
         {
-            this._maxKeys = maxKeys;
-            if (maxKeys != null)
-            {
-                this.QueryParams.Add("max-keys", maxKeys.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("max-keys");
-            }
-            return this;
-        }
-
-        private string _delimiter;
-        public string Delimiter
-        {
-            get { return _delimiter; }
-            set { WithDelimiter(value); }
+            get { return _prefix; }
+            set { WithPrefix(value); }
         }
 
         public GetBucketRequest WithDelimiter(string delimiter)
         {
             this._delimiter = delimiter;
-            if (delimiter != null)
-            {
+            if (delimiter != null) {
                 this.QueryParams.Add("delimiter", delimiter);
             }
             else
@@ -95,24 +66,34 @@ namespace Ds3.Calls
             }
             return this;
         }
-
-        private string _prefix;
-        public string Prefix
+        public GetBucketRequest WithMarker(string marker)
         {
-            get { return _prefix; }
-            set { WithPrefix(value); }
+            this._marker = marker;
+            if (marker != null) {
+                this.QueryParams.Add("marker", marker);
+            }
+            else
+            {
+                this.QueryParams.Remove("marker");
+            }
+            return this;
         }
-
-        /// <summary>
-        /// Specifies a string that all retrieved object keys must start with.
-        /// </summary>
-        /// <param name="prefix"></param>
-        /// <returns></returns>
+        public GetBucketRequest WithMaxKeys(int? maxKeys)
+        {
+            this._maxKeys = maxKeys;
+            if (maxKeys != null) {
+                this.QueryParams.Add("max_keys", maxKeys.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_keys");
+            }
+            return this;
+        }
         public GetBucketRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
-            if (prefix != null)
-            {
+            if (prefix != null) {
                 this.QueryParams.Add("prefix", prefix);
             }
             else
@@ -120,6 +101,12 @@ namespace Ds3.Calls
                 this.QueryParams.Remove("prefix");
             }
             return this;
+        }
+
+        
+        public GetBucketRequest(string bucketName) {
+            this.BucketName = bucketName;
+            
         }
 
         internal override HttpVerb Verb
@@ -136,11 +123,6 @@ namespace Ds3.Calls
             {
                 return "/" + BucketName;
             }
-        }
-
-        public GetBucketRequest(string bucketName)
-        {
-            this.BucketName = bucketName;
         }
     }
 }

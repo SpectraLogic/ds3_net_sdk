@@ -23,6 +23,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Ds3.Runtime;
 using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers
@@ -69,16 +70,16 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
@@ -159,16 +160,16 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     fullObjects,
                     partialObjects
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object)
                 .StartPartialReadJob(Stubs.BucketName, fullObjects, partialObjects);
@@ -255,17 +256,17 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkPut(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, maxBlobSize)))
-                .Returns(initialJobResponse);
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, maxBlobSize)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.AllocateJobChunk(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
             client
-                .Setup(c => c.AllocateJobChunk(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
             client
-                .Setup(c => c.AllocateJobChunk(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
 
             var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, maxBlobSize);
 
@@ -319,16 +320,16 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
@@ -356,16 +357,25 @@ namespace TestDs3.Helpers
                         marker: "",
                         nextMarker: "baz",
                         isTruncated: true,
-                        ds3objectInfos: new List<Ds3ObjectInfo> {
-                            MockHelpers.BuildDs3Object("foo", "2cde576e5f5a613e6cee466a681f4929", "2009-10-12T17:50:30.000Z", 12), MockHelpers.BuildDs3Object("bar", "f3f98ff00be128139332bcf4b772be43", "2009-10-14T17:50:31.000Z", 12)
+                        ds3objectInfos: new List<Contents> {
+                            MockHelpers.BuildDs3Object(
+                                "foo",
+                                "2cde576e-5f5a-613e-6cee-466a681f4929", 
+                                "2009-10-12T17:50:30.000Z", 
+                                12),
+                            MockHelpers.BuildDs3Object(
+                                "bar",
+                                "f3f98ff0-0be1-2813-9332-bcf4b772be43", 
+                                "2009-10-14T17:50:31.000Z", 
+                                12)
                         }
                     ),
                     MockHelpers.CreateGetBucketResponse(
                         marker: "baz",
                         nextMarker: "",
                         isTruncated: false,
-                        ds3objectInfos: new List<Ds3ObjectInfo> {
-                            MockHelpers.BuildDs3Object("baz", "802d45fcb9a3f7d00f1481362edc0ec9", "2009-10-18T17:50:35.000Z", 12)
+                        ds3objectInfos: new List<Contents> {
+                            MockHelpers.BuildDs3Object("baz", "802d45fc-b9a3-f7d0-0f14-81362edc0ec9", "2009-10-18T17:50:35.000Z", 12)
                         }
                     )
                 }).Dequeue);
@@ -403,16 +413,16 @@ namespace TestDs3.Helpers
                 .Setup(c => c.BuildFactory(Stubs.Nodes))
                 .Returns(clientFactory.Object);
             client
-                .Setup(c => c.BulkGet(MockHelpers.ItIsBulkGetRequest(
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    ChunkOrdering.None,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
-                .Returns(initialJobResponse);
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
-                .Setup(c => c.GetAvailableJobChunks(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
@@ -443,6 +453,70 @@ namespace TestDs3.Helpers
             );
             CollectionAssert.AreEquivalent(new[] { 20L }, dataTransfers);
             CollectionAssert.AreEquivalent(Stubs.PartialFailureObjectNames, itemsCompleted);
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3AssertException))]
+        public void WithMetadataBeforeTransferException()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(
+                            Stubs.Chunk1(null, false, false),
+                            Stubs.Chunk2(null, false, false),
+                            Stubs.Chunk3(null, false, false)
+                        );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node1Client, "hello", 0L, "ABCDefGHIJ");
+            MockHelpers.SetupPutObject(node1Client, "bar", 35L, "zABCDEFGHIJ");
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupPutObject(node2Client, "foo", 10L, "klmnopqrst");
+            MockHelpers.SetupPutObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupPutObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy");
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var streams = new Dictionary<string, string>
+            {
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
+            };
+            var ds3Objects = Stubs
+                .ObjectNames
+                .Select(name => new Ds3Object(name, streams[name].Length));
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, null)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects);
+
+            job.Transfer(key => new MockStream(streams[key]));
+
+            // Must always be called before the Transfer method. 
+            // This is will throw Ds3AssertException
+            job.WithMetadata(null);
         }
     }
 }

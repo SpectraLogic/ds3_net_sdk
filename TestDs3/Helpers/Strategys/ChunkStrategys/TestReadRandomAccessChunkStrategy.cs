@@ -51,11 +51,11 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
                 .Returns(factory.Object);
             client
-                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.Success(
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(
                     TimeSpan.FromMinutes(5),
                     Stubs.BuildJobResponse(Stubs.Chunk1(Stubs.NodeId1, true, true))
                 ));
@@ -116,18 +116,18 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
             client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
             var chunkResponses = new[]
             {
-                GetAvailableJobChunksResponse.RetryAfter(TimeSpan.FromMinutes(5)),
-                GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(11), jobResponse2),
-                GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(8), jobResponse2),
-                GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(11), jobResponse3),
-                GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(7), jobResponse3),
-                GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(6), jobResponse3),
-                GetAvailableJobChunksResponse.RetryAfter(TimeSpan.FromMinutes(4)),
-                GetAvailableJobChunksResponse.Success(TimeSpan.FromMinutes(11), jobResponse4)
+                GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)),
+                GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(11), jobResponse2),
+                GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(8), jobResponse2),
+                GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(11), jobResponse3),
+                GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(7), jobResponse3),
+                GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(6), jobResponse3),
+                GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(4)),
+                GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(11), jobResponse4)
             };
-            var chunkResponseQueue = new Queue<GetAvailableJobChunksResponse>(chunkResponses);
+            var chunkResponseQueue = new Queue<GetJobChunksReadyForClientProcessingSpectraS3Response>(chunkResponses);
             client
-                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
                 .Returns(() =>
                 {
                     var r = chunkResponseQueue.Dequeue();
@@ -141,12 +141,12 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
 
             var blobs = new[]
             {
-                new Blob(Range.ByLength(0, 10), "foo"),
-                new Blob(Range.ByLength(15, 20), "bar"),
-                new Blob(Range.ByLength(0, 15), "bar"),
-                new Blob(Range.ByLength(10, 10), "foo"),
-                new Blob(Range.ByLength(0, 10), "hello"),
-                new Blob(Range.ByLength(35, 11), "bar")
+                new Ds3.Helpers.Blob(Range.ByLength(0, 10), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(15, 20), "bar"),
+                new Ds3.Helpers.Blob(Range.ByLength(0, 15), "bar"),
+                new Ds3.Helpers.Blob(Range.ByLength(10, 10), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(0, 10), "hello"),
+                new Ds3.Helpers.Blob(Range.ByLength(35, 11), "bar")
             };
             var producerConsumer = new ProducerConsumer(1);
             var completeBlobsTask = Task.Run(() =>
@@ -234,11 +234,11 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
                 .Returns(factory.Object);
             client
-                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
-                .Returns(GetAvailableJobChunksResponse.RetryAfter(
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(
                     TimeSpan.FromMinutes(0)));
 
             var source = new ReadRandomAccessChunkStrategy(0, _ => { });
@@ -320,20 +320,20 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(new Mock<IDs3Client>(MockBehavior.Strict).Object);
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<Node>>()))
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
                 .Returns(factory.Object);
             client
-                .Setup(c => c.GetAvailableJobChunks(AllocateMock.AvailableChunks(Stubs.JobId)))
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
                 .Returns(() =>
                 {
                     if (retryAfter == 1) //after 4 retires we want to success
                     {
-                        return GetAvailableJobChunksResponse.Success(
+                        return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(
                             TimeSpan.FromMinutes(0),
                             Stubs.BuildJobResponse(Stubs.Chunk1(Stubs.NodeId1, true, true)));
                     }
 
-                    return GetAvailableJobChunksResponse.RetryAfter(TimeSpan.FromSeconds(0));
+                    return GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromSeconds(0));
                 });
 
             var source = new ReadRandomAccessChunkStrategy(retryAfter, _ => { retryAfter--; });

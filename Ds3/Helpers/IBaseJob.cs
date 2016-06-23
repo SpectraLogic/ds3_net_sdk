@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -55,6 +56,15 @@ namespace Ds3.Helpers
         TSelf WithCancellationToken(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Must always be called before the Transfer method.
+        /// 
+        /// Allows the client to add meta-data to objects.
+        /// </summary>
+        /// <param name="metadataAccess"></param>
+        /// <returns>This IJob instance.</returns>
+        TSelf WithMetadata(IMetadataAccess metadataAccess);
+
+        /// <summary>
         /// Performs all GETs or PUTs for the job (depending on the type
         /// of job).
         ///
@@ -79,5 +89,10 @@ namespace Ds3.Helpers
         /// Fires handlers with the name of each transferred item as their transfers finish.
         /// </summary>
         event Action<TItem> ItemCompleted;
+
+        /// <summary>
+        /// Fires handlers with an object name and the meta-data associated with it.
+        /// </summary>
+        event Action<string, IDictionary<string, string>> MetadataListener;
     }
 }

@@ -49,18 +49,18 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
             client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk1(Stubs.NodeId1, false, false)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false)));
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
 
             var sleeps = new List<TimeSpan>();
 
-            var source = new WriteRandomAccessChunkStrategy(sleeps.Add); //we don't want to really sleep in the tests
+            var source = new WriteRandomAccessChunkStrategy(sleeps.Add, false); //we don't want to really sleep in the tests
             var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
 
             CollectionAssert.AreEqual(
@@ -103,18 +103,18 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
             client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk1(Stubs.NodeId1, false, true)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, true)));
 
             client
-                .SetupSequence(c => c.AllocateJobChunk(AllocateMock.Allocate(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkResponse.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkResponse.Success(Stubs.Chunk2(Stubs.NodeId2, true, false)));
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, true, false)));
 
             var sleeps = new List<TimeSpan>();
 
-            var source = new WriteRandomAccessChunkStrategy(sleeps.Add); //we don't want to really sleep in the tests
+            var source = new WriteRandomAccessChunkStrategy(sleeps.Add, false); //we don't want to really sleep in the tests
             var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
 
             CollectionAssert.AreEqual(
@@ -133,6 +133,83 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 sleeps
             );
 
+            client.VerifyAll();
+            clientFactory.VerifyAll();
+        }
+
+        [Test]
+        public void TestGetNextTransferItemsWithAggregationNonCachedObjects()
+        {
+            var jobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, false, false),
+                Stubs.Chunk2(Stubs.NodeId2, false, false)
+                );
+ 
+            var nodeClient = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+ 
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(nodeClient);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(nodeClient);
+ 
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
+            client
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false)));
+            client
+                 .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                 .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+ 
+            var source = new WriteRandomAccessChunkStrategy(time => { }, true);
+            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
+
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(0, 15), "bar")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(10, 10), "foo")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(0, 10), "foo")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(15, 20), "bar")),
+                },
+                transfers,
+                new TransferItemSourceHelpers.TransferItemComparer()
+            );
+            client.VerifyAll();
+            clientFactory.VerifyAll();
+        }
+ 
+        [Test]
+        public void TestGetNextTransferItemsWithAggregationWithCachedObjects()
+        {
+            var jobResponse = Stubs.BuildJobResponse(
+            Stubs.Chunk1(Stubs.NodeId1, true, true),
+            Stubs.Chunk2(Stubs.NodeId2, false, false)
+            );
+ 
+            var nodeClient = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+ 
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(nodeClient);
+ 
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
+            client
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+ 
+            var source = new WriteRandomAccessChunkStrategy(time => { }, true);
+            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
+
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(0, 10), "foo")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(15, 20), "bar")),
+                },
+                transfers,
+                new TransferItemSourceHelpers.TransferItemComparer());
+ 
+ 
             client.VerifyAll();
             clientFactory.VerifyAll();
         }

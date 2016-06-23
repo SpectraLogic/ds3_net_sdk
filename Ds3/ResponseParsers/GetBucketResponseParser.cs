@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,14 +13,14 @@
  * ****************************************************************************
  */
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Net;
+// This code is auto-generated, do not modify
 
 using Ds3.Calls;
 using Ds3.Models;
 using Ds3.Runtime;
+using System.Linq;
+using System.Net;
+using System.Xml.Linq;
 
 namespace Ds3.ResponseParsers
 {
@@ -30,45 +30,15 @@ namespace Ds3.ResponseParsers
         {
             using (response)
             {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.OK);
-                using (Stream content = response.GetResponseStream())
+                ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
+                using (var stream = response.GetResponseStream())
                 {
-                    var root = XmlExtensions.ReadDocument(content).ElementOrThrow("ListBucketResult");
                     return new GetBucketResponse(
-                        name: root.TextOf("Name"),
-                        prefix: root.TextOf("Prefix"),
-                        marker: root.TextOf("Marker"),
-                        nextMarker: root.TextOfOrNull("NextMarker"),
-                        delimiter: root.TextOfOrNull("Delimiter"),
-                        maxKeys: int.Parse(root.TextOf("MaxKeys")),
-                        isTruncated: bool.Parse(root.TextOf("IsTruncated")),
-                        creationDate: ParseDateTime(root.TextOfOrNull("CreationDate")),
-                        objects: (
-                            from obj in root.Elements("Contents")
-                            let owner = obj.ElementOrThrow("Owner")
-                            select new Ds3ObjectInfo(
-                                obj.TextOf("Key"),
-                                long.Parse(obj.TextOf("Size")),
-                                new Owner(owner.TextOf("ID"), owner.TextOf("DisplayName")),
-                                obj.TextOf("ETag"),
-                                obj.TextOf("StorageClass"),
-                                ParseDateTime(obj.TextOf("LastModified"))
-                            )
-                        ).ToList(),
-                        metadata: ResponseParseUtilities.ExtractCustomMetadata(response.Headers),
-                        commonPrefixes: root
-                            .Elements("CommonPrefixes")
-                            .Select(cp => cp.TextOf("Prefix"))
-                            .ToList()
+                        ModelParsers.ParseListBucketResult(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("ListBucketResult"))
                     );
                 }
             }
-        }
-
-        private static DateTime ParseDateTime(string dateTime)
-        {
-            DateTime result;
-            return DateTime.TryParse(dateTime, out result) ? result : DateTime.MinValue;
         }
     }
 }

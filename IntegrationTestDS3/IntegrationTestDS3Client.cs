@@ -63,6 +63,9 @@ namespace IntegrationTestDs3
         public string BuildVersion { private set; get; }
         public string BuildBranch { private set; get; }
 
+        private static string FixtureName = "integration_test_ds3client";
+        private static TempStorageIds EnvStorageIds;
+
         #region setup
 
         [TestFixtureSetUp]
@@ -72,6 +75,15 @@ namespace IntegrationTestDs3
             _helpers = new Ds3ClientHelpers(_client);
 
             SetupTestData();
+
+            Guid dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+            EnvStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
+        }
+
+        [TestFixtureTearDown]
+        public void Teardown()
+        {
+            TempStorageUtil.TearDown(FixtureName, EnvStorageIds, _client);
         }
 
         private void SetupTestData()
@@ -148,22 +160,22 @@ namespace IntegrationTestDs3
         [Test]
         public void DoIntegrationPing()
         {
-            var request = new VerifySystemHealthRequest();
-            var response = _client.VerifySystemHealth(request);
+            var request = new VerifySystemHealthSpectraS3Request();
+            var response = _client.VerifySystemHealthSpectraS3(request);
 
-            Assert.GreaterOrEqual(response.MillisToVerify, 0);
+            Assert.GreaterOrEqual(response.ResponsePayload.MsRequiredToVerifyDataPlannerHealth, 0);
         }
 
         [Test]
         public void GetSystemInfo()
         {
             // get valid data and populate properties
-            var request = new GetSystemInformationRequest();
-            var response = _client.GetSystemInformation(request);
-            Assert.IsNotNullOrEmpty(response.BuildVersion);
-            BuildBranch = response.BuildBranch;
-            BuildRev = response.BuildRev;
-            BuildVersion = response.BuildVersion;
+            var request = new GetSystemInformationSpectraS3Request();
+            var response = _client.GetSystemInformationSpectraS3(request).ResponsePayload;
+            Assert.IsNotNullOrEmpty(response.BuildInformation.Version);
+            BuildBranch = response.BuildInformation.Branch;
+            BuildRev = response.BuildInformation.Revision;
+            BuildVersion = response.BuildInformation.Version;
         }
 
         #endregion ping
@@ -201,8 +213,10 @@ namespace IntegrationTestDs3
                 // instantiate a PutObjectRequest
                 var fs = File.Open(testDirectorySrc + Path.DirectorySeparatorChar + testObject.Name,
                     FileMode.Open);
-                var putRequest = new PutObjectRequest(bucketName, testObject.Name, job.JobId, 0L, fs);
-                putRequest.WithChecksum(Checksum.Compute, Checksum.ChecksumType.Crc32C);
+                var putRequest = new PutObjectRequest(bucketName, testObject.Name, fs)
+                    .WithJob(job.JobId)
+                    .WithOffset(0L);
+                putRequest.WithChecksum(ChecksumType.Compute, ChecksumType.Type.CRC_32C);
                 _client.PutObject(putRequest);
                 fs.Close();
             }
@@ -237,10 +251,11 @@ namespace IntegrationTestDs3
                     _helpers.EnsureBucketExists(bucketName);
                     // create a job
                     var job = _helpers.StartWriteJob(bucketName, ds3Objs);
-                    var putRequest = new PutObjectRequest(bucketName, testObject.Name, job.JobId, 0L,
-                        stream);
-                    putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(testChecksumCrc32C)),
-                        Checksum.ChecksumType.Crc32C);
+                    var putRequest = new PutObjectRequest(bucketName, testObject.Name, stream)
+                        .WithJob(job.JobId)
+                        .WithOffset(0L);
+                    putRequest.WithChecksum(ChecksumType.Value(Convert.FromBase64String(testChecksumCrc32C)),
+                        ChecksumType.Type.CRC_32C);
                     _client.PutObject(putRequest);
                 }
             }
@@ -252,7 +267,7 @@ namespace IntegrationTestDs3
 
         private static bool IsTestSupported(IDs3Client client, double supportedBlackPearlVersion)
         {
-            var buildInfo = client.GetSystemInformation(new GetSystemInformationRequest()).BuildVersion;
+            var buildInfo = client.GetSystemInformationSpectraS3(new GetSystemInformationSpectraS3Request()).ResponsePayload.BuildInformation.Version;
             var buildInfoArr = buildInfo.Split('.');
             var version = double.Parse(string.Format("{0}.{1}", buildInfoArr[0], buildInfoArr[1]));
 
@@ -279,10 +294,11 @@ namespace IntegrationTestDs3
                     _helpers.EnsureBucketExists(bucketName);
                     // create a job
                     var job = _helpers.StartWriteJob(bucketName, ds3Objs);
-                    var putRequest = new PutObjectRequest(bucketName, testObject.Name, job.JobId, 0L,
-                        stream);
-                    putRequest.WithChecksum(Checksum.Value(Convert.FromBase64String(testBadChecksumCrc32C)),
-                        Checksum.ChecksumType.Crc32C);
+                    var putRequest = new PutObjectRequest(bucketName, testObject.Name, stream)
+                        .WithJob(job.JobId)
+                        .WithOffset(0L);
+                    putRequest.WithChecksum(ChecksumType.Value(Convert.FromBase64String(testBadChecksumCrc32C)),
+                        ChecksumType.Type.CRC_32C);
                     _client.PutObject(putRequest);
                 }
             }
@@ -362,12 +378,13 @@ namespace IntegrationTestDs3
                 });
 
                 // Does a query param escape properly?
-                GetObjectsRequest getObjectsWithNameRequest = new GetObjectsRequest();
-                getObjectsWithNameRequest.ObjectName = fileName;
-                var getObjectsResponse = _client.GetObjects(getObjectsWithNameRequest);
+                GetObjectsSpectraS3Request getObjectsWithNameRequest = new GetObjectsSpectraS3Request()
+                    .WithName(fileName);
+
+                var getObjectsResponse = _client.GetObjectsSpectraS3(getObjectsWithNameRequest);
 
                 var filename =
-                    from f in getObjectsResponse.Objects
+                    from f in getObjectsResponse.ResponsePayload.S3Objects
                     where f.Name == fileName
                     select f;
 
@@ -416,10 +433,10 @@ namespace IntegrationTestDs3
                 var directoryObjects =
                     FileHelpers.ListObjectsForDirectory(testDirectoryBigFolderForMaxBlob, string.Empty).ToList();
                 var bulkResult =
-                    _client.BulkPut(new BulkPutRequest(bucketName, directoryObjects).WithMaxBlobSize(BlobSize));
+                    _client.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request(bucketName, directoryObjects).WithMaxUploadSize(BlobSize));
 
                 var chunkIds = new HashSet<Guid>();
-                foreach (var obj in bulkResult.ObjectLists)
+                foreach (var obj in bulkResult.ResponsePayload.Objects)
                 {
                     chunkIds.Add(obj.ChunkId);
                 }
@@ -427,14 +444,14 @@ namespace IntegrationTestDs3
                 while (chunkIds.Count > 0)
                 {
                     var availableChunks =
-                        _client.GetAvailableJobChunks(new GetAvailableJobChunksRequest(bulkResult.JobId));
+                        _client.GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(bulkResult.ResponsePayload.JobId));
 
                     availableChunks.Match(
                         (time, response) =>
                         {
                             // for each chunk that is available, check to make sure
                             // we have not sent it, and if not, send that object
-                            AsyncUpload(_client, chunkIds, response, bulkResult);
+                            AsyncUpload(_client, chunkIds, response, bulkResult.ResponsePayload);
                         },
                         () =>
                         {
@@ -482,9 +499,9 @@ namespace IntegrationTestDs3
             }
         }
 
-        private void AsyncUpload(IDs3Client client, ICollection<Guid> chunkIds, JobResponse response, JobResponse bulkResult)
+        private void AsyncUpload(IDs3Client client, ICollection<Guid> chunkIds, MasterObjectList response, MasterObjectList bulkResult)
         {
-            Parallel.ForEach(response.ObjectLists,
+            Parallel.ForEach(response.Objects,
                 chunk =>
                 {
                     if (!chunkIds.Contains(chunk.ChunkId)) return;
@@ -494,27 +511,26 @@ namespace IntegrationTestDs3
                     // some objects will already be in cache.  Check to make sure that they are not, and then
                     // send the object to Spectra S3
 
-                    Parallel.ForEach(chunk,
+                    Parallel.ForEach(chunk.ObjectsList,
                         obj =>
                         {
-                            if (obj.InCache) return;
+                            if ((bool)obj.InCache) return;
                             PutObject(client, obj, bulkResult);
                         });
                     Console.WriteLine();
                 });
         }
 
-        private void PutObject(IDs3Client client, JobObject obj, JobResponse bulkResult)
+        private void PutObject(IDs3Client client, BulkObject obj, MasterObjectList bulkResult)
         {
             var fileToPut = File.OpenRead(testDirectoryBigFolderForMaxBlob + obj.Name);
             var contentStream = new PutObjectRequestStream(fileToPut, obj.Offset, obj.Length);
             var putObjectRequest = new PutObjectRequest(
                 bulkResult.BucketName,
                 obj.Name,
-                bulkResult.JobId,
-                obj.Offset,
                 contentStream
-                );
+                ).WithJob(bulkResult.JobId)
+                .WithOffset(obj.Offset);
 
             client.PutObject(putObjectRequest);
             fileToPut.Close();
@@ -676,8 +692,8 @@ namespace IntegrationTestDs3
                 Assert.Greater(folderCount, 0);
 
                 // delete it
-                var request = new DeleteFolderRequest(bucketName, FOLDER);
-                _client.DeleteFolder(request);
+                var request = new DeleteFolderRecursivelySpectraS3Request(bucketName, FOLDER);
+                _client.DeleteFolderRecursivelySpectraS3(request);
 
                 // now it's gone
                 var postFolderCount = ListBucketObjects(bucketName).Count();
@@ -689,13 +705,13 @@ namespace IntegrationTestDs3
             }
         }
 
-        private IEnumerable<Ds3Object> ListBucketObjects(string bucketName)
+        private IEnumerable<S3Object> ListBucketObjects(string bucketName)
         {
-            var request = new GetObjectsRequest
+            var request = new GetObjectsSpectraS3Request
             {
                 BucketId = bucketName
             };
-            return _client.GetObjects(request).Objects;
+            return _client.GetObjectsSpectraS3(request).ResponsePayload.S3Objects;
         }
 
         /* current defect in simulator, this will fail,
@@ -869,6 +885,184 @@ namespace IntegrationTestDs3
                 }
 
                 Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestJobWithMetadata()
+        {
+            const string bucketName = "TestJobWithMetadata";
+
+            try
+            {
+                // grab a file
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(testDirectorySrc);
+                Assert.IsNotEmpty(directoryObjects);
+                var testObject = directoryObjects.Where(o => o.Name.Equals("beowulf.txt"));
+ 
+                // create or ensure bucket
+                _helpers.EnsureBucketExists(bucketName);
+                
+                // create a job with metadata
+                var job = _helpers.StartWriteJob(bucketName, testObject);
+                job.WithMetadata(new MetadataAccess());
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(testDirectorySrc));
+
+                // Creates a bulk job with all of the objects in the bucket.
+                job = _helpers.StartReadAllJob(bucketName);
+
+                //add metadata listener
+                job.MetadataListener += (fileName, metadata) =>
+                {
+                    Assert.AreEqual(fileName, "beowulf.txt");
+                    Assert.AreEqual(metadata, new Dictionary<string, string> {{"name", "beowulf.txt"}});
+                };
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFileGetter(testDirectoryDest));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void PutObjectsWithResume()
+        {
+            const string bucketName = "PutObjectsWithResume";
+            const int numberOfObjects = 1000;
+
+            try
+            {
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var objects = new List<Ds3Object>();
+
+                for (var i = 0; i < numberOfObjects; i++)
+                {
+                    objects.Add(new Ds3Object("File" + i, contentBytes.Length));
+                }
+
+                _helpers.EnsureBucketExists(bucketName);
+                var job = _helpers.StartWriteJob(bucketName, objects);
+
+                var cancellationTokenSource = new CancellationTokenSource();
+                job.WithCancellationToken(cancellationTokenSource.Token);
+
+                var filesTransfered = 0;
+                job.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+
+                var thread = new Thread(() =>
+                {
+                    job.Transfer(key => new MemoryStream(contentBytes));
+                });
+                thread.Start();
+
+                //give the thread a sec to start
+                Thread.Sleep(1000);
+
+                //cancel the job
+                cancellationTokenSource.Cancel();
+
+                //wait for the thread to finish
+                thread.Join();
+
+                Assert.Less(filesTransfered, numberOfObjects);
+
+                //resume the job
+                var resumedJob = _helpers.RecoverWriteJob(job.JobId);
+
+                resumedJob.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+                resumedJob.Transfer(key => new MemoryStream(contentBytes));
+
+                Assert.AreEqual(numberOfObjects, filesTransfered);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void GetObjectsWithResume()
+        {
+            const string bucketName = "GetObjectsWithResume";
+            const int numberOfObjects = 1000;
+
+            try
+            {
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var objects = new List<Ds3Object>();
+
+                for (var i = 0; i < numberOfObjects; i++)
+                {
+                    objects.Add(new Ds3Object("File" + i, contentBytes.Length));
+                }
+
+                _helpers.EnsureBucketExists(bucketName);
+
+                //upload test files
+                var putJob = _helpers.StartWriteJob(bucketName, objects);
+                putJob.Transfer(key => new MemoryStream(contentBytes));
+
+                //start the read job
+                var getJob = _helpers.StartReadJob(bucketName, objects);
+                var cancellationTokenSource = new CancellationTokenSource();
+                getJob.WithCancellationToken(cancellationTokenSource.Token);
+
+                var filesTransfered = 0;
+                getJob.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+
+                var thread = new Thread(() =>
+                {
+                    getJob.Transfer(key => new MemoryStream(contentBytes));
+                });
+                thread.Start();
+
+                //give the thread a sec to start
+                Thread.Sleep(1000);
+
+                //cancel the job
+                cancellationTokenSource.Cancel();
+
+                //wait for the thread to finish
+                thread.Join();
+
+                Assert.Less(filesTransfered, numberOfObjects);
+
+                //resume the job
+                var resumedJob = _helpers.RecoverReadJob(getJob.JobId);
+
+                resumedJob.ItemCompleted += s =>
+                {
+                    filesTransfered++;
+                };
+
+                resumedJob.Transfer(key => new MemoryStream(contentBytes));
+
+                Assert.AreEqual(numberOfObjects, filesTransfered);
             }
             finally
             {

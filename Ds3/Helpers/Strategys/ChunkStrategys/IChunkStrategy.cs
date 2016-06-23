@@ -13,7 +13,7 @@
 * ****************************************************************************
 */
 
-using Ds3.Calls;
+using Ds3.Models;
 using System.Collections.Generic;
 
 namespace Ds3.Helpers.Strategys.ChunkStrategys
@@ -26,7 +26,7 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         /// <param name="client"></param>
         /// <param name="jobResponse"></param>
         /// <returns></returns>
-        IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse);
+        IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse);
 
         /// <summary>
         /// Marks a blob as complete

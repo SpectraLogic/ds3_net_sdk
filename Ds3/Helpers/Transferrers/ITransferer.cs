@@ -29,6 +29,8 @@ namespace Ds3.Helpers.Transferrers
             long blobOffset,
             Guid jobId,
             IEnumerable<Range> ranges,
-            Stream stream);
+            Stream stream,
+            IMetadataAccess metadataAccess,
+            Action<string, IDictionary<string, string>> metadataListener);
     }
 }

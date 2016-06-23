@@ -144,28 +144,28 @@ namespace Ds3.Runtime
             httpRequest.ReadWriteTimeout = this._readWriteTimeout;
             httpRequest.Timeout = this._requestTimeout;
 
-            var chucksumValue = ComputeChecksum(request.ChecksumValue, content, request.ChecksumType);
+            var chucksumValue = ComputeChecksum(request.ChecksumValue, content, request.CType);
             if (!string.IsNullOrEmpty(chucksumValue))
             {
-                switch (request.ChecksumType)
+                switch (request.CType)
                 {
-                    case Checksum.ChecksumType.Md5:
+                    case ChecksumType.Type.MD5:
                         if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("MD5 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
                         break;
-                    case Checksum.ChecksumType.Sha256:
+                    case ChecksumType.Type.SHA_256:
                         if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-256 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
                         break;
-                    case Checksum.ChecksumType.Sha512:
+                    case ChecksumType.Type.SHA_512:
                         if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-512 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
                         break;
-                    case Checksum.ChecksumType.Crc32:
+                    case ChecksumType.Type.CRC_32:
                         if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32, chucksumValue);
                         break;
-                    case Checksum.ChecksumType.Crc32C:
+                    case ChecksumType.Type.CRC_32C:
                         if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32C checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32C, chucksumValue);
                         break;
@@ -211,26 +211,26 @@ namespace Ds3.Runtime
             return httpRequest;
         }
 
-        private static string ComputeChecksum(Checksum checksum, Stream content, Checksum.ChecksumType checksumType = Checksum.ChecksumType.Md5)
+        private static string ComputeChecksum(ChecksumType checksum, Stream content, ChecksumType.Type type = ChecksumType.Type.MD5)
         {
             return checksum.Match(
                 () => "",
                 () =>
                 {
-                    switch (checksumType)
+                    switch (type)
                     {
-                        case Checksum.ChecksumType.Md5:
+                        case ChecksumType.Type.MD5:
                             return Convert.ToBase64String(System.Security.Cryptography.MD5.Create().ComputeHash(content));
-                        case Checksum.ChecksumType.Sha256:
+                        case ChecksumType.Type.SHA_256:
                             return
                                 Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(content));
-                        case Checksum.ChecksumType.Sha512:
+                        case ChecksumType.Type.SHA_512:
                             return
                                 Convert.ToBase64String(System.Security.Cryptography.SHA512.Create().ComputeHash(content));
-                        case Checksum.ChecksumType.Crc32:
+                        case ChecksumType.Type.CRC_32:
                             return
                                 Convert.ToBase64String(Ds3.Models.Crc32.Create().ComputeHash(content));
-                        case Checksum.ChecksumType.Crc32C:
+                        case ChecksumType.Type.CRC_32C:
                             return
                                 Convert.ToBase64String(Ds3.Models.Crc32C.Create().ComputeHash(content));
                         default:
@@ -267,7 +267,7 @@ namespace Ds3.Runtime
                 from kvp in queryParams
                 orderby kvp.Key
                 let encodedKey = HttpHelper.PercentEncodePath(kvp.Key, _noChars)
-                select kvp.Value.Length > 0
+                select kvp.Value != null && kvp.Value.Length > 0
                     ? encodedKey + "=" + HttpHelper.PercentEncodePath(kvp.Value, _noChars)
                     : encodedKey
             );

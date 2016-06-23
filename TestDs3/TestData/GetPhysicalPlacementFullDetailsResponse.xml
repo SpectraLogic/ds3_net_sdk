@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Data>
-  <Object Length="20" Name="foo_object" Offset="10">
+  <Object Length="20" Name="foo_object" Offset="10" Latest="true" Version="1">
+    <Id>971c643f-678f-4854-bd40-7e99c61eef89</Id>
     <PhysicalPlacement>
       <Tapes>
         <Tape>
-          <AssignedToBucket>false</AssignedToBucket>
+          <AssignedToStorageDomain>false</AssignedToStorageDomain>
           <AvailableRawCapacity>10000</AvailableRawCapacity>
           <BarCode>t1</BarCode>
           <BucketId>7a6a0b80-4c24-4f8c-9779-527e863c5470</BucketId>
@@ -23,6 +24,7 @@
           <PreviousState/>
           <SerialNumber>123456</SerialNumber>
           <State>EJECTED</State>
+		  <TakeOwnershipPending>false</TakeOwnershipPending>
           <TotalRawCapacity>20000</TotalRawCapacity>
           <Type>LTO5</Type>
           <WriteProtected>false</WriteProtected>

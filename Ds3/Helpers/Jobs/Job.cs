@@ -13,7 +13,6 @@
 * ****************************************************************************
 */
 
-using Ds3.Calls;
 using Ds3.Helpers.ProgressTrackers;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.Strategys;
@@ -27,6 +26,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers.Jobs
 {
@@ -43,31 +43,46 @@ namespace Ds3.Helpers.Jobs
         private readonly IChunkStrategy _chunkStrategy;
         private readonly IStreamFactory<TItem> _streamFactory;
         private readonly IDs3Client _client;
-        private readonly JobResponse _jobResponse;
+        private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
+        private IMetadataAccess _metadataAccess;
+        private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
-
         public event Action<TItem> ItemCompleted;
+        public event Action<string, IDictionary<string, string>> MetadataListener;
+
 
         public Guid JobId { get; private set; }
         public string BucketName { get; private set; }
 
         public TSelf WithMaxParallelRequests(int maxParallelRequests)
         {
+            if (TransferStarted) throw new Ds3AssertException("WithMaxParallelRequests Must always be called before the Transfer method.");
+
             this._maxParallelRequests = maxParallelRequests;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
         public TSelf WithCancellationToken(CancellationToken cancellationToken)
         {
+            if (TransferStarted) throw new Ds3AssertException("WithCancellationToken Must always be called before the Transfer method.");
+
             this._cancellationToken = cancellationToken;
+            return (TSelf)(IBaseJob<TSelf, TItem>)this;
+        }
+
+        public TSelf WithMetadata(IMetadataAccess metadataAccess)
+        {
+            if (TransferStarted) throw new Ds3AssertException("WithMetadata Must always be called before the Transfer method.");
+
+            this._metadataAccess = metadataAccess;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
         protected Job(
             IDs3Client client,
-            JobResponse jobResponse,
+            MasterObjectList jobResponse,
             string bucketName,
             Guid jobId,
             IHelperStrategy<TItem> helperStrategy,
@@ -85,6 +100,7 @@ namespace Ds3.Helpers.Jobs
             this._transferrer = transferrer;
             this._rangesForRequests = rangesForRequests;
             this._rangeTranslator = rangeTranslator;
+            TransferStarted = false;
 
             this._itemTracker = new JobItemTracker<TItem>(itemsToTrack);
             this._itemTracker.DataTransferred += size => this.DataTransferred.Call(size);
@@ -97,6 +113,8 @@ namespace Ds3.Helpers.Jobs
 
         public void Transfer(Func<TItem, Stream> createStreamForTransferItem)
         {
+            TransferStarted = true;
+
             this._createStreamForTransferItem = createStreamForTransferItem;
 
             Parallel.ForEach(
@@ -134,7 +152,9 @@ namespace Ds3.Helpers.Jobs
                 blob.Range.Start,
                 this.JobId,
                 ranges,
-                stream
+                stream,
+                _metadataAccess,
+                MetadataListener
             );
 
             this._streamFactory.CloseBlob(blob);
