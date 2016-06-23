@@ -45,6 +45,7 @@ build/
 *.pidb
 *.log
 *.scc
+Ds3/ds3_net_sdk*.nupkg
 
 # Visual C++ cache files
 ipch/
