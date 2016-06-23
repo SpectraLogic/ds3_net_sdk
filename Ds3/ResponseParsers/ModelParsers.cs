@@ -373,6 +373,7 @@ namespace Ds3.ResponseParsers
                 MaximumAutoVerificationFrequencyInDays = ParseInt(element.Element("MaximumAutoVerificationFrequencyInDays")),
                 MediaEjectionAllowed = ParseBool(element.Element("MediaEjectionAllowed")),
                 Name = ParseNullableString(element.Element("Name")),
+                SecureMediaAllocation = ParseBool(element.Element("SecureMediaAllocation")),
                 VerifyPriorToAutoEject = ParseNullablePriority(element.Element("VerifyPriorToAutoEject")),
                 WriteOptimization = ParseWriteOptimization(element.Element("WriteOptimization"))
             };
@@ -961,7 +962,6 @@ namespace Ds3.ResponseParsers
         {
             return new BulkObject
             {
-                Id = ParseNullableGuid(element.Element("Id")),
                 InCache = ParseNullableBool(element.AttributeTextOrNull("InCache")),
                 Latest = ParseBool(element.AttributeText("Latest")),
                 Length = ParseLong(element.AttributeText("Length")),
@@ -1114,7 +1114,7 @@ namespace Ds3.ResponseParsers
             return new ListBucketResult
             {
                 CommonPrefixes = ParseEncapsulatedList(element, "Prefix", "CommonPrefixes", ParseString),
-                CreationDate = ParseNullableDateTime(element.Element("CreationDate")),
+                CreationDate = ParseDateTime(element.Element("CreationDate")),
                 Delimiter = ParseNullableString(element.Element("Delimiter")),
                 Marker = ParseNullableString(element.Element("Marker")),
                 MaxKeys = ParseInt(element.Element("MaxKeys")),
@@ -1359,7 +1359,8 @@ namespace Ds3.ResponseParsers
                 StartDate = ParseDateTime(element.AttributeText("StartDate")),
                 Status = ParseJobStatus(element.AttributeText("Status")),
                 UserId = ParseGuid(element.AttributeText("UserId")),
-                UserName = ParseNullableString(element.AttributeTextOrNull("UserName"))
+                UserName = ParseNullableString(element.AttributeTextOrNull("UserName")),
+                WriteOptimization = ParseWriteOptimization(element.AttributeText("WriteOptimization"))
             };
         }
 
@@ -1485,7 +1486,7 @@ namespace Ds3.ResponseParsers
             {
                 ETag = ParseNullableString(element.Element("ETag")),
                 Key = ParseNullableString(element.Element("Key")),
-                LastModified = ParseNullableDateTime(element.Element("LastModified")),
+                LastModified = ParseDateTime(element.Element("LastModified")),
                 Owner = ParseUser(element.Element("Owner")),
                 Size = ParseLong(element.Element("Size")),
                 StorageClass = ParseString(element.Element("StorageClass"))

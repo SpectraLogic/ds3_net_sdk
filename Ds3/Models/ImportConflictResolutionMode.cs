@@ -21,8 +21,6 @@ namespace Ds3.Models
     {
         CANCEL,
         ACCEPT_MOST_RECENT,
-        ACCEPT_HIGHEST_VERSION,
-        ACCEPT_IMPORT,
         ACCEPT_EXISTING
     }
 }

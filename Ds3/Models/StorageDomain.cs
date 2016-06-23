@@ -32,6 +32,7 @@ namespace Ds3.Models
         public int MaximumAutoVerificationFrequencyInDays { get; set; }
         public bool MediaEjectionAllowed { get; set; }
         public string Name { get; set; }
+        public bool SecureMediaAllocation { get; set; }
         public Priority? VerifyPriorToAutoEject { get; set; }
         public WriteOptimization WriteOptimization { get; set; }
     }
