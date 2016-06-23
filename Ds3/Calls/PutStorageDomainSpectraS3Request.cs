@@ -82,6 +82,13 @@ namespace Ds3.Calls
             set { WithMediaEjectionAllowed(value); }
         }
 
+        private bool? _secureMediaAllocation;
+        public bool? SecureMediaAllocation
+        {
+            get { return _secureMediaAllocation; }
+            set { WithSecureMediaAllocation(value); }
+        }
+
         private Priority? _verifyPriorToAutoEject;
         public Priority? VerifyPriorToAutoEject
         {
@@ -189,6 +196,18 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("media_ejection_allowed");
+            }
+            return this;
+        }
+        public PutStorageDomainSpectraS3Request WithSecureMediaAllocation(bool? secureMediaAllocation)
+        {
+            this._secureMediaAllocation = secureMediaAllocation;
+            if (secureMediaAllocation != null) {
+                this.QueryParams.Add("secure_media_allocation", secureMediaAllocation.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("secure_media_allocation");
             }
             return this;
         }

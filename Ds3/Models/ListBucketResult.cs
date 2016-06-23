@@ -23,7 +23,7 @@ namespace Ds3.Models
     public class ListBucketResult
     {
         public IEnumerable<string> CommonPrefixes { get; set; }
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         public string Delimiter { get; set; }
         public string Marker { get; set; }
         public int MaxKeys { get; set; }
