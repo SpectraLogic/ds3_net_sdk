@@ -495,6 +495,7 @@
     <Compile Include="Helpers\Strategys\WriteNoAllocateHelperStrategy.cs" />
     <Compile Include="Helpers\Strategys\WriteRandomAccessHelperStrategy.cs" />
     <Compile Include="Helpers\Strategys\StreamFactory\IStreamFactory.cs" />
+    <Compile Include="Helpers\Streams\NonDisposablePutObjectRequestStream.cs" />
     <Compile Include="Models\ActiveJob.cs" />
     <Compile Include="Models\ActiveJobList.cs" />
     <Compile Include="Models\AutoInspectMode.cs" />

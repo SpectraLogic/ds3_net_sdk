@@ -37,26 +37,37 @@ namespace Ds3.Helpers
         private readonly int _getObjectRetries; // -1 represents infinite number of retries
         private readonly int _jobRetries;
         private readonly int _jobWaitTime; //in minutes
+        private readonly long? _maximumFileSizeForAggregating;
 
-        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1, int jobWaitTime = 5)
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1, int jobWaitTime = 5, long? maximumFileSizeForAggregating = null)
         {
             this._client = client;
             this._retryAfter = retryAfter;
             this._getObjectRetries = getObjectRetries;
             this._jobRetries = jobRetries;
             this._jobWaitTime = jobWaitTime;
+            this._maximumFileSizeForAggregating = maximumFileSizeForAggregating;
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null, IHelperStrategy<string> helperStrategy = null)
         {
+            var withAggregation = false;
             var request = new PutBulkJobSpectraS3Request(
                 bucket,
                 VerifyObjectCount(objectsToWrite)
             );
+
             if (maxBlobSize.HasValue)
             {
                 request.WithMaxUploadSize(maxBlobSize.Value);
             }
+
+            if (_maximumFileSizeForAggregating.HasValue && GetJobSize(objectsToWrite) <= _maximumFileSizeForAggregating.Value)
+            {
+                withAggregation = true;
+                request.Aggregating = true;
+            }
+
             PutBulkJobSpectraS3Response jobResponse = null;
             var retriesLeft = this._jobRetries;
             do
@@ -79,7 +90,7 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy();
+                helperStrategy = new WriteRandomAccessHelperStrategy(withAggregation);
             }
 
             return FullObjectJob.Create(
@@ -88,6 +99,11 @@ namespace Ds3.Helpers
                 helperStrategy,
                 new WriteTransferrer()
             );
+        }
+
+        private static long GetJobSize(IEnumerable<Ds3Object> objectsToWrite)
+        {
+            return objectsToWrite.Where(objectToWrite => objectToWrite.Size != null).Sum(objectToWrite => objectToWrite.Size.Value);
         }
 
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null)
@@ -210,7 +226,7 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy();
+                helperStrategy = new WriteRandomAccessHelperStrategy(false);
             }
 
             return FullObjectJob.Create(
