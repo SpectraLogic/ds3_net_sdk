@@ -31,6 +31,7 @@ namespace LongRunningIntegrationTestDs3
         public void PutLargeNumberOfObjects()
         {
             const string bucketName = "PutLargeNumberOfObjects";
+            const int numberOfObjects = 10000;
 
             try
             {
@@ -39,14 +40,14 @@ namespace LongRunningIntegrationTestDs3
 
                 var objects = new List<Ds3Object>();
 
-                for (var i = 0; i < 1000; i++)
+                for (var i = 0; i < numberOfObjects; i++)
                 {
                     objects.Add(new Ds3Object(Guid.NewGuid().ToString(), contentBytes.Length));
                 }
 
                 Ds3TestUtils.PutFiles(_client, bucketName, objects, key => new MemoryStream(contentBytes));
 
-                Assert.AreEqual(1000, _client.GetBucket(new GetBucketRequest(bucketName)).Objects.Count());
+                Assert.AreEqual(numberOfObjects, _client.GetBucket(new GetBucketRequest(bucketName)).ResponsePayload.Objects.Count());
             }
             finally
             {

@@ -31,39 +31,50 @@ namespace Ds3.Helpers
         private const int DefaultMaxKeys = 1000;
 
         private readonly IDs3Client _client;
-        private const string JobTypePut = "PUT";
-        private const string JobTypeGet = "GET";
+        private const JobRequestType JobTypePut = JobRequestType.PUT;
+        private const JobRequestType JobTypeGet = JobRequestType.GET;
         private readonly int _retryAfter; //-1 represent infinite number
         private readonly int _getObjectRetries; // -1 represents infinite number of retries
         private readonly int _jobRetries;
         private readonly int _jobWaitTime; //in minutes
+        private readonly long? _maximumFileSizeForAggregating;
 
-        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1, int jobWaitTime = 5)
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1, int jobWaitTime = 5, long? maximumFileSizeForAggregating = null)
         {
             this._client = client;
             this._retryAfter = retryAfter;
             this._getObjectRetries = getObjectRetries;
             this._jobRetries = jobRetries;
             this._jobWaitTime = jobWaitTime;
+            this._maximumFileSizeForAggregating = maximumFileSizeForAggregating;
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null, IHelperStrategy<string> helperStrategy = null)
         {
-            var request = new BulkPutRequest(
+            var withAggregation = false;
+            var request = new PutBulkJobSpectraS3Request(
                 bucket,
                 VerifyObjectCount(objectsToWrite)
             );
+
             if (maxBlobSize.HasValue)
             {
-                request.WithMaxBlobSize(maxBlobSize.Value);
+                request.WithMaxUploadSize(maxBlobSize.Value);
             }
-            JobResponse jobResponse = null;
+
+            if (_maximumFileSizeForAggregating.HasValue && GetJobSize(objectsToWrite) <= _maximumFileSizeForAggregating.Value)
+            {
+                withAggregation = true;
+                request.Aggregating = true;
+            }
+
+            PutBulkJobSpectraS3Response jobResponse = null;
             var retriesLeft = this._jobRetries;
             do
             {
                 try
                 {
-                    jobResponse = this._client.BulkPut(request);
+                    jobResponse = this._client.PutBulkJobSpectraS3(request);
                 }
                 catch (Ds3MaxJobsException)
                 {
@@ -79,22 +90,27 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy();
+                helperStrategy = new WriteRandomAccessHelperStrategy(withAggregation);
             }
 
             return FullObjectJob.Create(
                 this._client,
-                jobResponse,
+                jobResponse.ResponsePayload,
                 helperStrategy,
                 new WriteTransferrer()
             );
         }
 
+        private static long GetJobSize(IEnumerable<Ds3Object> objectsToWrite)
+        {
+            return objectsToWrite.Where(objectToWrite => objectToWrite.Size != null).Sum(objectToWrite => objectToWrite.Size.Value);
+        }
+
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null)
         {
-            var jobResponse = this._client.BulkGet(
-                new BulkGetRequest(bucket, VerifyObjectCount(objectsToRead))
-                    .WithChunkOrdering(ChunkOrdering.None)
+            var jobResponse = this._client.GetBulkJobSpectraS3(
+                new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
+                    .WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee.NONE)
             );
 
             if (helperStrategy == null)
@@ -104,7 +120,7 @@ namespace Ds3.Helpers
 
             return FullObjectJob.Create(
                 this._client,
-                jobResponse,
+                jobResponse.ResponsePayload,
                 helperStrategy,
                 new PartialDataTransferrerDecorator(new ReadTransferrer(), _getObjectRetries)
             );
@@ -123,9 +139,9 @@ namespace Ds3.Helpers
             {
                 throw new InvalidOperationException(Resources.NoObjectsToTransferException);
             }
-            var jobResponse = this._client.BulkGet(
-                new BulkGetRequest(bucket, fullObjectList, partialObjectList)
-                    .WithChunkOrdering(ChunkOrdering.None)
+            var jobResponse = this._client.GetBulkJobSpectraS3(
+                new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList)
+                    .WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee.NONE)
             );
 
             if (helperStrategy == null)
@@ -135,7 +151,7 @@ namespace Ds3.Helpers
 
             return PartialReadJob.Create(
                 this._client,
-                jobResponse,
+                jobResponse.ResponsePayload,
                 fullObjectList,
                 partialObjectList,
                 helperStrategy,
@@ -174,13 +190,13 @@ namespace Ds3.Helpers
                     Marker = marker,
                     Prefix = keyPrefix
                 };
-                var response = _client.GetBucket(request);
-                isTruncated = response.IsTruncated;
+                var response = _client.GetBucket(request).ResponsePayload;
+                isTruncated = response.Truncated;
                 marker = response.NextMarker;
-                var responseObjects = response.Objects as IList<Ds3ObjectInfo> ?? response.Objects.ToList();
+                var responseObjects = response.Objects.ToList() as IList<Contents> ?? response.Objects.ToList();
                 foreach (var ds3Object in responseObjects)
                 {
-                    yield return ds3Object;
+                    yield return new Ds3Object(ds3Object.Key, ds3Object.Size);
                 }
             } while (isTruncated);
         }
@@ -196,7 +212,13 @@ namespace Ds3.Helpers
 
         public IJob RecoverWriteJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
         {
-            var jobResponse = this._client.ModifyJob(new ModifyJobRequest(jobId));
+            var jobResponse = this._client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
+
+            if (jobResponse.Status == JobStatus.COMPLETED)
+            {
+                throw new InvalidOperationException(Resources.JobCompletedException);
+            }
+
             if (jobResponse.RequestType != JobTypePut)
             {
                 throw new InvalidOperationException(Resources.ExpectedPutJobButWasGetJobException);
@@ -204,7 +226,7 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy();
+                helperStrategy = new WriteRandomAccessHelperStrategy(false);
             }
 
             return FullObjectJob.Create(
@@ -212,6 +234,33 @@ namespace Ds3.Helpers
                 jobResponse,
                 helperStrategy,
                 new WriteTransferrer()
+            );
+        }
+
+        public IJob RecoverReadJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
+        {
+            var jobResponse = this._client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
+
+            if (jobResponse.Status == JobStatus.COMPLETED)
+            {
+                throw new InvalidOperationException(Resources.JobCompletedException);
+            }
+
+            if (jobResponse.RequestType != JobTypeGet)
+            {
+                throw new InvalidOperationException(Resources.ExpectedGetJobButWasPutJobException);
+            }
+
+            if (helperStrategy == null)
+            {
+                helperStrategy = new ReadRandomAccessHelperStrategy<string>(this._retryAfter);
+            }
+
+            return FullObjectJob.Create(
+                this._client,
+                jobResponse,
+                helperStrategy,
+                new ReadTransferrer()
             );
         }
     }

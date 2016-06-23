@@ -28,30 +28,37 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
     public class WriteRandomAccessChunkStrategy : IChunkStrategy
     {
         private IDs3Client _client;
-        private JobResponse _jobResponse;
+        private MasterObjectList _jobResponse;
 
         private readonly object _chunksRemainingLock = new object();
         private ISet<Guid> _toAllocateChunks;
         private readonly Action<TimeSpan> _wait;
+        private readonly bool _withAggregation;
 
-        public WriteRandomAccessChunkStrategy()
-            :this(Thread.Sleep)
+        public WriteRandomAccessChunkStrategy(bool withAggregation = false)
+            :this(Thread.Sleep, withAggregation)
         {
         }
 
-        public WriteRandomAccessChunkStrategy(Action<TimeSpan> wait)
+        public WriteRandomAccessChunkStrategy(Action<TimeSpan> wait, bool withAggregation)
         {
             this._wait = wait;
+            this._withAggregation = withAggregation;
         }
 
-        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, JobResponse jobResponse)
+        public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
         {
             this._client = client;
             this._jobResponse = jobResponse;
 
+            if (_withAggregation)
+            {
+                _jobResponse.Objects = GetObjectsNotInCache();
+            }
+
             lock (this._chunksRemainingLock)
             {
-                _toAllocateChunks = new HashSet<Guid>(jobResponse.ObjectLists.Select(chunk => chunk.ChunkId));
+                _toAllocateChunks = new HashSet<Guid>(jobResponse.Objects.Select(chunk => chunk.ChunkId));
             }
 
             // Flatten all batches into a single enumerable.
@@ -99,10 +106,10 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             if (allocatedChunk != null)
             {
                 var transferClient = clientFactory.GetClientForNodeId(allocatedChunk.NodeId);
-                foreach (var jobObject in allocatedChunk.Objects)
+                foreach (var jobObject in allocatedChunk.ObjectsList)
                 {
                     var blob = Blob.Convert(jobObject);
-                    if (!jobObject.InCache)
+                    if (!(bool)jobObject.InCache)
                     {
                         transferItem.Add(new TransferItem(transferClient, blob));
                     }
@@ -112,14 +119,14 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
             return transferItem.ToArray();
         }
 
-        private JobObjectList AllocateChunk(IDs3Client client, Guid chunkId)
+        private Objects AllocateChunk(IDs3Client client, Guid chunkId)
         {
-            JobObjectList chunk = null;
+            Objects chunk = null;
             var chunkGone = false;
             while (chunk == null && !chunkGone)
             {
                 client
-                    .AllocateJobChunk(new AllocateJobChunkRequest(chunkId))
+                    .AllocateJobChunkSpectraS3(new AllocateJobChunkSpectraS3Request(chunkId))
                     .Match(
                         allocatedChunk =>
                         {
@@ -133,6 +140,35 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                     );
             }
             return chunk;
+        }
+
+        /// <summary>
+        /// Filtering the objects that are already in cache, 
+        /// this helps us when using aggregating jobs to determinate which object are related to the current running job.
+        /// </summary>
+        /// <returns> A new list of objects to be processed by the running job</returns>
+        private IEnumerable<Objects> GetObjectsNotInCache()
+        {
+            var notCachedObject = new List<Objects>();
+            var hasCachedObject = false;
+            foreach (var objectList in _jobResponse.Objects)
+            {
+                if (objectList.ObjectsList.Any(obj => obj.InCache.HasValue && obj.InCache.Value))
+                {
+                    hasCachedObject = true;
+                }
+
+                if (!hasCachedObject)
+                {
+                    notCachedObject.Add(objectList);
+                }
+                else
+                {
+                    hasCachedObject = false; //reset for next chunk
+                }
+            }
+
+            return notCachedObject;
         }
     }
 }

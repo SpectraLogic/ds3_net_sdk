@@ -1,10 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ds3", "Ds3\Ds3.csproj", "{00047EA6-0178-4ABD-B183-D1D73D222673}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CC8ED96-63BF-4CC0-853D-575B0BB50A7B}"
 	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 		VersionInfo.cs = VersionInfo.cs
@@ -18,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2D6417
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTestDs3", "IntegrationTestDS3\IntegrationTestDs3.csproj", "{B24AAFE5-7E66-4DE7-A0DD-8E4F77FF7D2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LongRunningIntegrationTestDs3", "LongRunningIntegrationTestDs3\LongRunningIntegrationTestDs3.csproj", "{47C7894E-C716-4210-80DB-0D434069428B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +42,10 @@ Global
 		{B24AAFE5-7E66-4DE7-A0DD-8E4F77FF7D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B24AAFE5-7E66-4DE7-A0DD-8E4F77FF7D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B24AAFE5-7E66-4DE7-A0DD-8E4F77FF7D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47C7894E-C716-4210-80DB-0D434069428B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47C7894E-C716-4210-80DB-0D434069428B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47C7894E-C716-4210-80DB-0D434069428B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47C7894E-C716-4210-80DB-0D434069428B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,39 +27,43 @@ namespace TestDs3.Helpers.Strategys.StreamFactory
     public class TestWriteStreamStreamFactory
     {
         [Test]
-        public void TestCreateStreamGetTheSameStreamForStream()
+        public void TestCreateStreamSaveTheSameStreamForStream()
         {
             var factory = new WriteStreamStreamFactory();
-            Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
+            Func<string, Stream> func = name => stream;
 
-            var stream1 = factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
-            var stream2 = factory.CreateStream(func, null, Stubs.Blob2, Stubs.Blob2Length);
+            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
+            factory.CreateStream(func, null, Stubs.Blob2, Stubs.Blob2Length);
 
-            Assert.AreEqual(stream1, stream2);
+            Assert.AreEqual(1, factory.GetStreamStore().Count);
+            Assert.AreEqual(stream, factory.GetStreamStore()["bar"]);
         }
 
         [Test]
-        public void TestCreateStreamGetDiffrentStreamForDiffrentStreams()
+        public void TestCreateStreamSaveDiffrentStreamForDiffrentStreams()
         {
             var factory = new WriteStreamStreamFactory();
             Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
 
-            var stream1 = factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
-            var stream2 = factory.CreateStream(func, null, Stubs.Blob3, Stubs.Blob3Length);
+            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
+            factory.CreateStream(func, null, Stubs.Blob3, Stubs.Blob3Length);
 
-            Assert.AreNotEqual(stream1, stream2);
+            Assert.AreEqual(2, factory.GetStreamStore().Count);
         }
 
         [Test]
-        public void TestCreateStreamGetSameStreamBlob()
+        public void TestCreateStreamSaveSameStreamBlob()
         {
             var factory = new WriteStreamStreamFactory();
-            Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
+            Func <string, Stream> func = name => stream;
 
-            var stream1 = factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
-            var stream2 = factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
+            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
+            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
 
-            Assert.AreEqual(stream1, stream2);
+            Assert.AreEqual(1, factory.GetStreamStore().Count);
+            Assert.AreEqual(stream, factory.GetStreamStore()["bar"]);
         }
 
         [Test]

@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,23 +13,22 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Models
 {
     public class Node
     {
-        public Guid Id { get; private set; }
-        public string EndPoint { get; private set; }
-        public int? HttpPort { get; private set; }
-        public int? HttpsPort { get; private set; }
-
-        public Node(Guid id, string endPoint, int? httpPort, int? httpsPort)
-        {
-            this.Id = id;
-            this.EndPoint = endPoint;
-            this.HttpPort = httpPort;
-            this.HttpsPort = httpsPort;
-        }
+        public int? DataPathHttpPort { get; set; }
+        public int? DataPathHttpsPort { get; set; }
+        public string DataPathIpAddress { get; set; }
+        public string DnsName { get; set; }
+        public Guid Id { get; set; }
+        public DateTime LastHeartbeat { get; set; }
+        public string Name { get; set; }
+        public string SerialNumber { get; set; }
     }
 }

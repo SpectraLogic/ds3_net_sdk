@@ -119,7 +119,7 @@ namespace IntegrationTestDS3
 
             var objs = helpers.ListObjects(bucketName);
 
-            client.DeleteObjectList(new DeleteObjectListRequest(bucketName, objs));
+            client.DeleteObjects(new DeleteObjectsRequest(bucketName, objs));
             client.DeleteBucket(new DeleteBucketRequest(bucketName));
         }
 
@@ -147,7 +147,8 @@ namespace IntegrationTestDS3
             var writeStrategyList = new List<IHelperStrategy<string>>
             {
                 null, //using the default strategy
-                new WriteRandomAccessHelperStrategy(),
+                new WriteRandomAccessHelperStrategy(false), //without aggregation
+                new WriteRandomAccessHelperStrategy(true), //with aggregation
                 new WriteNoAllocateHelperStrategy(),
                 new WriteStreamHelperStrategy()
             };

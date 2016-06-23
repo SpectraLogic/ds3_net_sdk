@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,21 +13,24 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+
 namespace Ds3.Models
 {
     public enum TapeType
     {
-        Lto5,
-        Lto6,
-        LtoCleaningTape,
-        TsJc,
-        TsJy,
-        TsJk,
-        TsJd,
-        TsJz,
-        TsJl,
-        TsCleaningTape,
-        Unknown,
-        Forbidden
+        LTO5,
+        LTO6,
+        LTO7,
+        LTO_CLEANING_TAPE,
+        TS_JC,
+        TS_JY,
+        TS_JK,
+        TS_JD,
+        TS_JZ,
+        TS_JL,
+        TS_CLEANING_TAPE,
+        UNKNOWN,
+        FORBIDDEN
     }
 }

@@ -30,9 +30,15 @@ namespace Ds3.Helpers.Transferrers
             long blobOffset,
             Guid jobId,
             IEnumerable<Range> ranges,
-            Stream stream)
+            Stream stream,
+            IMetadataAccess metadataAccess,
+            Action<string, IDictionary<string, string>> metadataListener)
         {
-            client.GetObject(new GetObjectRequest(bucketName, objectName, jobId, blobOffset, stream));
+            var response = client.GetObject(new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset));
+            if (blobOffset == 0)
+            {
+                metadataListener?.Invoke(objectName, response.Metadata);
+            }
         }
     }
 }

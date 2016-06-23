@@ -36,15 +36,13 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 Stream stream;
                 if (this._streamStore.TryGetValue(blob.Context, out stream))
                 {
-                    stream.SetLength(length);
-                    return stream;
+                    return new NonDisposablePutObjectRequestStream(stream, length);
                 }
 
                 var innerStream = createStreamForTransferItem(blob.Context);
 
-                stream = new PutObjectRequestStream(innerStream, length);
-                this._streamStore.Add(blob.Context, stream);
-                return stream;
+                this._streamStore.Add(blob.Context, innerStream);
+                return new NonDisposablePutObjectRequestStream(innerStream, length);
             }
         }
 
@@ -65,6 +63,11 @@ namespace Ds3.Helpers.Strategys.StreamFactory
 
                 stream.Close();
             }
+        }
+
+        public Dictionary<string, Stream> GetStreamStore()
+        {
+            return _streamStore;
         }
     }
 }

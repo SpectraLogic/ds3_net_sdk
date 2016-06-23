@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -12,6 +12,8 @@
  *   specific language governing permissions and limitations under the License.
  * ****************************************************************************
  */
+
+// This code is auto-generated, do not modify
 
 using System.Linq;
 using System.Net;
@@ -40,12 +42,11 @@ namespace Ds3.ResponseParsers
                         ? HttpStatusCode.PartialContent
                         : HttpStatusCode.OK
                     );
-                using (var responseStream = response.GetResponseStream())
+                using (var stream = response.GetResponseStream())
                 {
-                    StreamsUtil.BufferedCopyTo(responseStream, request.DestinationStream, _copyBufferSize);
+                    StreamsUtil.BufferedCopyTo(stream, request.DestinationStream, _copyBufferSize);
                 }
-                return new GetObjectResponse(ResponseParseUtilities.ExtractCustomMetadata(response.Headers)
-                    );
+                return new GetObjectResponse(ResponseParseUtilities.ExtractCustomMetadata(response.Headers));
             }
         }
     }

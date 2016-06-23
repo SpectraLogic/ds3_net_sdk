@@ -32,11 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Ds3Examples.Ds3ExampleClient</StartupObject>
+    <StartupObject>Ds3Examples.BulkPutExample</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ds3_net_sdk, Version=1.2.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ds3_net_sdk.1.2.4.0\lib\net40\ds3_net_sdk.dll</HintPath>
+    <Reference Include="ds3_net_sdk, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ds3_net_sdk.3.0.1.0\lib\net40\ds3_net_sdk.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -56,9 +56,11 @@
     <Compile Include="BulkPutExample.cs" />
     <Compile Include="BulkPutWithStreamStrategyExample.cs" />
     <Compile Include="Ds3ExampleClient.cs" />
+    <Compile Include="GetAvailableChunksExample.cs" />
     <Compile Include="ListBucketsExample.cs" />
     <Compile Include="ListObjectsExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WithMetadataExample.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

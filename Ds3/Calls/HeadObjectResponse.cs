@@ -1,6 +1,6 @@
-﻿/*
+/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,15 +13,21 @@
  * ****************************************************************************
  */
 
+// This code is auto-generated, do not modify
+
+using System.Net;
+using System.IO;
 using System.Collections.Generic;
+
+using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
     public class HeadObjectResponse
     {
-        public long Length { get; private set; }
-        public string ETag { get; private set; }
         public IDictionary<string, string> Metadata { get; private set; }
+        public string ETag { get; private set; }
+        public long Length { get; private set; }
 
         public HeadObjectResponse(long length, string eTag, IDictionary<string, string> metadata)
         {

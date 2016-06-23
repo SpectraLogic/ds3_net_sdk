@@ -27,14 +27,14 @@ namespace Ds3.Helpers
         {
         }
 
-        public static Blob Convert(JobObject jobObject)
+        public static Blob Convert(BulkObject jobObject)
         {
             return new Blob(Range.ByLength(jobObject.Offset, jobObject.Length), jobObject.Name);
         }
 
-        public static IEnumerable<Blob> Convert(JobResponse jobResponse)
+        public static IEnumerable<Blob> Convert(MasterObjectList jobResponse)
         {
-            return jobResponse.ObjectLists.SelectMany(ol => ol).Select(Blob.Convert);
+            return jobResponse.Objects.SelectMany(ol => ol.ObjectsList).Select(Blob.Convert);
         }
     }
 }

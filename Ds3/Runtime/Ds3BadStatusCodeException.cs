@@ -22,7 +22,7 @@ namespace Ds3.Runtime
     public class Ds3BadStatusCodeException : Ds3RequestException
     {
         private HttpStatusCode _statusCode;
-        private Ds3Error _error;
+        private Error _error;
         private string _responseBody;
 
         public HttpStatusCode StatusCode
@@ -30,7 +30,7 @@ namespace Ds3.Runtime
             get { return _statusCode; }
         }
 
-        public Ds3Error Error
+        public Error Error
         {
             get { return _error; }
         }
@@ -40,7 +40,7 @@ namespace Ds3.Runtime
             get { return _responseBody; }
         }
 
-        public Ds3BadStatusCodeException(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Ds3Error error, string responseBody)
+        public Ds3BadStatusCodeException(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Error error, string responseBody)
             : base(StatusCodeMessage(expectedStatusCodes, receivedStatusCode, error))
         {
             this._statusCode = receivedStatusCode;
@@ -48,7 +48,7 @@ namespace Ds3.Runtime
             this._responseBody = responseBody;
         }
 
-        private static string StatusCodeMessage(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Ds3Error error)
+        private static string StatusCodeMessage(IEnumerable<HttpStatusCode> expectedStatusCodes, HttpStatusCode receivedStatusCode, Error error)
         {
             var expectedCodesString = string.Join(", ", expectedStatusCodes);
             if (error == null)
