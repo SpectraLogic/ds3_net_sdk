@@ -966,7 +966,15 @@ namespace IntegrationTestDs3
 
                 var thread = new Thread(() =>
                 {
-                    job.Transfer(key => new MemoryStream(contentBytes));
+                    try
+                    {
+                        job.Transfer(key => new MemoryStream(contentBytes));
+                    }
+                    catch (Exception)
+                    {
+                        // pass
+                    }
+                    
                 });
                 thread.Start();
 
@@ -1037,7 +1045,14 @@ namespace IntegrationTestDs3
 
                 var thread = new Thread(() =>
                 {
-                    getJob.Transfer(key => new MemoryStream(contentBytes));
+                    try
+                    {
+                        getJob.Transfer(key => new MemoryStream(contentBytes));
+                    }
+                    catch (Exception)
+                    {
+                        // pass
+                    }
                 });
                 thread.Start();
 
