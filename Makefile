@@ -1,5 +1,7 @@
-test: unit integration
+test: unit integration longIntegration
 
+longIntegration: build
+	mono ./packages/NUnit.Runners.2.6.3/tools/nunit-console.exe ./LongRunningIntegrationTestDs3/bin/Debug/LongRunningIntegrationTestDs3.dll
 integration: build
 	mono ./packages/NUnit.Runners.2.6.3/tools/nunit-console.exe ./IntegrationTestDS3/bin/Debug/IntegrationTestDS3.dll
 unit: build
@@ -7,4 +9,4 @@ unit: build
 build:
 	xbuild /p:Configuration=Debug ds3_net_sdk.sln
 clean:
-	rm -rf ./TestDs3/bin/Debug ./IntegrationTestDS3/bin/Debug ./Ds3/bin/Debug
+	rm -rf ./TestDs3/bin/Debug ./IntegrationTestDS3/bin/Debug ./LongRunningIntegrationTestDs3/bin/Debug ./Ds3/bin/Debug
