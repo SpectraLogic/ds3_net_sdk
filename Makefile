@@ -1,4 +1,4 @@
-test: unit integration
+test: unit integration longIntegration
 
 longIntegration: build
 	mono ./packages/NUnit.Runners.2.6.3/tools/nunit-console.exe ./LongRunningIntegrationTestDs3/bin/Debug/LongRunningIntegrationTestDs3.dll
