@@ -65,11 +65,6 @@ namespace TestDs3.Runtime
 
     internal class FakeStream : Stream
     {
-        private readonly bool _canRead;
-        private readonly bool _canSeek;
-        private readonly bool _canWrite;
-        private readonly long _length;
-
         public override void Flush()
         {
             throw new NotImplementedException();
@@ -97,22 +92,22 @@ namespace TestDs3.Runtime
 
         public override bool CanRead
         {
-            get { return this._canRead; }
+            get { return false; }
         }
 
         public override bool CanSeek
         {
-            get { return this._canSeek; }
+            get { return false; }
         }
 
         public override bool CanWrite
         {
-            get { return this._canWrite; }
+            get { return false; }
         }
 
         public override long Length
         {
-            get { return this._length; }
+            get { return 0; }
         }
 
         public override long Position { get; set; }
