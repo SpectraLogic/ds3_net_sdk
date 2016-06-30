@@ -28,8 +28,6 @@ namespace Ds3.Helpers
 {
     public class Ds3ClientHelpers : IDs3ClientHelpers
     {
-        private const int DefaultMaxKeys = 1000;
-
         private readonly IDs3Client _client;
         private const JobRequestType JobTypePut = JobRequestType.PUT;
         private const JobRequestType JobTypeGet = JobRequestType.GET;
@@ -185,7 +183,7 @@ namespace Ds3.Helpers
             string marker = null;
             do
             {
-                var request = new Ds3.Calls.GetBucketRequest(bucketName)
+                var request = new GetBucketRequest(bucketName)
                 {
                     Marker = marker,
                     Prefix = keyPrefix
