@@ -21,9 +21,9 @@ namespace Ds3.Runtime
 {
     public class Ds3BadStatusCodeException : Ds3RequestException
     {
-        private HttpStatusCode _statusCode;
-        private Error _error;
-        private string _responseBody;
+        private readonly HttpStatusCode _statusCode;
+        private readonly Error _error;
+        private readonly string _responseBody;
 
         public HttpStatusCode StatusCode
         {
