@@ -19,12 +19,23 @@ namespace LongRunningIntegrationTestDs3
         private IDs3Client _client;
         private Ds3ClientHelpers _helpers;
         private readonly int? _copyBufferSize = 16 * 1024 * 1024;
+        private const string FixtureName = "long_integration_test_ds3client";
+        private static TempStorageIds _envStorageIds;
 
         [TestFixtureSetUp]
         public void Startup()
         {
             this._client = Ds3TestUtils.CreateClient(this._copyBufferSize);
             this._helpers = new Ds3ClientHelpers(this._client);
+
+            var dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+            _envStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
+        }
+
+        [TestFixtureTearDown]
+        public void Teardown()
+        {
+            TempStorageUtil.TearDown(FixtureName, _envStorageIds, _client);
         }
 
         [Test]
@@ -47,7 +58,7 @@ namespace LongRunningIntegrationTestDs3
 
                 Ds3TestUtils.PutFiles(_client, bucketName, objects, key => new MemoryStream(contentBytes));
 
-                Assert.AreEqual(numberOfObjects, _client.GetBucket(new GetBucketRequest(bucketName)).ResponsePayload.Objects.Count());
+                Assert.AreEqual(numberOfObjects, _client.GetBucket(new GetBucketRequest(bucketName).WithMaxKeys(numberOfObjects)).ResponsePayload.Objects.Count());
             }
             finally
             {
