@@ -26,7 +26,8 @@ namespace Ds3.Helpers
         /// Runs a DS3 bulk PUT request with a set of objects and returns an
         /// interface that can PUT individual objects efficiently to the server.
         /// </summary>
-        /// <seealso cref="FileHelpers.ListObjectsForDirectory"/>
+        /// <seealso cref="FileHelpers.ListObjectsForDirectory(string)"/>
+        /// <seealso cref="FileHelpers.ListObjectsForDirectory(string, string)"/>
         /// <param name="bucket">The name of the bucket to put the objects to.</param>
         /// <param name="objectsToWrite">The object names and sizes to put.</param>
         /// <param name="maxBlobSize">The (optional) maximum size for the parts of the objects to transmit.</param>

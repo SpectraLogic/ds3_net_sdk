@@ -74,8 +74,8 @@ namespace Ds3.Helpers
         /// requests. It also performs requests in parallel for situations
         /// where doing so can improve performance.
         /// </summary>
-        /// <seealso cref="FileHelpers.BuildFileGetter"/>
-        /// <seealso cref="FileHelpers.BuildFilePutter"/>
+        /// <seealso cref="FileHelpers.BuildFileGetter(string)"/>
+        /// <seealso cref="FileHelpers.BuildFilePutter(string, string)"/>
         /// <param name="createStreamForTransferItem">Opens a stream for a given transfer item.</param>
         void Transfer(Func<TItem, Stream> createStreamForTransferItem);
 
