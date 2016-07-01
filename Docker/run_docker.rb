@@ -35,7 +35,7 @@ response = connection.get("/ds3/keys?user_id=#{spectra_user["id"]}")
 spectra_user_keys = JSON.parse(response.body)["data"][0]
 abort("Spectra User keys not found.") if spectra_user_keys.nil?
 
-ENV["DOCKER_REPO"] = ENV["DOCKER_REPO"] || "denverm80/spectra_sandbox"
+ENV["DOCKER_REPO"] = ENV["DOCKER_REPO"] || "spectralogic/ds3_net_docker_test"
 ENV["DS3_ENDPOINT"] = "http://sm2u-11.eng.sldomain.com"
 ENV["DS3_SECRET_KEY"] = spectra_user_keys["secret_key"]
 ENV["DS3_ACCESS_KEY"] = spectra_user_keys["auth_id"]
