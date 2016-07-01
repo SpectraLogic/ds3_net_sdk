@@ -21,9 +21,9 @@ namespace Ds3
 {
     public class Ds3Builder
     {
-        private Credentials _creds;
-        private Uri _endpoint;
-        private Uri _proxy = null;
+        private readonly Credentials _creds;
+        private readonly Uri _endpoint;
+        private Uri _proxy;
         private int _redirectRetryCount = 5;
         private int _copyBufferSize = Network.DefaultCopyBufferSize;
         private int _readWriteTimeout = 60 * 60 * 1000;
@@ -36,16 +36,16 @@ namespace Ds3
         /// </summary>
         public static Ds3Builder FromEnv()
         {
-            string _endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
-            string accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
-            string secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
-            string _proxy = Environment.GetEnvironmentVariable("http_proxy");
+            var endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
+            var accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
+            var secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
+            var proxy = Environment.GetEnvironmentVariable("http_proxy");
 
-            var _credentials = new Credentials(accesskey, secretkey);
-            Ds3Builder builder = new Ds3Builder(_endpoint, _credentials);
-            if (!string.IsNullOrEmpty(_proxy))
+            var credentials = new Credentials(accesskey, secretkey);
+            var builder = new Ds3Builder(endpoint, credentials);
+            if (!string.IsNullOrEmpty(proxy))
             {
-                builder.WithProxy(new Uri(_proxy));
+                builder.WithProxy(new Uri(proxy));
             }
 
             return builder;
@@ -53,7 +53,7 @@ namespace Ds3
 
         /// <summary>
         /// </summary>
-        /// <param name="endpoint">The http or https location at which your DS3 server is listening.</param>
+        /// <param name="endpoint">The HTTP or HTTPS location at which your DS3 server is listening.</param>
         /// <param name="creds">Credentials with which to specify identity and sign requests.</param>
         public Ds3Builder(string endpoint, Credentials creds) {
             this._creds = creds;
@@ -62,7 +62,7 @@ namespace Ds3
 
         /// <summary>
         /// </summary>
-        /// <param name="endpoint">The http or https location at which your DS3 server is listening.</param>
+        /// <param name="endpoint">The HTTP or HTTPS location at which your DS3 server is listening.</param>
         /// <param name="creds">Credentials with which to specify identity and sign requests.</param>
         public Ds3Builder(Uri endpoint, Credentials creds)
         {
@@ -146,7 +146,7 @@ namespace Ds3
         /// <returns></returns>
         public IDs3Client Build()
         {
-            Network netLayer = new Network(
+            var netLayer = new Network(
                 _endpoint,
                 _creds,
                 _redirectRetryCount,

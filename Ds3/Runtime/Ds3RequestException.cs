@@ -14,7 +14,6 @@
  */
 
 using System;
-using System.Net;
 
 namespace Ds3.Runtime
 {
