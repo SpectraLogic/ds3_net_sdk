@@ -33,7 +33,6 @@ namespace Ds3.Runtime
 
         private readonly Uri _endpoint;
         private readonly Credentials _creds;
-        private readonly int _maxRedirects = 0;
         private readonly int _redirectRetryCount;
         private readonly int _readWriteTimeout;
         private readonly int _requestTimeout;
@@ -64,7 +63,7 @@ namespace Ds3.Runtime
 
         public IWebResponse Invoke(Ds3Request request)
         {
-            int redirectCount = 0;
+            var redirectCount = 0;
 
             using (var content = request.GetContentStream())
             {
@@ -73,12 +72,12 @@ namespace Ds3.Runtime
                     if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.RequestLogging, request.GetType().ToString())); }
                     if (sdkNetworkSwitch.TraceVerbose) { Trace.WriteLine(request.getDescription(BuildQueryParams(request.QueryParams))); }
 
-                    HttpWebRequest httpRequest = CreateRequest(request, content);
+                    var httpRequest = CreateRequest(request, content);
                     try
                     {
-                        long send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                        var send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                         var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
-                        long millis = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - send;
+                        var millis = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - send;
                         if (Is307(response))
                         {
                             redirectCount++;
@@ -98,7 +97,7 @@ namespace Ds3.Runtime
                         }
                         return new WebResponse((HttpWebResponse)e.Response);
                     }
-                } while (redirectCount < _maxRedirects);
+                } while (redirectCount < _redirectRetryCount);
             }
 
             throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException);
@@ -110,12 +109,12 @@ namespace Ds3.Runtime
             {
                 if (content != Stream.Null && !content.CanRead)
                 {
-                    throw new Ds3.Runtime.Ds3RequestException(Resources.InvalidStreamException);
+                    throw new Ds3RequestException(Resources.InvalidStreamException);
                 }
             }
 
-            DateTime date = DateTime.UtcNow;
-            UriBuilder uriBuilder = new UriBuilder(_endpoint);
+            var date = DateTime.UtcNow;
+            var uriBuilder = new UriBuilder(_endpoint);
             uriBuilder.Path = HttpHelper.PercentEncodePath(request.Path);
 
             if (request.QueryParams.Count > 0)
@@ -123,12 +122,12 @@ namespace Ds3.Runtime
                 uriBuilder.Query = BuildQueryParams(request.QueryParams);
             }
 
-            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.ToString());
+            var httpRequest = (HttpWebRequest)WebRequest.Create(uriBuilder.ToString());
             httpRequest.ServicePoint.ConnectionLimit = _connectionLimit;
             httpRequest.Method = request.Verb.ToString();
             if (Proxy != null)
             {
-                WebProxy webProxy = new WebProxy();
+                var webProxy = new WebProxy();
                 webProxy.Address = Proxy;
                 httpRequest.Proxy = webProxy;
             }
