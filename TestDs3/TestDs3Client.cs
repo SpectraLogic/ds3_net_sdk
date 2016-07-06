@@ -1092,6 +1092,33 @@ namespace TestDs3
             helpers.StartWriteJob("bucket", inputObjects);
         }
 
+        [Test]
+        public void TestDs3WebRequestCreateFunc()
+        {
+            const string responseString = "<Data><DatabaseFilesystemFreeSpace> NORMAL </DatabaseFilesystemFreeSpace><MsRequiredToVerifyDataPlannerHealth> 1 </MsRequiredToVerifyDataPlannerHealth></Data>";
+            var client = new Ds3Client(new Network(
+                null, null, 0, 0, 0, 0, 0,
+                (request, stream) => new MockWebRequest(new MockWebResponse(responseString, HttpStatusCode.OK, _emptyHeaders))));
+
+            client.VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request());
+        }
+
+        [Test]
+        public void TestRedirectRetryCount()
+        {
+            var client = new Ds3Client(new Network(
+                null, null, 2, 0, 0, 0, 0,
+                (request, stream) => new MockWebRequest(new MockWebResponse("", HttpStatusCode.TemporaryRedirect, _emptyHeaders))));
+            try
+            {
+                client.VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request());
+            }
+            catch (Ds3RedirectLimitException e)
+            {
+                Assert.AreEqual(2, e.Retries);
+            }
+        }
+
         private class BulkObjectComparer : IComparer, IComparer<BulkObject>
         {
             public int Compare(object x, object y)

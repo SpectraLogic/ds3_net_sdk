@@ -21,19 +21,19 @@ using System.Net;
 
 namespace Ds3.Runtime
 {
-    internal class WebResponse : IWebResponse
+    internal class Ds3WebResponse : IWebResponse
     {
         private readonly HttpWebResponse _webResponse;
         private IDictionary<string, string> _headers;
 
-        internal WebResponse(HttpWebResponse webResponse)
+        internal Ds3WebResponse(HttpWebResponse webResponse)
         {
             _webResponse = webResponse;
         }
 
         public Stream GetResponseStream()
         {
-            return new WebResponseStream(_webResponse.GetResponseStream(), _webResponse.ContentLength);
+            return new Ds3WebResponseStream(_webResponse.GetResponseStream(), _webResponse.ContentLength);
         }
 
         public HttpStatusCode StatusCode
