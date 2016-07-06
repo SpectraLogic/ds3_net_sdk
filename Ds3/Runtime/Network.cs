@@ -63,7 +63,7 @@ namespace Ds3.Runtime
             _createDs3WebRequestFunc = this.CreateDs3WebRequest;
         }
 
-        public Network(
+        internal Network(
             Uri endpoint,
             Credentials creds,
             int redirectRetryCount,
