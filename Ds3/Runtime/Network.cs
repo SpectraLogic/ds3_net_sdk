@@ -27,7 +27,7 @@ namespace Ds3.Runtime
 {
     internal class Network : INetwork
     {
-        private static TraceSwitch sdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
+        private static readonly TraceSwitch SdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
 
         internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
 
@@ -40,6 +40,8 @@ namespace Ds3.Runtime
 
         internal Uri Proxy = null;
         private readonly char[] _noChars = new char[0];
+
+        private readonly Func<Ds3Request, Stream, IWebRequest> _createDs3WebRequestFunc;
 
         public Network(
             Uri endpoint,
@@ -57,6 +59,21 @@ namespace Ds3.Runtime
             this._readWriteTimeout = readWriteTimeout;
             this._requestTimeout = requestTimeout;
             this._connectionLimit = connectionLimit;
+
+            _createDs3WebRequestFunc = this.CreateDs3WebRequest;
+        }
+
+        public Network(
+            Uri endpoint,
+            Credentials creds,
+            int redirectRetryCount,
+            int copyBufferSize,
+            int readWriteTimeout,
+            int requestTimeout,
+            int connectionLimit,
+            Func<Ds3Request, Stream, IWebRequest> createDs3WebRequestFunc) : this(endpoint, creds, redirectRetryCount, copyBufferSize, readWriteTimeout, requestTimeout, connectionLimit)
+        {
+            _createDs3WebRequestFunc = createDs3WebRequestFunc;
         }
 
         public int CopyBufferSize { get; private set; }
@@ -69,23 +86,23 @@ namespace Ds3.Runtime
             {
                 do
                 {
-                    if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.RequestLogging, request.GetType().ToString())); }
-                    if (sdkNetworkSwitch.TraceVerbose) { Trace.WriteLine(request.getDescription(BuildQueryParams(request.QueryParams))); }
+                    if (SdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.RequestLogging, request.GetType())); }
+                    if (SdkNetworkSwitch.TraceVerbose) { Trace.WriteLine(request.getDescription(BuildQueryParams(request.QueryParams))); }
 
-                    var httpRequest = CreateRequest(request, content);
+                    var ds3WebRequest = _createDs3WebRequestFunc(request, content);
                     try
                     {
                         var send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                        var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
+                        var response = ds3WebRequest.GetResponse();
                         var millis = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - send;
                         if (Is307(response))
                         {
                             redirectCount++;
-                            if (sdkNetworkSwitch.TraceWarning) { Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network"); }
+                            if (SdkNetworkSwitch.TraceWarning) { Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network"); }
                         }
                         else
                         {
-                            if (sdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.ResponseLogging, response.StatusCode.ToString(), millis)); }
+                            if (SdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.ResponseLogging, response.StatusCode, millis)); }
                             return response;
                         }
                     }
@@ -93,17 +110,17 @@ namespace Ds3.Runtime
                     {
                         if (e.Response == null)
                         {
-                            throw e;
+                            throw;
                         }
-                        return new WebResponse((HttpWebResponse)e.Response);
+                        return new Ds3WebResponse((HttpWebResponse)e.Response);
                     }
                 } while (redirectCount < _redirectRetryCount);
             }
 
-            throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException);
+            throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException, redirectCount);
         }
 
-        private HttpWebRequest CreateRequest(Ds3Request request, Stream content)
+        private IWebRequest CreateDs3WebRequest(Ds3Request request, Stream content)
         {
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
             {
@@ -114,9 +131,11 @@ namespace Ds3.Runtime
             }
 
             var date = DateTime.UtcNow;
-            var uriBuilder = new UriBuilder(_endpoint);
-            uriBuilder.Path = HttpHelper.PercentEncodePath(request.Path);
-
+            var uriBuilder = new UriBuilder(_endpoint)
+            {
+                Path = HttpHelper.PercentEncodePath(request.Path)
+            };
+            
             if (request.QueryParams.Count > 0)
             {
                 uriBuilder.Query = BuildQueryParams(request.QueryParams);
@@ -127,8 +146,10 @@ namespace Ds3.Runtime
             httpRequest.Method = request.Verb.ToString();
             if (Proxy != null)
             {
-                var webProxy = new WebProxy();
-                webProxy.Address = Proxy;
+                var webProxy = new WebProxy
+                {
+                    Address = Proxy
+                };
                 httpRequest.Proxy = webProxy;
             }
             httpRequest.Date = date;
@@ -149,23 +170,23 @@ namespace Ds3.Runtime
                 switch (request.CType)
                 {
                     case ChecksumType.Type.MD5:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("MD5 checksum is {0}", chucksumValue));
+                        if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("MD5 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
                         break;
                     case ChecksumType.Type.SHA_256:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-256 checksum is {0}", chucksumValue));
+                        if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-256 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
                         break;
                     case ChecksumType.Type.SHA_512:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-512 checksum is {0}", chucksumValue));
+                        if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-512 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
                         break;
                     case ChecksumType.Type.CRC_32:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32 checksum is {0}", chucksumValue));
+                        if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32, chucksumValue);
                         break;
                     case ChecksumType.Type.CRC_32C:
-                        if (sdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32C checksum is {0}", chucksumValue));
+                        if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32C checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32C, chucksumValue);
                         break;
                 }
@@ -207,7 +228,7 @@ namespace Ds3.Runtime
                     }
                 }
             }
-            return httpRequest;
+            return new Ds3WebRequest(httpRequest);
         }
 
         private static string ComputeChecksum(ChecksumType checksum, Stream content, ChecksumType.Type type = ChecksumType.Type.MD5)
@@ -240,7 +261,7 @@ namespace Ds3.Runtime
                 );
         }
 
-        private string CreateHostString(Uri endpoint)
+        private static string CreateHostString(Uri endpoint)
         {
             if (endpoint.Port > 0)
             {
@@ -249,7 +270,7 @@ namespace Ds3.Runtime
             return endpoint.Host;
         }
 
-        private bool Is307(IWebResponse httpResponse)
+        private static bool Is307(IWebResponse httpResponse)
         {
             return httpResponse.StatusCode.Equals(HttpStatusCode.TemporaryRedirect);
         }

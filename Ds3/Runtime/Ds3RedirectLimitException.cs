@@ -17,9 +17,12 @@ namespace Ds3.Runtime
 {
     public class Ds3RedirectLimitException : Ds3RequestException
     {
-        public Ds3RedirectLimitException(string message)
+        public readonly int Retries;
+
+        public Ds3RedirectLimitException(string message, int retries)
             : base(message)
         {
+            Retries = retries;
         }
     }
 }

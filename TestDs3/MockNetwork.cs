@@ -24,7 +24,7 @@ using System.Net;
 
 namespace TestDs3
 {
-    interface IMockNetworkWithExpectation
+    internal interface IMockNetworkWithExpectation
     {
         IMockNetworkWithReturn Returning(HttpStatusCode statusCode, string responseContent, IDictionary<string, string> responseHeaders);
     }
@@ -34,7 +34,7 @@ namespace TestDs3
         IDs3Client AsClient { get; }
     }
 
-    class MockNetwork : INetwork, IMockNetworkWithExpectation, IMockNetworkWithReturn
+    internal class MockNetwork : INetwork, IMockNetworkWithExpectation, IMockNetworkWithReturn
     {
         private HttpVerb _verb;
         private string _path;
@@ -50,11 +50,13 @@ namespace TestDs3
             IDictionary<string, string> queryParams,
             string requestContent)
         {
-            var mock = new MockNetwork();
-            mock._verb = verb;
-            mock._path = path;
-            mock._queryParams = queryParams;
-            mock._requestContent = requestContent;
+            var mock = new MockNetwork
+            {
+                _verb = verb,
+                _path = path,
+                _queryParams = queryParams,
+                _requestContent = requestContent
+            };
             return mock;
         }
 
@@ -83,7 +85,7 @@ namespace TestDs3
         }
     }
 
-    class MockWebResponse : IWebResponse
+    internal class MockWebResponse : IWebResponse
     {
         private readonly string _responseString;
         private readonly HttpStatusCode _statusCode;
@@ -113,6 +115,20 @@ namespace TestDs3
 
         public void Dispose()
         {
+        }
+    }
+
+    internal class MockWebRequest : IWebRequest
+    {
+        private readonly MockWebResponse _mockWebResponse;
+
+        public MockWebRequest(MockWebResponse mockWebResponse)
+        {
+            _mockWebResponse = mockWebResponse;
+        }
+        public IWebResponse GetResponse()
+        {
+            return _mockWebResponse;
         }
     }
 }
