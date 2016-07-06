@@ -32,6 +32,13 @@ namespace Ds3.Calls
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
+        private bool? _replicate;
+        public bool? Replicate
+        {
+            get { return _replicate; }
+            set { WithReplicate(value); }
+        }
+
         private bool? _rollBack;
         public bool? RollBack
         {
@@ -39,10 +46,24 @@ namespace Ds3.Calls
             set { WithRollBack(value); }
         }
 
+        public DeleteObjectsRequest WithReplicate(bool? replicate)
+        {
+            this._replicate = replicate;
+            if (replicate != null)
+            {
+                this.QueryParams.Add("replicate", replicate.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("replicate");
+            }
+            return this;
+        }
         public DeleteObjectsRequest WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
-            if (rollBack != null) {
+            if (rollBack != null)
+            {
                 this.QueryParams.Add("roll_back", rollBack.ToString());
             }
             else

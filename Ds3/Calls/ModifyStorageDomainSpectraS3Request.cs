@@ -26,6 +26,13 @@ namespace Ds3.Calls
         public string StorageDomain { get; private set; }
 
         
+        private long? _autoEjectMediaFullThreshold;
+        public long? AutoEjectMediaFullThreshold
+        {
+            get { return _autoEjectMediaFullThreshold; }
+            set { WithAutoEjectMediaFullThreshold(value); }
+        }
+
         private string _autoEjectUponCron;
         public string AutoEjectUponCron
         {
@@ -89,6 +96,13 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private bool? _secureMediaAllocation;
+        public bool? SecureMediaAllocation
+        {
+            get { return _secureMediaAllocation; }
+            set { WithSecureMediaAllocation(value); }
+        }
+
         private Priority? _verifyPriorToAutoEject;
         public Priority? VerifyPriorToAutoEject
         {
@@ -103,10 +117,24 @@ namespace Ds3.Calls
             set { WithWriteOptimization(value); }
         }
 
+        public ModifyStorageDomainSpectraS3Request WithAutoEjectMediaFullThreshold(long? autoEjectMediaFullThreshold)
+        {
+            this._autoEjectMediaFullThreshold = autoEjectMediaFullThreshold;
+            if (autoEjectMediaFullThreshold != null)
+            {
+                this.QueryParams.Add("auto_eject_media_full_threshold", autoEjectMediaFullThreshold.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("auto_eject_media_full_threshold");
+            }
+            return this;
+        }
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponCron(string autoEjectUponCron)
         {
             this._autoEjectUponCron = autoEjectUponCron;
-            if (autoEjectUponCron != null) {
+            if (autoEjectUponCron != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_cron", autoEjectUponCron);
             }
             else
@@ -118,7 +146,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponJobCancellation(bool? autoEjectUponJobCancellation)
         {
             this._autoEjectUponJobCancellation = autoEjectUponJobCancellation;
-            if (autoEjectUponJobCancellation != null) {
+            if (autoEjectUponJobCancellation != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_job_cancellation", autoEjectUponJobCancellation.ToString());
             }
             else
@@ -130,7 +159,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponJobCompletion(bool? autoEjectUponJobCompletion)
         {
             this._autoEjectUponJobCompletion = autoEjectUponJobCompletion;
-            if (autoEjectUponJobCompletion != null) {
+            if (autoEjectUponJobCompletion != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_job_completion", autoEjectUponJobCompletion.ToString());
             }
             else
@@ -142,7 +172,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponMediaFull(bool? autoEjectUponMediaFull)
         {
             this._autoEjectUponMediaFull = autoEjectUponMediaFull;
-            if (autoEjectUponMediaFull != null) {
+            if (autoEjectUponMediaFull != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_media_full", autoEjectUponMediaFull.ToString());
             }
             else
@@ -154,7 +185,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithLtfsFileNaming(LtfsFileNamingMode? ltfsFileNaming)
         {
             this._ltfsFileNaming = ltfsFileNaming;
-            if (ltfsFileNaming != null) {
+            if (ltfsFileNaming != null)
+            {
                 this.QueryParams.Add("ltfs_file_naming", ltfsFileNaming.ToString());
             }
             else
@@ -166,7 +198,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithMaxTapeFragmentationPercent(int? maxTapeFragmentationPercent)
         {
             this._maxTapeFragmentationPercent = maxTapeFragmentationPercent;
-            if (maxTapeFragmentationPercent != null) {
+            if (maxTapeFragmentationPercent != null)
+            {
                 this.QueryParams.Add("max_tape_fragmentation_percent", maxTapeFragmentationPercent.ToString());
             }
             else
@@ -178,7 +211,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithMaximumAutoVerificationFrequencyInDays(int? maximumAutoVerificationFrequencyInDays)
         {
             this._maximumAutoVerificationFrequencyInDays = maximumAutoVerificationFrequencyInDays;
-            if (maximumAutoVerificationFrequencyInDays != null) {
+            if (maximumAutoVerificationFrequencyInDays != null)
+            {
                 this.QueryParams.Add("maximum_auto_verification_frequency_in_days", maximumAutoVerificationFrequencyInDays.ToString());
             }
             else
@@ -190,7 +224,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithMediaEjectionAllowed(bool? mediaEjectionAllowed)
         {
             this._mediaEjectionAllowed = mediaEjectionAllowed;
-            if (mediaEjectionAllowed != null) {
+            if (mediaEjectionAllowed != null)
+            {
                 this.QueryParams.Add("media_ejection_allowed", mediaEjectionAllowed.ToString());
             }
             else
@@ -202,7 +237,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -211,10 +247,24 @@ namespace Ds3.Calls
             }
             return this;
         }
+        public ModifyStorageDomainSpectraS3Request WithSecureMediaAllocation(bool? secureMediaAllocation)
+        {
+            this._secureMediaAllocation = secureMediaAllocation;
+            if (secureMediaAllocation != null)
+            {
+                this.QueryParams.Add("secure_media_allocation", secureMediaAllocation.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("secure_media_allocation");
+            }
+            return this;
+        }
         public ModifyStorageDomainSpectraS3Request WithVerifyPriorToAutoEject(Priority? verifyPriorToAutoEject)
         {
             this._verifyPriorToAutoEject = verifyPriorToAutoEject;
-            if (verifyPriorToAutoEject != null) {
+            if (verifyPriorToAutoEject != null)
+            {
                 this.QueryParams.Add("verify_prior_to_auto_eject", verifyPriorToAutoEject.ToString());
             }
             else
@@ -226,7 +276,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainSpectraS3Request WithWriteOptimization(WriteOptimization? writeOptimization)
         {
             this._writeOptimization = writeOptimization;
-            if (writeOptimization != null) {
+            if (writeOptimization != null)
+            {
                 this.QueryParams.Add("write_optimization", writeOptimization.ToString());
             }
             else
@@ -237,7 +288,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyStorageDomainSpectraS3Request(string storageDomain) {
+        public ModifyStorageDomainSpectraS3Request(string storageDomain)
+        {
             this.StorageDomain = storageDomain;
             
         }

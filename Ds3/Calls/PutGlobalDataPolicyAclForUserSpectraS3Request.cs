@@ -28,14 +28,16 @@ namespace Ds3.Calls
         
 
         
-        public PutGlobalDataPolicyAclForUserSpectraS3Request(Guid userId) {
+        public PutGlobalDataPolicyAclForUserSpectraS3Request(Guid userId)
+        {
             this.UserId = userId.ToString();
             
             this.QueryParams.Add("user_id", userId.ToString());
 
         }
 
-        public PutGlobalDataPolicyAclForUserSpectraS3Request(string userId) {
+        public PutGlobalDataPolicyAclForUserSpectraS3Request(string userId)
+        {
             this.UserId = userId;
             
             this.QueryParams.Add("user_id", userId);

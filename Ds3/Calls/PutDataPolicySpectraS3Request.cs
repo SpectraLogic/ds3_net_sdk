@@ -26,6 +26,27 @@ namespace Ds3.Calls
         public string Name { get; private set; }
 
         
+        private bool? _alwaysForcePutJobCreation;
+        public bool? AlwaysForcePutJobCreation
+        {
+            get { return _alwaysForcePutJobCreation; }
+            set { WithAlwaysForcePutJobCreation(value); }
+        }
+
+        private bool? _alwaysMinimizeSpanningAcrossMedia;
+        public bool? AlwaysMinimizeSpanningAcrossMedia
+        {
+            get { return _alwaysMinimizeSpanningAcrossMedia; }
+            set { WithAlwaysMinimizeSpanningAcrossMedia(value); }
+        }
+
+        private bool? _alwaysReplicateDeletes;
+        public bool? AlwaysReplicateDeletes
+        {
+            get { return _alwaysReplicateDeletes; }
+            set { WithAlwaysReplicateDeletes(value); }
+        }
+
         private bool? _blobbingEnabled;
         public bool? BlobbingEnabled
         {
@@ -89,10 +110,50 @@ namespace Ds3.Calls
             set { WithVersioning(value); }
         }
 
+        public PutDataPolicySpectraS3Request WithAlwaysForcePutJobCreation(bool? alwaysForcePutJobCreation)
+        {
+            this._alwaysForcePutJobCreation = alwaysForcePutJobCreation;
+            if (alwaysForcePutJobCreation != null)
+            {
+                this.QueryParams.Add("always_force_put_job_creation", alwaysForcePutJobCreation.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("always_force_put_job_creation");
+            }
+            return this;
+        }
+        public PutDataPolicySpectraS3Request WithAlwaysMinimizeSpanningAcrossMedia(bool? alwaysMinimizeSpanningAcrossMedia)
+        {
+            this._alwaysMinimizeSpanningAcrossMedia = alwaysMinimizeSpanningAcrossMedia;
+            if (alwaysMinimizeSpanningAcrossMedia != null)
+            {
+                this.QueryParams.Add("always_minimize_spanning_across_media", alwaysMinimizeSpanningAcrossMedia.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("always_minimize_spanning_across_media");
+            }
+            return this;
+        }
+        public PutDataPolicySpectraS3Request WithAlwaysReplicateDeletes(bool? alwaysReplicateDeletes)
+        {
+            this._alwaysReplicateDeletes = alwaysReplicateDeletes;
+            if (alwaysReplicateDeletes != null)
+            {
+                this.QueryParams.Add("always_replicate_deletes", alwaysReplicateDeletes.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("always_replicate_deletes");
+            }
+            return this;
+        }
         public PutDataPolicySpectraS3Request WithBlobbingEnabled(bool? blobbingEnabled)
         {
             this._blobbingEnabled = blobbingEnabled;
-            if (blobbingEnabled != null) {
+            if (blobbingEnabled != null)
+            {
                 this.QueryParams.Add("blobbing_enabled", blobbingEnabled.ToString());
             }
             else
@@ -104,7 +165,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithChecksumType(ChecksumType.Type? checksumType)
         {
             this._checksumType = checksumType;
-            if (checksumType != null) {
+            if (checksumType != null)
+            {
                 this.QueryParams.Add("checksum_type", checksumType.ToString());
             }
             else
@@ -116,7 +178,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultBlobSize(long? defaultBlobSize)
         {
             this._defaultBlobSize = defaultBlobSize;
-            if (defaultBlobSize != null) {
+            if (defaultBlobSize != null)
+            {
                 this.QueryParams.Add("default_blob_size", defaultBlobSize.ToString());
             }
             else
@@ -128,7 +191,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultGetJobPriority(Priority? defaultGetJobPriority)
         {
             this._defaultGetJobPriority = defaultGetJobPriority;
-            if (defaultGetJobPriority != null) {
+            if (defaultGetJobPriority != null)
+            {
                 this.QueryParams.Add("default_get_job_priority", defaultGetJobPriority.ToString());
             }
             else
@@ -140,7 +204,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultPutJobPriority(Priority? defaultPutJobPriority)
         {
             this._defaultPutJobPriority = defaultPutJobPriority;
-            if (defaultPutJobPriority != null) {
+            if (defaultPutJobPriority != null)
+            {
                 this.QueryParams.Add("default_put_job_priority", defaultPutJobPriority.ToString());
             }
             else
@@ -152,7 +217,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultVerifyJobPriority(Priority? defaultVerifyJobPriority)
         {
             this._defaultVerifyJobPriority = defaultVerifyJobPriority;
-            if (defaultVerifyJobPriority != null) {
+            if (defaultVerifyJobPriority != null)
+            {
                 this.QueryParams.Add("default_verify_job_priority", defaultVerifyJobPriority.ToString());
             }
             else
@@ -164,7 +230,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithEndToEndCrcRequired(bool? endToEndCrcRequired)
         {
             this._endToEndCrcRequired = endToEndCrcRequired;
-            if (endToEndCrcRequired != null) {
+            if (endToEndCrcRequired != null)
+            {
                 this.QueryParams.Add("end_to_end_crc_required", endToEndCrcRequired.ToString());
             }
             else
@@ -176,7 +243,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithRebuildPriority(Priority? rebuildPriority)
         {
             this._rebuildPriority = rebuildPriority;
-            if (rebuildPriority != null) {
+            if (rebuildPriority != null)
+            {
                 this.QueryParams.Add("rebuild_priority", rebuildPriority.ToString());
             }
             else
@@ -188,7 +256,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithVersioning(VersioningLevel? versioning)
         {
             this._versioning = versioning;
-            if (versioning != null) {
+            if (versioning != null)
+            {
                 this.QueryParams.Add("versioning", versioning.ToString());
             }
             else
@@ -199,7 +268,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutDataPolicySpectraS3Request(string name) {
+        public PutDataPolicySpectraS3Request(string name)
+        {
             this.Name = name;
             
             this.QueryParams.Add("name", name);

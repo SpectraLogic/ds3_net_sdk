@@ -28,6 +28,13 @@ namespace Ds3.Calls
         public string BucketId { get; private set; }
 
         
+        private bool? _replicate;
+        public bool? Replicate
+        {
+            get { return _replicate; }
+            set { WithReplicate(value); }
+        }
+
         private bool? _rollBack;
         public bool? RollBack
         {
@@ -35,10 +42,24 @@ namespace Ds3.Calls
             set { WithRollBack(value); }
         }
 
+        public DeleteFolderRecursivelySpectraS3Request WithReplicate(bool? replicate)
+        {
+            this._replicate = replicate;
+            if (replicate != null)
+            {
+                this.QueryParams.Add("replicate", replicate.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("replicate");
+            }
+            return this;
+        }
         public DeleteFolderRecursivelySpectraS3Request WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
-            if (rollBack != null) {
+            if (rollBack != null)
+            {
                 this.QueryParams.Add("roll_back", rollBack.ToString());
             }
             else
@@ -49,7 +70,8 @@ namespace Ds3.Calls
         }
 
         
-        public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder) {
+        public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder)
+        {
             this.Folder = folder;
             this.BucketId = bucketId.ToString();
             
@@ -59,7 +81,8 @@ namespace Ds3.Calls
 
         }
 
-        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder) {
+        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder)
+        {
             this.Folder = folder;
             this.BucketId = bucketId;
             

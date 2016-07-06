@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetStorageDomainSpectraS3Request(string storageDomain) {
+        public GetStorageDomainSpectraS3Request(string storageDomain)
+        {
             this.StorageDomain = storageDomain;
             
         }

@@ -30,7 +30,8 @@ namespace Ds3.Calls
         
 
         
-        public PutDataPolicyAclForUserSpectraS3Request(Guid dataPolicyId, Guid userId) {
+        public PutDataPolicyAclForUserSpectraS3Request(Guid dataPolicyId, Guid userId)
+        {
             this.DataPolicyId = dataPolicyId.ToString();
             this.UserId = userId.ToString();
             
@@ -40,7 +41,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutDataPolicyAclForUserSpectraS3Request(string dataPolicyId, string userId) {
+        public PutDataPolicyAclForUserSpectraS3Request(string dataPolicyId, string userId)
+        {
             this.DataPolicyId = dataPolicyId;
             this.UserId = userId;
             

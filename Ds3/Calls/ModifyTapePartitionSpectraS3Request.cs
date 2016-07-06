@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public ModifyTapePartitionSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
-            if (quiesced != null) {
+            if (quiesced != null)
+            {
                 this.QueryParams.Add("quiesced", quiesced.ToString());
             }
             else
@@ -47,7 +48,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyTapePartitionSpectraS3Request(string tapePartition) {
+        public ModifyTapePartitionSpectraS3Request(string tapePartition)
+        {
             this.TapePartition = tapePartition;
             
         }

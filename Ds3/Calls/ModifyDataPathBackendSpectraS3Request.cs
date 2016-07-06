@@ -76,7 +76,8 @@ namespace Ds3.Calls
         public ModifyDataPathBackendSpectraS3Request WithActivated(bool? activated)
         {
             this._activated = activated;
-            if (activated != null) {
+            if (activated != null)
+            {
                 this.QueryParams.Add("activated", activated.ToString());
             }
             else
@@ -88,7 +89,8 @@ namespace Ds3.Calls
         public ModifyDataPathBackendSpectraS3Request WithAutoActivateTimeoutInMins(int? autoActivateTimeoutInMins)
         {
             this._autoActivateTimeoutInMins = autoActivateTimeoutInMins;
-            if (autoActivateTimeoutInMins != null) {
+            if (autoActivateTimeoutInMins != null)
+            {
                 this.QueryParams.Add("auto_activate_timeout_in_mins", autoActivateTimeoutInMins.ToString());
             }
             else
@@ -100,7 +102,8 @@ namespace Ds3.Calls
         public ModifyDataPathBackendSpectraS3Request WithAutoInspect(AutoInspectMode? autoInspect)
         {
             this._autoInspect = autoInspect;
-            if (autoInspect != null) {
+            if (autoInspect != null)
+            {
                 this.QueryParams.Add("auto_inspect", autoInspect.ToString());
             }
             else
@@ -112,7 +115,8 @@ namespace Ds3.Calls
         public ModifyDataPathBackendSpectraS3Request WithDefaultImportConflictResolutionMode(ImportConflictResolutionMode? defaultImportConflictResolutionMode)
         {
             this._defaultImportConflictResolutionMode = defaultImportConflictResolutionMode;
-            if (defaultImportConflictResolutionMode != null) {
+            if (defaultImportConflictResolutionMode != null)
+            {
                 this.QueryParams.Add("default_import_conflict_resolution_mode", defaultImportConflictResolutionMode.ToString());
             }
             else
@@ -124,7 +128,8 @@ namespace Ds3.Calls
         public ModifyDataPathBackendSpectraS3Request WithUnavailableMediaPolicy(UnavailableMediaUsagePolicy? unavailableMediaPolicy)
         {
             this._unavailableMediaPolicy = unavailableMediaPolicy;
-            if (unavailableMediaPolicy != null) {
+            if (unavailableMediaPolicy != null)
+            {
                 this.QueryParams.Add("unavailable_media_policy", unavailableMediaPolicy.ToString());
             }
             else
@@ -136,7 +141,8 @@ namespace Ds3.Calls
         public ModifyDataPathBackendSpectraS3Request WithUnavailablePoolMaxJobRetryInMins(int? unavailablePoolMaxJobRetryInMins)
         {
             this._unavailablePoolMaxJobRetryInMins = unavailablePoolMaxJobRetryInMins;
-            if (unavailablePoolMaxJobRetryInMins != null) {
+            if (unavailablePoolMaxJobRetryInMins != null)
+            {
                 this.QueryParams.Add("unavailable_pool_max_job_retry_in_mins", unavailablePoolMaxJobRetryInMins.ToString());
             }
             else
@@ -148,7 +154,8 @@ namespace Ds3.Calls
         public ModifyDataPathBackendSpectraS3Request WithUnavailableTapePartitionMaxJobRetryInMins(int? unavailableTapePartitionMaxJobRetryInMins)
         {
             this._unavailableTapePartitionMaxJobRetryInMins = unavailableTapePartitionMaxJobRetryInMins;
-            if (unavailableTapePartitionMaxJobRetryInMins != null) {
+            if (unavailableTapePartitionMaxJobRetryInMins != null)
+            {
                 this.QueryParams.Add("unavailable_tape_partition_max_job_retry_in_mins", unavailableTapePartitionMaxJobRetryInMins.ToString());
             }
             else
@@ -159,7 +166,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyDataPathBackendSpectraS3Request() {
+        public ModifyDataPathBackendSpectraS3Request()
+        {
             
         }
 

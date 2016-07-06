@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteStorageDomainMemberSpectraS3Request(string storageDomainMember) {
+        public DeleteStorageDomainMemberSpectraS3Request(string storageDomainMember)
+        {
             this.StorageDomainMember = storageDomainMember;
             
         }

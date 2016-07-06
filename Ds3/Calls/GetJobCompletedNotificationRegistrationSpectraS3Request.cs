@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetJobCompletedNotificationRegistrationSpectraS3Request(Guid notificationId) {
+        public GetJobCompletedNotificationRegistrationSpectraS3Request(Guid notificationId)
+        {
             this.NotificationId = notificationId;
             
         }

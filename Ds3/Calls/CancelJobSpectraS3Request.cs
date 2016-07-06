@@ -26,35 +26,22 @@ namespace Ds3.Calls
         public string JobId { get; private set; }
 
         
-        private bool? _force;
-        public bool? Force
-        {
-            get { return _force; }
-            set { WithForce(value); }
-        }
-
-        public CancelJobSpectraS3Request WithForce(bool? force)
-        {
-            this._force = force;
-            if (force != null) {
-                this.QueryParams.Add("force", force.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("force");
-            }
-            return this;
-        }
 
         
-        public CancelJobSpectraS3Request(Guid jobId) {
+        public CancelJobSpectraS3Request(Guid jobId)
+        {
             this.JobId = jobId.ToString();
             
+            this.QueryParams.Add("force", null);
+
         }
 
-        public CancelJobSpectraS3Request(string jobId) {
+        public CancelJobSpectraS3Request(string jobId)
+        {
             this.JobId = jobId;
             
+            this.QueryParams.Add("force", null);
+
         }
 
         internal override HttpVerb Verb

@@ -22,6 +22,7 @@ namespace Ds3.Models
 {
     public class StorageDomain
     {
+        public long? AutoEjectMediaFullThreshold { get; set; }
         public string AutoEjectUponCron { get; set; }
         public bool AutoEjectUponJobCancellation { get; set; }
         public bool AutoEjectUponJobCompletion { get; set; }
@@ -29,9 +30,10 @@ namespace Ds3.Models
         public Guid Id { get; set; }
         public LtfsFileNamingMode LtfsFileNaming { get; set; }
         public int MaxTapeFragmentationPercent { get; set; }
-        public int MaximumAutoVerificationFrequencyInDays { get; set; }
+        public int? MaximumAutoVerificationFrequencyInDays { get; set; }
         public bool MediaEjectionAllowed { get; set; }
         public string Name { get; set; }
+        public bool SecureMediaAllocation { get; set; }
         public Priority? VerifyPriorToAutoEject { get; set; }
         public WriteOptimization WriteOptimization { get; set; }
     }

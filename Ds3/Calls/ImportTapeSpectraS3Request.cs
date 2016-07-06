@@ -40,6 +40,13 @@ namespace Ds3.Calls
             set { WithDataPolicyId(value); }
         }
 
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
         private string _storageDomainId;
         public string StorageDomainId
         {
@@ -54,10 +61,25 @@ namespace Ds3.Calls
             set { WithUserId(value); }
         }
 
+        private Priority? _verifyDataAfterImport;
+        public Priority? VerifyDataAfterImport
+        {
+            get { return _verifyDataAfterImport; }
+            set { WithVerifyDataAfterImport(value); }
+        }
+
+        private bool? _verifyDataPriorToImport;
+        public bool? VerifyDataPriorToImport
+        {
+            get { return _verifyDataPriorToImport; }
+            set { WithVerifyDataPriorToImport(value); }
+        }
+
         public ImportTapeSpectraS3Request WithConflictResolutionMode(ImportConflictResolutionMode? conflictResolutionMode)
         {
             this._conflictResolutionMode = conflictResolutionMode;
-            if (conflictResolutionMode != null) {
+            if (conflictResolutionMode != null)
+            {
                 this.QueryParams.Add("conflict_resolution_mode", conflictResolutionMode.ToString());
             }
             else
@@ -69,7 +91,8 @@ namespace Ds3.Calls
         public ImportTapeSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId.ToString();
-            if (dataPolicyId != null) {
+            if (dataPolicyId != null)
+            {
                 this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
             }
             else
@@ -81,7 +104,8 @@ namespace Ds3.Calls
         public ImportTapeSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId;
-            if (dataPolicyId != null) {
+            if (dataPolicyId != null)
+            {
                 this.QueryParams.Add("data_policy_id", dataPolicyId);
             }
             else
@@ -90,10 +114,24 @@ namespace Ds3.Calls
             }
             return this;
         }
+        public ImportTapeSpectraS3Request WithPriority(Priority? priority)
+        {
+            this._priority = priority;
+            if (priority != null)
+            {
+                this.QueryParams.Add("priority", priority.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("priority");
+            }
+            return this;
+        }
         public ImportTapeSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
@@ -105,7 +143,8 @@ namespace Ds3.Calls
         public ImportTapeSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId);
             }
             else
@@ -117,7 +156,8 @@ namespace Ds3.Calls
         public ImportTapeSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId.ToString());
             }
             else
@@ -129,7 +169,8 @@ namespace Ds3.Calls
         public ImportTapeSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId);
             }
             else
@@ -138,15 +179,43 @@ namespace Ds3.Calls
             }
             return this;
         }
+        public ImportTapeSpectraS3Request WithVerifyDataAfterImport(Priority? verifyDataAfterImport)
+        {
+            this._verifyDataAfterImport = verifyDataAfterImport;
+            if (verifyDataAfterImport != null)
+            {
+                this.QueryParams.Add("verify_data_after_import", verifyDataAfterImport.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("verify_data_after_import");
+            }
+            return this;
+        }
+        public ImportTapeSpectraS3Request WithVerifyDataPriorToImport(bool? verifyDataPriorToImport)
+        {
+            this._verifyDataPriorToImport = verifyDataPriorToImport;
+            if (verifyDataPriorToImport != null)
+            {
+                this.QueryParams.Add("verify_data_prior_to_import", verifyDataPriorToImport.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("verify_data_prior_to_import");
+            }
+            return this;
+        }
 
         
-        public ImportTapeSpectraS3Request(Guid tapeId) {
+        public ImportTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             this.QueryParams.Add("operation", "import");
             
         }
 
-        public ImportTapeSpectraS3Request(string tapeId) {
+        public ImportTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "import");
             

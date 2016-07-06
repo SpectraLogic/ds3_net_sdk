@@ -22,6 +22,9 @@ namespace Ds3.Models
 {
     public class DataPolicy
     {
+        public bool AlwaysForcePutJobCreation { get; set; }
+        public bool AlwaysMinimizeSpanningAcrossMedia { get; set; }
+        public bool AlwaysReplicateDeletes { get; set; }
         public bool BlobbingEnabled { get; set; }
         public ChecksumType.Type ChecksumType { get; set; }
         public DateTime CreationDate { get; set; }

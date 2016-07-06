@@ -33,10 +33,18 @@ namespace Ds3.Calls
             set { WithForce(value); }
         }
 
+        private bool? _replicate;
+        public bool? Replicate
+        {
+            get { return _replicate; }
+            set { WithReplicate(value); }
+        }
+
         public DeleteBucketSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
-            if (force != null) {
+            if (force != null)
+            {
                 this.QueryParams.Add("force", force.ToString());
             }
             else
@@ -45,9 +53,23 @@ namespace Ds3.Calls
             }
             return this;
         }
+        public DeleteBucketSpectraS3Request WithReplicate(bool? replicate)
+        {
+            this._replicate = replicate;
+            if (replicate != null)
+            {
+                this.QueryParams.Add("replicate", replicate.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("replicate");
+            }
+            return this;
+        }
 
         
-        public DeleteBucketSpectraS3Request(string bucketName) {
+        public DeleteBucketSpectraS3Request(string bucketName)
+        {
             this.BucketName = bucketName;
             
         }

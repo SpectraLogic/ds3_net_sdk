@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public ModifyPoolPartitionSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -47,7 +48,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyPoolPartitionSpectraS3Request(string poolPartition) {
+        public ModifyPoolPartitionSpectraS3Request(string poolPartition)
+        {
             this.PoolPartition = poolPartition;
             
         }

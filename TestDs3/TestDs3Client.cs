@@ -114,9 +114,12 @@ namespace TestDs3
         [Test]
         public void TestGetSystemInfo()
         {
+            string id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
             var xmlResponse = "<Data><ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA</ApiVersion>" 
                 + "<BackendActivated>false</BackendActivated>"
                 + "<BuildInformation><Branch>//BlueStorm/r1.x</Branch><Revision>1154042</Revision><Version>1.2.0</Version></BuildInformation>" 
+                + "<InstanceId>" + id + "</InstanceId>"
+                + "<Now>0</Now>"
                 + "<SerialNumber>5003048001dbd7b3</SerialNumber></Data>";
             var expected = new GetSystemInformationSpectraS3Response(
                 new SystemInformation() {
@@ -695,7 +698,7 @@ namespace TestDs3
         [Test]
         public void TestGetJobList()
         {
-            var responseContent = "<Jobs><Job WriteOptimization=\"CAPACITY\" UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" OriginalSizeInBytes=\"0\" Naked=\"false\" CompletedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CachedSizeInBytes=\"0\" Aggregating=\"false\" BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
+            var responseContent = "<Jobs><Job EntirelyInCache=\"false\" WriteOptimization=\"CAPACITY\" UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" OriginalSizeInBytes=\"0\" Naked=\"false\" CompletedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CachedSizeInBytes=\"0\" Aggregating=\"false\" BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
@@ -709,7 +712,7 @@ namespace TestDs3
         [Test]
         public void TestGetJobListWithBucketName()
         {
-            var responseContent = "<Jobs><Job Aggregating=\"false\" BucketName=\"bucketName\" CachedSizeInBytes=\"0\" "
+            var responseContent = "<Jobs><Job EntirelyInCache=\"false\" Aggregating=\"false\" BucketName=\"bucketName\" CachedSizeInBytes=\"0\" "
                 + "ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CompletedSizeInBytes=\"0\" OriginalSizeInBytes=\"0\" "
                 + "JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Naked=\"false\" Priority=\"NORMAL\" RequestType=\"PUT\" "
                 + "UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" WriteOptimization=\"CAPACITY\" "

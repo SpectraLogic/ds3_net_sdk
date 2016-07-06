@@ -27,6 +27,7 @@ namespace Ds3.Models
         public long CachedSizeInBytes { get; set; }
         public JobChunkClientProcessingOrderGuarantee ChunkClientProcessingOrderGuarantee { get; set; }
         public long CompletedSizeInBytes { get; set; }
+        public bool EntirelyInCache { get; set; }
         public Guid JobId { get; set; }
         public bool Naked { get; set; }
         public string Name { get; set; }

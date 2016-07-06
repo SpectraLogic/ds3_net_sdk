@@ -64,7 +64,8 @@ namespace Ds3.Calls
         public ListMultiPartUploadsRequest WithDelimiter(string delimiter)
         {
             this._delimiter = delimiter;
-            if (delimiter != null) {
+            if (delimiter != null)
+            {
                 this.QueryParams.Add("delimiter", delimiter);
             }
             else
@@ -76,7 +77,8 @@ namespace Ds3.Calls
         public ListMultiPartUploadsRequest WithKeyMarker(string keyMarker)
         {
             this._keyMarker = keyMarker;
-            if (keyMarker != null) {
+            if (keyMarker != null)
+            {
                 this.QueryParams.Add("key_marker", keyMarker);
             }
             else
@@ -88,7 +90,8 @@ namespace Ds3.Calls
         public ListMultiPartUploadsRequest WithMaxUploads(int? maxUploads)
         {
             this._maxUploads = maxUploads;
-            if (maxUploads != null) {
+            if (maxUploads != null)
+            {
                 this.QueryParams.Add("max_uploads", maxUploads.ToString());
             }
             else
@@ -100,7 +103,8 @@ namespace Ds3.Calls
         public ListMultiPartUploadsRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
-            if (prefix != null) {
+            if (prefix != null)
+            {
                 this.QueryParams.Add("prefix", prefix);
             }
             else
@@ -112,7 +116,8 @@ namespace Ds3.Calls
         public ListMultiPartUploadsRequest WithUploadIdMarker(string uploadIdMarker)
         {
             this._uploadIdMarker = uploadIdMarker;
-            if (uploadIdMarker != null) {
+            if (uploadIdMarker != null)
+            {
                 this.QueryParams.Add("upload_id_marker", uploadIdMarker);
             }
             else
@@ -123,7 +128,8 @@ namespace Ds3.Calls
         }
 
         
-        public ListMultiPartUploadsRequest(string bucketName) {
+        public ListMultiPartUploadsRequest(string bucketName)
+        {
             this.BucketName = bucketName;
             
             this.QueryParams.Add("uploads", null);

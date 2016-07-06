@@ -28,13 +28,15 @@ namespace Ds3.Calls
         
 
         
-        public AllocateJobChunkSpectraS3Request(Guid jobChunkId) {
+        public AllocateJobChunkSpectraS3Request(Guid jobChunkId)
+        {
             this.JobChunkId = jobChunkId.ToString();
             this.QueryParams.Add("operation", "allocate");
             
         }
 
-        public AllocateJobChunkSpectraS3Request(string jobChunkId) {
+        public AllocateJobChunkSpectraS3Request(string jobChunkId)
+        {
             this.JobChunkId = jobChunkId;
             this.QueryParams.Add("operation", "allocate");
             

@@ -40,10 +40,18 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private string _secretKey;
+        public string SecretKey
+        {
+            get { return _secretKey; }
+            set { WithSecretKey(value); }
+        }
+
         public ModifyUserSpectraS3Request WithDefaultDataPolicyId(Guid? defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId.ToString();
-            if (defaultDataPolicyId != null) {
+            if (defaultDataPolicyId != null)
+            {
                 this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId.ToString());
             }
             else
@@ -55,7 +63,8 @@ namespace Ds3.Calls
         public ModifyUserSpectraS3Request WithDefaultDataPolicyId(string defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId;
-            if (defaultDataPolicyId != null) {
+            if (defaultDataPolicyId != null)
+            {
                 this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId);
             }
             else
@@ -67,7 +76,8 @@ namespace Ds3.Calls
         public ModifyUserSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -76,14 +86,29 @@ namespace Ds3.Calls
             }
             return this;
         }
+        public ModifyUserSpectraS3Request WithSecretKey(string secretKey)
+        {
+            this._secretKey = secretKey;
+            if (secretKey != null)
+            {
+                this.QueryParams.Add("secret_key", secretKey);
+            }
+            else
+            {
+                this.QueryParams.Remove("secret_key");
+            }
+            return this;
+        }
 
         
-        public ModifyUserSpectraS3Request(Guid userId) {
+        public ModifyUserSpectraS3Request(Guid userId)
+        {
             this.UserId = userId.ToString();
             
         }
 
-        public ModifyUserSpectraS3Request(string userId) {
+        public ModifyUserSpectraS3Request(string userId)
+        {
             this.UserId = userId;
             
         }

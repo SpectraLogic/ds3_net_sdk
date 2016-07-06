@@ -25,6 +25,8 @@ namespace Ds3.Models
         public string ApiVersion { get; set; }
         public bool BackendActivated { get; set; }
         public BuildInformation BuildInformation { get; set; }
+        public Guid InstanceId { get; set; }
+        public long Now { get; set; }
         public string SerialNumber { get; set; }
     }
 }

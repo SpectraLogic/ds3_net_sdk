@@ -1,7 +1,7 @@
 ﻿<MasterObjectList Aggregating="false" BucketName="bucket8192000000" CachedSizeInBytes="0" JobId="1a85e743-ec8f-4789-afec-97e587a26936" 
 ChunkClientProcessingOrderGuarantee="IN_ORDER" CompletedSizeInBytes="0" Naked="false" Name="Untitled" OriginalSizeInBytes="0"
 Priority="NORMAL" RequestType="GET" Status="IN_PROGRESS" StartDate="2014-07-01T20:12:52.000Z" UserId="2ecf2320-b3b6-4073-b7b0-3894b588990c"
-UserName="default_user_name" WriteOptimization="CAPACITY">
+UserName="default_user_name" WriteOptimization="CAPACITY" EntirelyInCache="false">
   <Nodes>
     <Node EndPoint="10.1.18.12" HttpPort="80" HttpsPort="443" Id="a02053b9-0147-11e4-8d6a-002590c1177c"/>
     <Node EndPoint="10.1.18.13" HttpsPort="443" Id="95e97010-8e70-4733-926c-aeeb21796848"/>

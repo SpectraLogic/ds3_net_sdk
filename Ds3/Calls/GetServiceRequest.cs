@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public GetServiceRequest() {
+        public GetServiceRequest()
+        {
             
         }
 
