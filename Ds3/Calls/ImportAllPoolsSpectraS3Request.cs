@@ -195,7 +195,8 @@ namespace Ds3.Calls
         }
 
         
-        public ImportAllPoolsSpectraS3Request() {
+        public ImportAllPoolsSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "import");
             
         }

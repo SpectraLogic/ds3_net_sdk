@@ -47,7 +47,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyGroupSpectraS3Request(string group) {
+        public ModifyGroupSpectraS3Request(string group)
+        {
             this.Group = group;
             
         }

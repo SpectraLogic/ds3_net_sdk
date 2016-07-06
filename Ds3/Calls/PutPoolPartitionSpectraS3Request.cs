@@ -30,7 +30,8 @@ namespace Ds3.Calls
         
 
         
-        public PutPoolPartitionSpectraS3Request(string name, PoolType type) {
+        public PutPoolPartitionSpectraS3Request(string name, PoolType type)
+        {
             this.Name = name;
             this.Type = type;
             

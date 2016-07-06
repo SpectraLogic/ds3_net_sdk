@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public HeadBucketRequest(string bucketName) {
+        public HeadBucketRequest(string bucketName)
+        {
             this.BucketName = bucketName;
             
         }

@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetObjectCachedNotificationRegistrationsSpectraS3Request() {
+        public GetObjectCachedNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

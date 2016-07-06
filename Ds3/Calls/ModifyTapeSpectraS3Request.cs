@@ -85,12 +85,14 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyTapeSpectraS3Request(Guid tapeId) {
+        public ModifyTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             
         }
 
-        public ModifyTapeSpectraS3Request(string tapeId) {
+        public ModifyTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             
         }

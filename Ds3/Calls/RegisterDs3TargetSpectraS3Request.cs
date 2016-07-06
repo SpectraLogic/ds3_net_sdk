@@ -186,7 +186,8 @@ namespace Ds3.Calls
         }
 
         
-        public RegisterDs3TargetSpectraS3Request(string adminAuthId, string adminSecretKey, string dataPathEndPoint, string name) {
+        public RegisterDs3TargetSpectraS3Request(string adminAuthId, string adminSecretKey, string dataPathEndPoint, string name)
+        {
             this.AdminAuthId = adminAuthId;
             this.AdminSecretKey = adminSecretKey;
             this.DataPathEndPoint = dataPathEndPoint;

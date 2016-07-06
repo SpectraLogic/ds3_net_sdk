@@ -30,7 +30,8 @@ namespace Ds3.Calls
         
 
         
-        public InitiateMultiPartUploadRequest(string bucketName, string objectName) {
+        public InitiateMultiPartUploadRequest(string bucketName, string objectName)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             

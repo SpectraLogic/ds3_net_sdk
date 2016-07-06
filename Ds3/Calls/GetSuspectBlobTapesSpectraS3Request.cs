@@ -176,7 +176,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetSuspectBlobTapesSpectraS3Request() {
+        public GetSuspectBlobTapesSpectraS3Request()
+        {
             
         }
 

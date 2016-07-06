@@ -202,7 +202,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapeDrivesSpectraS3Request() {
+        public GetTapeDrivesSpectraS3Request()
+        {
             
         }
 

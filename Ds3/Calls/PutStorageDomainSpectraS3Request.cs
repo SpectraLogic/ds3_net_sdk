@@ -256,7 +256,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutStorageDomainSpectraS3Request(string name) {
+        public PutStorageDomainSpectraS3Request(string name)
+        {
             this.Name = name;
             
             this.QueryParams.Add("name", name);

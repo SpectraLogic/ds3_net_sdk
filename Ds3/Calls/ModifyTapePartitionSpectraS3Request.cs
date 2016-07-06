@@ -47,7 +47,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyTapePartitionSpectraS3Request(string tapePartition) {
+        public ModifyTapePartitionSpectraS3Request(string tapePartition)
+        {
             this.TapePartition = tapePartition;
             
         }

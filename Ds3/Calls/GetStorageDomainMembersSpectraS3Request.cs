@@ -264,7 +264,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetStorageDomainMembersSpectraS3Request() {
+        public GetStorageDomainMembersSpectraS3Request()
+        {
             
         }
 

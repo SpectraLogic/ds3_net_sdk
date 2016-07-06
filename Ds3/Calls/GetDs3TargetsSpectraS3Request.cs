@@ -323,7 +323,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDs3TargetsSpectraS3Request() {
+        public GetDs3TargetsSpectraS3Request()
+        {
             
         }
 

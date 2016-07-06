@@ -85,12 +85,14 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyActiveJobSpectraS3Request(Guid activeJobId) {
+        public ModifyActiveJobSpectraS3Request(Guid activeJobId)
+        {
             this.ActiveJobId = activeJobId.ToString();
             
         }
 
-        public ModifyActiveJobSpectraS3Request(string activeJobId) {
+        public ModifyActiveJobSpectraS3Request(string activeJobId)
+        {
             this.ActiveJobId = activeJobId;
             
         }

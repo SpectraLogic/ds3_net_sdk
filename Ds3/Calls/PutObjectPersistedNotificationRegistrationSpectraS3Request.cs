@@ -116,7 +116,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutObjectPersistedNotificationRegistrationSpectraS3Request(string notificationEndPoint) {
+        public PutObjectPersistedNotificationRegistrationSpectraS3Request(string notificationEndPoint)
+        {
             this.NotificationEndPoint = notificationEndPoint;
             
             this.QueryParams.Add("notification_end_point", notificationEndPoint);

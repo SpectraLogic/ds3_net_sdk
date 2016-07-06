@@ -214,7 +214,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDegradedDataReplicationRulesSpectraS3Request() {
+        public GetDegradedDataReplicationRulesSpectraS3Request()
+        {
             
         }
 

@@ -76,7 +76,8 @@ namespace Ds3.Calls
         }
 
         
-        public TruncateAllActiveJobsSpectraS3Request() {
+        public TruncateAllActiveJobsSpectraS3Request()
+        {
             
         }
 

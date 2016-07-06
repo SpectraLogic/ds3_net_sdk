@@ -290,7 +290,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetCompletedJobsSpectraS3Request() {
+        public GetCompletedJobsSpectraS3Request()
+        {
             
         }
 

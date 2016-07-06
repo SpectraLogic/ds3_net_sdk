@@ -183,7 +183,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapeDensityDirectivesSpectraS3Request() {
+        public GetTapeDensityDirectivesSpectraS3Request()
+        {
             
         }
 

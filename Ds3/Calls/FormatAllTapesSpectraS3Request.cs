@@ -45,7 +45,8 @@ namespace Ds3.Calls
         }
 
         
-        public FormatAllTapesSpectraS3Request() {
+        public FormatAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "format");
             
         }

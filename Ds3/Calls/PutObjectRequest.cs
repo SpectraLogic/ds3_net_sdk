@@ -132,7 +132,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutObjectRequest(string bucketName, string objectName, Stream requestPayload) {
+        public PutObjectRequest(string bucketName, string objectName, Stream requestPayload)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.RequestPayload = requestPayload;

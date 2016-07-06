@@ -66,7 +66,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyNodeSpectraS3Request(string node) {
+        public ModifyNodeSpectraS3Request(string node)
+        {
             this.Node = node;
             
         }

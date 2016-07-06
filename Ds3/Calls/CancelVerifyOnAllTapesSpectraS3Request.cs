@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public CancelVerifyOnAllTapesSpectraS3Request() {
+        public CancelVerifyOnAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "cancel_verify");
             
         }

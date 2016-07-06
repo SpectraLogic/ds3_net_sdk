@@ -197,13 +197,15 @@ namespace Ds3.Calls
         }
 
         
-        public ImportTapeSpectraS3Request(Guid tapeId) {
+        public ImportTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             this.QueryParams.Add("operation", "import");
             
         }
 
-        public ImportTapeSpectraS3Request(string tapeId) {
+        public ImportTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "import");
             

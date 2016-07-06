@@ -259,7 +259,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetObjectsWithFullDetailsSpectraS3Request() {
+        public GetObjectsWithFullDetailsSpectraS3Request()
+        {
             
             this.QueryParams.Add("full_details", null);
 

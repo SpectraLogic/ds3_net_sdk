@@ -28,14 +28,16 @@ namespace Ds3.Calls
         
 
         
-        public CancelActiveJobSpectraS3Request(Guid activeJobId) {
+        public CancelActiveJobSpectraS3Request(Guid activeJobId)
+        {
             this.ActiveJobId = activeJobId.ToString();
             
             this.QueryParams.Add("force", null);
 
         }
 
-        public CancelActiveJobSpectraS3Request(string activeJobId) {
+        public CancelActiveJobSpectraS3Request(string activeJobId)
+        {
             this.ActiveJobId = activeJobId;
             
             this.QueryParams.Add("force", null);

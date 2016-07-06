@@ -309,7 +309,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetCanceledJobsSpectraS3Request() {
+        public GetCanceledJobsSpectraS3Request()
+        {
             
         }
 

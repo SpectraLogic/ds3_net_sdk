@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetPoolFailureNotificationRegistrationsSpectraS3Request() {
+        public GetPoolFailureNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

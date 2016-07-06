@@ -214,7 +214,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapeFailuresSpectraS3Request() {
+        public GetTapeFailuresSpectraS3Request()
+        {
             
         }
 

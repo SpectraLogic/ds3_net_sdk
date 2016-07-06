@@ -78,7 +78,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyPoolSpectraS3Request(string pool) {
+        public ModifyPoolSpectraS3Request(string pool)
+        {
             this.Pool = pool;
             
         }

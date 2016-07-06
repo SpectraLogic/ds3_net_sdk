@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetObjectPersistedNotificationRegistrationsSpectraS3Request() {
+        public GetObjectPersistedNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

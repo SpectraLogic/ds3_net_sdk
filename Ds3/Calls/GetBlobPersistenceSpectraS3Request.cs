@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetBlobPersistenceSpectraS3Request(string requestPayload) {
+        public GetBlobPersistenceSpectraS3Request(string requestPayload)
+        {
             this.RequestPayload = requestPayload;
             
         }

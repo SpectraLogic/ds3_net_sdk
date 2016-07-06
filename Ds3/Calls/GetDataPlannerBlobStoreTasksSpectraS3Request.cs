@@ -45,7 +45,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDataPlannerBlobStoreTasksSpectraS3Request() {
+        public GetDataPlannerBlobStoreTasksSpectraS3Request()
+        {
             
         }
 

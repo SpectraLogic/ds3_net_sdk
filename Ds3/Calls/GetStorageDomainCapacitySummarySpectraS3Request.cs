@@ -123,14 +123,16 @@ namespace Ds3.Calls
         }
 
         
-        public GetStorageDomainCapacitySummarySpectraS3Request(Guid storageDomainId) {
+        public GetStorageDomainCapacitySummarySpectraS3Request(Guid storageDomainId)
+        {
             this.StorageDomainId = storageDomainId.ToString();
             
             this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
 
         }
 
-        public GetStorageDomainCapacitySummarySpectraS3Request(string storageDomainId) {
+        public GetStorageDomainCapacitySummarySpectraS3Request(string storageDomainId)
+        {
             this.StorageDomainId = storageDomainId;
             
             this.QueryParams.Add("storage_domain_id", storageDomainId);

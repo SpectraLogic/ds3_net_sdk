@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetStorageDomainFailureNotificationRegistrationsSpectraS3Request() {
+        public GetStorageDomainFailureNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

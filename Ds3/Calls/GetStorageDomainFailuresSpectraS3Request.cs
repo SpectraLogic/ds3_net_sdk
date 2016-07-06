@@ -183,7 +183,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetStorageDomainFailuresSpectraS3Request() {
+        public GetStorageDomainFailuresSpectraS3Request()
+        {
             
         }
 

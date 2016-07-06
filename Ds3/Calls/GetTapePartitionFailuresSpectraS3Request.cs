@@ -183,7 +183,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapePartitionFailuresSpectraS3Request() {
+        public GetTapePartitionFailuresSpectraS3Request()
+        {
             
         }
 

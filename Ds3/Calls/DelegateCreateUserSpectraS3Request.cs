@@ -78,7 +78,8 @@ namespace Ds3.Calls
         }
 
         
-        public DelegateCreateUserSpectraS3Request(string name) {
+        public DelegateCreateUserSpectraS3Request(string name)
+        {
             this.Name = name;
             
             this.QueryParams.Add("name", name);

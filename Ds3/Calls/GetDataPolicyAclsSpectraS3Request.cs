@@ -207,7 +207,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDataPolicyAclsSpectraS3Request() {
+        public GetDataPolicyAclsSpectraS3Request()
+        {
             
         }
 

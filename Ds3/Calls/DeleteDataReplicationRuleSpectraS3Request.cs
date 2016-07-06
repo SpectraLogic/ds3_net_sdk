@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteDataReplicationRuleSpectraS3Request(string dataReplicationRule) {
+        public DeleteDataReplicationRuleSpectraS3Request(string dataReplicationRule)
+        {
             this.DataReplicationRule = dataReplicationRule;
             
         }

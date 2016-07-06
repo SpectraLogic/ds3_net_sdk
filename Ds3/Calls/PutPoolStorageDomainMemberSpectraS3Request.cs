@@ -49,7 +49,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutPoolStorageDomainMemberSpectraS3Request(Guid poolPartitionId, Guid storageDomainId) {
+        public PutPoolStorageDomainMemberSpectraS3Request(Guid poolPartitionId, Guid storageDomainId)
+        {
             this.PoolPartitionId = poolPartitionId.ToString();
             this.StorageDomainId = storageDomainId.ToString();
             
@@ -59,7 +60,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutPoolStorageDomainMemberSpectraS3Request(string poolPartitionId, string storageDomainId) {
+        public PutPoolStorageDomainMemberSpectraS3Request(string poolPartitionId, string storageDomainId)
+        {
             this.PoolPartitionId = poolPartitionId;
             this.StorageDomainId = storageDomainId;
             

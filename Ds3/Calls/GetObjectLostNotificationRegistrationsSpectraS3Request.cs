@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetObjectLostNotificationRegistrationsSpectraS3Request() {
+        public GetObjectLostNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

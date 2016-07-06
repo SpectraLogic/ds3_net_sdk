@@ -90,7 +90,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyBucketSpectraS3Request(string bucketName) {
+        public ModifyBucketSpectraS3Request(string bucketName)
+        {
             this.BucketName = bucketName;
             
         }

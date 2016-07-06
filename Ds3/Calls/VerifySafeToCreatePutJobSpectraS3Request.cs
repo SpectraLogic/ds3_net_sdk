@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public VerifySafeToCreatePutJobSpectraS3Request(string bucketName) {
+        public VerifySafeToCreatePutJobSpectraS3Request(string bucketName)
+        {
             this.BucketName = bucketName;
             this.QueryParams.Add("operation", "verify_safe_to_start_bulk_put");
             

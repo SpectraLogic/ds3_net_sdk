@@ -321,7 +321,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetPoolsSpectraS3Request() {
+        public GetPoolsSpectraS3Request()
+        {
             
         }
 

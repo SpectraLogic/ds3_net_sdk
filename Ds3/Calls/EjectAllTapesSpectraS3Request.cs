@@ -64,7 +64,8 @@ namespace Ds3.Calls
         }
 
         
-        public EjectAllTapesSpectraS3Request() {
+        public EjectAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "eject");
             
         }

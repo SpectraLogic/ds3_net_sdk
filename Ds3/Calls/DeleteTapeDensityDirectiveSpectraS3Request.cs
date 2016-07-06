@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteTapeDensityDirectiveSpectraS3Request(string tapeDensityDirective) {
+        public DeleteTapeDensityDirectiveSpectraS3Request(string tapeDensityDirective)
+        {
             this.TapeDensityDirective = tapeDensityDirective;
             
         }

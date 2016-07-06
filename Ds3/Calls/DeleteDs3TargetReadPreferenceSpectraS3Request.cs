@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteDs3TargetReadPreferenceSpectraS3Request(string ds3TargetReadPreference) {
+        public DeleteDs3TargetReadPreferenceSpectraS3Request(string ds3TargetReadPreference)
+        {
             this.Ds3TargetReadPreference = ds3TargetReadPreference;
             
         }

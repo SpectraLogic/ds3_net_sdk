@@ -47,13 +47,15 @@ namespace Ds3.Calls
         }
 
         
-        public VerifyTapeSpectraS3Request(Guid tapeId) {
+        public VerifyTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             this.QueryParams.Add("operation", "verify");
             
         }
 
-        public VerifyTapeSpectraS3Request(string tapeId) {
+        public VerifyTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "verify");
             

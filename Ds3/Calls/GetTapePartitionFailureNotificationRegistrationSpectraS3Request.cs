@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetTapePartitionFailureNotificationRegistrationSpectraS3Request(Guid notificationId) {
+        public GetTapePartitionFailureNotificationRegistrationSpectraS3Request(Guid notificationId)
+        {
             this.NotificationId = notificationId;
             
         }

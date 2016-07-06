@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public ForcePoolEnvironmentRefreshSpectraS3Request() {
+        public ForcePoolEnvironmentRefreshSpectraS3Request()
+        {
             
         }
 

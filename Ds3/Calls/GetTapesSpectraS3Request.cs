@@ -397,7 +397,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapesSpectraS3Request() {
+        public GetTapesSpectraS3Request()
+        {
             
         }
 

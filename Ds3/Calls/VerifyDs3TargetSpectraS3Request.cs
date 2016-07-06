@@ -47,7 +47,8 @@ namespace Ds3.Calls
         }
 
         
-        public VerifyDs3TargetSpectraS3Request(string ds3Target) {
+        public VerifyDs3TargetSpectraS3Request(string ds3Target)
+        {
             this.Ds3Target = ds3Target;
             this.QueryParams.Add("operation", "verify");
             

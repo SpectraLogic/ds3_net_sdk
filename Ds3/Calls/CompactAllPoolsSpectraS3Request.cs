@@ -45,7 +45,8 @@ namespace Ds3.Calls
         }
 
         
-        public CompactAllPoolsSpectraS3Request() {
+        public CompactAllPoolsSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "compact");
             
         }

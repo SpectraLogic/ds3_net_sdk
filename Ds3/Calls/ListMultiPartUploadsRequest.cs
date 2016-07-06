@@ -123,7 +123,8 @@ namespace Ds3.Calls
         }
 
         
-        public ListMultiPartUploadsRequest(string bucketName) {
+        public ListMultiPartUploadsRequest(string bucketName)
+        {
             this.BucketName = bucketName;
             
             this.QueryParams.Add("uploads", null);

@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetCacheFilesystemsSpectraS3Request() {
+        public GetCacheFilesystemsSpectraS3Request()
+        {
             
         }
 

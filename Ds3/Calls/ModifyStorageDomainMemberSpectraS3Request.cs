@@ -47,7 +47,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyStorageDomainMemberSpectraS3Request(string storageDomainMember) {
+        public ModifyStorageDomainMemberSpectraS3Request(string storageDomainMember)
+        {
             this.StorageDomainMember = storageDomainMember;
             
         }

@@ -85,7 +85,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutJobCreatedNotificationRegistrationSpectraS3Request(string notificationEndPoint) {
+        public PutJobCreatedNotificationRegistrationSpectraS3Request(string notificationEndPoint)
+        {
             this.NotificationEndPoint = notificationEndPoint;
             
             this.QueryParams.Add("notification_end_point", notificationEndPoint);

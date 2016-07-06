@@ -47,7 +47,8 @@ namespace Ds3.Calls
         }
 
         
-        public VerifyPoolSpectraS3Request(string pool) {
+        public VerifyPoolSpectraS3Request(string pool)
+        {
             this.Pool = pool;
             this.QueryParams.Add("operation", "verify");
             

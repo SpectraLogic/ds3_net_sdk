@@ -70,7 +70,8 @@ namespace Ds3.Calls
         }
 
         
-        public ListMultiPartUploadPartsRequest(string bucketName, string objectName, Guid uploadId) {
+        public ListMultiPartUploadPartsRequest(string bucketName, string objectName, Guid uploadId)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.UploadId = uploadId.ToString();
@@ -79,7 +80,8 @@ namespace Ds3.Calls
 
         }
 
-        public ListMultiPartUploadPartsRequest(string bucketName, string objectName, string uploadId) {
+        public ListMultiPartUploadPartsRequest(string bucketName, string objectName, string uploadId)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.UploadId = uploadId;

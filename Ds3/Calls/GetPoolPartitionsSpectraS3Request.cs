@@ -152,7 +152,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetPoolPartitionsSpectraS3Request() {
+        public GetPoolPartitionsSpectraS3Request()
+        {
             
         }
 

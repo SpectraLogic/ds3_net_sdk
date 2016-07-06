@@ -88,7 +88,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetSuspectObjectsSpectraS3Request() {
+        public GetSuspectObjectsSpectraS3Request()
+        {
             
         }
 

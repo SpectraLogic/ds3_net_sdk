@@ -240,7 +240,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetObjectsSpectraS3Request() {
+        public GetObjectsSpectraS3Request()
+        {
             
         }
 

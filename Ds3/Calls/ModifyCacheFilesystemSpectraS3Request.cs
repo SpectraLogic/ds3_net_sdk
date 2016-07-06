@@ -104,7 +104,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyCacheFilesystemSpectraS3Request(string cacheFilesystem) {
+        public ModifyCacheFilesystemSpectraS3Request(string cacheFilesystem)
+        {
             this.CacheFilesystem = cacheFilesystem;
             
         }

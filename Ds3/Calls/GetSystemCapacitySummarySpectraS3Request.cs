@@ -121,7 +121,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetSystemCapacitySummarySpectraS3Request() {
+        public GetSystemCapacitySummarySpectraS3Request()
+        {
             
         }
 

@@ -66,7 +66,8 @@ namespace Ds3.Calls
         }
 
         
-        public DeleteBucketSpectraS3Request(string bucketName) {
+        public DeleteBucketSpectraS3Request(string bucketName)
+        {
             this.BucketName = bucketName;
             
         }

@@ -152,7 +152,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetGroupsSpectraS3Request() {
+        public GetGroupsSpectraS3Request()
+        {
             
         }
 

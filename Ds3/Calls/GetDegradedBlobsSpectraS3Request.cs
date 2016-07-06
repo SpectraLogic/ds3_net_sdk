@@ -238,7 +238,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDegradedBlobsSpectraS3Request() {
+        public GetDegradedBlobsSpectraS3Request()
+        {
             
         }
 

@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public ResetInstanceIdentifierSpectraS3Request() {
+        public ResetInstanceIdentifierSpectraS3Request()
+        {
             
         }
 

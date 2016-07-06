@@ -183,7 +183,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetPoolFailuresSpectraS3Request() {
+        public GetPoolFailuresSpectraS3Request()
+        {
             
         }
 

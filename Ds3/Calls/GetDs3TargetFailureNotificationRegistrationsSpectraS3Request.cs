@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDs3TargetFailureNotificationRegistrationsSpectraS3Request() {
+        public GetDs3TargetFailureNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

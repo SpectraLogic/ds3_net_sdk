@@ -68,7 +68,8 @@ namespace Ds3.Calls
         }
 
         
-        public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder) {
+        public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder)
+        {
             this.Folder = folder;
             this.BucketId = bucketId.ToString();
             
@@ -78,7 +79,8 @@ namespace Ds3.Calls
 
         }
 
-        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder) {
+        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder)
+        {
             this.Folder = folder;
             this.BucketId = bucketId;
             

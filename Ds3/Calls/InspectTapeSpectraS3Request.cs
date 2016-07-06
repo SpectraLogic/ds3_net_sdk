@@ -47,13 +47,15 @@ namespace Ds3.Calls
         }
 
         
-        public InspectTapeSpectraS3Request(Guid tapeId) {
+        public InspectTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             this.QueryParams.Add("operation", "inspect");
             
         }
 
-        public InspectTapeSpectraS3Request(string tapeId) {
+        public InspectTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "inspect");
             

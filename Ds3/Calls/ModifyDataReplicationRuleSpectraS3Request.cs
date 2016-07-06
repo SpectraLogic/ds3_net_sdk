@@ -66,7 +66,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyDataReplicationRuleSpectraS3Request(string dataReplicationRule) {
+        public ModifyDataReplicationRuleSpectraS3Request(string dataReplicationRule)
+        {
             this.DataReplicationRule = dataReplicationRule;
             
         }

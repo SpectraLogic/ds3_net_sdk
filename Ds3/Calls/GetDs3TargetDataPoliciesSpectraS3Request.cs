@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetDs3TargetDataPoliciesSpectraS3Request(string ds3TargetDataPolicies) {
+        public GetDs3TargetDataPoliciesSpectraS3Request(string ds3TargetDataPolicies)
+        {
             this.Ds3TargetDataPolicies = ds3TargetDataPolicies;
             
         }

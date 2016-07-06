@@ -36,7 +36,8 @@ namespace Ds3.Calls
         
 
         
-        public PutMultiPartUploadPartRequest(string bucketName, string objectName, int partNumber, Stream requestPayload, Guid uploadId) {
+        public PutMultiPartUploadPartRequest(string bucketName, string objectName, int partNumber, Stream requestPayload, Guid uploadId)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.PartNumber = partNumber;
@@ -49,7 +50,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutMultiPartUploadPartRequest(string bucketName, string objectName, int partNumber, Stream requestPayload, string uploadId) {
+        public PutMultiPartUploadPartRequest(string bucketName, string objectName, int partNumber, Stream requestPayload, string uploadId)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.PartNumber = partNumber;

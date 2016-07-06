@@ -97,12 +97,14 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyUserSpectraS3Request(Guid userId) {
+        public ModifyUserSpectraS3Request(Guid userId)
+        {
             this.UserId = userId.ToString();
             
         }
 
-        public ModifyUserSpectraS3Request(string userId) {
+        public ModifyUserSpectraS3Request(string userId)
+        {
             this.UserId = userId;
             
         }

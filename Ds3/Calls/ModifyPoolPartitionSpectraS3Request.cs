@@ -47,7 +47,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyPoolPartitionSpectraS3Request(string poolPartition) {
+        public ModifyPoolPartitionSpectraS3Request(string poolPartition)
+        {
             this.PoolPartition = poolPartition;
             
         }

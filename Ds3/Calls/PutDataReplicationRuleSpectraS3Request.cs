@@ -51,7 +51,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutDataReplicationRuleSpectraS3Request(Guid dataPolicyId, Guid ds3TargetId, DataReplicationRuleType type) {
+        public PutDataReplicationRuleSpectraS3Request(Guid dataPolicyId, Guid ds3TargetId, DataReplicationRuleType type)
+        {
             this.DataPolicyId = dataPolicyId.ToString();
             this.Ds3TargetId = ds3TargetId.ToString();
             this.Type = type;
@@ -64,7 +65,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutDataReplicationRuleSpectraS3Request(string dataPolicyId, string ds3TargetId, DataReplicationRuleType type) {
+        public PutDataReplicationRuleSpectraS3Request(string dataPolicyId, string ds3TargetId, DataReplicationRuleType type)
+        {
             this.DataPolicyId = dataPolicyId;
             this.Ds3TargetId = ds3TargetId;
             this.Type = type;

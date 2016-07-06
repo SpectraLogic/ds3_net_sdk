@@ -214,7 +214,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDataReplicationRulesSpectraS3Request() {
+        public GetDataReplicationRulesSpectraS3Request()
+        {
             
         }
 

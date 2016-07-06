@@ -121,7 +121,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutBucketSpectraS3Request(string name) {
+        public PutBucketSpectraS3Request(string name)
+        {
             this.Name = name;
             
             this.QueryParams.Add("name", name);

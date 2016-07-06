@@ -76,7 +76,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetJobsSpectraS3Request() {
+        public GetJobsSpectraS3Request()
+        {
             
         }
 

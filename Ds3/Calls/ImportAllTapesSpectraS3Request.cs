@@ -195,7 +195,8 @@ namespace Ds3.Calls
         }
 
         
-        public ImportAllTapesSpectraS3Request() {
+        public ImportAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "import");
             
         }

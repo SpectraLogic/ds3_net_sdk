@@ -104,7 +104,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetBucketRequest(string bucketName) {
+        public GetBucketRequest(string bucketName)
+        {
             this.BucketName = bucketName;
             
         }

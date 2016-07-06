@@ -76,7 +76,8 @@ namespace Ds3.Calls
         }
 
         
-        public CancelAllJobsSpectraS3Request() {
+        public CancelAllJobsSpectraS3Request()
+        {
             
             this.QueryParams.Add("force", null);
 

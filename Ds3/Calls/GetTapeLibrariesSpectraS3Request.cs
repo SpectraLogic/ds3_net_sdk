@@ -171,7 +171,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapeLibrariesSpectraS3Request() {
+        public GetTapeLibrariesSpectraS3Request()
+        {
             
         }
 

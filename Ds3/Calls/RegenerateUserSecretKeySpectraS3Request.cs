@@ -28,13 +28,15 @@ namespace Ds3.Calls
         
 
         
-        public RegenerateUserSecretKeySpectraS3Request(Guid userId) {
+        public RegenerateUserSecretKeySpectraS3Request(Guid userId)
+        {
             this.UserId = userId.ToString();
             this.QueryParams.Add("operation", "regenerate_secret_key");
             
         }
 
-        public RegenerateUserSecretKeySpectraS3Request(string userId) {
+        public RegenerateUserSecretKeySpectraS3Request(string userId)
+        {
             this.UserId = userId;
             this.QueryParams.Add("operation", "regenerate_secret_key");
             

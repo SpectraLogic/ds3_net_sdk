@@ -114,7 +114,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetNodesSpectraS3Request() {
+        public GetNodesSpectraS3Request()
+        {
             
         }
 

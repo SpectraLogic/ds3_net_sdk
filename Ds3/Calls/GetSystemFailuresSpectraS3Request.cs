@@ -152,7 +152,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetSystemFailuresSpectraS3Request() {
+        public GetSystemFailuresSpectraS3Request()
+        {
             
         }
 

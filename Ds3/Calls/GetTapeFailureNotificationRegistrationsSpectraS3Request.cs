@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapeFailureNotificationRegistrationsSpectraS3Request() {
+        public GetTapeFailureNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

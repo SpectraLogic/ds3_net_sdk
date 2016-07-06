@@ -275,12 +275,14 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyDataPolicySpectraS3Request(Guid dataPolicyId) {
+        public ModifyDataPolicySpectraS3Request(Guid dataPolicyId)
+        {
             this.DataPolicyId = dataPolicyId.ToString();
             
         }
 
-        public ModifyDataPolicySpectraS3Request(string dataPolicyId) {
+        public ModifyDataPolicySpectraS3Request(string dataPolicyId)
+        {
             this.DataPolicyId = dataPolicyId;
             
         }

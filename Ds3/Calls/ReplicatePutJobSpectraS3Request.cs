@@ -49,7 +49,8 @@ namespace Ds3.Calls
         }
 
         
-        public ReplicatePutJobSpectraS3Request(string bucketName, string requestPayload) {
+        public ReplicatePutJobSpectraS3Request(string bucketName, string requestPayload)
+        {
             this.BucketName = bucketName;
             this.RequestPayload = requestPayload;
             this.QueryParams.Add("operation", "start_bulk_put");

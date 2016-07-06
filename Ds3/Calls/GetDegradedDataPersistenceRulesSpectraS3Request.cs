@@ -233,7 +233,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDegradedDataPersistenceRulesSpectraS3Request() {
+        public GetDegradedDataPersistenceRulesSpectraS3Request()
+        {
             
         }
 

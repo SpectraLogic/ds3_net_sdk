@@ -275,7 +275,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyDs3TargetSpectraS3Request(string ds3Target) {
+        public ModifyDs3TargetSpectraS3Request(string ds3Target)
+        {
             this.Ds3Target = ds3Target;
             
         }

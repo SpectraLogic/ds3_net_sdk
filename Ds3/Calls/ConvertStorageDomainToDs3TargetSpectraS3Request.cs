@@ -30,7 +30,8 @@ namespace Ds3.Calls
         
 
         
-        public ConvertStorageDomainToDs3TargetSpectraS3Request(Guid convertToDs3Target, string storageDomain) {
+        public ConvertStorageDomainToDs3TargetSpectraS3Request(Guid convertToDs3Target, string storageDomain)
+        {
             this.StorageDomain = storageDomain;
             this.ConvertToDs3Target = convertToDs3Target.ToString();
             
@@ -38,7 +39,8 @@ namespace Ds3.Calls
 
         }
 
-        public ConvertStorageDomainToDs3TargetSpectraS3Request(string convertToDs3Target, string storageDomain) {
+        public ConvertStorageDomainToDs3TargetSpectraS3Request(string convertToDs3Target, string storageDomain)
+        {
             this.StorageDomain = storageDomain;
             this.ConvertToDs3Target = convertToDs3Target;
             

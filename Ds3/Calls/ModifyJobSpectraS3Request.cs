@@ -85,12 +85,14 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyJobSpectraS3Request(Guid jobId) {
+        public ModifyJobSpectraS3Request(Guid jobId)
+        {
             this.JobId = jobId.ToString();
             
         }
 
-        public ModifyJobSpectraS3Request(string jobId) {
+        public ModifyJobSpectraS3Request(string jobId)
+        {
             this.JobId = jobId;
             
         }

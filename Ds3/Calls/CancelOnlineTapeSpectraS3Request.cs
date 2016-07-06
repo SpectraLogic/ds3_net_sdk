@@ -28,13 +28,15 @@ namespace Ds3.Calls
         
 
         
-        public CancelOnlineTapeSpectraS3Request(Guid tapeId) {
+        public CancelOnlineTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             this.QueryParams.Add("operation", "cancel_online");
             
         }
 
-        public CancelOnlineTapeSpectraS3Request(string tapeId) {
+        public CancelOnlineTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "cancel_online");
             

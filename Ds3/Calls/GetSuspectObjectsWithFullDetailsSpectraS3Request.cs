@@ -88,7 +88,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetSuspectObjectsWithFullDetailsSpectraS3Request() {
+        public GetSuspectObjectsWithFullDetailsSpectraS3Request()
+        {
             
             this.QueryParams.Add("full_details", null);
 

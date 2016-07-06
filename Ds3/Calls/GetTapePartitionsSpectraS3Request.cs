@@ -240,7 +240,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapePartitionsSpectraS3Request() {
+        public GetTapePartitionsSpectraS3Request()
+        {
             
         }
 

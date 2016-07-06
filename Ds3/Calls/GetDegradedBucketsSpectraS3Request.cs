@@ -195,7 +195,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDegradedBucketsSpectraS3Request() {
+        public GetDegradedBucketsSpectraS3Request()
+        {
             
         }
 

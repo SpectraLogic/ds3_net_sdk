@@ -45,7 +45,8 @@ namespace Ds3.Calls
         }
 
         
-        public VerifyAllTapesSpectraS3Request() {
+        public VerifyAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "verify");
             
         }

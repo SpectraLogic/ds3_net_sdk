@@ -45,7 +45,8 @@ namespace Ds3.Calls
         }
 
         
-        public MarkSuspectBlobTapesAsDegradedSpectraS3Request() {
+        public MarkSuspectBlobTapesAsDegradedSpectraS3Request()
+        {
             
         }
 

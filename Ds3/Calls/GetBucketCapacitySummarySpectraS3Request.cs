@@ -125,7 +125,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetBucketCapacitySummarySpectraS3Request(Guid bucketId, Guid storageDomainId) {
+        public GetBucketCapacitySummarySpectraS3Request(Guid bucketId, Guid storageDomainId)
+        {
             this.BucketId = bucketId.ToString();
             this.StorageDomainId = storageDomainId.ToString();
             
@@ -135,7 +136,8 @@ namespace Ds3.Calls
 
         }
 
-        public GetBucketCapacitySummarySpectraS3Request(string bucketId, string storageDomainId) {
+        public GetBucketCapacitySummarySpectraS3Request(string bucketId, string storageDomainId)
+        {
             this.BucketId = bucketId;
             this.StorageDomainId = storageDomainId;
             

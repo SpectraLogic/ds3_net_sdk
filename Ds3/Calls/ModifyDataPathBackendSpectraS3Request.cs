@@ -159,7 +159,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyDataPathBackendSpectraS3Request() {
+        public ModifyDataPathBackendSpectraS3Request()
+        {
             
         }
 

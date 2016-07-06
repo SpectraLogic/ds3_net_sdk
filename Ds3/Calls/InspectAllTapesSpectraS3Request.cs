@@ -45,7 +45,8 @@ namespace Ds3.Calls
         }
 
         
-        public InspectAllTapesSpectraS3Request() {
+        public InspectAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "inspect");
             
         }

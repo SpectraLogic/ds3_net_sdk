@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
-        public TruncateJobSpectraS3Request(Guid jobId) {
+        public TruncateJobSpectraS3Request(Guid jobId)
+        {
             this.JobId = jobId.ToString();
             
         }
 
-        public TruncateJobSpectraS3Request(string jobId) {
+        public TruncateJobSpectraS3Request(string jobId)
+        {
             this.JobId = jobId;
             
         }

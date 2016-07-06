@@ -145,7 +145,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetJobCreatedNotificationRegistrationsSpectraS3Request() {
+        public GetJobCreatedNotificationRegistrationsSpectraS3Request()
+        {
             
         }
 

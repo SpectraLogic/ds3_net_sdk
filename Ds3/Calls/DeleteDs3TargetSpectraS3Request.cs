@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteDs3TargetSpectraS3Request(string ds3Target) {
+        public DeleteDs3TargetSpectraS3Request(string ds3Target)
+        {
             this.Ds3Target = ds3Target;
             
         }

@@ -256,7 +256,8 @@ namespace Ds3.Calls
         }
 
         
-        public PairBackRegisteredDs3TargetSpectraS3Request(string ds3Target) {
+        public PairBackRegisteredDs3TargetSpectraS3Request(string ds3Target)
+        {
             this.Ds3Target = ds3Target;
             this.QueryParams.Add("operation", "pair_back");
             

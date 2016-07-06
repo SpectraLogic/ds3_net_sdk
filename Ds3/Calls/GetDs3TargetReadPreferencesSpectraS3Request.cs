@@ -195,7 +195,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetDs3TargetReadPreferencesSpectraS3Request() {
+        public GetDs3TargetReadPreferencesSpectraS3Request()
+        {
             
         }
 

@@ -59,7 +59,8 @@ namespace Ds3.Calls
         }
 
         
-        public VerifyUserIsMemberOfGroupSpectraS3Request(string group) {
+        public VerifyUserIsMemberOfGroupSpectraS3Request(string group)
+        {
             this.Group = group;
             this.QueryParams.Add("operation", "verify");
             

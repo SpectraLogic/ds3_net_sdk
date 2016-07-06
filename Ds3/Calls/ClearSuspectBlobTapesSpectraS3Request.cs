@@ -45,7 +45,8 @@ namespace Ds3.Calls
         }
 
         
-        public ClearSuspectBlobTapesSpectraS3Request() {
+        public ClearSuspectBlobTapesSpectraS3Request()
+        {
             
         }
 
