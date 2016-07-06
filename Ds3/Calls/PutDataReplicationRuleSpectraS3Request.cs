@@ -40,7 +40,8 @@ namespace Ds3.Calls
         public PutDataReplicationRuleSpectraS3Request WithDs3TargetDataPolicy(string ds3TargetDataPolicy)
         {
             this._ds3TargetDataPolicy = ds3TargetDataPolicy;
-            if (ds3TargetDataPolicy != null) {
+            if (ds3TargetDataPolicy != null)
+            {
                 this.QueryParams.Add("ds3_target_data_policy", ds3TargetDataPolicy);
             }
             else

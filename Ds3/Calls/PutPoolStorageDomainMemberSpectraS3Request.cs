@@ -38,7 +38,8 @@ namespace Ds3.Calls
         public PutPoolStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
-            if (writePreference != null) {
+            if (writePreference != null)
+            {
                 this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else

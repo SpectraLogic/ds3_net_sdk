@@ -62,7 +62,8 @@ namespace Ds3.Calls
         public GetCacheFilesystemsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -74,7 +75,8 @@ namespace Ds3.Calls
         public GetCacheFilesystemsSpectraS3Request WithNodeId(Guid? nodeId)
         {
             this._nodeId = nodeId.ToString();
-            if (nodeId != null) {
+            if (nodeId != null)
+            {
                 this.QueryParams.Add("node_id", nodeId.ToString());
             }
             else
@@ -86,7 +88,8 @@ namespace Ds3.Calls
         public GetCacheFilesystemsSpectraS3Request WithNodeId(string nodeId)
         {
             this._nodeId = nodeId;
-            if (nodeId != null) {
+            if (nodeId != null)
+            {
                 this.QueryParams.Add("node_id", nodeId);
             }
             else
@@ -98,7 +101,8 @@ namespace Ds3.Calls
         public GetCacheFilesystemsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -110,7 +114,8 @@ namespace Ds3.Calls
         public GetCacheFilesystemsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -122,7 +127,8 @@ namespace Ds3.Calls
         public GetCacheFilesystemsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -134,7 +140,8 @@ namespace Ds3.Calls
         public GetCacheFilesystemsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else

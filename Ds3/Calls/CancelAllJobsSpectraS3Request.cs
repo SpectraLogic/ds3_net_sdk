@@ -41,7 +41,8 @@ namespace Ds3.Calls
         public CancelAllJobsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -53,7 +54,8 @@ namespace Ds3.Calls
         public CancelAllJobsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -65,7 +67,8 @@ namespace Ds3.Calls
         public CancelAllJobsSpectraS3Request WithRequestType(JobRequestType? requestType)
         {
             this._requestType = requestType;
-            if (requestType != null) {
+            if (requestType != null)
+            {
                 this.QueryParams.Add("request_type", requestType.ToString());
             }
             else

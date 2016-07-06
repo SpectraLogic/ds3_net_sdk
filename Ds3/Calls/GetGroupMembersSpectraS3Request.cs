@@ -76,7 +76,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithGroupId(Guid? groupId)
         {
             this._groupId = groupId.ToString();
-            if (groupId != null) {
+            if (groupId != null)
+            {
                 this.QueryParams.Add("group_id", groupId.ToString());
             }
             else
@@ -88,7 +89,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithGroupId(string groupId)
         {
             this._groupId = groupId;
-            if (groupId != null) {
+            if (groupId != null)
+            {
                 this.QueryParams.Add("group_id", groupId);
             }
             else
@@ -100,7 +102,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -112,7 +115,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithMemberGroupId(Guid? memberGroupId)
         {
             this._memberGroupId = memberGroupId.ToString();
-            if (memberGroupId != null) {
+            if (memberGroupId != null)
+            {
                 this.QueryParams.Add("member_group_id", memberGroupId.ToString());
             }
             else
@@ -124,7 +128,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithMemberGroupId(string memberGroupId)
         {
             this._memberGroupId = memberGroupId;
-            if (memberGroupId != null) {
+            if (memberGroupId != null)
+            {
                 this.QueryParams.Add("member_group_id", memberGroupId);
             }
             else
@@ -136,7 +141,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithMemberUserId(Guid? memberUserId)
         {
             this._memberUserId = memberUserId.ToString();
-            if (memberUserId != null) {
+            if (memberUserId != null)
+            {
                 this.QueryParams.Add("member_user_id", memberUserId.ToString());
             }
             else
@@ -148,7 +154,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithMemberUserId(string memberUserId)
         {
             this._memberUserId = memberUserId;
-            if (memberUserId != null) {
+            if (memberUserId != null)
+            {
                 this.QueryParams.Add("member_user_id", memberUserId);
             }
             else
@@ -160,7 +167,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -172,7 +180,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -184,7 +193,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -196,7 +206,8 @@ namespace Ds3.Calls
         public GetGroupMembersSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else

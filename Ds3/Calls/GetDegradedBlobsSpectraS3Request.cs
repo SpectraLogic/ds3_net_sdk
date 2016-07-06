@@ -83,7 +83,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithBlobId(Guid? blobId)
         {
             this._blobId = blobId.ToString();
-            if (blobId != null) {
+            if (blobId != null)
+            {
                 this.QueryParams.Add("blob_id", blobId.ToString());
             }
             else
@@ -95,7 +96,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithBlobId(string blobId)
         {
             this._blobId = blobId;
-            if (blobId != null) {
+            if (blobId != null)
+            {
                 this.QueryParams.Add("blob_id", blobId);
             }
             else
@@ -107,7 +109,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -119,7 +122,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -131,7 +135,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -143,7 +148,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -155,7 +161,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -167,7 +174,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -179,7 +187,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -191,7 +200,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithPersistenceRuleId(Guid? persistenceRuleId)
         {
             this._persistenceRuleId = persistenceRuleId.ToString();
-            if (persistenceRuleId != null) {
+            if (persistenceRuleId != null)
+            {
                 this.QueryParams.Add("persistence_rule_id", persistenceRuleId.ToString());
             }
             else
@@ -203,7 +213,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithPersistenceRuleId(string persistenceRuleId)
         {
             this._persistenceRuleId = persistenceRuleId;
-            if (persistenceRuleId != null) {
+            if (persistenceRuleId != null)
+            {
                 this.QueryParams.Add("persistence_rule_id", persistenceRuleId);
             }
             else
@@ -215,7 +226,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithReplicationRuleId(Guid? replicationRuleId)
         {
             this._replicationRuleId = replicationRuleId.ToString();
-            if (replicationRuleId != null) {
+            if (replicationRuleId != null)
+            {
                 this.QueryParams.Add("replication_rule_id", replicationRuleId.ToString());
             }
             else
@@ -227,7 +239,8 @@ namespace Ds3.Calls
         public GetDegradedBlobsSpectraS3Request WithReplicationRuleId(string replicationRuleId)
         {
             this._replicationRuleId = replicationRuleId;
-            if (replicationRuleId != null) {
+            if (replicationRuleId != null)
+            {
                 this.QueryParams.Add("replication_rule_id", replicationRuleId);
             }
             else

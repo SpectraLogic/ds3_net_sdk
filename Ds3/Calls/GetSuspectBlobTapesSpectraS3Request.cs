@@ -69,7 +69,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithBlobId(Guid? blobId)
         {
             this._blobId = blobId.ToString();
-            if (blobId != null) {
+            if (blobId != null)
+            {
                 this.QueryParams.Add("blob_id", blobId.ToString());
             }
             else
@@ -81,7 +82,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithBlobId(string blobId)
         {
             this._blobId = blobId;
-            if (blobId != null) {
+            if (blobId != null)
+            {
                 this.QueryParams.Add("blob_id", blobId);
             }
             else
@@ -93,7 +95,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -105,7 +108,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -117,7 +121,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -129,7 +134,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -141,7 +147,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -153,7 +160,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithTapeId(Guid? tapeId)
         {
             this._tapeId = tapeId.ToString();
-            if (tapeId != null) {
+            if (tapeId != null)
+            {
                 this.QueryParams.Add("tape_id", tapeId.ToString());
             }
             else
@@ -165,7 +173,8 @@ namespace Ds3.Calls
         public GetSuspectBlobTapesSpectraS3Request WithTapeId(string tapeId)
         {
             this._tapeId = tapeId;
-            if (tapeId != null) {
+            if (tapeId != null)
+            {
                 this.QueryParams.Add("tape_id", tapeId);
             }
             else

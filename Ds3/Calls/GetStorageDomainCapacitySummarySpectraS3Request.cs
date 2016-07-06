@@ -64,7 +64,8 @@ namespace Ds3.Calls
         public GetStorageDomainCapacitySummarySpectraS3Request WithPoolHealth(PoolHealth? poolHealth)
         {
             this._poolHealth = poolHealth;
-            if (poolHealth != null) {
+            if (poolHealth != null)
+            {
                 this.QueryParams.Add("pool_health", poolHealth.ToString());
             }
             else
@@ -76,7 +77,8 @@ namespace Ds3.Calls
         public GetStorageDomainCapacitySummarySpectraS3Request WithPoolState(PoolState? poolState)
         {
             this._poolState = poolState;
-            if (poolState != null) {
+            if (poolState != null)
+            {
                 this.QueryParams.Add("pool_state", poolState.ToString());
             }
             else
@@ -88,7 +90,8 @@ namespace Ds3.Calls
         public GetStorageDomainCapacitySummarySpectraS3Request WithPoolType(PoolType? poolType)
         {
             this._poolType = poolType;
-            if (poolType != null) {
+            if (poolType != null)
+            {
                 this.QueryParams.Add("pool_type", poolType.ToString());
             }
             else
@@ -100,7 +103,8 @@ namespace Ds3.Calls
         public GetStorageDomainCapacitySummarySpectraS3Request WithTapeState(TapeState? tapeState)
         {
             this._tapeState = tapeState;
-            if (tapeState != null) {
+            if (tapeState != null)
+            {
                 this.QueryParams.Add("tape_state", tapeState.ToString());
             }
             else
@@ -112,7 +116,8 @@ namespace Ds3.Calls
         public GetStorageDomainCapacitySummarySpectraS3Request WithTapeType(TapeType? tapeType)
         {
             this._tapeType = tapeType;
-            if (tapeType != null) {
+            if (tapeType != null)
+            {
                 this.QueryParams.Add("tape_type", tapeType.ToString());
             }
             else

@@ -47,7 +47,8 @@ namespace Ds3.Calls
         public ListMultiPartUploadPartsRequest WithMaxParts(int? maxParts)
         {
             this._maxParts = maxParts;
-            if (maxParts != null) {
+            if (maxParts != null)
+            {
                 this.QueryParams.Add("max_parts", maxParts.ToString());
             }
             else
@@ -59,7 +60,8 @@ namespace Ds3.Calls
         public ListMultiPartUploadPartsRequest WithPartNumberMarker(int? partNumberMarker)
         {
             this._partNumberMarker = partNumberMarker;
-            if (partNumberMarker != null) {
+            if (partNumberMarker != null)
+            {
                 this.QueryParams.Add("part_number_marker", partNumberMarker.ToString());
             }
             else

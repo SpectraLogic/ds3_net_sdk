@@ -97,7 +97,8 @@ namespace Ds3.Calls
         public PutObjectRequest WithJob(Guid? job)
         {
             this._job = job.ToString();
-            if (job != null) {
+            if (job != null)
+            {
                 this.QueryParams.Add("job", job.ToString());
             }
             else
@@ -109,7 +110,8 @@ namespace Ds3.Calls
         public PutObjectRequest WithJob(string job)
         {
             this._job = job;
-            if (job != null) {
+            if (job != null)
+            {
                 this.QueryParams.Add("job", job);
             }
             else
@@ -121,7 +123,8 @@ namespace Ds3.Calls
         public PutObjectRequest WithOffset(long? offset)
         {
             this._offset = offset;
-            if (offset != null) {
+            if (offset != null)
+            {
                 this.QueryParams.Add("offset", offset.ToString());
             }
             else

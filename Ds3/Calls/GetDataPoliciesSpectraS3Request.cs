@@ -97,7 +97,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithAlwaysForcePutJobCreation(bool? alwaysForcePutJobCreation)
         {
             this._alwaysForcePutJobCreation = alwaysForcePutJobCreation;
-            if (alwaysForcePutJobCreation != null) {
+            if (alwaysForcePutJobCreation != null)
+            {
                 this.QueryParams.Add("always_force_put_job_creation", alwaysForcePutJobCreation.ToString());
             }
             else
@@ -109,7 +110,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithAlwaysMinimizeSpanningAcrossMedia(bool? alwaysMinimizeSpanningAcrossMedia)
         {
             this._alwaysMinimizeSpanningAcrossMedia = alwaysMinimizeSpanningAcrossMedia;
-            if (alwaysMinimizeSpanningAcrossMedia != null) {
+            if (alwaysMinimizeSpanningAcrossMedia != null)
+            {
                 this.QueryParams.Add("always_minimize_spanning_across_media", alwaysMinimizeSpanningAcrossMedia.ToString());
             }
             else
@@ -121,7 +123,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithAlwaysReplicateDeletes(bool? alwaysReplicateDeletes)
         {
             this._alwaysReplicateDeletes = alwaysReplicateDeletes;
-            if (alwaysReplicateDeletes != null) {
+            if (alwaysReplicateDeletes != null)
+            {
                 this.QueryParams.Add("always_replicate_deletes", alwaysReplicateDeletes.ToString());
             }
             else
@@ -133,7 +136,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithChecksumType(ChecksumType.Type? checksumType)
         {
             this._checksumType = checksumType;
-            if (checksumType != null) {
+            if (checksumType != null)
+            {
                 this.QueryParams.Add("checksum_type", checksumType.ToString());
             }
             else
@@ -145,7 +149,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithEndToEndCrcRequired(bool? endToEndCrcRequired)
         {
             this._endToEndCrcRequired = endToEndCrcRequired;
-            if (endToEndCrcRequired != null) {
+            if (endToEndCrcRequired != null)
+            {
                 this.QueryParams.Add("end_to_end_crc_required", endToEndCrcRequired.ToString());
             }
             else
@@ -157,7 +162,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -169,7 +175,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -181,7 +188,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -193,7 +201,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -205,7 +214,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -217,7 +227,8 @@ namespace Ds3.Calls
         public GetDataPoliciesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else

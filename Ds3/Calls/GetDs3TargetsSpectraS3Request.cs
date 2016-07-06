@@ -132,7 +132,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithAdminAuthId(string adminAuthId)
         {
             this._adminAuthId = adminAuthId;
-            if (adminAuthId != null) {
+            if (adminAuthId != null)
+            {
                 this.QueryParams.Add("admin_auth_id", adminAuthId);
             }
             else
@@ -144,7 +145,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithDataPathEndPoint(string dataPathEndPoint)
         {
             this._dataPathEndPoint = dataPathEndPoint;
-            if (dataPathEndPoint != null) {
+            if (dataPathEndPoint != null)
+            {
                 this.QueryParams.Add("data_path_end_point", dataPathEndPoint);
             }
             else
@@ -156,7 +158,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithDataPathHttps(bool? dataPathHttps)
         {
             this._dataPathHttps = dataPathHttps;
-            if (dataPathHttps != null) {
+            if (dataPathHttps != null)
+            {
                 this.QueryParams.Add("data_path_https", dataPathHttps.ToString());
             }
             else
@@ -168,7 +171,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithDataPathPort(int? dataPathPort)
         {
             this._dataPathPort = dataPathPort;
-            if (dataPathPort != null) {
+            if (dataPathPort != null)
+            {
                 this.QueryParams.Add("data_path_port", dataPathPort.ToString());
             }
             else
@@ -180,7 +184,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithDataPathProxy(string dataPathProxy)
         {
             this._dataPathProxy = dataPathProxy;
-            if (dataPathProxy != null) {
+            if (dataPathProxy != null)
+            {
                 this.QueryParams.Add("data_path_proxy", dataPathProxy);
             }
             else
@@ -192,7 +197,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithDataPathVerifyCertificate(bool? dataPathVerifyCertificate)
         {
             this._dataPathVerifyCertificate = dataPathVerifyCertificate;
-            if (dataPathVerifyCertificate != null) {
+            if (dataPathVerifyCertificate != null)
+            {
                 this.QueryParams.Add("data_path_verify_certificate", dataPathVerifyCertificate.ToString());
             }
             else
@@ -204,7 +210,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithDefaultReadPreference(TargetReadPreference? defaultReadPreference)
         {
             this._defaultReadPreference = defaultReadPreference;
-            if (defaultReadPreference != null) {
+            if (defaultReadPreference != null)
+            {
                 this.QueryParams.Add("default_read_preference", defaultReadPreference.ToString());
             }
             else
@@ -216,7 +223,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -228,7 +236,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -240,7 +249,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -252,7 +262,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -264,7 +275,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -276,7 +288,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -288,7 +301,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithPermitGoingOutOfSync(bool? permitGoingOutOfSync)
         {
             this._permitGoingOutOfSync = permitGoingOutOfSync;
-            if (permitGoingOutOfSync != null) {
+            if (permitGoingOutOfSync != null)
+            {
                 this.QueryParams.Add("permit_going_out_of_sync", permitGoingOutOfSync.ToString());
             }
             else
@@ -300,7 +314,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
-            if (quiesced != null) {
+            if (quiesced != null)
+            {
                 this.QueryParams.Add("quiesced", quiesced.ToString());
             }
             else
@@ -312,7 +327,8 @@ namespace Ds3.Calls
         public GetDs3TargetsSpectraS3Request WithState(TargetState? state)
         {
             this._state = state;
-            if (state != null) {
+            if (state != null)
+            {
                 this.QueryParams.Add("state", state.ToString());
             }
             else

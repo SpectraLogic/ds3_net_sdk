@@ -118,7 +118,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithAggregating(bool? aggregating)
         {
             this._aggregating = aggregating;
-            if (aggregating != null) {
+            if (aggregating != null)
+            {
                 this.QueryParams.Add("aggregating", aggregating.ToString());
             }
             else
@@ -130,7 +131,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -142,7 +144,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -154,7 +157,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee? chunkClientProcessingOrderGuarantee)
         {
             this._chunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
-            if (chunkClientProcessingOrderGuarantee != null) {
+            if (chunkClientProcessingOrderGuarantee != null)
+            {
                 this.QueryParams.Add("chunk_client_processing_order_guarantee", chunkClientProcessingOrderGuarantee.ToString());
             }
             else
@@ -166,7 +170,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -178,7 +183,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -190,7 +196,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -202,7 +209,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -214,7 +222,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -226,7 +235,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -238,7 +248,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
-            if (priority != null) {
+            if (priority != null)
+            {
                 this.QueryParams.Add("priority", priority.ToString());
             }
             else
@@ -250,7 +261,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithRechunked(DateTime? rechunked)
         {
             this._rechunked = rechunked;
-            if (rechunked != null) {
+            if (rechunked != null)
+            {
                 this.QueryParams.Add("rechunked", rechunked.ToString());
             }
             else
@@ -262,7 +274,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithRequestType(JobRequestType? requestType)
         {
             this._requestType = requestType;
-            if (requestType != null) {
+            if (requestType != null)
+            {
                 this.QueryParams.Add("request_type", requestType.ToString());
             }
             else
@@ -274,7 +287,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithTruncated(bool? truncated)
         {
             this._truncated = truncated;
-            if (truncated != null) {
+            if (truncated != null)
+            {
                 this.QueryParams.Add("truncated", truncated.ToString());
             }
             else
@@ -286,7 +300,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId.ToString());
             }
             else
@@ -298,7 +313,8 @@ namespace Ds3.Calls
         public GetActiveJobsSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId);
             }
             else

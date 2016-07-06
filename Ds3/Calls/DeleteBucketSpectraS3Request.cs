@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public DeleteBucketSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
-            if (force != null) {
+            if (force != null)
+            {
                 this.QueryParams.Add("force", force.ToString());
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public DeleteBucketSpectraS3Request WithReplicate(bool? replicate)
         {
             this._replicate = replicate;
-            if (replicate != null) {
+            if (replicate != null)
+            {
                 this.QueryParams.Add("replicate", replicate.ToString());
             }
             else

@@ -41,7 +41,8 @@ namespace Ds3.Calls
         public GetJobsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -53,7 +54,8 @@ namespace Ds3.Calls
         public GetJobsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -65,7 +67,8 @@ namespace Ds3.Calls
         public GetJobsSpectraS3Request WithFullDetails(bool? fullDetails)
         {
             this._fullDetails = fullDetails;
-            if (fullDetails != null) {
+            if (fullDetails != null)
+            {
                 this.QueryParams.Add("full_details", fullDetails.ToString());
             }
             else

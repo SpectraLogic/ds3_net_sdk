@@ -42,7 +42,8 @@ namespace Ds3.Calls
         public VerifyPhysicalPlacementForObjectsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
@@ -54,7 +55,8 @@ namespace Ds3.Calls
         public VerifyPhysicalPlacementForObjectsSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId);
             }
             else

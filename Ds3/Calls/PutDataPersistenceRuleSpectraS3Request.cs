@@ -42,7 +42,8 @@ namespace Ds3.Calls
         public PutDataPersistenceRuleSpectraS3Request WithMinimumDaysToRetain(int? minimumDaysToRetain)
         {
             this._minimumDaysToRetain = minimumDaysToRetain;
-            if (minimumDaysToRetain != null) {
+            if (minimumDaysToRetain != null)
+            {
                 this.QueryParams.Add("minimum_days_to_retain", minimumDaysToRetain.ToString());
             }
             else

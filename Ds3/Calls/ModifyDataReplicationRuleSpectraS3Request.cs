@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public ModifyDataReplicationRuleSpectraS3Request WithDs3TargetDataPolicy(string ds3TargetDataPolicy)
         {
             this._ds3TargetDataPolicy = ds3TargetDataPolicy;
-            if (ds3TargetDataPolicy != null) {
+            if (ds3TargetDataPolicy != null)
+            {
                 this.QueryParams.Add("ds3_target_data_policy", ds3TargetDataPolicy);
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public ModifyDataReplicationRuleSpectraS3Request WithType(DataReplicationRuleType? type)
         {
             this._type = type;
-            if (type != null) {
+            if (type != null)
+            {
                 this.QueryParams.Add("type", type.ToString());
             }
             else

@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public VerifyDs3TargetSpectraS3Request WithFullDetails(bool? fullDetails)
         {
             this._fullDetails = fullDetails;
-            if (fullDetails != null) {
+            if (fullDetails != null)
+            {
                 this.QueryParams.Add("full_details", fullDetails.ToString());
             }
             else

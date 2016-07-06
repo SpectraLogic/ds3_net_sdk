@@ -69,7 +69,8 @@ namespace Ds3.Calls
         public GetSystemFailuresSpectraS3Request WithErrorMessage(string errorMessage)
         {
             this._errorMessage = errorMessage;
-            if (errorMessage != null) {
+            if (errorMessage != null)
+            {
                 this.QueryParams.Add("error_message", errorMessage);
             }
             else
@@ -81,7 +82,8 @@ namespace Ds3.Calls
         public GetSystemFailuresSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -93,7 +95,8 @@ namespace Ds3.Calls
         public GetSystemFailuresSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -105,7 +108,8 @@ namespace Ds3.Calls
         public GetSystemFailuresSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -117,7 +121,8 @@ namespace Ds3.Calls
         public GetSystemFailuresSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -129,7 +134,8 @@ namespace Ds3.Calls
         public GetSystemFailuresSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -141,7 +147,8 @@ namespace Ds3.Calls
         public GetSystemFailuresSpectraS3Request WithType(SystemFailureType? type)
         {
             this._type = type;
-            if (type != null) {
+            if (type != null)
+            {
                 this.QueryParams.Add("type", type.ToString());
             }
             else

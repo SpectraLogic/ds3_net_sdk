@@ -97,7 +97,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithImportExportConfiguration(ImportExportConfiguration? importExportConfiguration)
         {
             this._importExportConfiguration = importExportConfiguration;
-            if (importExportConfiguration != null) {
+            if (importExportConfiguration != null)
+            {
                 this.QueryParams.Add("import_export_configuration", importExportConfiguration.ToString());
             }
             else
@@ -109,7 +110,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -121,7 +123,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithLibraryId(Guid? libraryId)
         {
             this._libraryId = libraryId.ToString();
-            if (libraryId != null) {
+            if (libraryId != null)
+            {
                 this.QueryParams.Add("library_id", libraryId.ToString());
             }
             else
@@ -133,7 +136,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithLibraryId(string libraryId)
         {
             this._libraryId = libraryId;
-            if (libraryId != null) {
+            if (libraryId != null)
+            {
                 this.QueryParams.Add("library_id", libraryId);
             }
             else
@@ -145,7 +149,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -157,7 +162,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -169,7 +175,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -181,7 +188,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -193,7 +201,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -205,7 +214,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
-            if (quiesced != null) {
+            if (quiesced != null)
+            {
                 this.QueryParams.Add("quiesced", quiesced.ToString());
             }
             else
@@ -217,7 +227,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithSerialNumber(string serialNumber)
         {
             this._serialNumber = serialNumber;
-            if (serialNumber != null) {
+            if (serialNumber != null)
+            {
                 this.QueryParams.Add("serial_number", serialNumber);
             }
             else
@@ -229,7 +240,8 @@ namespace Ds3.Calls
         public GetTapePartitionsSpectraS3Request WithState(TapePartitionState? state)
         {
             this._state = state;
-            if (state != null) {
+            if (state != null)
+            {
                 this.QueryParams.Add("state", state.ToString());
             }
             else

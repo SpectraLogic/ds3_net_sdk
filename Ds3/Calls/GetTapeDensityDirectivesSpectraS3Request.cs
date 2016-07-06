@@ -76,7 +76,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithDensity(TapeDriveType? density)
         {
             this._density = density;
-            if (density != null) {
+            if (density != null)
+            {
                 this.QueryParams.Add("density", density.ToString());
             }
             else
@@ -88,7 +89,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -100,7 +102,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -112,7 +115,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -124,7 +128,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -136,7 +141,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -148,7 +154,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId.ToString());
             }
             else
@@ -160,7 +167,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId);
             }
             else
@@ -172,7 +180,8 @@ namespace Ds3.Calls
         public GetTapeDensityDirectivesSpectraS3Request WithTapeType(TapeType? tapeType)
         {
             this._tapeType = tapeType;
-            if (tapeType != null) {
+            if (tapeType != null)
+            {
                 this.QueryParams.Add("tape_type", tapeType.ToString());
             }
             else

@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public ModifyGroupSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else

@@ -57,7 +57,8 @@ namespace Ds3.Calls
         public ModifyCacheFilesystemSpectraS3Request WithAutoReclaimInitiateThreshold(double? autoReclaimInitiateThreshold)
         {
             this._autoReclaimInitiateThreshold = autoReclaimInitiateThreshold;
-            if (autoReclaimInitiateThreshold != null) {
+            if (autoReclaimInitiateThreshold != null)
+            {
                 this.QueryParams.Add("auto_reclaim_initiate_threshold", autoReclaimInitiateThreshold.ToString());
             }
             else
@@ -69,7 +70,8 @@ namespace Ds3.Calls
         public ModifyCacheFilesystemSpectraS3Request WithAutoReclaimTerminateThreshold(double? autoReclaimTerminateThreshold)
         {
             this._autoReclaimTerminateThreshold = autoReclaimTerminateThreshold;
-            if (autoReclaimTerminateThreshold != null) {
+            if (autoReclaimTerminateThreshold != null)
+            {
                 this.QueryParams.Add("auto_reclaim_terminate_threshold", autoReclaimTerminateThreshold.ToString());
             }
             else
@@ -81,7 +83,8 @@ namespace Ds3.Calls
         public ModifyCacheFilesystemSpectraS3Request WithBurstThreshold(double? burstThreshold)
         {
             this._burstThreshold = burstThreshold;
-            if (burstThreshold != null) {
+            if (burstThreshold != null)
+            {
                 this.QueryParams.Add("burst_threshold", burstThreshold.ToString());
             }
             else
@@ -93,7 +96,8 @@ namespace Ds3.Calls
         public ModifyCacheFilesystemSpectraS3Request WithMaxCapacityInBytes(long? maxCapacityInBytes)
         {
             this._maxCapacityInBytes = maxCapacityInBytes;
-            if (maxCapacityInBytes != null) {
+            if (maxCapacityInBytes != null)
+            {
                 this.QueryParams.Add("max_capacity_in_bytes", maxCapacityInBytes.ToString());
             }
             else

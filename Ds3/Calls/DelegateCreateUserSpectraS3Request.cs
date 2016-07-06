@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public DelegateCreateUserSpectraS3Request WithId(Guid? id)
         {
             this._id = id.ToString();
-            if (id != null) {
+            if (id != null)
+            {
                 this.QueryParams.Add("id", id.ToString());
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public DelegateCreateUserSpectraS3Request WithId(string id)
         {
             this._id = id;
-            if (id != null) {
+            if (id != null)
+            {
                 this.QueryParams.Add("id", id);
             }
             else
@@ -67,7 +69,8 @@ namespace Ds3.Calls
         public DelegateCreateUserSpectraS3Request WithSecretKey(string secretKey)
         {
             this._secretKey = secretKey;
-            if (secretKey != null) {
+            if (secretKey != null)
+            {
                 this.QueryParams.Add("secret_key", secretKey);
             }
             else

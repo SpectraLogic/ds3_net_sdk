@@ -57,7 +57,8 @@ namespace Ds3.Calls
         public GetBucketRequest WithDelimiter(string delimiter)
         {
             this._delimiter = delimiter;
-            if (delimiter != null) {
+            if (delimiter != null)
+            {
                 this.QueryParams.Add("delimiter", delimiter);
             }
             else
@@ -69,7 +70,8 @@ namespace Ds3.Calls
         public GetBucketRequest WithMarker(string marker)
         {
             this._marker = marker;
-            if (marker != null) {
+            if (marker != null)
+            {
                 this.QueryParams.Add("marker", marker);
             }
             else
@@ -81,7 +83,8 @@ namespace Ds3.Calls
         public GetBucketRequest WithMaxKeys(int? maxKeys)
         {
             this._maxKeys = maxKeys;
-            if (maxKeys != null) {
+            if (maxKeys != null)
+            {
                 this.QueryParams.Add("max_keys", maxKeys.ToString());
             }
             else
@@ -93,7 +96,8 @@ namespace Ds3.Calls
         public GetBucketRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
-            if (prefix != null) {
+            if (prefix != null)
+            {
                 this.QueryParams.Add("prefix", prefix);
             }
             else

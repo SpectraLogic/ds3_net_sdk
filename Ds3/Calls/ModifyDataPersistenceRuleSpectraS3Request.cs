@@ -50,7 +50,8 @@ namespace Ds3.Calls
         public ModifyDataPersistenceRuleSpectraS3Request WithIsolationLevel(DataIsolationLevel? isolationLevel)
         {
             this._isolationLevel = isolationLevel;
-            if (isolationLevel != null) {
+            if (isolationLevel != null)
+            {
                 this.QueryParams.Add("isolation_level", isolationLevel.ToString());
             }
             else
@@ -62,7 +63,8 @@ namespace Ds3.Calls
         public ModifyDataPersistenceRuleSpectraS3Request WithMinimumDaysToRetain(int? minimumDaysToRetain)
         {
             this._minimumDaysToRetain = minimumDaysToRetain;
-            if (minimumDaysToRetain != null) {
+            if (minimumDaysToRetain != null)
+            {
                 this.QueryParams.Add("minimum_days_to_retain", minimumDaysToRetain.ToString());
             }
             else
@@ -74,7 +76,8 @@ namespace Ds3.Calls
         public ModifyDataPersistenceRuleSpectraS3Request WithType(DataPersistenceRuleType? type)
         {
             this._type = type;
-            if (type != null) {
+            if (type != null)
+            {
                 this.QueryParams.Add("type", type.ToString());
             }
             else

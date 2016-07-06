@@ -146,7 +146,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithAssignedToStorageDomain(bool? assignedToStorageDomain)
         {
             this._assignedToStorageDomain = assignedToStorageDomain;
-            if (assignedToStorageDomain != null) {
+            if (assignedToStorageDomain != null)
+            {
                 this.QueryParams.Add("assigned_to_storage_domain", assignedToStorageDomain.ToString());
             }
             else
@@ -158,7 +159,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithBarCode(string barCode)
         {
             this._barCode = barCode;
-            if (barCode != null) {
+            if (barCode != null)
+            {
                 this.QueryParams.Add("bar_code", barCode);
             }
             else
@@ -170,7 +172,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -182,7 +185,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -194,7 +198,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithEjectLabel(string ejectLabel)
         {
             this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
+            if (ejectLabel != null)
+            {
                 this.QueryParams.Add("eject_label", ejectLabel);
             }
             else
@@ -206,7 +211,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
-            if (ejectLocation != null) {
+            if (ejectLocation != null)
+            {
                 this.QueryParams.Add("eject_location", ejectLocation);
             }
             else
@@ -218,7 +224,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithFullOfData(bool? fullOfData)
         {
             this._fullOfData = fullOfData;
-            if (fullOfData != null) {
+            if (fullOfData != null)
+            {
                 this.QueryParams.Add("full_of_data", fullOfData.ToString());
             }
             else
@@ -230,7 +237,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -242,7 +250,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -254,7 +263,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -266,7 +276,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -278,7 +289,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -290,7 +302,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId.ToString());
             }
             else
@@ -302,7 +315,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId);
             }
             else
@@ -314,7 +328,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithPreviousState(TapeState? previousState)
         {
             this._previousState = previousState;
-            if (previousState != null) {
+            if (previousState != null)
+            {
                 this.QueryParams.Add("previous_state", previousState.ToString());
             }
             else
@@ -326,7 +341,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithSerialNumber(string serialNumber)
         {
             this._serialNumber = serialNumber;
-            if (serialNumber != null) {
+            if (serialNumber != null)
+            {
                 this.QueryParams.Add("serial_number", serialNumber);
             }
             else
@@ -338,7 +354,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithState(TapeState? state)
         {
             this._state = state;
-            if (state != null) {
+            if (state != null)
+            {
                 this.QueryParams.Add("state", state.ToString());
             }
             else
@@ -350,7 +367,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
@@ -362,7 +380,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId);
             }
             else
@@ -374,7 +393,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithType(TapeType? type)
         {
             this._type = type;
-            if (type != null) {
+            if (type != null)
+            {
                 this.QueryParams.Add("type", type.ToString());
             }
             else
@@ -386,7 +406,8 @@ namespace Ds3.Calls
         public GetTapesSpectraS3Request WithWriteProtected(bool? writeProtected)
         {
             this._writeProtected = writeProtected;
-            if (writeProtected != null) {
+            if (writeProtected != null)
+            {
                 this.QueryParams.Add("write_protected", writeProtected.ToString());
             }
             else

@@ -34,7 +34,8 @@ namespace Ds3.Calls
         public VerifyAllTapesSpectraS3Request WithTaskPriority(Priority? taskPriority)
         {
             this._taskPriority = taskPriority;
-            if (taskPriority != null) {
+            if (taskPriority != null)
+            {
                 this.QueryParams.Add("task_priority", taskPriority.ToString());
             }
             else

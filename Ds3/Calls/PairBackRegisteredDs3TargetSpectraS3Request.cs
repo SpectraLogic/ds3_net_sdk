@@ -113,7 +113,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithAccessControlReplication(Ds3TargetAccessControlReplication? accessControlReplication)
         {
             this._accessControlReplication = accessControlReplication;
-            if (accessControlReplication != null) {
+            if (accessControlReplication != null)
+            {
                 this.QueryParams.Add("access_control_replication", accessControlReplication.ToString());
             }
             else
@@ -125,7 +126,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithAdminAuthId(string adminAuthId)
         {
             this._adminAuthId = adminAuthId;
-            if (adminAuthId != null) {
+            if (adminAuthId != null)
+            {
                 this.QueryParams.Add("admin_auth_id", adminAuthId);
             }
             else
@@ -137,7 +139,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithAdminSecretKey(string adminSecretKey)
         {
             this._adminSecretKey = adminSecretKey;
-            if (adminSecretKey != null) {
+            if (adminSecretKey != null)
+            {
                 this.QueryParams.Add("admin_secret_key", adminSecretKey);
             }
             else
@@ -149,7 +152,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithDataPathEndPoint(string dataPathEndPoint)
         {
             this._dataPathEndPoint = dataPathEndPoint;
-            if (dataPathEndPoint != null) {
+            if (dataPathEndPoint != null)
+            {
                 this.QueryParams.Add("data_path_end_point", dataPathEndPoint);
             }
             else
@@ -161,7 +165,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithDataPathHttps(bool? dataPathHttps)
         {
             this._dataPathHttps = dataPathHttps;
-            if (dataPathHttps != null) {
+            if (dataPathHttps != null)
+            {
                 this.QueryParams.Add("data_path_https", dataPathHttps.ToString());
             }
             else
@@ -173,7 +178,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithDataPathPort(int? dataPathPort)
         {
             this._dataPathPort = dataPathPort;
-            if (dataPathPort != null) {
+            if (dataPathPort != null)
+            {
                 this.QueryParams.Add("data_path_port", dataPathPort.ToString());
             }
             else
@@ -185,7 +191,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithDataPathProxy(string dataPathProxy)
         {
             this._dataPathProxy = dataPathProxy;
-            if (dataPathProxy != null) {
+            if (dataPathProxy != null)
+            {
                 this.QueryParams.Add("data_path_proxy", dataPathProxy);
             }
             else
@@ -197,7 +204,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithDataPathVerifyCertificate(bool? dataPathVerifyCertificate)
         {
             this._dataPathVerifyCertificate = dataPathVerifyCertificate;
-            if (dataPathVerifyCertificate != null) {
+            if (dataPathVerifyCertificate != null)
+            {
                 this.QueryParams.Add("data_path_verify_certificate", dataPathVerifyCertificate.ToString());
             }
             else
@@ -209,7 +217,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithDefaultReadPreference(TargetReadPreference? defaultReadPreference)
         {
             this._defaultReadPreference = defaultReadPreference;
-            if (defaultReadPreference != null) {
+            if (defaultReadPreference != null)
+            {
                 this.QueryParams.Add("default_read_preference", defaultReadPreference.ToString());
             }
             else
@@ -221,7 +230,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -233,7 +243,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithPermitGoingOutOfSync(bool? permitGoingOutOfSync)
         {
             this._permitGoingOutOfSync = permitGoingOutOfSync;
-            if (permitGoingOutOfSync != null) {
+            if (permitGoingOutOfSync != null)
+            {
                 this.QueryParams.Add("permit_going_out_of_sync", permitGoingOutOfSync.ToString());
             }
             else
@@ -245,7 +256,8 @@ namespace Ds3.Calls
         public PairBackRegisteredDs3TargetSpectraS3Request WithReplicatedUserDefaultDataPolicy(string replicatedUserDefaultDataPolicy)
         {
             this._replicatedUserDefaultDataPolicy = replicatedUserDefaultDataPolicy;
-            if (replicatedUserDefaultDataPolicy != null) {
+            if (replicatedUserDefaultDataPolicy != null)
+            {
                 this.QueryParams.Add("replicated_user_default_data_policy", replicatedUserDefaultDataPolicy);
             }
             else

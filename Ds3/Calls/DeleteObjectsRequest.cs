@@ -49,7 +49,8 @@ namespace Ds3.Calls
         public DeleteObjectsRequest WithReplicate(bool? replicate)
         {
             this._replicate = replicate;
-            if (replicate != null) {
+            if (replicate != null)
+            {
                 this.QueryParams.Add("replicate", replicate.ToString());
             }
             else
@@ -61,7 +62,8 @@ namespace Ds3.Calls
         public DeleteObjectsRequest WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
-            if (rollBack != null) {
+            if (rollBack != null)
+            {
                 this.QueryParams.Add("roll_back", rollBack.ToString());
             }
             else

@@ -57,7 +57,8 @@ namespace Ds3.Calls
         public PutObjectCachedNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType? format)
         {
             this._format = format;
-            if (format != null) {
+            if (format != null)
+            {
                 this.QueryParams.Add("format", format.ToString());
             }
             else
@@ -69,7 +70,8 @@ namespace Ds3.Calls
         public PutObjectCachedNotificationRegistrationSpectraS3Request WithJobId(Guid? jobId)
         {
             this._jobId = jobId.ToString();
-            if (jobId != null) {
+            if (jobId != null)
+            {
                 this.QueryParams.Add("job_id", jobId.ToString());
             }
             else
@@ -81,7 +83,8 @@ namespace Ds3.Calls
         public PutObjectCachedNotificationRegistrationSpectraS3Request WithJobId(string jobId)
         {
             this._jobId = jobId;
-            if (jobId != null) {
+            if (jobId != null)
+            {
                 this.QueryParams.Add("job_id", jobId);
             }
             else
@@ -93,7 +96,8 @@ namespace Ds3.Calls
         public PutObjectCachedNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType? namingConvention)
         {
             this._namingConvention = namingConvention;
-            if (namingConvention != null) {
+            if (namingConvention != null)
+            {
                 this.QueryParams.Add("naming_convention", namingConvention.ToString());
             }
             else
@@ -105,7 +109,8 @@ namespace Ds3.Calls
         public PutObjectCachedNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType? notificationHttpMethod)
         {
             this._notificationHttpMethod = notificationHttpMethod;
-            if (notificationHttpMethod != null) {
+            if (notificationHttpMethod != null)
+            {
                 this.QueryParams.Add("notification_http_method", notificationHttpMethod.ToString());
             }
             else

@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public VerifyPoolSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
-            if (priority != null) {
+            if (priority != null)
+            {
                 this.QueryParams.Add("priority", priority.ToString());
             }
             else

@@ -76,7 +76,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -88,7 +89,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -100,7 +102,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -112,7 +115,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -124,7 +128,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -136,7 +141,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -148,7 +154,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -160,7 +167,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithReadPreference(TargetReadPreference? readPreference)
         {
             this._readPreference = readPreference;
-            if (readPreference != null) {
+            if (readPreference != null)
+            {
                 this.QueryParams.Add("read_preference", readPreference.ToString());
             }
             else
@@ -172,7 +180,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithTargetId(Guid? targetId)
         {
             this._targetId = targetId.ToString();
-            if (targetId != null) {
+            if (targetId != null)
+            {
                 this.QueryParams.Add("target_id", targetId.ToString());
             }
             else
@@ -184,7 +193,8 @@ namespace Ds3.Calls
         public GetDs3TargetReadPreferencesSpectraS3Request WithTargetId(string targetId)
         {
             this._targetId = targetId;
-            if (targetId != null) {
+            if (targetId != null)
+            {
                 this.QueryParams.Add("target_id", targetId);
             }
             else

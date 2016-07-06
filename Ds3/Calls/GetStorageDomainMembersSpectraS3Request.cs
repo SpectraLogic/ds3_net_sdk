@@ -97,7 +97,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -109,7 +110,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -121,7 +123,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -133,7 +136,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -145,7 +149,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -157,7 +162,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithPoolPartitionId(Guid? poolPartitionId)
         {
             this._poolPartitionId = poolPartitionId.ToString();
-            if (poolPartitionId != null) {
+            if (poolPartitionId != null)
+            {
                 this.QueryParams.Add("pool_partition_id", poolPartitionId.ToString());
             }
             else
@@ -169,7 +175,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithPoolPartitionId(string poolPartitionId)
         {
             this._poolPartitionId = poolPartitionId;
-            if (poolPartitionId != null) {
+            if (poolPartitionId != null)
+            {
                 this.QueryParams.Add("pool_partition_id", poolPartitionId);
             }
             else
@@ -181,7 +188,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithState(StorageDomainMemberState? state)
         {
             this._state = state;
-            if (state != null) {
+            if (state != null)
+            {
                 this.QueryParams.Add("state", state.ToString());
             }
             else
@@ -193,7 +201,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
@@ -205,7 +214,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId);
             }
             else
@@ -217,7 +227,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithTapePartitionId(Guid? tapePartitionId)
         {
             this._tapePartitionId = tapePartitionId.ToString();
-            if (tapePartitionId != null) {
+            if (tapePartitionId != null)
+            {
                 this.QueryParams.Add("tape_partition_id", tapePartitionId.ToString());
             }
             else
@@ -229,7 +240,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithTapePartitionId(string tapePartitionId)
         {
             this._tapePartitionId = tapePartitionId;
-            if (tapePartitionId != null) {
+            if (tapePartitionId != null)
+            {
                 this.QueryParams.Add("tape_partition_id", tapePartitionId);
             }
             else
@@ -241,7 +253,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithTapeType(TapeType? tapeType)
         {
             this._tapeType = tapeType;
-            if (tapeType != null) {
+            if (tapeType != null)
+            {
                 this.QueryParams.Add("tape_type", tapeType.ToString());
             }
             else
@@ -253,7 +266,8 @@ namespace Ds3.Calls
         public GetStorageDomainMembersSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
-            if (writePreference != null) {
+            if (writePreference != null)
+            {
                 this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else

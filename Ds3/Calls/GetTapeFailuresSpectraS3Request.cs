@@ -83,7 +83,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithErrorMessage(string errorMessage)
         {
             this._errorMessage = errorMessage;
-            if (errorMessage != null) {
+            if (errorMessage != null)
+            {
                 this.QueryParams.Add("error_message", errorMessage);
             }
             else
@@ -95,7 +96,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -107,7 +109,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -119,7 +122,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -131,7 +135,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -143,7 +148,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -155,7 +161,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithTapeDriveId(Guid? tapeDriveId)
         {
             this._tapeDriveId = tapeDriveId.ToString();
-            if (tapeDriveId != null) {
+            if (tapeDriveId != null)
+            {
                 this.QueryParams.Add("tape_drive_id", tapeDriveId.ToString());
             }
             else
@@ -167,7 +174,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithTapeDriveId(string tapeDriveId)
         {
             this._tapeDriveId = tapeDriveId;
-            if (tapeDriveId != null) {
+            if (tapeDriveId != null)
+            {
                 this.QueryParams.Add("tape_drive_id", tapeDriveId);
             }
             else
@@ -179,7 +187,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithTapeId(Guid? tapeId)
         {
             this._tapeId = tapeId.ToString();
-            if (tapeId != null) {
+            if (tapeId != null)
+            {
                 this.QueryParams.Add("tape_id", tapeId.ToString());
             }
             else
@@ -191,7 +200,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithTapeId(string tapeId)
         {
             this._tapeId = tapeId;
-            if (tapeId != null) {
+            if (tapeId != null)
+            {
                 this.QueryParams.Add("tape_id", tapeId);
             }
             else
@@ -203,7 +213,8 @@ namespace Ds3.Calls
         public GetTapeFailuresSpectraS3Request WithType(TapeFailureType? type)
         {
             this._type = type;
-            if (type != null) {
+            if (type != null)
+            {
                 this.QueryParams.Add("type", type.ToString());
             }
             else

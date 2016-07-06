@@ -90,7 +90,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId.ToString();
-            if (dataPolicyId != null) {
+            if (dataPolicyId != null)
+            {
                 this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
             }
             else
@@ -102,7 +103,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId;
-            if (dataPolicyId != null) {
+            if (dataPolicyId != null)
+            {
                 this.QueryParams.Add("data_policy_id", dataPolicyId);
             }
             else
@@ -114,7 +116,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithIsolationLevel(DataIsolationLevel? isolationLevel)
         {
             this._isolationLevel = isolationLevel;
-            if (isolationLevel != null) {
+            if (isolationLevel != null)
+            {
                 this.QueryParams.Add("isolation_level", isolationLevel.ToString());
             }
             else
@@ -126,7 +129,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -138,7 +142,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -150,7 +155,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -162,7 +168,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -174,7 +181,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -186,7 +194,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithState(DataPersistenceRuleState? state)
         {
             this._state = state;
-            if (state != null) {
+            if (state != null)
+            {
                 this.QueryParams.Add("state", state.ToString());
             }
             else
@@ -198,7 +207,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
@@ -210,7 +220,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId);
             }
             else
@@ -222,7 +233,8 @@ namespace Ds3.Calls
         public GetDataPersistenceRulesSpectraS3Request WithType(DataPersistenceRuleType? type)
         {
             this._type = type;
-            if (type != null) {
+            if (type != null)
+            {
                 this.QueryParams.Add("type", type.ToString());
             }
             else

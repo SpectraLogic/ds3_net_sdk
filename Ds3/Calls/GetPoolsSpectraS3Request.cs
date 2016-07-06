@@ -118,7 +118,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithAssignedToStorageDomain(bool? assignedToStorageDomain)
         {
             this._assignedToStorageDomain = assignedToStorageDomain;
-            if (assignedToStorageDomain != null) {
+            if (assignedToStorageDomain != null)
+            {
                 this.QueryParams.Add("assigned_to_storage_domain", assignedToStorageDomain.ToString());
             }
             else
@@ -130,7 +131,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -142,7 +144,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -154,7 +157,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithHealth(PoolHealth? health)
         {
             this._health = health;
-            if (health != null) {
+            if (health != null)
+            {
                 this.QueryParams.Add("health", health.ToString());
             }
             else
@@ -166,7 +170,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -178,7 +183,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -190,7 +196,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -202,7 +209,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -214,7 +222,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -226,7 +235,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -238,7 +248,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId.ToString());
             }
             else
@@ -250,7 +261,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId);
             }
             else
@@ -262,7 +274,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithPoweredOn(bool? poweredOn)
         {
             this._poweredOn = poweredOn;
-            if (poweredOn != null) {
+            if (poweredOn != null)
+            {
                 this.QueryParams.Add("powered_on", poweredOn.ToString());
             }
             else
@@ -274,7 +287,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithState(PoolState? state)
         {
             this._state = state;
-            if (state != null) {
+            if (state != null)
+            {
                 this.QueryParams.Add("state", state.ToString());
             }
             else
@@ -286,7 +300,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
             }
             else
@@ -298,7 +313,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
-            if (storageDomainId != null) {
+            if (storageDomainId != null)
+            {
                 this.QueryParams.Add("storage_domain_id", storageDomainId);
             }
             else
@@ -310,7 +326,8 @@ namespace Ds3.Calls
         public GetPoolsSpectraS3Request WithType(PoolType? type)
         {
             this._type = type;
-            if (type != null) {
+            if (type != null)
+            {
                 this.QueryParams.Add("type", type.ToString());
             }
             else
