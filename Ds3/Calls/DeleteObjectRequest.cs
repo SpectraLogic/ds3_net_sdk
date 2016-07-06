@@ -28,6 +28,13 @@ namespace Ds3.Calls
         public string ObjectName { get; private set; }
 
         
+        private bool? _replicate;
+        public bool? Replicate
+        {
+            get { return _replicate; }
+            set { WithReplicate(value); }
+        }
+
         private bool? _rollBack;
         public bool? RollBack
         {
@@ -35,6 +42,18 @@ namespace Ds3.Calls
             set { WithRollBack(value); }
         }
 
+        public DeleteObjectRequest WithReplicate(bool? replicate)
+        {
+            this._replicate = replicate;
+            if (replicate != null) {
+                this.QueryParams.Add("replicate", replicate.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("replicate");
+            }
+            return this;
+        }
         public DeleteObjectRequest WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;

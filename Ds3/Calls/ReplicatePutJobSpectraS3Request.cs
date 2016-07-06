@@ -28,13 +28,6 @@ namespace Ds3.Calls
         public string BucketName { get; private set; }
 
         
-        private ReplicationConflictResolutionMode? _conflictResolutionMode;
-        public ReplicationConflictResolutionMode? ConflictResolutionMode
-        {
-            get { return _conflictResolutionMode; }
-            set { WithConflictResolutionMode(value); }
-        }
-
         private Priority? _priority;
         public Priority? Priority
         {
@@ -42,18 +35,6 @@ namespace Ds3.Calls
             set { WithPriority(value); }
         }
 
-        public ReplicatePutJobSpectraS3Request WithConflictResolutionMode(ReplicationConflictResolutionMode? conflictResolutionMode)
-        {
-            this._conflictResolutionMode = conflictResolutionMode;
-            if (conflictResolutionMode != null) {
-                this.QueryParams.Add("conflict_resolution_mode", conflictResolutionMode.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("conflict_resolution_mode");
-            }
-            return this;
-        }
         public ReplicatePutJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;

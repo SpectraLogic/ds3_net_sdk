@@ -22,6 +22,7 @@ namespace Ds3.Models
 {
     public class BulkObject
     {
+        public string Bucket { get; set; }
         public Guid? Id { get; set; }
         public bool? InCache { get; set; }
         public bool Latest { get; set; }

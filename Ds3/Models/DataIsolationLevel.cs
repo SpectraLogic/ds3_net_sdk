@@ -20,7 +20,6 @@ namespace Ds3.Models
     public enum DataIsolationLevel
     {
         STANDARD,
-        BUCKET_ISOLATED,
-        SECURE_BUCKET_ISOLATED
+        BUCKET_ISOLATED
     }
 }

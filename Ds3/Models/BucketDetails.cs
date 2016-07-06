@@ -22,7 +22,7 @@ namespace Ds3.Models
 {
     public class BucketDetails
     {
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
         public string Name { get; set; }
     }
 }

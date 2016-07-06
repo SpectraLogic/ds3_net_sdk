@@ -38,13 +38,6 @@ namespace Ds3.Calls
             set { WithFolder(value); }
         }
 
-        private bool? _includePhysicalPlacement;
-        public bool? IncludePhysicalPlacement
-        {
-            get { return _includePhysicalPlacement; }
-            set { WithIncludePhysicalPlacement(value); }
-        }
-
         private bool? _lastPage;
         public bool? LastPage
         {
@@ -134,18 +127,6 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("folder");
-            }
-            return this;
-        }
-        public GetObjectsSpectraS3Request WithIncludePhysicalPlacement(bool? includePhysicalPlacement)
-        {
-            this._includePhysicalPlacement = includePhysicalPlacement;
-            if (includePhysicalPlacement != null) {
-                this.QueryParams.Add("include_physical_placement", includePhysicalPlacement.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("include_physical_placement");
             }
             return this;
         }

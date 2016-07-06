@@ -47,11 +47,25 @@ namespace Ds3.Calls
             set { WithAggregating(value); }
         }
 
+        private bool? _force;
+        public bool? Force
+        {
+            get { return _force; }
+            set { WithForce(value); }
+        }
+
         private bool? _ignoreNamingConflicts;
         public bool? IgnoreNamingConflicts
         {
             get { return _ignoreNamingConflicts; }
             set { WithIgnoreNamingConflicts(value); }
+        }
+
+        private bool? _minimizeSpanningAcrossMedia;
+        public bool? MinimizeSpanningAcrossMedia
+        {
+            get { return _minimizeSpanningAcrossMedia; }
+            set { WithMinimizeSpanningAcrossMedia(value); }
         }
 
         private string _name;
@@ -80,6 +94,18 @@ namespace Ds3.Calls
             }
             return this;
         }
+        public PutBulkJobSpectraS3Request WithForce(bool? force)
+        {
+            this._force = force;
+            if (force != null) {
+                this.QueryParams.Add("force", force.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("force");
+            }
+            return this;
+        }
         public PutBulkJobSpectraS3Request WithIgnoreNamingConflicts(bool? ignoreNamingConflicts)
         {
             this._ignoreNamingConflicts = ignoreNamingConflicts;
@@ -89,6 +115,18 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("ignore_naming_conflicts");
+            }
+            return this;
+        }
+        public PutBulkJobSpectraS3Request WithMinimizeSpanningAcrossMedia(bool? minimizeSpanningAcrossMedia)
+        {
+            this._minimizeSpanningAcrossMedia = minimizeSpanningAcrossMedia;
+            if (minimizeSpanningAcrossMedia != null) {
+                this.QueryParams.Add("minimize_spanning_across_media", minimizeSpanningAcrossMedia.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("minimize_spanning_across_media");
             }
             return this;
         }

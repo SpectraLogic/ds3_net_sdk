@@ -38,6 +38,13 @@ namespace Ds3.Calls
             set { WithDataPolicyId(value); }
         }
 
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
+        }
+
         private string _storageDomainId;
         public string StorageDomainId
         {
@@ -50,6 +57,20 @@ namespace Ds3.Calls
         {
             get { return _userId; }
             set { WithUserId(value); }
+        }
+
+        private Priority? _verifyDataAfterImport;
+        public Priority? VerifyDataAfterImport
+        {
+            get { return _verifyDataAfterImport; }
+            set { WithVerifyDataAfterImport(value); }
+        }
+
+        private bool? _verifyDataPriorToImport;
+        public bool? VerifyDataPriorToImport
+        {
+            get { return _verifyDataPriorToImport; }
+            set { WithVerifyDataPriorToImport(value); }
         }
 
         public ImportAllTapesSpectraS3Request WithConflictResolutionMode(ImportConflictResolutionMode? conflictResolutionMode)
@@ -85,6 +106,18 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("data_policy_id");
+            }
+            return this;
+        }
+        public ImportAllTapesSpectraS3Request WithPriority(Priority? priority)
+        {
+            this._priority = priority;
+            if (priority != null) {
+                this.QueryParams.Add("priority", priority.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("priority");
             }
             return this;
         }
@@ -133,6 +166,30 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("user_id");
+            }
+            return this;
+        }
+        public ImportAllTapesSpectraS3Request WithVerifyDataAfterImport(Priority? verifyDataAfterImport)
+        {
+            this._verifyDataAfterImport = verifyDataAfterImport;
+            if (verifyDataAfterImport != null) {
+                this.QueryParams.Add("verify_data_after_import", verifyDataAfterImport.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("verify_data_after_import");
+            }
+            return this;
+        }
+        public ImportAllTapesSpectraS3Request WithVerifyDataPriorToImport(bool? verifyDataPriorToImport)
+        {
+            this._verifyDataPriorToImport = verifyDataPriorToImport;
+            if (verifyDataPriorToImport != null) {
+                this.QueryParams.Add("verify_data_prior_to_import", verifyDataPriorToImport.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("verify_data_prior_to_import");
             }
             return this;
         }

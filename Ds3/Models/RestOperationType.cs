@@ -24,6 +24,7 @@ namespace Ds3.Models
         CANCEL_FORMAT,
         CANCEL_IMPORT,
         CANCEL_ONLINE,
+        CANCEL_VERIFY,
         CLEAN,
         COMPACT,
         DEALLOCATE,
@@ -33,11 +34,13 @@ namespace Ds3.Models
         IMPORT,
         INSPECT,
         ONLINE,
+        PAIR_BACK,
         REGENERATE_SECRET_KEY,
         START_BULK_GET,
         START_BULK_PUT,
         START_BULK_VERIFY,
         VERIFY,
+        VERIFY_SAFE_TO_START_BULK_PUT,
         VERIFY_PHYSICAL_PLACEMENT
     }
 }

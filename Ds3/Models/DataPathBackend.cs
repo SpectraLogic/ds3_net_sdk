@@ -27,6 +27,7 @@ namespace Ds3.Models
         public AutoInspectMode AutoInspect { get; set; }
         public ImportConflictResolutionMode DefaultImportConflictResolutionMode { get; set; }
         public Guid Id { get; set; }
+        public Guid InstanceId { get; set; }
         public DateTime LastHeartbeat { get; set; }
         public UnavailableMediaUsagePolicy UnavailableMediaPolicy { get; set; }
         public int UnavailablePoolMaxJobRetryInMins { get; set; }
