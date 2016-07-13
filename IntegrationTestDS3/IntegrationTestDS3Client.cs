@@ -1084,5 +1084,24 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
+
+        [Test]
+        public void TestGetObjectDetails()
+        {
+            const string bucketName = "TestGetObjectDetails";
+            const string objectName = "beowulf.txt";
+            try
+            {
+                Ds3TestUtils.LoadTestData(_client, bucketName);
+
+                var response = _client.GetObjectDetailsSpectraS3(new GetObjectDetailsSpectraS3Request(objectName, bucketName));
+                Assert.AreEqual(response.ResponsePayload.Name, objectName);
+                Assert.AreEqual(response.ResponsePayload.Type, S3ObjectType.DATA);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
     }
 }
