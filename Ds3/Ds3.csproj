@@ -290,6 +290,8 @@
     <Compile Include="Calls\GetObjectCachedNotificationRegistrationSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectCachedNotificationRegistrationsSpectraS3Request.cs" />
     <Compile Include="Calls\GetObjectCachedNotificationRegistrationsSpectraS3Response.cs" />
+    <Compile Include="Calls\GetObjectDetailsSpectraS3Request.cs" />
+    <Compile Include="Calls\GetObjectDetailsSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectLostNotificationRegistrationSpectraS3Request.cs" />
     <Compile Include="Calls\GetObjectLostNotificationRegistrationSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectLostNotificationRegistrationsSpectraS3Request.cs" />
@@ -300,8 +302,6 @@
     <Compile Include="Calls\GetObjectPersistedNotificationRegistrationsSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectRequest.cs" />
     <Compile Include="Calls\GetObjectResponse.cs" />
-    <Compile Include="Calls\GetObjectSpectraS3Request.cs" />
-    <Compile Include="Calls\GetObjectSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectsSpectraS3Request.cs" />
     <Compile Include="Calls\GetObjectsSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectsWithFullDetailsSpectraS3Request.cs" />
@@ -853,12 +853,12 @@
     <Compile Include="ResponseParsers\GetNodesSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectCachedNotificationRegistrationSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectCachedNotificationRegistrationsSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetObjectDetailsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectLostNotificationRegistrationSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectLostNotificationRegistrationsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectPersistedNotificationRegistrationSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectPersistedNotificationRegistrationsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectResponseParser.cs" />
-    <Compile Include="ResponseParsers\GetObjectSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectsWithFullDetailsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetPhysicalPlacementForObjectsSpectraS3ResponseParser.cs" />
