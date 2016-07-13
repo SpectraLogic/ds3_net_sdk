@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteGroupSpectraS3Request(string group) {
+        public DeleteGroupSpectraS3Request(string group)
+        {
             this.Group = group;
             
         }

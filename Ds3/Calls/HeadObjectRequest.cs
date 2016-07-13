@@ -30,7 +30,8 @@ namespace Ds3.Calls
         
 
         
-        public HeadObjectRequest(string bucketName, string objectName) {
+        public HeadObjectRequest(string bucketName, string objectName)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             

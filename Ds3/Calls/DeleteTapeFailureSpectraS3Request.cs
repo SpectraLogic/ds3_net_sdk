@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteTapeFailureSpectraS3Request(string tapeFailure) {
+        public DeleteTapeFailureSpectraS3Request(string tapeFailure)
+        {
             this.TapeFailure = tapeFailure;
             
         }

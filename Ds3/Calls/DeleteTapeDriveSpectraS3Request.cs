@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
-        public DeleteTapeDriveSpectraS3Request(Guid tapeDriveId) {
+        public DeleteTapeDriveSpectraS3Request(Guid tapeDriveId)
+        {
             this.TapeDriveId = tapeDriveId.ToString();
             
         }
 
-        public DeleteTapeDriveSpectraS3Request(string tapeDriveId) {
+        public DeleteTapeDriveSpectraS3Request(string tapeDriveId)
+        {
             this.TapeDriveId = tapeDriveId;
             
         }

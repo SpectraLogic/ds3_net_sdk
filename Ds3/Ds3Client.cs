@@ -541,9 +541,9 @@ namespace Ds3
             return new GetTapePartitionFailureNotificationRegistrationsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public GetObjectSpectraS3Response GetObjectSpectraS3(GetObjectSpectraS3Request request)
+        public GetObjectDetailsSpectraS3Response GetObjectDetailsSpectraS3(GetObjectDetailsSpectraS3Request request)
         {
-            return new GetObjectSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+            return new GetObjectDetailsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetObjectsSpectraS3Response GetObjectsSpectraS3(GetObjectsSpectraS3Request request)

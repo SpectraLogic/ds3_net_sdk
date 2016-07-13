@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeallocatePoolSpectraS3Request(string pool) {
+        public DeallocatePoolSpectraS3Request(string pool)
+        {
             this.Pool = pool;
             this.QueryParams.Add("operation", "deallocate");
             

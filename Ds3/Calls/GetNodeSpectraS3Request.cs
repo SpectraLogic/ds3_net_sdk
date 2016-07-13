@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetNodeSpectraS3Request(string node) {
+        public GetNodeSpectraS3Request(string node)
+        {
             this.Node = node;
             
         }

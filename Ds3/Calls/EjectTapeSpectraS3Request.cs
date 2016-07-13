@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public EjectTapeSpectraS3Request WithEjectLabel(string ejectLabel)
         {
             this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
+            if (ejectLabel != null)
+            {
                 this.QueryParams.Add("eject_label", ejectLabel);
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public EjectTapeSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
-            if (ejectLocation != null) {
+            if (ejectLocation != null)
+            {
                 this.QueryParams.Add("eject_location", ejectLocation);
             }
             else
@@ -66,13 +68,15 @@ namespace Ds3.Calls
         }
 
         
-        public EjectTapeSpectraS3Request(Guid tapeId) {
+        public EjectTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             this.QueryParams.Add("operation", "eject");
             
         }
 
-        public EjectTapeSpectraS3Request(string tapeId) {
+        public EjectTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "eject");
             

@@ -83,7 +83,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -95,7 +96,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -107,7 +109,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithGroupId(Guid? groupId)
         {
             this._groupId = groupId.ToString();
-            if (groupId != null) {
+            if (groupId != null)
+            {
                 this.QueryParams.Add("group_id", groupId.ToString());
             }
             else
@@ -119,7 +122,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithGroupId(string groupId)
         {
             this._groupId = groupId;
-            if (groupId != null) {
+            if (groupId != null)
+            {
                 this.QueryParams.Add("group_id", groupId);
             }
             else
@@ -131,7 +135,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -143,7 +148,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -155,7 +161,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -167,7 +174,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -179,7 +187,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -191,7 +200,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithPermission(BucketAclPermission? permission)
         {
             this._permission = permission;
-            if (permission != null) {
+            if (permission != null)
+            {
                 this.QueryParams.Add("permission", permission.ToString());
             }
             else
@@ -203,7 +213,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId.ToString());
             }
             else
@@ -215,7 +226,8 @@ namespace Ds3.Calls
         public GetBucketAclsSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId);
             }
             else
@@ -226,7 +238,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetBucketAclsSpectraS3Request() {
+        public GetBucketAclsSpectraS3Request()
+        {
             
         }
 

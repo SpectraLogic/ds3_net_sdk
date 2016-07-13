@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
-        public GetUserSpectraS3Request(Guid userId) {
+        public GetUserSpectraS3Request(Guid userId)
+        {
             this.UserId = userId.ToString();
             
         }
 
-        public GetUserSpectraS3Request(string userId) {
+        public GetUserSpectraS3Request(string userId)
+        {
             this.UserId = userId;
             
         }

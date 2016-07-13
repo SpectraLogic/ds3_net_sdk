@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public ModifyPoolSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId.ToString());
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public ModifyPoolSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
-            if (partitionId != null) {
+            if (partitionId != null)
+            {
                 this.QueryParams.Add("partition_id", partitionId);
             }
             else
@@ -67,7 +69,8 @@ namespace Ds3.Calls
         public ModifyPoolSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
-            if (quiesced != null) {
+            if (quiesced != null)
+            {
                 this.QueryParams.Add("quiesced", quiesced.ToString());
             }
             else
@@ -78,7 +81,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyPoolSpectraS3Request(string pool) {
+        public ModifyPoolSpectraS3Request(string pool)
+        {
             this.Pool = pool;
             
         }

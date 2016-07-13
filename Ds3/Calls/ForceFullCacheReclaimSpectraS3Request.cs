@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public ForceFullCacheReclaimSpectraS3Request() {
+        public ForceFullCacheReclaimSpectraS3Request()
+        {
             
             this.QueryParams.Add("reclaim", null);
 
