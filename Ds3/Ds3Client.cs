@@ -666,9 +666,9 @@ namespace Ds3
             return new GetObjectDetailsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public GetObjectsSpectraS3Response GetObjectsSpectraS3(GetObjectsSpectraS3Request request)
+        public GetObjectsDetailsSpectraS3Response GetObjectsDetailsSpectraS3(GetObjectsDetailsSpectraS3Request request)
         {
-            return new GetObjectsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+            return new GetObjectsDetailsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetObjectsWithFullDetailsSpectraS3Response GetObjectsWithFullDetailsSpectraS3(GetObjectsWithFullDetailsSpectraS3Request request)

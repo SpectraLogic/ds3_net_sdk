@@ -302,8 +302,8 @@
     <Compile Include="Calls\GetObjectPersistedNotificationRegistrationsSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectRequest.cs" />
     <Compile Include="Calls\GetObjectResponse.cs" />
-    <Compile Include="Calls\GetObjectsSpectraS3Request.cs" />
-    <Compile Include="Calls\GetObjectsSpectraS3Response.cs" />
+    <Compile Include="Calls\GetObjectsDetailsSpectraS3Request.cs" />
+    <Compile Include="Calls\GetObjectsDetailsSpectraS3Response.cs" />
     <Compile Include="Calls\GetObjectsWithFullDetailsSpectraS3Request.cs" />
     <Compile Include="Calls\GetObjectsWithFullDetailsSpectraS3Response.cs" />
     <Compile Include="Calls\GetPhysicalPlacementForObjectsSpectraS3Request.cs" />
@@ -859,7 +859,7 @@
     <Compile Include="ResponseParsers\GetObjectPersistedNotificationRegistrationSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectPersistedNotificationRegistrationsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectResponseParser.cs" />
-    <Compile Include="ResponseParsers\GetObjectsSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetObjectsDetailsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetObjectsWithFullDetailsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetPhysicalPlacementForObjectsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3ResponseParser.cs" />

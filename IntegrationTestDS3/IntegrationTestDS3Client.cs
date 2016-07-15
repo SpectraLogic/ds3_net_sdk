@@ -378,10 +378,10 @@ namespace IntegrationTestDs3
                 });
 
                 // Does a query param escape properly?
-                GetObjectsSpectraS3Request getObjectsWithNameRequest = new GetObjectsSpectraS3Request()
+                GetObjectsDetailsSpectraS3Request getObjectsWithNameRequest = new GetObjectsDetailsSpectraS3Request()
                     .WithName(fileName);
 
-                var getObjectsResponse = _client.GetObjectsSpectraS3(getObjectsWithNameRequest);
+                var getObjectsResponse = _client.GetObjectsDetailsSpectraS3(getObjectsWithNameRequest);
 
                 var filename =
                     from f in getObjectsResponse.ResponsePayload.S3Objects
@@ -707,11 +707,11 @@ namespace IntegrationTestDs3
 
         private IEnumerable<S3Object> ListBucketObjects(string bucketName)
         {
-            var request = new GetObjectsSpectraS3Request
+            var request = new GetObjectsDetailsSpectraS3Request
             {
                 BucketId = bucketName
             };
-            return _client.GetObjectsSpectraS3(request).ResponsePayload.S3Objects;
+            return _client.GetObjectsDetailsSpectraS3(request).ResponsePayload.S3Objects;
         }
 
         /* current defect in simulator, this will fail,

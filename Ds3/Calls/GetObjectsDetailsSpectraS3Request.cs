@@ -20,7 +20,7 @@ using System.Net;
 
 namespace Ds3.Calls
 {
-    public class GetObjectsSpectraS3Request : Ds3Request
+    public class GetObjectsDetailsSpectraS3Request : Ds3Request
     {
         
         
@@ -94,7 +94,7 @@ namespace Ds3.Calls
             set { WithVersion(value); }
         }
 
-        public GetObjectsSpectraS3Request WithBucketId(Guid? bucketId)
+        public GetObjectsDetailsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
             if (bucketId != null)
@@ -107,7 +107,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithBucketId(string bucketId)
+        public GetObjectsDetailsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
             if (bucketId != null)
@@ -120,7 +120,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithFolder(string folder)
+        public GetObjectsDetailsSpectraS3Request WithFolder(string folder)
         {
             this._folder = folder;
             if (folder != null)
@@ -133,7 +133,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithLastPage(bool? lastPage)
+        public GetObjectsDetailsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
             if (lastPage != null)
@@ -146,7 +146,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithLatest(bool? latest)
+        public GetObjectsDetailsSpectraS3Request WithLatest(bool? latest)
         {
             this._latest = latest;
             if (latest != null)
@@ -159,7 +159,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithName(string name)
+        public GetObjectsDetailsSpectraS3Request WithName(string name)
         {
             this._name = name;
             if (name != null)
@@ -172,7 +172,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithPageLength(int? pageLength)
+        public GetObjectsDetailsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
             if (pageLength != null)
@@ -185,7 +185,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithPageOffset(int? pageOffset)
+        public GetObjectsDetailsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
             if (pageOffset != null)
@@ -198,7 +198,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
+        public GetObjectsDetailsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
             if (pageStartMarker != null)
@@ -211,7 +211,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithPageStartMarker(string pageStartMarker)
+        public GetObjectsDetailsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
             if (pageStartMarker != null)
@@ -224,7 +224,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithType(S3ObjectType? type)
+        public GetObjectsDetailsSpectraS3Request WithType(S3ObjectType? type)
         {
             this._type = type;
             if (type != null)
@@ -237,7 +237,7 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public GetObjectsSpectraS3Request WithVersion(long? version)
+        public GetObjectsDetailsSpectraS3Request WithVersion(long? version)
         {
             this._version = version;
             if (version != null)
@@ -252,7 +252,7 @@ namespace Ds3.Calls
         }
 
         
-        public GetObjectsSpectraS3Request()
+        public GetObjectsDetailsSpectraS3Request()
         {
             
         }

@@ -18,11 +18,11 @@ using Ds3.Models;
 
 namespace Ds3.Calls
 {
-    public class GetObjectsSpectraS3Response
+    public class GetObjectsDetailsSpectraS3Response
     {
         public S3ObjectList ResponsePayload { get; private set; }
 
-        public GetObjectsSpectraS3Response(S3ObjectList responsePayload)
+        public GetObjectsDetailsSpectraS3Response(S3ObjectList responsePayload)
         {
             this.ResponsePayload = responsePayload;
         }
