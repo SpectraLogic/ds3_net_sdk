@@ -27,7 +27,7 @@ namespace TestDs3.Helpers.Strategys
         [Test]
         public void TestReadRandomAccessHelperStrategyUsingStringAsTItem()
         {
-            var helperStrategy = new ReadRandomAccessHelperStrategy<string>(-1);
+            var helperStrategy = new ReadRandomAccessHelperStrategy<string>();
             var chunkStrategy = helperStrategy.GetChunkStrategy();
             var streamFactory = helperStrategy.GetStreamFactory();
 
@@ -38,7 +38,7 @@ namespace TestDs3.Helpers.Strategys
         [Test]
         public void TestReadRandomAccessHelperStrategyUsingDs3PartialObjectAsTItem()
         {
-            var helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(-1);
+            var helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>();
             var chunkStrategy = helperStrategy.GetChunkStrategy();
             var streamFactory = helperStrategy.GetStreamFactory();
 

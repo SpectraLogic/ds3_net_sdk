@@ -91,7 +91,7 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy(withAggregation);
+                helperStrategy = new WriteRandomAccessHelperStrategy(this._retryAfter, withAggregation);
             }
 
             return FullObjectJob.Create(
@@ -248,7 +248,7 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy(false);
+                helperStrategy = new WriteRandomAccessHelperStrategy(this._retryAfter, false);
             }
 
             return FullObjectJob.Create(
