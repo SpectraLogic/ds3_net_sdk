@@ -24,16 +24,16 @@ using System.Xml.Linq;
 
 namespace Ds3.ResponseParsers
 {
-    internal class GetObjectsSpectraS3ResponseParser : IResponseParser<GetObjectsSpectraS3Request, GetObjectsSpectraS3Response>
+    internal class GetObjectsDetailsSpectraS3ResponseParser : IResponseParser<GetObjectsDetailsSpectraS3Request, GetObjectsDetailsSpectraS3Response>
     {
-        public GetObjectsSpectraS3Response Parse(GetObjectsSpectraS3Request request, IWebResponse response)
+        public GetObjectsDetailsSpectraS3Response Parse(GetObjectsDetailsSpectraS3Request request, IWebResponse response)
         {
             using (response)
             {
                 ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
                 using (var stream = response.GetResponseStream())
                 {
-                    return new GetObjectsSpectraS3Response(
+                    return new GetObjectsDetailsSpectraS3Response(
                         ModelParsers.ParseS3ObjectList(
                             XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
                     );

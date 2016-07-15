@@ -286,7 +286,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/_rest_/object", expectedQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetObjectsSpectraS3(new GetObjectsSpectraS3Request()
+                .GetObjectsDetailsSpectraS3(new GetObjectsDetailsSpectraS3Request()
                 .WithBucketId("videos")
                 .WithName("%mp4"));
 
