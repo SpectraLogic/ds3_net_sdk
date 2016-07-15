@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public ModifyBucketSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId.ToString();
-            if (dataPolicyId != null) {
+            if (dataPolicyId != null)
+            {
                 this.QueryParams.Add("data_policy_id", dataPolicyId.ToString());
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public ModifyBucketSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId;
-            if (dataPolicyId != null) {
+            if (dataPolicyId != null)
+            {
                 this.QueryParams.Add("data_policy_id", dataPolicyId);
             }
             else
@@ -67,7 +69,8 @@ namespace Ds3.Calls
         public ModifyBucketSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId.ToString());
             }
             else
@@ -79,7 +82,8 @@ namespace Ds3.Calls
         public ModifyBucketSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId);
             }
             else
@@ -90,7 +94,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyBucketSpectraS3Request(string bucketName) {
+        public ModifyBucketSpectraS3Request(string bucketName)
+        {
             this.BucketName = bucketName;
             
         }

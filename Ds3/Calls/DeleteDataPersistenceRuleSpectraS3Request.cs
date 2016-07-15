@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteDataPersistenceRuleSpectraS3Request(string dataPersistenceRule) {
+        public DeleteDataPersistenceRuleSpectraS3Request(string dataPersistenceRule)
+        {
             this.DataPersistenceRule = dataPersistenceRule;
             
         }

@@ -45,7 +45,8 @@ namespace Ds3.Calls
         public ReplicatePutJobSpectraS3Request WithConflictResolutionMode(ReplicationConflictResolutionMode? conflictResolutionMode)
         {
             this._conflictResolutionMode = conflictResolutionMode;
-            if (conflictResolutionMode != null) {
+            if (conflictResolutionMode != null)
+            {
                 this.QueryParams.Add("conflict_resolution_mode", conflictResolutionMode.ToString());
             }
             else
@@ -57,7 +58,8 @@ namespace Ds3.Calls
         public ReplicatePutJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
-            if (priority != null) {
+            if (priority != null)
+            {
                 this.QueryParams.Add("priority", priority.ToString());
             }
             else
@@ -68,7 +70,8 @@ namespace Ds3.Calls
         }
 
         
-        public ReplicatePutJobSpectraS3Request(string bucketName, string requestPayload) {
+        public ReplicatePutJobSpectraS3Request(string bucketName, string requestPayload)
+        {
             this.BucketName = bucketName;
             this.RequestPayload = requestPayload;
             this.QueryParams.Add("operation", "start_bulk_put");

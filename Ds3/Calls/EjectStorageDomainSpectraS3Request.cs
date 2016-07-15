@@ -56,7 +56,8 @@ namespace Ds3.Calls
         public EjectStorageDomainSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId.ToString());
             }
             else
@@ -68,7 +69,8 @@ namespace Ds3.Calls
         public EjectStorageDomainSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
-            if (bucketId != null) {
+            if (bucketId != null)
+            {
                 this.QueryParams.Add("bucket_id", bucketId);
             }
             else
@@ -80,7 +82,8 @@ namespace Ds3.Calls
         public EjectStorageDomainSpectraS3Request WithEjectLabel(string ejectLabel)
         {
             this._ejectLabel = ejectLabel;
-            if (ejectLabel != null) {
+            if (ejectLabel != null)
+            {
                 this.QueryParams.Add("eject_label", ejectLabel);
             }
             else
@@ -92,7 +95,8 @@ namespace Ds3.Calls
         public EjectStorageDomainSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
-            if (ejectLocation != null) {
+            if (ejectLocation != null)
+            {
                 this.QueryParams.Add("eject_location", ejectLocation);
             }
             else

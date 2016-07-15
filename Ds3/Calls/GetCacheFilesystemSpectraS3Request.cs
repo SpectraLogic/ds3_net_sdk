@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetCacheFilesystemSpectraS3Request(string cacheFilesystem) {
+        public GetCacheFilesystemSpectraS3Request(string cacheFilesystem)
+        {
             this.CacheFilesystem = cacheFilesystem;
             
         }

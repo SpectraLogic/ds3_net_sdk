@@ -34,7 +34,8 @@ namespace Ds3.Calls
         public FormatAllTapesSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
-            if (force != null) {
+            if (force != null)
+            {
                 this.QueryParams.Add("force", force.ToString());
             }
             else
@@ -45,7 +46,8 @@ namespace Ds3.Calls
         }
 
         
-        public FormatAllTapesSpectraS3Request() {
+        public FormatAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "format");
             
         }

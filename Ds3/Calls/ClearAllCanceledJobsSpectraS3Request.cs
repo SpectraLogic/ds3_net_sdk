@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public ClearAllCanceledJobsSpectraS3Request() {
+        public ClearAllCanceledJobsSpectraS3Request()
+        {
             
         }
 

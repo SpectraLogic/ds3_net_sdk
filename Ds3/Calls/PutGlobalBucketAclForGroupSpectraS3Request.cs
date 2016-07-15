@@ -30,7 +30,8 @@ namespace Ds3.Calls
         
 
         
-        public PutGlobalBucketAclForGroupSpectraS3Request(Guid groupId, BucketAclPermission permission) {
+        public PutGlobalBucketAclForGroupSpectraS3Request(Guid groupId, BucketAclPermission permission)
+        {
             this.GroupId = groupId.ToString();
             this.Permission = permission;
             
@@ -40,7 +41,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutGlobalBucketAclForGroupSpectraS3Request(string groupId, BucketAclPermission permission) {
+        public PutGlobalBucketAclForGroupSpectraS3Request(string groupId, BucketAclPermission permission)
+        {
             this.GroupId = groupId;
             this.Permission = permission;
             

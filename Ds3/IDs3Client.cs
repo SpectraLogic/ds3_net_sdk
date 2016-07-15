@@ -127,7 +127,7 @@ namespace Ds3
         GetTapeFailureNotificationRegistrationsSpectraS3Response GetTapeFailureNotificationRegistrationsSpectraS3(GetTapeFailureNotificationRegistrationsSpectraS3Request request);
         GetTapePartitionFailureNotificationRegistrationSpectraS3Response GetTapePartitionFailureNotificationRegistrationSpectraS3(GetTapePartitionFailureNotificationRegistrationSpectraS3Request request);
         GetTapePartitionFailureNotificationRegistrationsSpectraS3Response GetTapePartitionFailureNotificationRegistrationsSpectraS3(GetTapePartitionFailureNotificationRegistrationsSpectraS3Request request);
-        GetObjectSpectraS3Response GetObjectSpectraS3(GetObjectSpectraS3Request request);
+        GetObjectDetailsSpectraS3Response GetObjectDetailsSpectraS3(GetObjectDetailsSpectraS3Request request);
         GetObjectsSpectraS3Response GetObjectsSpectraS3(GetObjectsSpectraS3Request request);
         GetObjectsWithFullDetailsSpectraS3Response GetObjectsWithFullDetailsSpectraS3(GetObjectsWithFullDetailsSpectraS3Request request);
         GetPhysicalPlacementForObjectsSpectraS3Response GetPhysicalPlacementForObjectsSpectraS3(GetPhysicalPlacementForObjectsSpectraS3Request request);

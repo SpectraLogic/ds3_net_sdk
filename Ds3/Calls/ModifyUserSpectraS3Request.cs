@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public ModifyUserSpectraS3Request WithDefaultDataPolicyId(Guid? defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId.ToString();
-            if (defaultDataPolicyId != null) {
+            if (defaultDataPolicyId != null)
+            {
                 this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId.ToString());
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public ModifyUserSpectraS3Request WithDefaultDataPolicyId(string defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId;
-            if (defaultDataPolicyId != null) {
+            if (defaultDataPolicyId != null)
+            {
                 this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId);
             }
             else
@@ -67,7 +69,8 @@ namespace Ds3.Calls
         public ModifyUserSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -78,12 +81,14 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyUserSpectraS3Request(Guid userId) {
+        public ModifyUserSpectraS3Request(Guid userId)
+        {
             this.UserId = userId.ToString();
             
         }
 
-        public ModifyUserSpectraS3Request(string userId) {
+        public ModifyUserSpectraS3Request(string userId)
+        {
             this.UserId = userId;
             
         }

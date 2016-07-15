@@ -50,7 +50,8 @@ namespace Ds3.Calls
         public ModifyJobSpectraS3Request WithCreatedAt(DateTime? createdAt)
         {
             this._createdAt = createdAt;
-            if (createdAt != null) {
+            if (createdAt != null)
+            {
                 this.QueryParams.Add("created_at", createdAt.ToString());
             }
             else
@@ -62,7 +63,8 @@ namespace Ds3.Calls
         public ModifyJobSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -74,7 +76,8 @@ namespace Ds3.Calls
         public ModifyJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
-            if (priority != null) {
+            if (priority != null)
+            {
                 this.QueryParams.Add("priority", priority.ToString());
             }
             else
@@ -85,12 +88,14 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyJobSpectraS3Request(Guid jobId) {
+        public ModifyJobSpectraS3Request(Guid jobId)
+        {
             this.JobId = jobId.ToString();
             
         }
 
-        public ModifyJobSpectraS3Request(string jobId) {
+        public ModifyJobSpectraS3Request(string jobId)
+        {
             this.JobId = jobId;
             
         }

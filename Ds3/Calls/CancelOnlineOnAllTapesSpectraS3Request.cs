@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public CancelOnlineOnAllTapesSpectraS3Request() {
+        public CancelOnlineOnAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "cancel_online");
             
         }

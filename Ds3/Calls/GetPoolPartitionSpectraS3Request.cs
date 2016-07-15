@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetPoolPartitionSpectraS3Request(string poolPartition) {
+        public GetPoolPartitionSpectraS3Request(string poolPartition)
+        {
             this.PoolPartition = poolPartition;
             
         }

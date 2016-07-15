@@ -38,7 +38,8 @@ namespace Ds3.Calls
         public DeleteFolderRecursivelySpectraS3Request WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
-            if (rollBack != null) {
+            if (rollBack != null)
+            {
                 this.QueryParams.Add("roll_back", rollBack.ToString());
             }
             else
@@ -49,7 +50,8 @@ namespace Ds3.Calls
         }
 
         
-        public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder) {
+        public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder)
+        {
             this.Folder = folder;
             this.BucketId = bucketId.ToString();
             
@@ -59,7 +61,8 @@ namespace Ds3.Calls
 
         }
 
-        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder) {
+        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder)
+        {
             this.Folder = folder;
             this.BucketId = bucketId;
             

@@ -28,14 +28,16 @@ namespace Ds3.Calls
         
 
         
-        public GetPutJobToReplicateSpectraS3Request(Guid jobId) {
+        public GetPutJobToReplicateSpectraS3Request(Guid jobId)
+        {
             this.JobId = jobId.ToString();
             
             this.QueryParams.Add("replicate", null);
 
         }
 
-        public GetPutJobToReplicateSpectraS3Request(string jobId) {
+        public GetPutJobToReplicateSpectraS3Request(string jobId)
+        {
             this.JobId = jobId;
             
             this.QueryParams.Add("replicate", null);

@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public CancelEjectOnAllTapesSpectraS3Request() {
+        public CancelEjectOnAllTapesSpectraS3Request()
+        {
             this.QueryParams.Add("operation", "cancel_eject");
             
         }
