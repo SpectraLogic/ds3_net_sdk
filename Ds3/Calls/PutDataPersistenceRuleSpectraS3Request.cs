@@ -42,7 +42,8 @@ namespace Ds3.Calls
         public PutDataPersistenceRuleSpectraS3Request WithMinimumDaysToRetain(int? minimumDaysToRetain)
         {
             this._minimumDaysToRetain = minimumDaysToRetain;
-            if (minimumDaysToRetain != null) {
+            if (minimumDaysToRetain != null)
+            {
                 this.QueryParams.Add("minimum_days_to_retain", minimumDaysToRetain.ToString());
             }
             else
@@ -53,7 +54,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutDataPersistenceRuleSpectraS3Request(Guid dataPolicyId, DataIsolationLevel isolationLevel, Guid storageDomainId, DataPersistenceRuleType type) {
+        public PutDataPersistenceRuleSpectraS3Request(Guid dataPolicyId, DataIsolationLevel isolationLevel, Guid storageDomainId, DataPersistenceRuleType type)
+        {
             this.DataPolicyId = dataPolicyId.ToString();
             this.IsolationLevel = isolationLevel;
             this.StorageDomainId = storageDomainId.ToString();
@@ -69,7 +71,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutDataPersistenceRuleSpectraS3Request(string dataPolicyId, DataIsolationLevel isolationLevel, string storageDomainId, DataPersistenceRuleType type) {
+        public PutDataPersistenceRuleSpectraS3Request(string dataPolicyId, DataIsolationLevel isolationLevel, string storageDomainId, DataPersistenceRuleType type)
+        {
             this.DataPolicyId = dataPolicyId;
             this.IsolationLevel = isolationLevel;
             this.StorageDomainId = storageDomainId;

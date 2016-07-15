@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteBucketRequest(string bucketName) {
+        public DeleteBucketRequest(string bucketName)
+        {
             this.BucketName = bucketName;
             
         }

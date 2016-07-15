@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public GetDataPathBackendSpectraS3Request() {
+        public GetDataPathBackendSpectraS3Request()
+        {
             
         }
 

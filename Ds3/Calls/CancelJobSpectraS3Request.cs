@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public CancelJobSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
-            if (force != null) {
+            if (force != null)
+            {
                 this.QueryParams.Add("force", force.ToString());
             }
             else
@@ -47,12 +48,14 @@ namespace Ds3.Calls
         }
 
         
-        public CancelJobSpectraS3Request(Guid jobId) {
+        public CancelJobSpectraS3Request(Guid jobId)
+        {
             this.JobId = jobId.ToString();
             
         }
 
-        public CancelJobSpectraS3Request(string jobId) {
+        public CancelJobSpectraS3Request(string jobId)
+        {
             this.JobId = jobId;
             
         }

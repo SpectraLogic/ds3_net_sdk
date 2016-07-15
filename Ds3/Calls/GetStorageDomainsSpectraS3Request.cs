@@ -104,7 +104,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponCron(string autoEjectUponCron)
         {
             this._autoEjectUponCron = autoEjectUponCron;
-            if (autoEjectUponCron != null) {
+            if (autoEjectUponCron != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_cron", autoEjectUponCron);
             }
             else
@@ -116,7 +117,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponJobCancellation(bool? autoEjectUponJobCancellation)
         {
             this._autoEjectUponJobCancellation = autoEjectUponJobCancellation;
-            if (autoEjectUponJobCancellation != null) {
+            if (autoEjectUponJobCancellation != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_job_cancellation", autoEjectUponJobCancellation.ToString());
             }
             else
@@ -128,7 +130,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponJobCompletion(bool? autoEjectUponJobCompletion)
         {
             this._autoEjectUponJobCompletion = autoEjectUponJobCompletion;
-            if (autoEjectUponJobCompletion != null) {
+            if (autoEjectUponJobCompletion != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_job_completion", autoEjectUponJobCompletion.ToString());
             }
             else
@@ -140,7 +143,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponMediaFull(bool? autoEjectUponMediaFull)
         {
             this._autoEjectUponMediaFull = autoEjectUponMediaFull;
-            if (autoEjectUponMediaFull != null) {
+            if (autoEjectUponMediaFull != null)
+            {
                 this.QueryParams.Add("auto_eject_upon_media_full", autoEjectUponMediaFull.ToString());
             }
             else
@@ -152,7 +156,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
-            if (lastPage != null) {
+            if (lastPage != null)
+            {
                 this.QueryParams.Add("last_page", lastPage.ToString());
             }
             else
@@ -164,7 +169,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithMediaEjectionAllowed(bool? mediaEjectionAllowed)
         {
             this._mediaEjectionAllowed = mediaEjectionAllowed;
-            if (mediaEjectionAllowed != null) {
+            if (mediaEjectionAllowed != null)
+            {
                 this.QueryParams.Add("media_ejection_allowed", mediaEjectionAllowed.ToString());
             }
             else
@@ -176,7 +182,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -188,7 +195,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
-            if (pageLength != null) {
+            if (pageLength != null)
+            {
                 this.QueryParams.Add("page_length", pageLength.ToString());
             }
             else
@@ -200,7 +208,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
-            if (pageOffset != null) {
+            if (pageOffset != null)
+            {
                 this.QueryParams.Add("page_offset", pageOffset.ToString());
             }
             else
@@ -212,7 +221,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
             }
             else
@@ -224,7 +234,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
-            if (pageStartMarker != null) {
+            if (pageStartMarker != null)
+            {
                 this.QueryParams.Add("page_start_marker", pageStartMarker);
             }
             else
@@ -236,7 +247,8 @@ namespace Ds3.Calls
         public GetStorageDomainsSpectraS3Request WithWriteOptimization(WriteOptimization? writeOptimization)
         {
             this._writeOptimization = writeOptimization;
-            if (writeOptimization != null) {
+            if (writeOptimization != null)
+            {
                 this.QueryParams.Add("write_optimization", writeOptimization.ToString());
             }
             else
@@ -247,7 +259,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetStorageDomainsSpectraS3Request() {
+        public GetStorageDomainsSpectraS3Request()
+        {
             
         }
 

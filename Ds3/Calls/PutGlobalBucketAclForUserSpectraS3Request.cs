@@ -30,7 +30,8 @@ namespace Ds3.Calls
         
 
         
-        public PutGlobalBucketAclForUserSpectraS3Request(BucketAclPermission permission, Guid userId) {
+        public PutGlobalBucketAclForUserSpectraS3Request(BucketAclPermission permission, Guid userId)
+        {
             this.Permission = permission;
             this.UserId = userId.ToString();
             
@@ -40,7 +41,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutGlobalBucketAclForUserSpectraS3Request(BucketAclPermission permission, string userId) {
+        public PutGlobalBucketAclForUserSpectraS3Request(BucketAclPermission permission, string userId)
+        {
             this.Permission = permission;
             this.UserId = userId;
             

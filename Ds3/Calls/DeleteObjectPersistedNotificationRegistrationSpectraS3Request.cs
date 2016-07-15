@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteObjectPersistedNotificationRegistrationSpectraS3Request(Guid notificationId) {
+        public DeleteObjectPersistedNotificationRegistrationSpectraS3Request(Guid notificationId)
+        {
             this.NotificationId = notificationId;
             
         }

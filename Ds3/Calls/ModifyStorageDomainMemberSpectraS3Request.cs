@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public ModifyStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
-            if (writePreference != null) {
+            if (writePreference != null)
+            {
                 this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else
@@ -47,7 +48,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyStorageDomainMemberSpectraS3Request(string storageDomainMember) {
+        public ModifyStorageDomainMemberSpectraS3Request(string storageDomainMember)
+        {
             this.StorageDomainMember = storageDomainMember;
             
         }

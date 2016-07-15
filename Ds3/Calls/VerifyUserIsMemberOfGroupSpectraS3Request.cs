@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public VerifyUserIsMemberOfGroupSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId.ToString());
             }
             else
@@ -48,7 +49,8 @@ namespace Ds3.Calls
         public VerifyUserIsMemberOfGroupSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
-            if (userId != null) {
+            if (userId != null)
+            {
                 this.QueryParams.Add("user_id", userId);
             }
             else
@@ -59,7 +61,8 @@ namespace Ds3.Calls
         }
 
         
-        public VerifyUserIsMemberOfGroupSpectraS3Request(string group) {
+        public VerifyUserIsMemberOfGroupSpectraS3Request(string group)
+        {
             this.Group = group;
             this.QueryParams.Add("operation", "verify");
             

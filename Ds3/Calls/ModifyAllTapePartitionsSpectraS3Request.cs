@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public ModifyAllTapePartitionsSpectraS3Request(Quiesced quiesced) {
+        public ModifyAllTapePartitionsSpectraS3Request(Quiesced quiesced)
+        {
             this.Quiesced = quiesced;
             
             this.QueryParams.Add("quiesced", quiesced.ToString());

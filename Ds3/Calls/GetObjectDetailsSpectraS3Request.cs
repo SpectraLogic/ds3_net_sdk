@@ -16,13 +16,11 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Net;
 
 namespace Ds3.Calls
 {
-    public class GetObjectSpectraS3Request : Ds3Request
+    public class GetObjectDetailsSpectraS3Request : Ds3Request
     {
         
         public string ObjectName { get; private set; }
@@ -31,38 +29,20 @@ namespace Ds3.Calls
 
         
 
-        private IEnumerable<Range> _byteRanges = Enumerable.Empty<Range>();
-        public IEnumerable<Range> ByteRanges
+        
+        public GetObjectDetailsSpectraS3Request(string objectName, Guid bucketId)
         {
-            get { return _byteRanges; }
-            set { WithByteRanges(value); }
-        }
-
-        public GetObjectSpectraS3Request WithByteRanges(IEnumerable<Range> byteRanges)
-        {
-            this._byteRanges = byteRanges;
-            return this;
-        }
-
-        internal override IEnumerable<Range> GetByteRanges()
-        {
-            return this._byteRanges;
-        }
-
-        internal Stream DestinationStream { get; private set; }
-
-        public GetObjectSpectraS3Request(string objectName, Guid bucketId, Stream destinationStream) {
             this.ObjectName = objectName;
             this.BucketId = bucketId.ToString();
-            this.DestinationStream = destinationStream;
             
             this.QueryParams.Add("bucket_id", bucketId.ToString());
 
         }
-        public GetObjectSpectraS3Request(string objectName, string bucketId, Stream destinationStream) {
+
+        public GetObjectDetailsSpectraS3Request(string objectName, string bucketId)
+        {
             this.ObjectName = objectName;
             this.BucketId = bucketId;
-            this.DestinationStream = destinationStream;
             
             this.QueryParams.Add("bucket_id", bucketId);
 

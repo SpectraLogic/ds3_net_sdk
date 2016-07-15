@@ -26,7 +26,8 @@ namespace Ds3.Calls
         
 
         
-        public VerifySystemHealthSpectraS3Request() {
+        public VerifySystemHealthSpectraS3Request()
+        {
             
         }
 

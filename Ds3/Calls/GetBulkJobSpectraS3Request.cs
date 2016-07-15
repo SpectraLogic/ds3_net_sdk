@@ -66,7 +66,8 @@ namespace Ds3.Calls
         public GetBulkJobSpectraS3Request WithAggregating(bool? aggregating)
         {
             this._aggregating = aggregating;
-            if (aggregating != null) {
+            if (aggregating != null)
+            {
                 this.QueryParams.Add("aggregating", aggregating.ToString());
             }
             else
@@ -78,7 +79,8 @@ namespace Ds3.Calls
         public GetBulkJobSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -90,7 +92,8 @@ namespace Ds3.Calls
         public GetBulkJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
-            if (priority != null) {
+            if (priority != null)
+            {
                 this.QueryParams.Add("priority", priority.ToString());
             }
             else
@@ -101,7 +104,8 @@ namespace Ds3.Calls
         }
 
         
-        public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects) {
+        public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
+        {
             this.BucketName = bucketName;
             this.FullObjects = fullObjects.ToList();
             this.PartialObjects = partialObjects.ToList();

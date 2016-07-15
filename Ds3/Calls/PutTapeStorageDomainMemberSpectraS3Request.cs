@@ -40,7 +40,8 @@ namespace Ds3.Calls
         public PutTapeStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
-            if (writePreference != null) {
+            if (writePreference != null)
+            {
                 this.QueryParams.Add("write_preference", writePreference.ToString());
             }
             else
@@ -51,7 +52,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutTapeStorageDomainMemberSpectraS3Request(Guid storageDomainId, Guid tapePartitionId, TapeType tapeType) {
+        public PutTapeStorageDomainMemberSpectraS3Request(Guid storageDomainId, Guid tapePartitionId, TapeType tapeType)
+        {
             this.StorageDomainId = storageDomainId.ToString();
             this.TapePartitionId = tapePartitionId.ToString();
             this.TapeType = tapeType;
@@ -64,7 +66,8 @@ namespace Ds3.Calls
 
         }
 
-        public PutTapeStorageDomainMemberSpectraS3Request(string storageDomainId, string tapePartitionId, TapeType tapeType) {
+        public PutTapeStorageDomainMemberSpectraS3Request(string storageDomainId, string tapePartitionId, TapeType tapeType)
+        {
             this.StorageDomainId = storageDomainId;
             this.TapePartitionId = tapePartitionId;
             this.TapeType = tapeType;

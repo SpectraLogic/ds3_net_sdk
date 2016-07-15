@@ -71,7 +71,8 @@ namespace Ds3.Calls
         public PutBulkJobSpectraS3Request WithAggregating(bool? aggregating)
         {
             this._aggregating = aggregating;
-            if (aggregating != null) {
+            if (aggregating != null)
+            {
                 this.QueryParams.Add("aggregating", aggregating.ToString());
             }
             else
@@ -83,7 +84,8 @@ namespace Ds3.Calls
         public PutBulkJobSpectraS3Request WithIgnoreNamingConflicts(bool? ignoreNamingConflicts)
         {
             this._ignoreNamingConflicts = ignoreNamingConflicts;
-            if (ignoreNamingConflicts != null) {
+            if (ignoreNamingConflicts != null)
+            {
                 this.QueryParams.Add("ignore_naming_conflicts", ignoreNamingConflicts.ToString());
             }
             else
@@ -95,7 +97,8 @@ namespace Ds3.Calls
         public PutBulkJobSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -107,7 +110,8 @@ namespace Ds3.Calls
         public PutBulkJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
-            if (priority != null) {
+            if (priority != null)
+            {
                 this.QueryParams.Add("priority", priority.ToString());
             }
             else

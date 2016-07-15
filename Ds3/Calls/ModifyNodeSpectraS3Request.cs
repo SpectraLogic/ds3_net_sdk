@@ -43,7 +43,8 @@ namespace Ds3.Calls
         public ModifyNodeSpectraS3Request WithDnsName(string dnsName)
         {
             this._dnsName = dnsName;
-            if (dnsName != null) {
+            if (dnsName != null)
+            {
                 this.QueryParams.Add("dns_name", dnsName);
             }
             else
@@ -55,7 +56,8 @@ namespace Ds3.Calls
         public ModifyNodeSpectraS3Request WithName(string name)
         {
             this._name = name;
-            if (name != null) {
+            if (name != null)
+            {
                 this.QueryParams.Add("name", name);
             }
             else
@@ -66,7 +68,8 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyNodeSpectraS3Request(string node) {
+        public ModifyNodeSpectraS3Request(string node)
+        {
             this.Node = node;
             
         }

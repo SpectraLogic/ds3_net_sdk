@@ -28,13 +28,15 @@ namespace Ds3.Calls
         
 
         
-        public CleanTapeDriveSpectraS3Request(Guid tapeDriveId) {
+        public CleanTapeDriveSpectraS3Request(Guid tapeDriveId)
+        {
             this.TapeDriveId = tapeDriveId.ToString();
             this.QueryParams.Add("operation", "clean");
             
         }
 
-        public CleanTapeDriveSpectraS3Request(string tapeDriveId) {
+        public CleanTapeDriveSpectraS3Request(string tapeDriveId)
+        {
             this.TapeDriveId = tapeDriveId;
             this.QueryParams.Add("operation", "clean");
             

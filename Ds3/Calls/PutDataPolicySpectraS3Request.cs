@@ -92,7 +92,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithBlobbingEnabled(bool? blobbingEnabled)
         {
             this._blobbingEnabled = blobbingEnabled;
-            if (blobbingEnabled != null) {
+            if (blobbingEnabled != null)
+            {
                 this.QueryParams.Add("blobbing_enabled", blobbingEnabled.ToString());
             }
             else
@@ -104,7 +105,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithChecksumType(ChecksumType.Type? checksumType)
         {
             this._checksumType = checksumType;
-            if (checksumType != null) {
+            if (checksumType != null)
+            {
                 this.QueryParams.Add("checksum_type", checksumType.ToString());
             }
             else
@@ -116,7 +118,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultBlobSize(long? defaultBlobSize)
         {
             this._defaultBlobSize = defaultBlobSize;
-            if (defaultBlobSize != null) {
+            if (defaultBlobSize != null)
+            {
                 this.QueryParams.Add("default_blob_size", defaultBlobSize.ToString());
             }
             else
@@ -128,7 +131,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultGetJobPriority(Priority? defaultGetJobPriority)
         {
             this._defaultGetJobPriority = defaultGetJobPriority;
-            if (defaultGetJobPriority != null) {
+            if (defaultGetJobPriority != null)
+            {
                 this.QueryParams.Add("default_get_job_priority", defaultGetJobPriority.ToString());
             }
             else
@@ -140,7 +144,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultPutJobPriority(Priority? defaultPutJobPriority)
         {
             this._defaultPutJobPriority = defaultPutJobPriority;
-            if (defaultPutJobPriority != null) {
+            if (defaultPutJobPriority != null)
+            {
                 this.QueryParams.Add("default_put_job_priority", defaultPutJobPriority.ToString());
             }
             else
@@ -152,7 +157,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithDefaultVerifyJobPriority(Priority? defaultVerifyJobPriority)
         {
             this._defaultVerifyJobPriority = defaultVerifyJobPriority;
-            if (defaultVerifyJobPriority != null) {
+            if (defaultVerifyJobPriority != null)
+            {
                 this.QueryParams.Add("default_verify_job_priority", defaultVerifyJobPriority.ToString());
             }
             else
@@ -164,7 +170,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithEndToEndCrcRequired(bool? endToEndCrcRequired)
         {
             this._endToEndCrcRequired = endToEndCrcRequired;
-            if (endToEndCrcRequired != null) {
+            if (endToEndCrcRequired != null)
+            {
                 this.QueryParams.Add("end_to_end_crc_required", endToEndCrcRequired.ToString());
             }
             else
@@ -176,7 +183,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithRebuildPriority(Priority? rebuildPriority)
         {
             this._rebuildPriority = rebuildPriority;
-            if (rebuildPriority != null) {
+            if (rebuildPriority != null)
+            {
                 this.QueryParams.Add("rebuild_priority", rebuildPriority.ToString());
             }
             else
@@ -188,7 +196,8 @@ namespace Ds3.Calls
         public PutDataPolicySpectraS3Request WithVersioning(VersioningLevel? versioning)
         {
             this._versioning = versioning;
-            if (versioning != null) {
+            if (versioning != null)
+            {
                 this.QueryParams.Add("versioning", versioning.ToString());
             }
             else
@@ -199,7 +208,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutDataPolicySpectraS3Request(string name) {
+        public PutDataPolicySpectraS3Request(string name)
+        {
             this.Name = name;
             
             this.QueryParams.Add("name", name);

@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetBucketAclSpectraS3Request(string bucketAcl) {
+        public GetBucketAclSpectraS3Request(string bucketAcl)
+        {
             this.BucketAcl = bucketAcl;
             
         }

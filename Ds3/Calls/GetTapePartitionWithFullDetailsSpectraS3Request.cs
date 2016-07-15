@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetTapePartitionWithFullDetailsSpectraS3Request(string tapePartition) {
+        public GetTapePartitionWithFullDetailsSpectraS3Request(string tapePartition)
+        {
             this.TapePartition = tapePartition;
             
             this.QueryParams.Add("full_details", null);

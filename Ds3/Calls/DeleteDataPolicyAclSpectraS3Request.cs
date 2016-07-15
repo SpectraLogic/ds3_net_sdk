@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public DeleteDataPolicyAclSpectraS3Request(string dataPolicyAcl) {
+        public DeleteDataPolicyAclSpectraS3Request(string dataPolicyAcl)
+        {
             this.DataPolicyAcl = dataPolicyAcl;
             
         }

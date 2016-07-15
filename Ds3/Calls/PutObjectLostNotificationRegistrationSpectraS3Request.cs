@@ -50,7 +50,8 @@ namespace Ds3.Calls
         public PutObjectLostNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType? format)
         {
             this._format = format;
-            if (format != null) {
+            if (format != null)
+            {
                 this.QueryParams.Add("format", format.ToString());
             }
             else
@@ -62,7 +63,8 @@ namespace Ds3.Calls
         public PutObjectLostNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType? namingConvention)
         {
             this._namingConvention = namingConvention;
-            if (namingConvention != null) {
+            if (namingConvention != null)
+            {
                 this.QueryParams.Add("naming_convention", namingConvention.ToString());
             }
             else
@@ -74,7 +76,8 @@ namespace Ds3.Calls
         public PutObjectLostNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType? notificationHttpMethod)
         {
             this._notificationHttpMethod = notificationHttpMethod;
-            if (notificationHttpMethod != null) {
+            if (notificationHttpMethod != null)
+            {
                 this.QueryParams.Add("notification_http_method", notificationHttpMethod.ToString());
             }
             else
@@ -85,7 +88,8 @@ namespace Ds3.Calls
         }
 
         
-        public PutObjectLostNotificationRegistrationSpectraS3Request(string notificationEndPoint) {
+        public PutObjectLostNotificationRegistrationSpectraS3Request(string notificationEndPoint)
+        {
             this.NotificationEndPoint = notificationEndPoint;
             
             this.QueryParams.Add("notification_end_point", notificationEndPoint);

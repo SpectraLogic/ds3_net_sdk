@@ -28,7 +28,8 @@ namespace Ds3.Calls
         
 
         
-        public GetPoolFailureNotificationRegistrationSpectraS3Request(Guid notificationId) {
+        public GetPoolFailureNotificationRegistrationSpectraS3Request(Guid notificationId)
+        {
             this.NotificationId = notificationId;
             
         }

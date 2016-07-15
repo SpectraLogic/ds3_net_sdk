@@ -38,7 +38,8 @@ namespace Ds3.Calls
         public DeleteObjectRequest WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
-            if (rollBack != null) {
+            if (rollBack != null)
+            {
                 this.QueryParams.Add("roll_back", rollBack.ToString());
             }
             else
@@ -49,7 +50,8 @@ namespace Ds3.Calls
         }
 
         
-        public DeleteObjectRequest(string bucketName, string objectName) {
+        public DeleteObjectRequest(string bucketName, string objectName)
+        {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             

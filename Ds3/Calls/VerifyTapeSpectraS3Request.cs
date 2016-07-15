@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public VerifyTapeSpectraS3Request WithTaskPriority(Priority? taskPriority)
         {
             this._taskPriority = taskPriority;
-            if (taskPriority != null) {
+            if (taskPriority != null)
+            {
                 this.QueryParams.Add("task_priority", taskPriority.ToString());
             }
             else
@@ -47,13 +48,15 @@ namespace Ds3.Calls
         }
 
         
-        public VerifyTapeSpectraS3Request(Guid tapeId) {
+        public VerifyTapeSpectraS3Request(Guid tapeId)
+        {
             this.TapeId = tapeId.ToString();
             this.QueryParams.Add("operation", "verify");
             
         }
 
-        public VerifyTapeSpectraS3Request(string tapeId) {
+        public VerifyTapeSpectraS3Request(string tapeId)
+        {
             this.TapeId = tapeId;
             this.QueryParams.Add("operation", "verify");
             

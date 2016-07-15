@@ -36,7 +36,8 @@ namespace Ds3.Calls
         public GetJobChunksReadyForClientProcessingSpectraS3Request WithPreferredNumberOfChunks(int? preferredNumberOfChunks)
         {
             this._preferredNumberOfChunks = preferredNumberOfChunks;
-            if (preferredNumberOfChunks != null) {
+            if (preferredNumberOfChunks != null)
+            {
                 this.QueryParams.Add("preferred_number_of_chunks", preferredNumberOfChunks.ToString());
             }
             else
@@ -47,14 +48,16 @@ namespace Ds3.Calls
         }
 
         
-        public GetJobChunksReadyForClientProcessingSpectraS3Request(Guid job) {
+        public GetJobChunksReadyForClientProcessingSpectraS3Request(Guid job)
+        {
             this.Job = job.ToString();
             
             this.QueryParams.Add("job", job.ToString());
 
         }
 
-        public GetJobChunksReadyForClientProcessingSpectraS3Request(string job) {
+        public GetJobChunksReadyForClientProcessingSpectraS3Request(string job)
+        {
             this.Job = job;
             
             this.QueryParams.Add("job", job);
