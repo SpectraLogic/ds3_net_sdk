@@ -35,16 +35,17 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
         private List<TransferItem> _currentTransferItemsList = new List<TransferItem>();
-        private readonly Action<TimeSpan> _wait;
 
-        public WriteStreamChunkStrategy()
-            :this(Thread.Sleep)
+        public readonly RetryAfter RetryAfer;
+
+        public WriteStreamChunkStrategy(int retryAfter = -1)
+            :this(Thread.Sleep, retryAfter)
         {
         }
 
-        public WriteStreamChunkStrategy(Action<TimeSpan> wait)
+        public WriteStreamChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
         {
-            this._wait = wait;
+            this.RetryAfer = new RetryAfter(wait, retryAfter);
         }
 
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
@@ -197,8 +198,9 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                         {
                             allocatedChunks[chunkId] = true; //mark this chunk as allocated
                             chunk = allocatedChunk;
+                            this.RetryAfer.Reset(); // Reset the number of retries to the initial value
                         },
-                        this._wait,
+                        this.RetryAfer.RetryAfterFunc,
                         () =>
                         {
                             chunkGone = true;
