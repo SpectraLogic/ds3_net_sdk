@@ -21,6 +21,7 @@ using System.Linq;
 
 using Ds3.Models;
 using Ds3.Runtime;
+using System.Diagnostics;
 
 namespace Ds3.Calls
 {
@@ -59,6 +60,7 @@ namespace Ds3.Calls
             return this;
         }
         private IDictionary<string, string> _metadata = new Dictionary<string, string>();
+        private static readonly TraceSwitch SdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
 
         public IDictionary<string, string> Metadata
         {
@@ -76,7 +78,10 @@ namespace Ds3.Calls
             {
                 if (string.IsNullOrEmpty(keyValuePair.Value))
                 {
-                    System.Diagnostics.Trace.TraceWarning("Key has not been added to metadata because value was null or empty: " + keyValuePair.Key);
+                    if (SdkNetworkSwitch.TraceWarning)
+                    {
+                        Trace.WriteLine("Key has not been added to metadata because value was null or empty: " + keyValuePair.Key);
+                    }
                 }
                 else
                 {
