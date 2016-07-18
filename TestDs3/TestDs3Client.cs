@@ -465,6 +465,38 @@ namespace TestDs3
         }
 
         [Test]
+        public void TestPutObjectWithMetadata()
+        {
+            var stringRequest = "object content";
+            var jobId = Guid.Parse("e5d4adce-e170-4915-ba04-595fab30df81");
+            var offset = 10L;
+            var expectedQueryParams = new Dictionary<string, string>
+            {
+                { "job", "e5d4adce-e170-4915-ba04-595fab30df81" },
+                { "offset", "10" }
+            };
+            IDictionary<string, string> metadata = new Dictionary<string, string>()
+            {
+                { "test1", "test1value" },
+                { "test2", "" },
+                { "test3", null }
+            };
+            IDictionary<string, string> expectedHeaders = new Dictionary<string, string>()
+            {
+                { "Naming-Convention", "s3" },
+                { "x-amz-meta-test1", "test1value" }
+            };
+            MockNetwork
+                .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, expectedHeaders, stringRequest)
+                .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)
+                .AsClient
+                .PutObject(new PutObjectRequest("bucketName", "object", HelpersForTest.StringToStream(stringRequest))
+                    .WithJob(jobId)
+                    .WithOffset(offset)
+                    .WithMetadata(metadata));
+        }
+
+        [Test]
         public void TestPutObjectWithCRC()
         {
             var stringRequest = "object content";
