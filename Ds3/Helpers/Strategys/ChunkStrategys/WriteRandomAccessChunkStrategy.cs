@@ -32,18 +32,19 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
 
         private readonly object _chunksRemainingLock = new object();
         private ISet<Guid> _toAllocateChunks;
-        private readonly Action<TimeSpan> _wait;
         private readonly bool _withAggregation;
 
-        public WriteRandomAccessChunkStrategy(bool withAggregation = false)
-            :this(Thread.Sleep, withAggregation)
+        public readonly RetryAfter RetryAfer;
+
+        public WriteRandomAccessChunkStrategy(int retryAfter = -1, bool withAggregation = false)
+            :this(Thread.Sleep, retryAfter, withAggregation)
         {
         }
 
-        public WriteRandomAccessChunkStrategy(Action<TimeSpan> wait, bool withAggregation)
+        public WriteRandomAccessChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1, bool withAggregation = false)
         {
-            this._wait = wait;
             this._withAggregation = withAggregation;
+            this.RetryAfer = new RetryAfter(wait, retryAfter);
         }
 
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
@@ -131,8 +132,9 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                         allocatedChunk =>
                         {
                             chunk = allocatedChunk;
+                            this.RetryAfer.Reset(); // Reset the number of retries to the initial value
                         },
-                        this._wait,
+                        this.RetryAfer.RetryAfterFunc,
                         () =>
                         {
                             chunkGone = true;

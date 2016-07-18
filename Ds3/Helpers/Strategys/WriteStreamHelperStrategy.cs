@@ -26,9 +26,9 @@ namespace Ds3.Helpers.Strategys
         private readonly IChunkStrategy _writeStreamChunkStrategy;
         private readonly IStreamFactory<string> _writeStreamStreamFactory;
 
-        public WriteStreamHelperStrategy()
+        public WriteStreamHelperStrategy(int retryAfter = -1)
         {
-            this._writeStreamChunkStrategy = new WriteStreamChunkStrategy();
+            this._writeStreamChunkStrategy = new WriteStreamChunkStrategy(retryAfter);
             this._writeStreamStreamFactory = new WriteStreamStreamFactory();
         }
 
