@@ -74,7 +74,14 @@ namespace Ds3.Calls
             }
             foreach (var keyValuePair in metadata)
             {
-                this.Headers.Add(HttpHeaders.AwsMetadataPrefix + keyValuePair.Key, keyValuePair.Value);
+                if (string.IsNullOrEmpty(keyValuePair.Value))
+                {
+                    System.Diagnostics.Trace.TraceWarning("Key has not been added to metadata because value was null or empty: " + keyValuePair.Key);
+                }
+                else
+                {
+                    this.Headers.Add(HttpHeaders.AwsMetadataPrefix + keyValuePair.Key, keyValuePair.Value);
+                }
             }
             this._metadata = metadata;
             return this;
