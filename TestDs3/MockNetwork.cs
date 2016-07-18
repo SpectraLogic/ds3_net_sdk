@@ -43,6 +43,7 @@ namespace TestDs3
         private HttpStatusCode _statusCode;
         private string _responseContent;
         private IDictionary<string, string> _responseHeaders;
+        private IDictionary<string, string> _requestHeaders;
 
         public static IMockNetworkWithExpectation Expecting(
             HttpVerb verb,
@@ -55,6 +56,24 @@ namespace TestDs3
             mock._path = path;
             mock._queryParams = queryParams;
             mock._requestContent = requestContent;
+            return mock;
+        }
+
+        public static IMockNetworkWithExpectation Expecting(
+            HttpVerb verb,
+            string path,
+            IDictionary<string, string> queryParams,
+            IDictionary<string, string> requestHeaders,
+            string requestContent)
+        {
+            var mock = new MockNetwork
+            {
+                _verb = verb,
+                _path = path,
+                _queryParams = queryParams,
+                _requestHeaders = requestHeaders,
+                _requestContent = requestContent
+            };
             return mock;
         }
 
@@ -73,6 +92,10 @@ namespace TestDs3
             Assert.AreEqual(_verb, request.Verb);
             Assert.AreEqual(_path, request.Path);
             CollectionAssert.AreEquivalent(_queryParams, request.QueryParams);
+            if (_requestHeaders != null)
+            {
+                CollectionAssert.AreEquivalent(_requestHeaders, request.Headers);
+            }
             Assert.AreEqual(_requestContent, HelpersForTest.StringFromStream(request.GetContentStream()));
             return new MockWebResponse(_responseContent, _statusCode, _responseHeaders);
         }
