@@ -21,6 +21,7 @@ using System.Linq;
 
 using Ds3.Models;
 using Ds3.Runtime;
+using System.Diagnostics;
 
 namespace Ds3.Calls
 {
@@ -59,6 +60,7 @@ namespace Ds3.Calls
             return this;
         }
         private IDictionary<string, string> _metadata = new Dictionary<string, string>();
+        private static readonly TraceSwitch SdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
 
         public IDictionary<string, string> Metadata
         {
@@ -74,7 +76,17 @@ namespace Ds3.Calls
             }
             foreach (var keyValuePair in metadata)
             {
-                this.Headers.Add(HttpHeaders.AwsMetadataPrefix + keyValuePair.Key, keyValuePair.Value);
+                if (string.IsNullOrEmpty(keyValuePair.Value))
+                {
+                    if (SdkNetworkSwitch.TraceWarning)
+                    {
+                        Trace.WriteLine("Key has not been added to metadata because value was null or empty: " + keyValuePair.Key);
+                    }
+                }
+                else
+                {
+                    this.Headers.Add(HttpHeaders.AwsMetadataPrefix + keyValuePair.Key, keyValuePair.Value);
+                }
             }
             this._metadata = metadata;
             return this;
