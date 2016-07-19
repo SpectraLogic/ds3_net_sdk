@@ -2005,7 +2005,7 @@ namespace Ds3.ResponseParsers
         {
             return new DetailedS3ObjectList
             {
-                DetailedS3Objects = element.Elements("DetailedS3Object").Select(ParseDetailedS3Object).ToList()
+                DetailedS3Objects = element.Elements("Object").Select(ParseDetailedS3Object).ToList()
             };
         }
 
@@ -2201,7 +2201,7 @@ namespace Ds3.ResponseParsers
         {
             return new NamedDetailedTapePartitionList
             {
-                NamedDetailedTapePartitions = element.Elements("NamedDetailedTapePartition").Select(ParseNamedDetailedTapePartition).ToList()
+                NamedDetailedTapePartitions = element.Elements("TapePartition").Select(ParseNamedDetailedTapePartition).ToList()
             };
         }
 

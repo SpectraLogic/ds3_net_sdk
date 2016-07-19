@@ -1096,6 +1096,24 @@ namespace IntegrationTestDs3
         }
 
         [Test]
+        public void TestGetObjectsWithFullDetails()
+        {
+            const string bucketName = "TestGetObjectsWithFullDetails";
+            try
+            {
+                Ds3TestUtils.LoadTestData(_client, bucketName);
+
+                var request = new GetObjectsWithFullDetailsSpectraS3Request().WithIncludePhysicalPlacement(true);
+                var response = _client.GetObjectsWithFullDetailsSpectraS3(request);
+                Assert.AreEqual(response.ResponsePayload.DetailedS3Objects.Count(), 4);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
         public void TestGetObjectDetails()
         {
             const string bucketName = "TestGetObjectDetails";
