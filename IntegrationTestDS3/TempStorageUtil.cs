@@ -17,6 +17,9 @@ using Ds3;
 using Ds3.Calls;
 using Ds3.Models;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IntegrationTestDS3
 {
@@ -69,11 +72,63 @@ namespace IntegrationTestDS3
             TempStorageIds ids,
             IDs3Client client)
         {
-            ABMTestHelper.DeleteDataPersistenceRule(ids.DataPersistenceRuleId, client);
-            ABMTestHelper.DeleteDataPolicy(fixtureName, client);
-            ABMTestHelper.DeleteStorageDomainMember(ids.StorageDomainMemberId, client);
-            ABMTestHelper.DeleteStorageDomain(fixtureName, client);
-            ABMTestHelper.DeletePoolPartition(fixtureName, client);
+
+            //try to delete as much as possible
+
+            var exceptionsThrown = new Queue<Exception>();
+
+            try
+            {
+                ABMTestHelper.DeleteDataPersistenceRule(ids.DataPersistenceRuleId, client);
+            }
+            catch (Exception ex)
+            {
+                exceptionsThrown.Enqueue(ex);
+            }
+
+
+            try
+            {
+                ABMTestHelper.DeleteDataPolicy(fixtureName, client);
+            }
+            catch (Exception ex)
+            {
+                exceptionsThrown.Enqueue(ex);
+            }
+
+
+            try
+            {
+                ABMTestHelper.DeleteStorageDomainMember(ids.StorageDomainMemberId, client);
+            }
+            catch (Exception ex)
+            {
+                exceptionsThrown.Enqueue(ex);
+            }
+
+
+            try
+            {
+                ABMTestHelper.DeleteStorageDomain(fixtureName, client);
+            }
+            catch (Exception ex)
+            {
+                exceptionsThrown.Enqueue(ex);
+            }
+
+            try
+            {
+                ABMTestHelper.DeletePoolPartition(fixtureName, client);
+            }
+            catch (Exception ex)
+            {
+                exceptionsThrown.Enqueue(ex);
+            }
+
+            if (exceptionsThrown.Count > 0)
+            {
+                throw new AggregateException(exceptionsThrown);
+            }
         }
 
         /// <summary>
