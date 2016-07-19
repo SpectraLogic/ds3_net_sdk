@@ -71,13 +71,23 @@ namespace IntegrationTestDs3
         [TestFixtureSetUp]
         public void Startup()
         {
-            _client = Ds3TestUtils.CreateClient();
-            _helpers = new Ds3ClientHelpers(_client);
+            try
+            {
+                _client = Ds3TestUtils.CreateClient();
+                _helpers = new Ds3ClientHelpers(_client);
 
-            SetupTestData();
+                SetupTestData();
 
-            Guid dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
-            EnvStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
+                var dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+                EnvStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
+            }
+            catch (Exception)
+            {
+                // So long as any SetUp method runs without error, the TearDown method is guaranteed to run.
+                // It will not run if a SetUp method fails or throws an exception.
+                Teardown();
+                throw;
+            }
         }
 
         [TestFixtureTearDown]
