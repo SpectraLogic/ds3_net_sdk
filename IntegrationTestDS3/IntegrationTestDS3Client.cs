@@ -1093,7 +1093,9 @@ namespace IntegrationTestDs3
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
 
-                var request = new GetObjectsWithFullDetailsSpectraS3Request().WithIncludePhysicalPlacement(true);
+                var request =
+                    new GetObjectsWithFullDetailsSpectraS3Request().WithIncludePhysicalPlacement(true)
+                        .WithBucketId(bucketName);
                 var response = _client.GetObjectsWithFullDetailsSpectraS3(request);
                 Assert.AreEqual(response.ResponsePayload.DetailedS3Objects.Count(), 4);
             }
