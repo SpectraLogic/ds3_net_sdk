@@ -18,6 +18,7 @@
 using Ds3.Calls;
 using Ds3.Runtime;
 using System.Net;
+using System.IO;
 
 namespace Ds3.ResponseParsers
 {
@@ -29,8 +30,9 @@ namespace Ds3.ResponseParsers
             {
                 ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
                 using (var stream = response.GetResponseStream())
+                using (StreamReader sr = new StreamReader(stream))
                 {
-                    return new GetBlobPersistenceSpectraS3Response(stream.ToString());
+                    return new GetBlobPersistenceSpectraS3Response(sr.ReadToEnd());
                 }
             }
         }
