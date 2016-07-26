@@ -16,11 +16,9 @@
 // This code is auto-generated, do not modify
 
 using Ds3.Calls;
-using Ds3.Models;
 using Ds3.Runtime;
-using System.Linq;
 using System.Net;
-using System.Xml.Linq;
+using System.IO;
 
 namespace Ds3.ResponseParsers
 {
@@ -32,11 +30,9 @@ namespace Ds3.ResponseParsers
             {
                 ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
                 using (var stream = response.GetResponseStream())
+                using (StreamReader sr = new StreamReader(stream))
                 {
-                    return new GetPutJobToReplicateSpectraS3Response(
-                        ModelParsers.ParseString(
-                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
-                    );
+                    return new GetPutJobToReplicateSpectraS3Response(sr.ReadToEnd());
                 }
             }
         }
