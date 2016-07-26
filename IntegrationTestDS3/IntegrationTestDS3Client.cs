@@ -65,6 +65,7 @@ namespace IntegrationTestDs3
 
         private static string FixtureName = "integration_test_ds3client";
         private static TempStorageIds EnvStorageIds;
+        private static Guid EnvDataPolicyId;
 
         #region setup
 
@@ -78,8 +79,8 @@ namespace IntegrationTestDs3
 
                 SetupTestData();
 
-                var dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
-                EnvStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
+                EnvDataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+                EnvStorageIds = TempStorageUtil.Setup(FixtureName, EnvDataPolicyId, _client);
             }
             catch (Exception)
             {
@@ -1125,6 +1126,27 @@ namespace IntegrationTestDs3
                 var response = _client.GetObjectDetailsSpectraS3(new GetObjectDetailsSpectraS3Request(objectName, bucketName));
                 Assert.AreEqual(response.ResponsePayload.Name, objectName);
                 Assert.AreEqual(response.ResponsePayload.Type, S3ObjectType.DATA);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestGetPutJobToReplicate()
+        {
+            const string bucketName = "TestGetPutJobToReplicate";
+            const string objectName = "beowulf.txt";
+            try
+            {
+                var bucket = _client.PutBucketSpectraS3(new PutBucketSpectraS3Request(bucketName).WithDataPolicyId(EnvDataPolicyId));
+                var objects = new List<Ds3Object>();
+                objects.Add(new Ds3Object(objectName, 0));
+                var putBulk = _client.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request(bucketName, objects));
+
+                var getJob = _client.GetPutJobToReplicateSpectraS3(new GetPutJobToReplicateSpectraS3Request(putBulk.ResponsePayload.JobId));
+                StringAssert.Contains("\"name\":\"beowulf.txt\",\"type\":\"DATA\"", getJob.ResponsePayload);
             }
             finally
             {
