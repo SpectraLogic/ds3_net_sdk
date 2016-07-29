@@ -215,6 +215,7 @@ namespace Ds3.Helpers
             for (var i = 0; i < predicates.Length; i++)
             {
                 var predicate = predicates[i];
+                if (predicate == null) continue;
                 result = result.Where(obj => predicate.Invoke(obj));
             }
             return result;
