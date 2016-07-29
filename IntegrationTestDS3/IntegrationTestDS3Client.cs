@@ -1147,6 +1147,7 @@ namespace IntegrationTestDs3
                 var getJob =
                     _client.GetPutJobToReplicateSpectraS3(
                         new GetPutJobToReplicateSpectraS3Request(putBulk.ResponsePayload.JobId));
+
                 StringAssert.Contains("\"name\":\"beowulf.txt\",\"type\":\"DATA\"", getJob.ResponsePayload);
             }
             finally
@@ -1156,6 +1157,7 @@ namespace IntegrationTestDs3
         }
 
         [Test]
+        [ExpectedException(typeof(System.Net.WebException))]
         public void TestPutObjectWithSpecifiedLength()
         {
             const string bucketName = "TestPutObjectWithSpecifiedLength";
@@ -1187,6 +1189,80 @@ namespace IntegrationTestDs3
 
                 var stream = new MemoryStream(contentBytes);
                 _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestFolderFilterDs3Object()
+        {
+            const string bucketName = "TestFolderFilterDs3Object";
+
+            try
+            {
+                _client.PutBucket(new PutBucketRequest(bucketName));
+                var stream = new MemoryStream(new byte[] { });
+                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", stream));
+
+                var objects = _helpers.ListObjects(bucketName);
+                Assert.AreEqual(1, objects.Count());
+
+                var objectsFiltered = Ds3ClientHelpers.FilterDs3Objects(objects, Ds3ClientHelpers.FolderFilterPredicate);
+                Assert.AreEqual(0, objectsFiltered.Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestZeroLengthFilterDs3Object()
+        {
+            const string bucketName = "TestZeroLengthFilterDs3Object";
+
+            try
+            {
+                _client.PutBucket(new PutBucketRequest(bucketName));
+                var stream = new MemoryStream(new byte[] {});
+                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_zero_length_object", stream));
+
+                var objects = _helpers.ListObjects(bucketName);
+                Assert.AreEqual(1, objects.Count());
+
+                var objectsFiltered = Ds3ClientHelpers.FilterDs3Objects(objects,
+                    Ds3ClientHelpers.ZeroLengthFilterPredicate);
+                Assert.AreEqual(0, objectsFiltered.Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestFilterDs3Object()
+        {
+            const string bucketName = "TestFilterDs3Object";
+
+            try
+            {
+                _client.PutBucket(new PutBucketRequest(bucketName));
+                var stream = new MemoryStream(new byte[] {});
+                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", stream));
+
+                stream = new MemoryStream(new byte[] {});
+                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_zero_length_object", stream));
+
+                var objects = _helpers.ListObjects(bucketName);
+                Assert.AreEqual(2, objects.Count());
+
+                var objectsFiltered = Ds3ClientHelpers.FilterDs3Objects(objects, Ds3ClientHelpers.FolderFilterPredicate,
+                    Ds3ClientHelpers.ZeroLengthFilterPredicate);
+                Assert.AreEqual(0, objectsFiltered.Count());
             }
             finally
             {

@@ -37,7 +37,8 @@ namespace Ds3.Helpers
         private readonly int _jobWaitTime; //in minutes
         private readonly long? _maximumFileSizeForAggregating;
 
-        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1, int jobWaitTime = 5, long? maximumFileSizeForAggregating = null)
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1,
+            int jobWaitTime = 5, long? maximumFileSizeForAggregating = null)
         {
             this._client = client;
             this._retryAfter = retryAfter;
@@ -47,20 +48,22 @@ namespace Ds3.Helpers
             this._maximumFileSizeForAggregating = maximumFileSizeForAggregating;
         }
 
-        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null, IHelperStrategy<string> helperStrategy = null)
+        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null,
+            IHelperStrategy<string> helperStrategy = null)
         {
             var withAggregation = false;
             var request = new PutBulkJobSpectraS3Request(
                 bucket,
                 VerifyObjectCount(objectsToWrite)
-            );
+                );
 
             if (maxBlobSize.HasValue)
             {
                 request.WithMaxUploadSize(maxBlobSize.Value);
             }
 
-            if (_maximumFileSizeForAggregating.HasValue && GetJobSize(objectsToWrite) <= _maximumFileSizeForAggregating.Value)
+            if (_maximumFileSizeForAggregating.HasValue &&
+                GetJobSize(objectsToWrite) <= _maximumFileSizeForAggregating.Value)
             {
                 withAggregation = true;
                 request.Aggregating = true;
@@ -82,7 +85,7 @@ namespace Ds3.Helpers
                     }
 
                     retriesLeft--;
-                    Thread.Sleep(this._jobWaitTime * 1000 * 60);
+                    Thread.Sleep(this._jobWaitTime*1000*60);
                 }
             } while (jobResponse == null);
 
@@ -96,20 +99,23 @@ namespace Ds3.Helpers
                 jobResponse.ResponsePayload,
                 helperStrategy,
                 new WriteTransferrer()
-            );
+                );
         }
 
         private static long GetJobSize(IEnumerable<Ds3Object> objectsToWrite)
         {
-            return objectsToWrite.Where(objectToWrite => objectToWrite.Size != null).Sum(objectToWrite => objectToWrite.Size.Value);
+            return
+                objectsToWrite.Where(objectToWrite => objectToWrite.Size != null)
+                    .Sum(objectToWrite => objectToWrite.Size.Value);
         }
 
-        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null)
+        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead,
+            IHelperStrategy<string> helperStrategy = null)
         {
             var jobResponse = this._client.GetBulkJobSpectraS3(
                 new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
                     .WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee.NONE)
-            );
+                );
 
             if (helperStrategy == null)
             {
@@ -121,7 +127,7 @@ namespace Ds3.Helpers
                 jobResponse.ResponsePayload,
                 helperStrategy,
                 new PartialDataTransferrerDecorator(new ReadTransferrer(), _getObjectRetries)
-            );
+                );
         }
 
         public IPartialReadJob StartPartialReadJob(
@@ -140,7 +146,7 @@ namespace Ds3.Helpers
             var jobResponse = this._client.GetBulkJobSpectraS3(
                 new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList)
                     .WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee.NONE)
-            );
+                );
 
             if (helperStrategy == null)
             {
@@ -154,7 +160,7 @@ namespace Ds3.Helpers
                 partialObjectList,
                 helperStrategy,
                 _getObjectRetries
-            );
+                );
         }
 
         private static List<T> VerifyObjectCount<T>(IEnumerable<T> objects)
@@ -199,6 +205,21 @@ namespace Ds3.Helpers
             } while (isTruncated);
         }
 
+        public static readonly Func<Ds3Object, bool> FolderFilterPredicate = obj => !obj.Name.Contains("/");
+        public static readonly Func<Ds3Object, bool> ZeroLengthFilterPredicate = obj => obj.Size != 0;
+
+        public static IEnumerable<Ds3Object> FilterDs3Objects(IEnumerable<Ds3Object> objects,
+            params Func<Ds3Object, bool>[] predicates)
+        {
+            var result = objects;
+            for (var i = 0; i < predicates.Length; i++)
+            {
+                var predicate = predicates[i];
+                result = result.Where(obj => predicate.Invoke(obj));
+            }
+            return result;
+        }
+
         public void EnsureBucketExists(string bucketName)
         {
             var headResponse = _client.HeadBucket(new HeadBucketRequest(bucketName));
@@ -232,7 +253,7 @@ namespace Ds3.Helpers
                 jobResponse,
                 helperStrategy,
                 new WriteTransferrer()
-            );
+                );
         }
 
         public IJob RecoverReadJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
@@ -259,7 +280,7 @@ namespace Ds3.Helpers
                 jobResponse,
                 helperStrategy,
                 new ReadTransferrer()
-            );
+                );
         }
     }
 }
