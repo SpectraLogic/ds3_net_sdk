@@ -211,6 +211,8 @@ namespace Ds3.Helpers
         public static IEnumerable<Ds3Object> FilterDs3Objects(IEnumerable<Ds3Object> objects,
             params Func<Ds3Object, bool>[] predicates)
         {
+            if (predicates == null) return objects;
+
             var result = objects;
             for (var i = 0; i < predicates.Length; i++)
             {
