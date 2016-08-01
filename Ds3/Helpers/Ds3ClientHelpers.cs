@@ -205,7 +205,7 @@ namespace Ds3.Helpers
             } while (isTruncated);
         }
 
-        public static readonly Func<Ds3Object, bool> FolderFilterPredicate = obj => !obj.Name.Contains("/");
+        public static readonly Func<Ds3Object, bool> FolderFilterPredicate = obj => !obj.Name.EndsWith("/");
         public static readonly Func<Ds3Object, bool> ZeroLengthFilterPredicate = obj => obj.Size != 0;
 
         public static IEnumerable<Ds3Object> FilterDs3Objects(IEnumerable<Ds3Object> objects,
