@@ -99,6 +99,11 @@ namespace Ds3.Calls
             return ds3Object.Size.Value.ToString("D");
         }
 
+        internal override long GetContentLength()
+        {
+            return GetContentStream().Length;
+        }
+
         internal override HttpVerb Verb
         {
             get
