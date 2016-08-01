@@ -214,7 +214,7 @@ namespace Ds3.Runtime
 
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
             {
-                httpRequest.ContentLength = content.Length;
+                httpRequest.ContentLength = request.GetContentLength();
                 if (content != Stream.Null)
                 {
                     using (var requestStream = httpRequest.GetRequestStream())
