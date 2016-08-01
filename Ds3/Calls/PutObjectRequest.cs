@@ -28,6 +28,7 @@ namespace Ds3.Calls
     public class PutObjectRequest : Ds3Request
     {
         private readonly Stream RequestPayload;
+        private readonly long Length;
 
         
         public string BucketName { get; private set; }
@@ -147,12 +148,18 @@ namespace Ds3.Calls
         }
 
         
-        public PutObjectRequest(string bucketName, string objectName, Stream requestPayload)
+        public PutObjectRequest(string bucketName, string objectName, long length, Stream requestPayload)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.RequestPayload = requestPayload;
+            this.Length = length;
             
+        }
+
+        public PutObjectRequest(string bucketName, string objectName, Stream requestPayload)
+            : this(bucketName, objectName, requestPayload.Length, requestPayload)
+        {
         }
 
         internal override HttpVerb Verb
@@ -174,6 +181,11 @@ namespace Ds3.Calls
         internal override Stream GetContentStream()
         {
             return RequestPayload;
+        }
+
+        internal override long GetContentLength()
+        {
+            return Length;
         }
     }
 }

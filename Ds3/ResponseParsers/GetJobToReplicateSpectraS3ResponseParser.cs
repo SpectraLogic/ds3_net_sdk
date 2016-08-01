@@ -30,7 +30,7 @@ namespace Ds3.ResponseParsers
             {
                 ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
                 using (var stream = response.GetResponseStream())
-                using (StreamReader sr = new StreamReader(stream))
+                using (var sr = new StreamReader(stream))
                 {
                     return new GetJobToReplicateSpectraS3Response(sr.ReadToEnd());
                 }
