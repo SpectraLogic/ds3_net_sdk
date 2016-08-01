@@ -1254,5 +1254,38 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
+
+        [Test]
+        public void TestPutObjectWithSpecifiedLength()
+        {
+            const string bucketName = "TestPutObjectWithSpecifiedLength";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                var stream = new MemoryStream(new byte[] { });
+                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", 0, stream));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.Net.WebException))]
+        public void TestPutObjectWithWrongSpecifiedLength()
+        {
+            const string bucketName = "TestPutObjectWithSpecifiedLength";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                var stream = new MemoryStream(new byte[] { });
+                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", 1, stream));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
     }
 }

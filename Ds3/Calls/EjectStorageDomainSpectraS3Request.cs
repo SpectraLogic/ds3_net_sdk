@@ -145,6 +145,11 @@ namespace Ds3.Calls
                 .WriteToMemoryStream();
         }
 
+        internal override long GetContentLength()
+        {
+            return GetContentStream().Length;
+        }
+
         internal override HttpVerb Verb
         {
             get

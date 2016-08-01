@@ -32,6 +32,11 @@ namespace Ds3.Calls
             get;   
         }
 
+        internal virtual long GetContentLength()
+        {
+            return 0;
+        }
+
         internal virtual Stream GetContentStream()
         {
             return Stream.Null;
