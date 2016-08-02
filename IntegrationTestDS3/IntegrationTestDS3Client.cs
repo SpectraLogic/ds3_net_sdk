@@ -1262,8 +1262,11 @@ namespace IntegrationTestDs3
             try
             {
                 _helpers.EnsureBucketExists(bucketName);
-                var stream = new MemoryStream(new byte[] { });
-                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", 0, stream));
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length, stream));
             }
             finally
             {
@@ -1275,12 +1278,15 @@ namespace IntegrationTestDs3
         [ExpectedException(typeof(System.Net.WebException))]
         public void TestPutObjectWithWrongSpecifiedLength()
         {
-            const string bucketName = "TestPutObjectWithSpecifiedLength";
+            const string bucketName = "TestPutObjectWithWrongSpecifiedLength";
             try
             {
                 _helpers.EnsureBucketExists(bucketName);
-                var stream = new MemoryStream(new byte[] { });
-                _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", 1, stream));
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
             }
             finally
             {
