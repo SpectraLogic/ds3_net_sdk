@@ -1144,7 +1144,9 @@ namespace IntegrationTestDs3
                 objects.Add(new Ds3Object(objectName, 0));
                 var putBulk = _client.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request(bucketName, objects));
 
-                var getJob = _client.GetPutJobToReplicateSpectraS3(new GetPutJobToReplicateSpectraS3Request(putBulk.ResponsePayload.JobId));
+                var getJob =
+                    _client.GetPutJobToReplicateSpectraS3(
+                        new GetPutJobToReplicateSpectraS3Request(putBulk.ResponsePayload.JobId));
                 StringAssert.Contains("\"name\":\"beowulf.txt\",\"type\":\"DATA\"", getJob.ResponsePayload);
             }
             finally
