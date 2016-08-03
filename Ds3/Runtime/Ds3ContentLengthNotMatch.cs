@@ -19,12 +19,16 @@ namespace Ds3.Runtime
 {
     public class Ds3ContentLengthNotMatch : Exception
     {
+        public Ds3ContentLengthNotMatch(string message)
+            : base(message)
+        {
+        }
+
         public Ds3ContentLengthNotMatch(string message, long contentLength, long bytesRead)
             : base(string.Format(message, contentLength, bytesRead))
         {
             ContentLength = contentLength;
             BytesRead = bytesRead;
-                
         }
 
         public long BytesRead { get; private set; }

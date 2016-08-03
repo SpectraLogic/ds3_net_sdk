@@ -196,14 +196,29 @@ namespace Ds3.Runtime
                 httpRequest.ContentLength = request.GetContentLength();
                 if (content != Stream.Null)
                 {
-                    using (var requestStream = httpRequest.GetRequestStream())
+                    var requestStream = httpRequest.GetRequestStream();
+                    if (content.CanSeek && content.Position != 0)
                     {
-                        if (content.CanSeek && content.Position != 0)
+                        content.Seek(0, SeekOrigin.Begin);
+                    }
+                    using (var webResponseStream = new WebResponseStream(content, request.GetContentLength()))
+                    {
+                        try
                         {
-                            content.Seek(0, SeekOrigin.Begin);
+                            webResponseStream.CopyTo(requestStream, this.CopyBufferSize);
                         }
-                        content.CopyTo(requestStream, this.CopyBufferSize);
+                        catch (Exception ex)
+                        {
+                            const string message =
+                                "Bytes to be written to the stream exceed the Content-Length bytes size specified.";
+                            if (ex.Message.Equals(message))
+                            {
+                                throw new Ds3ContentLengthNotMatch(message);
+                            }
+                            throw;
+                        }
                         requestStream.Flush();
+                        requestStream.Close();
                     }
                 }
             }

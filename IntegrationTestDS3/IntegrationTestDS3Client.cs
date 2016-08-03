@@ -29,6 +29,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Ds3.Helpers.Strategys;
+using Ds3.Runtime;
 
 // using TestDs3.Lang;
 
@@ -1167,10 +1168,10 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(System.Net.WebException))]
-        public void TestPutObjectWithWrongSpecifiedLength()
+        [ExpectedException(typeof(Ds3ContentLengthNotMatch))]
+        public void TestPutObjectWithWrongSpecifiedLengthPlus()
         {
-            const string bucketName = "TestPutObjectWithWrongSpecifiedLength";
+            const string bucketName = "TestPutObjectWithWrongSpecifiedLengthPlus";
             try
             {
                 _helpers.EnsureBucketExists(bucketName);
@@ -1179,6 +1180,26 @@ namespace IntegrationTestDs3
 
                 var stream = new MemoryStream(contentBytes);
                 _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3ContentLengthNotMatch))]
+        public void TestPutObjectWithWrongSpecifiedLengthMinus()
+        {
+            const string bucketName = "TestPutObjectWithWrongSpecifiedLengthMinus";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length - 1, stream));
             }
             finally
             {
