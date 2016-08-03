@@ -17,13 +17,13 @@ using System.IO;
 
 namespace Ds3.Runtime
 {
-    public class WebResponseStream : Stream
+    public class WebStream : Stream
     {
         private readonly Stream _stream;
         private readonly long _contentLength;
         private long _bytesRead = 0;
 
-        public WebResponseStream(Stream stream, long contentLength)
+        public WebStream(Stream stream, long contentLength)
         {
             _stream = stream;
             _contentLength = contentLength;
@@ -31,47 +31,29 @@ namespace Ds3.Runtime
 
         public override bool CanRead
         {
-            get
-            {
-                return _stream.CanRead;
-            }
+            get { return _stream.CanRead; }
         }
 
         public override bool CanSeek
         {
-            get
-            {
-                return _stream.CanSeek;
-            }
+            get { return _stream.CanSeek; }
         }
 
         public override bool CanWrite
         {
-            get
-            {
-                return _stream.CanWrite;
-            }
+            get { return _stream.CanWrite; }
         }
 
         public override long Length
         {
-            get
-            {
-                return _stream.Length;
-            }
+            get { return _stream.Length; }
         }
 
         public override long Position
         {
-            get
-            {
-                return _stream.Position;
-            }
+            get { return _stream.Position; }
 
-            set
-            {
-                _stream.Position = value;
-            }
+            set { _stream.Position = value; }
         }
 
         public override void Flush()
@@ -94,7 +76,7 @@ namespace Ds3.Runtime
             var bytesRead = _stream.Read(buffer, offset, count);
             _bytesRead += bytesRead;
 
-            if ( _contentLength > -1 && (bytesRead == 0) && (_bytesRead != _contentLength))
+            if (_contentLength > -1 && (bytesRead == 0) && (_bytesRead != _contentLength))
                 throw new Ds3ContentLengthNotMatch(Resources.ContentLengthNotMatch, _contentLength, _bytesRead);
 
             return bytesRead;
