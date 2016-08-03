@@ -201,11 +201,11 @@ namespace Ds3.Runtime
                     {
                         content.Seek(0, SeekOrigin.Begin);
                     }
-                    using (var webResponseStream = new WebResponseStream(content, request.GetContentLength()))
+                    using (var webStream = new WebStream(content, request.GetContentLength()))
                     {
                         try
                         {
-                            webResponseStream.CopyTo(requestStream, this.CopyBufferSize);
+                            webStream.CopyTo(requestStream, this.CopyBufferSize);
                         }
                         catch (Exception ex)
                         {
