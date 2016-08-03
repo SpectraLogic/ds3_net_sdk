@@ -1157,7 +1157,6 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(System.Net.WebException))]
         public void TestPutObjectWithSpecifiedLength()
         {
             const string bucketName = "TestPutObjectWithSpecifiedLength";
