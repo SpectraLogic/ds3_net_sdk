@@ -49,7 +49,6 @@ namespace TestDs3.Helpers
                     )))
                 .Callback<GetObjectRequest>(r =>
                 {
-                    Console.WriteLine("Writing \"" + payload + "\" to stream");
                     WriteToStream(r.DestinationStream, payload);
                 })
                 .Throws(new Ds3ContentLengthNotMatch("Content Length mismatch", expectedLength, returnedLength));
@@ -173,7 +172,6 @@ namespace TestDs3.Helpers
                 .Returns(new GetObjectResponse(new Dictionary<string, string>()))
                 .Callback<GetObjectRequest>(r =>
                 {
-                    Console.WriteLine("Writing \"" + payload + "\" to stream");
                     WriteToStream(r.DestinationStream, payload);
                 });
         }
