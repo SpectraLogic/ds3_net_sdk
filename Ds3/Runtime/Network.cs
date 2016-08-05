@@ -76,7 +76,7 @@ namespace Ds3.Runtime
                     try
                     {
                         var send = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                        var response = new WebResponse((HttpWebResponse)httpRequest.GetResponse());
+                        var response = new Ds3WebResponse((HttpWebResponse)httpRequest.GetResponse());
                         var millis = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - send;
                         if (Is307(response))
                         {
@@ -95,7 +95,7 @@ namespace Ds3.Runtime
                         {
                             throw e;
                         }
-                        return new WebResponse((HttpWebResponse)e.Response);
+                        return new Ds3WebResponse((HttpWebResponse)e.Response);
                     }
                 } while (redirectCount < _redirectRetryCount);
             }
@@ -206,7 +206,7 @@ namespace Ds3.Runtime
                             {
                                 content.Seek(0, SeekOrigin.Begin);
                             }
-                            using (var webStream = new WebStream(content, request.GetContentLength()))
+                            using (var webStream = new Ds3WebStream(content, request.GetContentLength()))
                             {
                                 try
                                 {
