@@ -42,7 +42,7 @@ namespace TestDs3.Runtime
 
         private static Stream GetRequestedStream(Stream source, long length)
         {
-            var webReponseStream = new WebStream(source, length);
+            var webReponseStream = new Ds3WebStream(source, length);
             var requestStream = new MemoryStream();
             if (webReponseStream.Position != 0)
             {
@@ -56,7 +56,7 @@ namespace TestDs3.Runtime
         [Test]
         public void TestForOverflow()
         {
-            var webReponseStream = new WebStream(new FakeStream(), int.MaxValue * 2L);
+            var webReponseStream = new Ds3WebStream(new FakeStream(), int.MaxValue * 2L);
             webReponseStream.Read(null, 0, 0);
             webReponseStream.Read(null, 0, 0);
             Assert.AreEqual(webReponseStream.GetBytesRead(), int.MaxValue * 2L);

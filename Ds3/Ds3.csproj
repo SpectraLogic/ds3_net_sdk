@@ -995,7 +995,7 @@
     <Compile Include="Lang\StreamsUtil.cs" />
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
-    <Compile Include="Runtime\WebStream.cs" />
+    <Compile Include="Runtime\Ds3WebStream.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Helpers\Blob.cs" />
     <Compile Include="Helpers\Jobs\FullObjectJob.cs" />
@@ -1071,7 +1071,7 @@
     <Compile Include="Runtime\IWebResponse.cs" />
     <Compile Include="Runtime\Network.cs" />
     <Compile Include="Runtime\S3Signer.cs" />
-    <Compile Include="Runtime\WebResponse.cs" />
+    <Compile Include="Runtime\Ds3WebResponse.cs" />
     <Compile Include="Runtime\XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

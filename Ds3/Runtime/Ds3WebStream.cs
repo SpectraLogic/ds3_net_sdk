@@ -17,13 +17,13 @@ using System.IO;
 
 namespace Ds3.Runtime
 {
-    public class WebStream : Stream
+    public class Ds3WebStream : Stream
     {
         private readonly Stream _stream;
         private readonly long _contentLength;
         private long _bytesRead = 0;
 
-        public WebStream(Stream stream, long contentLength)
+        public Ds3WebStream(Stream stream, long contentLength)
         {
             _stream = stream;
             _contentLength = contentLength;
