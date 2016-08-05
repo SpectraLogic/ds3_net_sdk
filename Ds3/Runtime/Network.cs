@@ -196,29 +196,58 @@ namespace Ds3.Runtime
                 httpRequest.ContentLength = request.GetContentLength();
                 if (content != Stream.Null)
                 {
-                    var requestStream = httpRequest.GetRequestStream();
-                    if (content.CanSeek && content.Position != 0)
+                    var ds3ContentLengthNotMatchCatched = false;
+                    Ds3ContentLengthNotMatch ds3ContentLengthNotMatch = null;
+                    try
                     {
-                        content.Seek(0, SeekOrigin.Begin);
-                    }
-                    using (var webStream = new WebStream(content, request.GetContentLength()))
-                    {
-                        try
+                        using (var requestStream = httpRequest.GetRequestStream())
                         {
-                            webStream.CopyTo(requestStream, this.CopyBufferSize);
-                        }
-                        catch (Exception ex)
-                        {
-                            const string message =
-                                "Bytes to be written to the stream exceed the Content-Length bytes size specified.";
-                            if (ex.Message.Equals(message))
+                            if (content.CanSeek && content.Position != 0)
                             {
-                                throw new Ds3ContentLengthNotMatch(message);
+                                content.Seek(0, SeekOrigin.Begin);
                             }
-                            throw;
+                            using (var webStream = new WebStream(content, request.GetContentLength()))
+                            {
+                                try
+                                {
+                                    webStream.CopyTo(requestStream, this.CopyBufferSize);
+                                }
+                                catch (Ds3ContentLengthNotMatch ex)
+                                {
+                                    ds3ContentLengthNotMatchCatched = true;
+                                    ds3ContentLengthNotMatch = ex;
+                                    throw ds3ContentLengthNotMatch;
+                                }
+                                catch (Exception ex)
+                                {
+                                    const string message =
+                                        "Bytes to be written to the stream exceed the Content-Length bytes size specified.";
+                                    if (ex.Message.Equals(message))
+                                    {
+                                        ds3ContentLengthNotMatchCatched = true;
+                                        ds3ContentLengthNotMatch = new Ds3ContentLengthNotMatch(message, ex);
+                                        throw ds3ContentLengthNotMatch;
+                                    }
+                                    throw;
+                                }
+                                requestStream.Flush();
+                            }
                         }
-                        requestStream.Flush();
-                        requestStream.Close();
+                    }
+                    //if only Ds3ContentLengthNotMatch was thrown than just re-throw it
+                    catch (Ds3ContentLengthNotMatch)
+                    {
+                        throw;
+                    }
+                    //if an Exception was thrown from closing requestStream in finally block and also Ds3ContentLengthNotMatch than we will aggregate them,
+                    //and if not than just re-throw
+                    catch (Exception ex)
+                    {
+                        if (!ds3ContentLengthNotMatchCatched) throw;
+
+                        var innerExceptions = ds3ContentLengthNotMatch.InnerExceptions.Select(e=>e).ToList();
+                        innerExceptions.Add(ex);
+                        throw new Ds3ContentLengthNotMatch(ds3ContentLengthNotMatch.Message, innerExceptions);
                     }
                 }
             }
