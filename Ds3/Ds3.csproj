@@ -845,7 +845,7 @@
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
     <Compile Include="Runtime\IWebRequest.cs" />
     <Compile Include="Runtime\Ds3WebRequest.cs" />
-    <Compile Include="Runtime\Ds3WebResponseStream.cs" />
+    <Compile Include="Runtime\Ds3WebStream.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Helpers\Blob.cs" />
     <Compile Include="Helpers\Jobs\FullObjectJob.cs" />
