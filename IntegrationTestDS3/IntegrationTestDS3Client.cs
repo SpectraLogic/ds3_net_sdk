@@ -1291,6 +1291,8 @@ namespace IntegrationTestDs3
             }
             finally
             {
+                //wait streams closing to be over
+                Thread.Sleep(100);
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
@@ -1311,6 +1313,8 @@ namespace IntegrationTestDs3
             }
             finally
             {
+                //wait streams closing to be over
+                Thread.Sleep(100);
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }

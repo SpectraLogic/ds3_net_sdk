@@ -220,12 +220,12 @@ namespace Ds3.Runtime
                                 }
                                 catch (Exception ex)
                                 {
-                                    const string message =
-                                        "Bytes to be written to the stream exceed the Content-Length bytes size specified.";
-                                    if (ex.Message.Equals(message))
+                                    const string windowsMessage = "Bytes to be written to the stream exceed the Content-Length bytes size specified.";
+                                    const string monoMessage = "The number of bytes to be written is greater than the specified ContentLength.";
+                                    if (ex.Message.Equals(windowsMessage) || ex.Message.Equals(monoMessage))
                                     {
                                         ds3ContentLengthNotMatchCatched = true;
-                                        ds3ContentLengthNotMatch = new Ds3ContentLengthNotMatch(message, ex);
+                                        ds3ContentLengthNotMatch = new Ds3ContentLengthNotMatch(ex.Message, ex);
                                         throw ds3ContentLengthNotMatch;
                                     }
                                     throw;
