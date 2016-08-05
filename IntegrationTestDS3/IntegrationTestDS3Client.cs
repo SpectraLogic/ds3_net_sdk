@@ -1290,7 +1290,7 @@ namespace IntegrationTestDs3
                 _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
                 
                 //wait streams closing to be over
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
             }
             finally
             {
@@ -1313,7 +1313,7 @@ namespace IntegrationTestDs3
                 _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length - 1, stream));
                 
                 //wait streams closing to be over
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
             }
             finally
             {
