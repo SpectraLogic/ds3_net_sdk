@@ -225,7 +225,7 @@ namespace Ds3.Runtime
                                     if (ex.Message.Equals(windowsMessage) || ex.Message.Equals(monoMessage))
                                     {
                                         ds3ContentLengthNotMatchCatched = true;
-                                        ds3ContentLengthNotMatch = new Ds3ContentLengthNotMatch(windowsMessage, ex);
+                                        ds3ContentLengthNotMatch = new Ds3ContentLengthNotMatch(ex.Message, ex);
                                         throw ds3ContentLengthNotMatch;
                                     }
                                     throw;
