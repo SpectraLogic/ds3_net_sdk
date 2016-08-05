@@ -217,14 +217,58 @@ namespace Ds3.Runtime
                 httpRequest.ContentLength = request.GetContentLength();
                 if (content != Stream.Null)
                 {
-                    using (var requestStream = httpRequest.GetRequestStream())
+                    var ds3ContentLengthNotMatchCatched = false;
+                    Ds3ContentLengthNotMatch ds3ContentLengthNotMatch = null;
+                    try
                     {
-                        if (content.CanSeek && content.Position != 0)
+                        using (var requestStream = httpRequest.GetRequestStream())
                         {
-                            content.Seek(0, SeekOrigin.Begin);
+                            if (content.CanSeek && content.Position != 0)
+                            {
+                                content.Seek(0, SeekOrigin.Begin);
+                            }
+                            using (var webStream = new Ds3WebStream(content, request.GetContentLength()))
+                            {
+                                try
+                                {
+                                    webStream.CopyTo(requestStream, this.CopyBufferSize);
+                                }
+                                catch (Ds3ContentLengthNotMatch ex)
+                                {
+                                    ds3ContentLengthNotMatchCatched = true;
+                                    ds3ContentLengthNotMatch = ex;
+                                    throw ds3ContentLengthNotMatch;
+                                }
+                                catch (Exception ex)
+                                {
+                                    const string windowsMessage = "Bytes to be written to the stream exceed the Content-Length bytes size specified.";
+                                    const string monoMessage = "The number of bytes to be written is greater than the specified ContentLength.";
+                                    if (ex.Message.Equals(windowsMessage) || ex.Message.Equals(monoMessage))
+                                    {
+                                        ds3ContentLengthNotMatchCatched = true;
+                                        ds3ContentLengthNotMatch = new Ds3ContentLengthNotMatch(ex.Message, ex);
+                                        throw ds3ContentLengthNotMatch;
+                                    }
+                                    throw;
+                                }
+                                requestStream.Flush();
+                            }
                         }
-                        content.CopyTo(requestStream, this.CopyBufferSize);
-                        requestStream.Flush();
+                    }
+                    //if only Ds3ContentLengthNotMatch was thrown than just re-throw it
+                    catch (Ds3ContentLengthNotMatch)
+                    {
+                        throw;
+                    }
+                    //if an Exception was thrown from closing requestStream in finally block and also Ds3ContentLengthNotMatch than we will aggregate them,
+                    //and if not than just re-throw
+                    catch (Exception ex)
+                    {
+                        if (!ds3ContentLengthNotMatchCatched) throw;
+
+                        var innerExceptions = ds3ContentLengthNotMatch.InnerExceptions.Select(e => e).ToList();
+                        innerExceptions.Add(ex);
+                        throw new Ds3ContentLengthNotMatch(ds3ContentLengthNotMatch.Message, innerExceptions);
                     }
                 }
             }

@@ -29,6 +29,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Ds3.Helpers.Strategys;
+using Ds3.Runtime;
 
 // using TestDs3.Lang;
 
@@ -1157,45 +1158,6 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        public void TestPutObjectWithSpecifiedLength()
-        {
-            const string bucketName = "TestPutObjectWithSpecifiedLength";
-            try
-            {
-                _helpers.EnsureBucketExists(bucketName);
-                const string content = "hi im content";
-                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
-
-                var stream = new MemoryStream(contentBytes);
-                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length, stream));
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
-        }
-
-        [Test]
-        [ExpectedException(typeof(System.Net.WebException))]
-        public void TestPutObjectWithWrongSpecifiedLength()
-        {
-            const string bucketName = "TestPutObjectWithWrongSpecifiedLength";
-            try
-            {
-                _helpers.EnsureBucketExists(bucketName);
-                const string content = "hi im content";
-                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
-
-                var stream = new MemoryStream(contentBytes);
-                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
-        }
-
-        [Test]
         public void TestFolderFilterDs3Object()
         {
             const string bucketName = "TestFolderFilterDs3Object";
@@ -1299,6 +1261,69 @@ namespace IntegrationTestDs3
             }
             finally
             {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestPutObjectWithSpecifiedLength()
+        {
+            const string bucketName = "TestPutObjectWithSpecifiedLength";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length, stream));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3ContentLengthNotMatch))]
+        public void TestPutObjectWithWrongSpecifiedLengthPlus()
+        {
+            const string bucketName = "TestPutObjectWithWrongSpecifiedLengthPlus";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
+            }
+            finally
+            {
+                //wait streams closing to be over
+                Thread.Sleep(100);
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        [ExpectedException(typeof(Ds3ContentLengthNotMatch))]
+        public void TestPutObjectWithWrongSpecifiedLengthMinus()
+        {
+            const string bucketName = "TestPutObjectWithWrongSpecifiedLengthMinus";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length - 1, stream));
+            }
+            finally
+            {
+                //wait streams closing to be over
+                Thread.Sleep(100);
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }

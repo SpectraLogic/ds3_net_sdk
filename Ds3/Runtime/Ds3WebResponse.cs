@@ -33,7 +33,7 @@ namespace Ds3.Runtime
 
         public Stream GetResponseStream()
         {
-            return new Ds3WebResponseStream(_webResponse.GetResponseStream(), _webResponse.ContentLength);
+            return new Ds3WebStream(_webResponse.GetResponseStream(), _webResponse.ContentLength);
         }
 
         public HttpStatusCode StatusCode
