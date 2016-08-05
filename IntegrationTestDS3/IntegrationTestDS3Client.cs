@@ -1288,12 +1288,11 @@ namespace IntegrationTestDs3
 
                 var stream = new MemoryStream(contentBytes);
                 _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
-                
-                //wait streams closing to be over
-                Thread.Sleep(1000);
             }
             finally
             {
+                //wait streams closing to be over
+                Thread.Sleep(100);
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
@@ -1311,12 +1310,11 @@ namespace IntegrationTestDs3
 
                 var stream = new MemoryStream(contentBytes);
                 _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length - 1, stream));
-                
-                //wait streams closing to be over
-                Thread.Sleep(1000);
             }
             finally
             {
+                //wait streams closing to be over
+                Thread.Sleep(100);
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
