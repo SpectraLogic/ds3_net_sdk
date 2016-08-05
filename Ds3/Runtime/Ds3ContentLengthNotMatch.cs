@@ -14,17 +14,32 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace Ds3.Runtime
 {
-    public class Ds3ContentLengthNotMatch : Exception
+    public class Ds3ContentLengthNotMatch : AggregateException
     {
+        public Ds3ContentLengthNotMatch(string message)
+            : base(message)
+        {
+        }
+
+        public Ds3ContentLengthNotMatch(string message, IEnumerable<Exception> innerExceptions)
+            :base(message, innerExceptions)
+        {
+        }
+
+        public Ds3ContentLengthNotMatch(string message, params Exception[] innerExceptions)
+            : base(message, innerExceptions)
+        {
+        }
+
         public Ds3ContentLengthNotMatch(string message, long contentLength, long bytesRead)
             : base(string.Format(message, contentLength, bytesRead))
         {
             ContentLength = contentLength;
             BytesRead = bytesRead;
-                
         }
 
         public long BytesRead { get; private set; }
