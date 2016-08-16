@@ -94,5 +94,10 @@ namespace Ds3.Helpers
         /// Fires handlers with an object name and the meta-data associated with it.
         /// </summary>
         event Action<string, IDictionary<string, string>> MetadataListener;
+
+        /// <summary>
+        /// Fires handlers with an object name, offset and the exception thrown
+        /// </summary>
+        event Action<string, long, Exception> OnFailure;
     }
 }
