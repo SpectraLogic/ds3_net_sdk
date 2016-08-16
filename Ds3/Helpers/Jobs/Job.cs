@@ -132,7 +132,7 @@ namespace Ds3.Helpers.Jobs
                     {
                         this._chunkStrategy.Stop();
 
-                        //if we have an OnFailure event than invoke that with the blob name, offset and the exception
+                        //if we have an OnFailure event then invoke with blob name, offset and the exception
                         OnFailure?.Invoke(item.Blob.Context, item.Blob.Range.Start, ex);
                         throw;
                     }
