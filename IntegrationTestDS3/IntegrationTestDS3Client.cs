@@ -1318,5 +1318,39 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
+
+        [Test]
+        public void TestOnTransferErrorEvent()
+        {
+            const string bucketName = "TestOnTransferErrorEvent";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+
+                var objects = new List<Ds3Object>
+                {
+                    new Ds3Object("obj1", contentBytes.Length + 1),
+                };
+
+                var job = _helpers.StartWriteJob(bucketName, objects);
+                job.OnFailure += (fileName, offset, exception) =>
+                {
+                    Assert.AreEqual("obj1", fileName);
+                    Assert.AreEqual(0, offset);
+                    var expectedMessage = $"The Content length ({contentBytes.Length + 1}) not match the number of byte read ({contentBytes.Length})";
+                    Assert.AreEqual(expectedMessage, exception.Message);
+                };
+
+                Assert.Throws<AggregateException>(() => job.Transfer(s => stream));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
     }
 }
