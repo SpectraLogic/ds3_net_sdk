@@ -60,7 +60,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                     Stubs.BuildJobResponse(Stubs.Chunk1(Stubs.NodeId1, true, true))
                 ));
 
-            var source = new ReadRandomAccessChunkStrategy(-1, _ => { });
+            var source = new ReadRandomAccessChunkStrategy(_ => { });
 
             var readyToStop = new ManualResetEventSlim();
             var task = Task.Run(() =>
@@ -137,7 +137,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
 
             var sleeps = new List<TimeSpan>();
 
-            var source = new ReadRandomAccessChunkStrategy(-1, sleeps.Add);
+            var source = new ReadRandomAccessChunkStrategy(sleeps.Add);
 
             var blobs = new[]
             {
@@ -241,66 +241,66 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(
                     TimeSpan.FromMinutes(0)));
 
-            var source = new ReadRandomAccessChunkStrategy(0, _ => { });
+            var source = new ReadRandomAccessChunkStrategy(_ => { }, 0);
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(source.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(source.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
 
-            source = new ReadRandomAccessChunkStrategy(1, _ => { });
+            source = new ReadRandomAccessChunkStrategy(_ => { }, 1);
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(source.RetryAfterLeft == 1);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 1);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(source.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
 
-            source = new ReadRandomAccessChunkStrategy(2, _ => { });
+            source = new ReadRandomAccessChunkStrategy(_ => { }, 2);
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(source.RetryAfterLeft == 2);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 2);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(source.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
 
-            source = new ReadRandomAccessChunkStrategy(100, _ => { });
+            source = new ReadRandomAccessChunkStrategy(_ => { }, 100);
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
                 try
                 {
-                    Assert.True(source.RetryAfterLeft == 100);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 100);
                     transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
                     Assert.Fail();
                 }
                 catch (Ds3NoMoreRetriesException ex)
                 {
-                    Assert.True(source.RetryAfterLeft == 0);
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
                     Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
                 }
             }
@@ -336,14 +336,14 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                     return GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromSeconds(0));
                 });
 
-            var source = new ReadRandomAccessChunkStrategy(retryAfter, _ => { retryAfter--; });
+            var source = new ReadRandomAccessChunkStrategy(_ => { retryAfter--; }, retryAfter);
 
 
             using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
             {
-                Assert.True(source.RetryAfterLeft == 5);
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
                 transfers.MoveNext();
-                Assert.True(source.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
                 transfers.MoveNext();
             }
         }

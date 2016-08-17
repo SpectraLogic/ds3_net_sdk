@@ -30,22 +30,22 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
     {
         private readonly object _blobsRemainingLock = new object();
         private readonly Action<TimeSpan> _wait;
-        private readonly int _retryAfter; // Negative _retryAfter value represent infinity retries
-        public int RetryAfterLeft { get; private set; } // The number of retries left
         private Guid _jobId;
         private ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
         private IDs3Client _client;
 
-        public ReadRandomAccessChunkStrategy(int retryAfter)
-            : this(retryAfter, Thread.Sleep)
+        public readonly RetryAfter RetryAfer;
+
+        public ReadRandomAccessChunkStrategy(int retryAfter = -1)
+            : this(Thread.Sleep, retryAfter)
         {
         }
 
-        public ReadRandomAccessChunkStrategy(int retryAfter, Action<TimeSpan> wait)
+        public ReadRandomAccessChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
         {
-            this._retryAfter = RetryAfterLeft = retryAfter;
+            RetryAfer = new RetryAfter(wait, retryAfter);
             this._wait = wait;
         }
 
@@ -116,18 +116,12 @@ namespace Ds3.Helpers.Strategys.ChunkStrategys
                 {
                     _wait(ts);
                 }
-                RetryAfterLeft = _retryAfter; // Reset the number of retries to the initial value
+                this.RetryAfer.Reset();
                 return result;
             },
             ts =>
             {
-                if (RetryAfterLeft == 0)
-                {
-                    throw new Ds3NoMoreRetriesException(Resources.NoMoreRetriesException);
-                }
-                RetryAfterLeft--;
-
-                _wait(ts);
+                this.RetryAfer.RetryAfterFunc(ts);
                 return new TransferItem[0];
             });
         }
