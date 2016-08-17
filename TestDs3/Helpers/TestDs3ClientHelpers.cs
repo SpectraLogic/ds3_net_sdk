@@ -517,5 +517,73 @@ namespace TestDs3.Helpers
             // This is will throw Ds3AssertException
             Assert.Throws<Ds3AssertException>(() => job.WithMetadata(null));
         }
+
+        [Test]
+        public void TestJobOnFailureEvent()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(null, false, false),
+                Stubs.Chunk2(null, false, false),
+                Stubs.Chunk3(null, false, false)
+            );
+            var availableJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk2(Stubs.NodeId2, true, true)
+            );
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupGetObject(node2Client, "foo", 0L, "abcdefghij");
+            node2Client
+                .Setup(c => c.GetObject(MockHelpers.ItIsGetObjectRequest(
+                    Stubs.BucketName,
+                    "bar",
+                    Stubs.JobId,
+                    15L,
+                    Enumerable.Empty<Range>()
+                )))
+                .Throws<NullReferenceException>();
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
+                    Stubs.BucketName,
+                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    Stubs.ObjectNames,
+                    Enumerable.Empty<Ds3PartialObject>()
+                )))
+                .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+
+            var job = new Ds3ClientHelpers(client.Object).StartReadJob(
+                Stubs.BucketName,
+                Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
+            );
+
+            job.OnFailure += (fileName, offset, exception) =>
+            {
+                Assert.AreEqual("bar", fileName);
+                Assert.AreEqual(15, offset);
+                Assert.AreEqual("Object reference not set to an instance of an object.", exception.Message);
+            };
+
+            try
+            {
+                job.Transfer(key => new MockStream());
+                Assert.Fail("Should have thrown an exception.");
+            }
+            catch (AggregateException e)
+            {
+                Assert.IsInstanceOf<NullReferenceException>(e.InnerException);
+            }
+        }
     }
 }

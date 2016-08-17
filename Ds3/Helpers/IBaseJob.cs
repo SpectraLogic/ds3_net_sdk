@@ -94,5 +94,11 @@ namespace Ds3.Helpers
         /// Fires handlers with an object name and the meta-data associated with it.
         /// </summary>
         event Action<string, IDictionary<string, string>> MetadataListener;
+
+        /// <summary>
+        /// A failure occurred while transferring a blob that we cannot recover from in the helper functions.
+        /// Fires handlers with an object name, offset and the exception thrown
+        /// </summary>
+        event Action<string, long, Exception> OnFailure;
     }
 }
