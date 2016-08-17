@@ -22,7 +22,7 @@ namespace LongRunningIntegrationTestDs3
         private const string FixtureName = "long_integration_test_ds3client";
         private static TempStorageIds _envStorageIds;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Startup()
         {
             this._client = Ds3TestUtils.CreateClient(this._copyBufferSize);
@@ -32,7 +32,7 @@ namespace LongRunningIntegrationTestDs3
             _envStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Teardown()
         {
             TempStorageUtil.TearDown(FixtureName, _envStorageIds, _client);

@@ -456,7 +456,6 @@ namespace TestDs3.Helpers
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3AssertException))]
         public void WithMetadataBeforeTransferException()
         {
             var initialJobResponse = Stubs.BuildJobResponse(
@@ -516,7 +515,7 @@ namespace TestDs3.Helpers
 
             // Must always be called before the Transfer method. 
             // This is will throw Ds3AssertException
-            job.WithMetadata(null);
+            Assert.Throws<Ds3AssertException>(() => job.WithMetadata(null));
         }
     }
 }

@@ -62,7 +62,6 @@ namespace TestDs3.Helpers.Strategys.StreamFactory
         }
 
         [Test]
-        [ExpectedException(typeof(StreamNotFoundException))]
         public void TestCloseBlobException()
         {
             var factory = new WriteRandomAccessStreamFactory();
@@ -71,7 +70,7 @@ namespace TestDs3.Helpers.Strategys.StreamFactory
             factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
 
             factory.CloseBlob(Stubs.Blob1);
-            factory.CloseBlob(Stubs.Blob2); //should throw StreamNotFoundException
+            Assert.Throws<StreamNotFoundException>(() => factory.CloseBlob(Stubs.Blob2));
         }
     }
 }
