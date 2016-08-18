@@ -64,7 +64,7 @@ namespace IntegrationTestDS3
 
                 if (helperStrategy == null)
                 {
-                    helperStrategy = new ReadRandomAccessHelperStrategy<string>(-1);
+                    helperStrategy = new ReadRandomAccessHelperStrategy<string>();
                 }
 
                 var job = helper.StartReadJob(bucketName, new List<Ds3Object> { new Ds3Object(objectName, null) }, helperStrategy);
@@ -85,7 +85,7 @@ namespace IntegrationTestDS3
 
                 if (helperStrategy == null)
                 {
-                    helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(-1);
+                    helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>();
                 }
 
                 var job = helper.StartPartialReadJob(bucketName, new List<string>(), new List<Ds3PartialObject> { new Ds3PartialObject(range, objectName) }, helperStrategy);
@@ -147,8 +147,8 @@ namespace IntegrationTestDS3
             var writeStrategyList = new List<IHelperStrategy<string>>
             {
                 null, //using the default strategy
-                new WriteRandomAccessHelperStrategy(false), //without aggregation
-                new WriteRandomAccessHelperStrategy(true), //with aggregation
+                new WriteRandomAccessHelperStrategy(), //without aggregation
+                new WriteRandomAccessHelperStrategy(withAggregation:true), //with aggregation
                 new WriteNoAllocateHelperStrategy(),
                 new WriteStreamHelperStrategy()
             };
@@ -161,7 +161,7 @@ namespace IntegrationTestDS3
             var writeStrategyList = new List<IHelperStrategy<string>>
             {
                 null, //using the default strategy
-                new ReadRandomAccessHelperStrategy<string>(-1)
+                new ReadRandomAccessHelperStrategy<string>()
             };
 
             writeStrategyList.ForEach(action);
@@ -172,7 +172,7 @@ namespace IntegrationTestDS3
             var writeStrategyList = new List<IHelperStrategy<Ds3PartialObject>>
             {
                 null, //using the default strategy
-                new ReadRandomAccessHelperStrategy<Ds3PartialObject>(-1)
+                new ReadRandomAccessHelperStrategy<Ds3PartialObject>()
             };
 
             writeStrategyList.ForEach(action);

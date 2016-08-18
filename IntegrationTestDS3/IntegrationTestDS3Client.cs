@@ -49,7 +49,7 @@ namespace IntegrationTestDs3
         private static string FOLDER = "joyce";
         private static string BIG = "big";
         private static string BIGFORMAXBLOB = "bigForMaxBlob";
-        private const long BlobSize = 10*1024*1024;
+        private const long BlobSize = 10 * 1024 * 1024;
 
         private string testDirectorySrc { get; set; }
         private string testDirectoryBigFolder { get; set; }
@@ -72,13 +72,23 @@ namespace IntegrationTestDs3
         [OneTimeSetUp]
         public void Startup()
         {
-            _client = Ds3TestUtils.CreateClient();
-            _helpers = new Ds3ClientHelpers(_client);
+            try
+            {
+                _client = Ds3TestUtils.CreateClient();
+                _helpers = new Ds3ClientHelpers(_client);
 
-            SetupTestData();
+                SetupTestData();
 
-            EnvDataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
-            EnvStorageIds = TempStorageUtil.Setup(FixtureName, EnvDataPolicyId, _client);
+                EnvDataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+                EnvStorageIds = TempStorageUtil.Setup(FixtureName, EnvDataPolicyId, _client);
+            }
+            catch (Exception)
+            {
+                // So long as any SetUp method runs without error, the TearDown method is guaranteed to run.
+                // It will not run if a SetUp method fails or throws an exception.
+                Teardown();
+                throw;
+            }
         }
 
         [OneTimeTearDown]

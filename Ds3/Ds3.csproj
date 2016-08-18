@@ -576,6 +576,7 @@
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
     <Compile Include="Helpers\IMetadataAccess.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\IChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategys\ChunkStrategys\RetryAfter.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\WriteRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\ReadRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategys\ChunkStrategys\WriteNoAllocateChunkStrategy.cs" />
@@ -995,6 +996,8 @@
     <Compile Include="Lang\StreamsUtil.cs" />
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
+    <Compile Include="Runtime\IWebRequest.cs" />
+    <Compile Include="Runtime\Ds3WebRequest.cs" />
     <Compile Include="Runtime\Ds3WebStream.cs" />
     <Compile Include="Models\JobStatus.cs" />
     <Compile Include="Helpers\Blob.cs" />
