@@ -26,10 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using Moq;
-using TestDs3.Helpers;
 using TestDs3.Lang;
-using System.Text;
 
 namespace TestDs3
 {
@@ -90,33 +87,34 @@ namespace TestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestGetBadService()
         {
-            MockNetwork
+            Assert.Throws<Ds3BadStatusCodeException>(() => MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.BadRequest, "", _emptyHeaders)
                 .AsClient
-                .GetService(new GetServiceRequest());
+                .GetService(new GetServiceRequest()));
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3BadResponseException))]
         public void TestGetWorseService()
         {
-            MockNetwork
+            Assert.Throws<Ds3BadResponseException>(() => MockNetwork
                 .Expecting(HttpVerb.GET, "/", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.OK, "", _emptyHeaders)
                 .AsClient
-                .GetService(new GetServiceRequest());
+                .GetService(new GetServiceRequest()));
         }
 
         [Test]
         public void TestGetSystemInfo()
         {
+            string id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
             var xmlResponse = "<Data><ApiVersion>91C76B3B5B01A306A0DFA94C9EE3549A.767D11668247E20543EFC3B1C76117BA</ApiVersion>" 
                 + "<BackendActivated>false</BackendActivated>"
                 + "<BuildInformation><Branch>//BlueStorm/r1.x</Branch><Revision>1154042</Revision><Version>1.2.0</Version></BuildInformation>" 
+                + "<InstanceId>" + id + "</InstanceId>"
+                + "<Now>0</Now>"
                 + "<SerialNumber>5003048001dbd7b3</SerialNumber></Data>";
             var expected = new GetSystemInformationSpectraS3Response(
                 new SystemInformation() {
@@ -158,14 +156,13 @@ namespace TestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestVerifySystemHealthConnectFail()
         {
-            var response = MockNetwork
+            Assert.Throws<Ds3BadStatusCodeException>(() => MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/system_health", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.ServiceUnavailable, "", _emptyHeaders)
                 .AsClient
-                .VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request());
+                .VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request()));
         }
 
         [Test]
@@ -283,7 +280,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.GET, "/_rest_/object", expectedQueryParams, "")
                 .Returning(HttpStatusCode.OK, xmlResponse, _emptyHeaders)
                 .AsClient
-                .GetObjectsSpectraS3(new GetObjectsSpectraS3Request()
+                .GetObjectsDetailsSpectraS3(new GetObjectsDetailsSpectraS3Request()
                 .WithBucketId("videos")
                 .WithName("%mp4"));
 
@@ -375,7 +372,6 @@ namespace TestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestDeleteFolderMissingFolder()
         {
             var expectedQueryParams = new Dictionary<string, string>
@@ -383,15 +379,14 @@ namespace TestDs3
                     { "bucket_id", "testdelete" },
                     { "recursive", null }
                 };
-            MockNetwork
+            Assert.Throws<Ds3BadStatusCodeException>(() => MockNetwork
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
                 .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
                 .AsClient
-                .DeleteFolderRecursivelySpectraS3(new DeleteFolderRecursivelySpectraS3Request("testdelete", "badfoldername"));
+                .DeleteFolderRecursivelySpectraS3(new DeleteFolderRecursivelySpectraS3Request("testdelete", "badfoldername")));
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestDeleteFolderMissingBucket()
         {
             var expectedQueryParams = new Dictionary<string, string>
@@ -399,22 +394,21 @@ namespace TestDs3
                     { "bucket_id", "nosuchbucket" },
                     { "recursive", null }
                 };
-            MockNetwork
+            Assert.Throws<Ds3BadStatusCodeException>(() => MockNetwork
                 .Expecting(HttpVerb.DELETE, "/_rest_/folder/badfoldername", expectedQueryParams, "")
                 .Returning(HttpStatusCode.NotFound, "", _emptyHeaders)
                 .AsClient
-                .DeleteFolderRecursivelySpectraS3(new DeleteFolderRecursivelySpectraS3Request("nosuchbucket", "badfoldername"));
+                .DeleteFolderRecursivelySpectraS3(new DeleteFolderRecursivelySpectraS3Request("nosuchbucket", "badfoldername")));
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3BadStatusCodeException))]
         public void TestGetBadBucket()
         {
-            MockNetwork
+            Assert.Throws<Ds3BadStatusCodeException>(() => MockNetwork
                 .Expecting(HttpVerb.GET, "/bucketName", _emptyQueryParams, "")
                 .Returning(HttpStatusCode.BadRequest, "", _emptyHeaders)
                 .AsClient
-                .GetBucket(new GetBucketRequest("bucketName"));
+                .GetBucket(new GetBucketRequest("bucketName")));
         }
 
         [Test]
@@ -727,7 +721,7 @@ namespace TestDs3
         [Test]
         public void TestGetJobList()
         {
-            var responseContent = "<Jobs><Job WriteOptimization=\"CAPACITY\" UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" OriginalSizeInBytes=\"0\" Naked=\"false\" CompletedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CachedSizeInBytes=\"0\" Aggregating=\"false\" BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
+            var responseContent = "<Jobs><Job EntirelyInCache=\"false\" WriteOptimization=\"CAPACITY\" UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" OriginalSizeInBytes=\"0\" Naked=\"false\" CompletedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CachedSizeInBytes=\"0\" Aggregating=\"false\" BucketName=\"bucketName\" JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Priority=\"NORMAL\" RequestType=\"PUT\" StartDate=\"2014-05-22T18:24:00.000Z\" Status=\"IN_PROGRESS\"/></Jobs>";
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job", new Dictionary<string, string>(), "")
                 .Returning(HttpStatusCode.OK, responseContent, _emptyHeaders)
@@ -741,7 +735,7 @@ namespace TestDs3
         [Test]
         public void TestGetJobListWithBucketName()
         {
-            var responseContent = "<Jobs><Job Aggregating=\"false\" BucketName=\"bucketName\" CachedSizeInBytes=\"0\" "
+            var responseContent = "<Jobs><Job EntirelyInCache=\"false\" Aggregating=\"false\" BucketName=\"bucketName\" CachedSizeInBytes=\"0\" "
                 + "ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CompletedSizeInBytes=\"0\" OriginalSizeInBytes=\"0\" "
                 + "JobId=\"a4a586a1-cb80-4441-84e2-48974e982d51\" Naked=\"false\" Priority=\"NORMAL\" RequestType=\"PUT\" "
                 + "UserId=\"c041e1a1-1900-4e7d-814b-3bd018df047c\" WriteOptimization=\"CAPACITY\" "
@@ -1085,7 +1079,6 @@ namespace TestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3MaxJobsException))]
         public void TestBulkPutWithDs3MaxJobsException()
         {
             var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
@@ -1100,11 +1093,10 @@ namespace TestDs3
             };
             var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
 
-            mockClient.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request("bucket", inputObjects));
+            Assert.Throws<Ds3MaxJobsException>(() => mockClient.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request("bucket", inputObjects)));
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3MaxJobsException))]
         public void TestStartWriteJobWithDs3MaxJobsException()
         {
             var queryParams = new Dictionary<string, string>() { { "operation", "start_bulk_put" } };
@@ -1121,7 +1113,7 @@ namespace TestDs3
 
             var helpers = new Ds3ClientHelpers(mockClient, jobRetries: 3, jobWaitTime: 0);
 
-            helpers.StartWriteJob("bucket", inputObjects);
+            Assert.Throws<Ds3MaxJobsException>(() => helpers.StartWriteJob("bucket", inputObjects));
         }
 
         [Test]

@@ -22,6 +22,7 @@ namespace Ds3.Models
 {
     public class PhysicalPlacement
     {
+        public IEnumerable<Ds3Target> Ds3Targets { get; set; }
         public IEnumerable<Pool> Pools { get; set; }
         public IEnumerable<Tape> Tapes { get; set; }
     }

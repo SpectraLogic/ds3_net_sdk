@@ -26,6 +26,13 @@ namespace Ds3.Calls
         public string StorageDomain { get; private set; }
 
         
+        private long? _autoEjectMediaFullThreshold;
+        public long? AutoEjectMediaFullThreshold
+        {
+            get { return _autoEjectMediaFullThreshold; }
+            set { WithAutoEjectMediaFullThreshold(value); }
+        }
+
         private string _autoEjectUponCron;
         public string AutoEjectUponCron
         {
@@ -89,6 +96,13 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private bool? _secureMediaAllocation;
+        public bool? SecureMediaAllocation
+        {
+            get { return _secureMediaAllocation; }
+            set { WithSecureMediaAllocation(value); }
+        }
+
         private Priority? _verifyPriorToAutoEject;
         public Priority? VerifyPriorToAutoEject
         {
@@ -103,6 +117,19 @@ namespace Ds3.Calls
             set { WithWriteOptimization(value); }
         }
 
+        public ModifyStorageDomainSpectraS3Request WithAutoEjectMediaFullThreshold(long? autoEjectMediaFullThreshold)
+        {
+            this._autoEjectMediaFullThreshold = autoEjectMediaFullThreshold;
+            if (autoEjectMediaFullThreshold != null)
+            {
+                this.QueryParams.Add("auto_eject_media_full_threshold", autoEjectMediaFullThreshold.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("auto_eject_media_full_threshold");
+            }
+            return this;
+        }
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponCron(string autoEjectUponCron)
         {
             this._autoEjectUponCron = autoEjectUponCron;
@@ -217,6 +244,19 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("name");
+            }
+            return this;
+        }
+        public ModifyStorageDomainSpectraS3Request WithSecureMediaAllocation(bool? secureMediaAllocation)
+        {
+            this._secureMediaAllocation = secureMediaAllocation;
+            if (secureMediaAllocation != null)
+            {
+                this.QueryParams.Add("secure_media_allocation", secureMediaAllocation.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("secure_media_allocation");
             }
             return this;
         }

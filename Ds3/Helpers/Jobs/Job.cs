@@ -51,6 +51,7 @@ namespace Ds3.Helpers.Jobs
         public event Action<long> DataTransferred;
         public event Action<TItem> ItemCompleted;
         public event Action<string, IDictionary<string, string>> MetadataListener;
+        public event Action<string, long, Exception> OnFailure;
 
 
         public Guid JobId { get; private set; }
@@ -127,9 +128,12 @@ namespace Ds3.Helpers.Jobs
                     {
                         this.TransferBlob(item.Client, item.Blob);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         this._chunkStrategy.Stop();
+
+                        //if we have an OnFailure event then invoke with blob name, offset and the exception
+                        OnFailure?.Invoke(item.Blob.Context, item.Blob.Range.Start, ex);
                         throw;
                     }
                     this._chunkStrategy.CompleteBlob(item.Blob);

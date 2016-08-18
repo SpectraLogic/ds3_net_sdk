@@ -24,6 +24,27 @@ namespace Ds3.Calls
     {
         
         
+        private bool? _alwaysForcePutJobCreation;
+        public bool? AlwaysForcePutJobCreation
+        {
+            get { return _alwaysForcePutJobCreation; }
+            set { WithAlwaysForcePutJobCreation(value); }
+        }
+
+        private bool? _alwaysMinimizeSpanningAcrossMedia;
+        public bool? AlwaysMinimizeSpanningAcrossMedia
+        {
+            get { return _alwaysMinimizeSpanningAcrossMedia; }
+            set { WithAlwaysMinimizeSpanningAcrossMedia(value); }
+        }
+
+        private bool? _alwaysReplicateDeletes;
+        public bool? AlwaysReplicateDeletes
+        {
+            get { return _alwaysReplicateDeletes; }
+            set { WithAlwaysReplicateDeletes(value); }
+        }
+
         private ChecksumType.Type? _checksumType;
         public ChecksumType.Type? ChecksumType
         {
@@ -73,6 +94,45 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        public GetDataPoliciesSpectraS3Request WithAlwaysForcePutJobCreation(bool? alwaysForcePutJobCreation)
+        {
+            this._alwaysForcePutJobCreation = alwaysForcePutJobCreation;
+            if (alwaysForcePutJobCreation != null)
+            {
+                this.QueryParams.Add("always_force_put_job_creation", alwaysForcePutJobCreation.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("always_force_put_job_creation");
+            }
+            return this;
+        }
+        public GetDataPoliciesSpectraS3Request WithAlwaysMinimizeSpanningAcrossMedia(bool? alwaysMinimizeSpanningAcrossMedia)
+        {
+            this._alwaysMinimizeSpanningAcrossMedia = alwaysMinimizeSpanningAcrossMedia;
+            if (alwaysMinimizeSpanningAcrossMedia != null)
+            {
+                this.QueryParams.Add("always_minimize_spanning_across_media", alwaysMinimizeSpanningAcrossMedia.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("always_minimize_spanning_across_media");
+            }
+            return this;
+        }
+        public GetDataPoliciesSpectraS3Request WithAlwaysReplicateDeletes(bool? alwaysReplicateDeletes)
+        {
+            this._alwaysReplicateDeletes = alwaysReplicateDeletes;
+            if (alwaysReplicateDeletes != null)
+            {
+                this.QueryParams.Add("always_replicate_deletes", alwaysReplicateDeletes.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("always_replicate_deletes");
+            }
+            return this;
+        }
         public GetDataPoliciesSpectraS3Request WithChecksumType(ChecksumType.Type? checksumType)
         {
             this._checksumType = checksumType;

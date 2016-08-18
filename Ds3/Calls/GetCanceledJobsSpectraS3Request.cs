@@ -31,6 +31,13 @@ namespace Ds3.Calls
             set { WithBucketId(value); }
         }
 
+        private bool? _canceledDueToTimeout;
+        public bool? CanceledDueToTimeout
+        {
+            get { return _canceledDueToTimeout; }
+            set { WithCanceledDueToTimeout(value); }
+        }
+
         private JobChunkClientProcessingOrderGuarantee? _chunkClientProcessingOrderGuarantee;
         public JobChunkClientProcessingOrderGuarantee? ChunkClientProcessingOrderGuarantee
         {
@@ -131,6 +138,19 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+        public GetCanceledJobsSpectraS3Request WithCanceledDueToTimeout(bool? canceledDueToTimeout)
+        {
+            this._canceledDueToTimeout = canceledDueToTimeout;
+            if (canceledDueToTimeout != null)
+            {
+                this.QueryParams.Add("canceled_due_to_timeout", canceledDueToTimeout.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("canceled_due_to_timeout");
             }
             return this;
         }
