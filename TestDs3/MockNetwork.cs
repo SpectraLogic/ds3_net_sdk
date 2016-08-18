@@ -79,24 +79,6 @@ namespace TestDs3
             return mock;
         }
 
-        public static IMockNetworkWithExpectation Expecting(
-            HttpVerb verb,
-            string path,
-            IDictionary<string, string> queryParams,
-            IDictionary<string, string> requestHeaders,
-            string requestContent)
-        {
-            var mock = new MockNetwork
-            {
-                _verb = verb,
-                _path = path,
-                _queryParams = queryParams,
-                _requestHeaders = requestHeaders,
-                _requestContent = requestContent
-            };
-            return mock;
-        }
-
         IMockNetworkWithReturn IMockNetworkWithExpectation.Returning(HttpStatusCode statusCode, string responseContent, IDictionary<string, string> responseHeaders)
         {
             _statusCode = statusCode;
