@@ -26,7 +26,7 @@ namespace Ds3.Runtime
         }
 
         public Ds3ContentLengthNotMatch(string message, IEnumerable<Exception> innerExceptions)
-            : base(message, innerExceptions)
+            :base(message, innerExceptions)
         {
         }
 

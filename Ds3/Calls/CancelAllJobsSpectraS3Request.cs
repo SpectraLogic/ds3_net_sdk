@@ -31,13 +31,6 @@ namespace Ds3.Calls
             set { WithBucketId(value); }
         }
 
-        private bool? _force;
-        public bool? Force
-        {
-            get { return _force; }
-            set { WithForce(value); }
-        }
-
         private JobRequestType? _requestType;
         public JobRequestType? RequestType
         {
@@ -71,19 +64,6 @@ namespace Ds3.Calls
             }
             return this;
         }
-        public CancelAllJobsSpectraS3Request WithForce(bool? force)
-        {
-            this._force = force;
-            if (force != null)
-            {
-                this.QueryParams.Add("force", force.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("force");
-            }
-            return this;
-        }
         public CancelAllJobsSpectraS3Request WithRequestType(JobRequestType? requestType)
         {
             this._requestType = requestType;
@@ -102,6 +82,8 @@ namespace Ds3.Calls
         public CancelAllJobsSpectraS3Request()
         {
             
+            this.QueryParams.Add("force", null);
+
         }
 
         internal override HttpVerb Verb

@@ -33,6 +33,13 @@ namespace Ds3.Calls
             set { WithDataPolicyId(value); }
         }
 
+        private string _id;
+        public string Id
+        {
+            get { return _id; }
+            set { WithId(value); }
+        }
+
         private string _userId;
         public string UserId
         {
@@ -63,6 +70,32 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("data_policy_id");
+            }
+            return this;
+        }
+        public PutBucketSpectraS3Request WithId(Guid? id)
+        {
+            this._id = id.ToString();
+            if (id != null)
+            {
+                this.QueryParams.Add("id", id.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("id");
+            }
+            return this;
+        }
+        public PutBucketSpectraS3Request WithId(string id)
+        {
+            this._id = id;
+            if (id != null)
+            {
+                this.QueryParams.Add("id", id);
+            }
+            else
+            {
+                this.QueryParams.Remove("id");
             }
             return this;
         }

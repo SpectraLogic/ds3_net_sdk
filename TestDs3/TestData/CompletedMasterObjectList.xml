@@ -15,4 +15,5 @@
   Status="COMPLETED"
   UserId="0c93db8e-2cbd-4f1c-a313-4d1aa23c08dc"
   UserName="spectra"
-  WriteOptimization="CAPACITY"/>
+  WriteOptimization="CAPACITY"
+  EntirelyInCache="false" />

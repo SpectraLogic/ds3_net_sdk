@@ -43,10 +43,7 @@ namespace Ds3.Runtime
 
         public IDictionary<string, string> Headers
         {
-            get
-            {
-                return _headers ?? (_headers = ConvertToDictionary(_webResponse.Headers));
-            }
+            get { return _headers ?? (_headers = ConvertToDictionary(_webResponse.Headers)); }
         }
 
         private static IDictionary<string, string> ConvertToDictionary(WebHeaderCollection headers)

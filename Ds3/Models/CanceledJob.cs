@@ -24,6 +24,7 @@ namespace Ds3.Models
     {
         public Guid BucketId { get; set; }
         public long CachedSizeInBytes { get; set; }
+        public bool CanceledDueToTimeout { get; set; }
         public JobChunkClientProcessingOrderGuarantee ChunkClientProcessingOrderGuarantee { get; set; }
         public long CompletedSizeInBytes { get; set; }
         public DateTime CreatedAt { get; set; }

@@ -49,7 +49,7 @@ namespace IntegrationTestDs3
         private static string FOLDER = "joyce";
         private static string BIG = "big";
         private static string BIGFORMAXBLOB = "bigForMaxBlob";
-        private const long BlobSize = 10*1024*1024;
+        private const long BlobSize = 10 * 1024 * 1024;
 
         private string testDirectorySrc { get; set; }
         private string testDirectoryBigFolder { get; set; }
@@ -69,8 +69,7 @@ namespace IntegrationTestDs3
         private static Guid EnvDataPolicyId;
 
         #region setup
-
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Startup()
         {
             try
@@ -92,7 +91,7 @@ namespace IntegrationTestDs3
             }
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Teardown()
         {
             TempStorageUtil.TearDown(FixtureName, EnvStorageIds, _client);
@@ -185,7 +184,7 @@ namespace IntegrationTestDs3
             // get valid data and populate properties
             var request = new GetSystemInformationSpectraS3Request();
             var response = _client.GetSystemInformationSpectraS3(request).ResponsePayload;
-            Assert.IsNotNullOrEmpty(response.BuildInformation.Version);
+            Assert.That(string.IsNullOrEmpty(response.BuildInformation.Version), Is.False, "Result string must not be null or empty");
             BuildBranch = response.BuildInformation.Branch;
             BuildRev = response.BuildInformation.Revision;
             BuildVersion = response.BuildInformation.Version;
@@ -290,7 +289,6 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
         public void TestPutWithBadChecksum()
         {
             const string bucketName = "TestPutWithBadChecksum";
@@ -314,7 +312,7 @@ namespace IntegrationTestDs3
                         .WithOffset(0L);
                     putRequest.WithChecksum(ChecksumType.Value(Convert.FromBase64String(testBadChecksumCrc32C)),
                         ChecksumType.Type.CRC_32C);
-                    _client.PutObject(putRequest);
+                    Assert.Throws<Ds3BadStatusCodeException>(() => _client.PutObject(putRequest));
                 }
             }
             finally
@@ -394,10 +392,10 @@ namespace IntegrationTestDs3
                 });
 
                 // Does a query param escape properly?
-                GetObjectsSpectraS3Request getObjectsWithNameRequest = new GetObjectsSpectraS3Request()
+                GetObjectsDetailsSpectraS3Request getObjectsWithNameRequest = new GetObjectsDetailsSpectraS3Request()
                     .WithName(fileName);
 
-                var getObjectsResponse = _client.GetObjectsSpectraS3(getObjectsWithNameRequest);
+                var getObjectsResponse = _client.GetObjectsDetailsSpectraS3(getObjectsWithNameRequest);
 
                 var filename =
                     from f in getObjectsResponse.ResponsePayload.S3Objects
@@ -726,11 +724,11 @@ namespace IntegrationTestDs3
 
         private IEnumerable<S3Object> ListBucketObjects(string bucketName)
         {
-            var request = new GetObjectsSpectraS3Request
+            var request = new GetObjectsDetailsSpectraS3Request
             {
                 BucketId = bucketName
             };
-            return _client.GetObjectsSpectraS3(request).ResponsePayload.S3Objects;
+            return _client.GetObjectsDetailsSpectraS3(request).ResponsePayload.S3Objects;
         }
 
         /* current defect in simulator, this will fail,
@@ -746,11 +744,10 @@ namespace IntegrationTestDs3
         **/
 
         [Test]
-        [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
         public void TestGetBadBucket()
         {
             var request = new GetBucketRequest("NoBucket" + DateTime.Now.Ticks);
-            _client.GetBucket(request);
+            Assert.Throws<Ds3BadStatusCodeException>(() => _client.GetBucket(request));
         }
 
         [Test]
@@ -777,7 +774,6 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3.Runtime.Ds3BadStatusCodeException))]
         public void TestDeleteDeletedObject()
         {
             const string bucketName = "TestDeleteDeletedObject";
@@ -795,7 +791,7 @@ namespace IntegrationTestDs3
                 Assert.AreEqual(anteFolderCount - postFolderCount, 1);
 
                 book = BOOKS.First();
-                DeleteObject(bucketName, book);
+                Assert.Throws<Ds3BadStatusCodeException>(() => DeleteObject(bucketName, book));
             }
             finally
             {
@@ -1101,7 +1097,9 @@ namespace IntegrationTestDs3
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
 
-                var request = new GetObjectsWithFullDetailsSpectraS3Request().WithIncludePhysicalPlacement(true);
+                var request =
+                    new GetObjectsWithFullDetailsSpectraS3Request().WithIncludePhysicalPlacement(true)
+                        .WithBucketId(bucketName);
                 var response = _client.GetObjectsWithFullDetailsSpectraS3(request);
                 Assert.AreEqual(response.ResponsePayload.DetailedS3Objects.Count(), 4);
             }
@@ -1146,9 +1144,8 @@ namespace IntegrationTestDs3
                 var putBulk = _client.PutBulkJobSpectraS3(new PutBulkJobSpectraS3Request(bucketName, objects));
 
                 var getJob =
-                    _client.GetPutJobToReplicateSpectraS3(
-                        new GetPutJobToReplicateSpectraS3Request(putBulk.ResponsePayload.JobId));
-
+                    _client.GetJobToReplicateSpectraS3(
+                        new GetJobToReplicateSpectraS3Request(putBulk.ResponsePayload.JobId));
                 StringAssert.Contains("\"name\":\"beowulf.txt\",\"type\":\"DATA\"", getJob.ResponsePayload);
             }
             finally
@@ -1165,7 +1162,7 @@ namespace IntegrationTestDs3
             try
             {
                 _client.PutBucket(new PutBucketRequest(bucketName));
-                var stream = new MemoryStream(new byte[] { });
+                var stream = new MemoryStream(new byte[] {});
                 _client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", stream));
 
                 var objects = _helpers.ListObjects(bucketName);
@@ -1285,7 +1282,6 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3ContentLengthNotMatch))]
         public void TestPutObjectWithWrongSpecifiedLengthPlus()
         {
             const string bucketName = "TestPutObjectWithWrongSpecifiedLengthPlus";
@@ -1296,7 +1292,7 @@ namespace IntegrationTestDs3
                 var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
 
                 var stream = new MemoryStream(contentBytes);
-                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream));
+                Assert.Throws<Ds3ContentLengthNotMatch>(() => _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length + 1, stream)));
             }
             finally
             {
@@ -1307,7 +1303,6 @@ namespace IntegrationTestDs3
         }
 
         [Test]
-        [ExpectedException(typeof(Ds3ContentLengthNotMatch))]
         public void TestPutObjectWithWrongSpecifiedLengthMinus()
         {
             const string bucketName = "TestPutObjectWithWrongSpecifiedLengthMinus";
@@ -1318,12 +1313,46 @@ namespace IntegrationTestDs3
                 var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
 
                 var stream = new MemoryStream(contentBytes);
-                _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length - 1, stream));
+                Assert.Throws<Ds3ContentLengthNotMatch>(() => _client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length - 1, stream)));
             }
             finally
             {
                 //wait streams closing to be over
                 Thread.Sleep(100);
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestOnTransferErrorEvent()
+        {
+            const string bucketName = "TestOnTransferErrorEvent";
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                var stream = new MemoryStream(contentBytes);
+
+                var objects = new List<Ds3Object>
+                {
+                    new Ds3Object("obj1", contentBytes.Length + 1),
+                };
+
+                var job = _helpers.StartWriteJob(bucketName, objects);
+                job.OnFailure += (fileName, offset, exception) =>
+                {
+                    Assert.AreEqual("obj1", fileName);
+                    Assert.AreEqual(0, offset);
+                    var expectedMessage = $"The Content length ({contentBytes.Length + 1}) not match the number of byte read ({contentBytes.Length})";
+                    Assert.AreEqual(expectedMessage, exception.Message);
+                };
+
+                Assert.Throws<AggregateException>(() => job.Transfer(s => stream));
+            }
+            finally
+            {
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }

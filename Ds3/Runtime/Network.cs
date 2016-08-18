@@ -135,7 +135,7 @@ namespace Ds3.Runtime
             {
                 Path = HttpHelper.PercentEncodePath(request.Path)
             };
-            
+
             if (request.QueryParams.Count > 0)
             {
                 uriBuilder.Query = BuildQueryParams(request.QueryParams);

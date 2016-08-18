@@ -30,6 +30,7 @@ namespace Ds3.Models
         public DateTime CreatedAt { get; set; }
         public string ErrorMessage { get; set; }
         public Guid Id { get; set; }
+        public bool MinimizeSpanningAcrossMedia { get; set; }
         public bool Naked { get; set; }
         public string Name { get; set; }
         public long OriginalSizeInBytes { get; set; }

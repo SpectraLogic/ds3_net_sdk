@@ -94,6 +94,13 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        private bool? _secureMediaAllocation;
+        public bool? SecureMediaAllocation
+        {
+            get { return _secureMediaAllocation; }
+            set { WithSecureMediaAllocation(value); }
+        }
+
         private WriteOptimization? _writeOptimization;
         public WriteOptimization? WriteOptimization
         {
@@ -241,6 +248,19 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
+        }
+        public GetStorageDomainsSpectraS3Request WithSecureMediaAllocation(bool? secureMediaAllocation)
+        {
+            this._secureMediaAllocation = secureMediaAllocation;
+            if (secureMediaAllocation != null)
+            {
+                this.QueryParams.Add("secure_media_allocation", secureMediaAllocation.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("secure_media_allocation");
             }
             return this;
         }
