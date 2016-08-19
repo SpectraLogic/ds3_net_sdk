@@ -42,7 +42,8 @@ namespace Ds3.Helpers.Transferrers
            IEnumerable<Range> ranges,
            Stream stream,
            IMetadataAccess metadataAccess,
-           Action<string, IDictionary<string, string>> metadataListener) 
+           Action<string, IDictionary<string, string>> metadataListener,
+           int retransmitRetries) 
         {
 
             var currentTry = 0;
@@ -53,7 +54,7 @@ namespace Ds3.Helpers.Transferrers
             {
                 try
                 {
-                    transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, _ranges, stream, metadataAccess, metadataListener);
+                    transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, _ranges, stream, metadataAccess, metadataListener, retransmitRetries);
                     break;
                 }
                 catch (Ds3ContentLengthNotMatch exception)

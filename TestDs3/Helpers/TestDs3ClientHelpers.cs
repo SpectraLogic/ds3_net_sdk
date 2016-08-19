@@ -22,6 +22,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Ds3.Runtime;
 using Range = Ds3.Models.Range;
@@ -584,6 +585,401 @@ namespace TestDs3.Helpers
             {
                 Assert.IsInstanceOf<NullReferenceException>(e.InnerException);
             }
+        }
+
+        [Test]
+        public void TestPutJobWithReachedTheLimitRetransmit()
+        {
+            var initialJobResponse = Stubs.BuildPutJobResponse(
+                Stubs.Chunk1(null, false, false),
+                Stubs.Chunk2(null, false, false),
+                Stubs.Chunk3(null, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node1Client, "hello", 0L, "ABCDefGHIJ");
+            MockHelpers.SetupPutObject(node1Client, "bar", 35L, "zABCDEFGHIJ");
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupPutObject(node2Client, "foo", 10L, "klmnopqrst");
+            MockHelpers.SetupPutObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupPutObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy");
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var streams = new Dictionary<string, string>
+            {
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
+            };
+            var ds3Objects = Stubs
+                .ObjectNames
+                .Select(name => new Ds3Object(name, streams[name].Length));
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, null)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+
+            const int timesToFail = 2;
+            var timesToFailLeft = 0;
+            node1Client
+                .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
+                    Stubs.BucketName, "hello", Stubs.JobId, 0L)))
+                .Callback(() =>
+                {
+                    if (timesToFailLeft < timesToFail)
+                    {
+                        timesToFailLeft++;
+                        throw new IOException();
+                    }
+                });
+
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            job.WithRetransmitFailingPutBlobs(1);
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<string>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
+            try
+            {
+                job.Transfer(key => new MockStream(streams[key]));
+
+            }
+            catch (AggregateException age)
+            {
+                const string expectredMessage = "Reached the limit number of retransmit for blob name hello with offset 0";
+                Assert.AreEqual(expectredMessage, age.InnerExceptions[0].Message);
+            }
+
+
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEquivalent(new[] { 15L, 20L, 11L, 10L, 10L}, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !"hello".Equals(obj)), itemsCompleted);
+        }
+
+        [Test]
+        public void TestPutJobWithRetransmit()
+        {
+            var initialJobResponse = Stubs.BuildPutJobResponse(
+                Stubs.Chunk1(null, false, false),
+                Stubs.Chunk2(null, false, false),
+                Stubs.Chunk3(null, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node1Client, "hello", 0L, "ABCDefGHIJ");
+            MockHelpers.SetupPutObject(node1Client, "bar", 35L, "zABCDEFGHIJ");
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupPutObject(node2Client, "foo", 10L, "klmnopqrst");
+            MockHelpers.SetupPutObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupPutObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy");
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var streams = new Dictionary<string, string>
+            {
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
+            };
+            var ds3Objects = Stubs
+                .ObjectNames
+                .Select(name => new Ds3Object(name, streams[name].Length));
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, null)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+
+            const int timesToFail = 2;
+            var timesToFailLeft = 0;
+            node1Client
+                .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
+                    Stubs.BucketName, "hello", Stubs.JobId, 0L)))
+                .Callback(() =>
+                {
+                    if (timesToFailLeft < timesToFail)
+                    {
+                        timesToFailLeft++;
+                        throw new IOException();
+                    }
+                });
+
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            job.WithRetransmitFailingPutBlobs(2);
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<string>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
+            job.Transfer(key => new MockStream(streams[key]));
+
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEquivalent(new[] { 15L, 20L, 11L, 10L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames, itemsCompleted);
+        }
+
+        [Test]
+        public void TestPutJobWithRetransmit2Blobs()
+        {
+            var initialJobResponse = Stubs.BuildPutJobResponse(
+                Stubs.Chunk1(null, false, false),
+                Stubs.Chunk2(null, false, false),
+                Stubs.Chunk3(null, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node1Client, "hello", 0L, "ABCDefGHIJ");
+            MockHelpers.SetupPutObject(node1Client, "bar", 35L, "zABCDEFGHIJ");
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupPutObject(node2Client, "foo", 10L, "klmnopqrst");
+            MockHelpers.SetupPutObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupPutObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy");
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var streams = new Dictionary<string, string>
+            {
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
+            };
+            var ds3Objects = Stubs
+                .ObjectNames
+                .Select(name => new Ds3Object(name, streams[name].Length));
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, null)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+
+            const int timesToFail = 2;
+            var timesToFailLeft = 0;
+            node1Client
+                .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
+                    Stubs.BucketName, "hello", Stubs.JobId, 0L)))
+                .Callback(() =>
+                {
+                    if (timesToFailLeft < timesToFail)
+                    {
+                        timesToFailLeft++;
+                        throw new IOException();
+                    }
+                });
+
+            const int timesToFail2 = 2;
+            var timesToFailLeft2 = 0;
+            node2Client
+                .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
+                    Stubs.BucketName, "bar", Stubs.JobId, 15L)))
+                .Callback(() =>
+                {
+                    if (timesToFailLeft2 < timesToFail2)
+                    {
+                        timesToFailLeft2++;
+                        throw new IOException();
+                    }
+                });
+
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            job.WithRetransmitFailingPutBlobs(2);
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<string>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
+            job.Transfer(key => new MockStream(streams[key]));
+
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEquivalent(new[] { 15L, 20L, 11L, 10L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames, itemsCompleted);
+        }
+
+        [Test]
+        public void TestPutJobWithRetransmit2Blobs1Fail()
+        {
+            var initialJobResponse = Stubs.BuildPutJobResponse(
+                Stubs.Chunk1(null, false, false),
+                Stubs.Chunk2(null, false, false),
+                Stubs.Chunk3(null, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node1Client, "hello", 0L, "ABCDefGHIJ");
+            MockHelpers.SetupPutObject(node1Client, "bar", 35L, "zABCDEFGHIJ");
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupPutObject(node2Client, "foo", 10L, "klmnopqrst");
+            MockHelpers.SetupPutObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupPutObject(node2Client, "bar", 15L, "fghijklmnopqrstuvwxy");
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var streams = new Dictionary<string, string>
+            {
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
+            };
+            var ds3Objects = Stubs
+                .ObjectNames
+                .Select(name => new Ds3Object(name, streams[name].Length));
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, null)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+
+            const int timesToFail = 2;
+            var timesToFailLeft = 0;
+            node1Client
+                .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
+                    Stubs.BucketName, "hello", Stubs.JobId, 0L)))
+                .Callback(() =>
+                {
+                    if (timesToFailLeft < timesToFail)
+                    {
+                        timesToFailLeft++;
+                        throw new IOException();
+                    }
+                });
+
+            const int timesToFail2 = 3;
+            var timesToFailLeft2 = 0;
+            node2Client
+                .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
+                    Stubs.BucketName, "bar", Stubs.JobId, 15L)))
+                .Callback(() =>
+                {
+                    if (timesToFailLeft2 < timesToFail2)
+                    {
+                        timesToFailLeft2++;
+                        throw new IOException();
+                    }
+                });
+
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            job.WithRetransmitFailingPutBlobs(2);
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<string>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
+            try
+            {
+                job.Transfer(key => new MockStream(streams[key]));
+
+            }
+            catch (AggregateException age)
+            {
+                const string expectredMessage = "Reached the limit number of retransmit for blob name bar with offset 15";
+                Assert.AreEqual(expectredMessage, age.InnerExceptions[0].Message);
+            }
+
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEquivalent(new[] { 15L, 11L, 10L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !"bar".Equals(obj)), itemsCompleted);
         }
     }
 }

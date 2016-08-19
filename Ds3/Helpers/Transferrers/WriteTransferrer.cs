@@ -18,6 +18,7 @@ using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers.Transferrers
 {
@@ -32,7 +33,8 @@ namespace Ds3.Helpers.Transferrers
             IEnumerable<Range> ranges,
             Stream stream,
             IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener)
+            Action<string, IDictionary<string, string>> metadataListener,
+            int retransmitRetries)
         {
             var request = new PutObjectRequest(bucketName, objectName, stream)
                 .WithJob(jobId)
@@ -43,7 +45,31 @@ namespace Ds3.Helpers.Transferrers
                 request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
             }
 
-            client.PutObject(request);
+            PutObjectHelper(client, request, stream, retransmitRetries, retransmitRetries);
+
+        }
+
+        private static void PutObjectHelper(IDs3Client client, PutObjectRequest request, Stream stream, int retransmitRetries, int retransmitRetriesLeft)
+        {
+            try
+            {
+                client.PutObject(request);
+            }
+            catch (Exception ex)
+            {
+                if (!stream.CanSeek) throw;
+
+                if (retransmitRetriesLeft == 0)
+                {
+                    throw new Ds3NoMoreRetransmitException(
+                        string.Format(Resources.NoMoreRetransmitException, request.ObjectName, request.Offset.Value),
+                        ex);
+                }
+
+                retransmitRetriesLeft--;
+                stream.Seek(request.Offset.Value, SeekOrigin.Begin);
+                PutObjectHelper(client, request, stream, retransmitRetries, retransmitRetriesLeft);
+            }
         }
     }
 }

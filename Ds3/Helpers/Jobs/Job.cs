@@ -46,6 +46,7 @@ namespace Ds3.Helpers.Jobs
         private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
         private IMetadataAccess _metadataAccess;
+        private int _retransmitRetries;
         private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
@@ -78,6 +79,16 @@ namespace Ds3.Helpers.Jobs
             if (TransferStarted) throw new Ds3AssertException("WithMetadata Must always be called before the Transfer method.");
 
             this._metadataAccess = metadataAccess;
+            return (TSelf)(IBaseJob<TSelf, TItem>)this;
+        }
+
+        public TSelf WithRetransmitFailingPutBlobs(int retransmitRetries)
+        {
+            if (TransferStarted) throw new Ds3AssertException("WithRetransmitFailingPutBlobs Must always be called before the Transfer method.");
+
+            if (_jobResponse.RequestType != JobRequestType.PUT) throw new Ds3AssertException("WithRetransmitFailingPutBlobs Can only be called on PUT jobs.");
+
+            this._retransmitRetries = retransmitRetries;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
@@ -158,7 +169,8 @@ namespace Ds3.Helpers.Jobs
                 ranges,
                 stream,
                 _metadataAccess,
-                MetadataListener
+                MetadataListener,
+                _retransmitRetries
             );
 
             this._streamFactory.CloseBlob(blob);

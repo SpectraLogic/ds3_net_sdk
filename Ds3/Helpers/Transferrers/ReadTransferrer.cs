@@ -32,7 +32,8 @@ namespace Ds3.Helpers.Transferrers
             IEnumerable<Range> ranges,
             Stream stream,
             IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener)
+            Action<string, IDictionary<string, string>> metadataListener,
+            int retransmitRetries)
         {
             var response = client.GetObject(new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset));
             if (blobOffset == 0)

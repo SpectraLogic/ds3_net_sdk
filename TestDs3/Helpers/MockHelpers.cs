@@ -131,7 +131,7 @@ namespace TestDs3.Helpers
                 );
         }
 
-        private static PutObjectRequest ItIsPutObjectRequest(
+        public static PutObjectRequest ItIsPutObjectRequest(
             string bucketName,
             string objectName,
             Guid jobId,

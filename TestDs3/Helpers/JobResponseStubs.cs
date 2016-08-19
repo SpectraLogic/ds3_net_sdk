@@ -64,6 +64,23 @@ namespace TestDs3.Helpers
             };
         }
 
+        public static MasterObjectList BuildPutJobResponse(params Objects[] chunks)
+        {
+            return new MasterObjectList()
+            {
+                BucketName = BucketName,
+                JobId = JobId,
+                Priority = Priority.HIGH,
+                RequestType = JobRequestType.PUT,
+                StartDate = new DateTime(2015, 1, 11, 11, 54, 0),
+                ChunkClientProcessingOrderGuarantee = JobChunkClientProcessingOrderGuarantee.NONE,
+                Nodes = Nodes,
+                Objects = chunks,
+                Status = JobStatus.IN_PROGRESS
+
+            };
+        }
+
         public static Objects ReadFailureChunk(Guid? nodeId, bool inCache)
         {
             return new Objects()
