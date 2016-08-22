@@ -45,11 +45,11 @@ namespace Ds3.Helpers.Transferrers
                 request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
             }
 
-            PutObjectHelper(client, request, stream, retransmitRetries, retransmitRetries);
+            PutObjectHelper(client, request, stream, retransmitRetries);
 
         }
 
-        private static void PutObjectHelper(IDs3Client client, PutObjectRequest request, Stream stream, int retransmitRetries, int retransmitRetriesLeft)
+        private static void PutObjectHelper(IDs3Client client, PutObjectRequest request, Stream stream, int retransmitRetriesLeft)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Ds3.Helpers.Transferrers
 
                 retransmitRetriesLeft--;
                 stream.Seek(request.Offset.Value, SeekOrigin.Begin);
-                PutObjectHelper(client, request, stream, retransmitRetries, retransmitRetriesLeft);
+                PutObjectHelper(client, request, stream, retransmitRetriesLeft);
             }
         }
     }
