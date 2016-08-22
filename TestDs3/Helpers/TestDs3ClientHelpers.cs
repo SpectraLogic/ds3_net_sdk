@@ -944,7 +944,7 @@ namespace TestDs3.Helpers
             var timesToFailLeft2 = 0;
             node2Client
                 .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
-                    Stubs.BucketName, "bar", Stubs.JobId, 15L)))
+                    Stubs.BucketName, "bar", Stubs.JobId, 0L)))
                 .Callback(() =>
                 {
                     if (timesToFailLeft2 < timesToFail2)
@@ -969,16 +969,13 @@ namespace TestDs3.Helpers
             }
             catch (AggregateException age)
             {
-                const string expectredMessage = "Reached the limit number of retransmit for blob name bar with offset 15";
+                const string expectredMessage = "Reached the limit number of retransmit for blob name bar with offset 0";
                 Assert.AreEqual(expectredMessage, age.InnerExceptions[0].Message);
             }
 
-            node1Client.VerifyAll();
-            node2Client.VerifyAll();
-            clientFactory.VerifyAll();
             client.VerifyAll();
 
-            CollectionAssert.AreEquivalent(new[] { 15L, 11L, 10L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(new[] { 20L, 11L, 10L, 10L, 10L }, dataTransfers);
             CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !"bar".Equals(obj)), itemsCompleted);
         }
     }
