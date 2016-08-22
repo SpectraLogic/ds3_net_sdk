@@ -13,25 +13,17 @@
  * ****************************************************************************
  */
 
-using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Ds3.Models;
 
 namespace Ds3.Helpers.Transferrers
 {
     internal interface ITransferrer
     {
-        void Transfer(
-            IDs3Client client,
-            string bucketName,
-            string objectName,
-            long blobOffset,
-            Guid jobId,
-            IEnumerable<Range> ranges,
-            Stream stream,
-            IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener,
-            int retransmitRetries);
+        void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
+            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
+            Action<string, IDictionary<string, string>> metadataListener, int retransmitRetries);
     }
 }

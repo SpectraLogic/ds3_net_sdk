@@ -24,9 +24,18 @@ namespace Ds3.Helpers.Streams
         {
         }
 
+        public NonDisposablePutObjectRequestStream(Stream stream, long offset, long length) : base(stream, offset, length)
+        {
+        }
+
         public new void Dispose()
         {
             //NonDisposable Stream
+        }
+
+        public void DisposeUnderlineStream()
+        {
+            base.Dispose();
         }
     }
 }

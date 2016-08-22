@@ -286,6 +286,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Non seekable stream are not supported for PUTs retransmit.
+        /// </summary>
+        internal static string NotSupportedStream {
+            get {
+                return ResourceManager.GetString("NotSupportedStream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Some or all of the objects to put are missing a size field..
         /// </summary>
         internal static string ObjectsMissingSizeException {

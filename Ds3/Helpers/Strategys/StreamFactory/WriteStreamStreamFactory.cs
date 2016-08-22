@@ -62,6 +62,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 }
 
                 stream.Close();
+                this._streamStore.Remove(item);
             }
         }
 

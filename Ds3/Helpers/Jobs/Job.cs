@@ -160,20 +160,25 @@ namespace Ds3.Helpers.Jobs
 
             var stream = this._streamFactory.CreateStream(_createStreamForTransferItem, this._rangeTranslator, blob, blobLength);
 
-            this._transferrer.Transfer(
-                client,
-                this.BucketName,
-                blob.Context,
-                blob.Range.Start,
-                this.JobId,
-                ranges,
-                stream,
-                _metadataAccess,
-                MetadataListener,
-                _retransmitRetries
-            );
-
-            this._streamFactory.CloseBlob(blob);
+            try
+            {
+                this._transferrer.Transfer(
+                    client,
+                    this.BucketName,
+                    blob.Context,
+                    blob.Range.Start,
+                    this.JobId,
+                    ranges,
+                    stream,
+                    _metadataAccess,
+                    MetadataListener,
+                    _retransmitRetries
+                    );
+            }
+            finally
+            {
+                this._streamFactory.CloseBlob(blob);
+            }
 
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, blobLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))

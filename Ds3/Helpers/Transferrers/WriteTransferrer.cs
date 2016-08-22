@@ -13,28 +13,20 @@
  * ****************************************************************************
  */
 
-using Ds3.Calls;
-using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Ds3.Calls;
+using Ds3.Models;
 using Ds3.Runtime;
 
 namespace Ds3.Helpers.Transferrers
 {
     internal class WriteTransferrer : ITransferrer
     {
-        public void Transfer(
-            IDs3Client client,
-            string bucketName,
-            string objectName,
-            long blobOffset,
-            Guid jobId,
-            IEnumerable<Range> ranges,
-            Stream stream,
-            IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener,
-            int retransmitRetries)
+        public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
+            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
+            Action<string, IDictionary<string, string>> metadataListener, int retransmitRetries)
         {
             var request = new PutObjectRequest(bucketName, objectName, stream)
                 .WithJob(jobId)
@@ -45,30 +37,25 @@ namespace Ds3.Helpers.Transferrers
                 request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
             }
 
-            PutObjectHelper(client, request, stream, retransmitRetries);
-
-        }
-
-        private static void PutObjectHelper(IDs3Client client, PutObjectRequest request, Stream stream, int retransmitRetriesLeft)
-        {
             try
             {
                 client.PutObject(request);
             }
             catch (Exception ex)
             {
-                if (!stream.CanSeek) throw;
-
-                if (retransmitRetriesLeft == 0)
+                if (retransmitRetries == 0)
                 {
                     throw new Ds3NoMoreRetransmitException(
                         string.Format(Resources.NoMoreRetransmitException, request.ObjectName, request.Offset.Value),
                         ex);
                 }
 
-                retransmitRetriesLeft--;
-                stream.Seek(request.Offset.Value, SeekOrigin.Begin);
-                PutObjectHelper(client, request, stream, retransmitRetriesLeft);
+                if (!stream.CanSeek) throw new Ds3NotSupportedStream(Resources.NotSupportedStream, ex);
+
+                retransmitRetries--;
+                stream.Position = request.Offset.Value;
+                Transfer(client, bucketName, objectName, blobOffset, jobId, ranges, stream, metadataAccess,
+                    metadataListener, retransmitRetries);
             }
         }
     }
