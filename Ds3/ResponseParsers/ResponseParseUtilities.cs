@@ -13,7 +13,6 @@
  * ****************************************************************************
  */
 
-using Ds3.Calls;
 using Ds3.Models;
 using Ds3.Runtime;
 using System.Collections.Generic;
@@ -81,6 +80,22 @@ namespace Ds3.ResponseParsers
                 return null;
             }
             catch (Ds3BadResponseException)
+            {
+                return null;
+            }
+        }
+
+        public static int? ParseIntHeader(string key, IDictionary<string, string> headers)
+        {
+            if (!headers.ContainsKey(key))
+            {
+                return null;
+            }
+            try
+            {
+                return int.Parse(headers[key]);
+            }
+            catch (System.Exception)
             {
                 return null;
             }
