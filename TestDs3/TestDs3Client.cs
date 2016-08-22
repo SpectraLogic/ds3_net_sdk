@@ -284,6 +284,9 @@ namespace TestDs3
                 .WithBucketId("videos")
                 .WithName("%mp4"));
 
+            Assert.AreEqual(response.PagingTruncated, null);
+            Assert.AreEqual(response.PagingTotalResultCount, null);
+
             var responseObjects = response.ResponsePayload.S3Objects.ToList();
             Assert.AreEqual(expected.Objects.Length, responseObjects.Count);
             for (var i = 0; i < expected.Objects.Length; i++)
@@ -295,6 +298,66 @@ namespace TestDs3
                 Assert.AreEqual(expected.Objects[i].Type.ToString(), responseObjects[i].Type.ToString());
                 Assert.AreEqual(expected.Objects[i].Version, responseObjects[i].Version);
             }
+        }
+
+        [Test]
+        public void TestGetObjectsParseHeaders()
+        {
+            var xmlResponse = "<Data><S3Object><Latest>true</Latest><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:51.643</CreationDate><Id>82c8caee-9ad2-4c2c-912a-7d7f1dba850e</Id><Name>dont_get_around_much_anymore.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object>"
+                + "<S3Object><Latest>true</Latest><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.457</CreationDate><Id>7dad06d1-d492-497e-828d-ca8c53cf5e6d</Id><Name>is_you_is_or_is_you_aint.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object>"
+                + "<S3Object><Latest>true</Latest><BucketId>b25a51b1-3dc8-4ecb-86d0-de334314e0a8</BucketId><CreationDate>2015-08-26 16:11:52.012</CreationDate><Id>bcf24226-9c5e-423d-99fb-4939a61cd1fb</Id><Name>youre_just_in_love.mp4</Name><Type>DATA</Type><Version>1</Version></S3Object></Data>";
+            var expected = new
+            {
+                Objects = new[] {
+                    new S3Object() {
+                        BucketId = Guid.Parse("b25a51b1-3dc8-4ecb-86d0-de334314e0a8"),
+                        Name = "dont_get_around_much_anymore.mp4",
+                        Id = Guid.Parse("82c8caee-9ad2-4c2c-912a-7d7f1dba850e"),
+                        CreationDate = DateTime.Parse("2015-08-26 16:11:51.643"),
+                        Type = S3ObjectType.DATA,
+                        Version = 1L
+                    },
+                    new S3Object() {
+                        BucketId = Guid.Parse("b25a51b1-3dc8-4ecb-86d0-de334314e0a8"),
+                        Name = "is_you_is_or_is_you_aint.mp4",
+                        Id = Guid.Parse("7dad06d1-d492-497e-828d-ca8c53cf5e6d"),
+                        CreationDate = DateTime.Parse("2015-08-26 16:11:52.457"),
+                        Type = S3ObjectType.DATA,
+                        Version = 1L
+                    },
+                    new S3Object() {
+                        BucketId = Guid.Parse("b25a51b1-3dc8-4ecb-86d0-de334314e0a8"),
+                        Name = "youre_just_in_love.mp4",
+                        Id = Guid.Parse("bcf24226-9c5e-423d-99fb-4939a61cd1fb"),
+                        CreationDate = DateTime.Parse("2015-08-26 16:11:52.012"),
+                        Type = S3ObjectType.DATA,
+                        Version = 1L
+                    }
+                }
+            };
+
+            var expectedQueryParams = new Dictionary<string, string>
+                {
+                    { "bucket_id", "videos" },
+                    { "name", "%mp4" }
+                };
+
+            var headers = new Dictionary<string, string>
+                {
+                    { "page-truncated", "2" },
+                    { "total-result-count", "4" }
+                };
+
+            var response = MockNetwork
+                .Expecting(HttpVerb.GET, "/_rest_/object", expectedQueryParams, "")
+                .Returning(HttpStatusCode.OK, xmlResponse, headers)
+                .AsClient
+                .GetObjectsDetailsSpectraS3(new GetObjectsDetailsSpectraS3Request()
+                .WithBucketId("videos")
+                .WithName("%mp4"));
+            
+            Assert.AreEqual(response.PagingTruncated, 2);
+            Assert.AreEqual(response.PagingTotalResultCount, 4);
         }
 
         [Test]
