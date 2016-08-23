@@ -17,12 +17,16 @@ using System;
 
 namespace Ds3.Runtime
 {
-    class Ds3NotSupportedStream : Exception
+    public class Ds3NotSupportedStream : Exception
     {
+        public Ds3NotSupportedStream(string message)
+            : base(message)
+        {
+        }
+
         public Ds3NotSupportedStream(string message, Exception ex)
             : base(message, ex)
         {
-            
         }
     }
 }

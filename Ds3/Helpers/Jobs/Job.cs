@@ -88,6 +88,8 @@ namespace Ds3.Helpers.Jobs
 
             if (_jobResponse.RequestType != JobRequestType.PUT) throw new Ds3AssertException("WithRetransmitFailingPutBlobs Can only be called on PUT jobs.");
 
+            if (_streamFactory.GetType() == typeof(WriteStreamStreamFactory)) throw new Ds3NotSupportedStream("WithRetransmitFailingPutBlobs Can only be called on seekable streams");
+
             this._retransmitRetries = retransmitRetries;
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
