@@ -26,37 +26,39 @@ namespace Ds3.Helpers.Transferrers
     {
         public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int retransmitRetries)
+            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttemps)
         {
-            var request = new PutObjectRequest(bucketName, objectName, stream)
-                .WithJob(jobId)
-                .WithOffset(blobOffset);
+            do
+            {
+                var request = new PutObjectRequest(bucketName, objectName, stream)
+                    .WithJob(jobId)
+                    .WithOffset(blobOffset);
 
-            if (blobOffset == 0 && metadataAccess != null)
-            {
-                request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
-            }
-
-            try
-            {
-                client.PutObject(request);
-            }
-            catch (Exception ex)
-            {
-                if (retransmitRetries == 0)
+                if (blobOffset == 0 && metadataAccess != null)
                 {
-                    throw new Ds3NoMoreRetransmitException(
-                        string.Format(Resources.NoMoreRetransmitException, request.ObjectName, request.Offset.Value),
-                        ex);
+                    request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
                 }
 
-                if (!stream.CanSeek) throw new Ds3NotSupportedStream(Resources.NotSupportedStream, ex);
+                try
+                {
+                    client.PutObject(request);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    if (objectTransferAttemps == 0)
+                    {
+                        throw new Ds3NoMoreRetransmitException(
+                            string.Format(Resources.NoMoreRetransmitException, request.ObjectName, request.Offset.Value),
+                            ex);
+                    }
 
-                retransmitRetries--;
-                stream.Position = request.Offset.Value;
-                Transfer(client, bucketName, objectName, blobOffset, jobId, ranges, stream, metadataAccess,
-                    metadataListener, retransmitRetries);
-            }
+                    if (!stream.CanSeek) throw new Ds3NotSupportedStream(Resources.NotSupportedStream, ex);
+
+                    objectTransferAttemps--;
+                    stream.Position = request.Offset.Value;
+                }
+            } while (true);
         }
     }
 }

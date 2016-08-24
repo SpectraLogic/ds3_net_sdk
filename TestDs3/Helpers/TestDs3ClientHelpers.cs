@@ -655,8 +655,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
-            job.WithRetransmitFailingPutBlobs(1);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:1).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -753,8 +752,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
-            job.WithRetransmitFailingPutBlobs(2);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -854,8 +852,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
-            job.WithRetransmitFailingPutBlobs(2);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -955,8 +952,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
-            job.WithRetransmitFailingPutBlobs(2);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();

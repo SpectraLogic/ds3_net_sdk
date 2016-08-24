@@ -30,7 +30,7 @@ namespace IntegrationTestDs3WithProxy
     public class IntegrationTestDs3WithProxy
     {
         private IDs3Client _client;
-        private Ds3ClientHelpers _helpers;
+
         private const string FixtureName = "integration_test_ds3client_with_proxy";
         private static TempStorageIds _envStorageIds;
 
@@ -40,7 +40,6 @@ namespace IntegrationTestDs3WithProxy
             try
             {
                 this._client = Ds3Builder.FromEnv().WithProxy(new Uri("http://localhost:9090")).Build();
-                this._helpers = new Ds3ClientHelpers(this._client);
 
                 var dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
                 _envStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
@@ -66,7 +65,8 @@ namespace IntegrationTestDs3WithProxy
             const string bucketName = "TestWithRetransmitFailingPutBlobs";
             try
             {
-                _helpers.EnsureBucketExists(bucketName);
+                var helpers = new Ds3ClientHelpers(this._client, objectTransferAttemps:4);
+                helpers.EnsureBucketExists(bucketName);
                 const string content = "hi im content";
                 var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
 
@@ -77,74 +77,9 @@ namespace IntegrationTestDs3WithProxy
                     new Ds3Object("obj1", contentBytes.Length)
                 };
 
-                var job = _helpers.StartWriteJob(bucketName, objects);
-
-                job.WithRetransmitFailingPutBlobs(4);
+                var job = helpers.StartWriteJob(bucketName, objects);
 
                 job.Transfer(s => stream);
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
-        }
-
-        [Test]
-        public void TestWithRetransmitFailingPutBlobsAfterTransfer()
-        {
-            const string bucketName = "TestWithRetransmitFailingPutBlobsAfterTransfer";
-            try
-            {
-                _helpers.EnsureBucketExists(bucketName);
-                const string content = "hi im a wrong content";
-                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
-
-                var stream = new MemoryStream(contentBytes);
-
-                var objects = new List<Ds3Object>
-                {
-                    new Ds3Object("obj1", contentBytes.Length)
-                };
-
-                var job = _helpers.StartWriteJob(bucketName, objects);
-
-                job.Transfer(s => stream);
-
-                Assert.Throws<Ds3AssertException>(() => job.WithRetransmitFailingPutBlobs(4));
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
-        }
-
-        [Test]
-        public void TestWithRetransmitFailingPutBlobsWithGetJob()
-        {
-            const string bucketName = "TestWithRetransmitFailingPutBlobsWithGetJob";
-            try
-            {
-                _helpers.EnsureBucketExists(bucketName);
-
-                const string content = "hi im a wrong content";
-                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
-
-                var stream = new MemoryStream(contentBytes);
-
-                var objects = new List<Ds3Object>
-                {
-                    new Ds3Object("obj1", contentBytes.Length)
-                };
-
-                var job = _helpers.StartWriteJob(bucketName, objects);
-
-                job.Transfer(s => stream);
-
-
-                job = _helpers.StartReadJob(bucketName, _helpers.ListObjects(bucketName));
-
-                Assert.Throws<Ds3AssertException>(() => job.WithRetransmitFailingPutBlobs(4));
-
             }
             finally
             {
@@ -158,7 +93,8 @@ namespace IntegrationTestDs3WithProxy
             const string bucketName = "TestWithRetransmitFailingPutBlobsWithNonSeekableStream";
             try
             {
-                _helpers.EnsureBucketExists(bucketName);
+                var helpers = new Ds3ClientHelpers(this._client, objectTransferAttemps: 4);
+                helpers.EnsureBucketExists(bucketName);
 
                 const string content = "hi im content";
                 var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
@@ -170,9 +106,7 @@ namespace IntegrationTestDs3WithProxy
                     new Ds3Object("obj1", contentBytes.Length)
                 };
 
-                var job = _helpers.StartWriteJob(bucketName, objects);
-
-                job.WithRetransmitFailingPutBlobs(4);
+                var job = helpers.StartWriteJob(bucketName, objects);
 
                 try
                 {
@@ -183,29 +117,6 @@ namespace IntegrationTestDs3WithProxy
                     Assert.AreEqual(typeof(Ds3NotSupportedStream), age.InnerExceptions[0].GetType());
                 }
                 
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
-        }
-
-        [Test]
-        public void TestWithRetransmitFailingPutBlobsWithWriteStreamHelperStrategy()
-        {
-            const string bucketName = "TestWithRetransmitFailingPutBlobsWithWriteStreamHelperStrategy";
-            try
-            {
-                _helpers.EnsureBucketExists(bucketName);
-
-                var objects = new List<Ds3Object>
-                {
-                    new Ds3Object("obj1", 10L)
-                };
-
-                var job = _helpers.StartWriteJob(bucketName, objects, helperStrategy: new WriteStreamHelperStrategy());
-
-                Assert.Throws<Ds3NotSupportedStream>(() => job.WithRetransmitFailingPutBlobs(4));
             }
             finally
             {

@@ -36,7 +36,7 @@ namespace Ds3.Helpers.Transferrers
 
         public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int retransmitRetries)
+            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttemps)
         {
             var currentTry = 0;
             var transferrer = _transferrer;
@@ -47,15 +47,16 @@ namespace Ds3.Helpers.Transferrers
                 try
                 {
                     transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, _ranges, stream,
-                        metadataAccess, metadataListener, retransmitRetries);
+                        metadataAccess, metadataListener, objectTransferAttemps);
                     break;
                 }
                 catch (Ds3ContentLengthNotMatch exception)
                 {
                     if (_retries != -1 && currentTry >= _retries)
                     {
-                        throw new Ds3NoMoreRetriesException(Resources.TooManyRetriesForPartialData, exception,
-                            currentTry);
+                        throw new Ds3NoMoreRetransmitException(
+                            string.Format(Resources.NoMoreRetransmitException, objectName, blobOffset), currentTry,
+                            exception);
                     }
 
                     // Issue a partial get for the remainder of the request

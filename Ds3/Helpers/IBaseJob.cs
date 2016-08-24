@@ -65,16 +65,6 @@ namespace Ds3.Helpers
         TSelf WithMetadata(IMetadataAccess metadataAccess);
 
         /// <summary>
-        /// Must always be called before the Transfer method.
-        /// Can only be called on PUT jobs with seekable streams
-        /// 
-        /// Allows the client to try and retransmit a failing blob
-        /// </summary>
-        /// <param name="retransmitRetries"></param>
-        /// <returns></returns>
-        TSelf WithRetransmitFailingPutBlobs(int retransmitRetries);
-
-        /// <summary>
         /// Performs all GETs or PUTs for the job (depending on the type
         /// of job).
         ///

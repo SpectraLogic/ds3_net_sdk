@@ -46,7 +46,7 @@ namespace Ds3.Helpers.Jobs
         private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
         private IMetadataAccess _metadataAccess;
-        private int _retransmitRetries;
+        private int _objectTransferAttemps;
         private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
@@ -82,18 +82,6 @@ namespace Ds3.Helpers.Jobs
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
-        public TSelf WithRetransmitFailingPutBlobs(int retransmitRetries)
-        {
-            if (TransferStarted) throw new Ds3AssertException("WithRetransmitFailingPutBlobs Must always be called before the Transfer method.");
-
-            if (_jobResponse.RequestType != JobRequestType.PUT) throw new Ds3AssertException("WithRetransmitFailingPutBlobs Can only be called on PUT jobs.");
-
-            if (_streamFactory.GetType() == typeof(WriteStreamStreamFactory)) throw new Ds3NotSupportedStream("WithRetransmitFailingPutBlobs Can only be called on seekable streams");
-
-            this._retransmitRetries = retransmitRetries;
-            return (TSelf)(IBaseJob<TSelf, TItem>)this;
-        }
-
         protected Job(
             IDs3Client client,
             MasterObjectList jobResponse,
@@ -103,7 +91,8 @@ namespace Ds3.Helpers.Jobs
             ITransferrer transferrer,
             ILookup<Blob, Range> rangesForRequests,
             IRangeTranslator<Blob, TItem> rangeTranslator,
-            IEnumerable<ContextRange<TItem>> itemsToTrack)
+            IEnumerable<ContextRange<TItem>> itemsToTrack,
+            int objectTransferAttemps)
         {
             this._client = client;
             this._jobResponse = jobResponse;
@@ -123,6 +112,8 @@ namespace Ds3.Helpers.Jobs
                 this._streamFactory.CloseStream(item);
                 this.ItemCompleted.Call(item);
             };
+
+            this._objectTransferAttemps = objectTransferAttemps;
         }
 
         public void Transfer(Func<TItem, Stream> createStreamForTransferItem)
@@ -174,7 +165,7 @@ namespace Ds3.Helpers.Jobs
                     stream,
                     _metadataAccess,
                     MetadataListener,
-                    _retransmitRetries
+                    _objectTransferAttemps
                     );
             }
             finally
