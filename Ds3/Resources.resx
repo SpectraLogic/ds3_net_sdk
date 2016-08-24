@@ -202,7 +202,7 @@
     <value>Encountered an error while reading XML response: "{0}"</value>
   </data>
   <data name="NoMoreRetriesException" xml:space="preserve">
-    <value>Reached the limit number of retries request</value>
+    <value>Reached the maximum number of retries when attempting to get cache space</value>
   </data>
   <data name="ContentLengthNotMatch" xml:space="preserve">
     <value>The Content length ({0}) not match the number of byte read ({1})</value>

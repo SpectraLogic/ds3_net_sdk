@@ -247,7 +247,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
                 }
             }
 
@@ -268,7 +268,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
                 }
             }
 
@@ -284,7 +284,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
                 }
             }
 
@@ -300,7 +300,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
                 }
             }
 
@@ -316,7 +316,7 @@ namespace TestDs3.Helpers.Strategys.ChunkStrategys
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals("Reached the limit number of retries request"));
+                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
                 }
             }
 
