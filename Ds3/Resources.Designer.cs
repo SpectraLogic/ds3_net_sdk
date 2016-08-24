@@ -268,7 +268,7 @@ namespace Ds3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reached the limit number of retries request.
+        ///   Looks up a localized string similar to Reached the maximum number of retries when attempting to get cache space.
         /// </summary>
         internal static string NoMoreRetriesException {
             get {
