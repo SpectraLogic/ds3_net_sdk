@@ -13,37 +13,52 @@
  * ****************************************************************************
  */
 
-using Ds3.Calls;
-using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Ds3.Calls;
+using Ds3.Models;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers.Transferrers
 {
     internal class WriteTransferrer : ITransferrer
     {
-        public void Transfer(
-            IDs3Client client,
-            string bucketName,
-            string objectName,
-            long blobOffset,
-            Guid jobId,
-            IEnumerable<Range> ranges,
-            Stream stream,
-            IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener)
+        public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
+            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
+            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttemps)
         {
-            var request = new PutObjectRequest(bucketName, objectName, stream)
-                .WithJob(jobId)
-                .WithOffset(blobOffset);
-
-            if (blobOffset == 0 && metadataAccess != null)
+            do
             {
-                request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
-            }
+                var request = new PutObjectRequest(bucketName, objectName, stream)
+                    .WithJob(jobId)
+                    .WithOffset(blobOffset);
 
-            client.PutObject(request);
+                if (blobOffset == 0 && metadataAccess != null)
+                {
+                    request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
+                }
+
+                try
+                {
+                    client.PutObject(request);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    if (objectTransferAttemps == 0)
+                    {
+                        throw new Ds3NoMoreRetransmitException(
+                            string.Format(Resources.NoMoreRetransmitException, request.ObjectName, request.Offset.Value),
+                            ex);
+                    }
+
+                    if (!stream.CanSeek) throw new Ds3NotSupportedStream(Resources.NotSupportedStream, ex);
+
+                    objectTransferAttemps--;
+                    stream.Position = request.Offset.Value;
+                }
+            } while (true);
         }
     }
 }

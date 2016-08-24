@@ -41,7 +41,7 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                 }
 
                 // Create a new stream for the transfered blob
-                stream = new PutObjectRequestStream(createStreamForTransferItem(blob.Context), blob.Range.Start, length);
+                stream = new NonDisposablePutObjectRequestStream(createStreamForTransferItem(blob.Context), blob.Range.Start, length);
 
                 this._streamStore.Add(blob, stream);
                 return stream;
@@ -58,7 +58,8 @@ namespace Ds3.Helpers.Strategys.StreamFactory
                     throw new StreamNotFoundException(string.Format("Stream not found for blob ({0}, {1}:{2})", blob.Context, blob.Range.Start, blob.Range.End));
                 }
 
-                stream.Close();
+                ((NonDisposablePutObjectRequestStream)stream).DisposeUnderlineStream();
+                this._streamStore.Remove(blob);
             }
         }
 

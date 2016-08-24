@@ -46,6 +46,7 @@ namespace Ds3.Helpers.Jobs
         private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
         private IMetadataAccess _metadataAccess;
+        private int _objectTransferAttemps;
         private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
@@ -90,7 +91,8 @@ namespace Ds3.Helpers.Jobs
             ITransferrer transferrer,
             ILookup<Blob, Range> rangesForRequests,
             IRangeTranslator<Blob, TItem> rangeTranslator,
-            IEnumerable<ContextRange<TItem>> itemsToTrack)
+            IEnumerable<ContextRange<TItem>> itemsToTrack,
+            int objectTransferAttemps)
         {
             this._client = client;
             this._jobResponse = jobResponse;
@@ -110,6 +112,8 @@ namespace Ds3.Helpers.Jobs
                 this._streamFactory.CloseStream(item);
                 this.ItemCompleted.Call(item);
             };
+
+            this._objectTransferAttemps = objectTransferAttemps;
         }
 
         public void Transfer(Func<TItem, Stream> createStreamForTransferItem)
@@ -149,19 +153,25 @@ namespace Ds3.Helpers.Jobs
 
             var stream = this._streamFactory.CreateStream(_createStreamForTransferItem, this._rangeTranslator, blob, blobLength);
 
-            this._transferrer.Transfer(
-                client,
-                this.BucketName,
-                blob.Context,
-                blob.Range.Start,
-                this.JobId,
-                ranges,
-                stream,
-                _metadataAccess,
-                MetadataListener
-            );
-
-            this._streamFactory.CloseBlob(blob);
+            try
+            {
+                this._transferrer.Transfer(
+                    client,
+                    this.BucketName,
+                    blob.Context,
+                    blob.Range.Start,
+                    this.JobId,
+                    ranges,
+                    stream,
+                    _metadataAccess,
+                    MetadataListener,
+                    _objectTransferAttemps
+                    );
+            }
+            finally
+            {
+                this._streamFactory.CloseBlob(blob);
+            }
 
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, blobLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))

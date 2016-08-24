@@ -216,4 +216,10 @@
   <data name="JobCompletedException" xml:space="preserve">
     <value>The job is already completed</value>
   </data>
+  <data name="NoMoreRetransmitException" xml:space="preserve">
+    <value>Reached the limit number of retransmit for blob name {0} with offset {1}</value>
+  </data>
+  <data name="NotSupportedStream" xml:space="preserve">
+    <value>Non seekable stream are not supported for PUTs retransmit</value>
+  </data>
 </root>

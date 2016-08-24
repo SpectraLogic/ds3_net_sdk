@@ -996,6 +996,8 @@
     <Compile Include="Lang\StreamsUtil.cs" />
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
+    <Compile Include="Runtime\Ds3NoMoreRetransmitException.cs" />
+    <Compile Include="Runtime\Ds3NotSupportedStream.cs" />
     <Compile Include="Runtime\IWebRequest.cs" />
     <Compile Include="Runtime\Ds3WebRequest.cs" />
     <Compile Include="Runtime\Ds3WebStream.cs" />

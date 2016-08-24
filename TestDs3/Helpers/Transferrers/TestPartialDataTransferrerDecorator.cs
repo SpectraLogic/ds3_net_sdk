@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
@@ -39,11 +40,15 @@ namespace TestDs3.Helpers.Transferrers
                 var stream = new MemoryStream(200);
                 var exceptionTransferrer = new ReadTransferrer();
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 0);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null);
+                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null, 0);
                 Assert.Fail();
             }
-            catch (Ds3NoMoreRetriesException e) {
-                Assert.AreEqual(0, e.Retries);   
+            catch (Ds3NoMoreRetransmitException ex)
+            {
+                const string expectedMessage = "Reached the limit number of retransmit for blob name bar with offset 0";
+                Assert.AreEqual(expectedMessage, ex.Message);
+
+                Assert.AreEqual(0, ex.Retries);
             }
         }
 
@@ -58,12 +63,15 @@ namespace TestDs3.Helpers.Transferrers
                 var stream = new MemoryStream(200);
                 var exceptionTransferrer = new ReadTransferrer();
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 1);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null);
+                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null, 0);
                 Assert.Fail();
             }
-            catch (Ds3NoMoreRetriesException e)
+            catch (Ds3NoMoreRetransmitException ex)
             {
-                Assert.AreEqual(1, e.Retries);
+                const string expectedMessage = "Reached the limit number of retransmit for blob name bar with offset 0";
+                Assert.AreEqual(expectedMessage, ex.Message);
+
+                Assert.AreEqual(1, ex.Retries);
             }
         }
 

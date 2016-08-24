@@ -115,11 +115,11 @@ namespace TestDs3
         private readonly IDictionary<string, string> _responseHeaders;
 
         public MockWebResponse(string responseString, HttpStatusCode statusCode, IDictionary<string, string> responseHeaders)
-	    {
+        {
             _responseString = responseString;
             _statusCode = statusCode;
             _responseHeaders = responseHeaders;
-	    }
+        }
 
         public Stream GetResponseStream()
         {
@@ -128,7 +128,7 @@ namespace TestDs3
 
         public HttpStatusCode StatusCode
         {
-	        get { return _statusCode; }
+            get { return _statusCode; }
         }
 
         public IDictionary<string, string> Headers

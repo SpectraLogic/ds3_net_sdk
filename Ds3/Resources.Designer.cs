@@ -259,6 +259,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reached the limit number of retransmit for blob name {0} with offset {1}.
+        /// </summary>
+        internal static string NoMoreRetransmitException {
+            get {
+                return ResourceManager.GetString("NoMoreRetransmitException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reached the limit number of retries request.
         /// </summary>
         internal static string NoMoreRetriesException {
@@ -273,6 +282,15 @@ namespace Ds3 {
         internal static string NoObjectsToTransferException {
             get {
                 return ResourceManager.GetString("NoObjectsToTransferException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non seekable stream are not supported for PUTs retransmit.
+        /// </summary>
+        internal static string NotSupportedStream {
+            get {
+                return ResourceManager.GetString("NotSupportedStream", resourceCulture);
             }
         }
         

@@ -32,17 +32,17 @@ namespace Ds3.Helpers
         private const JobRequestType JobTypePut = JobRequestType.PUT;
         private const JobRequestType JobTypeGet = JobRequestType.GET;
         private readonly int _retryAfter; //-1 represent infinite number
-        private readonly int _getObjectRetries; // -1 represents infinite number of retries
+        private readonly int _objectTransferAttemps; // -1 represents infinite number of retries
         private readonly int _jobRetries;
         private readonly int _jobWaitTime; //in minutes
         private readonly long? _maximumFileSizeForAggregating;
 
-        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int getObjectRetries = 5, int jobRetries = -1,
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int objectTransferAttemps = 5, int jobRetries = -1,
             int jobWaitTime = 5, long? maximumFileSizeForAggregating = null)
         {
             this._client = client;
             this._retryAfter = retryAfter;
-            this._getObjectRetries = getObjectRetries;
+            this._objectTransferAttemps = objectTransferAttemps;
             this._jobRetries = jobRetries;
             this._jobWaitTime = jobWaitTime;
             this._maximumFileSizeForAggregating = maximumFileSizeForAggregating;
@@ -98,7 +98,8 @@ namespace Ds3.Helpers
                 this._client,
                 jobResponse.ResponsePayload,
                 helperStrategy,
-                new WriteTransferrer()
+                new WriteTransferrer(),
+                _objectTransferAttemps
                 );
         }
 
@@ -126,7 +127,7 @@ namespace Ds3.Helpers
                 this._client,
                 jobResponse.ResponsePayload,
                 helperStrategy,
-                new PartialDataTransferrerDecorator(new ReadTransferrer(), _getObjectRetries)
+                new PartialDataTransferrerDecorator(new ReadTransferrer(), _objectTransferAttemps)
                 );
         }
 
@@ -159,7 +160,7 @@ namespace Ds3.Helpers
                 fullObjectList,
                 partialObjectList,
                 helperStrategy,
-                _getObjectRetries
+                _objectTransferAttemps
                 );
         }
 

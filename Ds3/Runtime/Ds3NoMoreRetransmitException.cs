@@ -14,28 +14,20 @@
  */
 
 using System;
-using System.IO;
 
-namespace Ds3.Helpers.Streams
+namespace Ds3.Runtime
 {
-    internal class NonDisposablePutObjectRequestStream : PutObjectRequestStream, IDisposable
+    class Ds3NoMoreRetransmitException : Exception
     {
-        public NonDisposablePutObjectRequestStream(Stream stream, long length) : base(stream, length)
+        public readonly int Retries;
+        public Ds3NoMoreRetransmitException(string message, Exception e) : base(message, e) 
         {
         }
 
-        public NonDisposablePutObjectRequestStream(Stream stream, long offset, long length) : base(stream, offset, length)
+        public Ds3NoMoreRetransmitException(string message, int retries, Exception e) : base(message, e)
         {
+            Retries = retries;
         }
 
-        public new void Dispose()
-        {
-            //NonDisposable Stream
-        }
-
-        public void DisposeUnderlineStream()
-        {
-            base.Dispose();
-        }
     }
 }
