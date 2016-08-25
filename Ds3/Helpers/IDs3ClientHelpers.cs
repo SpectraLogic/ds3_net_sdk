@@ -15,7 +15,7 @@
 
 using System;
 using System.Collections.Generic;
-using Ds3.Helpers.Strategys;
+using Ds3.Helpers.Strategies;
 using Ds3.Models;
 
 namespace Ds3.Helpers

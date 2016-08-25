@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Ds3.Helpers.Strategys;
+using Ds3.Helpers.Strategies;
 using Ds3.Runtime;
 
 namespace Ds3.Helpers

@@ -28,7 +28,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Ds3.Helpers.Strategys;
+using Ds3.Helpers.Strategies;
 using Ds3.Runtime;
 
 // using TestDs3.Lang;
@@ -558,7 +558,7 @@ namespace IntegrationTestDs3
         [Test]
         public void TestBulkPutNoPrefix()
         {
-            Ds3TestUtils.UsingAllWriteStrategys(strategy =>
+            Ds3TestUtils.UsingAllWriteStrategies(strategy =>
             {
                 const string bucketName = "TestBulkPutNoPrefix";
                 try
@@ -589,7 +589,7 @@ namespace IntegrationTestDs3
         public void TestBulkPutWithPrefix()
         {
             const string bucketName = "TestBulkPutWithPrefix";
-            Ds3TestUtils.UsingAllWriteStrategys(strategy =>
+            Ds3TestUtils.UsingAllWriteStrategies(strategy =>
             {
                 try
                 {
@@ -620,7 +620,7 @@ namespace IntegrationTestDs3
         {
             const string bucketName = "TestBulkGetWithPrefix";
 
-            Ds3TestUtils.UsingAllStringReadStrategys(strategy =>
+            Ds3TestUtils.UsingAllStringReadStrategies(strategy =>
             {
                 try
                 {
@@ -649,7 +649,7 @@ namespace IntegrationTestDs3
         {
             const string bucketName = "TestBulkGetWithoutPrefix";
 
-            Ds3TestUtils.UsingAllStringReadStrategys(strategy =>
+            Ds3TestUtils.UsingAllStringReadStrategies(strategy =>
             {
                 try
                 {

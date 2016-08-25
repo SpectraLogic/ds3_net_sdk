@@ -15,7 +15,7 @@
 
 using Ds3.Calls;
 using Ds3.Helpers.RangeTranslators;
-using Ds3.Helpers.Strategys;
+using Ds3.Helpers.Strategies;
 using Ds3.Helpers.Transferrers;
 using Ds3.Models;
 using System;

@@ -16,7 +16,7 @@
 using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
-using Ds3.Helpers.Strategys;
+using Ds3.Helpers.Strategies;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
@@ -142,7 +142,7 @@ namespace IntegrationTestDS3
             return Assembly.GetExecutingAssembly().GetManifestResourceStream("IntegrationTestDS3.TestData." + resourceName);
         }
 
-        public static void UsingAllWriteStrategys(Action<IHelperStrategy<string>> action)
+        public static void UsingAllWriteStrategies(Action<IHelperStrategy<string>> action)
         {
             var writeStrategyList = new List<IHelperStrategy<string>>
             {
@@ -156,7 +156,7 @@ namespace IntegrationTestDS3
             writeStrategyList.ForEach(action);
         }
 
-        public static void UsingAllStringReadStrategys(Action<IHelperStrategy<string>> action)
+        public static void UsingAllStringReadStrategies(Action<IHelperStrategy<string>> action)
         {
             var writeStrategyList = new List<IHelperStrategy<string>>
             {
@@ -167,7 +167,7 @@ namespace IntegrationTestDS3
             writeStrategyList.ForEach(action);
         }
 
-        public static void UsingAllDs3PartialObjectReadStrategys(Action<IHelperStrategy<Ds3PartialObject>> action)
+        public static void UsingAllDs3PartialObjectReadStrategies(Action<IHelperStrategy<Ds3PartialObject>> action)
         {
             var writeStrategyList = new List<IHelperStrategy<Ds3PartialObject>>
             {

@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using Ds3;
 using Ds3.Helpers;
-using Ds3.Helpers.Strategys;
 using Ds3.Models;
 using Ds3.Runtime;
 using IntegrationTestDS3;
