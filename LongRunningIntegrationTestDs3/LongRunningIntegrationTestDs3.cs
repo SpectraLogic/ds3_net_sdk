@@ -1,7 +1,7 @@
 ﻿using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
-using Ds3.Helpers.Strategys;
+using Ds3.Helpers.Strategies;
 using Ds3.Models;
 using IntegrationTestDS3;
 using NUnit.Framework;
