@@ -15,9 +15,9 @@
 
 using Ds3.Helpers.ProgressTrackers;
 using Ds3.Helpers.RangeTranslators;
-using Ds3.Helpers.Strategys;
-using Ds3.Helpers.Strategys.ChunkStrategys;
-using Ds3.Helpers.Strategys.StreamFactory;
+using Ds3.Helpers.Strategies;
+using Ds3.Helpers.Strategies.ChunkStrategies;
+using Ds3.Helpers.Strategies.StreamFactory;
 using Ds3.Helpers.Transferrers;
 using Ds3.Lang;
 using Ds3.Models;

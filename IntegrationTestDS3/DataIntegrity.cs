@@ -63,13 +63,13 @@ namespace IntegrationTestDS3
         [Test]
         public void SingleObjectGet()
         {
-            Ds3TestUtils.UsingAllWriteStrategys(writeStrategy =>
+            Ds3TestUtils.UsingAllWriteStrategies(writeStrategy =>
             {
                 const string bucketName = "SingleObjectGet";
                 try
                 {
                     Ds3TestUtils.LoadTestData(_client, bucketName, writeStrategy);
-                    Ds3TestUtils.UsingAllStringReadStrategys(readStrategy =>
+                    Ds3TestUtils.UsingAllStringReadStrategies(readStrategy =>
                     {
                         var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategy: readStrategy);
                         _tempFiles.Add(file);
@@ -93,7 +93,7 @@ namespace IntegrationTestDS3
             try
             {
                 Ds3TestUtils.LoadTestData(_client, bucketName);
-                Ds3TestUtils.UsingAllDs3PartialObjectReadStrategys(strategy =>
+                Ds3TestUtils.UsingAllDs3PartialObjectReadStrategies(strategy =>
                 {
                     var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0, 1046), strategy);
                     _tempFiles.Add(file);
@@ -124,7 +124,7 @@ namespace IntegrationTestDS3
 
                 var helpers = new Ds3ClientHelpers(_client);
 
-                Ds3TestUtils.UsingAllStringReadStrategys(strategy =>
+                Ds3TestUtils.UsingAllStringReadStrategies(strategy =>
                 {
                     var counter = 0;
                     var dataTransfered = 0L;
