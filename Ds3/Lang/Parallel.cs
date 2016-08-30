@@ -38,8 +38,7 @@ namespace Ds3.Lang
                     {
                         var it = default(T);
                         while (
-                            exceptionsThrown.Count == 0
-                            && !cancellationToken.IsCancellationRequested
+                            !cancellationToken.IsCancellationRequested
                             && itemGetter.TryGetNext(ref it))
                         {
                             action(it);

@@ -17,7 +17,7 @@ using System;
 
 namespace Ds3.Runtime
 {
-    class Ds3NoMoreRetransmitException : Exception
+    public class Ds3NoMoreRetransmitException : Exception
     {
         public readonly int Retries;
         public Ds3NoMoreRetransmitException(string message, Exception e) : base(message, e) 

@@ -14,8 +14,10 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Ds3;
 using Ds3.Helpers;
 using Ds3.Models;
@@ -110,12 +112,85 @@ namespace IntegrationTestDs3WithProxy
                 try
                 {
                     job.Transfer(s => stream);
+                    Assert.Fail();
                 }
                 catch (AggregateException age)
                 {
                     Assert.AreEqual(typeof(Ds3NotSupportedStream), age.InnerExceptions[0].GetType());
                 }
-                
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        
+
+        [Test]
+        public void TestGetBestEffort()
+        {
+            const string bucketName = "TestGetBestEffort";
+
+            try
+            {
+                var helpers = new Ds3ClientHelpers(this._client);
+                helpers.EnsureBucketExists(bucketName);
+
+                //Upload data for the test
+                //3 files: 1 with 3 blobs, 1 with 2 blobs and 1 with 1 blob
+                const int blobSize = 10485760; //10MB blob size
+                var putJob = helpers.StartWriteJob(bucketName, Utils.Objects, blobSize);
+                putJob.Transfer(Utils.ReadResource);
+
+
+                //Getting the data back
+                //1 blob will be missing from the 3 blobs object 
+                var getJob = helpers.StartReadJob(bucketName, Utils.Objects);
+
+                var dataTransfers = new ConcurrentQueue<long>();
+                var itemsCompleted = new ConcurrentQueue<string>();
+                getJob.DataTransferred += dataTransfers.Enqueue;
+                getJob.ItemCompleted += itemsCompleted.Enqueue;
+
+
+                Assert.Throws<AggregateException>(() => getJob.Transfer(s => new MemoryStream()));
+
+                CollectionAssert.AreEquivalent(new[] { 10485760, 10485760, 10485760, 8027314, 8160373 }, dataTransfers); //7229224 will have an exception
+                CollectionAssert.AreEquivalent(Utils.Objects.Select(obj => obj.Name).Where(obj => !obj.Equals("3_blobs.txt")), itemsCompleted);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestPutBestEffort()
+        {
+            const string bucketName = "TestPutBestEffort";
+
+            try
+            {
+                var helpers = new Ds3ClientHelpers(this._client);
+                helpers.EnsureBucketExists(bucketName);
+
+                //Upload data for the test
+                //3 files: 1 with 3 blobs, 1 with 2 blobs and 1 with 1 blob
+                const int blobSize = 10485760; //10MB blob size
+                var putJob = helpers.StartWriteJob(bucketName, Utils.Objects, blobSize);
+
+                var dataTransfers = new ConcurrentQueue<long>();
+                var itemsCompleted = new ConcurrentQueue<string>();
+                putJob.DataTransferred += dataTransfers.Enqueue;
+                putJob.ItemCompleted += itemsCompleted.Enqueue;
+
+
+                //1 blob from 3_blobs.txt will throw an exception
+                Assert.Throws<AggregateException>(() => putJob.Transfer(Utils.ReadResource));
+
+                CollectionAssert.AreEquivalent(new[] { 10485760, 10485760, 10485760, 8027314, 8160373 }, dataTransfers); //7229224 will have an exception
+                CollectionAssert.AreEquivalent(Utils.Objects.Select(obj => obj.Name).Where(obj => !obj.Equals("3_blobs.txt")), itemsCompleted);
             }
             finally
             {
