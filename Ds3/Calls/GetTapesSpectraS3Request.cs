@@ -94,6 +94,13 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        private DateTime? _partiallyVerifiedEndOfTape;
+        public DateTime? PartiallyVerifiedEndOfTape
+        {
+            get { return _partiallyVerifiedEndOfTape; }
+            set { WithPartiallyVerifiedEndOfTape(value); }
+        }
+
         private string _partitionId;
         public string PartitionId
         {
@@ -296,6 +303,19 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
+        }
+        public GetTapesSpectraS3Request WithPartiallyVerifiedEndOfTape(DateTime? partiallyVerifiedEndOfTape)
+        {
+            this._partiallyVerifiedEndOfTape = partiallyVerifiedEndOfTape;
+            if (partiallyVerifiedEndOfTape != null)
+            {
+                this.QueryParams.Add("partially_verified_end_of_tape", partiallyVerifiedEndOfTape.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("partially_verified_end_of_tape");
             }
             return this;
         }
