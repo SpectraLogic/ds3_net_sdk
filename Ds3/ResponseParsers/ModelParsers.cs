@@ -184,6 +184,7 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 InstanceId = ParseGuid(element.Element("InstanceId")),
                 LastHeartbeat = ParseDateTime(element.Element("LastHeartbeat")),
+                PartiallyVerifyLastPercentOfTapes = ParseNullableInt(element.Element("PartiallyVerifyLastPercentOfTapes")),
                 UnavailableMediaPolicy = ParseUnavailableMediaUsagePolicy(element.Element("UnavailableMediaPolicy")),
                 UnavailablePoolMaxJobRetryInMins = ParseInt(element.Element("UnavailablePoolMaxJobRetryInMins")),
                 UnavailableTapePartitionMaxJobRetryInMins = ParseInt(element.Element("UnavailableTapePartitionMaxJobRetryInMins"))
@@ -976,6 +977,7 @@ namespace Ds3.ResponseParsers
                 LastCheckpoint = ParseNullableString(element.Element("LastCheckpoint")),
                 LastModified = ParseNullableDateTime(element.Element("LastModified")),
                 LastVerified = ParseNullableDateTime(element.Element("LastVerified")),
+                PartiallyVerifiedEndOfTape = ParseNullableDateTime(element.Element("PartiallyVerifiedEndOfTape")),
                 PartitionId = ParseNullableGuid(element.Element("PartitionId")),
                 PreviousState = ParseNullableTapeState(element.Element("PreviousState")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
