@@ -52,6 +52,13 @@ namespace Ds3.Calls
             set { WithDefaultImportConflictResolutionMode(value); }
         }
 
+        private int? _partiallyVerifyLastPercentOfTapes;
+        public int? PartiallyVerifyLastPercentOfTapes
+        {
+            get { return _partiallyVerifyLastPercentOfTapes; }
+            set { WithPartiallyVerifyLastPercentOfTapes(value); }
+        }
+
         private UnavailableMediaUsagePolicy? _unavailableMediaPolicy;
         public UnavailableMediaUsagePolicy? UnavailableMediaPolicy
         {
@@ -122,6 +129,19 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("default_import_conflict_resolution_mode");
+            }
+            return this;
+        }
+        public ModifyDataPathBackendSpectraS3Request WithPartiallyVerifyLastPercentOfTapes(int? partiallyVerifyLastPercentOfTapes)
+        {
+            this._partiallyVerifyLastPercentOfTapes = partiallyVerifyLastPercentOfTapes;
+            if (partiallyVerifyLastPercentOfTapes != null)
+            {
+                this.QueryParams.Add("partially_verify_last_percent_of_tapes", partiallyVerifyLastPercentOfTapes.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("partially_verify_last_percent_of_tapes");
             }
             return this;
         }

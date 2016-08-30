@@ -37,6 +37,7 @@ namespace Ds3.Models
         public string LastCheckpoint { get; set; }
         public DateTime? LastModified { get; set; }
         public DateTime? LastVerified { get; set; }
+        public DateTime? PartiallyVerifiedEndOfTape { get; set; }
         public Guid? PartitionId { get; set; }
         public TapeState? PreviousState { get; set; }
         public string SerialNumber { get; set; }
