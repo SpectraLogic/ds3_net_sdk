@@ -47,6 +47,7 @@ namespace Ds3.Calls
             set { WithNotificationHttpMethod(value); }
         }
 
+        
         public PutJobCreationFailedNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType? format)
         {
             this._format = format;
@@ -60,6 +61,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutJobCreationFailedNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType? namingConvention)
         {
             this._namingConvention = namingConvention;
@@ -73,6 +76,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutJobCreationFailedNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType? notificationHttpMethod)
         {
             this._notificationHttpMethod = notificationHttpMethod;
@@ -87,6 +92,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public PutJobCreationFailedNotificationRegistrationSpectraS3Request(string notificationEndPoint)
         {

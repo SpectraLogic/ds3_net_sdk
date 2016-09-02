@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public PutGlobalDataPolicyAclForGroupSpectraS3Request(Guid groupId)
         {
             this.GroupId = groupId.ToString();
@@ -36,6 +37,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public PutGlobalDataPolicyAclForGroupSpectraS3Request(string groupId)
         {
             this.GroupId = groupId;

@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetDataPoliciesSpectraS3Response
     {
         public DataPolicyList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetDataPoliciesSpectraS3Response(DataPolicyList responsePayload)
+        public GetDataPoliciesSpectraS3Response(DataPolicyList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

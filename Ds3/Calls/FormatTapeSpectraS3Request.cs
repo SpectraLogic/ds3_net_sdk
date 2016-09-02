@@ -33,6 +33,7 @@ namespace Ds3.Calls
             set { WithForce(value); }
         }
 
+        
         public FormatTapeSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
@@ -47,6 +48,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public FormatTapeSpectraS3Request(Guid tapeId)
         {
@@ -55,6 +58,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public FormatTapeSpectraS3Request(string tapeId)
         {
             this.TapeId = tapeId;

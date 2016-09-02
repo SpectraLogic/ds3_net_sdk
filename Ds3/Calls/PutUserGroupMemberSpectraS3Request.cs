@@ -30,6 +30,7 @@ namespace Ds3.Calls
         
 
         
+        
         public PutUserGroupMemberSpectraS3Request(Guid groupId, Guid memberUserId)
         {
             this.GroupId = groupId.ToString();
@@ -41,6 +42,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public PutUserGroupMemberSpectraS3Request(string groupId, string memberUserId)
         {
             this.GroupId = groupId;

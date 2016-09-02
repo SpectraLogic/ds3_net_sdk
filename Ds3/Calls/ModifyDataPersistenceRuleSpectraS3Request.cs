@@ -47,6 +47,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public ModifyDataPersistenceRuleSpectraS3Request WithIsolationLevel(DataIsolationLevel? isolationLevel)
         {
             this._isolationLevel = isolationLevel;
@@ -60,6 +61,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPersistenceRuleSpectraS3Request WithMinimumDaysToRetain(int? minimumDaysToRetain)
         {
             this._minimumDaysToRetain = minimumDaysToRetain;
@@ -73,6 +76,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPersistenceRuleSpectraS3Request WithType(DataPersistenceRuleType? type)
         {
             this._type = type;
@@ -87,6 +92,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyDataPersistenceRuleSpectraS3Request(string dataPersistenceRule)
         {

@@ -66,6 +66,7 @@ namespace Ds3.Calls
             set { WithPoolId(value); }
         }
 
+        
         public GetSuspectBlobPoolsSpectraS3Request WithBlobId(Guid? blobId)
         {
             this._blobId = blobId.ToString();
@@ -79,6 +80,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithBlobId(string blobId)
         {
             this._blobId = blobId;
@@ -92,6 +95,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -105,6 +110,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -118,6 +125,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -131,6 +140,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -144,6 +155,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -157,6 +170,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithPoolId(Guid? poolId)
         {
             this._poolId = poolId.ToString();
@@ -170,6 +185,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobPoolsSpectraS3Request WithPoolId(string poolId)
         {
             this._poolId = poolId;
@@ -184,6 +201,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetSuspectBlobPoolsSpectraS3Request()
         {

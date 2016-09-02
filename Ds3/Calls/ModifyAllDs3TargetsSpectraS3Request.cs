@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public ModifyAllDs3TargetsSpectraS3Request(Quiesced quiesced)
         {
             this.Quiesced = quiesced;

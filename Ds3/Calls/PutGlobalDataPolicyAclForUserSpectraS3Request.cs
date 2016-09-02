@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public PutGlobalDataPolicyAclForUserSpectraS3Request(Guid userId)
         {
             this.UserId = userId.ToString();
@@ -36,6 +37,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public PutGlobalDataPolicyAclForUserSpectraS3Request(string userId)
         {
             this.UserId = userId;

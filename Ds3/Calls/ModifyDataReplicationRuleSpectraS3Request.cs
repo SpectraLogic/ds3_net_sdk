@@ -40,6 +40,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public ModifyDataReplicationRuleSpectraS3Request WithDs3TargetDataPolicy(string ds3TargetDataPolicy)
         {
             this._ds3TargetDataPolicy = ds3TargetDataPolicy;
@@ -53,6 +54,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataReplicationRuleSpectraS3Request WithType(DataReplicationRuleType? type)
         {
             this._type = type;
@@ -67,6 +70,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyDataReplicationRuleSpectraS3Request(string dataReplicationRule)
         {

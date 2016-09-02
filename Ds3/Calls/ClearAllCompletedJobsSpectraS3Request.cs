@@ -26,6 +26,7 @@ namespace Ds3.Calls
         
 
         
+        
         public ClearAllCompletedJobsSpectraS3Request()
         {
             

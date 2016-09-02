@@ -73,6 +73,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public GetStorageDomainFailuresSpectraS3Request WithErrorMessage(string errorMessage)
         {
             this._errorMessage = errorMessage;
@@ -86,6 +87,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -99,6 +102,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -112,6 +117,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -125,6 +132,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -138,6 +147,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -151,6 +162,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
@@ -164,6 +177,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
@@ -177,6 +192,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainFailuresSpectraS3Request WithType(StorageDomainFailureType? type)
         {
             this._type = type;
@@ -191,6 +208,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetStorageDomainFailuresSpectraS3Request()
         {

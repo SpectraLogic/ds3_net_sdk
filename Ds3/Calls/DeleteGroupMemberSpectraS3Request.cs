@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public DeleteGroupMemberSpectraS3Request(string groupMember)
         {
             this.GroupMember = groupMember;

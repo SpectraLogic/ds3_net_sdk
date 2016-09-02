@@ -32,6 +32,7 @@ namespace Ds3.Calls
         
 
         
+        
         public PutDs3TargetReadPreferenceSpectraS3Request(Guid bucketId, TargetReadPreference readPreference, Guid targetId)
         {
             this.BucketId = bucketId.ToString();
@@ -46,6 +47,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public PutDs3TargetReadPreferenceSpectraS3Request(string bucketId, TargetReadPreference readPreference, string targetId)
         {
             this.BucketId = bucketId;

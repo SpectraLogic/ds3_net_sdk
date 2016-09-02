@@ -73,6 +73,7 @@ namespace Ds3.Calls
             set { WithTargetId(value); }
         }
 
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
@@ -86,6 +87,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
@@ -99,6 +102,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -112,6 +117,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -125,6 +132,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -138,6 +147,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -151,6 +162,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -164,6 +177,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithReadPreference(TargetReadPreference? readPreference)
         {
             this._readPreference = readPreference;
@@ -177,6 +192,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithTargetId(Guid? targetId)
         {
             this._targetId = targetId.ToString();
@@ -190,6 +207,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetReadPreferencesSpectraS3Request WithTargetId(string targetId)
         {
             this._targetId = targetId;
@@ -204,6 +223,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetDs3TargetReadPreferencesSpectraS3Request()
         {

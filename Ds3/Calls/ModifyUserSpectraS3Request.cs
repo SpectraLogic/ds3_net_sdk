@@ -47,6 +47,7 @@ namespace Ds3.Calls
             set { WithSecretKey(value); }
         }
 
+        
         public ModifyUserSpectraS3Request WithDefaultDataPolicyId(Guid? defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId.ToString();
@@ -60,6 +61,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyUserSpectraS3Request WithDefaultDataPolicyId(string defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId;
@@ -73,6 +76,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyUserSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -86,6 +91,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyUserSpectraS3Request WithSecretKey(string secretKey)
         {
             this._secretKey = secretKey;
@@ -100,6 +107,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyUserSpectraS3Request(Guid userId)
         {
@@ -107,6 +116,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public ModifyUserSpectraS3Request(string userId)
         {
             this.UserId = userId;

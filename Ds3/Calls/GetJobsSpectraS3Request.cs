@@ -38,6 +38,7 @@ namespace Ds3.Calls
             set { WithFullDetails(value); }
         }
 
+        
         public GetJobsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
@@ -51,6 +52,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
@@ -64,6 +67,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobsSpectraS3Request WithFullDetails(bool? fullDetails)
         {
             this._fullDetails = fullDetails;
@@ -78,6 +83,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetJobsSpectraS3Request()
         {

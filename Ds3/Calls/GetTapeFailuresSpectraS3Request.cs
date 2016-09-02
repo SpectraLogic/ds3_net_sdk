@@ -80,6 +80,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public GetTapeFailuresSpectraS3Request WithErrorMessage(string errorMessage)
         {
             this._errorMessage = errorMessage;
@@ -93,6 +94,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -106,6 +109,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -119,6 +124,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -132,6 +139,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -145,6 +154,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -158,6 +169,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithTapeDriveId(Guid? tapeDriveId)
         {
             this._tapeDriveId = tapeDriveId.ToString();
@@ -171,6 +184,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithTapeDriveId(string tapeDriveId)
         {
             this._tapeDriveId = tapeDriveId;
@@ -184,6 +199,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithTapeId(Guid? tapeId)
         {
             this._tapeId = tapeId.ToString();
@@ -197,6 +214,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithTapeId(string tapeId)
         {
             this._tapeId = tapeId;
@@ -210,6 +229,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeFailuresSpectraS3Request WithType(TapeFailureType? type)
         {
             this._type = type;
@@ -224,6 +245,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetTapeFailuresSpectraS3Request()
         {

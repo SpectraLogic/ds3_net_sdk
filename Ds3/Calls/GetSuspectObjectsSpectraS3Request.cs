@@ -38,6 +38,7 @@ namespace Ds3.Calls
             set { WithStorageDomainId(value); }
         }
 
+        
         public GetSuspectObjectsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
@@ -51,6 +52,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectObjectsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
@@ -64,6 +67,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectObjectsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
@@ -77,6 +82,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectObjectsSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
@@ -91,6 +98,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetSuspectObjectsSpectraS3Request()
         {

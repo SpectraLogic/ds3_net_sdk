@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
+        
         public GetTapeLibrarySpectraS3Request(Guid tapeLibraryId)
         {
             this.TapeLibraryId = tapeLibraryId.ToString();
             
         }
 
+        
         public GetTapeLibrarySpectraS3Request(string tapeLibraryId)
         {
             this.TapeLibraryId = tapeLibraryId;

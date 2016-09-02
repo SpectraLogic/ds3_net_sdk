@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
+        
         public GetJobSpectraS3Request(Guid jobId)
         {
             this.JobId = jobId.ToString();
             
         }
 
+        
         public GetJobSpectraS3Request(string jobId)
         {
             this.JobId = jobId;

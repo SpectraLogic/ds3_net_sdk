@@ -54,6 +54,7 @@ namespace Ds3.Calls
             set { WithMaxCapacityInBytes(value); }
         }
 
+        
         public ModifyCacheFilesystemSpectraS3Request WithAutoReclaimInitiateThreshold(double? autoReclaimInitiateThreshold)
         {
             this._autoReclaimInitiateThreshold = autoReclaimInitiateThreshold;
@@ -67,6 +68,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyCacheFilesystemSpectraS3Request WithAutoReclaimTerminateThreshold(double? autoReclaimTerminateThreshold)
         {
             this._autoReclaimTerminateThreshold = autoReclaimTerminateThreshold;
@@ -80,6 +83,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyCacheFilesystemSpectraS3Request WithBurstThreshold(double? burstThreshold)
         {
             this._burstThreshold = burstThreshold;
@@ -93,6 +98,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyCacheFilesystemSpectraS3Request WithMaxCapacityInBytes(long? maxCapacityInBytes)
         {
             this._maxCapacityInBytes = maxCapacityInBytes;
@@ -107,6 +114,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyCacheFilesystemSpectraS3Request(string cacheFilesystem)
         {

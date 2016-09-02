@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public DeleteDs3TargetFailureSpectraS3Request(string ds3TargetFailure)
         {
             this.Ds3TargetFailure = ds3TargetFailure;

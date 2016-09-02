@@ -52,6 +52,7 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        
         public GetNodesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -65,6 +66,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetNodesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -78,6 +81,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetNodesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -91,6 +96,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetNodesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -104,6 +111,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetNodesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -118,6 +127,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetNodesSpectraS3Request()
         {

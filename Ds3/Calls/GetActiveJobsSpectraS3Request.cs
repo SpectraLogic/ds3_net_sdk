@@ -115,6 +115,7 @@ namespace Ds3.Calls
             set { WithUserId(value); }
         }
 
+        
         public GetActiveJobsSpectraS3Request WithAggregating(bool? aggregating)
         {
             this._aggregating = aggregating;
@@ -128,6 +129,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
@@ -141,6 +144,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
@@ -154,6 +159,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee? chunkClientProcessingOrderGuarantee)
         {
             this._chunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
@@ -167,6 +174,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -180,6 +189,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -193,6 +204,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -206,6 +219,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -219,6 +234,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -232,6 +249,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -245,6 +264,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -258,6 +279,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithRechunked(DateTime? rechunked)
         {
             this._rechunked = rechunked;
@@ -271,6 +294,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithRequestType(JobRequestType? requestType)
         {
             this._requestType = requestType;
@@ -284,6 +309,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithTruncated(bool? truncated)
         {
             this._truncated = truncated;
@@ -297,6 +324,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
@@ -310,6 +339,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetActiveJobsSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
@@ -324,6 +355,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetActiveJobsSpectraS3Request()
         {

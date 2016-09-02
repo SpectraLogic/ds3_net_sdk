@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetStorageDomainsSpectraS3Response
     {
         public StorageDomainList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetStorageDomainsSpectraS3Response(StorageDomainList responsePayload)
+        public GetStorageDomainsSpectraS3Response(StorageDomainList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

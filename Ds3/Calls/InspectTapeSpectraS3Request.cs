@@ -33,6 +33,7 @@ namespace Ds3.Calls
             set { WithTaskPriority(value); }
         }
 
+        
         public InspectTapeSpectraS3Request WithTaskPriority(Priority? taskPriority)
         {
             this._taskPriority = taskPriority;
@@ -47,6 +48,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public InspectTapeSpectraS3Request(Guid tapeId)
         {
@@ -55,6 +58,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public InspectTapeSpectraS3Request(string tapeId)
         {
             this.TapeId = tapeId;

@@ -31,6 +31,7 @@ namespace Ds3.Calls
             set { WithForce(value); }
         }
 
+        
         public MarkSuspectBlobPoolsAsDegradedSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
@@ -45,6 +46,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public MarkSuspectBlobPoolsAsDegradedSpectraS3Request()
         {

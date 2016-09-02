@@ -94,6 +94,7 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        
         public GetDataPoliciesSpectraS3Request WithAlwaysForcePutJobCreation(bool? alwaysForcePutJobCreation)
         {
             this._alwaysForcePutJobCreation = alwaysForcePutJobCreation;
@@ -107,6 +108,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithAlwaysMinimizeSpanningAcrossMedia(bool? alwaysMinimizeSpanningAcrossMedia)
         {
             this._alwaysMinimizeSpanningAcrossMedia = alwaysMinimizeSpanningAcrossMedia;
@@ -120,6 +123,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithAlwaysReplicateDeletes(bool? alwaysReplicateDeletes)
         {
             this._alwaysReplicateDeletes = alwaysReplicateDeletes;
@@ -133,6 +138,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithChecksumType(ChecksumType.Type? checksumType)
         {
             this._checksumType = checksumType;
@@ -146,6 +153,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithEndToEndCrcRequired(bool? endToEndCrcRequired)
         {
             this._endToEndCrcRequired = endToEndCrcRequired;
@@ -159,6 +168,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -172,6 +183,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -185,6 +198,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -198,6 +213,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -211,6 +228,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -224,6 +243,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataPoliciesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -238,6 +259,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetDataPoliciesSpectraS3Request()
         {

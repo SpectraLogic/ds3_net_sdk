@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetObjectPersistedNotificationRegistrationSpectraS3Request(Guid notificationId)
         {
             this.NotificationId = notificationId;

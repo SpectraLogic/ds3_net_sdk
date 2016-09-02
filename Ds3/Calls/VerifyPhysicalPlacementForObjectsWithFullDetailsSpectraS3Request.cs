@@ -39,6 +39,7 @@ namespace Ds3.Calls
             set { WithStorageDomainId(value); }
         }
 
+        
         public VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
@@ -52,6 +53,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
@@ -65,6 +68,7 @@ namespace Ds3.Calls
             }
             return this;
         }
+
 
         
         public VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {

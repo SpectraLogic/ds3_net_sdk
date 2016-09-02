@@ -82,6 +82,7 @@ namespace Ds3.Calls
             set { WithPriority(value); }
         }
 
+        
         public PutBulkJobSpectraS3Request WithAggregating(bool? aggregating)
         {
             this._aggregating = aggregating;
@@ -95,6 +96,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBulkJobSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
@@ -108,6 +111,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBulkJobSpectraS3Request WithIgnoreNamingConflicts(bool? ignoreNamingConflicts)
         {
             this._ignoreNamingConflicts = ignoreNamingConflicts;
@@ -121,6 +126,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBulkJobSpectraS3Request WithMinimizeSpanningAcrossMedia(bool? minimizeSpanningAcrossMedia)
         {
             this._minimizeSpanningAcrossMedia = minimizeSpanningAcrossMedia;
@@ -134,6 +141,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBulkJobSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -147,6 +156,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBulkJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -160,6 +171,7 @@ namespace Ds3.Calls
             }
             return this;
         }
+
 
         
         public PutBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {

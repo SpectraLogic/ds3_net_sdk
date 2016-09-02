@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public AllocateJobChunkSpectraS3Request(Guid jobChunkId)
         {
             this.JobChunkId = jobChunkId.ToString();
@@ -35,6 +36,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public AllocateJobChunkSpectraS3Request(string jobChunkId)
         {
             this.JobChunkId = jobChunkId;

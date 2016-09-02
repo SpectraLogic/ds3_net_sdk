@@ -66,6 +66,7 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        
         public GetSuspectBlobTargetsSpectraS3Request WithBlobId(Guid? blobId)
         {
             this._blobId = blobId.ToString();
@@ -79,6 +80,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithBlobId(string blobId)
         {
             this._blobId = blobId;
@@ -92,6 +95,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithDs3TargetId(Guid? ds3TargetId)
         {
             this._ds3TargetId = ds3TargetId.ToString();
@@ -105,6 +110,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithDs3TargetId(string ds3TargetId)
         {
             this._ds3TargetId = ds3TargetId;
@@ -118,6 +125,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -131,6 +140,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -144,6 +155,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -157,6 +170,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -170,6 +185,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetSuspectBlobTargetsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -184,6 +201,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetSuspectBlobTargetsSpectraS3Request()
         {
