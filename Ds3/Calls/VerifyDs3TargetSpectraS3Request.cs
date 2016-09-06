@@ -33,6 +33,7 @@ namespace Ds3.Calls
             set { WithFullDetails(value); }
         }
 
+        
         public VerifyDs3TargetSpectraS3Request WithFullDetails(bool? fullDetails)
         {
             this._fullDetails = fullDetails;
@@ -47,6 +48,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public VerifyDs3TargetSpectraS3Request(string ds3Target)
         {

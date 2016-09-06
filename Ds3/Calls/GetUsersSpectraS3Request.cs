@@ -73,6 +73,7 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        
         public GetUsersSpectraS3Request WithAuthId(string authId)
         {
             this._authId = authId;
@@ -86,6 +87,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithDefaultDataPolicyId(Guid? defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId.ToString();
@@ -99,6 +102,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithDefaultDataPolicyId(string defaultDataPolicyId)
         {
             this._defaultDataPolicyId = defaultDataPolicyId;
@@ -112,6 +117,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -125,6 +132,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -138,6 +147,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -151,6 +162,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -164,6 +177,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -177,6 +192,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetUsersSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -191,6 +208,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetUsersSpectraS3Request()
         {

@@ -80,6 +80,7 @@ namespace Ds3.Calls
             set { WithReplicationRuleId(value); }
         }
 
+        
         public GetDegradedBlobsSpectraS3Request WithBlobId(Guid? blobId)
         {
             this._blobId = blobId.ToString();
@@ -93,6 +94,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithBlobId(string blobId)
         {
             this._blobId = blobId;
@@ -106,6 +109,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
@@ -119,6 +124,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
@@ -132,6 +139,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -145,6 +154,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -158,6 +169,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -171,6 +184,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -184,6 +199,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -197,6 +214,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithPersistenceRuleId(Guid? persistenceRuleId)
         {
             this._persistenceRuleId = persistenceRuleId.ToString();
@@ -210,6 +229,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithPersistenceRuleId(string persistenceRuleId)
         {
             this._persistenceRuleId = persistenceRuleId;
@@ -223,6 +244,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithReplicationRuleId(Guid? replicationRuleId)
         {
             this._replicationRuleId = replicationRuleId.ToString();
@@ -236,6 +259,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedBlobsSpectraS3Request WithReplicationRuleId(string replicationRuleId)
         {
             this._replicationRuleId = replicationRuleId;
@@ -250,6 +275,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetDegradedBlobsSpectraS3Request()
         {

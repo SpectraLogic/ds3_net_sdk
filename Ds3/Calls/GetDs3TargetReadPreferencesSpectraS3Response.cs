@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetDs3TargetReadPreferencesSpectraS3Response
     {
         public Ds3TargetReadPreferenceList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetDs3TargetReadPreferencesSpectraS3Response(Ds3TargetReadPreferenceList responsePayload)
+        public GetDs3TargetReadPreferencesSpectraS3Response(Ds3TargetReadPreferenceList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

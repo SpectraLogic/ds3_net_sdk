@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public DeallocatePoolSpectraS3Request(string pool)
         {
             this.Pool = pool;

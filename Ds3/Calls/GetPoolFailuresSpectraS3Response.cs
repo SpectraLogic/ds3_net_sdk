@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetPoolFailuresSpectraS3Response
     {
         public PoolFailureList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetPoolFailuresSpectraS3Response(PoolFailureList responsePayload)
+        public GetPoolFailuresSpectraS3Response(PoolFailureList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

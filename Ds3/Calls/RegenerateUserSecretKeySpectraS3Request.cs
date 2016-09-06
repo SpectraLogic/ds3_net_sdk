@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public RegenerateUserSecretKeySpectraS3Request(Guid userId)
         {
             this.UserId = userId.ToString();
@@ -35,6 +36,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public RegenerateUserSecretKeySpectraS3Request(string userId)
         {
             this.UserId = userId;

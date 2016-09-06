@@ -31,6 +31,7 @@ namespace Ds3.Calls
             set { WithPriority(value); }
         }
 
+        
         public VerifyAllPoolsSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -45,6 +46,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public VerifyAllPoolsSpectraS3Request()
         {

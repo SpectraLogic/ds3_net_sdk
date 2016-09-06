@@ -129,6 +129,7 @@ namespace Ds3.Calls
             set { WithState(value); }
         }
 
+        
         public GetDs3TargetsSpectraS3Request WithAdminAuthId(string adminAuthId)
         {
             this._adminAuthId = adminAuthId;
@@ -142,6 +143,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithDataPathEndPoint(string dataPathEndPoint)
         {
             this._dataPathEndPoint = dataPathEndPoint;
@@ -155,6 +158,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithDataPathHttps(bool? dataPathHttps)
         {
             this._dataPathHttps = dataPathHttps;
@@ -168,6 +173,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithDataPathPort(int? dataPathPort)
         {
             this._dataPathPort = dataPathPort;
@@ -181,6 +188,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithDataPathProxy(string dataPathProxy)
         {
             this._dataPathProxy = dataPathProxy;
@@ -194,6 +203,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithDataPathVerifyCertificate(bool? dataPathVerifyCertificate)
         {
             this._dataPathVerifyCertificate = dataPathVerifyCertificate;
@@ -207,6 +218,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithDefaultReadPreference(TargetReadPreference? defaultReadPreference)
         {
             this._defaultReadPreference = defaultReadPreference;
@@ -220,6 +233,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -233,6 +248,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -246,6 +263,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -259,6 +278,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -272,6 +293,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -285,6 +308,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -298,6 +323,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithPermitGoingOutOfSync(bool? permitGoingOutOfSync)
         {
             this._permitGoingOutOfSync = permitGoingOutOfSync;
@@ -311,6 +338,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
@@ -324,6 +353,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDs3TargetsSpectraS3Request WithState(TargetState? state)
         {
             this._state = state;
@@ -338,6 +369,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetDs3TargetsSpectraS3Request()
         {

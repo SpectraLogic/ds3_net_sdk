@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetStorageDomainMemberSpectraS3Request(string storageDomainMember)
         {
             this.StorageDomainMember = storageDomainMember;

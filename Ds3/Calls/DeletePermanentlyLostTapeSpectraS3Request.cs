@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
+        
         public DeletePermanentlyLostTapeSpectraS3Request(Guid tapeId)
         {
             this.TapeId = tapeId.ToString();
             
         }
 
+        
         public DeletePermanentlyLostTapeSpectraS3Request(string tapeId)
         {
             this.TapeId = tapeId;

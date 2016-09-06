@@ -40,6 +40,7 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        
         public ModifyNodeSpectraS3Request WithDnsName(string dnsName)
         {
             this._dnsName = dnsName;
@@ -53,6 +54,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyNodeSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -67,6 +70,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyNodeSpectraS3Request(string node)
         {

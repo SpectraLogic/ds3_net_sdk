@@ -31,6 +31,7 @@ namespace Ds3.Calls
             set { WithFullDetails(value); }
         }
 
+        
         public GetDataPlannerBlobStoreTasksSpectraS3Request WithFullDetails(bool? fullDetails)
         {
             this._fullDetails = fullDetails;
@@ -45,6 +46,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetDataPlannerBlobStoreTasksSpectraS3Request()
         {

@@ -117,6 +117,7 @@ namespace Ds3.Calls
             set { WithReplicatedUserDefaultDataPolicy(value); }
         }
 
+        
         public ModifyDs3TargetSpectraS3Request WithAccessControlReplication(Ds3TargetAccessControlReplication? accessControlReplication)
         {
             this._accessControlReplication = accessControlReplication;
@@ -130,6 +131,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithAdminAuthId(string adminAuthId)
         {
             this._adminAuthId = adminAuthId;
@@ -143,6 +146,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithAdminSecretKey(string adminSecretKey)
         {
             this._adminSecretKey = adminSecretKey;
@@ -156,6 +161,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithDataPathEndPoint(string dataPathEndPoint)
         {
             this._dataPathEndPoint = dataPathEndPoint;
@@ -169,6 +176,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithDataPathHttps(bool? dataPathHttps)
         {
             this._dataPathHttps = dataPathHttps;
@@ -182,6 +191,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithDataPathPort(int? dataPathPort)
         {
             this._dataPathPort = dataPathPort;
@@ -195,6 +206,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithDataPathProxy(string dataPathProxy)
         {
             this._dataPathProxy = dataPathProxy;
@@ -208,6 +221,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithDataPathVerifyCertificate(bool? dataPathVerifyCertificate)
         {
             this._dataPathVerifyCertificate = dataPathVerifyCertificate;
@@ -221,6 +236,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithDefaultReadPreference(TargetReadPreference? defaultReadPreference)
         {
             this._defaultReadPreference = defaultReadPreference;
@@ -234,6 +251,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -247,6 +266,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithPermitGoingOutOfSync(bool? permitGoingOutOfSync)
         {
             this._permitGoingOutOfSync = permitGoingOutOfSync;
@@ -260,6 +281,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
@@ -273,6 +296,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDs3TargetSpectraS3Request WithReplicatedUserDefaultDataPolicy(string replicatedUserDefaultDataPolicy)
         {
             this._replicatedUserDefaultDataPolicy = replicatedUserDefaultDataPolicy;
@@ -287,6 +312,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyDs3TargetSpectraS3Request(string ds3Target)
         {

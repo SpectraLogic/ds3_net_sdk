@@ -87,6 +87,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId.ToString();
@@ -100,6 +101,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId;
@@ -113,6 +116,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithIsolationLevel(DataIsolationLevel? isolationLevel)
         {
             this._isolationLevel = isolationLevel;
@@ -126,6 +131,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -139,6 +146,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -152,6 +161,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -165,6 +176,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -178,6 +191,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -191,6 +206,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithState(DataPersistenceRuleState? state)
         {
             this._state = state;
@@ -204,6 +221,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
@@ -217,6 +236,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
@@ -230,6 +251,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDegradedDataPersistenceRulesSpectraS3Request WithType(DataPersistenceRuleType? type)
         {
             this._type = type;
@@ -244,6 +267,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetDegradedDataPersistenceRulesSpectraS3Request()
         {

@@ -73,6 +73,7 @@ namespace Ds3.Calls
             set { WithTapeType(value); }
         }
 
+        
         public GetTapeDensityDirectivesSpectraS3Request WithDensity(TapeDriveType? density)
         {
             this._density = density;
@@ -86,6 +87,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -99,6 +102,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -112,6 +117,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -125,6 +132,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -138,6 +147,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -151,6 +162,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
@@ -164,6 +177,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
@@ -177,6 +192,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDensityDirectivesSpectraS3Request WithTapeType(TapeType? tapeType)
         {
             this._tapeType = tapeType;
@@ -191,6 +208,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetTapeDensityDirectivesSpectraS3Request()
         {

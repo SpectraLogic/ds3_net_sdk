@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetTapeDensityDirectivesSpectraS3Response
     {
         public TapeDensityDirectiveList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetTapeDensityDirectivesSpectraS3Response(TapeDensityDirectiveList responsePayload)
+        public GetTapeDensityDirectivesSpectraS3Response(TapeDensityDirectiveList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

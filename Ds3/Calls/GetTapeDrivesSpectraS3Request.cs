@@ -80,6 +80,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public GetTapeDrivesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -93,6 +94,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -106,6 +109,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -119,6 +124,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -132,6 +139,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -145,6 +154,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
@@ -158,6 +169,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
@@ -171,6 +184,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithSerialNumber(string serialNumber)
         {
             this._serialNumber = serialNumber;
@@ -184,6 +199,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithState(TapeDriveState? state)
         {
             this._state = state;
@@ -197,6 +214,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeDrivesSpectraS3Request WithType(TapeDriveType? type)
         {
             this._type = type;
@@ -211,6 +230,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetTapeDrivesSpectraS3Request()
         {

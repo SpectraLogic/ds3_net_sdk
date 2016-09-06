@@ -40,6 +40,7 @@ namespace Ds3.Calls
             set { WithReplicate(value); }
         }
 
+        
         public DeleteBucketSpectraS3Request WithForce(bool? force)
         {
             this._force = force;
@@ -53,6 +54,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public DeleteBucketSpectraS3Request WithReplicate(bool? replicate)
         {
             this._replicate = replicate;
@@ -67,6 +70,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public DeleteBucketSpectraS3Request(string bucketName)
         {

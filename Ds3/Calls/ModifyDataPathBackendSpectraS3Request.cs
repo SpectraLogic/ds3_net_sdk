@@ -80,6 +80,7 @@ namespace Ds3.Calls
             set { WithUnavailableTapePartitionMaxJobRetryInMins(value); }
         }
 
+        
         public ModifyDataPathBackendSpectraS3Request WithActivated(bool? activated)
         {
             this._activated = activated;
@@ -93,6 +94,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithAutoActivateTimeoutInMins(int? autoActivateTimeoutInMins)
         {
             this._autoActivateTimeoutInMins = autoActivateTimeoutInMins;
@@ -106,6 +109,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithAutoInspect(AutoInspectMode? autoInspect)
         {
             this._autoInspect = autoInspect;
@@ -119,6 +124,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithDefaultImportConflictResolutionMode(ImportConflictResolutionMode? defaultImportConflictResolutionMode)
         {
             this._defaultImportConflictResolutionMode = defaultImportConflictResolutionMode;
@@ -132,6 +139,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithPartiallyVerifyLastPercentOfTapes(int? partiallyVerifyLastPercentOfTapes)
         {
             this._partiallyVerifyLastPercentOfTapes = partiallyVerifyLastPercentOfTapes;
@@ -145,6 +154,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithUnavailableMediaPolicy(UnavailableMediaUsagePolicy? unavailableMediaPolicy)
         {
             this._unavailableMediaPolicy = unavailableMediaPolicy;
@@ -158,6 +169,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithUnavailablePoolMaxJobRetryInMins(int? unavailablePoolMaxJobRetryInMins)
         {
             this._unavailablePoolMaxJobRetryInMins = unavailablePoolMaxJobRetryInMins;
@@ -171,6 +184,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithUnavailableTapePartitionMaxJobRetryInMins(int? unavailableTapePartitionMaxJobRetryInMins)
         {
             this._unavailableTapePartitionMaxJobRetryInMins = unavailableTapePartitionMaxJobRetryInMins;
@@ -185,6 +200,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyDataPathBackendSpectraS3Request()
         {

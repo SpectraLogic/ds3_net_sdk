@@ -59,6 +59,7 @@ namespace Ds3.Calls
             set { WithUserId(value); }
         }
 
+        
         public GetJobCompletedNotificationRegistrationsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -72,6 +73,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobCompletedNotificationRegistrationsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -85,6 +88,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobCompletedNotificationRegistrationsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -98,6 +103,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobCompletedNotificationRegistrationsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -111,6 +118,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobCompletedNotificationRegistrationsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -124,6 +133,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobCompletedNotificationRegistrationsSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
@@ -137,6 +148,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobCompletedNotificationRegistrationsSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
@@ -151,6 +164,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetJobCompletedNotificationRegistrationsSpectraS3Request()
         {

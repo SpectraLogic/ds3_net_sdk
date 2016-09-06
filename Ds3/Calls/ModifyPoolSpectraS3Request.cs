@@ -40,6 +40,7 @@ namespace Ds3.Calls
             set { WithQuiesced(value); }
         }
 
+        
         public ModifyPoolSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
@@ -53,6 +54,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyPoolSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
@@ -66,6 +69,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyPoolSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
@@ -80,6 +85,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyPoolSpectraS3Request(string pool)
         {

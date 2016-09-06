@@ -35,7 +35,9 @@ namespace Ds3.ResponseParsers
                 {
                     return new GetTapePartitionFailuresSpectraS3Response(
                         ModelParsers.ParseTapePartitionFailureList(
-                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data")),
+                        ResponseParseUtilities.ParseIntHeader("page-truncated", response.Headers),
+                        ResponseParseUtilities.ParseIntHeader("total-result-count", response.Headers)
                     );
                 }
             }

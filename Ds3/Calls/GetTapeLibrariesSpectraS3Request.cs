@@ -73,6 +73,7 @@ namespace Ds3.Calls
             set { WithSerialNumber(value); }
         }
 
+        
         public GetTapeLibrariesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -86,6 +87,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeLibrariesSpectraS3Request WithManagementUrl(string managementUrl)
         {
             this._managementUrl = managementUrl;
@@ -99,6 +102,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeLibrariesSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -112,6 +117,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeLibrariesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -125,6 +132,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeLibrariesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -138,6 +147,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeLibrariesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -151,6 +162,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeLibrariesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -164,6 +177,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapeLibrariesSpectraS3Request WithSerialNumber(string serialNumber)
         {
             this._serialNumber = serialNumber;
@@ -178,6 +193,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetTapeLibrariesSpectraS3Request()
         {

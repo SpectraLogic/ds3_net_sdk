@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public CancelImportTapeSpectraS3Request(Guid tapeId)
         {
             this.TapeId = tapeId.ToString();
@@ -35,6 +36,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public CancelImportTapeSpectraS3Request(string tapeId)
         {
             this.TapeId = tapeId;

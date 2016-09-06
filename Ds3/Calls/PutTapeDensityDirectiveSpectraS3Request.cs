@@ -32,6 +32,7 @@ namespace Ds3.Calls
         
 
         
+        
         public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, Guid partitionId, TapeType tapeType)
         {
             this.Density = density;
@@ -46,6 +47,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, string partitionId, TapeType tapeType)
         {
             this.Density = density;

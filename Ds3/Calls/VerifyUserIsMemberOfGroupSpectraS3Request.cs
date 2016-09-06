@@ -33,6 +33,7 @@ namespace Ds3.Calls
             set { WithUserId(value); }
         }
 
+        
         public VerifyUserIsMemberOfGroupSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
@@ -46,6 +47,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public VerifyUserIsMemberOfGroupSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
@@ -60,6 +63,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public VerifyUserIsMemberOfGroupSpectraS3Request(string group)
         {

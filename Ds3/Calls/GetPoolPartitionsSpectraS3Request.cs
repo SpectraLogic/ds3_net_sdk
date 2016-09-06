@@ -66,6 +66,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public GetPoolPartitionsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -79,6 +80,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolPartitionsSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -92,6 +95,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolPartitionsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -105,6 +110,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolPartitionsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -118,6 +125,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolPartitionsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -131,6 +140,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolPartitionsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -144,6 +155,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolPartitionsSpectraS3Request WithType(PoolType? type)
         {
             this._type = type;
@@ -158,6 +171,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetPoolPartitionsSpectraS3Request()
         {

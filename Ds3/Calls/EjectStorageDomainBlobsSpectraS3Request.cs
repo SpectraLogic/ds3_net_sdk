@@ -48,6 +48,7 @@ namespace Ds3.Calls
             set { WithEjectLocation(value); }
         }
 
+        
         public EjectStorageDomainBlobsSpectraS3Request WithEjectLabel(string ejectLabel)
         {
             this._ejectLabel = ejectLabel;
@@ -61,6 +62,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public EjectStorageDomainBlobsSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
@@ -74,6 +77,7 @@ namespace Ds3.Calls
             }
             return this;
         }
+
 
         public EjectStorageDomainBlobsSpectraS3Request(Guid bucketId, IEnumerable<Ds3Object> objects, Guid storageDomainId) {
             this.BucketId = bucketId.ToString();

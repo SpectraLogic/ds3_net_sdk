@@ -42,6 +42,7 @@ namespace Ds3.Calls
             set { WithRollBack(value); }
         }
 
+        
         public DeleteObjectRequest WithReplicate(bool? replicate)
         {
             this._replicate = replicate;
@@ -55,6 +56,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public DeleteObjectRequest WithRollBack(bool? rollBack)
         {
             this._rollBack = rollBack;
@@ -69,6 +72,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public DeleteObjectRequest(string bucketName, string objectName)
         {

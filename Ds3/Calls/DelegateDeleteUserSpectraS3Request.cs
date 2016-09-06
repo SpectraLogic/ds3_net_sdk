@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
+        
         public DelegateDeleteUserSpectraS3Request(Guid userId)
         {
             this.UserId = userId.ToString();
             
         }
 
+        
         public DelegateDeleteUserSpectraS3Request(string userId)
         {
             this.UserId = userId;

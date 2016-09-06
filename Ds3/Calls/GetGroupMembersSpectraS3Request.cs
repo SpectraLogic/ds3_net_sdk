@@ -73,6 +73,7 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        
         public GetGroupMembersSpectraS3Request WithGroupId(Guid? groupId)
         {
             this._groupId = groupId.ToString();
@@ -86,6 +87,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithGroupId(string groupId)
         {
             this._groupId = groupId;
@@ -99,6 +102,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -112,6 +117,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithMemberGroupId(Guid? memberGroupId)
         {
             this._memberGroupId = memberGroupId.ToString();
@@ -125,6 +132,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithMemberGroupId(string memberGroupId)
         {
             this._memberGroupId = memberGroupId;
@@ -138,6 +147,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithMemberUserId(Guid? memberUserId)
         {
             this._memberUserId = memberUserId.ToString();
@@ -151,6 +162,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithMemberUserId(string memberUserId)
         {
             this._memberUserId = memberUserId;
@@ -164,6 +177,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -177,6 +192,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -190,6 +207,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -203,6 +222,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetGroupMembersSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -217,6 +238,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetGroupMembersSpectraS3Request()
         {

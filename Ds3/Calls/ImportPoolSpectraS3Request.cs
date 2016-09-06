@@ -75,6 +75,7 @@ namespace Ds3.Calls
             set { WithVerifyDataPriorToImport(value); }
         }
 
+        
         public ImportPoolSpectraS3Request WithConflictResolutionMode(ImportConflictResolutionMode? conflictResolutionMode)
         {
             this._conflictResolutionMode = conflictResolutionMode;
@@ -88,6 +89,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId.ToString();
@@ -101,6 +104,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId;
@@ -114,6 +119,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -127,6 +134,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
@@ -140,6 +149,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
@@ -153,6 +164,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
@@ -166,6 +179,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
@@ -179,6 +194,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithVerifyDataAfterImport(Priority? verifyDataAfterImport)
         {
             this._verifyDataAfterImport = verifyDataAfterImport;
@@ -192,6 +209,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ImportPoolSpectraS3Request WithVerifyDataPriorToImport(bool? verifyDataPriorToImport)
         {
             this._verifyDataPriorToImport = verifyDataPriorToImport;
@@ -206,6 +225,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ImportPoolSpectraS3Request(string pool)
         {
