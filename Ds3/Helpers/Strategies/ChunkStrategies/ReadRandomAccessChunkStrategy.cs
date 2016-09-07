@@ -115,6 +115,10 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                     this.SameChunksRetryAfter.RetryAfterFunc(ts);
                     return new TransferItem[0];
                 }
+                else
+                {
+                    _lastAvailableChunks = GetChunksNumbers(jobResponse);
+                }
 
                 var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
                 var result = (
