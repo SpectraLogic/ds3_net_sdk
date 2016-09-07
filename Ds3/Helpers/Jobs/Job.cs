@@ -122,7 +122,7 @@ namespace Ds3.Helpers.Jobs
 
             this._createStreamForTransferItem = createStreamForTransferItem;
 
-            //Will transfer as much blobs as possible and return an aggregate exception with all the failed blobs in the end
+            //Will transfer as many blobs as possible and return an aggregate exception with all the failed blobs in the end
             Parallel.ForEach(
                 this._maxParallelRequests,
                 this._cancellationToken,
