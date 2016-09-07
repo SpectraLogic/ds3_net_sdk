@@ -107,6 +107,7 @@ namespace Ds3.Calls
             set { WithOffset(value); }
         }
 
+        
         public PutObjectRequest WithJob(Guid? job)
         {
             this._job = job.ToString();
@@ -120,6 +121,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutObjectRequest WithJob(string job)
         {
             this._job = job;
@@ -133,6 +136,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutObjectRequest WithOffset(long? offset)
         {
             this._offset = offset;
@@ -147,6 +152,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public PutObjectRequest(string bucketName, string objectName, long length, Stream requestPayload)
         {

@@ -40,6 +40,7 @@ namespace Ds3.Calls
             set { WithEjectLocation(value); }
         }
 
+        
         public EjectTapeSpectraS3Request WithEjectLabel(string ejectLabel)
         {
             this._ejectLabel = ejectLabel;
@@ -53,6 +54,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public EjectTapeSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
@@ -67,6 +70,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public EjectTapeSpectraS3Request(Guid tapeId)
         {
@@ -75,6 +80,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public EjectTapeSpectraS3Request(string tapeId)
         {
             this.TapeId = tapeId;

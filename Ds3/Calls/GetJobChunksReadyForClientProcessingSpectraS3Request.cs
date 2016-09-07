@@ -40,6 +40,7 @@ namespace Ds3.Calls
             set { WithPreferredNumberOfChunks(value); }
         }
 
+        
         public GetJobChunksReadyForClientProcessingSpectraS3Request WithJobChunk(Guid? jobChunk)
         {
             this._jobChunk = jobChunk.ToString();
@@ -53,6 +54,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobChunksReadyForClientProcessingSpectraS3Request WithJobChunk(string jobChunk)
         {
             this._jobChunk = jobChunk;
@@ -66,6 +69,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetJobChunksReadyForClientProcessingSpectraS3Request WithPreferredNumberOfChunks(int? preferredNumberOfChunks)
         {
             this._preferredNumberOfChunks = preferredNumberOfChunks;
@@ -80,6 +85,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetJobChunksReadyForClientProcessingSpectraS3Request(Guid job)
         {
@@ -89,6 +96,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public GetJobChunksReadyForClientProcessingSpectraS3Request(string job)
         {
             this.Job = job;

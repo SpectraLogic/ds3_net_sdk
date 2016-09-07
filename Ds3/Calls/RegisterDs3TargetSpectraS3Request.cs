@@ -88,6 +88,7 @@ namespace Ds3.Calls
             set { WithReplicatedUserDefaultDataPolicy(value); }
         }
 
+        
         public RegisterDs3TargetSpectraS3Request WithAccessControlReplication(Ds3TargetAccessControlReplication? accessControlReplication)
         {
             this._accessControlReplication = accessControlReplication;
@@ -101,6 +102,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public RegisterDs3TargetSpectraS3Request WithDataPathHttps(bool? dataPathHttps)
         {
             this._dataPathHttps = dataPathHttps;
@@ -114,6 +117,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public RegisterDs3TargetSpectraS3Request WithDataPathPort(int? dataPathPort)
         {
             this._dataPathPort = dataPathPort;
@@ -127,6 +132,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public RegisterDs3TargetSpectraS3Request WithDataPathProxy(string dataPathProxy)
         {
             this._dataPathProxy = dataPathProxy;
@@ -140,6 +147,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public RegisterDs3TargetSpectraS3Request WithDataPathVerifyCertificate(bool? dataPathVerifyCertificate)
         {
             this._dataPathVerifyCertificate = dataPathVerifyCertificate;
@@ -153,6 +162,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public RegisterDs3TargetSpectraS3Request WithDefaultReadPreference(TargetReadPreference? defaultReadPreference)
         {
             this._defaultReadPreference = defaultReadPreference;
@@ -166,6 +177,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public RegisterDs3TargetSpectraS3Request WithPermitGoingOutOfSync(bool? permitGoingOutOfSync)
         {
             this._permitGoingOutOfSync = permitGoingOutOfSync;
@@ -179,6 +192,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public RegisterDs3TargetSpectraS3Request WithReplicatedUserDefaultDataPolicy(string replicatedUserDefaultDataPolicy)
         {
             this._replicatedUserDefaultDataPolicy = replicatedUserDefaultDataPolicy;
@@ -193,6 +208,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public RegisterDs3TargetSpectraS3Request(string adminAuthId, string adminSecretKey, string dataPathEndPoint, string name)
         {

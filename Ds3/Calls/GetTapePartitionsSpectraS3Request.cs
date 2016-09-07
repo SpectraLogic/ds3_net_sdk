@@ -94,6 +94,7 @@ namespace Ds3.Calls
             set { WithState(value); }
         }
 
+        
         public GetTapePartitionsSpectraS3Request WithImportExportConfiguration(ImportExportConfiguration? importExportConfiguration)
         {
             this._importExportConfiguration = importExportConfiguration;
@@ -107,6 +108,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -120,6 +123,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithLibraryId(Guid? libraryId)
         {
             this._libraryId = libraryId.ToString();
@@ -133,6 +138,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithLibraryId(string libraryId)
         {
             this._libraryId = libraryId;
@@ -146,6 +153,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -159,6 +168,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -172,6 +183,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -185,6 +198,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -198,6 +213,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -211,6 +228,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
             this._quiesced = quiesced;
@@ -224,6 +243,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithSerialNumber(string serialNumber)
         {
             this._serialNumber = serialNumber;
@@ -237,6 +258,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetTapePartitionsSpectraS3Request WithState(TapePartitionState? state)
         {
             this._state = state;
@@ -251,6 +274,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetTapePartitionsSpectraS3Request()
         {

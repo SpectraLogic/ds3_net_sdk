@@ -59,6 +59,7 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        
         public GetCacheFilesystemsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -72,6 +73,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetCacheFilesystemsSpectraS3Request WithNodeId(Guid? nodeId)
         {
             this._nodeId = nodeId.ToString();
@@ -85,6 +88,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetCacheFilesystemsSpectraS3Request WithNodeId(string nodeId)
         {
             this._nodeId = nodeId;
@@ -98,6 +103,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetCacheFilesystemsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -111,6 +118,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetCacheFilesystemsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -124,6 +133,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetCacheFilesystemsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -137,6 +148,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetCacheFilesystemsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -151,6 +164,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetCacheFilesystemsSpectraS3Request()
         {

@@ -63,6 +63,7 @@ namespace Ds3.Calls
             set { WithTapeType(value); }
         }
 
+        
         public GetBucketCapacitySummarySpectraS3Request WithPoolHealth(PoolHealth? poolHealth)
         {
             this._poolHealth = poolHealth;
@@ -76,6 +77,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBucketCapacitySummarySpectraS3Request WithPoolState(PoolState? poolState)
         {
             this._poolState = poolState;
@@ -89,6 +92,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBucketCapacitySummarySpectraS3Request WithPoolType(PoolType? poolType)
         {
             this._poolType = poolType;
@@ -102,6 +107,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBucketCapacitySummarySpectraS3Request WithTapeState(TapeState? tapeState)
         {
             this._tapeState = tapeState;
@@ -115,6 +122,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBucketCapacitySummarySpectraS3Request WithTapeType(TapeType? tapeType)
         {
             this._tapeType = tapeType;
@@ -129,6 +138,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetBucketCapacitySummarySpectraS3Request(Guid bucketId, Guid storageDomainId)
         {
@@ -141,6 +152,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public GetBucketCapacitySummarySpectraS3Request(string bucketId, string storageDomainId)
         {
             this.BucketId = bucketId;

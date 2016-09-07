@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public CancelActiveJobSpectraS3Request(Guid activeJobId)
         {
             this.ActiveJobId = activeJobId.ToString();
@@ -36,6 +37,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public CancelActiveJobSpectraS3Request(string activeJobId)
         {
             this.ActiveJobId = activeJobId;

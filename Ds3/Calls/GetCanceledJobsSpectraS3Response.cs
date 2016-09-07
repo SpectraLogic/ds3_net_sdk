@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetCanceledJobsSpectraS3Response
     {
         public CanceledJobList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetCanceledJobsSpectraS3Response(CanceledJobList responsePayload)
+        public GetCanceledJobsSpectraS3Response(CanceledJobList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

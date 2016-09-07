@@ -37,6 +37,7 @@ namespace Ds3.Calls
             set { WithWritePreference(value); }
         }
 
+        
         public PutTapeStorageDomainMemberSpectraS3Request WithWritePreference(WritePreferenceLevel? writePreference)
         {
             this._writePreference = writePreference;
@@ -51,6 +52,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public PutTapeStorageDomainMemberSpectraS3Request(Guid storageDomainId, Guid tapePartitionId, TapeType tapeType)
         {
@@ -66,6 +69,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public PutTapeStorageDomainMemberSpectraS3Request(string storageDomainId, string tapePartitionId, TapeType tapeType)
         {
             this.StorageDomainId = storageDomainId;

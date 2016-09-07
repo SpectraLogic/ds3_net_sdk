@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetDs3TargetSpectraS3Request(string ds3Target)
         {
             this.Ds3Target = ds3Target;

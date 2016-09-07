@@ -47,6 +47,7 @@ namespace Ds3.Calls
             set { WithState(value); }
         }
 
+        
         public ModifyTapeSpectraS3Request WithEjectLabel(string ejectLabel)
         {
             this._ejectLabel = ejectLabel;
@@ -60,6 +61,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyTapeSpectraS3Request WithEjectLocation(string ejectLocation)
         {
             this._ejectLocation = ejectLocation;
@@ -73,6 +76,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyTapeSpectraS3Request WithState(TapeState? state)
         {
             this._state = state;
@@ -87,6 +92,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyTapeSpectraS3Request(Guid tapeId)
         {
@@ -94,6 +101,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public ModifyTapeSpectraS3Request(string tapeId)
         {
             this.TapeId = tapeId;

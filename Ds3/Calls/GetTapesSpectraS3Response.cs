@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetTapesSpectraS3Response
     {
         public TapeList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetTapesSpectraS3Response(TapeList responsePayload)
+        public GetTapesSpectraS3Response(TapeList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

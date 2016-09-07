@@ -33,6 +33,7 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        
         public ModifyGroupSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -47,6 +48,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyGroupSpectraS3Request(string group)
         {

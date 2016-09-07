@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetJobToReplicateSpectraS3Request(Guid jobId)
         {
             this.JobId = jobId.ToString();
@@ -36,6 +37,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public GetJobToReplicateSpectraS3Request(string jobId)
         {
             this.JobId = jobId;

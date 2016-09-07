@@ -108,6 +108,7 @@ namespace Ds3.Calls
             set { WithWriteOptimization(value); }
         }
 
+        
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponCron(string autoEjectUponCron)
         {
             this._autoEjectUponCron = autoEjectUponCron;
@@ -121,6 +122,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponJobCancellation(bool? autoEjectUponJobCancellation)
         {
             this._autoEjectUponJobCancellation = autoEjectUponJobCancellation;
@@ -134,6 +137,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponJobCompletion(bool? autoEjectUponJobCompletion)
         {
             this._autoEjectUponJobCompletion = autoEjectUponJobCompletion;
@@ -147,6 +152,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithAutoEjectUponMediaFull(bool? autoEjectUponMediaFull)
         {
             this._autoEjectUponMediaFull = autoEjectUponMediaFull;
@@ -160,6 +167,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -173,6 +182,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithMediaEjectionAllowed(bool? mediaEjectionAllowed)
         {
             this._mediaEjectionAllowed = mediaEjectionAllowed;
@@ -186,6 +197,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -199,6 +212,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -212,6 +227,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -225,6 +242,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -238,6 +257,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -251,6 +272,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithSecureMediaAllocation(bool? secureMediaAllocation)
         {
             this._secureMediaAllocation = secureMediaAllocation;
@@ -264,6 +287,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetStorageDomainsSpectraS3Request WithWriteOptimization(WriteOptimization? writeOptimization)
         {
             this._writeOptimization = writeOptimization;
@@ -278,6 +303,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetStorageDomainsSpectraS3Request()
         {

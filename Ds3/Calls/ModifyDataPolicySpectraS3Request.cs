@@ -117,6 +117,7 @@ namespace Ds3.Calls
             set { WithVersioning(value); }
         }
 
+        
         public ModifyDataPolicySpectraS3Request WithAlwaysForcePutJobCreation(bool? alwaysForcePutJobCreation)
         {
             this._alwaysForcePutJobCreation = alwaysForcePutJobCreation;
@@ -130,6 +131,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithAlwaysMinimizeSpanningAcrossMedia(bool? alwaysMinimizeSpanningAcrossMedia)
         {
             this._alwaysMinimizeSpanningAcrossMedia = alwaysMinimizeSpanningAcrossMedia;
@@ -143,6 +146,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithAlwaysReplicateDeletes(bool? alwaysReplicateDeletes)
         {
             this._alwaysReplicateDeletes = alwaysReplicateDeletes;
@@ -156,6 +161,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithBlobbingEnabled(bool? blobbingEnabled)
         {
             this._blobbingEnabled = blobbingEnabled;
@@ -169,6 +176,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithChecksumType(ChecksumType.Type? checksumType)
         {
             this._checksumType = checksumType;
@@ -182,6 +191,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithDefaultBlobSize(long? defaultBlobSize)
         {
             this._defaultBlobSize = defaultBlobSize;
@@ -195,6 +206,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithDefaultGetJobPriority(Priority? defaultGetJobPriority)
         {
             this._defaultGetJobPriority = defaultGetJobPriority;
@@ -208,6 +221,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithDefaultPutJobPriority(Priority? defaultPutJobPriority)
         {
             this._defaultPutJobPriority = defaultPutJobPriority;
@@ -221,6 +236,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithDefaultVerifyJobPriority(Priority? defaultVerifyJobPriority)
         {
             this._defaultVerifyJobPriority = defaultVerifyJobPriority;
@@ -234,6 +251,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithEndToEndCrcRequired(bool? endToEndCrcRequired)
         {
             this._endToEndCrcRequired = endToEndCrcRequired;
@@ -247,6 +266,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -260,6 +281,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithRebuildPriority(Priority? rebuildPriority)
         {
             this._rebuildPriority = rebuildPriority;
@@ -273,6 +296,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyDataPolicySpectraS3Request WithVersioning(VersioningLevel? versioning)
         {
             this._versioning = versioning;
@@ -287,6 +312,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyDataPolicySpectraS3Request(Guid dataPolicyId)
         {
@@ -294,6 +321,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public ModifyDataPolicySpectraS3Request(string dataPolicyId)
         {
             this.DataPolicyId = dataPolicyId;

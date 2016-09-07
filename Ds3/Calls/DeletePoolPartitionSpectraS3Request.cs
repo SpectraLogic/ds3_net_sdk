@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public DeletePoolPartitionSpectraS3Request(string poolPartition)
         {
             this.PoolPartition = poolPartition;

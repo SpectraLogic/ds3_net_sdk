@@ -115,6 +115,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public GetPoolsSpectraS3Request WithAssignedToStorageDomain(bool? assignedToStorageDomain)
         {
             this._assignedToStorageDomain = assignedToStorageDomain;
@@ -128,6 +129,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithBucketId(Guid? bucketId)
         {
             this._bucketId = bucketId.ToString();
@@ -141,6 +144,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithBucketId(string bucketId)
         {
             this._bucketId = bucketId;
@@ -154,6 +159,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithHealth(PoolHealth? health)
         {
             this._health = health;
@@ -167,6 +174,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -180,6 +189,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -193,6 +204,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -206,6 +219,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -219,6 +234,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -232,6 +249,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -245,6 +264,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithPartitionId(Guid? partitionId)
         {
             this._partitionId = partitionId.ToString();
@@ -258,6 +279,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithPartitionId(string partitionId)
         {
             this._partitionId = partitionId;
@@ -271,6 +294,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithPoweredOn(bool? poweredOn)
         {
             this._poweredOn = poweredOn;
@@ -284,6 +309,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithState(PoolState? state)
         {
             this._state = state;
@@ -297,6 +324,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
         {
             this._storageDomainId = storageDomainId.ToString();
@@ -310,6 +339,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithStorageDomainId(string storageDomainId)
         {
             this._storageDomainId = storageDomainId;
@@ -323,6 +354,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetPoolsSpectraS3Request WithType(PoolType? type)
         {
             this._type = type;
@@ -337,6 +370,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetPoolsSpectraS3Request()
         {

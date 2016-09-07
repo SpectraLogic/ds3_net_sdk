@@ -32,6 +32,7 @@ namespace Ds3.Calls
         
 
         
+        
         public PutBucketAclForUserSpectraS3Request(Guid bucketId, BucketAclPermission permission, Guid userId)
         {
             this.BucketId = bucketId.ToString();
@@ -46,6 +47,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public PutBucketAclForUserSpectraS3Request(string bucketId, BucketAclPermission permission, string userId)
         {
             this.BucketId = bucketId;

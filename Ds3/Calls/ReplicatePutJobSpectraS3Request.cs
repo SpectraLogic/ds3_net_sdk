@@ -35,6 +35,7 @@ namespace Ds3.Calls
             set { WithPriority(value); }
         }
 
+        
         public ReplicatePutJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -49,6 +50,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ReplicatePutJobSpectraS3Request(string bucketName, string requestPayload)
         {

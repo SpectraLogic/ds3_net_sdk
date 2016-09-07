@@ -54,6 +54,7 @@ namespace Ds3.Calls
             set { WithPrefix(value); }
         }
 
+        
         public GetBucketRequest WithDelimiter(string delimiter)
         {
             this._delimiter = delimiter;
@@ -67,6 +68,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBucketRequest WithMarker(string marker)
         {
             this._marker = marker;
@@ -80,6 +83,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBucketRequest WithMaxKeys(int? maxKeys)
         {
             this._maxKeys = maxKeys;
@@ -93,6 +98,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBucketRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
@@ -107,6 +114,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetBucketRequest(string bucketName)
         {

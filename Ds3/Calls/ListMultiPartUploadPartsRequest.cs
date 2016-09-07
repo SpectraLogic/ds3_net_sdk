@@ -44,6 +44,7 @@ namespace Ds3.Calls
             set { WithPartNumberMarker(value); }
         }
 
+        
         public ListMultiPartUploadPartsRequest WithMaxParts(int? maxParts)
         {
             this._maxParts = maxParts;
@@ -57,6 +58,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ListMultiPartUploadPartsRequest WithPartNumberMarker(int? partNumberMarker)
         {
             this._partNumberMarker = partNumberMarker;
@@ -71,6 +74,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ListMultiPartUploadPartsRequest(string bucketName, string objectName, Guid uploadId)
         {
@@ -82,6 +87,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public ListMultiPartUploadPartsRequest(string bucketName, string objectName, string uploadId)
         {
             this.BucketName = bucketName;

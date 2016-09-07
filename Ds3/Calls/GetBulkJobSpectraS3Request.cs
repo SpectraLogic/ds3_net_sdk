@@ -63,6 +63,7 @@ namespace Ds3.Calls
             set { WithPriority(value); }
         }
 
+        
         public GetBulkJobSpectraS3Request WithAggregating(bool? aggregating)
         {
             this._aggregating = aggregating;
@@ -76,6 +77,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBulkJobSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -89,6 +92,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetBulkJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -103,6 +108,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
         {

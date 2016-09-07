@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetJobCreationFailedNotificationRegistrationSpectraS3Request(Guid notificationId)
         {
             this.NotificationId = notificationId;

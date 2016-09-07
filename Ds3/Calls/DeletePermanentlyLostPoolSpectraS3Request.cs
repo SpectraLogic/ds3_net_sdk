@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public DeletePermanentlyLostPoolSpectraS3Request(string pool)
         {
             this.Pool = pool;

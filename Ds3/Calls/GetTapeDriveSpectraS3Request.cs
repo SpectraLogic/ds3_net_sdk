@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
+        
         public GetTapeDriveSpectraS3Request(Guid tapeDriveId)
         {
             this.TapeDriveId = tapeDriveId.ToString();
             
         }
 
+        
         public GetTapeDriveSpectraS3Request(string tapeDriveId)
         {
             this.TapeDriveId = tapeDriveId;

@@ -47,6 +47,7 @@ namespace Ds3.Calls
             set { WithPriority(value); }
         }
 
+        
         public ModifyJobSpectraS3Request WithCreatedAt(DateTime? createdAt)
         {
             this._createdAt = createdAt;
@@ -60,6 +61,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyJobSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -73,6 +76,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyJobSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -87,6 +92,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyJobSpectraS3Request(Guid jobId)
         {
@@ -94,6 +101,7 @@ namespace Ds3.Calls
             
         }
 
+        
         public ModifyJobSpectraS3Request(string jobId)
         {
             this.JobId = jobId;

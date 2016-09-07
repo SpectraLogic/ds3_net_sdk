@@ -117,6 +117,7 @@ namespace Ds3.Calls
             set { WithWriteOptimization(value); }
         }
 
+        
         public ModifyStorageDomainSpectraS3Request WithAutoEjectMediaFullThreshold(long? autoEjectMediaFullThreshold)
         {
             this._autoEjectMediaFullThreshold = autoEjectMediaFullThreshold;
@@ -130,6 +131,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponCron(string autoEjectUponCron)
         {
             this._autoEjectUponCron = autoEjectUponCron;
@@ -143,6 +146,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponJobCancellation(bool? autoEjectUponJobCancellation)
         {
             this._autoEjectUponJobCancellation = autoEjectUponJobCancellation;
@@ -156,6 +161,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponJobCompletion(bool? autoEjectUponJobCompletion)
         {
             this._autoEjectUponJobCompletion = autoEjectUponJobCompletion;
@@ -169,6 +176,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithAutoEjectUponMediaFull(bool? autoEjectUponMediaFull)
         {
             this._autoEjectUponMediaFull = autoEjectUponMediaFull;
@@ -182,6 +191,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithLtfsFileNaming(LtfsFileNamingMode? ltfsFileNaming)
         {
             this._ltfsFileNaming = ltfsFileNaming;
@@ -195,6 +206,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithMaxTapeFragmentationPercent(int? maxTapeFragmentationPercent)
         {
             this._maxTapeFragmentationPercent = maxTapeFragmentationPercent;
@@ -208,6 +221,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithMaximumAutoVerificationFrequencyInDays(int? maximumAutoVerificationFrequencyInDays)
         {
             this._maximumAutoVerificationFrequencyInDays = maximumAutoVerificationFrequencyInDays;
@@ -221,6 +236,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithMediaEjectionAllowed(bool? mediaEjectionAllowed)
         {
             this._mediaEjectionAllowed = mediaEjectionAllowed;
@@ -234,6 +251,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithName(string name)
         {
             this._name = name;
@@ -247,6 +266,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithSecureMediaAllocation(bool? secureMediaAllocation)
         {
             this._secureMediaAllocation = secureMediaAllocation;
@@ -260,6 +281,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithVerifyPriorToAutoEject(Priority? verifyPriorToAutoEject)
         {
             this._verifyPriorToAutoEject = verifyPriorToAutoEject;
@@ -273,6 +296,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ModifyStorageDomainSpectraS3Request WithWriteOptimization(WriteOptimization? writeOptimization)
         {
             this._writeOptimization = writeOptimization;
@@ -287,6 +312,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ModifyStorageDomainSpectraS3Request(string storageDomain)
         {

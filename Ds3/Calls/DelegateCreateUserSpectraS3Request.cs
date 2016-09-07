@@ -40,6 +40,7 @@ namespace Ds3.Calls
             set { WithSecretKey(value); }
         }
 
+        
         public DelegateCreateUserSpectraS3Request WithId(Guid? id)
         {
             this._id = id.ToString();
@@ -53,6 +54,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public DelegateCreateUserSpectraS3Request WithId(string id)
         {
             this._id = id;
@@ -66,6 +69,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public DelegateCreateUserSpectraS3Request WithSecretKey(string secretKey)
         {
             this._secretKey = secretKey;
@@ -80,6 +85,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public DelegateCreateUserSpectraS3Request(string name)
         {

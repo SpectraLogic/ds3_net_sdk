@@ -61,6 +61,7 @@ namespace Ds3.Calls
             set { WithUploadIdMarker(value); }
         }
 
+        
         public ListMultiPartUploadsRequest WithDelimiter(string delimiter)
         {
             this._delimiter = delimiter;
@@ -74,6 +75,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ListMultiPartUploadsRequest WithKeyMarker(string keyMarker)
         {
             this._keyMarker = keyMarker;
@@ -87,6 +90,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ListMultiPartUploadsRequest WithMaxUploads(int? maxUploads)
         {
             this._maxUploads = maxUploads;
@@ -100,6 +105,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ListMultiPartUploadsRequest WithPrefix(string prefix)
         {
             this._prefix = prefix;
@@ -113,6 +120,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public ListMultiPartUploadsRequest WithUploadIdMarker(string uploadIdMarker)
         {
             this._uploadIdMarker = uploadIdMarker;
@@ -127,6 +136,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public ListMultiPartUploadsRequest(string bucketName)
         {

@@ -26,6 +26,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetSystemInformationSpectraS3Request()
         {
             

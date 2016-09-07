@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetCacheFilesystemsSpectraS3Response
     {
         public CacheFilesystemList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetCacheFilesystemsSpectraS3Response(CacheFilesystemList responsePayload)
+        public GetCacheFilesystemsSpectraS3Response(CacheFilesystemList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

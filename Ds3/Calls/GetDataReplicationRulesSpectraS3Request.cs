@@ -80,6 +80,7 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        
         public GetDataReplicationRulesSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId.ToString();
@@ -93,6 +94,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId;
@@ -106,6 +109,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithDs3TargetId(Guid? ds3TargetId)
         {
             this._ds3TargetId = ds3TargetId.ToString();
@@ -119,6 +124,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithDs3TargetId(string ds3TargetId)
         {
             this._ds3TargetId = ds3TargetId;
@@ -132,6 +139,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithLastPage(bool? lastPage)
         {
             this._lastPage = lastPage;
@@ -145,6 +154,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithPageLength(int? pageLength)
         {
             this._pageLength = pageLength;
@@ -158,6 +169,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithPageOffset(int? pageOffset)
         {
             this._pageOffset = pageOffset;
@@ -171,6 +184,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker.ToString();
@@ -184,6 +199,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithPageStartMarker(string pageStartMarker)
         {
             this._pageStartMarker = pageStartMarker;
@@ -197,6 +214,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithState(DataPersistenceRuleState? state)
         {
             this._state = state;
@@ -210,6 +229,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public GetDataReplicationRulesSpectraS3Request WithType(DataReplicationRuleType? type)
         {
             this._type = type;
@@ -224,6 +245,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public GetDataReplicationRulesSpectraS3Request()
         {

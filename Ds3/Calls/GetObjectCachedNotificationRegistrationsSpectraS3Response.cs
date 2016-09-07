@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetObjectCachedNotificationRegistrationsSpectraS3Response
     {
         public S3ObjectCachedNotificationRegistrationList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetObjectCachedNotificationRegistrationsSpectraS3Response(S3ObjectCachedNotificationRegistrationList responsePayload)
+        public GetObjectCachedNotificationRegistrationsSpectraS3Response(S3ObjectCachedNotificationRegistrationList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

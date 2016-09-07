@@ -54,6 +54,7 @@ namespace Ds3.Calls
             set { WithNotificationHttpMethod(value); }
         }
 
+        
         public PutObjectPersistedNotificationRegistrationSpectraS3Request WithFormat(HttpResponseFormatType? format)
         {
             this._format = format;
@@ -67,6 +68,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutObjectPersistedNotificationRegistrationSpectraS3Request WithJobId(Guid? jobId)
         {
             this._jobId = jobId.ToString();
@@ -80,6 +83,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutObjectPersistedNotificationRegistrationSpectraS3Request WithJobId(string jobId)
         {
             this._jobId = jobId;
@@ -93,6 +98,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutObjectPersistedNotificationRegistrationSpectraS3Request WithNamingConvention(NamingConventionType? namingConvention)
         {
             this._namingConvention = namingConvention;
@@ -106,6 +113,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutObjectPersistedNotificationRegistrationSpectraS3Request WithNotificationHttpMethod(RequestType? notificationHttpMethod)
         {
             this._notificationHttpMethod = notificationHttpMethod;
@@ -120,6 +129,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public PutObjectPersistedNotificationRegistrationSpectraS3Request(string notificationEndPoint)
         {

@@ -30,6 +30,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetObjectDetailsSpectraS3Request(string objectName, Guid bucketId)
         {
             this.ObjectName = objectName;
@@ -39,6 +40,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public GetObjectDetailsSpectraS3Request(string objectName, string bucketId)
         {
             this.ObjectName = objectName;

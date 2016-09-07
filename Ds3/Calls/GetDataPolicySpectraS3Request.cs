@@ -28,12 +28,14 @@ namespace Ds3.Calls
         
 
         
+        
         public GetDataPolicySpectraS3Request(Guid dataPolicyId)
         {
             this.DataPolicyId = dataPolicyId.ToString();
             
         }
 
+        
         public GetDataPolicySpectraS3Request(string dataPolicyId)
         {
             this.DataPolicyId = dataPolicyId;

@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public GetCompletedJobSpectraS3Request(string completedJob)
         {
             this.CompletedJob = completedJob;

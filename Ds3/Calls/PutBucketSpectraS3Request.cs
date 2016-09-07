@@ -47,6 +47,7 @@ namespace Ds3.Calls
             set { WithUserId(value); }
         }
 
+        
         public PutBucketSpectraS3Request WithDataPolicyId(Guid? dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId.ToString();
@@ -60,6 +61,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBucketSpectraS3Request WithDataPolicyId(string dataPolicyId)
         {
             this._dataPolicyId = dataPolicyId;
@@ -73,6 +76,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBucketSpectraS3Request WithId(Guid? id)
         {
             this._id = id.ToString();
@@ -86,6 +91,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBucketSpectraS3Request WithId(string id)
         {
             this._id = id;
@@ -99,6 +106,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBucketSpectraS3Request WithUserId(Guid? userId)
         {
             this._userId = userId.ToString();
@@ -112,6 +121,8 @@ namespace Ds3.Calls
             }
             return this;
         }
+
+        
         public PutBucketSpectraS3Request WithUserId(string userId)
         {
             this._userId = userId;
@@ -126,6 +137,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public PutBucketSpectraS3Request(string name)
         {

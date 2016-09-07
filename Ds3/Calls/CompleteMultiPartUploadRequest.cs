@@ -32,6 +32,7 @@ namespace Ds3.Calls
         
 
         
+        
         public CompleteMultiPartUploadRequest(string bucketName, string objectName, Guid uploadId)
         {
             this.BucketName = bucketName;
@@ -42,6 +43,7 @@ namespace Ds3.Calls
 
         }
 
+        
         public CompleteMultiPartUploadRequest(string bucketName, string objectName, string uploadId)
         {
             this.BucketName = bucketName;

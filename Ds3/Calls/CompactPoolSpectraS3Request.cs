@@ -33,6 +33,7 @@ namespace Ds3.Calls
             set { WithPriority(value); }
         }
 
+        
         public CompactPoolSpectraS3Request WithPriority(Priority? priority)
         {
             this._priority = priority;
@@ -47,6 +48,8 @@ namespace Ds3.Calls
             return this;
         }
 
+
+        
         
         public CompactPoolSpectraS3Request(string pool)
         {

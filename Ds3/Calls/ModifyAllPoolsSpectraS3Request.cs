@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public ModifyAllPoolsSpectraS3Request(Quiesced quiesced)
         {
             this.Quiesced = quiesced;

@@ -28,6 +28,7 @@ namespace Ds3.Calls
         
 
         
+        
         public PutGroupSpectraS3Request(string name)
         {
             this.Name = name;

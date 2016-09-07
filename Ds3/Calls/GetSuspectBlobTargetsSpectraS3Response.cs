@@ -21,10 +21,14 @@ namespace Ds3.Calls
     public class GetSuspectBlobTargetsSpectraS3Response
     {
         public SuspectBlobTargetList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetSuspectBlobTargetsSpectraS3Response(SuspectBlobTargetList responsePayload)
+        public GetSuspectBlobTargetsSpectraS3Response(SuspectBlobTargetList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }
