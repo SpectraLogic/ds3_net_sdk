@@ -35,8 +35,10 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
         private IDs3Client _client;
+        private IEnumerable<int> _lastAvailableChunks = null;
 
         public readonly RetryAfter RetryAfer;
+        public readonly RetryAfter SameChunksRetryAfter;
 
         public ReadRandomAccessChunkStrategy(int retryAfter = -1)
             : this(Thread.Sleep, retryAfter)
@@ -46,6 +48,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         public ReadRandomAccessChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
         {
             RetryAfer = new RetryAfter(wait, retryAfter);
+            SameChunksRetryAfter = new RetryAfter(wait, retryAfter);
             this._wait = wait;
         }
 
@@ -103,6 +106,14 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
             .GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(this._jobId))
             .Match((ts, jobResponse) =>
             {
+                if (_lastAvailableChunks != null && GotTheSameChunks(_lastAvailableChunks, GetChunksNumbers(jobResponse)))
+                {
+                    this.SameChunksRetryAfter.RetryAfterFunc(ts);
+                    return new TransferItem[0];
+                }
+
+                _lastAvailableChunks = GetChunksNumbers(jobResponse);
+
                 var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
                 var result = (
                     from chunk in jobResponse.Objects
@@ -117,6 +128,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                     _wait(ts);
                 }
                 this.RetryAfer.Reset();
+                this.SameChunksRetryAfter.Reset();
                 return result;
             },
             ts =>
@@ -124,6 +136,17 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                 this.RetryAfer.RetryAfterFunc(ts);
                 return new TransferItem[0];
             });
+        }
+
+        private static bool GotTheSameChunks(IEnumerable<int> lastAvailableChunks, IEnumerable<int> newAvailableChunks)
+        {
+            return !lastAvailableChunks.Except(newAvailableChunks).Any() &&
+                   !newAvailableChunks.Except(lastAvailableChunks).Any();
+        }
+
+        private static IEnumerable<int> GetChunksNumbers(MasterObjectList jobResponse)
+        {
+            return jobResponse.Objects.Select(o => o.ChunkNumber);
         }
 
         public void CompleteBlob(Blob blob)

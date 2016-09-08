@@ -24,6 +24,7 @@ using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Helpers.Strategies.ChunkStrategies;
+using Ds3.Lang;
 using Ds3.Models;
 using Ds3.Runtime;
 using Moq;
@@ -348,6 +349,119 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
             }
         }
 
+        [Test, Timeout(1000)]
+        public void TestGetNextTransferItemsRetryGetChunks()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, false, false),
+                Stubs.Chunk2(Stubs.NodeId1, false, false)
+                );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+
+            var factory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+
+            factory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(node1Client.Object);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
+                .Returns(factory.Object);
+            client
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
+                .Returns(
+                    GetJobChunksReadyForClientProcessingSpectraS3Response.Success(
+                        TimeSpan.FromMinutes(5),
+                        Stubs.BuildJobResponse(Stubs.Chunk1(Stubs.NodeId1, true, true))));
+
+            var source = new ReadRandomAccessChunkStrategy(_ => { }, 5);
+
+
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
+            {
+                var itemGetter = new ThreadSafeEnumerator<TransferItem>(transfers);
+                Assert.Throws<Ds3NoMoreRetriesException>(() =>
+                {
+                    TransferItem it = null;
+                    itemGetter.TryGetNext(ref it); //the first blob in the first chunk will return
+                    source.CompleteBlob(it.Blob);
+                    itemGetter.TryGetNext(ref it); //the second blob in the first chunk will return
+                    source.CompleteBlob(it.Blob);
+                    itemGetter.TryGetNext(ref it); //exception will be thrown since we will get the same chunk over and over
+                });
+            }
+
+            node1Client.VerifyAll();
+            factory.VerifyAll();
+        }
+
+        [Test, Timeout(2000)]
+        public void TestGetNextTransferItemsRetryGetChunks2()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, false, false),
+                Stubs.Chunk2(Stubs.NodeId1, false, false),
+                Stubs.Chunk3(Stubs.NodeId1, false, false)
+                );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+
+            var factory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+
+            factory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(node1Client.Object);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
+                .Returns(factory.Object);
+
+
+            var first = true;
+            client
+                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(Stubs.JobId)))
+                .Returns(() =>
+                {
+                    if (first)
+                    {
+                        first = false;
+                        return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5),
+                            Stubs.BuildJobResponse(Stubs.Chunk1(Stubs.NodeId1, true, true)));
+                    }
+
+                    return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5),
+                        Stubs.BuildJobResponse(Stubs.Chunk2(Stubs.NodeId1, true, true)));
+                });
+
+
+            var source = new ReadRandomAccessChunkStrategy(_ => { }, 5);
+
+
+            using (var transfers = source.GetNextTransferItems(client.Object, initialJobResponse).GetEnumerator())
+            {
+                var itemGetter = new ThreadSafeEnumerator<TransferItem>(transfers);
+                Assert.Throws<Ds3NoMoreRetriesException>(() =>
+                {
+                    TransferItem it = null;
+                    itemGetter.TryGetNext(ref it); //the first blob in the first chunk will return
+                    source.CompleteBlob(it.Blob);
+
+                    itemGetter.TryGetNext(ref it); //the second blob in the first chunk will return
+                    source.CompleteBlob(it.Blob);
+
+                    itemGetter.TryGetNext(ref it); //the first blob in the second chunk will return
+                    source.CompleteBlob(it.Blob);
+
+                    itemGetter.TryGetNext(ref it); //the second blob in the second chunk will return
+                    source.CompleteBlob(it.Blob);
+
+                    itemGetter.TryGetNext(ref it); //exception will be thrown since we will get the same chunk over and over
+                });
+            }
+
+            node1Client.VerifyAll();
+            factory.VerifyAll();
+        }
+
 
         private static ConcurrentQueue<T> Queue<T>(T example)
         {
@@ -381,3 +495,4 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
         }
     }
 }
+

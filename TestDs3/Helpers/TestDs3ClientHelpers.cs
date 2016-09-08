@@ -296,11 +296,20 @@ namespace TestDs3.Helpers
                 Stubs.Chunk3(null, false, false)
             );
             var availableJobResponse = Stubs.BuildJobResponse(
-                Stubs.Chunk2(Stubs.NodeId2, true, true)
+                Stubs.Chunk1(Stubs.NodeId2, true, true),
+                Stubs.Chunk2(Stubs.NodeId2, true, true),
+                Stubs.Chunk3(Stubs.NodeId2, true, true)
             );
 
             var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
             MockHelpers.SetupGetObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupGetObject(node2Client, "foo", 10L, "klmnopqrst");
+
+            MockHelpers.SetupGetObject(node2Client, "hello", 0L, "ABCDefGHIJ");
+            
+            MockHelpers.SetupGetObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupGetObject(node2Client, "bar", 35L, "zABCDEFGHIJ");
+
             node2Client
                 .Setup(c => c.GetObject(MockHelpers.ItIsGetObjectRequest(
                     Stubs.BucketName,
@@ -330,12 +339,18 @@ namespace TestDs3.Helpers
                 .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
             client
                 .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(MockHelpers.ItIsGetAvailableJobChunksRequest(Stubs.JobId)))
-                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(1), availableJobResponse));
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(0), availableJobResponse));
 
             var job = new Ds3ClientHelpers(client.Object).StartReadJob(
                 Stubs.BucketName,
                 Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
             );
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<string>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
             try
             {
                 job.Transfer(key => new MockStream());
@@ -345,6 +360,100 @@ namespace TestDs3.Helpers
             {
                 Assert.IsInstanceOf<NullReferenceException>(e.InnerException);
             }
+
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEquivalent(new[] { 15L, 11L, 10L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !obj.Equals("bar")), itemsCompleted);
+        }
+
+        [Test]
+        public void WriteTransferFailsUponTransferrerException()
+        {
+            var initialJobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(null, false, false),
+                Stubs.Chunk2(null, false, false),
+                Stubs.Chunk3(null, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node1Client, "hello", 0L, "ABCDefGHIJ");
+            MockHelpers.SetupPutObject(node1Client, "bar", 35L, "zABCDEFGHIJ");
+
+            var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupPutObject(node2Client, "bar", 0L, "0123456789abcde");
+            MockHelpers.SetupPutObject(node2Client, "foo", 10L, "klmnopqrst");
+            MockHelpers.SetupPutObject(node2Client, "foo", 0L, "abcdefghij");
+
+            node2Client
+                .Setup(c => c.PutObject(MockHelpers.ItIsPutObjectRequest(
+                    Stubs.BucketName,
+                    "bar",
+                    Stubs.JobId,
+                    15L)))
+                .Throws<NullReferenceException>();
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1))
+                .Returns(node1Client.Object);
+            clientFactory
+                .Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2))
+                .Returns(node2Client.Object);
+
+            var streams = new Dictionary<string, string>
+            {
+                { "bar", "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJ" },
+                { "foo", "abcdefghijklmnopqrst" },
+                { "hello", "ABCDefGHIJ" }
+            };
+            var ds3Objects = Stubs
+                .ObjectNames
+                .Select(name => new Ds3Object(name, streams[name].Length));
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.BuildFactory(Stubs.Nodes))
+                .Returns(clientFactory.Object);
+            client
+                .Setup(c => c.PutBulkJobSpectraS3(MockHelpers.ItIsBulkPutRequest(Stubs.BucketName, ds3Objects, null)))
+                .Returns(new PutBulkJobSpectraS3Response(initialJobResponse));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
+
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+
+            var dataTransfers = new ConcurrentQueue<long>();
+            var itemsCompleted = new ConcurrentQueue<string>();
+            job.DataTransferred += dataTransfers.Enqueue;
+            job.ItemCompleted += itemsCompleted.Enqueue;
+
+            try
+            {
+                job.Transfer(key => new MockStream(streams[key]));
+                Assert.Fail("Should have thrown an exception.");
+            }
+            catch (AggregateException e)
+            {
+                Assert.IsInstanceOf<Ds3NoMoreRetransmitException>(e.InnerException);
+            }
+
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEquivalent(new[] { 15L,11L, 10L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !obj.Equals("bar")), itemsCompleted);
         }
 
         [Test]
@@ -523,9 +632,7 @@ namespace TestDs3.Helpers
         public void TestJobOnFailureEvent()
         {
             var initialJobResponse = Stubs.BuildJobResponse(
-                Stubs.Chunk1(null, false, false),
-                Stubs.Chunk2(null, false, false),
-                Stubs.Chunk3(null, false, false)
+                Stubs.Chunk2(null, false, false)
             );
             var availableJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk2(Stubs.NodeId2, true, true)
@@ -569,6 +676,9 @@ namespace TestDs3.Helpers
                 Stubs.ObjectNames.Select(name => new Ds3Object(name, null))
             );
 
+            var dataTransfers = new ConcurrentQueue<long>();
+            job.DataTransferred += dataTransfers.Enqueue;
+
             job.OnFailure += (fileName, offset, exception) =>
             {
                 Assert.AreEqual("bar", fileName);
@@ -585,6 +695,12 @@ namespace TestDs3.Helpers
             {
                 Assert.IsInstanceOf<NullReferenceException>(e.InnerException);
             }
+
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
+
+            CollectionAssert.AreEquivalent(new[] { 10L }, dataTransfers);
         }
 
         [Test]
@@ -674,14 +790,13 @@ namespace TestDs3.Helpers
             }
 
 
-            //TODO add those checks once we have the best effort implemented for PUTs
-            //node1Client.VerifyAll();
-            //node2Client.VerifyAll();
-            //clientFactory.VerifyAll();
-            //client.VerifyAll();
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
 
-            //CollectionAssert.AreEquivalent(new[] { 15L, 20L, 11L, 10L, 10L}, dataTransfers);
-            //CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !"hello".Equals(obj)), itemsCompleted);
+            CollectionAssert.AreEquivalent(new[] { 15L, 20L, 11L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !"hello".Equals(obj)), itemsCompleted);
         }
 
         [Test]
@@ -971,15 +1086,13 @@ namespace TestDs3.Helpers
             }
 
 
+            node1Client.VerifyAll();
+            node2Client.VerifyAll();
+            clientFactory.VerifyAll();
+            client.VerifyAll();
 
-            //TODO add those checks once we have the best effort implemented for PUTs
-            //node1Client.VerifyAll();
-            //node2Client.VerifyAll();
-            //clientFactory.VerifyAll();
-            //client.VerifyAll();
-            
-            //CollectionAssert.AreEquivalent(new[] { 20L, 11L, 10L, 10L, 10L }, dataTransfers);
-            //CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !"bar".Equals(obj)), itemsCompleted);
+            CollectionAssert.AreEquivalent(new[] { 20L, 11L, 10L, 10L, 10L }, dataTransfers);
+            CollectionAssert.AreEquivalent(Stubs.ObjectNames.Where(obj => !"bar".Equals(obj)), itemsCompleted);
         }
     }
 }

@@ -122,6 +122,7 @@ namespace Ds3.Helpers.Jobs
 
             this._createStreamForTransferItem = createStreamForTransferItem;
 
+            //Will transfer as many blobs as possible and return an aggregate exception with all the failed blobs in the end
             Parallel.ForEach(
                 this._maxParallelRequests,
                 this._cancellationToken,
@@ -134,14 +135,16 @@ namespace Ds3.Helpers.Jobs
                     }
                     catch (Exception ex)
                     {
-                        this._chunkStrategy.Stop();
-
                         //if we have an OnFailure event then invoke with blob name, offset and the exception
                         OnFailure?.Invoke(item.Blob.Context, item.Blob.Range.Start, ex);
+
                         throw;
                     }
-                    this._chunkStrategy.CompleteBlob(item.Blob);
-                    this._cancellationToken.ThrowIfCancellationRequested();
+                    finally
+                    {
+                        this._chunkStrategy.CompleteBlob(item.Blob);
+                        this._cancellationToken.ThrowIfCancellationRequested();
+                    }
                 }
             );
         }
