@@ -106,19 +106,13 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
             .GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(this._jobId))
             .Match((ts, jobResponse) =>
             {
-                if (_lastAvailableChunks == null)
-                {
-                    _lastAvailableChunks = GetChunksNumbers(jobResponse);
-                }
-                else if (GotTheSameChunks(_lastAvailableChunks, GetChunksNumbers(jobResponse)))
+                if (_lastAvailableChunks != null && GotTheSameChunks(_lastAvailableChunks, GetChunksNumbers(jobResponse)))
                 {
                     this.SameChunksRetryAfter.RetryAfterFunc(ts);
                     return new TransferItem[0];
                 }
-                else
-                {
-                    _lastAvailableChunks = GetChunksNumbers(jobResponse);
-                }
+
+                _lastAvailableChunks = GetChunksNumbers(jobResponse);
 
                 var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
                 var result = (
