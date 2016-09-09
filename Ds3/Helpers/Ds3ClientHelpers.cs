@@ -31,8 +31,8 @@ namespace Ds3.Helpers
         private readonly IDs3Client _client;
         private const JobRequestType JobTypePut = JobRequestType.PUT;
         private const JobRequestType JobTypeGet = JobRequestType.GET;
-        private readonly int _retryAfter; //-1 represent infinite number
-        private readonly int _objectTransferAttemps; // -1 represents infinite number of retries
+        private readonly int _retryAfter; //Negative represent infinite number
+        private readonly int _objectTransferAttemps; //Negative number represents infinite number of retries
         private readonly int _jobRetries;
         private readonly int _jobWaitTime; //in minutes
         private readonly long? _maximumFileSizeForAggregating;

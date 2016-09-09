@@ -28,7 +28,9 @@ namespace Ds3.Helpers.Transferrers
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
             Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttemps)
         {
-            do
+            var currentTry = 0;
+
+            while (true)
             {
                 var request = new PutObjectRequest(bucketName, objectName, stream)
                     .WithJob(jobId)
@@ -46,19 +48,18 @@ namespace Ds3.Helpers.Transferrers
                 }
                 catch (Exception ex)
                 {
-                    if (objectTransferAttemps == 0)
+                    if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        throw new Ds3NoMoreRetransmitException(
-                            string.Format(Resources.NoMoreRetransmitException, request.ObjectName, request.Offset.Value),
-                            ex);
+                        BestEffort.ModifyForRetry(stream, objectTransferAttemps, ref currentTry, request.ObjectName, request.Offset.Value, ex);
                     }
-
-                    if (!stream.CanSeek) throw new Ds3NotSupportedStream(Resources.NotSupportedStream, ex);
-
-                    objectTransferAttemps--;
-                    stream.Position = request.Offset.Value;
+                    else
+                    {
+                        throw;
+                    }
                 }
-            } while (true);
+            }
         }
+
+
     }
 }

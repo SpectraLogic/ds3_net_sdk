@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Ds3.Helpers.Jobs;
 using Ds3.Models;
 using Ds3.Runtime;
 
@@ -40,33 +39,30 @@ namespace Ds3.Helpers.Transferrers
         {
             var currentTry = 0;
             var transferrer = _transferrer;
-            var _ranges = ranges;
+            var tRanges = ranges;
 
             while (true)
             {
                 try
                 {
-                    transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, _ranges, stream,
+                    transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, tRanges, stream,
                         metadataAccess, metadataListener, objectTransferAttemps);
-                    break;
+                    return;
                 }
-                catch (Ds3ContentLengthNotMatch exception)
+                catch (Ds3ContentLengthNotMatch ex)
                 {
-                    if (_retries != -1 && currentTry >= _retries)
+                    BestEffort.ModifyForRetry(stream, objectTransferAttemps, ref currentTry, objectName, blobOffset, ref tRanges, ref transferrer, ex);
+                }
+                catch (Exception ex)
+                {
+                    if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        throw new Ds3NoMoreRetransmitException(
-                            string.Format(Resources.NoMoreRetransmitException, objectName, blobOffset), currentTry,
-                            exception);
+                        BestEffort.ModifyForRetry(stream, _retries, ref currentTry, objectName, blobOffset, ex);
                     }
-
-                    // Issue a partial get for the remainder of the request
-                    // Seek back one byte to make sure that the connection did not fail part way through a byte
-                    stream.Seek(-1, SeekOrigin.Current);
-
-                    _ranges = JobsUtil.RetryRanges(_ranges, exception.BytesRead, exception.ContentLength);
-                    transferrer = new PartialReadTransferrer();
-
-                    currentTry++;
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
         }

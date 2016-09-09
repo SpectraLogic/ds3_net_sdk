@@ -13,7 +13,6 @@
  * ****************************************************************************
  */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
@@ -26,7 +25,7 @@ using Range = Ds3.Models.Range;
 namespace TestDs3.Helpers.Transferrers
 {
     [TestFixture]
-    class TestPartialDataTransferrerDecorator
+    internal class TestPartialDataTransferrerDecorator
     {
 
         [Test]
@@ -62,8 +61,9 @@ namespace TestDs3.Helpers.Transferrers
             {
                 var stream = new MemoryStream(200);
                 var exceptionTransferrer = new ReadTransferrer();
-                var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 1);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null, 0);
+                var retries = 1;
+                var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, retries);
+                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null, retries);
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)
