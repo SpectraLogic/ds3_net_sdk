@@ -14,9 +14,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ds3.Helpers.Strategies.ChunkStrategies;
 using Ds3.Helpers.Strategies.StreamFactory;
 
