@@ -46,7 +46,7 @@ namespace Ds3.Helpers.Jobs
         private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
         private IMetadataAccess _metadataAccess;
-        private int _objectTransferAttemps;
+        private readonly int _objectTransferAttemps;
         private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
