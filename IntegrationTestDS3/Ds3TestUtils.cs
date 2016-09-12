@@ -60,7 +60,7 @@ namespace IntegrationTestDS3
 
             using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
             {
-                IDs3ClientHelpers helper = new Ds3ClientHelpers(client, objectTransferAttemps: retries);
+                IDs3ClientHelpers helper = new Ds3ClientHelpers(client, objectTransferAttempts: retries);
 
                 if (helperStrategy == null)
                 {

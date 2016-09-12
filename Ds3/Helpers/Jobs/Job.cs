@@ -46,7 +46,7 @@ namespace Ds3.Helpers.Jobs
         private readonly MasterObjectList _jobResponse;
         private Func<TItem, Stream> _createStreamForTransferItem;
         private IMetadataAccess _metadataAccess;
-        private int _objectTransferAttemps;
+        private readonly int _objectTransferAttempts;
         private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
@@ -92,7 +92,7 @@ namespace Ds3.Helpers.Jobs
             ILookup<Blob, Range> rangesForRequests,
             IRangeTranslator<Blob, TItem> rangeTranslator,
             IEnumerable<ContextRange<TItem>> itemsToTrack,
-            int objectTransferAttemps)
+            int objectTransferAttempts)
         {
             this._client = client;
             this._jobResponse = jobResponse;
@@ -113,7 +113,7 @@ namespace Ds3.Helpers.Jobs
                 this.ItemCompleted.Call(item);
             };
 
-            this._objectTransferAttemps = objectTransferAttemps;
+            this._objectTransferAttempts = objectTransferAttempts;
         }
 
         public void Transfer(Func<TItem, Stream> createStreamForTransferItem)
@@ -168,7 +168,7 @@ namespace Ds3.Helpers.Jobs
                     stream,
                     _metadataAccess,
                     MetadataListener,
-                    _objectTransferAttemps
+                    _objectTransferAttempts
                     );
             }
             finally

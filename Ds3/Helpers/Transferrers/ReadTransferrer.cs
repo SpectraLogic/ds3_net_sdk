@@ -25,7 +25,7 @@ namespace Ds3.Helpers.Transferrers
     {
         public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttemps)
+            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts)
         {
             var response = client.GetObject(new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset));
             if (blobOffset == 0)

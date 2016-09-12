@@ -861,7 +861,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:1).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:1).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -957,7 +957,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -1057,7 +1057,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -1157,7 +1157,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttemps:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();

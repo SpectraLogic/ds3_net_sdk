@@ -26,7 +26,7 @@ namespace Ds3.Helpers.Transferrers
     {
         public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttemps)
+            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts)
         {
             var currentTry = 0;
 
@@ -50,7 +50,7 @@ namespace Ds3.Helpers.Transferrers
                 {
                     if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        BestEffort.ModifyForRetry(stream, objectTransferAttemps, ref currentTry, request.ObjectName, request.Offset.Value, ex);
+                        BestEffort.ModifyForRetry(stream, objectTransferAttempts, ref currentTry, request.ObjectName, request.Offset.Value, ex);
                     }
                     else
                     {
