@@ -52,8 +52,8 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 new[]
                 {
                     new TransferItem(node1Client, new Blob(Range.ByLength(0, 15), "bar")),
-                    new TransferItem(node1Client, new Blob(Range.ByLength(10, 10), "foo")),
                     new TransferItem(node1Client, new Blob(Range.ByLength(0, 10), "foo")),
+                    new TransferItem(node1Client, new Blob(Range.ByLength(10, 10), "foo")),
                     new TransferItem(node1Client, new Blob(Range.ByLength(15, 20), "bar"))
                 },
                 transfers,

@@ -584,6 +584,7 @@
     <Compile Include="Helpers\Strategies\ReadStreamHelperStrategy.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\ReadRandomAccessStreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\ReadStreamStreamFactory.cs" />
+    <Compile Include="Helpers\Strategies\StreamFactory\StreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\StreamNotFoundException.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\WriteRandomAccessStreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\WriteStreamStreamFactory.cs" />

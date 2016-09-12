@@ -24,12 +24,12 @@ namespace TestDs3.Helpers.Strategies.StreamFactory
     using Stubs = BlobsStub;
 
     [TestFixture]
-    public class TestWriteStreamStreamFactory
+    public class TestStreamFactory
     {
         [Test]
         public void TestCreateStreamSaveTheSameStreamForStream()
         {
-            var factory = new WriteStreamStreamFactory();
+            var factory = new Ds3.Helpers.Strategies.StreamFactory.StreamFactory();
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
             Func<string, Stream> func = name => stream;
 
@@ -43,7 +43,7 @@ namespace TestDs3.Helpers.Strategies.StreamFactory
         [Test]
         public void TestCreateStreamSaveDiffrentStreamForDiffrentStreams()
         {
-            var factory = new WriteStreamStreamFactory();
+            var factory = new Ds3.Helpers.Strategies.StreamFactory.StreamFactory();
             Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
 
             factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
@@ -55,7 +55,7 @@ namespace TestDs3.Helpers.Strategies.StreamFactory
         [Test]
         public void TestCreateStreamSaveSameStreamBlob()
         {
-            var factory = new WriteStreamStreamFactory();
+            var factory = new Ds3.Helpers.Strategies.StreamFactory.StreamFactory();
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
             Func <string, Stream> func = name => stream;
 
@@ -69,7 +69,7 @@ namespace TestDs3.Helpers.Strategies.StreamFactory
         [Test]
         public void TestCloseStream()
         {
-            var factory = new WriteStreamStreamFactory();
+            var factory = new Ds3.Helpers.Strategies.StreamFactory.StreamFactory();
             Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
 
             factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
@@ -80,7 +80,7 @@ namespace TestDs3.Helpers.Strategies.StreamFactory
         [Test]
         public void TestCloseStreamException()
         {
-            var factory = new WriteStreamStreamFactory();
+            var factory = new Ds3.Helpers.Strategies.StreamFactory.StreamFactory();
             Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
 
             factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);

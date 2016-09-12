@@ -13,27 +13,12 @@
  * ****************************************************************************
  */
 
-using System;
-using System.IO;
-using Ds3.Helpers.RangeTranslators;
-
 namespace Ds3.Helpers.Strategies.StreamFactory
 {
-    public class ReadStreamStreamFactory : IStreamFactory<string>
+    /// <summary>
+    /// Create one stream and GET blobs in order without seeking
+    /// </summary>
+    public class ReadStreamStreamFactory : StreamFactory
     {
-        public Stream CreateStream(Func<string, Stream> createStreamForTransferItem, IRangeTranslator<Blob, string> rangeTranslator, Blob blob, long length)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CloseBlob(Blob blob)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CloseStream(string item)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

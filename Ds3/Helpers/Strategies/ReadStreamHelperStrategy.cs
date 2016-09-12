@@ -13,22 +13,35 @@
  * ****************************************************************************
  */
 
-using System;
 using Ds3.Helpers.Strategies.ChunkStrategies;
 using Ds3.Helpers.Strategies.StreamFactory;
 
 namespace Ds3.Helpers.Strategies
 {
+    /// <summary>
+    /// The ReadStreamHelperStrategy bundle ReadStreamChunkStrategy with ReadStreamStreamFactory
+    /// </summary>
     public class ReadStreamHelperStrategy : IHelperStrategy<string>
     {
+
+        private readonly IChunkStrategy _readStreamChunkStrategy;
+        private readonly IStreamFactory<string> _readStreamStreamFactory;
+
+        //TODO maybe add preffered number of chunks
+        public ReadStreamHelperStrategy(int retryAfter = -1)
+        {
+            this._readStreamChunkStrategy = new ReadStreamChunkStrategy(retryAfter);
+            this._readStreamStreamFactory = new ReadStreamStreamFactory();
+        }
+
         public IChunkStrategy GetChunkStrategy()
         {
-            throw new NotImplementedException();
+            return this._readStreamChunkStrategy;
         }
 
         public IStreamFactory<string> GetStreamFactory()
         {
-            throw new NotImplementedException();
+            return this._readStreamStreamFactory;
         }
     }
 }
