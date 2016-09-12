@@ -66,7 +66,7 @@ namespace IntegrationTestDs3WithProxy
             const string bucketName = "TestWithRetransmitFailingPutBlobs";
             try
             {
-                var helpers = new Ds3ClientHelpers(this._client, objectTransferAttemps:4);
+                var helpers = new Ds3ClientHelpers(this._client, objectTransferAttempts:4);
                 helpers.EnsureBucketExists(bucketName);
                 const string content = "hi im content";
                 var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
@@ -94,7 +94,7 @@ namespace IntegrationTestDs3WithProxy
             const string bucketName = "TestWithRetransmitFailingPutBlobsWithNonSeekableStream";
             try
             {
-                var helpers = new Ds3ClientHelpers(this._client, objectTransferAttemps: 4);
+                var helpers = new Ds3ClientHelpers(this._client, objectTransferAttempts: 4);
                 helpers.EnsureBucketExists(bucketName);
 
                 const string content = "hi im content";

@@ -31,7 +31,7 @@ namespace Ds3.Helpers.Jobs
             MasterObjectList jobResponse,
             IHelperStrategy<string> helperStrategy,
             ITransferrer transferrer,
-            int objectTransferAttemps = 5)
+            int objectTransferAttempts = 5)
         {
             var blobs = Blob.Convert(jobResponse);
             var rangesForRequests = blobs.ToLookup(b => b, b => b.Range);
@@ -44,7 +44,7 @@ namespace Ds3.Helpers.Jobs
                 transferrer,
                 rangesForRequests,
                 blobs,
-                objectTransferAttemps
+                objectTransferAttempts
             );
         }
 
@@ -57,7 +57,7 @@ namespace Ds3.Helpers.Jobs
             ITransferrer transferrer,
             ILookup<Blob, Range> rangesForRequests,
             IEnumerable<ContextRange<string>> itemsToTrack,
-            int objectTransferAttemps  = 5)
+            int objectTransferAttempts  = 5)
                 : base(
                       client,
                       jobResponse,
@@ -68,7 +68,7 @@ namespace Ds3.Helpers.Jobs
                       rangesForRequests,
                       new RequestToObjectRangeTranslator(rangesForRequests),
                       itemsToTrack,
-                      objectTransferAttemps
+                      objectTransferAttempts
                       )
         {
         }

@@ -32,7 +32,7 @@ namespace Ds3.Helpers.Jobs
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
             IHelperStrategy<Ds3PartialObject> helperStrategy,
-            int objectTransferAttemps = 5)
+            int objectTransferAttempts = 5)
         {
             var blobs = Blob.Convert(jobResponse).ToList();
             var allItems = partialObjects
@@ -47,7 +47,7 @@ namespace Ds3.Helpers.Jobs
                 PartialObjectRangeUtilities.RangesForRequests(blobs, allItems),
                 allItems,
                 allItems.Select(po => ContextRange.Create(Range.ByLength(0L, po.Range.Length), po)),
-                objectTransferAttemps
+                objectTransferAttempts
             );
         }
 
@@ -60,18 +60,18 @@ namespace Ds3.Helpers.Jobs
             ILookup<Blob, Range> rangesForRequests,
             IEnumerable<Ds3PartialObject> allItems,
             IEnumerable<ContextRange<Ds3PartialObject>> itemsToTrack,
-            int objectTransferAttemps = 5)
+            int objectTransferAttempts = 5)
                 : base(
                         client,
                         jobResponse,
                         bucketName,
                         jobId,
                         helperStrategy,
-                        new PartialDataTransferrerDecorator(new PartialReadTransferrer(), objectTransferAttemps),
+                        new PartialDataTransferrerDecorator(new PartialReadTransferrer(), objectTransferAttempts),
                         rangesForRequests,
                         new RequestToObjectRangeTranslator(rangesForRequests).ComposedWith(new ObjectToPartRangeTranslator(allItems)),
                         itemsToTrack,
-                        objectTransferAttemps
+                        objectTransferAttempts
                       )
         {
             this.AllItems = allItems;
