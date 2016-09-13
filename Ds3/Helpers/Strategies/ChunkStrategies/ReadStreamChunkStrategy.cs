@@ -30,11 +30,11 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
     {
         private readonly object _lock = new object();
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
+        private readonly RetryAfter _sameChunksRetryAfter;
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
         private readonly Action<TimeSpan> _wait;
 
         public readonly RetryAfter RetryAfer;
-        public readonly RetryAfter SameChunksRetryAfter;
 
         private ISet<Blob> _blobsRemaining;
         private IEnumerable<TransferItem> _blobsToSend = new List<TransferItem>();
@@ -50,7 +50,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         public ReadStreamChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
         {
             RetryAfer = new RetryAfter(wait, retryAfter);
-            SameChunksRetryAfter = new RetryAfter(wait, retryAfter);
+            _sameChunksRetryAfter = new RetryAfter(wait, retryAfter);
             _wait = wait;
         }
 
@@ -103,7 +103,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                     }
 
                     transferItems = GetNextItemsFromList(ref _blobsToSend);
-                    
+
                     //reset the counter to the number of blobs we are going to transfer
                     _numberInProgress.Reset(transferItems.Length);
                 }
@@ -140,7 +140,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                         if (_lastAvailableChunks != null &&
                             GotTheSameChunks(_lastAvailableChunks, GetChunksNumbers(jobResponse)))
                         {
-                            SameChunksRetryAfter.RetryAfterFunc(ts);
+                            _sameChunksRetryAfter.RetryAfterFunc(ts);
                             return new TransferItem[0];
                         }
 
@@ -160,7 +160,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                             _wait(ts);
                         }
                         RetryAfer.Reset();
-                        SameChunksRetryAfter.Reset();
+                        _sameChunksRetryAfter.Reset();
                         return result;
                     },
                     ts =>

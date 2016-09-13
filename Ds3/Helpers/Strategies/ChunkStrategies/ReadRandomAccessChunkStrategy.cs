@@ -13,13 +13,12 @@
 * ****************************************************************************
 */
 
-using Ds3.Calls;
-using Ds3.Models;
-using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Ds3.Calls;
+using Ds3.Models;
 
 namespace Ds3.Helpers.Strategies.ChunkStrategies
 {
@@ -29,16 +28,16 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
     public class ReadRandomAccessChunkStrategy : IChunkStrategy
     {
         private readonly object _blobsRemainingLock = new object();
-        private readonly Action<TimeSpan> _wait;
-        private Guid _jobId;
-        private ISet<Blob> _blobsRemaining;
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
+        private readonly RetryAfter _sameChunksRetryAfter;
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
-        private IDs3Client _client;
-        private IEnumerable<int> _lastAvailableChunks = null;
+        private readonly Action<TimeSpan> _wait;
 
         public readonly RetryAfter RetryAfer;
-        public readonly RetryAfter SameChunksRetryAfter;
+        private ISet<Blob> _blobsRemaining;
+        private IDs3Client _client;
+        private Guid _jobId;
+        private IEnumerable<int> _lastAvailableChunks = null;
 
         public ReadRandomAccessChunkStrategy(int retryAfter = -1)
             : this(Thread.Sleep, retryAfter)
@@ -48,21 +47,35 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         public ReadRandomAccessChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
         {
             RetryAfer = new RetryAfter(wait, retryAfter);
-            SameChunksRetryAfter = new RetryAfter(wait, retryAfter);
-            this._wait = wait;
+            _sameChunksRetryAfter = new RetryAfter(wait, retryAfter);
+            _wait = wait;
         }
 
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
         {
-            this._client = client;
-            this._jobId = jobResponse.JobId;
-            lock (this._blobsRemainingLock)
+            _client = client;
+            _jobId = jobResponse.JobId;
+            lock (_blobsRemainingLock)
             {
-                this._blobsRemaining = new HashSet<Blob>(Blob.Convert(jobResponse));
+                _blobsRemaining = new HashSet<Blob>(Blob.Convert(jobResponse));
             }
 
             // Flatten all batches into a single enumerable.
             return EnumerateTransferItemBatches().SelectMany(it => it);
+        }
+
+        public void CompleteBlob(Blob blob)
+        {
+            lock (_blobsRemainingLock)
+            {
+                _blobsRemaining.Remove(blob);
+            }
+            _numberInProgress.Signal();
+        }
+
+        public void Stop()
+        {
+            _stopEvent.Set();
         }
 
         /// <summary>
@@ -76,13 +89,13 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         {
             // If the wait handle resumed because of _numberInProgress, continue iterating (that's the 0 == ...).
             // Otherwise it resumed because of the stop, so we'll terminate.
-            while (0 == WaitHandle.WaitAny(new[] { this._numberInProgress.WaitHandle, this._stopEvent.WaitHandle }))
+            while (0 == WaitHandle.WaitAny(new[] {_numberInProgress.WaitHandle, _stopEvent.WaitHandle}))
             {
                 // Get the current batch of transfer items.
                 TransferItem[] transferItems;
-                lock (this._blobsRemainingLock)
+                lock (_blobsRemainingLock)
                 {
-                    if (this._blobsRemaining.Count == 0)
+                    if (_blobsRemaining.Count == 0)
                     {
                         yield break;
                     }
@@ -92,7 +105,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                 // We're about to return more items, so reset the counter.
                 if (transferItems.Length > 0)
                 {
-                    this._numberInProgress.Reset(transferItems.Length);
+                    _numberInProgress.Reset(transferItems.Length);
                 }
 
                 // Return the current batch.
@@ -102,40 +115,42 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
 
         private TransferItem[] GetNextTransfers()
         {
-            return this._client
-            .GetJobChunksReadyForClientProcessingSpectraS3(new GetJobChunksReadyForClientProcessingSpectraS3Request(this._jobId))
-            .Match((ts, jobResponse) =>
-            {
-                if (_lastAvailableChunks != null && GotTheSameChunks(_lastAvailableChunks, GetChunksNumbers(jobResponse)))
-                {
-                    this.SameChunksRetryAfter.RetryAfterFunc(ts);
-                    return new TransferItem[0];
-                }
+            return _client
+                .GetJobChunksReadyForClientProcessingSpectraS3(
+                    new GetJobChunksReadyForClientProcessingSpectraS3Request(_jobId))
+                .Match((ts, jobResponse) =>
+                    {
+                        if (_lastAvailableChunks != null &&
+                            GotTheSameChunks(_lastAvailableChunks, GetChunksNumbers(jobResponse)))
+                        {
+                            _sameChunksRetryAfter.RetryAfterFunc(ts);
+                            return new TransferItem[0];
+                        }
 
-                _lastAvailableChunks = GetChunksNumbers(jobResponse);
+                        _lastAvailableChunks = GetChunksNumbers(jobResponse);
 
-                var clientFactory = this._client.BuildFactory(jobResponse.Nodes);
-                var result = (
-                    from chunk in jobResponse.Objects
-                    let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
-                    from jobObject in chunk.ObjectsList
-                    let blob = Blob.Convert(jobObject)
-                    where this._blobsRemaining.Contains(blob)
-                    select new TransferItem(transferClient, blob)
-                ).ToArray();
-                if (result.Length == 0)
-                {
-                    _wait(ts);
-                }
-                this.RetryAfer.Reset();
-                this.SameChunksRetryAfter.Reset();
-                return result;
-            },
-            ts =>
-            {
-                this.RetryAfer.RetryAfterFunc(ts);
-                return new TransferItem[0];
-            });
+                        var clientFactory = _client.BuildFactory(jobResponse.Nodes);
+                        var result = (
+                            from chunk in jobResponse.Objects
+                            let transferClient = clientFactory.GetClientForNodeId(chunk.NodeId)
+                            from jobObject in chunk.ObjectsList
+                            let blob = Blob.Convert(jobObject)
+                            where _blobsRemaining.Contains(blob)
+                            select new TransferItem(transferClient, blob)
+                        ).ToArray();
+                        if (result.Length == 0)
+                        {
+                            _wait(ts);
+                        }
+                        RetryAfer.Reset();
+                        _sameChunksRetryAfter.Reset();
+                        return result;
+                    },
+                    ts =>
+                    {
+                        RetryAfer.RetryAfterFunc(ts);
+                        return new TransferItem[0];
+                    });
         }
 
         private static bool GotTheSameChunks(IEnumerable<int> lastAvailableChunks, IEnumerable<int> newAvailableChunks)
@@ -147,20 +162,6 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         private static IEnumerable<int> GetChunksNumbers(MasterObjectList jobResponse)
         {
             return jobResponse.Objects.Select(o => o.ChunkNumber);
-        }
-
-        public void CompleteBlob(Blob blob)
-        {
-            lock (this._blobsRemainingLock)
-            {
-                this._blobsRemaining.Remove(blob);
-            }
-            this._numberInProgress.Signal();
-        }
-
-        public void Stop()
-        {
-            this._stopEvent.Set();
         }
     }
 }
