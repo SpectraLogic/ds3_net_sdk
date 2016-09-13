@@ -113,15 +113,22 @@ namespace Ds3.Helpers
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead,
             IHelperStrategy<string> helperStrategy = null)
         {
-            var jobResponse = this._client.GetBulkJobSpectraS3(
-                new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
-                    .WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee.NONE)
-                );
-
             if (helperStrategy == null)
             {
                 helperStrategy = new ReadRandomAccessHelperStrategy<string>(this._retryAfter);
             }
+
+            var processingOrder = JobChunkClientProcessingOrderGuarantee.NONE;
+            if (helperStrategy.GetType() == typeof(ReadStreamHelperStrategy))
+            {
+                processingOrder = JobChunkClientProcessingOrderGuarantee.IN_ORDER;
+            }
+
+            var jobResponse = this._client.GetBulkJobSpectraS3(
+                new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
+                    .WithChunkClientProcessingOrderGuarantee(processingOrder)
+                );
+
 
             return FullObjectJob.Create(
                 this._client,
@@ -144,15 +151,22 @@ namespace Ds3.Helpers
             {
                 throw new InvalidOperationException(Resources.NoObjectsToTransferException);
             }
-            var jobResponse = this._client.GetBulkJobSpectraS3(
-                new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList)
-                    .WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee.NONE)
-                );
 
             if (helperStrategy == null)
             {
                 helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(this._retryAfter);
             }
+
+            var processingOrder = JobChunkClientProcessingOrderGuarantee.NONE;
+            if (helperStrategy.GetType() == typeof(ReadStreamHelperStrategy))
+            {
+                processingOrder = JobChunkClientProcessingOrderGuarantee.IN_ORDER;
+            }
+
+            var jobResponse = this._client.GetBulkJobSpectraS3(
+                new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList)
+                    .WithChunkClientProcessingOrderGuarantee(processingOrder)
+                );
 
             return PartialReadJob.Create(
                 this._client,

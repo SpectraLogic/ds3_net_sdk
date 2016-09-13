@@ -18,7 +18,7 @@ using System.IO;
 
 namespace Ds3.Helpers.Streams
 {
-    internal class NonDisposablePutObjectRequestStream : PutObjectRequestStream, IDisposable
+    internal class NonDisposablePutObjectRequestStream : ObjectRequestStream, IDisposable
     {
         public NonDisposablePutObjectRequestStream(Stream stream, long length) : base(stream, length)
         {

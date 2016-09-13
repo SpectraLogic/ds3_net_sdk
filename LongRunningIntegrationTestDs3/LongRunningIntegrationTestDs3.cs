@@ -1,4 +1,19 @@
-﻿using Ds3;
+﻿/*
+ * ******************************************************************************
+ *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+ *   this file except in compliance with the License. A copy of the License is located at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file.
+ *   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ *   CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ *   specific language governing permissions and limitations under the License.
+ * ****************************************************************************
+ */
+
+using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Helpers.Strategies;
@@ -77,9 +92,10 @@ namespace LongRunningIntegrationTestDs3
         }
 
         [Test]
-        public void TestChecksumStreamingWithMultiChunks()
+        public void TestPutChecksumStreamingWithMultiChunks()
         {
-            const string bucketName = "TestChecksumStreamingWithMultiChunks";
+            const string bucketName = "TestPutChecksumStreamingWithMultiChunks";
+            var tempFilename = Path.GetTempFileName();
 
             try
             {
@@ -90,31 +106,59 @@ namespace LongRunningIntegrationTestDs3
                 var directoryObjects = new List<Ds3Object> { new Ds3Object("bigFile", streamLength) };
 
                 const long blobSize = 1L * 1024L * 1024L * 1024L;
-                var job = _helpers.StartWriteJob(bucketName, directoryObjects, blobSize, new WriteStreamHelperStrategy());
 
-                var md5 = MD5.Create();
-                var fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value);
-                var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
-
-                job.Transfer(foo => md5Stream);
-
-                if (!md5Stream.HasFlushedFinalBlock)
+                // Test the PUT
+                var putJob = _helpers.StartWriteJob(bucketName, directoryObjects, blobSize, new WriteStreamHelperStrategy());
+                using (var fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value))
                 {
-                    md5Stream.FlushFinalBlock();
+                    var md5 = MD5.Create();
+                    using (var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read))
+                    {
+                        putJob.Transfer(foo => md5Stream);
+
+                        if (!md5Stream.HasFlushedFinalBlock)
+                        {
+                            md5Stream.FlushFinalBlock();
+                        }
+
+                        Assert.AreEqual("6pqugiiIUgxPkHfKKgq52A==", Convert.ToBase64String(md5.Hash));
+                    }
                 }
 
-                Assert.AreEqual("6pqugiiIUgxPkHfKKgq52A==", Convert.ToBase64String(md5.Hash));
+                // Test the GET
+                var getJob = _helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
+                using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
+                {
+                    var md5 = MD5.Create();
+                    using (var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Write))
+                    {
+                        getJob.Transfer(foo => md5Stream);
+                        if (!md5Stream.HasFlushedFinalBlock)
+                        {
+                            md5Stream.FlushFinalBlock();
+                        }
+
+                        Assert.AreEqual("6pqugiiIUgxPkHfKKgq52A==", Convert.ToBase64String(md5.Hash));
+                    }
+                }
             }
             finally
             {
+                File.Delete(tempFilename);
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
 
         [Test]
-        public void TestChecksumStreamingWithMultiStreams()
+        public void TestPutChecksumStreamingWithMultiStreams()
         {
-            const string bucketName = "TestChecksumStreamingWithMultiStreams";
+            const string bucketName = "TestPutChecksumStreamingWithMultiStreams";
+            var tempFilesname = new Dictionary<string, string>
+            {
+                { "bigFile1", Path.GetTempFileName() },
+                { "bigFile2", Path.GetTempFileName() },
+                { "bigFile3", Path.GetTempFileName() }
+            };
 
             try
             {
@@ -132,11 +176,11 @@ namespace LongRunningIntegrationTestDs3
                     new Ds3Object("bigFile3", streamLength)
                 };
 
-                
-                var job = _helpers.StartWriteJob(bucketName, directoryObjects, blobSize, new WriteStreamHelperStrategy());
+                // Test the PUT
+                var putJob = _helpers.StartWriteJob(bucketName, directoryObjects, blobSize, new WriteStreamHelperStrategy());
 
-                var cryptoStreams = new Dictionary<string, CryptoStream>();
-                var md5s = new Dictionary<string, MD5>();
+                var putCryptoStreams = new Dictionary<string, CryptoStream>();
+                var putMd5s = new Dictionary<string, MD5>();
 
                 directoryObjects.ForEach(obj =>
                 {
@@ -144,29 +188,60 @@ namespace LongRunningIntegrationTestDs3
                     var fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value);
                     var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
 
-                    cryptoStreams.Add(obj.Name, md5Stream);
-                    md5s.Add(obj.Name, md5);
+                    putCryptoStreams.Add(obj.Name, md5Stream);
+                    putMd5s.Add(obj.Name, md5);
                 });
 
-                job.Transfer(fileName => cryptoStreams[fileName]);
+                putJob.Transfer(fileName => putCryptoStreams[fileName]);
 
-                foreach (var stream in cryptoStreams.Select(pair => pair.Value).Where(stream => !stream.HasFlushedFinalBlock))
+                foreach (var stream in putCryptoStreams.Select(pair => pair.Value).Where(stream => !stream.HasFlushedFinalBlock))
                 {
                     stream.FlushFinalBlock();
                 }
 
-                foreach (var md5 in md5s.Select(pair => pair.Value))
+                foreach (var md5 in putMd5s.Select(pair => pair.Value))
                 {
                     Assert.AreEqual("Rt83cCvGZHQGu3eRIdfJIQ==", Convert.ToBase64String(md5.Hash));
                 }
 
+                // Test the GET
+                var getJob = _helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
+
+                var getCryptoStreams = new Dictionary<string, CryptoStream>();
+                var getMd5s = new Dictionary<string, MD5>();
+
+                directoryObjects.ForEach(obj =>
+                {
+                    var md5 = MD5.Create();
+                    var fileStream = new FileStream(tempFilesname[obj.Name], FileMode.Truncate, FileAccess.Write);
+                    var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Write);
+
+                    getCryptoStreams.Add(obj.Name, md5Stream);
+                    getMd5s.Add(obj.Name, md5);
+                });
+
+                getJob.Transfer(fileName => getCryptoStreams[fileName]);
+
+                foreach (var stream in getCryptoStreams.Select(pair => pair.Value).Where(stream => !stream.HasFlushedFinalBlock))
+                {
+                    stream.FlushFinalBlock();
+                }
+
+                foreach (var md5 in getMd5s.Select(pair => pair.Value))
+                {
+                    Assert.AreEqual("Rt83cCvGZHQGu3eRIdfJIQ==", Convert.ToBase64String(md5.Hash));
+                }
             }
             finally
             {
+                foreach (var pair in tempFilesname)
+                {
+                    File.Delete(pair.Value);
+                }
+
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }
-
     }
 
     internal class ChecksumStream : Stream

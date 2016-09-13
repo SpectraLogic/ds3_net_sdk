@@ -997,7 +997,7 @@
     <Compile Include="Runtime\Ds3MaxJobsException.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\DisposableFileStream.cs" />
-    <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
+    <Compile Include="Helpers\Streams\ObjectRequestStream.cs" />
     <Compile Include="Helpers\Transferrers\PartialDataTransferrerDecorator.cs" />
     <Compile Include="Lang\StreamsUtil.cs" />
     <Compile Include="Models\Crc32.cs" />
