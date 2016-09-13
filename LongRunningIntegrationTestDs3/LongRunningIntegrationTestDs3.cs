@@ -92,9 +92,9 @@ namespace LongRunningIntegrationTestDs3
         }
 
         [Test]
-        public void TestPutChecksumStreamingWithMultiChunks()
+        public void TestChecksumStreamingWithMultiChunks()
         {
-            const string bucketName = "TestPutChecksumStreamingWithMultiChunks";
+            const string bucketName = "TestChecksumStreamingWithMultiChunks";
             var tempFilename = Path.GetTempFileName();
 
             try
@@ -150,9 +150,9 @@ namespace LongRunningIntegrationTestDs3
         }
 
         [Test]
-        public void TestPutChecksumStreamingWithMultiStreams()
+        public void TestChecksumStreamingWithMultiStreams()
         {
-            const string bucketName = "TestPutChecksumStreamingWithMultiStreams";
+            const string bucketName = "TestChecksumStreamingWithMultiStreams";
             var tempFilesname = new Dictionary<string, string>
             {
                 { "bigFile1", Path.GetTempFileName() },
