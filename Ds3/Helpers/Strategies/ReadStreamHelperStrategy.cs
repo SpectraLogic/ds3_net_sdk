@@ -27,7 +27,6 @@ namespace Ds3.Helpers.Strategies
         private readonly IChunkStrategy _readStreamChunkStrategy;
         private readonly IStreamFactory<string> _readStreamStreamFactory;
 
-        //TODO maybe add preffered number of chunks
         public ReadStreamHelperStrategy(int retryAfter = -1)
         {
             this._readStreamChunkStrategy = new ReadStreamChunkStrategy(retryAfter);

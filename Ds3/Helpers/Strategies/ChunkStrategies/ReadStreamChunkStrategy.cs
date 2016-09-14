@@ -138,13 +138,13 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                 .Match((ts, jobResponse) =>
                     {
                         if (_lastAvailableChunks != null &&
-                            GotTheSameChunks(_lastAvailableChunks, GetChunksNumbers(jobResponse)))
+                            ChunkUtils.GotTheSameChunks(_lastAvailableChunks, ChunkUtils.GetChunksNumbers(jobResponse)))
                         {
                             _sameChunksRetryAfter.RetryAfterFunc(ts);
                             return new TransferItem[0];
                         }
 
-                        _lastAvailableChunks = GetChunksNumbers(jobResponse);
+                        _lastAvailableChunks = ChunkUtils.GetChunksNumbers(jobResponse);
 
                         var clientFactory = _client.BuildFactory(jobResponse.Nodes);
                         var result = (
@@ -168,19 +168,6 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                         RetryAfer.RetryAfterFunc(ts);
                         return new TransferItem[0];
                     });
-        }
-
-        //TODO extrat to Util
-        private static bool GotTheSameChunks(IEnumerable<int> lastAvailableChunks, IEnumerable<int> newAvailableChunks)
-        {
-            return !lastAvailableChunks.Except(newAvailableChunks).Any() &&
-                   !newAvailableChunks.Except(lastAvailableChunks).Any();
-        }
-
-        //TODO extrat to Util
-        private static IEnumerable<int> GetChunksNumbers(MasterObjectList jobResponse)
-        {
-            return jobResponse.Objects.Select(o => o.ChunkNumber);
         }
     }
 }
