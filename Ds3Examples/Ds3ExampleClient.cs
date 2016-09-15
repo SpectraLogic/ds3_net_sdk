@@ -303,7 +303,7 @@ namespace Ds3Examples
 
         public IEnumerable<S3Object> GetObjects(string bucketName, string objectName, int length, int offset, S3ObjectType type, long version)
         {
-            var request = new Ds3.Calls.GetObjectsSpectraS3Request()
+            var request = new Ds3.Calls.GetObjectsDetailsSpectraS3Request
             {
                 BucketId = bucketName,
                 Name = objectName,
@@ -312,7 +312,7 @@ namespace Ds3Examples
                 Type = type,
                 Version = version
             };
-            var response = _client.GetObjectsSpectraS3(request);
+            var response = _client.GetObjectsDetailsSpectraS3(request);
             foreach (var ds3Object in response.ResponsePayload.S3Objects)
             {
                 yield return ds3Object;

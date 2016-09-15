@@ -15,7 +15,6 @@
 
 using Ds3;
 using Ds3.Helpers;
-using Ds3.Helpers.Strategys;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,6 +22,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using Ds3.Helpers.Strategies;
 
 namespace Ds3Examples
 {
