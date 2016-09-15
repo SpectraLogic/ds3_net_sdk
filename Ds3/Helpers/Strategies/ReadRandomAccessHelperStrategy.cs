@@ -30,10 +30,10 @@ namespace Ds3.Helpers.Strategies
         private readonly IChunkStrategy _readRandomAccessChunkStrategy;
         private readonly IStreamFactory<TItem> _readRandomAccessStreamFactory;
 
-        public ReadRandomAccessHelperStrategy(int retyrAfter = -1)
+        public ReadRandomAccessHelperStrategy(int retryAfter = -1)
         {
             this._readRandomAccessChunkStrategy =
-                new ReadRandomAccessChunkStrategy(retyrAfter);
+                new ReadRandomAccessChunkStrategy(retryAfter);
 
             this._readRandomAccessStreamFactory =
                 new ReadRandomAccessStreamFactory<TItem>();

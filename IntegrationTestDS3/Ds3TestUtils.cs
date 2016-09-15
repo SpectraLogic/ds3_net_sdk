@@ -161,7 +161,8 @@ namespace IntegrationTestDS3
             var writeStrategyList = new List<IHelperStrategy<string>>
             {
                 null, //using the default strategy
-                new ReadRandomAccessHelperStrategy<string>()
+                new ReadRandomAccessHelperStrategy<string>(),
+                new ReadStreamHelperStrategy()
             };
 
             writeStrategyList.ForEach(action);

@@ -68,7 +68,7 @@ namespace TestDs3.Helpers.Streams
 
         private Stream GetRequestedStream(Stream source, long offset, long lenght)
         {
-            var putObjectRequestStream = new PutObjectRequestStream(source, offset, lenght);
+            var putObjectRequestStream = new ObjectRequestStream(source, offset, lenght);
             var requestStream = new MemoryStream();
             if (putObjectRequestStream.Position != 0)
             {
