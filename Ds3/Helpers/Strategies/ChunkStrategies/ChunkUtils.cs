@@ -1,6 +1,6 @@
 ﻿/*
  * ******************************************************************************
- *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,29 +13,23 @@
  * ****************************************************************************
  */
 
-using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using Ds3.Models;
 
-namespace Ds3.Helpers.Streams
+namespace Ds3.Helpers.Strategies.ChunkStrategies
 {
-    internal class NonDisposablePutObjectRequestStream : ObjectRequestStream, IDisposable
+    internal static class ChunkUtils
     {
-        public NonDisposablePutObjectRequestStream(Stream stream, long length) : base(stream, length)
+        public static bool HasTheSameChunks(IEnumerable<int> lastAvailableChunks, IEnumerable<int> newAvailableChunks)
         {
+            return !lastAvailableChunks.Except(newAvailableChunks).Any() &&
+                   !newAvailableChunks.Except(lastAvailableChunks).Any();
         }
 
-        public NonDisposablePutObjectRequestStream(Stream stream, long offset, long length) : base(stream, offset, length)
+        public static IEnumerable<int> GetChunkNumbers(MasterObjectList jobResponse)
         {
-        }
-
-        public new void Dispose()
-        {
-            //NonDisposable Stream
-        }
-
-        public void DisposeUnderlineStream()
-        {
-            base.Dispose();
+            return jobResponse.Objects.Select(o => o.ChunkNumber);
         }
     }
 }

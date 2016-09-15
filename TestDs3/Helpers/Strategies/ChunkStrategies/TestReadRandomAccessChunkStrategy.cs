@@ -142,10 +142,10 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
 
             var blobs = new[]
             {
-                new Ds3.Helpers.Blob(Range.ByLength(0, 10), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(10, 10), "foo"),
                 new Ds3.Helpers.Blob(Range.ByLength(15, 20), "bar"),
                 new Ds3.Helpers.Blob(Range.ByLength(0, 15), "bar"),
-                new Ds3.Helpers.Blob(Range.ByLength(10, 10), "foo"),
+                new Ds3.Helpers.Blob(Range.ByLength(0, 10), "foo"),
                 new Ds3.Helpers.Blob(Range.ByLength(0, 10), "hello"),
                 new Ds3.Helpers.Blob(Range.ByLength(35, 11), "bar")
             };

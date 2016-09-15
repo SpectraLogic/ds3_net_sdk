@@ -24,12 +24,12 @@ namespace Ds3.Helpers.Strategies
     public class WriteRandomAccessHelperStrategy : IHelperStrategy<string>
     {
         private readonly IChunkStrategy _writeRandomAccessChunkStrategy;
-        private readonly IStreamFactory<string> _writeRandomAccesStreamFactory;
+        private readonly IStreamFactory<string> _writeRandomAccessStreamFactory;
 
         public WriteRandomAccessHelperStrategy(int retryAfter = -1, bool withAggregation = false)
         {
             this._writeRandomAccessChunkStrategy = new WriteRandomAccessChunkStrategy(retryAfter, withAggregation);
-            this._writeRandomAccesStreamFactory = new WriteRandomAccessStreamFactory();
+            this._writeRandomAccessStreamFactory = new WriteRandomAccessStreamFactory();
         }
 
         public IChunkStrategy GetChunkStrategy()
@@ -39,7 +39,7 @@ namespace Ds3.Helpers.Strategies
 
         public IStreamFactory<string> GetStreamFactory()
         {
-            return this._writeRandomAccesStreamFactory;
+            return this._writeRandomAccessStreamFactory;
         }
     }
 }

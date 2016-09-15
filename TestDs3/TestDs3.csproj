@@ -76,6 +76,7 @@
     <Compile Include="Helpers\MockStream.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\AllocateMock.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\TestReadRandomAccessChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\TestReadStreamChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\TestWriteNoAllocateChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\TestWriteRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\TestWriteStreamChunkStrategy.cs" />

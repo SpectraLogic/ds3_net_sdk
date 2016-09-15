@@ -729,7 +729,7 @@ namespace TestDs3.Helpers
             );
 
             var node2Client = new Mock<IDs3Client>(MockBehavior.Strict);
-            MockHelpers.SetupGetObject(node2Client, "foo", 0L, "abcdefghij");
+            MockHelpers.SetupGetObject(node2Client, "foo", 10L, "abcdefghij");
             node2Client
                 .Setup(c => c.GetObject(MockHelpers.ItIsGetObjectRequest(
                     Stubs.BucketName,

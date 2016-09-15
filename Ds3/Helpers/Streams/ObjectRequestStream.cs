@@ -18,20 +18,20 @@ using System.IO;
 
 namespace Ds3.Helpers.Streams
 {
-    public class PutObjectRequestStream : Stream, IDisposable
+    public class ObjectRequestStream : Stream, IDisposable
     {
         private readonly Stream _stream;
         private long _streamLength;
         private long _totalBytesRead = 0;
         private bool _disposed;
 
-        public PutObjectRequestStream(Stream stream, long length)
+        public ObjectRequestStream(Stream stream, long length)
         {
             this._stream = stream;
             this._streamLength = length;
         }
 
-        public PutObjectRequestStream(Stream stream, long offset, long length)
+        public ObjectRequestStream(Stream stream, long offset, long length)
         {
             this._stream = stream;
             this._stream.Position = offset;
@@ -139,7 +139,7 @@ namespace Ds3.Helpers.Streams
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            throw new NotSupportedException();
+            _stream.Write(buffer, offset, count);
         }
     }
 }

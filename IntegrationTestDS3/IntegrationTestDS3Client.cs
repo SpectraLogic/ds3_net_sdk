@@ -541,7 +541,7 @@ namespace IntegrationTestDs3
         private void PutObject(IDs3Client client, BulkObject obj, MasterObjectList bulkResult)
         {
             var fileToPut = File.OpenRead(testDirectoryBigFolderForMaxBlob + obj.Name);
-            var contentStream = new PutObjectRequestStream(fileToPut, obj.Offset, obj.Length);
+            var contentStream = new ObjectRequestStream(fileToPut, obj.Offset, obj.Length);
             var putObjectRequest = new PutObjectRequest(
                 bulkResult.BucketName,
                 obj.Name,
@@ -876,6 +876,8 @@ namespace IntegrationTestDs3
         public void TestChecksumStreamingWithMultiBlobs()
         {
             const string bucketName = "TestChecksumStreamingWithMultiBlobs";
+            var tempFilename = Path.GetTempFileName();
+
             try
             {
                 // Creates a bucket if it does not already exist.
@@ -887,24 +889,45 @@ namespace IntegrationTestDs3
                         .First(obj => obj.Name.Equals(BIGFILES.First()));
                 var directoryObjects = new List<Ds3Object> {bigFile};
 
-                Assert.Greater(directoryObjects.Count(), 0);
+                Assert.Greater(directoryObjects.Count, 0);
 
-                var job = _helpers.StartWriteJob(bucketName, directoryObjects, BlobSize, new WriteStreamHelperStrategy());
-
-                var md5 = MD5.Create();
-                var fileStream = File.OpenRead(testDirectoryBigFolder + BIGFILES.First());
-                var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read);
-
-                job.Transfer(foo => md5Stream);
-                if (!md5Stream.HasFlushedFinalBlock)
+                // Test the PUT
+                var putJob = _helpers.StartWriteJob(bucketName, directoryObjects, BlobSize, new WriteStreamHelperStrategy());
+                using (Stream fileStream = File.OpenRead(testDirectoryBigFolder + BIGFILES.First()))
                 {
-                    md5Stream.FlushFinalBlock();
+                    var md5 = MD5.Create();
+                    using (var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Read))
+                    {
+                        putJob.Transfer(foo => md5Stream);
+                        if (!md5Stream.HasFlushedFinalBlock)
+                        {
+                            md5Stream.FlushFinalBlock();
+                        }
+
+                        Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+                    }
                 }
 
-                Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+                // Test the GET
+                var getJob = _helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
+                using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
+                {
+                    var md5 = MD5.Create();
+                    using (var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Write))
+                    {
+                        getJob.Transfer(foo => md5Stream);
+                        if (!md5Stream.HasFlushedFinalBlock)
+                        {
+                            md5Stream.FlushFinalBlock();
+                        }
+
+                        Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+                    }
+                }
             }
             finally
             {
+                File.Delete(tempFilename);
                 Ds3TestUtils.DeleteBucket(_client, bucketName);
             }
         }

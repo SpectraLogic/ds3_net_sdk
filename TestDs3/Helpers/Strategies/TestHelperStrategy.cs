@@ -78,5 +78,16 @@ namespace TestDs3.Helpers.Strategies
             Assert.AreEqual(typeof(WriteStreamChunkStrategy), chunkStrategy.GetType());
             Assert.AreEqual(typeof(WriteStreamStreamFactory), streamFactory.GetType());
         }
+
+        [Test]
+        public void TestReadStreamHelperStrategy()
+        {
+            var helperStrategy = new ReadStreamHelperStrategy();
+            var chunkStrategy = helperStrategy.GetChunkStrategy();
+            var streamFactory = helperStrategy.GetStreamFactory();
+
+            Assert.AreEqual(typeof(ReadStreamChunkStrategy), chunkStrategy.GetType());
+            Assert.AreEqual(typeof(ReadStreamStreamFactory), streamFactory.GetType());
+        }
     }
 }

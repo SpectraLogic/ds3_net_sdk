@@ -1,17 +1,17 @@
 ﻿/*
-* ******************************************************************************
-*   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
-*   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
-*   this file except in compliance with the License. A copy of the License is located at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-*   or in the "license" file accompanying this file.
-*   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-*   CONDITIONS OF ANY KIND, either express or implied. See the License for the
-*   specific language governing permissions and limitations under the License.
-* ****************************************************************************
-*/
+ * ******************************************************************************
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
+ *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+ *   this file except in compliance with the License. A copy of the License is located at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file.
+ *   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ *   CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ *   specific language governing permissions and limitations under the License.
+ * ****************************************************************************
+ */
 
 using System;
 using System.Collections.Generic;
@@ -23,28 +23,31 @@ using Ds3.Models;
 namespace Ds3.Helpers.Strategies.ChunkStrategies
 {
     /// <summary>
-    /// The ReadRandomAccessChunkStrategy will get the available job chunks and allocate those chunks
+    ///  The ReadStreamChunkStrategy will get the available job chunks and receive the blobs in order
+    ///  NOTE: To use this strategy the job must be created with the JobChunkClientProcessingOrderGuarantee.IN_ORDER
     /// </summary>
-    public class ReadRandomAccessChunkStrategy : IChunkStrategy
+    public class ReadStreamChunkStrategy : IChunkStrategy
     {
-        private readonly object _blobsRemainingLock = new object();
+        private readonly object _lock = new object();
         private readonly CountdownEvent _numberInProgress = new CountdownEvent(0);
         private readonly RetryAfter _sameChunksRetryAfter;
         private readonly ManualResetEventSlim _stopEvent = new ManualResetEventSlim();
         private readonly Action<TimeSpan> _wait;
 
         public readonly RetryAfter RetryAfer;
+
         private ISet<Blob> _blobsRemaining;
+        private IEnumerable<TransferItem> _blobsToSend = new List<TransferItem>();
         private IDs3Client _client;
-        private Guid _jobId;
+        private MasterObjectList _jobResponse;
         private IEnumerable<int> _lastAvailableChunks = null;
 
-        public ReadRandomAccessChunkStrategy(int retryAfter = -1)
+        public ReadStreamChunkStrategy(int retryAfter = -1)
             : this(Thread.Sleep, retryAfter)
         {
         }
 
-        public ReadRandomAccessChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
+        public ReadStreamChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
         {
             RetryAfer = new RetryAfter(wait, retryAfter);
             _sameChunksRetryAfter = new RetryAfter(wait, retryAfter);
@@ -54,8 +57,9 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         public IEnumerable<TransferItem> GetNextTransferItems(IDs3Client client, MasterObjectList jobResponse)
         {
             _client = client;
-            _jobId = jobResponse.JobId;
-            lock (_blobsRemainingLock)
+            _jobResponse = jobResponse;
+
+            lock (_lock)
             {
                 _blobsRemaining = new HashSet<Blob>(Blob.Convert(jobResponse));
             }
@@ -66,7 +70,7 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
 
         public void CompleteBlob(Blob blob)
         {
-            lock (_blobsRemainingLock)
+            lock (_lock)
             {
                 _blobsRemaining.Remove(blob);
             }
@@ -78,13 +82,6 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
             _stopEvent.Set();
         }
 
-        /// <summary>
-        /// This generator method yields batches of transfer items. After yielding a
-        /// batch, it blocks until the consumer passes each of the batch items to
-        /// CompleteBlob. It does so using the _numberInProgress countdown event.
-        /// If the consumer calls Stop, the generator terminates.
-        /// </summary>
-        /// <returns></returns>
         private IEnumerable<IEnumerable<TransferItem>> EnumerateTransferItemBatches()
         {
             // If the wait handle resumed because of _numberInProgress, continue iterating (that's the 0 == ...).
@@ -93,18 +90,21 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
             {
                 // Get the current batch of transfer items.
                 TransferItem[] transferItems;
-                lock (_blobsRemainingLock)
+                lock (_lock)
                 {
-                    if (_blobsRemaining.Count == 0)
+                    if (!_blobsToSend.Any())
                     {
-                        yield break;
-                    }
-                    transferItems = GetNextTransfers();
-                }
+                        if (_blobsRemaining.Count == 0)
+                        {
+                            yield break;
+                        }
 
-                // We're about to return more items, so reset the counter.
-                if (transferItems.Length > 0)
-                {
+                        _blobsToSend = GetNextTransfers();
+                    }
+
+                    transferItems = GetNextItemsFromList(ref _blobsToSend);
+
+                    //reset the counter to the number of blobs we are going to transfer
                     _numberInProgress.Reset(transferItems.Length);
                 }
 
@@ -113,11 +113,28 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
             }
         }
 
+        private static TransferItem[] GetNextItemsFromList(ref IEnumerable<TransferItem> currentTransferItemsList)
+        {
+            var result = new HashSet<TransferItem>();
+
+            foreach (var item in currentTransferItemsList)
+            {
+                if (!result.Select(transferItem => transferItem.Blob.Context).Contains(item.Blob.Context))
+                {
+                    result.Add(item);
+                }
+            }
+
+            currentTransferItemsList = currentTransferItemsList.Except(result);
+
+            return result.ToArray();
+        }
+
         private TransferItem[] GetNextTransfers()
         {
             return _client
                 .GetJobChunksReadyForClientProcessingSpectraS3(
-                    new GetJobChunksReadyForClientProcessingSpectraS3Request(_jobId))
+                    new GetJobChunksReadyForClientProcessingSpectraS3Request(_jobResponse.JobId))
                 .Match((ts, jobResponse) =>
                     {
                         if (_lastAvailableChunks != null &&
