@@ -126,7 +126,6 @@ namespace LongRunningIntegrationTestDs3
 
                 // Test the GET
                 var getJob = _helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
-                //using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
                 using (Stream fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value))
                 {
                     var md5 = MD5.Create();
@@ -284,7 +283,7 @@ namespace LongRunningIntegrationTestDs3
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            //throw new NotSupportedException();
+            //Do not write the files to disk when using in Tests
         }
 
         public override bool CanRead

@@ -21,13 +21,13 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
 {
     internal static class ChunkUtils
     {
-        public static bool GotTheSameChunks(IEnumerable<int> lastAvailableChunks, IEnumerable<int> newAvailableChunks)
+        public static bool HasTheSameChunks(IEnumerable<int> lastAvailableChunks, IEnumerable<int> newAvailableChunks)
         {
             return !lastAvailableChunks.Except(newAvailableChunks).Any() &&
                    !newAvailableChunks.Except(lastAvailableChunks).Any();
         }
 
-        public static IEnumerable<int> GetChunksNumbers(MasterObjectList jobResponse)
+        public static IEnumerable<int> GetChunkNumbers(MasterObjectList jobResponse)
         {
             return jobResponse.Objects.Select(o => o.ChunkNumber);
         }

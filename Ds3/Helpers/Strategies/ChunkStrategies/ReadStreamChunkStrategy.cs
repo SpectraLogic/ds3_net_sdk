@@ -23,7 +23,7 @@ using Ds3.Models;
 namespace Ds3.Helpers.Strategies.ChunkStrategies
 {
     /// <summary>
-    ///  The ReadStreamChunkStrategy will get the available job chunks, allocate those chunks and send the blobs in order
+    ///  The ReadStreamChunkStrategy will get the available job chunks and receive the blobs in order
     ///  NOTE: To use this strategy the job must be created with the JobChunkClientProcessingOrderGuarantee.IN_ORDER
     /// </summary>
     public class ReadStreamChunkStrategy : IChunkStrategy
@@ -138,13 +138,13 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                 .Match((ts, jobResponse) =>
                     {
                         if (_lastAvailableChunks != null &&
-                            ChunkUtils.GotTheSameChunks(_lastAvailableChunks, ChunkUtils.GetChunksNumbers(jobResponse)))
+                            ChunkUtils.HasTheSameChunks(_lastAvailableChunks, ChunkUtils.GetChunkNumbers(jobResponse)))
                         {
                             _sameChunksRetryAfter.RetryAfterFunc(ts);
                             return new TransferItem[0];
                         }
 
-                        _lastAvailableChunks = ChunkUtils.GetChunksNumbers(jobResponse);
+                        _lastAvailableChunks = ChunkUtils.GetChunkNumbers(jobResponse);
 
                         var clientFactory = _client.BuildFactory(jobResponse.Nodes);
                         var result = (
