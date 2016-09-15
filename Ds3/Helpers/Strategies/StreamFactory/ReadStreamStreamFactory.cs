@@ -1,6 +1,6 @@
 ﻿/*
  * ******************************************************************************
- *   Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -13,29 +13,12 @@
  * ****************************************************************************
  */
 
-using System;
-using System.IO;
-
-namespace Ds3.Helpers.Streams
+namespace Ds3.Helpers.Strategies.StreamFactory
 {
-    internal class NonDisposablePutObjectRequestStream : ObjectRequestStream, IDisposable
+    /// <summary>
+    /// Create one stream and GET blobs in order without seeking
+    /// </summary>
+    public class ReadStreamStreamFactory : StreamFactory
     {
-        public NonDisposablePutObjectRequestStream(Stream stream, long length) : base(stream, length)
-        {
-        }
-
-        public NonDisposablePutObjectRequestStream(Stream stream, long offset, long length) : base(stream, offset, length)
-        {
-        }
-
-        public new void Dispose()
-        {
-            //NonDisposable Stream
-        }
-
-        public void DisposeUnderlineStream()
-        {
-            base.Dispose();
-        }
     }
 }

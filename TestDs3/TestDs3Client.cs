@@ -593,7 +593,7 @@ namespace TestDs3
             };
 
             var stream = HelpersForTest.StringToStream(stringRequest);
-            var putObjectRequestStream = new Ds3.Helpers.Streams.PutObjectRequestStream(stream, offset, stream.Length);
+            var putObjectRequestStream = new Ds3.Helpers.Streams.ObjectRequestStream(stream, offset, stream.Length);
             MockNetwork
                 .Expecting(HttpVerb.PUT, "/bucketName/object", expectedQueryParams, stringRequest)
                 .Returning(HttpStatusCode.OK, stringRequest, _emptyHeaders)

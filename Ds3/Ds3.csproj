@@ -575,12 +575,17 @@
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
     <Compile Include="Helpers\IMetadataAccess.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\ChunkUtils.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\IChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\ReadStreamChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\RetryAfter.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\WriteRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ReadRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\WriteNoAllocateChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\ReadStreamHelperStrategy.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\ReadRandomAccessStreamFactory.cs" />
+    <Compile Include="Helpers\Strategies\StreamFactory\ReadStreamStreamFactory.cs" />
+    <Compile Include="Helpers\Strategies\StreamFactory\StreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\StreamNotFoundException.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\WriteRandomAccessStreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\WriteStreamStreamFactory.cs" />
@@ -993,7 +998,7 @@
     <Compile Include="Runtime\Ds3MaxJobsException.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\DisposableFileStream.cs" />
-    <Compile Include="Helpers\Streams\PutObjectRequestStream.cs" />
+    <Compile Include="Helpers\Streams\ObjectRequestStream.cs" />
     <Compile Include="Helpers\Transferrers\PartialDataTransferrerDecorator.cs" />
     <Compile Include="Lang\StreamsUtil.cs" />
     <Compile Include="Models\Crc32.cs" />

@@ -121,7 +121,7 @@ namespace TestDs3.Helpers
                     {
                         Name = "foo",
                         Length = 10,
-                        Offset = 10,
+                        Offset = 0,
                         InCache = secondInCache
                     },
                 }
@@ -141,7 +141,7 @@ namespace TestDs3.Helpers
                     {
                         Name = "foo",
                         Length = 10,
-                        Offset = 0,
+                        Offset = 10,
                         InCache = firstInCache
                     },
                     new BulkObject()
