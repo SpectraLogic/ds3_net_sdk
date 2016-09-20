@@ -575,6 +575,7 @@
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
     <Compile Include="Helpers\IMetadataAccess.cs" />
+    <Compile Include="Helpers\MetaDataUtils.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ChunkUtils.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\IChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ReadStreamChunkStrategy.cs" />

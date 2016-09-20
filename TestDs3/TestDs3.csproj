@@ -86,6 +86,7 @@
     <Compile Include="Helpers\Strategies\TestHelperStrategy.cs" />
     <Compile Include="Helpers\Streams\TestPutObjectRequestStream.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\TransferItemSourceHelpers.cs" />
+    <Compile Include="Helpers\TestMetadataUtils.cs" />
     <Compile Include="Helpers\Transferrers\NonSeekableStream.cs" />
     <Compile Include="Helpers\Transferrers\TestBestEffort.cs" />
     <Compile Include="Helpers\Transferrers\TestPartialDataTransferrerDecorator.cs" />
