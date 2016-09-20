@@ -961,7 +961,12 @@ namespace IntegrationTestDs3
                 job.MetadataListener += (fileName, metadata) =>
                 {
                     Assert.AreEqual(fileName, "beowulf.txt");
-                    Assert.AreEqual(metadata, new Dictionary<string, string> {{"name", "beowulf.txt"}});
+                    CollectionAssert.AreEqual(metadata, new Dictionary<string, string>
+                    {
+                        {"name", "beowulf.txt"},
+                        {"i am a key with spaces", "i am a value with spaces"},
+                        {"אני מפתח בעיברית", "אני ערך בעיברית"}
+                    });
                 };
 
                 // Transfer all of the files.

@@ -24,7 +24,9 @@ namespace IntegrationTestDS3
         {
             var metadataValue = new Dictionary<string, string>
             {
-                {"name", filename}
+                {"name", filename},
+                {"i am a key with spaces", "i am a value with spaces"},
+                {"אני מפתח בעיברית", "אני ערך בעיברית"}
             };
             return metadataValue;
         }

@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using Ds3.Calls;
 using Ds3.Models;
-using Ds3.Runtime;
 
 namespace Ds3.Helpers.Transferrers
 {
@@ -38,7 +37,7 @@ namespace Ds3.Helpers.Transferrers
 
                 if (blobOffset == 0 && metadataAccess != null)
                 {
-                    request.WithMetadata(metadataAccess.GetMetadataValue(objectName));
+                    request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(metadataAccess.GetMetadataValue(objectName)));
                 }
 
                 try
@@ -59,7 +58,5 @@ namespace Ds3.Helpers.Transferrers
                 }
             }
         }
-
-
     }
 }

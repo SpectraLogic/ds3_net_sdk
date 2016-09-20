@@ -15,27 +15,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using Ds3.Calls;
-using Ds3.Models;
+using System.Linq;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers
 {
-    internal class PartialReadTransferrer : ITransferrer
+    public static class MetadataUtils
     {
-        public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
-            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts)
+        public static IDictionary<string, string> GetUriEscapeMetadata(IDictionary<string, string> metadata)
         {
-            var response = client.GetObject(
-                new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset)
-                    .WithByteRanges(ranges)
-                );
+            return metadata.ToDictionary(
+                data => Uri.EscapeDataString(data.Key),
+                data => Uri.EscapeDataString(data.Value));
+        }
 
-            if (blobOffset == 0)
-            {
-                metadataListener?.Invoke(objectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
-            }
+        public static IDictionary<string, string> GetUriUnEscapeMetadata(IDictionary<string, string> metadata)
+        {
+            return metadata.ToDictionary(
+                data => Uri.UnescapeDataString(data.Key),
+                data => Uri.UnescapeDataString(data.Value));
         }
     }
 }

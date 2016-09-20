@@ -30,7 +30,7 @@ namespace Ds3.Helpers.Transferrers
             var response = client.GetObject(new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset));
             if (blobOffset == 0)
             {
-                metadataListener?.Invoke(objectName, response.Metadata);
+                metadataListener?.Invoke(objectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
             }
         }
     }
