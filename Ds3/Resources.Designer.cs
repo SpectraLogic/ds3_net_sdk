@@ -259,7 +259,7 @@ namespace Ds3 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reached the limit number of retransmit for blob name {0} with offset {1}.
+        ///   Looks up a localized string similar to Reached the limit of {0} retries for retransmissions for blob {1} with offset {2}.
         /// </summary>
         internal static string NoMoreRetransmitException {
             get {
