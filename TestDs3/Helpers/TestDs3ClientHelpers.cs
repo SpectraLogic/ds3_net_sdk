@@ -875,8 +875,8 @@ namespace TestDs3.Helpers
             }
             catch (AggregateException age)
             {
-                const string expectredMessage = "Reached the limit number of retransmit for blob name hello with offset 0";
-                Assert.AreEqual(expectredMessage, age.InnerExceptions[0].Message);
+                var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "1", "hello", "0");
+                Assert.AreEqual(expectedMessage, age.InnerExceptions[0].Message);
             }
 
 
@@ -1171,8 +1171,8 @@ namespace TestDs3.Helpers
             }
             catch (AggregateException age)
             {
-                const string expectredMessage = "Reached the limit number of retransmit for blob name bar with offset 0";
-                Assert.AreEqual(expectredMessage, age.InnerExceptions[0].Message);
+                var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "2", "bar", "0");
+                Assert.AreEqual(expectedMessage, age.InnerExceptions[0].Message);
             }
 
 

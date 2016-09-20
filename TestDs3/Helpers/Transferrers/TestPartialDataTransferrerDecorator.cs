@@ -44,7 +44,7 @@ namespace TestDs3.Helpers.Transferrers
             }
             catch (Ds3NoMoreRetransmitException ex)
             {
-                const string expectedMessage = "Reached the limit number of retransmit for blob name bar with offset 0";
+                var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "0", "bar", "0");
                 Assert.AreEqual(expectedMessage, ex.Message);
 
                 Assert.AreEqual(0, ex.Retries);
@@ -68,7 +68,7 @@ namespace TestDs3.Helpers.Transferrers
             }
             catch (Ds3NoMoreRetransmitException ex)
             {
-                const string expectedMessage = "Reached the limit number of retransmit for blob name bar with offset 0";
+                var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "1", "bar", "0");
                 Assert.AreEqual(expectedMessage, ex.Message);
 
                 Assert.AreEqual(1, ex.Retries);

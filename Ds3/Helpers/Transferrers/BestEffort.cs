@@ -51,7 +51,7 @@ namespace Ds3.Helpers.Transferrers
             if (retries != -1 && currentTry >= retries)
             {
                 throw new Ds3NoMoreRetransmitException(
-                    string.Format(Resources.NoMoreRetransmitException, objectName, offset), currentTry, ex);
+                    string.Format(Resources.NoMoreRetransmitException, retries, objectName, offset), currentTry, ex);
             }
 
             if (!stream.CanSeek) throw new Ds3NotSupportedStream(Resources.NotSupportedStream, ex);
