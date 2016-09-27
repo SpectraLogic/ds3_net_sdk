@@ -67,10 +67,25 @@ namespace Ds3.Calls
         {
              { "Naming-Convention", "s3" }
         };
+
         internal virtual Dictionary<string, string> Headers
         {
             get { return _headers; }
         }
+
+        public void AddHeaders(IDictionary<string, string> headers)
+        {
+            foreach (var pair in headers)
+            {
+                AddHeader(pair.Key, pair.Value);
+            }
+        }
+
+        public void AddHeader(string key, string value)
+        {
+            _headers.Add(key, value);
+        }
+
         public string getDescription(string paramstring)
         {
             return string.Format(" | {0} {1}{2}{3}", this.Verb.ToString(), this.Path, string.IsNullOrEmpty(paramstring) ? "" : "?", string.IsNullOrEmpty(paramstring) ? "" : paramstring);
