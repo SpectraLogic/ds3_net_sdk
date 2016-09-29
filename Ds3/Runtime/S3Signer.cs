@@ -12,6 +12,7 @@
  * ****************************************************************************
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -90,12 +91,15 @@ namespace Ds3.Runtime
             builder.Append(md5).Append('\n');
             builder.Append(contentType).Append('\n');
             builder.Append(date).Append('\n');
+
             var canonicalizedAmzHeaders =
-                from keyValuePair in amzHeaders
-                let key = keyValuePair.Key.ToLowerInvariant()
-                where key.StartsWith(HttpHeaders.AwsPrefix)
-                orderby key
-                select new { Key = key, Value = UnfoldLongHeaderContent(keyValuePair.Value) };
+                amzHeaders.
+                    Select(keyValuePair => new {Key = keyValuePair.Key.ToLowerInvariant(), keyValuePair.Value})
+                    .Where(keyValuePair => keyValuePair.Key.StartsWith(HttpHeaders.AwsPrefix))
+                    .OrderBy(keyValuePair => keyValuePair.Key, StringComparer.Ordinal)
+                    .Select(
+                        keyValuePair => new {keyValuePair.Key, Value = UnfoldLongHeaderContent(keyValuePair.Value)});
+
             foreach (var keyValuePair in canonicalizedAmzHeaders)
             {
                 builder.Append(keyValuePair.Key).Append(':').Append(keyValuePair.Value).Append('\n');
