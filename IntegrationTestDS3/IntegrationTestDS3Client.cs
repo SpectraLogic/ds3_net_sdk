@@ -1367,5 +1367,28 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
         }
+
+        [Test]
+        public void TestHttpsClient()
+        {
+            if (RuntimeUtils.IsRunningOnMono()) Assert.Ignore();
+
+            var endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
+            endpoint = endpoint.ToLower().Replace("http://", "https://");
+            var accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
+            var secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
+            var proxy = Environment.GetEnvironmentVariable("http_proxy");
+
+            var credentials = new Credentials(accesskey, secretkey);
+            var builder = new Ds3Builder(endpoint, credentials);
+            if (!string.IsNullOrEmpty(proxy))
+            {
+                builder.WithProxy(new Uri(proxy));
+            }
+
+            var client = builder.Build();
+
+            client.GetService(new GetServiceRequest());
+        }
     }
 }

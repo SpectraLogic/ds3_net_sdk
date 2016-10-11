@@ -146,6 +146,11 @@ namespace Ds3
         /// <returns></returns>
         public IDs3Client Build()
         {
+            if (IsHttpsScheme() && RuntimeUtils.IsRunningOnMono())
+            {
+                throw new Exception(Resources.HttpsNotSupportedOnMono);
+            }
+
             var netLayer = new Network(
                 _endpoint,
                 _creds,
@@ -160,6 +165,11 @@ namespace Ds3
                 netLayer.Proxy = _proxy;
             }
             return new Ds3Client(netLayer);
+        }
+
+        private bool IsHttpsScheme()
+        {
+            return _endpoint.Scheme.ToLower().Equals("https");
         }
     }
 }
