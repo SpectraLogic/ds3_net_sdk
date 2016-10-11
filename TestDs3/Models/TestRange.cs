@@ -13,69 +13,22 @@
  * ****************************************************************************
  */
 
-using Ds3.Models;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ds3.Models;
+using NUnit.Framework;
 
 namespace TestDs3.Models
 {
     [TestFixture]
     public class TestRange
     {
-        [Test]
-        public void ByLengthWorks()
-        {
-            var range = Range.ByLength(20, 30);
-            Assert.AreEqual(20, range.Start);
-            Assert.AreEqual(49, range.End);
-            Assert.AreEqual(30, range.Length);
-        }
-
-        [Test]
-        public void ByPositionWorks()
-        {
-            var range = Range.ByPosition(20, 49);
-            Assert.AreEqual(20, range.Start);
-            Assert.AreEqual(49, range.End);
-            Assert.AreEqual(30, range.Length);
-        }
-
-        [Test]
-        public void EqualsWorks()
-        {
-            Assert.True(Range.ByPosition(0, 10).Equals(Range.ByPosition(0, 10)));
-            Assert.False(Range.ByPosition(1, 10).Equals(Range.ByPosition(0, 10)));
-            Assert.False(Range.ByPosition(0, 11).Equals(Range.ByPosition(0, 10)));
-            Assert.False(Range.ByPosition(1, 11).Equals(Range.ByPosition(0, 10)));
-            Assert.False(Range.ByPosition(1, 11).Equals(null));
-            Assert.False(Range.ByPosition(1, 11).Equals(new { Start = 1L, End = 11L }));
-        }
-
-        [Test]
-        public void GetHashCodeDoesNotThrowException()
-        {
-            Range.ByPosition(1234, 5678).GetHashCode();
-        }
-
-        [Test]
-        public void CompareWorks()
-        {
-            Assert.Throws<ArgumentNullException>(() => Range.ByPosition(0, 10).CompareTo((object)null));
-            Assert.Throws<ArgumentException>(() => Range.ByPosition(0, 10).CompareTo(new { Start = 0L, End = 10L }));
-
-            Assert.AreEqual(0, Range.ByPosition(0, 10).CompareTo((object)Range.ByPosition(0, 10)));
-            RangeIsLessThan(0, 10, 0, 11);
-            RangeIsLessThan(0, 10, 1, 11);
-            RangeIsLessThan(0, 10, 1, 10);
-            RangeIsLessThan(0, 10, 1, 8);
-        }
-
         private static void RangeIsLessThan(long offset1, long length1, long offset2, long length2)
         {
-            Assert.AreEqual(-1, Range.ByPosition(offset1, length1).CompareTo((object)Range.ByPosition(offset2, length2)));
-            Assert.AreEqual(1, Range.ByPosition(offset2, length2).CompareTo((object)Range.ByPosition(offset1, length1)));
+            Assert.AreEqual(-1,
+                Range.ByPosition(offset1, length1).CompareTo((object) Range.ByPosition(offset2, length2)));
+            Assert.AreEqual(1, Range.ByPosition(offset2, length2).CompareTo((object) Range.ByPosition(offset1, length1)));
 
             Assert.AreEqual(-1, Range.ByPosition(offset1, length1).CompareTo(Range.ByPosition(offset2, length2)));
             Assert.AreEqual(1, Range.ByPosition(offset2, length2).CompareTo(Range.ByPosition(offset1, length1)));
@@ -112,30 +65,72 @@ namespace TestDs3.Models
             Range.ByPosition(321L, 321L),
             Range.ByPosition(123L, 321L),
             Range.ByPosition(123L, 321L)
-        }.Zip(OverlappingRanges, (output, input) => new[] { input, output });
+        }.Zip(OverlappingRanges, (output, input) => new[] {input, output});
 
-        [Test, TestCaseSource("OverlappingRanges")]
-        public void OverlapsReturnsTrue(Range overlappingRange)
+        [Test]
+        public void BetweenWorks()
         {
-            Assert.True(overlappingRange.Overlaps(TargetRange));
-            Assert.True(TargetRange.Overlaps(overlappingRange));
+            var range = Range.ByPosition(123L, 321L);
+            foreach (var outside in new[] {-123L, 0L, 122L, 322L, 123456L})
+            {
+                Assert.False(outside.Between(range));
+            }
+            foreach (var inside in new[] {123L, 124L, 200L, 320L, 321L})
+            {
+                Assert.True(inside.Between(range));
+            }
         }
 
-        [Test, TestCaseSource("NonOverlappingRanges")]
-        public void OverlapsReturnsFalse(Range nonOverlappingRange)
+        [Test]
+        public void ByLengthWorks()
         {
-            Assert.False(nonOverlappingRange.Overlaps(TargetRange));
-            Assert.False(TargetRange.Overlaps(nonOverlappingRange));
+            var range = Range.ByLength(20, 30);
+            Assert.AreEqual(20, range.Start);
+            Assert.AreEqual(49, range.End);
+            Assert.AreEqual(30, range.Length);
         }
 
-        [Test, TestCaseSource("NotTouchingRanges")]
-        public void IntersectThrowsException(Range nonOverlappingRange)
+        [Test]
+        public void ByPositionWorks()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => nonOverlappingRange.Intersect(TargetRange));
-            Assert.Throws<ArgumentOutOfRangeException>(() => TargetRange.Intersect(nonOverlappingRange));
+            var range = Range.ByPosition(20, 49);
+            Assert.AreEqual(20, range.Start);
+            Assert.AreEqual(49, range.End);
+            Assert.AreEqual(30, range.Length);
         }
 
-        [Test, TestCaseSource("Intersections")]
+        [Test]
+        public void CompareWorks()
+        {
+            Assert.Throws<ArgumentNullException>(() => Range.ByPosition(0, 10).CompareTo((object) null));
+            Assert.Throws<ArgumentException>(() => Range.ByPosition(0, 10).CompareTo(new {Start = 0L, End = 10L}));
+
+            Assert.AreEqual(0, Range.ByPosition(0, 10).CompareTo((object) Range.ByPosition(0, 10)));
+            RangeIsLessThan(0, 10, 0, 11);
+            RangeIsLessThan(0, 10, 1, 11);
+            RangeIsLessThan(0, 10, 1, 10);
+            RangeIsLessThan(0, 10, 1, 8);
+        }
+
+        [Test]
+        public void EqualsWorks()
+        {
+            Assert.True(Range.ByPosition(0, 10).Equals(Range.ByPosition(0, 10)));
+            Assert.False(Range.ByPosition(1, 10).Equals(Range.ByPosition(0, 10)));
+            Assert.False(Range.ByPosition(0, 11).Equals(Range.ByPosition(0, 10)));
+            Assert.False(Range.ByPosition(1, 11).Equals(Range.ByPosition(0, 10)));
+            Assert.False(Range.ByPosition(1, 11).Equals(null));
+            Assert.False(Range.ByPosition(1, 11).Equals(new {Start = 1L, End = 11L}));
+        }
+
+        [Test]
+        public void GetHashCodeDoesNotThrowException()
+        {
+            Range.ByPosition(1234, 5678).GetHashCode();
+        }
+
+        [Test]
+        [TestCaseSource(nameof(Intersections))]
         public void IntersectReturnsCommonRangeParts(Range input, Range output)
         {
             Assert.AreEqual(output, TargetRange.Intersect(input));
@@ -143,17 +138,27 @@ namespace TestDs3.Models
         }
 
         [Test]
-        public void BetweenWorks()
+        [TestCaseSource(nameof(NotTouchingRanges))]
+        public void IntersectThrowsException(Range nonOverlappingRange)
         {
-            var range = Range.ByPosition(123L, 321L);
-            foreach (var outside in new[] { -123L, 0L, 122L, 322L, 123456L })
-            {
-                Assert.False(outside.Between(range));
-            }
-            foreach (var inside in new[] { 123L, 124L, 200L, 320L, 321L })
-            {
-                Assert.True(inside.Between(range));
-            }
+            Assert.Throws<ArgumentOutOfRangeException>(() => nonOverlappingRange.Intersect(TargetRange));
+            Assert.Throws<ArgumentOutOfRangeException>(() => TargetRange.Intersect(nonOverlappingRange));
+        }
+
+        [Test]
+        [TestCaseSource(nameof(NonOverlappingRanges))]
+        public void OverlapsReturnsFalse(Range nonOverlappingRange)
+        {
+            Assert.False(nonOverlappingRange.Overlaps(TargetRange));
+            Assert.False(TargetRange.Overlaps(nonOverlappingRange));
+        }
+
+        [Test]
+        [TestCaseSource(nameof(OverlappingRanges))]
+        public void OverlapsReturnsTrue(Range overlappingRange)
+        {
+            Assert.True(overlappingRange.Overlaps(TargetRange));
+            Assert.True(TargetRange.Overlaps(overlappingRange));
         }
     }
 }

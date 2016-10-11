@@ -557,7 +557,7 @@ namespace TestDs3.Helpers
                         marker: "",
                         nextMarker: "baz",
                         isTruncated: true,
-                        ds3objectInfos: new List<Contents> {
+                        ds3ObjectInfos: new List<Contents> {
                             MockHelpers.BuildDs3Object(
                                 "foo",
                                 "2cde576e-5f5a-613e-6cee-466a681f4929", 
@@ -574,7 +574,7 @@ namespace TestDs3.Helpers
                         marker: "baz",
                         nextMarker: "",
                         isTruncated: false,
-                        ds3objectInfos: new List<Contents> {
+                        ds3ObjectInfos: new List<Contents> {
                             MockHelpers.BuildDs3Object("baz", "802d45fc-b9a3-f7d0-0f14-81362edc0ec9", "2009-10-18T17:50:35.000Z", 12)
                         }
                     )

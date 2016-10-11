@@ -25,17 +25,6 @@ namespace TestDs3.Helpers.Strategies
     public class TestHelperStrategy
     {
         [Test]
-        public void TestReadRandomAccessHelperStrategyUsingStringAsTItem()
-        {
-            var helperStrategy = new ReadRandomAccessHelperStrategy<string>();
-            var chunkStrategy = helperStrategy.GetChunkStrategy();
-            var streamFactory = helperStrategy.GetStreamFactory();
-
-            Assert.AreEqual(typeof(ReadRandomAccessChunkStrategy), chunkStrategy.GetType());
-            Assert.AreEqual(typeof(ReadRandomAccessStreamFactory<string>), streamFactory.GetType());
-        }
-
-        [Test]
         public void TestReadRandomAccessHelperStrategyUsingDs3PartialObjectAsTItem()
         {
             var helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>();
@@ -47,14 +36,25 @@ namespace TestDs3.Helpers.Strategies
         }
 
         [Test]
-        public void TestWriteRandomAccessHelperStrategy()
+        public void TestReadRandomAccessHelperStrategyUsingStringAsTItem()
         {
-            var helperStrategy = new WriteRandomAccessHelperStrategy();
+            var helperStrategy = new ReadRandomAccessHelperStrategy<string>();
             var chunkStrategy = helperStrategy.GetChunkStrategy();
             var streamFactory = helperStrategy.GetStreamFactory();
 
-            Assert.AreEqual(typeof(WriteRandomAccessChunkStrategy), chunkStrategy.GetType());
-            Assert.AreEqual(typeof(WriteRandomAccessStreamFactory), streamFactory.GetType());
+            Assert.AreEqual(typeof(ReadRandomAccessChunkStrategy), chunkStrategy.GetType());
+            Assert.AreEqual(typeof(ReadRandomAccessStreamFactory<string>), streamFactory.GetType());
+        }
+
+        [Test]
+        public void TestReadStreamHelperStrategy()
+        {
+            var helperStrategy = new ReadStreamHelperStrategy();
+            var chunkStrategy = helperStrategy.GetChunkStrategy();
+            var streamFactory = helperStrategy.GetStreamFactory();
+
+            Assert.AreEqual(typeof(ReadStreamChunkStrategy), chunkStrategy.GetType());
+            Assert.AreEqual(typeof(ReadStreamStreamFactory), streamFactory.GetType());
         }
 
         [Test]
@@ -69,25 +69,26 @@ namespace TestDs3.Helpers.Strategies
         }
 
         [Test]
+        public void TestWriteRandomAccessHelperStrategy()
+        {
+            var helperStrategy = new WriteRandomAccessHelperStrategy();
+            var chunkStrategy = helperStrategy.GetChunkStrategy();
+            var streamFactory = helperStrategy.GetStreamFactory();
+
+            Assert.AreEqual(typeof(WriteRandomAccessChunkStrategy), chunkStrategy.GetType());
+            Assert.AreEqual(typeof(WriteRandomAccessStreamFactory), streamFactory.GetType());
+        }
+
+        [Test]
         public void TestWriteStreamHelperStrategy()
         {
-            var helperStrategy = new WriteStreamHelperStrategy();;
+            var helperStrategy = new WriteStreamHelperStrategy();
+            ;
             var chunkStrategy = helperStrategy.GetChunkStrategy();
             var streamFactory = helperStrategy.GetStreamFactory();
 
             Assert.AreEqual(typeof(WriteStreamChunkStrategy), chunkStrategy.GetType());
             Assert.AreEqual(typeof(WriteStreamStreamFactory), streamFactory.GetType());
-        }
-
-        [Test]
-        public void TestReadStreamHelperStrategy()
-        {
-            var helperStrategy = new ReadStreamHelperStrategy();
-            var chunkStrategy = helperStrategy.GetChunkStrategy();
-            var streamFactory = helperStrategy.GetStreamFactory();
-
-            Assert.AreEqual(typeof(ReadStreamChunkStrategy), chunkStrategy.GetType());
-            Assert.AreEqual(typeof(ReadStreamStreamFactory), streamFactory.GetType());
         }
     }
 }

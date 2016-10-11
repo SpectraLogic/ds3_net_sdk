@@ -41,9 +41,12 @@ namespace TestDs3.Runtime
                     {"x-amz-meta-creation_date", "0"},
                     {"x-amz-meta-file-number", "0"},
                     {"x-amz-meta-file_type", "text/plain"},
-                    {"x-amz-meta-media_type","12"},
+                    {"x-amz-meta-media_type", "12"},
                     {"x-amz-meta-modification_date", "1465445122"},
-                    {"x-amz-meta-original_file_name", "\\\\172.18.7.30\\DPIShare\\BlackPearl_Landing\\Original_video\\645106EF7E9C\\2016\\0609\\0608\\001\\000000\\000000.idx"},
+                    {
+                        "x-amz-meta-original_file_name",
+                        "\\\\172.18.7.30\\DPIShare\\BlackPearl_Landing\\Original_video\\645106EF7E9C\\2016\\0609\\0608\\001\\000000\\000000.idx"
+                    },
                     {"x-amz-meta-profile", "-1"},
                     {"x-amz-meta-profile-name", "Original_video"},
                     {"x-amz-meta-relationship_id", "[BK-IMG-MCC]:[1]:[1463]"},

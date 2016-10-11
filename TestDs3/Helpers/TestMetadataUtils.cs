@@ -26,7 +26,8 @@ namespace TestDs3.Helpers
         public void TestGetUriEscapeMetadataWithEmptyDic()
         {
             var emptyMetadata = new Dictionary<string, string>();
-            CollectionAssert.AreEqual(emptyMetadata, MetadataUtils.GetUriEscapeMetadata(new Dictionary<string, string>()));
+            CollectionAssert.AreEqual(emptyMetadata,
+                MetadataUtils.GetUriEscapeMetadata(new Dictionary<string, string>()));
         }
 
         [Test]
@@ -69,7 +70,8 @@ namespace TestDs3.Helpers
         public void TestGetUriUnEscapeMetadataWithEmptyDic()
         {
             var emptyMetadata = new Dictionary<string, string>();
-            CollectionAssert.AreEqual(emptyMetadata, MetadataUtils.GetUriUnEscapeMetadata(new Dictionary<string, string>()));
+            CollectionAssert.AreEqual(emptyMetadata,
+                MetadataUtils.GetUriUnEscapeMetadata(new Dictionary<string, string>()));
         }
 
         [Test]

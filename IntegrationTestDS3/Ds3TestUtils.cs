@@ -13,30 +13,21 @@
  * ****************************************************************************
  */
 
-using Ds3;
-using Ds3.Calls;
-using Ds3.Helpers;
-using Ds3.Helpers.Strategies;
-using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using Ds3;
+using Ds3.Calls;
+using Ds3.Helpers;
+using Ds3.Helpers.Strategies;
+using Ds3.Models;
 
 namespace IntegrationTestDS3
 {
     public static class Ds3TestUtils
     {
-        public static IDs3Client CreateClient(int? copyBufferSize = null)
-        {
-            const int defaultCopyBufferSize = 1 * 1024 * 1024;
-
-            return Ds3Builder.FromEnv().
-                WithCopyBufferSize(copyBufferSize ?? defaultCopyBufferSize).
-                Build();
-        }
-
         private static readonly List<Ds3Object> Objects = new List<Ds3Object>
         {
             new Ds3Object("beowulf.txt", 294059),
@@ -45,7 +36,17 @@ namespace IntegrationTestDS3
             new Ds3Object("ulysses.txt", 1540095)
         };
 
-        public static void LoadTestData(IDs3Client client, string bucketName, IHelperStrategy<string> helperStrategy = null)
+        public static IDs3Client CreateClient(int? copyBufferSize = null)
+        {
+            const int defaultCopyBufferSize = 1*1024*1024;
+
+            return Ds3Builder.FromEnv().
+                WithCopyBufferSize(copyBufferSize ?? defaultCopyBufferSize).
+                Build();
+        }
+
+        public static void LoadTestData(IDs3Client client, string bucketName,
+            IHelperStrategy<string> helperStrategy = null)
         {
             PutFiles(client, bucketName, Objects, ReadResource, helperStrategy);
         }
@@ -54,7 +55,8 @@ namespace IntegrationTestDS3
         /// This will get the object and return the name of the temporary file it was written to.
         /// It is up to the caller to delete the temporary file
         /// </summary>
-        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName, int retries = 5, IHelperStrategy<string> helperStrategy = null)
+        public static string GetSingleObject(IDs3Client client, string bucketName, string objectName, int retries = 5,
+            IHelperStrategy<string> helperStrategy = null)
         {
             var tempFilename = Path.GetTempFileName();
 
@@ -67,7 +69,8 @@ namespace IntegrationTestDS3
                     helperStrategy = new ReadRandomAccessHelperStrategy<string>();
                 }
 
-                var job = helper.StartReadJob(bucketName, new List<Ds3Object> { new Ds3Object(objectName, null) }, helperStrategy);
+                var job = helper.StartReadJob(bucketName, new List<Ds3Object> {new Ds3Object(objectName, null)},
+                    helperStrategy);
 
                 job.Transfer(key => fileStream);
 
@@ -75,7 +78,8 @@ namespace IntegrationTestDS3
             }
         }
 
-        internal static string GetSingleObjectWithRange(IDs3Client client, string bucketName, string objectName, Range range, IHelperStrategy<Ds3PartialObject> helperStrategy = null)
+        internal static string GetSingleObjectWithRange(IDs3Client client, string bucketName, string objectName,
+            Range range, IHelperStrategy<Ds3PartialObject> helperStrategy = null)
         {
             var tempFilename = Path.GetTempFileName();
 
@@ -88,7 +92,8 @@ namespace IntegrationTestDS3
                     helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>();
                 }
 
-                var job = helper.StartPartialReadJob(bucketName, new List<string>(), new List<Ds3PartialObject> { new Ds3PartialObject(range, objectName) }, helperStrategy);
+                var job = helper.StartPartialReadJob(bucketName, new List<string>(),
+                    new List<Ds3PartialObject> {new Ds3PartialObject(range, objectName)}, helperStrategy);
 
                 job.Transfer(key => fileStream);
 
@@ -137,9 +142,10 @@ namespace IntegrationTestDS3
             }
         }
 
-        public static Stream ReadResource(string resourceName)
+        private static Stream ReadResource(string resourceName)
         {
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream("IntegrationTestDS3.TestData." + resourceName);
+            return
+                Assembly.GetExecutingAssembly().GetManifestResourceStream("IntegrationTestDS3.TestData." + resourceName);
         }
 
         public static void UsingAllWriteStrategies(Action<IHelperStrategy<string>> action)
@@ -148,7 +154,7 @@ namespace IntegrationTestDS3
             {
                 null, //using the default strategy
                 new WriteRandomAccessHelperStrategy(), //without aggregation
-                new WriteRandomAccessHelperStrategy(withAggregation:true), //with aggregation
+                new WriteRandomAccessHelperStrategy(withAggregation: true), //with aggregation
                 new WriteNoAllocateHelperStrategy(),
                 new WriteStreamHelperStrategy()
             };

@@ -31,12 +31,12 @@ namespace TestDs3.Lang
 
         public EnumerableComparer(IComparer<T> innerComparer)
         {
-            this._innerComparer = innerComparer;
+            _innerComparer = innerComparer;
         }
 
         public int Compare(object x, object y)
         {
-            return this.Compare(x as IEnumerable<T>, y as IEnumerable<T>);
+            return Compare(x as IEnumerable<T>, y as IEnumerable<T>);
         }
 
         public int Compare(IEnumerable<T> x, IEnumerable<T> y)
@@ -55,9 +55,9 @@ namespace TestDs3.Lang
                 return countCompareResult;
             }
 
-            for (int i = 0; i < xList.Count; i++)
+            for (var i = 0; i < xList.Count; i++)
             {
-                var itemCompareResult = this._innerComparer.Compare(xList[i], yList[i]);
+                var itemCompareResult = _innerComparer.Compare(xList[i], yList[i]);
                 if (itemCompareResult != 0)
                 {
                     return itemCompareResult;

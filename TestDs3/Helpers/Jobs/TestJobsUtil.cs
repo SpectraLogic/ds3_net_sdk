@@ -15,9 +15,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
-using Ds3.Models;
 using Ds3.Helpers.Jobs;
+using Ds3.Models;
+using NUnit.Framework;
 
 namespace TestDs3.Helpers.Jobs
 {
@@ -39,8 +39,7 @@ namespace TestDs3.Helpers.Jobs
         [Test]
         public void OneRange()
         {
-            var oldRanges = new List<Range>();
-            oldRanges.Add(Range.ByPosition(0, 19));
+            var oldRanges = new List<Range> {Range.ByPosition(0, 19)};
 
             var newRanges = JobsUtil.RetryRanges(oldRanges, 10, 20);
 
@@ -54,9 +53,7 @@ namespace TestDs3.Helpers.Jobs
         [Test]
         public void TwoRangesWithFailureInFirst()
         {
-            var oldRanges = new List<Range>();
-            oldRanges.Add(Range.ByPosition(10, 19));
-            oldRanges.Add(Range.ByPosition(30, 49));
+            var oldRanges = new List<Range> {Range.ByPosition(10, 19), Range.ByPosition(30, 49)};
 
             var contentLength = oldRanges.Sum(rangeIter => rangeIter.Length);
 
@@ -78,11 +75,9 @@ namespace TestDs3.Helpers.Jobs
         [Test]
         public void TwoRangesWithFailureInSecond()
         {
-            var oldRanges = new List<Range>();
+            var oldRanges = new List<Range> {Range.ByPosition(10, 19), Range.ByPosition(30, 49)};
 
-            oldRanges.Add(Range.ByPosition(10, 19));
-            oldRanges.Add(Range.ByPosition(30, 49));
-            
+
             var contentLength = oldRanges.Sum(rangeIter => rangeIter.Length);
 
             Assert.AreEqual(30, contentLength);
@@ -99,10 +94,8 @@ namespace TestDs3.Helpers.Jobs
         [Test]
         public void FailureOnLastByteOfFirstRange()
         {
-            var oldRanges = new List<Range>();
+            var oldRanges = new List<Range> {Range.ByPosition(10, 19), Range.ByPosition(30, 49)};
 
-            oldRanges.Add(Range.ByPosition(10, 19));
-            oldRanges.Add(Range.ByPosition(30, 49));
 
             var contentLength = oldRanges.Sum(rangeIter => rangeIter.Length);
 
