@@ -1388,7 +1388,7 @@ namespace IntegrationTestDs3
         [Test]
         public void TestHttpsClient()
         {
-            if (RuntimeUtils.IsRunningOnMono()) return;
+            if (RuntimeUtils.IsRunningOnMono()) Assert.Ignore();
 
             var endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
             endpoint = endpoint.ToLower().Replace("http://", "https://");
