@@ -13,17 +13,17 @@
  * ****************************************************************************
  */
 
+using System;
 using Ds3;
 using Ds3.Calls;
 using Ds3.Models;
-using System;
 
 namespace IntegrationTestDS3
 {
     /// <summary>
     /// Provides utilities for testing the Advanced Bucket Management commands
     /// </summary>
-    class ABMTestHelper
+    static class ABMTestHelper
     {
         /// <summary>
         /// Creates a data persistence rule to link the specified data policy and storage domain
@@ -56,7 +56,9 @@ namespace IntegrationTestDS3
             Guid poolPartitionId,
             IDs3Client client)
         {
-            return client.PutPoolStorageDomainMemberSpectraS3(new PutPoolStorageDomainMemberSpectraS3Request(poolPartitionId, storageDomainId));
+            return
+                client.PutPoolStorageDomainMemberSpectraS3(
+                    new PutPoolStorageDomainMemberSpectraS3Request(poolPartitionId, storageDomainId));
         }
 
         /// <summary>
@@ -66,10 +68,10 @@ namespace IntegrationTestDS3
         /// <param name="poolType"></param>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static PutPoolPartitionSpectraS3Response CreatePoolPartition(string poolPartitionName, PoolType poolType, IDs3Client client)
+        public static PutPoolPartitionSpectraS3Response CreatePoolPartition(string poolPartitionName, PoolType poolType,
+            IDs3Client client)
         {
             return client.PutPoolPartitionSpectraS3(new PutPoolPartitionSpectraS3Request(poolPartitionName, poolType));
-
         }
 
         /// <summary>
@@ -88,7 +90,8 @@ namespace IntegrationTestDS3
         /// </summary>
         public static void DeleteDataPersistenceRule(Guid dataPersistenceRuleId, IDs3Client client)
         {
-            client.DeleteDataPersistenceRuleSpectraS3(new DeleteDataPersistenceRuleSpectraS3Request(dataPersistenceRuleId.ToString()));
+            client.DeleteDataPersistenceRuleSpectraS3(
+                new DeleteDataPersistenceRuleSpectraS3Request(dataPersistenceRuleId.ToString()));
         }
 
         /// <summary>

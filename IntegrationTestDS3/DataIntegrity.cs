@@ -13,33 +13,27 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using Ds3;
 using Ds3.Helpers;
 using Ds3.Models;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace IntegrationTestDS3
 {
     [TestFixture]
     internal class DataIntegrity
     {
-        private IDs3Client _client;
-        private readonly List<string> _tempFiles = new List<string>();
-
-        private static string FixtureName = "data_integrity";
-        private static TempStorageIds EnvStorageIds;
-
         [SetUp]
         public void Setup()
         {
             try
             {
                 _client = Ds3TestUtils.CreateClient();
-                Guid dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
-                EnvStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
+                var dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
+                _envStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
             }
             catch (Exception)
             {
@@ -57,7 +51,37 @@ namespace IntegrationTestDS3
             {
                 File.Delete(file);
             }
-            TempStorageUtil.TearDown(FixtureName, EnvStorageIds, _client);
+            TempStorageUtil.TearDown(FixtureName, _envStorageIds, _client);
+        }
+
+        private IDs3Client _client;
+        private readonly List<string> _tempFiles = new List<string>();
+
+        private const string FixtureName = "data_integrity";
+        private static TempStorageIds _envStorageIds;
+
+        [Test]
+        public void GetPartialData()
+        {
+            const string bucketName = "GetPartialData";
+
+            try
+            {
+                Ds3TestUtils.LoadTestData(_client, bucketName);
+                Ds3TestUtils.UsingAllDs3PartialObjectReadStrategies(strategy =>
+                {
+                    var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt",
+                        Range.ByLength(0, 1046), strategy);
+                    _tempFiles.Add(file);
+
+                    var sha1 = Ds3TestUtils.ComputeSha1(file);
+                    Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
+                });
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
         }
 
         [Test]
@@ -71,7 +95,8 @@ namespace IntegrationTestDS3
                     Ds3TestUtils.LoadTestData(_client, bucketName, writeStrategy);
                     Ds3TestUtils.UsingAllStringReadStrategies(readStrategy =>
                     {
-                        var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt", helperStrategy: readStrategy);
+                        var file = Ds3TestUtils.GetSingleObject(_client, bucketName, "beowulf.txt",
+                            helperStrategy: readStrategy);
                         _tempFiles.Add(file);
 
                         var sha1 = Ds3TestUtils.ComputeSha1(file);
@@ -83,29 +108,6 @@ namespace IntegrationTestDS3
                     Ds3TestUtils.DeleteBucket(_client, bucketName);
                 }
             });
-        }
-
-        [Test]
-        public void GetPartialData()
-        {
-            const string bucketName = "GetPartialData";
-
-            try
-            {
-                Ds3TestUtils.LoadTestData(_client, bucketName);
-                Ds3TestUtils.UsingAllDs3PartialObjectReadStrategies(strategy =>
-                {
-                    var file = Ds3TestUtils.GetSingleObjectWithRange(_client, bucketName, "beowulf.txt", Range.ByLength(0, 1046), strategy);
-                    _tempFiles.Add(file);
-
-                    var sha1 = Ds3TestUtils.ComputeSha1(file);
-                    Assert.AreEqual("pHmefq7JfKf4Kd3Yh8WjEf1jLAM=", sha1);
-                });
-            }
-            finally
-            {
-                Ds3TestUtils.DeleteBucket(_client, bucketName);
-            }
         }
 
         [Test]
@@ -131,15 +133,9 @@ namespace IntegrationTestDS3
 
                     var job = helpers.StartReadJob(bucketName, ds3ObjList, strategy);
 
-                    job.ItemCompleted += item =>
-                    {
-                        counter++;
-                    };
+                    job.ItemCompleted += item => { counter++; };
 
-                    job.DataTransferred += item =>
-                    {
-                        dataTransfered += item;
-                    };
+                    job.DataTransferred += item => { dataTransfered += item; };
 
                     job.Transfer(name => Stream.Null);
 
