@@ -19,29 +19,29 @@ using System.Linq;
 
 namespace TestDs3.Lang
 {
-    internal class LangTestHelpers
+    internal static class LangTestHelpers
     {
         public static IEnumerable<string> RandomStrings(int stringCount, int stringSizes)
         {
-            var chars = Enumerable.Range(0, 26).Select(i => (char)('a' + i)).ToArray();
+            var chars = Enumerable.Range(0, 26).Select(i => (char) ('a' + i)).ToArray();
             return RandomStrings(new Random(), stringCount, stringSizes, chars).ToArray();
         }
 
-        public static IEnumerable<string> RandomStrings(Random rand, int stringCount, int stringSizes, char[] chars)
+        private static IEnumerable<string> RandomStrings(Random rand, int stringCount, int stringSizes, char[] chars)
         {
             var buffer = new char[stringSizes];
-            for (int i = 0; i < stringCount; i++)
+            for (var i = 0; i < stringCount; i++)
             {
                 PopulateWithRandom(rand, buffer, chars);
-                yield return new String(buffer);
+                yield return new string(buffer);
             }
         }
 
-        private static void PopulateWithRandom<T>(Random rand, T[] dest, T[] allowed)
+        private static void PopulateWithRandom<T>(Random rand, IList<T> dest, IReadOnlyList<T> allowed)
         {
-            for (int i = 0; i < dest.Length; i++)
+            for (var i = 0; i < dest.Count; i++)
             {
-                dest[i] = allowed[rand.Next(allowed.Length)];
+                dest[i] = allowed[rand.Next(allowed.Count)];
             }
         }
     }

@@ -13,14 +13,14 @@
  * ****************************************************************************
  */
 
-using Ds3;
-using Ds3.Helpers;
-using Moq;
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Ds3;
+using Ds3.Helpers;
 using Ds3.Helpers.Strategies.ChunkStrategies;
+using Moq;
+using NUnit.Framework;
 using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers.Strategies.ChunkStrategies
@@ -28,6 +28,28 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
     [TestFixture]
     public class TransferItemSourceHelpers
     {
+        internal class TransferItemComparer : IComparer<TransferItem>, IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                var xti = x as TransferItem;
+                var yti = y as TransferItem;
+                if (xti != null && yti != null)
+                {
+                    return Compare(xti, yti);
+                }
+                throw new ArgumentException();
+            }
+
+            public int Compare(TransferItem x, TransferItem y)
+            {
+                return Math.Sign(
+                    2*Math.Sign(x.Client.GetHashCode() - y.Client.GetHashCode())
+                    + x.Blob.CompareTo(y.Blob)
+                );
+            }
+        }
+
         [Test]
         public void TestTransferItemComparer()
         {
@@ -45,28 +67,6 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
             Assert.AreEqual(0, comparer.Compare(new TransferItem(client1, blob1), new TransferItem(client1, blob1)));
             Assert.AreNotEqual(0, comparer.Compare(new TransferItem(client1, blob1), new TransferItem(client2, blob1)));
             Assert.AreEqual(1, comparer.Compare(instance1, new TransferItem(client1, blob2)));
-        }
-
-        internal class TransferItemComparer : IComparer<TransferItem>, IComparer
-        {
-            public int Compare(object x, object y)
-            {
-                var xti = x as TransferItem;
-                var yti = y as TransferItem;
-                if (xti != null && yti != null)
-                {
-                    return this.Compare(xti, yti);
-                }
-                throw new ArgumentException();
-            }
-
-            public int Compare(TransferItem x, TransferItem y)
-            {
-                return Math.Sign(
-                    2 * Math.Sign(x.Client.GetHashCode() - y.Client.GetHashCode())
-                    + x.Blob.CompareTo(y.Blob)
-                );
-            }
         }
     }
 }

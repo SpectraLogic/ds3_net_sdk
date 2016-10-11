@@ -13,15 +13,15 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Collections.Generic;
 using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Helpers.Strategies.ChunkStrategies;
+using Ds3.Runtime;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using Ds3.Runtime;
 using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers.Strategies.ChunkStrategies
@@ -32,12 +32,52 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
     public class TestWriteStreamChunkStrategy
     {
         [Test]
+        public void TestEnumerateTransfersResetRetryAfter()
+        {
+            var retryAfter = 5;
+            var jobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(node1Client);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
+
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(() =>
+                {
+                    if (retryAfter == 1) //after 4 retires we want to success
+                    {
+                        return AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false));
+                    }
+
+                    return AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromSeconds(5));
+                });
+
+            var source = new WriteStreamChunkStrategy(_ => { retryAfter--; }, retryAfter);
+
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
+                transfers.MoveNext();
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
+                    //we want to make sure that the retryAfter value was reseted
+                transfers.MoveNext();
+            }
+        }
+
+        [Test]
         public void TestGetNextTransferItems()
         {
             var jobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(Stubs.NodeId1, false, false),
                 Stubs.Chunk2(Stubs.NodeId2, false, false)
-                );
+            );
 
             var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
 
@@ -81,12 +121,120 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 },
                 transfered,
                 new TransferItemSourceHelpers.TransferItemComparer()
-                );
+            );
 
             CollectionAssert.AreEqual(
-                new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5) },
+                new[] {TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)},
                 sleeps
-                );
+            );
+
+            client.VerifyAll();
+            clientFactory.VerifyAll();
+        }
+
+        [Test]
+        public void TestGetNextTransferItemsRetryAfter()
+        {
+            var jobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, false, false)
+            );
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
+
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)));
+
+            var sleeps = new List<TimeSpan>();
+
+            var source = new WriteStreamChunkStrategy(sleeps.Add, 2); //we don't want to really sleep in the tests
+
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 2);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
+                }
+            }
+
+            CollectionAssert.AreEqual(
+                new[] {TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)},
+                sleeps
+            );
+
+            source = new WriteStreamChunkStrategy(_ => { }, 0);
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
+                }
+            }
+
+            source = new WriteStreamChunkStrategy(_ => { }, 1);
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 1);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
+                }
+            }
+
+            source = new WriteStreamChunkStrategy(_ => { }, 2);
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 2);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
+                }
+            }
+
+            source = new WriteStreamChunkStrategy(_ => { }, 100);
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                try
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 100);
+                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
+                    Assert.Fail();
+                }
+                catch (Ds3NoMoreRetriesException ex)
+                {
+                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
+                }
+            }
 
             client.VerifyAll();
             clientFactory.VerifyAll();
@@ -98,7 +246,7 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
             var jobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(Stubs.NodeId1, false, true),
                 Stubs.Chunk2(Stubs.NodeId2, true, false)
-                );
+            );
 
             var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
 
@@ -140,162 +288,15 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 },
                 transfered,
                 new TransferItemSourceHelpers.TransferItemComparer()
-                );
+            );
 
             CollectionAssert.AreEqual(
-                new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5) },
-                sleeps
-                );
-
-            client.VerifyAll();
-            clientFactory.VerifyAll();
-        }
-
-        [Test]
-        public void TestGetNextTransferItemsRetryAfter()
-        {
-            var jobResponse = Stubs.BuildJobResponse(
-                            Stubs.Chunk1(Stubs.NodeId1, false, false)
-                        );
-
-            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
-
-            client
-                .Setup(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)));
-
-            var sleeps = new List<TimeSpan>();
-
-            var source = new WriteStreamChunkStrategy(sleeps.Add, 2); //we don't want to really sleep in the tests
-
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                try
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 2);
-                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
-                    Assert.Fail();
-                }
-                catch (Ds3NoMoreRetriesException ex)
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
-                }
-            }
-
-            CollectionAssert.AreEqual(
-                new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5) },
+                new[] {TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)},
                 sleeps
             );
 
-            source = new WriteStreamChunkStrategy(_ => { }, 0);
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                try
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
-                    Assert.Fail();
-                }
-                catch (Ds3NoMoreRetriesException ex)
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
-                }
-            }
-
-            source = new WriteStreamChunkStrategy(_ => { }, 1);
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                try
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 1);
-                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
-                    Assert.Fail();
-                }
-                catch (Ds3NoMoreRetriesException ex)
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
-                }
-            }
-
-            source = new WriteStreamChunkStrategy(_ => { }, 2);
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                try
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 2);
-                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
-                    Assert.Fail();
-                }
-                catch (Ds3NoMoreRetriesException ex)
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
-                }
-            }
-
-            source = new WriteStreamChunkStrategy(_ => { }, 100);
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                try
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 100);
-                    transfers.MoveNext(); //Should throw Ds3NoMoreRetriesException
-                    Assert.Fail();
-                }
-                catch (Ds3NoMoreRetriesException ex)
-                {
-                    Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
-                }
-            }
-
             client.VerifyAll();
             clientFactory.VerifyAll();
-        }
-
-        [Test]
-        public void TestEnumerateTransfersResetRetryAfter()
-        {
-            var retryAfter = 5;
-            var jobResponse = Stubs.BuildJobResponse(
-                            Stubs.Chunk1(Stubs.NodeId1, false, false)
-                        );
-
-            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
-
-            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(node1Client);
-
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
-
-            client
-                .Setup(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(() =>
-                {
-                    if (retryAfter == 1) //after 4 retires we want to success
-                    {
-                        return AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false));
-                    }
-
-                    return AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromSeconds(5));
-                });
-
-            var source = new WriteStreamChunkStrategy(_ => { retryAfter--; }, retryAfter);
-
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
-                transfers.MoveNext();
-                Assert.True(source.RetryAfer.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
-                transfers.MoveNext();
-            }
         }
     }
 }

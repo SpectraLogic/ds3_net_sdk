@@ -26,7 +26,12 @@ namespace TestDs3.Helpers.Transferrers
     [TestFixture]
     internal class TestBestEffort
     {
-        [Test, TestCase(0), TestCase(1), TestCase(2), TestCase(3), TestCase(4)]
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
         public void TestCanRetry(int currentTry)
         {
             Stream stream = new MemoryStream();
@@ -56,13 +61,16 @@ namespace TestDs3.Helpers.Transferrers
             var currentTryBefore = 0;
             IEnumerable<Range> rages = new List<Range>();
             ITransferrer transferrer = new ReadTransferrer();
-            BestEffort.ModifyForRetry(stream, 5, ref currentTryBefore, "Test", 10, ref rages, ref transferrer, new Ds3ContentLengthNotMatch("", 0, 0));
+            BestEffort.ModifyForRetry(stream, 5, ref currentTryBefore, "Test", 10, ref rages, ref transferrer,
+                new Ds3ContentLengthNotMatch("", 0, 0));
 
             Assert.AreEqual(1, currentTryBefore);
             Assert.AreEqual(9, stream.Position);
         }
 
-        [Test, TestCase(5), TestCase(6)]
+        [Test]
+        [TestCase(5)]
+        [TestCase(6)]
         public void TestModifyForRetryDs3NoMoreRetransmitException(int currentTry)
         {
             try
@@ -85,8 +93,8 @@ namespace TestDs3.Helpers.Transferrers
         {
             Stream stream = new NonSeekableStream();
             var currentTry = 0;
-            Assert.Throws<Ds3NotSupportedStream>(() => BestEffort.ModifyForRetry(stream, 1, ref currentTry, "Test", 0, null));
-            
+            Assert.Throws<Ds3NotSupportedStream>(
+                () => BestEffort.ModifyForRetry(stream, 1, ref currentTry, "Test", 0, null));
         }
     }
 }

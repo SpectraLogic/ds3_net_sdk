@@ -21,9 +21,38 @@ namespace TestDs3.Lang
     public class TestCompareChain
     {
         [Test]
-        public void CompareChainStartsAtZero()
+        public void CompareChainCanCompareNullables()
         {
-            Assert.AreEqual(0, CompareChain.Of("foo", "bar").Result);
+            Assert.AreEqual(
+                0,
+                CompareChain.Of(new {foo = (int?) 1}, new {foo = (int?) 1})
+                    .Value(it => it.foo)
+                    .Result
+            );
+            Assert.AreEqual(
+                -1,
+                CompareChain.Of(new {foo = (int?) null}, new {foo = (int?) 1})
+                    .Value(it => it.foo)
+                    .Result
+            );
+            Assert.AreEqual(
+                1,
+                CompareChain.Of(new {foo = (int?) 1}, new {foo = (int?) null})
+                    .Value(it => it.foo)
+                    .Result
+            );
+            Assert.AreEqual(
+                -1,
+                CompareChain.Of(new {foo = (int?) 1}, new {foo = (int?) 2})
+                    .Value(it => it.foo)
+                    .Result
+            );
+            Assert.AreEqual(
+                1,
+                CompareChain.Of(new {foo = (int?) 2}, new {foo = (int?) 1})
+                    .Value(it => it.foo)
+                    .Result
+            );
         }
 
         [Test]
@@ -31,21 +60,21 @@ namespace TestDs3.Lang
         {
             Assert.AreEqual(
                 -1,
-                CompareChain.Of(new { foo = "foo", bar = "bar" }, new { foo = "foo1", bar = "bar" })
+                CompareChain.Of(new {foo = "foo", bar = "bar"}, new {foo = "foo1", bar = "bar"})
                     .Value(it => it.foo)
                     .Value(it => it.bar)
                     .Result
             );
             Assert.AreEqual(
                 1,
-                CompareChain.Of(new { foo = "foo", bar = "bar1" }, new { foo = "foo", bar = "bar" })
+                CompareChain.Of(new {foo = "foo", bar = "bar1"}, new {foo = "foo", bar = "bar"})
                     .Value(it => it.foo)
                     .Value(it => it.bar)
                     .Result
             );
             Assert.AreEqual(
                 0,
-                CompareChain.Of(new { foo = "foo", bar = "bar" }, new { foo = "foo", bar = "bar" })
+                CompareChain.Of(new {foo = "foo", bar = "bar"}, new {foo = "foo", bar = "bar"})
                     .Value(it => it.foo)
                     .Value(it => it.bar)
                     .Result
@@ -53,38 +82,9 @@ namespace TestDs3.Lang
         }
 
         [Test]
-        public void CompareChainCanCompareNullables()
+        public void CompareChainStartsAtZero()
         {
-            Assert.AreEqual(
-                0,
-                CompareChain.Of(new { foo = (int?)1 }, new { foo = (int?)1 })
-                    .Value(it => it.foo)
-                    .Result
-            );
-            Assert.AreEqual(
-                -1,
-                CompareChain.Of(new { foo = (int?)null }, new { foo = (int?)1 })
-                    .Value(it => it.foo)
-                    .Result
-            );
-            Assert.AreEqual(
-                1,
-                CompareChain.Of(new { foo = (int?)1 }, new { foo = (int?)null })
-                    .Value(it => it.foo)
-                    .Result
-            );
-            Assert.AreEqual(
-                -1,
-                CompareChain.Of(new { foo = (int?)1 }, new { foo = (int?)2 })
-                    .Value(it => it.foo)
-                    .Result
-            );
-            Assert.AreEqual(
-                1,
-                CompareChain.Of(new { foo = (int?)2 }, new { foo = (int?)1 })
-                    .Value(it => it.foo)
-                    .Result
-            );
+            Assert.AreEqual(0, CompareChain.Of("foo", "bar").Result);
         }
     }
 }

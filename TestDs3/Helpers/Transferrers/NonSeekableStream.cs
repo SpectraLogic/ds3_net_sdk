@@ -20,10 +20,12 @@ namespace TestDs3.Helpers.Transferrers
 {
     internal class NonSeekableStream : Stream
     {
-        public NonSeekableStream()
-        {
-            
-        }
+        public override bool CanRead { get; }
+        public override bool CanSeek => false;
+        public override bool CanWrite { get; }
+        public override long Length { get; }
+        public override long Position { get; set; }
+
         public override void Flush()
         {
             throw new NotImplementedException();
@@ -48,11 +50,5 @@ namespace TestDs3.Helpers.Transferrers
         {
             throw new NotImplementedException();
         }
-
-        public override bool CanRead { get; }
-        public override bool CanSeek => false;
-        public override bool CanWrite { get; }
-        public override long Length { get; }
-        public override long Position { get; set; }
     }
 }

@@ -13,11 +13,11 @@
  * ****************************************************************************
  */
 
-using Ds3.Lang;
-using NUnit.Framework;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using Ds3.Lang;
+using NUnit.Framework;
 
 namespace TestDs3.Lang
 {
@@ -33,7 +33,7 @@ namespace TestDs3.Lang
             {
                 var tse = new ThreadSafeEnumerator<string>(stringsEnumerator);
                 var threads = new List<Thread>();
-                for (int i = 0; i < 10; i++)
+                for (var i = 0; i < 10; i++)
                 {
                     var thread = new Thread(() =>
                     {

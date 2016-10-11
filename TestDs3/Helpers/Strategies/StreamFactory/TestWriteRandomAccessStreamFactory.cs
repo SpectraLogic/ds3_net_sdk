@@ -13,11 +13,11 @@
  * ****************************************************************************
  */
 
-using Ds3.Helpers.Strategies.StreamFactory;
-using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
+using Ds3.Helpers.Strategies.StreamFactory;
+using NUnit.Framework;
 
 namespace TestDs3.Helpers.Strategies.StreamFactory
 {
@@ -26,6 +26,29 @@ namespace TestDs3.Helpers.Strategies.StreamFactory
     [TestFixture]
     public class TestWriteRandomAccessStreamFactory
     {
+        [Test]
+        public void TestCloseBlob()
+        {
+            var factory = new WriteRandomAccessStreamFactory();
+            Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
+
+            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
+
+            factory.CloseBlob(Stubs.Blob1);
+        }
+
+        [Test]
+        public void TestCloseBlobException()
+        {
+            var factory = new WriteRandomAccessStreamFactory();
+            Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
+
+            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
+
+            factory.CloseBlob(Stubs.Blob1);
+            Assert.Throws<StreamNotFoundException>(() => factory.CloseBlob(Stubs.Blob2));
+        }
+
         [Test]
         public void TestCreateStreamGetNewStreamForEachBlob()
         {
@@ -48,29 +71,6 @@ namespace TestDs3.Helpers.Strategies.StreamFactory
             var stream2 = factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
 
             Assert.AreEqual(stream1, stream2);
-        }
-
-        [Test]
-        public void TestCloseBlob()
-        {
-            var factory = new WriteRandomAccessStreamFactory();
-            Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
-
-            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
-
-            factory.CloseBlob(Stubs.Blob1);
-        }
-
-        [Test]
-        public void TestCloseBlobException()
-        {
-            var factory = new WriteRandomAccessStreamFactory();
-            Func<string, Stream> func = name => new MemoryStream(Encoding.UTF8.GetBytes("I am a stream"));
-
-            factory.CreateStream(func, null, Stubs.Blob1, Stubs.Blob1Length);
-
-            factory.CloseBlob(Stubs.Blob1);
-            Assert.Throws<StreamNotFoundException>(() => factory.CloseBlob(Stubs.Blob2));
         }
     }
 }

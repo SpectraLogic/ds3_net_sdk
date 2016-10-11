@@ -13,12 +13,12 @@
  * ****************************************************************************
  */
 
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NUnit.Framework;
 
 namespace TestDs3
 {
@@ -46,7 +46,8 @@ namespace TestDs3
             return new MemoryStream(Encoding.UTF8.GetBytes(responseString));
         }
 
-        internal static void AssertCollectionsEqual<T1, T2>(IEnumerable<T1> expected, IEnumerable<T2> actual, Action<T1, T2> assertion)
+        internal static void AssertCollectionsEqual<T1, T2>(IEnumerable<T1> expected, IEnumerable<T2> actual,
+            Action<T1, T2> assertion)
         {
             var expectedList = expected.ToList();
             var actualList = actual.ToList();

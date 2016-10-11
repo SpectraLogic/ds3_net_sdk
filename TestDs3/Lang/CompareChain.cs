@@ -40,7 +40,7 @@ namespace TestDs3.Lang
         private readonly T _x;
         private readonly T _y;
 
-        public int Result { get; private set; }
+        public int Result { get; }
 
         public CompareChain(T x, T y)
             : this(x, y, 0)
@@ -50,24 +50,24 @@ namespace TestDs3.Lang
         private CompareChain(T x, T y, int result)
             : this()
         {
-            this._x = x;
-            this._y = y;
-            this.Result = result;
+            _x = x;
+            _y = y;
+            Result = result;
         }
 
         public CompareChain<T> Value<TValue>(Func<T, TValue> valueOf)
         {
-            return this.Value(valueOf, Comparer<TValue>.Default);
+            return Value(valueOf, Comparer<TValue>.Default);
         }
 
         public CompareChain<T> Value<TValue>(Func<T, TValue> valueOf, IComparer<TValue> comparer)
         {
             return new CompareChain<T>(
-                this._x,
-                this._y,
-                this.Result == 0
-                    ? comparer.Compare(valueOf(this._x), valueOf(this._y))
-                    : this.Result
+                _x,
+                _y,
+                Result == 0
+                    ? comparer.Compare(valueOf(_x), valueOf(_y))
+                    : Result
             );
         }
     }
