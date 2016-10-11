@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ds3Examples</RootNamespace>
     <AssemblyName>Ds3Examples</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,8 +36,8 @@
     <StartupObject>Ds3Examples.BulkPutExample</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ds3_net_sdk, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ds3_net_sdk.3.2.2.0\lib\net40\ds3_net_sdk.dll</HintPath>
+    <Reference Include="ds3_net_sdk, Version=3.2.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ds3_net_sdk.3.2.5.0\lib\net45\ds3_net_sdk.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
