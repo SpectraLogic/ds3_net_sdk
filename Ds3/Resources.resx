@@ -222,4 +222,7 @@
   <data name="NotSupportedStream" xml:space="preserve">
     <value>Non seekable stream are not supported for PUTs retransmit</value>
   </data>
+  <data name="HttpsNotSupportedOnMono" xml:space="preserve">
+    <value>HTTPS requests are not supported on Mono.</value>
+  </data>
 </root>

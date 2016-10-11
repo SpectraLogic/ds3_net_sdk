@@ -178,6 +178,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTPS requests are not supported on Mono..
+        /// </summary>
+        internal static string HttpsNotSupportedOnMono {
+            get {
+                return ResourceManager.GetString("HttpsNotSupportedOnMono", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enum value not accounted for in a switch statement intended to be exhaustive..
         /// </summary>
         internal static string InvalidEnumValueException {

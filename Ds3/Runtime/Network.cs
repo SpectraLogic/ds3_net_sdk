@@ -89,6 +89,8 @@ namespace Ds3.Runtime
                     if (SdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.RequestLogging, request.GetType())); }
                     if (SdkNetworkSwitch.TraceVerbose) { Trace.WriteLine(request.getDescription(BuildQueryParams(request.QueryParams))); }
 
+                    Ds3ServerCertificateValidation.OverrideValidation();
+
                     var ds3WebRequest = _createDs3WebRequestFunc(request, content);
                     try
                     {
