@@ -99,7 +99,8 @@ namespace Ds3Examples
                         }
                     }
                 },
-                Thread.Sleep);
+                Thread.Sleep // If this matcher is called this means that we need to wait before we can safely continue processing chunks
+                );
             }
         }
     }
