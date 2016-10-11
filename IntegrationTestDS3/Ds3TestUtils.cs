@@ -101,7 +101,7 @@ namespace IntegrationTestDS3
             }
         }
 
-        private static void PutFiles(IDs3Client client, string bucketName, IEnumerable<Ds3Object> files,
+        public static void PutFiles(IDs3Client client, string bucketName, IEnumerable<Ds3Object> files,
             Func<string, Stream> createStreamForTransferItem, IHelperStrategy<string> helperStrategy = null)
         {
             IDs3ClientHelpers helper = new Ds3ClientHelpers(client);
