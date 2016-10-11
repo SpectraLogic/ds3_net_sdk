@@ -61,12 +61,12 @@ namespace Ds3Examples
             // Continue processing until all the chunks have been sent.
             while (chunkSet.Count > 0)
             {
-                // Get the set of chunks that are currentlty available for procesing
+                // Get the set of chunks that are currently available for processing
                 var chunkResponse = client.GetJobChunksReadyForClientProcessingSpectraS3(
                     new GetJobChunksReadyForClientProcessingSpectraS3Request(jobId)
                         .WithPreferredNumberOfChunks(10)); // This can be changed to any number
                                                            // but 10 is a good default and you
-                                                           // are not guarunteed to get this many         
+                                                           // are not guaranteed to get this many         
 
                 chunkResponse.Match((ts, response) =>
                 {
@@ -84,12 +84,12 @@ namespace Ds3Examples
                         foreach (var obj in chunk.ObjectsList)
                         {
                             // Create the stream and seek to the correct position for that
-                            // blob offset, and then wrap in a PutObjectRequestStream to 
-                            // limit the amount of data transffered to the lenght of the 
+                            // blob offset, and then wrap in a ObjectRequestStream to 
+                            // limit the amount of data transferred to the length of the 
                             // blob being processed.
                             var stream = streamBuilder.Invoke(obj.Name);
                             stream.Seek(obj.Offset, System.IO.SeekOrigin.Begin);
-                            var wrappedStream = new PutObjectRequestStream(stream, obj.Length);
+                            var wrappedStream = new ObjectRequestStream(stream, obj.Length);
 
                             // Put the blob
                             client.PutObject(
@@ -99,11 +99,8 @@ namespace Ds3Examples
                         }
                     }
                 },
-                ts => {
-                    // If this matcher is called this means that we need to wait before we can safely
-                    // continue processing chunks
-                    Thread.Sleep(ts);
-                });
+                Thread.Sleep // If this matcher is called this means that we need to wait before we can safely continue processing chunks
+                );
             }
         }
     }
