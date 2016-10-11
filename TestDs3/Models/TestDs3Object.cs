@@ -21,8 +21,7 @@ namespace TestDs3.Models
     [TestFixture]
     public class TestDs3Object
     {
-        private static Ds3Object[] _ds3Objects = new[]
-        {
+        private static readonly Ds3Object[] Ds3Objects = {
             new Ds3Object("foo", null),
             new Ds3Object("bar", null),
             new Ds3Object("foo", 123L),
@@ -31,28 +30,8 @@ namespace TestDs3.Models
             new Ds3Object("bar", 321L),
         };
 
-        [Test, TestCaseSource("_ds3Objects")]
-        public void Ds3ObjectsReturnConsistentHashCodes(Ds3Object ds3Object)
-        {
-            var hashCode1 = ds3Object.GetHashCode();
-            Assert.AreNotEqual(hashCode1, 0);
-            Assert.AreEqual(hashCode1, ds3Object.GetHashCode());
-            Assert.AreEqual(hashCode1, new Ds3Object(ds3Object.Name, ds3Object.Size).GetHashCode());
-        }
-
-        [Test, TestCaseSource("_ds3Objects")]
-        public void Ds3ObjectEqualsReturnsTrueWhenSameInstance(Ds3Object ds3Object)
-        {
-            Assert.IsTrue(ds3Object.Equals(ds3Object));
-        }
-
-        [Test, TestCaseSource("_ds3Objects")]
-        public void Ds3ObjectEqualsReturnsTrueWhenCopyOfSelf(Ds3Object ds3Object)
-        {
-            Assert.IsTrue(ds3Object.Equals(new Ds3Object(ds3Object.Name, ds3Object.Size)));
-        }
-
-        [Test, TestCaseSource("_ds3Objects")]
+        [Test]
+        [TestCaseSource(nameof(Ds3Objects))]
         public void Ds3ObjectEqualsReturnsFalseWhenComparingNull(Ds3Object ds3Object)
         {
             Assert.IsFalse(ds3Object.Equals(null));
@@ -61,16 +40,40 @@ namespace TestDs3.Models
         [Test]
         public void Ds3ObjectEqualsReturnsFalseWhenComparingOthers()
         {
-            for (int i = 0; i < _ds3Objects.Length; i++)
+            for (var i = 0; i < Ds3Objects.Length; i++)
             {
-                for (int j = 0; j < _ds3Objects.Length; j++)
+                for (var j = 0; j < Ds3Objects.Length; j++)
                 {
                     if (i != j)
                     {
-                        Assert.IsFalse(_ds3Objects[i].Equals(_ds3Objects[j]));
+                        Assert.IsFalse(Ds3Objects[i].Equals(Ds3Objects[j]));
                     }
                 }
             }
+        }
+
+        [Test]
+        [TestCaseSource(nameof(Ds3Objects))]
+        public void Ds3ObjectEqualsReturnsTrueWhenCopyOfSelf(Ds3Object ds3Object)
+        {
+            Assert.IsTrue(ds3Object.Equals(new Ds3Object(ds3Object.Name, ds3Object.Size)));
+        }
+
+        [Test]
+        [TestCaseSource(nameof(Ds3Objects))]
+        public void Ds3ObjectEqualsReturnsTrueWhenSameInstance(Ds3Object ds3Object)
+        {
+            Assert.IsTrue(ds3Object.Equals(ds3Object));
+        }
+
+        [Test]
+        [TestCaseSource(nameof(Ds3Objects))]
+        public void Ds3ObjectsReturnConsistentHashCodes(Ds3Object ds3Object)
+        {
+            var hashCode1 = ds3Object.GetHashCode();
+            Assert.AreNotEqual(hashCode1, 0);
+            Assert.AreEqual(hashCode1, ds3Object.GetHashCode());
+            Assert.AreEqual(hashCode1, new Ds3Object(ds3Object.Name, ds3Object.Size).GetHashCode());
         }
     }
 }

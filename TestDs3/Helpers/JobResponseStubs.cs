@@ -1,14 +1,24 @@
-﻿using Ds3.Calls;
-using Ds3.Models;
+﻿/*
+ * ******************************************************************************
+ *   Copyright 2014-2016 Spectra Logic Corporation. All Rights Reserved.
+ *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+ *   this file except in compliance with the License. A copy of the License is located at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file.
+ *   This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ *   CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ *   specific language governing permissions and limitations under the License.
+ * ****************************************************************************
+ */
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ds3.Models;
 
 namespace TestDs3.Helpers
 {
-    class JobResponseStubs
+    internal static class JobResponseStubs
     {
         public const string BucketName = "test-bucket";
         public static readonly Guid JobId = Guid.Parse("b99b7fe5-b787-4b53-9dfb-1a0f7d336ada");
@@ -17,16 +27,16 @@ namespace TestDs3.Helpers
         public static readonly Guid ChunkId1 = Guid.Parse("b63a0481-7020-4306-9a9e-384102adf901");
         public static readonly Guid ChunkId2 = Guid.Parse("ea100286-97d5-47f2-b1ee-a917262bc02d");
         public static readonly Guid ChunkId3 = Guid.Parse("8698c831-bbf4-4eb7-b7a9-22a4215771f6");
-        public static readonly JobNode[] Nodes = new[]
-        {
-            new JobNode()
+
+        public static readonly JobNode[] Nodes = {
+            new JobNode
             {
                 Id = NodeId1,
                 EndPoint = "http://192.168.10.1",
                 HttpPort = 80,
                 HttpsPort = 443
             },
-            new JobNode()
+            new JobNode
             {
                 Id = NodeId2,
                 EndPoint = "http://192.168.10.2",
@@ -49,7 +59,7 @@ namespace TestDs3.Helpers
 
         public static MasterObjectList BuildJobResponse(params Objects[] chunks)
         {
-            return new MasterObjectList()
+            return new MasterObjectList
             {
                 BucketName = BucketName,
                 JobId = JobId,
@@ -60,13 +70,12 @@ namespace TestDs3.Helpers
                 Nodes = Nodes,
                 Objects = chunks,
                 Status = JobStatus.IN_PROGRESS
-
             };
         }
 
         public static MasterObjectList BuildPutJobResponse(params Objects[] chunks)
         {
-            return new MasterObjectList()
+            return new MasterObjectList
             {
                 BucketName = BucketName,
                 JobId = JobId,
@@ -77,20 +86,19 @@ namespace TestDs3.Helpers
                 Nodes = Nodes,
                 Objects = chunks,
                 Status = JobStatus.IN_PROGRESS
-
             };
         }
 
         public static Objects ReadFailureChunk(Guid? nodeId, bool inCache)
         {
-            return new Objects()
+            return new Objects
             {
                 ChunkId = ChunkId1,
                 ChunkNumber = 1,
                 NodeId = nodeId,
                 ObjectsList = new[]
                 {
-                    new BulkObject()
+                    new BulkObject
                     {
                         Name = "bar",
                         Length = 20,
@@ -103,21 +111,21 @@ namespace TestDs3.Helpers
 
         public static Objects Chunk1(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
-            return new Objects()
+            return new Objects
             {
                 ChunkId = ChunkId1,
                 ChunkNumber = 1,
                 NodeId = nodeId,
                 ObjectsList = new[]
                 {
-                    new BulkObject()
+                    new BulkObject
                     {
                         Name = "bar",
                         Length = 15,
                         Offset = 0,
                         InCache = firstInCache
                     },
-                    new BulkObject()
+                    new BulkObject
                     {
                         Name = "foo",
                         Length = 10,
@@ -130,21 +138,21 @@ namespace TestDs3.Helpers
 
         public static Objects Chunk2(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
-            return new Objects()
+            return new Objects
             {
                 ChunkId = ChunkId2,
                 ChunkNumber = 2,
                 NodeId = nodeId,
                 ObjectsList = new[]
                 {
-                    new BulkObject()
+                    new BulkObject
                     {
                         Name = "foo",
                         Length = 10,
                         Offset = 10,
                         InCache = firstInCache
                     },
-                    new BulkObject()
+                    new BulkObject
                     {
                         Name = "bar",
                         Length = 20,
@@ -157,21 +165,21 @@ namespace TestDs3.Helpers
 
         public static Objects Chunk3(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
-            return new Objects()
+            return new Objects
             {
                 ChunkId = ChunkId3,
                 ChunkNumber = 3,
                 NodeId = nodeId,
                 ObjectsList = new[]
                 {
-                    new BulkObject()
+                    new BulkObject
                     {
                         Name = "hello",
                         Length = 10,
                         Offset = 0,
                         InCache = firstInCache
                     },
-                    new BulkObject()
+                    new BulkObject
                     {
                         Name = "bar",
                         Length = 11,

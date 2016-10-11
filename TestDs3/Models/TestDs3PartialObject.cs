@@ -13,64 +13,63 @@
  * ****************************************************************************
  */
 
-using Ds3.Models;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Ds3.Models;
+using NUnit.Framework;
 
 namespace TestDs3.Models
 {
     [TestFixture]
     public class TestDs3PartialObject
     {
-        [Test]
-        public void EqualsWorks()
+        private static readonly IEnumerable<object[]> ComparisonTestCases = new[]
         {
-            var item = new Ds3PartialObject(Range.ByLength(1, 10), "foo");
-            Assert.True(item.Equals(item));
-            Assert.True(item.Equals(new Ds3PartialObject (Range.ByLength(1, 10), "foo")));
-            Assert.False(item.Equals(new Ds3PartialObject(Range.ByLength(1, 10), "bar")));
-            Assert.False(item.Equals(new Ds3PartialObject(Range.ByLength(0, 10), "foo")));
-            Assert.False(item.Equals(new Ds3PartialObject(Range.ByLength(0, 10), "bar")));
-            Assert.False(item.Equals(null));
-            Assert.False(item.Equals(new { Name = "foo", Range = Range.ByLength(1, 10) }));
-        }
-
-        [Test]
-        public void GetHashCodeDoesNotThrowException()
-        {
-            Assert.AreNotEqual(0, new Ds3PartialObject(Range.ByLength(1, 10), "foo").GetHashCode());
-        }
-
-        private static IEnumerable<object[]> ComparisonTestCases = new[]
-        {
-            new object[] { -1, new Ds3PartialObject(Range.ByLength(1, 10), "grand") },
-            new object[] { -1, new Ds3PartialObject(Range.ByLength(0, 10), "grand") },
-            new object[] { -1, new Ds3PartialObject(Range.ByLength(2, 10), "grand") },
-
-            new object[] { -1, new Ds3PartialObject(Range.ByLength(2, 10), "foo") },
-            new object[] { 0, new Ds3PartialObject (Range.ByLength(1, 10), "foo") },
-            new object[] { 1, new Ds3PartialObject (Range.ByLength(0, 10), "foo") },
-
-            new object[] { 1, new Ds3PartialObject(Range.ByLength(1, 10), "bar") },
-            new object[] { 1, new Ds3PartialObject(Range.ByLength(0, 10), "bar") },
-            new object[] { 1, new Ds3PartialObject(Range.ByLength(2, 10), "bar") },
+            new object[] {-1, new Ds3PartialObject(Range.ByLength(1, 10), "grand")},
+            new object[] {-1, new Ds3PartialObject(Range.ByLength(0, 10), "grand")},
+            new object[] {-1, new Ds3PartialObject(Range.ByLength(2, 10), "grand")},
+            new object[] {-1, new Ds3PartialObject(Range.ByLength(2, 10), "foo")},
+            new object[] {0, new Ds3PartialObject(Range.ByLength(1, 10), "foo")},
+            new object[] {1, new Ds3PartialObject(Range.ByLength(0, 10), "foo")},
+            new object[] {1, new Ds3PartialObject(Range.ByLength(1, 10), "bar")},
+            new object[] {1, new Ds3PartialObject(Range.ByLength(0, 10), "bar")},
+            new object[] {1, new Ds3PartialObject(Range.ByLength(2, 10), "bar")},
         };
 
         [Test]
         public void CompareToWithInvalidTypesThrowsException()
         {
             var item = new Ds3PartialObject(Range.ByLength(1, 10), "foo");
-            Assert.Throws<ArgumentException>(() => item.CompareTo(new { Name = "foo", Range = Range.ByLength(1, 10) }));
+            Assert.Throws<ArgumentException>(() => item.CompareTo(new {Name = "foo", Range = Range.ByLength(1, 10)}));
             Assert.Throws<ArgumentNullException>(() => item.CompareTo(null));
         }
 
-        [Test, TestCaseSource("ComparisonTestCases")]
+        [Test]
+        [TestCaseSource(nameof(ComparisonTestCases))]
         public void CompareToWorks(int result, Ds3PartialObject other)
         {
             var item = new Ds3PartialObject(Range.ByLength(1, 10), "foo");
-            Assert.AreEqual(result, item.CompareTo((object)other));
+            Assert.AreEqual(result, item.CompareTo((object) other));
             Assert.AreEqual(result, item.CompareTo(other));
+        }
+
+        [Test]
+        public void EqualsWorks()
+        {
+            var item = new Ds3PartialObject(Range.ByLength(1, 10), "foo");
+            Assert.True(item.Equals(item));
+            Assert.True(item.Equals(new Ds3PartialObject(Range.ByLength(1, 10), "foo")));
+            Assert.False(item.Equals(new Ds3PartialObject(Range.ByLength(1, 10), "bar")));
+            Assert.False(item.Equals(new Ds3PartialObject(Range.ByLength(0, 10), "foo")));
+            Assert.False(item.Equals(new Ds3PartialObject(Range.ByLength(0, 10), "bar")));
+            Assert.False(item.Equals(null));
+            Assert.False(item.Equals(new {Name = "foo", Range = Range.ByLength(1, 10)}));
+        }
+
+        [Test]
+        public void GetHashCodeDoesNotThrowException()
+        {
+            Assert.AreNotEqual(0, new Ds3PartialObject(Range.ByLength(1, 10), "foo").GetHashCode());
         }
     }
 }

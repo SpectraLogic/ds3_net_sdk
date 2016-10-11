@@ -15,11 +15,11 @@
 
 using System.Collections.Generic;
 using System.IO;
-using NUnit.Framework;
-using Moq;
 using Ds3;
-using Ds3.Runtime;
 using Ds3.Helpers.Transferrers;
+using Ds3.Runtime;
+using Moq;
+using NUnit.Framework;
 using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers.Transferrers
@@ -27,43 +27,21 @@ namespace TestDs3.Helpers.Transferrers
     [TestFixture]
     internal class TestPartialDataTransferrerDecorator
     {
-
-        [Test]
-        public void TestZeroRetries()
-        {
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            MockHelpers.SetupGetObjectWithContentLengthMismatchException(client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L); // The initial request is for all 20 bytes, but only the first 10 will be sent
-
-            try
-            {
-                var stream = new MemoryStream(200);
-                var exceptionTransferrer = new ReadTransferrer();
-                var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 0);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null, 0);
-                Assert.Fail();
-            }
-            catch (Ds3NoMoreRetransmitException ex)
-            {
-                var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "0", "bar", "0");
-                Assert.AreEqual(expectedMessage, ex.Message);
-
-                Assert.AreEqual(0, ex.Retries);
-            }
-        }
-
         [Test]
         public void Test1Retries()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             MockHelpers.SetupGetObjectWithContentLengthMismatchException(client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L);
-            MockHelpers.SetupGetObjectWithContentLengthMismatchException(client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L, Range.ByPosition(9, 19));
+            MockHelpers.SetupGetObjectWithContentLengthMismatchException(client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L,
+                Range.ByPosition(9, 19));
             try
             {
                 var stream = new MemoryStream(200);
                 var exceptionTransferrer = new ReadTransferrer();
                 var retries = 1;
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, retries);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId, new List<Range>(), stream, null, null, retries);
+                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
+                    new List<Range>(), stream, null, null, retries);
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)
@@ -75,5 +53,29 @@ namespace TestDs3.Helpers.Transferrers
             }
         }
 
+        [Test]
+        public void TestZeroRetries()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            MockHelpers.SetupGetObjectWithContentLengthMismatchException(client, "bar", 0L, "ABCDEFGHIJ", 20L, 10L);
+                // The initial request is for all 20 bytes, but only the first 10 will be sent
+
+            try
+            {
+                var stream = new MemoryStream(200);
+                var exceptionTransferrer = new ReadTransferrer();
+                var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 0);
+                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
+                    new List<Range>(), stream, null, null, 0);
+                Assert.Fail();
+            }
+            catch (Ds3NoMoreRetransmitException ex)
+            {
+                var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "0", "bar", "0");
+                Assert.AreEqual(expectedMessage, ex.Message);
+
+                Assert.AreEqual(0, ex.Retries);
+            }
+        }
     }
 }

@@ -13,12 +13,11 @@
  * ****************************************************************************
  */
 
-using Ds3.Helpers;
+using System.Linq;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Lang;
 using Ds3.Models;
 using NUnit.Framework;
-using System.Linq;
 
 namespace TestDs3.Helpers.RangeTranslators
 {
@@ -39,13 +38,13 @@ namespace TestDs3.Helpers.RangeTranslators
             var rt = new RequestToObjectRangeTranslator(
                 new[]
                 {
-                    new[] { Range.ByLength(5L, 5L) }.ToGrouping(blobs[0]),
+                    new[] {Range.ByLength(5L, 5L)}.ToGrouping(blobs[0]),
                     new[]
                     {
                         Range.ByLength(10L, 5L),
                         Range.ByLength(17L, 3L),
                     }.ToGrouping(blobs[1]),
-                    new[] { Range.ByLength(20L, 7L) }.ToGrouping(blobs[2]),
+                    new[] {Range.ByLength(20L, 7L)}.ToGrouping(blobs[2]),
                 }.ToLookup()
             );
             CollectionAssert.AreEqual(

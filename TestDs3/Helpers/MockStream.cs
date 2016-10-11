@@ -20,8 +20,6 @@ namespace TestDs3.Helpers
 {
     internal class MockStream : MemoryStream
     {
-        public byte[] Result { get; private set; }
-
         public MockStream()
         {
         }
@@ -29,13 +27,15 @@ namespace TestDs3.Helpers
         public MockStream(string data)
         {
             var buffer = new UTF8Encoding(false).GetBytes(data);
-            this.Write(buffer, 0, buffer.Length);
-            this.Position = 0L;
+            Write(buffer, 0, buffer.Length);
+            Position = 0L;
         }
+
+        public byte[] Result { get; private set; }
 
         protected override void Dispose(bool disposing)
         {
-            this.Result = this.ToArray();
+            Result = ToArray();
             base.Dispose(disposing);
         }
     }

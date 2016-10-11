@@ -13,10 +13,10 @@
  * ****************************************************************************
  */
 
+using System.Linq;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Models;
 using NUnit.Framework;
-using System.Linq;
 
 namespace TestDs3.Helpers.RangeTranslators
 {
@@ -29,7 +29,7 @@ namespace TestDs3.Helpers.RangeTranslators
             var po1 = new Ds3PartialObject(Range.ByLength(100L, 200L), "foobar");
             var po2 = new Ds3PartialObject(Range.ByLength(300L, 100L), "foobar");
             var po3 = new Ds3PartialObject(Range.ByLength(10000L, 123L), "foobar");
-            var translator = new ObjectToPartRangeTranslator(new[] { po1, po2, po3 });
+            var translator = new ObjectToPartRangeTranslator(new[] {po1, po2, po3});
             var result = translator.Translate(ContextRange.Create(Range.ByLength(110L, 250L), "foobar")).ToList();
             CollectionAssert.AreEqual(
                 new[]
@@ -41,4 +41,4 @@ namespace TestDs3.Helpers.RangeTranslators
             );
         }
     }
-} 
+}

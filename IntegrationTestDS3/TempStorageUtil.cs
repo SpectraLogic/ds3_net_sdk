@@ -13,47 +13,45 @@
  * ****************************************************************************
  */
 
+using System;
+using System.Collections.Generic;
 using Ds3;
 using Ds3.Calls;
 using Ds3.Models;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace IntegrationTestDS3
 {
-    public class TempStorageUtil
+    public static class TempStorageUtil
     {
         /// <summary>
         /// Sets up a temporary data policy with a temporary storage domain and partition
         /// for use in integration tests where the BP may not currently have access to a
         /// partition.
         /// </summary>
-        /// <param name="fixtureName">Name of fixutre being run under this domain. This is
+        /// <param name="fixtureName">Name of fixture being run under this domain. This is
         /// used to prevent race conditions between test setup and teardown</param>
         /// <param name="dataPolicyId"></param>
         /// <param name="client"></param>
         /// <returns>Storage domain and data persistence Ids for use in teardown</returns>
         public static TempStorageIds Setup(
-            string fixtureName, 
-            Guid dataPolicyId, 
+            string fixtureName,
+            Guid dataPolicyId,
             IDs3Client client)
         {
             //Create storage domain
-            PutStorageDomainSpectraS3Response storageDomainResponse = ABMTestHelper.CreateStorageDomain(fixtureName, client);
+            var storageDomainResponse = ABMTestHelper.CreateStorageDomain(fixtureName, client);
 
             //Crate pool partition
-            PutPoolPartitionSpectraS3Response poolPartitionResponse = ABMTestHelper.CreatePoolPartition(fixtureName, PoolType.ONLINE, client);
+            var poolPartitionResponse = ABMTestHelper.CreatePoolPartition(fixtureName, PoolType.ONLINE, client);
 
             //Create storage domain member linking pool partition to storage domain
-            PutPoolStorageDomainMemberSpectraS3Response memberResponse = ABMTestHelper.CreatePoolStorageDomainMember(
+            var memberResponse = ABMTestHelper.CreatePoolStorageDomainMember(
                 storageDomainResponse.ResponsePayload.Id,
                 poolPartitionResponse.ResponsePayload.Id,
                 client);
 
             //Create data persistence rule
-            PutDataPersistenceRuleSpectraS3Response dataPersistenceResponse = ABMTestHelper.CreateDataPersistenceRule(
+            var dataPersistenceResponse = ABMTestHelper.CreateDataPersistenceRule(
                 dataPolicyId,
                 storageDomainResponse.ResponsePayload.Id,
                 client);
@@ -72,7 +70,6 @@ namespace IntegrationTestDS3
             TempStorageIds ids,
             IDs3Client client)
         {
-
             //try to delete as much as possible
 
             var exceptionsThrown = new Queue<Exception>();
@@ -146,14 +143,14 @@ namespace IntegrationTestDS3
             ChecksumType.Type checksumType,
             IDs3Client client)
         {
-            PutDataPolicySpectraS3Request dataPolicyRequest = new PutDataPolicySpectraS3Request(fixtureName)
+            var dataPolicyRequest = new PutDataPolicySpectraS3Request(fixtureName)
                 .WithEndToEndCrcRequired(withEndToEndCrcRequired);
 
             if (checksumType != ChecksumType.Type.NONE)
             {
                 dataPolicyRequest.WithChecksumType(checksumType);
             }
-            PutDataPolicySpectraS3Response dataPolicyResponse = client.PutDataPolicySpectraS3(dataPolicyRequest);
+            var dataPolicyResponse = client.PutDataPolicySpectraS3(dataPolicyRequest);
 
             client.ModifyUserSpectraS3(new ModifyUserSpectraS3Request("spectra")
                 .WithDefaultDataPolicyId(dataPolicyResponse.ResponsePayload.Id));
@@ -169,13 +166,13 @@ namespace IntegrationTestDS3
     /// </summary>
     public class TempStorageIds
     {
-        public Guid StorageDomainMemberId { get; private set; }
-        public Guid DataPersistenceRuleId { get; private set; }
-
         public TempStorageIds(Guid storageDomainMemberId, Guid dataPersistenceRuleId)
         {
-            this.StorageDomainMemberId = storageDomainMemberId;
-            this.DataPersistenceRuleId = dataPersistenceRuleId;
+            StorageDomainMemberId = storageDomainMemberId;
+            DataPersistenceRuleId = dataPersistenceRuleId;
         }
+
+        public Guid StorageDomainMemberId { get; }
+        public Guid DataPersistenceRuleId { get; }
     }
 }

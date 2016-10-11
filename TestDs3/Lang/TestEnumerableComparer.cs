@@ -13,38 +13,14 @@
  * ****************************************************************************
  */
 
-using NUnit.Framework;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace TestDs3.Lang
 {
     [TestFixture]
     public class TestEnumerableComparer
     {
-        [Test]
-        public void EnumerablesOfDifferingSizesAreDifferent()
-        {
-            Assert.AreEqual(
-                -1,
-                new EnumerableComparer<string>()
-                .Compare(new[] { "foo" }, new[] { "foo", "bar" })
-            );
-            Assert.AreEqual(
-                1,
-                new EnumerableComparer<string>()
-                .Compare(new[] { "foo", "bar" }, new[] { "foo" })
-            );
-        }
-
-        [Test]
-        public void SameSizedEnumerablesWithSameContentsAreEqual()
-        {
-            AssertCompareEqual(new string[0]);
-            AssertCompareEqual(new[] { "foo" });
-            AssertCompareEqual(new[] { "foo", "bar" });
-            AssertCompareEqual(new[] { "foo", "bar", "baz" });
-        }
-
         private static void AssertCompareEqual(string[] x)
         {
             var y = x.Clone() as string[];
@@ -52,20 +28,44 @@ namespace TestDs3.Lang
             Assert.AreEqual(0, comparer.Compare(x, y));
         }
 
-        [Test]
-        public void SameSizeEnumerablesWithDifferentContentsAreNotEqual()
-        {
-            AssertInequalities(new[] { "foo1", "bar", "baz" });
-            AssertInequalities(new[] { "foo", "bar1", "baz" });
-            AssertInequalities(new[] { "foo", "bar", "baz1" });
-        }
-
         private static void AssertInequalities(string[] subject)
         {
-            var reference = new[] { "foo", "bar", "baz" };
+            var reference = new[] {"foo", "bar", "baz"};
             IComparer<IEnumerable<string>> comparer = new EnumerableComparer<string>();
             Assert.AreEqual(-1, comparer.Compare(reference, subject));
             Assert.AreEqual(1, comparer.Compare(subject, reference));
+        }
+
+        [Test]
+        public void EnumerablesOfDifferingSizesAreDifferent()
+        {
+            Assert.AreEqual(
+                -1,
+                new EnumerableComparer<string>()
+                    .Compare(new[] {"foo"}, new[] {"foo", "bar"})
+            );
+            Assert.AreEqual(
+                1,
+                new EnumerableComparer<string>()
+                    .Compare(new[] {"foo", "bar"}, new[] {"foo"})
+            );
+        }
+
+        [Test]
+        public void SameSizedEnumerablesWithSameContentsAreEqual()
+        {
+            AssertCompareEqual(new string[0]);
+            AssertCompareEqual(new[] {"foo"});
+            AssertCompareEqual(new[] {"foo", "bar"});
+            AssertCompareEqual(new[] {"foo", "bar", "baz"});
+        }
+
+        [Test]
+        public void SameSizeEnumerablesWithDifferentContentsAreNotEqual()
+        {
+            AssertInequalities(new[] {"foo1", "bar", "baz"});
+            AssertInequalities(new[] {"foo", "bar1", "baz"});
+            AssertInequalities(new[] {"foo", "bar", "baz1"});
         }
     }
 }

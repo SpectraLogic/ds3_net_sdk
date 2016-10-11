@@ -13,62 +13,25 @@
  * ****************************************************************************
  */
 
-using System.Text;
-using NUnit.Framework;
-using Ds3.Helpers.Streams;
 using System.IO;
+using System.Text;
+using Ds3.Helpers.Streams;
+using NUnit.Framework;
 
 namespace TestDs3.Helpers.Streams
 {
-
     [TestFixture]
-    class TestPutObjectRequestStream
+    internal class TestPutObjectRequestStream
     {
-        const int CopyBufferSize = 1;
-        byte[] byteStringSize26 = Encoding.UTF8.GetBytes("abcdefghijklmnopqrstuvwxyz");
-        byte[] first10Bytes = Encoding.UTF8.GetBytes("abcdefghij");
-        byte[] second10Bytes = Encoding.UTF8.GetBytes("klmnopqrst");
-        byte[] last6Bytes = Encoding.UTF8.GetBytes("uvwxyz");
+        private const int CopyBufferSize = 1;
+        private readonly byte[] _byteStringSize26 = Encoding.UTF8.GetBytes("abcdefghijklmnopqrstuvwxyz");
+        private readonly byte[] _first10Bytes = Encoding.UTF8.GetBytes("abcdefghij");
+        private readonly byte[] _second10Bytes = Encoding.UTF8.GetBytes("klmnopqrst");
+        private readonly byte[] _last6Bytes = Encoding.UTF8.GetBytes("uvwxyz");
 
-        [Test]
-        public void TestCopyToInOrder()
+        private static Stream GetRequestedStream(Stream source, long offset, long length)
         {
-            var stream = new MemoryStream(byteStringSize26);
-
-            Assert.AreEqual(
-                GetRequestedStream(stream, 0, 10),
-                new MemoryStream(first10Bytes));
-
-            Assert.AreEqual(
-                GetRequestedStream(stream, 10, 10),
-                new MemoryStream(second10Bytes));
-
-            Assert.AreEqual(
-                GetRequestedStream(stream, 20, 6),
-                new MemoryStream(last6Bytes));
-        }
-
-        [Test]
-        public void TestCopyToNotInOrder()
-        {
-            var stream = new MemoryStream(byteStringSize26);
-
-            Assert.AreEqual(
-                GetRequestedStream(stream, 10, 10),
-                new MemoryStream(second10Bytes));
-
-            Assert.AreEqual(
-                GetRequestedStream(stream, 20, 6),
-                new MemoryStream(last6Bytes));
-
-            Assert.AreEqual(
-                GetRequestedStream(stream, 0, 10),
-                new MemoryStream(first10Bytes));
-        }
-
-        private Stream GetRequestedStream(Stream source, long offset, long lenght)
-        {
-            var putObjectRequestStream = new ObjectRequestStream(source, offset, lenght);
+            var putObjectRequestStream = new ObjectRequestStream(source, offset, length);
             var requestStream = new MemoryStream();
             if (putObjectRequestStream.Position != 0)
             {
@@ -77,6 +40,42 @@ namespace TestDs3.Helpers.Streams
             putObjectRequestStream.CopyTo(requestStream, CopyBufferSize);
 
             return requestStream;
+        }
+
+        [Test]
+        public void TestCopyToInOrder()
+        {
+            var stream = new MemoryStream(_byteStringSize26);
+
+            Assert.AreEqual(
+                GetRequestedStream(stream, 0, 10),
+                new MemoryStream(_first10Bytes));
+
+            Assert.AreEqual(
+                GetRequestedStream(stream, 10, 10),
+                new MemoryStream(_second10Bytes));
+
+            Assert.AreEqual(
+                GetRequestedStream(stream, 20, 6),
+                new MemoryStream(_last6Bytes));
+        }
+
+        [Test]
+        public void TestCopyToNotInOrder()
+        {
+            var stream = new MemoryStream(_byteStringSize26);
+
+            Assert.AreEqual(
+                GetRequestedStream(stream, 10, 10),
+                new MemoryStream(_second10Bytes));
+
+            Assert.AreEqual(
+                GetRequestedStream(stream, 20, 6),
+                new MemoryStream(_last6Bytes));
+
+            Assert.AreEqual(
+                GetRequestedStream(stream, 0, 10),
+                new MemoryStream(_first10Bytes));
         }
     }
 }

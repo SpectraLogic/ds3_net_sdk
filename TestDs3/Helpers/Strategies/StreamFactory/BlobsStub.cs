@@ -13,18 +13,17 @@
  * ****************************************************************************
  */
 
-using Ds3.Helpers;
 using Ds3.Models;
 
 namespace TestDs3.Helpers.Strategies.StreamFactory
 {
     public static class BlobsStub
     {
-        public static readonly Ds3.Helpers.Blob Blob1 = new Ds3.Helpers.Blob(Range.ByLength(0, 15), "bar");
         public const int Blob1Length = 15;
-        public static readonly Ds3.Helpers.Blob Blob2 = new Ds3.Helpers.Blob(Range.ByLength(15, 10), "bar");
         public const int Blob2Length = 10;
-        public static readonly Ds3.Helpers.Blob Blob3 = new Ds3.Helpers.Blob(Range.ByLength(0, 20), "foo");
         public const int Blob3Length = 20;
+        public static readonly Ds3.Helpers.Blob Blob1 = new Ds3.Helpers.Blob(Range.ByLength(0, 15), "bar");
+        public static readonly Ds3.Helpers.Blob Blob2 = new Ds3.Helpers.Blob(Range.ByLength(15, 10), "bar");
+        public static readonly Ds3.Helpers.Blob Blob3 = new Ds3.Helpers.Blob(Range.ByLength(0, 20), "foo");
     }
 }

@@ -34,6 +34,115 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
     [TestFixture]
     public class TestReadStreamChunkStrategy
     {
+        [Test]
+        public void TestEnumerateTransfersResetRetryAfter()
+        {
+            var retryAfter = 5;
+            var jobResponse = JobResponseStubs.BuildJobResponse(
+                JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(JobResponseStubs.NodeId1)).Returns(node1Client);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(JobResponseStubs.Nodes)).Returns(clientFactory.Object);
+
+            client
+                .Setup(
+                    c =>
+                        c.GetJobChunksReadyForClientProcessingSpectraS3(
+                            AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
+                .Returns(() =>
+                {
+                    if (retryAfter == 1) //after 4 retires we want to success
+                    {
+                        return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5),
+                            jobResponse);
+                    }
+
+                    return GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5));
+                });
+
+            var source = new ReadStreamChunkStrategy(_ => { retryAfter--; }, retryAfter);
+
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
+                transfers.MoveNext();
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
+                    //we want to make sure that the retryAfter value was reseted
+                transfers.MoveNext();
+            }
+        }
+
+        [Test]
+        public void TestGetNextTransferItems()
+        {
+            var jobResponse1 = JobResponseStubs.BuildJobResponse(
+                JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, false, false),
+                JobResponseStubs.Chunk2(JobResponseStubs.NodeId1, false, false),
+                JobResponseStubs.Chunk3(JobResponseStubs.NodeId1, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(JobResponseStubs.NodeId1)).Returns(node1Client);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(JobResponseStubs.Nodes)).Returns(clientFactory.Object);
+
+            client
+                .SetupSequence(
+                    c =>
+                        c.GetJobChunksReadyForClientProcessingSpectraS3(
+                            AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5),
+                    jobResponse1));
+
+            var sleeps = new List<TimeSpan>();
+
+            var source = new ReadStreamChunkStrategy(sleeps.Add);
+
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse1).GetEnumerator())
+            {
+                var transfered = new TransferItem[6];
+                for (var i = 0; i < 6; i++)
+                {
+                    Assert.True(transfers.MoveNext());
+                    transfered[i] = transfers.Current;
+                    source.CompleteBlob(transfers.Current.Blob);
+                }
+
+                Assert.False(transfers.MoveNext());
+
+                CollectionAssert.AreEqual(
+                    new[]
+                    {
+                        new TransferItem(node1Client, new Blob(Range.ByLength(0, 15), "bar")),
+                        new TransferItem(node1Client, new Blob(Range.ByLength(0, 10), "foo")),
+                        new TransferItem(node1Client, new Blob(Range.ByLength(0, 10), "hello")),
+                        new TransferItem(node1Client, new Blob(Range.ByLength(10, 10), "foo")),
+                        new TransferItem(node1Client, new Blob(Range.ByLength(15, 20), "bar")),
+                        new TransferItem(node1Client, new Blob(Range.ByLength(35, 11), "bar"))
+                    },
+                    transfered,
+                    new TransferItemSourceHelpers.TransferItemComparer()
+                );
+
+                CollectionAssert.AreEqual(
+                    new[] {TimeSpan.FromMinutes(5)},
+                    sleeps
+                );
+            }
+
+            client.VerifyAll();
+            clientFactory.VerifyAll();
+        }
 
         [Test]
         public void TestGetNextTransferItemsCanBeStopped()
@@ -55,7 +164,10 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 .Returns(factory.Object);
 
             client
-                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
+                .Setup(
+                    c =>
+                        c.GetJobChunksReadyForClientProcessingSpectraS3(
+                            AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
                 .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(
                     TimeSpan.FromMinutes(5),
                     JobResponseStubs.BuildJobResponse(JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, true, true))
@@ -86,70 +198,6 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
         }
 
         [Test]
-        public void TestGetNextTransferItems()
-        {
-            var jobResponse1 = JobResponseStubs.BuildJobResponse(
-                JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, false, false),
-                JobResponseStubs.Chunk2(JobResponseStubs.NodeId1, false, false),
-                JobResponseStubs.Chunk3(JobResponseStubs.NodeId1, false, false)
-            );
-
-            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
-
-            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(JobResponseStubs.NodeId1)).Returns(node1Client);
-
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client.Setup(c => c.BuildFactory(JobResponseStubs.Nodes)).Returns(clientFactory.Object);
-
-            client
-                .SetupSequence(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
-                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5), jobResponse1));
-
-            var sleeps = new List<TimeSpan>();
-
-            var source = new ReadStreamChunkStrategy(sleeps.Add);
-
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse1).GetEnumerator())
-            {
-
-
-                var transfered = new TransferItem[6];
-                for (var i = 0; i < 6; i++)
-                {
-                    Assert.True(transfers.MoveNext());
-                    transfered[i] = transfers.Current;
-                    source.CompleteBlob(transfers.Current.Blob);
-                }
-
-                Assert.False(transfers.MoveNext());
-
-                CollectionAssert.AreEqual(
-                new[]
-                {
-                    new TransferItem(node1Client, new Blob(Range.ByLength(0, 15), "bar")),
-                    new TransferItem(node1Client, new Blob(Range.ByLength(0, 10), "foo")),
-                    new TransferItem(node1Client, new Blob(Range.ByLength(0, 10), "hello")),
-                    new TransferItem(node1Client, new Blob(Range.ByLength(10, 10), "foo")),
-                    new TransferItem(node1Client, new Blob(Range.ByLength(15, 20), "bar" )),
-                    new TransferItem(node1Client, new Blob(Range.ByLength(35, 11), "bar" ))
-                },
-                transfered,
-                new TransferItemSourceHelpers.TransferItemComparer()
-                );
-
-                CollectionAssert.AreEqual(
-                    new[] { TimeSpan.FromMinutes(5) },
-                    sleeps
-                    );
-            }
-
-            client.VerifyAll();
-            clientFactory.VerifyAll();
-        }
-
-        [Test]
         public void TestGetNextTransferItemsRetryAfter()
         {
             var jobResponse = JobResponseStubs.BuildJobResponse(
@@ -160,7 +208,10 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
 
             client
-                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
+                .Setup(
+                    c =>
+                        c.GetJobChunksReadyForClientProcessingSpectraS3(
+                            AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
                 .Returns(GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)));
 
             var sleeps = new List<TimeSpan>();
@@ -183,7 +234,7 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
             }
 
             CollectionAssert.AreEqual(
-                new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5) },
+                new[] {TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)},
                 sleeps
             );
 
@@ -256,52 +307,13 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
         }
 
         [Test]
-        public void TestEnumerateTransfersResetRetryAfter()
-        {
-            var retryAfter = 5;
-            var jobResponse = JobResponseStubs.BuildJobResponse(
-                            JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, false, false)
-                        );
-
-            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
-
-            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(JobResponseStubs.NodeId1)).Returns(node1Client);
-
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client.Setup(c => c.BuildFactory(JobResponseStubs.Nodes)).Returns(clientFactory.Object);
-
-            client
-                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
-                .Returns(() =>
-                {
-                    if (retryAfter == 1) //after 4 retires we want to success
-                    {
-                        return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5), jobResponse);
-
-                    }
-
-                    return GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5));
-                });
-
-            var source = new ReadStreamChunkStrategy(_ => { retryAfter--; }, retryAfter);
-
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
-                transfers.MoveNext();
-                Assert.True(source.RetryAfer.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
-                transfers.MoveNext();
-            }
-        }
-
-        [Test, Timeout(1000)]
+        [Timeout(1000)]
         public void TestGetNextTransferItemsRetryGetChunks()
         {
             var initialJobResponse = JobResponseStubs.BuildJobResponse(
                 JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, false, false),
                 JobResponseStubs.Chunk2(JobResponseStubs.NodeId1, false, false)
-                );
+            );
 
             var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
 
@@ -314,7 +326,10 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 .Setup(c => c.BuildFactory(It.IsAny<IEnumerable<JobNode>>()))
                 .Returns(factory.Object);
             client
-                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
+                .Setup(
+                    c =>
+                        c.GetJobChunksReadyForClientProcessingSpectraS3(
+                            AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
                 .Returns(
                     GetJobChunksReadyForClientProcessingSpectraS3Response.Success(
                         TimeSpan.FromMinutes(5),
@@ -333,7 +348,8 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                     source.CompleteBlob(it.Blob);
                     itemGetter.TryGetNext(ref it); //the second blob in the first chunk will return
                     source.CompleteBlob(it.Blob);
-                    itemGetter.TryGetNext(ref it); //exception will be thrown since we will get the same chunk over and over
+                    itemGetter.TryGetNext(ref it);
+                        //exception will be thrown since we will get the same chunk over and over
                 });
             }
 
@@ -341,14 +357,15 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
             factory.VerifyAll();
         }
 
-        [Test, Timeout(2000)]
+        [Test]
+        [Timeout(2000)]
         public void TestGetNextTransferItemsRetryGetChunks2()
         {
             var initialJobResponse = JobResponseStubs.BuildJobResponse(
                 JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, false, false),
                 JobResponseStubs.Chunk2(JobResponseStubs.NodeId1, false, false),
                 JobResponseStubs.Chunk3(JobResponseStubs.NodeId1, false, false)
-                );
+            );
 
             var node1Client = new Mock<IDs3Client>(MockBehavior.Strict);
 
@@ -364,14 +381,18 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
 
             var first = true;
             client
-                .Setup(c => c.GetJobChunksReadyForClientProcessingSpectraS3(AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
+                .Setup(
+                    c =>
+                        c.GetJobChunksReadyForClientProcessingSpectraS3(
+                            AllocateMock.AvailableChunks(JobResponseStubs.JobId)))
                 .Returns(() =>
                 {
                     if (first)
                     {
                         first = false;
                         return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5),
-                            JobResponseStubs.BuildJobResponse(JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, true, true)));
+                            JobResponseStubs.BuildJobResponse(JobResponseStubs.Chunk1(JobResponseStubs.NodeId1, true,
+                                true)));
                     }
 
                     return GetJobChunksReadyForClientProcessingSpectraS3Response.Success(TimeSpan.FromMinutes(5),
@@ -400,7 +421,8 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                     itemGetter.TryGetNext(ref it); //the second blob in the second chunk will return
                     source.CompleteBlob(it.Blob);
 
-                    itemGetter.TryGetNext(ref it); //exception will be thrown since we will get the same chunk over and over
+                    itemGetter.TryGetNext(ref it);
+                        //exception will be thrown since we will get the same chunk over and over
                 });
             }
 
