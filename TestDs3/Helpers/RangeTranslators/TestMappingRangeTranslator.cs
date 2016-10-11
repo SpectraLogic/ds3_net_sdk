@@ -13,28 +13,46 @@
  * ****************************************************************************
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Models;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace TestDs3.Helpers.RangeTranslators
 {
     [TestFixture]
     public class TestMappingRangeTranslator
     {
+        private class KeyValuePairList<TKey, TValue> : List<KeyValuePair<TKey, TValue>>
+        {
+            public void Add(TKey key, TValue value)
+            {
+                Add(new KeyValuePair<TKey, TValue>(key, value));
+            }
+
+            public ILookup<TKey, TValue> ToLookup()
+            {
+                return this.ToLookup(kvp => kvp.Key, kvp => kvp.Value);
+            }
+        }
+
+        private static ContextRange<string> ByPosition(long start, long end, string context)
+        {
+            return ContextRange.Create(Range.ByPosition(start, end), context);
+        }
+
         [Test]
         public void MappingTranslateWorks()
         {
             var translator = new MappingRangeTranslator<string, string>(
                 new KeyValuePairList<string, RangeMapping<string>>
                 {
-                    { "foo", new RangeMapping<string>(Range.ByLength(0L, 100L), 1000L, "foo1") },
-                    { "foo", new RangeMapping<string>(Range.ByLength(100L, 100L), 2000L, "foo1") },
-                    { "foo", new RangeMapping<string>(Range.ByLength(200L, 100L), 3000L, "foo1") },
-                    { "bar", new RangeMapping<string>(Range.ByLength(200L, 100L), 4000L, "bar1") },
-                    { "foo", new RangeMapping<string>(Range.ByLength(300L, 100L), 0L, "foo2") }
+                    {"foo", new RangeMapping<string>(Range.ByLength(0L, 100L), 1000L, "foo1")},
+                    {"foo", new RangeMapping<string>(Range.ByLength(100L, 100L), 2000L, "foo1")},
+                    {"foo", new RangeMapping<string>(Range.ByLength(200L, 100L), 3000L, "foo1")},
+                    {"bar", new RangeMapping<string>(Range.ByLength(200L, 100L), 4000L, "bar1")},
+                    {"foo", new RangeMapping<string>(Range.ByLength(300L, 100L), 0L, "foo2")}
                 }.ToLookup(kvp => kvp.Key, kvp => kvp.Value)
             );
             var result = translator.Translate(ContextRange.Create(Range.ByLength(50L, 300L), "foo"));
@@ -48,24 +66,6 @@ namespace TestDs3.Helpers.RangeTranslators
                 },
                 result
             );
-        }
-
-        private class KeyValuePairList<TKey, TValue> : List<KeyValuePair<TKey, TValue>>
-        {
-            public void Add(TKey key, TValue value)
-            {
-                this.Add(new KeyValuePair<TKey, TValue>(key, value));
-            }
-
-            public ILookup<TKey, TValue> ToLookup()
-            {
-                return this.ToLookup(kvp => kvp.Key, kvp => kvp.Value);
-            }
-        }
-
-        private static ContextRange<string> ByPosition(long start, long end, string context)
-        {
-            return ContextRange.Create(Range.ByPosition(start, end), context);
         }
     }
 }

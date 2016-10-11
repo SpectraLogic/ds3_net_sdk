@@ -13,13 +13,13 @@
  * ****************************************************************************
  */
 
-using NUnit.Framework;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using Parallel = Ds3.Lang.Parallel;
 
 namespace TestDs3.Lang
@@ -27,7 +27,17 @@ namespace TestDs3.Lang
     [TestFixture]
     public class TestParallel
     {
-        [Test, Timeout(1000)]
+        private static IEnumerable<int> Infinite()
+        {
+            var i = 0;
+            while (true)
+            {
+                yield return i++;
+            }
+        }
+
+        [Test]
+        [Timeout(1000)]
         public void ForEachIteratesItemsInParallel()
         {
             var strings = LangTestHelpers.RandomStrings(100, 50);
@@ -47,11 +57,12 @@ namespace TestDs3.Lang
             CollectionAssert.AreEquivalent(strings, results.Select(it => it.Item2));
         }
 
-        [Test, Timeout(1000)]
+        [Test]
+        [Timeout(1000)]
         public void ForEachObeysCancellationToken()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            System.Threading.Tasks.Task.Run(() =>
+            Task.Run(() =>
             {
                 Thread.Sleep(50);
                 cancellationTokenSource.Cancel();
@@ -61,19 +72,28 @@ namespace TestDs3.Lang
             Assert.Throws<OperationCanceledException>(() => Parallel.ForEach(
                 10,
                 cancellationTokenSource.Token,
-                Enumerable.Range(0, 1000).Select(it => { itemsConsumed.Enqueue(it); return it; }),
-                it => { Thread.Sleep(5); itemsFinished.Enqueue(it); }
+                Enumerable.Range(0, 1000).Select(it =>
+                {
+                    itemsConsumed.Enqueue(it);
+                    return it;
+                }),
+                it =>
+                {
+                    Thread.Sleep(5);
+                    itemsFinished.Enqueue(it);
+                }
             ));
             CollectionAssert.AreEquivalent(itemsConsumed, itemsFinished);
             Assert.GreaterOrEqual(itemsConsumed.Count, 10);
             Assert.LessOrEqual(itemsConsumed.Count, 100);
         }
 
-        [Test, Timeout(1000)]
+        [Test]
+        [Timeout(1000)]
         public void ForEachTerminatesUponFailure()
         {
-            var threadCount = 12;
-            int itemsReturned = 0;
+            const int threadCount = 12;
+            var itemsReturned = 0;
             try
             {
                 var throwExceptions = new CountdownEvent(threadCount);
@@ -81,12 +101,20 @@ namespace TestDs3.Lang
                 Parallel.ForEach(
                     threadCount,
                     CancellationToken.None,
-                    Infinite().Select(it => { itemsReturned = it; return it; }),
+                    Infinite().Select(it =>
+                    {
+                        itemsReturned = it;
+                        return it;
+                    }),
                     i =>
                     {
                         threadsRun.AddOrUpdate(
                             Thread.CurrentThread.ManagedThreadId,
-                            k => { throwExceptions.Signal(); return 1; },
+                            k =>
+                            {
+                                throwExceptions.Signal();
+                                return 1;
+                            },
                             (k, v) => 1
                         );
                         Thread.Sleep(1);
@@ -105,15 +133,6 @@ namespace TestDs3.Lang
                 {
                     Assert.IsInstanceOf<InvalidOperationException>(inner);
                 }
-            }
-        }
-
-        private static IEnumerable<int> Infinite()
-        {
-            var i = 0;
-            while (true)
-            {
-                yield return i++;
             }
         }
     }

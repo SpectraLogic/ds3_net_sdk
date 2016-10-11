@@ -38,14 +38,14 @@ namespace TestDs3.Helpers.RangeTranslators
             var first = new Mock<IRangeTranslator<long, string>>(MockBehavior.Strict);
             first
                 .Setup(rt => rt.Translate(range_1_1))
-                .Returns(new[] { range_2_1, range_2_2 });
+                .Returns(new[] {range_2_1, range_2_2});
             var second = new Mock<IRangeTranslator<string, bool>>(MockBehavior.Strict);
             second
                 .Setup(rt => rt.Translate(range_2_1))
-                .Returns(new[] { range_3_1, range_3_2 });
+                .Returns(new[] {range_3_1, range_3_2});
             second
                 .Setup(rt => rt.Translate(range_2_2))
-                .Returns(new[] { range_3_3, range_3_4 });
+                .Returns(new[] {range_3_3, range_3_4});
             var composed = first.Object.ComposedWith(second.Object);
 
             var result = composed.Translate(ContextRange.Create(Range.ByLength(0L, 10L), 10L));

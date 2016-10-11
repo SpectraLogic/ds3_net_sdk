@@ -18,12 +18,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Ds3;
 using Ds3.Calls;
+using Ds3.Helpers;
 using Ds3.Helpers.Strategies.ChunkStrategies;
-using Ds3.Models;
 using Ds3.Runtime;
 using Moq;
 using NUnit.Framework;
-using Blob = Ds3.Helpers.Blob;
 using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers.Strategies.ChunkStrategies
@@ -33,6 +32,46 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
     [TestFixture]
     public class TestWriteRandomAccessChunkStrategy
     {
+        [Test]
+        public void TestEnumerateTransfersResetRetryAfter()
+        {
+            var retryAfter = 5;
+            var jobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, false, false)
+            );
+
+            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(node1Client);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
+
+            client
+                .Setup(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(() =>
+                {
+                    if (retryAfter == 1) //after 4 retires we want to success
+                    {
+                        return AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false));
+                    }
+
+                    return AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromSeconds(5));
+                });
+
+            var source = new WriteStreamChunkStrategy(_ => { retryAfter--; }, retryAfter);
+
+            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
+            {
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
+                transfers.MoveNext();
+                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
+                    //we want to make sure that the retryAfter value was reseted
+                transfers.MoveNext();
+            }
+        }
+
         [Test]
         public void TestGetNextTransferItems()
         {
@@ -72,146 +111,16 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                     new TransferItem(node1Client, new Blob(Range.ByLength(0, 10), "foo")),
                     new TransferItem(node1Client, new Blob(Range.ByLength(10, 10), "foo")),
                     new TransferItem(node1Client, new Blob(Range.ByLength(15, 20), "bar"))
-
                 },
                 transfers,
                 new TransferItemSourceHelpers.TransferItemComparer()
             );
 
             CollectionAssert.AreEqual(
-                new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5) },
+                new[] {TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)},
                 sleeps
             );
 
-            client.VerifyAll();
-            clientFactory.VerifyAll();
-        }
-
-        [Test]
-        public void TestGetNextTransferItemsWithCashedBlob()
-        {
-            var jobResponse = Stubs.BuildJobResponse(
-                Stubs.Chunk1(Stubs.NodeId1, false, true),
-                Stubs.Chunk2(Stubs.NodeId2, true, false)
-            );
-
-            var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
-
-            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(node1Client);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(node1Client);
-
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
-
-            client
-                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, true)));
-
-            client
-                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
-                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, true, false)));
-
-            var sleeps = new List<TimeSpan>();
-
-            var source = new WriteRandomAccessChunkStrategy(sleeps.Add, -1, false); //we don't want to really sleep in the tests
-            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
-
-            CollectionAssert.AreEqual(
-                new[]
-                {
-                    new TransferItem(node1Client, new Blob(Range.ByLength(0, 15), "bar")),
-                    new TransferItem(node1Client, new Blob(Range.ByLength(15, 20), "bar"))
-
-                },
-                transfers,
-                new TransferItemSourceHelpers.TransferItemComparer()
-            );
-
-            CollectionAssert.AreEqual(
-                new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5) },
-                sleeps
-            );
-
-            client.VerifyAll();
-            clientFactory.VerifyAll();
-        }
-
-        [Test]
-        public void TestGetNextTransferItemsWithAggregationNonCachedObjects()
-        {
-            var jobResponse = Stubs.BuildJobResponse(
-                Stubs.Chunk1(Stubs.NodeId1, false, false),
-                Stubs.Chunk2(Stubs.NodeId2, false, false)
-                );
- 
-            var nodeClient = new Mock<IDs3Client>(MockBehavior.Strict).Object;
- 
-            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(nodeClient);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(nodeClient);
- 
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
-            client
-                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false)));
-            client
-                 .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
-                 .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
- 
-            var source = new WriteRandomAccessChunkStrategy(time => { }, withAggregation:true);
-            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
-
-            CollectionAssert.AreEqual(
-                new[]
-                {
-                    new TransferItem(nodeClient, new Blob(Range.ByLength(0, 15), "bar")),
-                    new TransferItem(nodeClient, new Blob(Range.ByLength(0, 10), "foo")),
-                    new TransferItem(nodeClient, new Blob(Range.ByLength(10, 10), "foo")),
-                    new TransferItem(nodeClient, new Blob(Range.ByLength(15, 20), "bar")),
-                },
-                transfers,
-                new TransferItemSourceHelpers.TransferItemComparer()
-            );
-            client.VerifyAll();
-            clientFactory.VerifyAll();
-        }
- 
-        [Test]
-        public void TestGetNextTransferItemsWithAggregationWithCachedObjects()
-        {
-            var jobResponse = Stubs.BuildJobResponse(
-            Stubs.Chunk1(Stubs.NodeId1, true, true),
-            Stubs.Chunk2(Stubs.NodeId2, false, false)
-            );
- 
-            var nodeClient = new Mock<IDs3Client>(MockBehavior.Strict).Object;
- 
-            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
-            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(nodeClient);
- 
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
-            client
-                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
-                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
- 
-            var source = new WriteRandomAccessChunkStrategy(time => { }, withAggregation:true);
-            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
-
-            CollectionAssert.AreEqual(
-                new[]
-                {
-                    new TransferItem(nodeClient, new Blob(Range.ByLength(10, 10), "foo")),
-                    new TransferItem(nodeClient, new Blob(Range.ByLength(15, 20), "bar")),
-                },
-                transfers,
-                new TransferItemSourceHelpers.TransferItemComparer());
- 
- 
             client.VerifyAll();
             clientFactory.VerifyAll();
         }
@@ -247,12 +156,12 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
                 }
             }
 
             CollectionAssert.AreEqual(
-                new[] { TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5) },
+                new[] {TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)},
                 sleeps
             );
 
@@ -268,7 +177,7 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
                 }
             }
 
@@ -284,7 +193,7 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
                 }
             }
 
@@ -300,7 +209,7 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
                 }
             }
 
@@ -316,7 +225,7 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
                 catch (Ds3NoMoreRetriesException ex)
                 {
                     Assert.True(source.RetryAfer.RetryAfterLeft == 0);
-                    Assert.True(ex.Message.Equals(Ds3.Resources.NoMoreRetriesException));
+                    Assert.True(ex.Message.Equals(Resources.NoMoreRetriesException));
                 }
             }
 
@@ -325,42 +234,132 @@ namespace TestDs3.Helpers.Strategies.ChunkStrategies
         }
 
         [Test]
-        public void TestEnumerateTransfersResetRetryAfter()
+        public void TestGetNextTransferItemsWithAggregationNonCachedObjects()
         {
-            var retryAfter = 5;
             var jobResponse = Stubs.BuildJobResponse(
-                            Stubs.Chunk1(Stubs.NodeId1, false, false)
-                        );
+                Stubs.Chunk1(Stubs.NodeId1, false, false),
+                Stubs.Chunk2(Stubs.NodeId2, false, false)
+            );
+
+            var nodeClient = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(nodeClient);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(nodeClient);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
+            client
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false)));
+            client
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+
+            var source = new WriteRandomAccessChunkStrategy(time => { }, withAggregation: true);
+            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
+
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(0, 15), "bar")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(0, 10), "foo")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(10, 10), "foo")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(15, 20), "bar")),
+                },
+                transfers,
+                new TransferItemSourceHelpers.TransferItemComparer()
+            );
+            client.VerifyAll();
+            clientFactory.VerifyAll();
+        }
+
+        [Test]
+        public void TestGetNextTransferItemsWithAggregationWithCachedObjects()
+        {
+            var jobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, true, true),
+                Stubs.Chunk2(Stubs.NodeId2, false, false)
+            );
+
+            var nodeClient = new Mock<IDs3Client>(MockBehavior.Strict).Object;
+
+            var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(nodeClient);
+
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
+            client
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, false, false)));
+
+            var source = new WriteRandomAccessChunkStrategy(time => { }, withAggregation: true);
+            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
+
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(10, 10), "foo")),
+                    new TransferItem(nodeClient, new Blob(Range.ByLength(15, 20), "bar")),
+                },
+                transfers,
+                new TransferItemSourceHelpers.TransferItemComparer());
+
+
+            client.VerifyAll();
+            clientFactory.VerifyAll();
+        }
+
+        [Test]
+        public void TestGetNextTransferItemsWithCashedBlob()
+        {
+            var jobResponse = Stubs.BuildJobResponse(
+                Stubs.Chunk1(Stubs.NodeId1, false, true),
+                Stubs.Chunk2(Stubs.NodeId2, true, false)
+            );
 
             var node1Client = new Mock<IDs3Client>(MockBehavior.Strict).Object;
 
             var clientFactory = new Mock<IDs3ClientFactory>(MockBehavior.Strict);
             clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId1)).Returns(node1Client);
+            clientFactory.Setup(cf => cf.GetClientForNodeId(Stubs.NodeId2)).Returns(node1Client);
 
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client.Setup(c => c.BuildFactory(Stubs.Nodes)).Returns(clientFactory.Object);
 
             client
-                .Setup(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
-                .Returns(() =>
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId1)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, true)));
+
+            client
+                .SetupSequence(c => c.AllocateJobChunkSpectraS3(AllocateMock.Allocate(Stubs.ChunkId2)))
+                .Returns(AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromMinutes(5)))
+                .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk2(Stubs.NodeId2, true, false)));
+
+            var sleeps = new List<TimeSpan>();
+
+            var source = new WriteRandomAccessChunkStrategy(sleeps.Add);
+                //we don't want to really sleep in the tests
+            var transfers = source.GetNextTransferItems(client.Object, jobResponse).ToArray();
+
+            CollectionAssert.AreEqual(
+                new[]
                 {
-                    if (retryAfter == 1) //after 4 retires we want to success
-                    {
-                        return AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk1(Stubs.NodeId1, false, false));
-                    }
+                    new TransferItem(node1Client, new Blob(Range.ByLength(0, 15), "bar")),
+                    new TransferItem(node1Client, new Blob(Range.ByLength(15, 20), "bar"))
+                },
+                transfers,
+                new TransferItemSourceHelpers.TransferItemComparer()
+            );
 
-                    return AllocateJobChunkSpectraS3Response.RetryAfter(TimeSpan.FromSeconds(5));
-                });
+            CollectionAssert.AreEqual(
+                new[] {TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)},
+                sleeps
+            );
 
-            var source = new WriteStreamChunkStrategy(_ => { retryAfter--; }, retryAfter);
-            
-            using (var transfers = source.GetNextTransferItems(client.Object, jobResponse).GetEnumerator())
-            {
-                Assert.True(source.RetryAfer.RetryAfterLeft == 5);
-                transfers.MoveNext();
-                Assert.True(source.RetryAfer.RetryAfterLeft == 5); //we want to make sure that the retryAfter value was reseted
-                transfers.MoveNext();
-            }
+            client.VerifyAll();
+            clientFactory.VerifyAll();
         }
     }
 }

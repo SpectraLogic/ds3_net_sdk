@@ -13,31 +13,18 @@
  * ****************************************************************************
  */
 
-using Ds3.Helpers.Streams;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Ds3.Helpers.Streams;
+using NUnit.Framework;
 
 namespace TestDs3.Helpers.Streams
 {
     [TestFixture]
     public class TestResourceStore
     {
-        [Test]
-        public void CacheLocksConcurrentAccessToSameObject()
-        {
-            Assert.AreEqual(1, RunAccessesConcurrently(new[] { "foo", "foo", "foo" }));
-        }
-
-        [Test]
-        public void CacheAllowsConcurrentAccessToDifferentObjects()
-        {
-            Assert.AreEqual(3, RunAccessesConcurrently(new[] { "foo", "bar", "baz" }));
-            Assert.AreEqual(2, RunAccessesConcurrently(new[] { "foo", "foo", "baz" }));
-        }
-
-        private static int RunAccessesConcurrently(string[] keys)
+        private static int RunAccessesConcurrently(IEnumerable<string> keys)
         {
             var resourceStore = new ResourceStore<string, Disposable>(name => new Disposable(name));
             var lck = new object();
@@ -70,42 +57,57 @@ namespace TestDs3.Helpers.Streams
             return maxCallCount;
         }
 
-        [Test]
-        public void CacheReturnsSameInstanceWhenCalledTwice()
+        private sealed class Disposable : IDisposable
         {
-            var resourceStore = new ResourceStore<string, Disposable>(name => new Disposable(name));
+            public Disposable(string name)
+            {
+                Name = name;
+            }
 
-            Disposable firstItem = null;
-            resourceStore.Access("foo", item => firstItem = item);
-            Assert.AreEqual("foo", firstItem.Name);
+            public int DisposeCallCount { get; private set; }
 
-            Disposable secondItem = null;
-            resourceStore.Access("foo", item => secondItem = item);
-            Assert.AreSame(firstItem, secondItem);
+            public string Name { get; }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    DisposeCallCount++;
+                }
+            }
         }
 
         [Test]
-        public void CacheDisposesAllItemsExactlyOnce()
+        public void CacheAllowsConcurrentAccessToDifferentObjects()
+        {
+            Assert.AreEqual(3, RunAccessesConcurrently(new[] {"foo", "bar", "baz"}));
+            Assert.AreEqual(2, RunAccessesConcurrently(new[] {"foo", "foo", "baz"}));
+        }
+
+        [Test]
+        public void CacheCallsFailWhenDisposed()
+        {
+            var resourceStore = new ResourceStore<string, Disposable>(name => new Disposable(name));
+            resourceStore.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => resourceStore.Access("foo", it => { }));
+            Assert.Throws<ObjectDisposedException>(() => resourceStore.Close("foo"));
+        }
+
+        [Test]
+        public void CacheCanCloseBeforeGet()
         {
             var resourceStore = new ResourceStore<string, Disposable>(name => new Disposable(name));
 
-            Disposable item1 = null;
-            Disposable item2 = null;
-            resourceStore.Access("foo", it => item1 = it);
-            resourceStore.Access("bar", it => item2 = it);
+            resourceStore.Close("foo");
 
-            Assert.AreEqual(0, item1.DisposeCallCount);
-            Assert.AreEqual(0, item2.DisposeCallCount);
-
-            resourceStore.Dispose();
-
-            Assert.AreEqual(1, item1.DisposeCallCount);
-            Assert.AreEqual(1, item2.DisposeCallCount);
-
-            resourceStore.Dispose();
-
-            Assert.AreEqual(1, item1.DisposeCallCount);
-            Assert.AreEqual(1, item2.DisposeCallCount);
+            Assert.Throws<ObjectDisposedException>(() => resourceStore.Access("foo", it => { }));
         }
 
         [Test]
@@ -135,53 +137,47 @@ namespace TestDs3.Helpers.Streams
         }
 
         [Test]
-        public void CacheCanCloseBeforeGet()
+        public void CacheDisposesAllItemsExactlyOnce()
         {
             var resourceStore = new ResourceStore<string, Disposable>(name => new Disposable(name));
 
-            resourceStore.Close("foo");
+            Disposable item1 = null;
+            Disposable item2 = null;
+            resourceStore.Access("foo", it => item1 = it);
+            resourceStore.Access("bar", it => item2 = it);
 
-            Assert.Throws<ObjectDisposedException>(() => resourceStore.Access("foo", it => { }));
+            Assert.AreEqual(0, item1.DisposeCallCount);
+            Assert.AreEqual(0, item2.DisposeCallCount);
+
+            resourceStore.Dispose();
+
+            Assert.AreEqual(1, item1.DisposeCallCount);
+            Assert.AreEqual(1, item2.DisposeCallCount);
+
+            resourceStore.Dispose();
+
+            Assert.AreEqual(1, item1.DisposeCallCount);
+            Assert.AreEqual(1, item2.DisposeCallCount);
         }
 
         [Test]
-        public void CacheCallsFailWhenDisposed()
+        public void CacheLocksConcurrentAccessToSameObject()
         {
-            var resourceStore = new ResourceStore<string, Disposable>(name => new Disposable(name));
-            resourceStore.Dispose();
-
-            Assert.Throws<ObjectDisposedException>(() => resourceStore.Access("foo", it => { }));
-            Assert.Throws<ObjectDisposedException>(() => resourceStore.Close("foo"));
+            Assert.AreEqual(1, RunAccessesConcurrently(new[] {"foo", "foo", "foo"}));
         }
 
-        private class Disposable : IDisposable
+        [Test]
+        public void CacheReturnsSameInstanceWhenCalledTwice()
         {
-            private int _disposeCallCount = 0;
-            public int DisposeCallCount
-            {
-                get { return this._disposeCallCount; }
-            }
+            var resourceStore = new ResourceStore<string, Disposable>(name => new Disposable(name));
 
-            public string Name { get; private set; }
+            Disposable firstItem = null;
+            resourceStore.Access("foo", item => firstItem = item);
+            Assert.AreEqual("foo", firstItem.Name);
 
-            public Disposable(string name)
-            {
-                this.Name = name;
-            }
-
-            public void Dispose()
-            { 
-                Dispose(true);
-                GC.SuppressFinalize(this);           
-            }
-
-            protected virtual void Dispose(bool disposing)
-            {
-                if (disposing)
-                {
-                    this._disposeCallCount++;
-                }
-            }
+            Disposable secondItem = null;
+            resourceStore.Access("foo", item => secondItem = item);
+            Assert.AreSame(firstItem, secondItem);
         }
     }
 }

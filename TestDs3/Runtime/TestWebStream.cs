@@ -13,11 +13,11 @@
  * ****************************************************************************
  */
 
-using Ds3.Runtime;
-using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
+using Ds3.Runtime;
+using NUnit.Framework;
 
 namespace TestDs3.Runtime
 {
@@ -26,6 +26,19 @@ namespace TestDs3.Runtime
     {
         private const int CopyBufferSize = 1;
         private readonly byte[] _byteStringSize26 = Encoding.UTF8.GetBytes("abcdefghijklmnopqrstuvwxyz");
+
+        private static Stream GetRequestedStream(Stream source, long length)
+        {
+            var webResponseStream = new Ds3WebStream(source, length);
+            var requestStream = new MemoryStream();
+            if (webResponseStream.Position != 0)
+            {
+                webResponseStream.Seek(0, SeekOrigin.Begin);
+            }
+            webResponseStream.CopyTo(requestStream, CopyBufferSize);
+
+            return requestStream;
+        }
 
         [Test]
         public void TestCopyTo()
@@ -40,31 +53,28 @@ namespace TestDs3.Runtime
             Assert.Catch(typeof(Ds3ContentLengthNotMatch), () => GetRequestedStream(stream, stream.Length - 10));
         }
 
-        private static Stream GetRequestedStream(Stream source, long length)
-        {
-            var webReponseStream = new Ds3WebStream(source, length);
-            var requestStream = new MemoryStream();
-            if (webReponseStream.Position != 0)
-            {
-                webReponseStream.Seek(0, SeekOrigin.Begin);
-            }
-            webReponseStream.CopyTo(requestStream, CopyBufferSize);
-
-            return requestStream;
-        }
-
         [Test]
         public void TestForOverflow()
         {
-            var webReponseStream = new Ds3WebStream(new FakeStream(), int.MaxValue * 2L);
-            webReponseStream.Read(null, 0, 0);
-            webReponseStream.Read(null, 0, 0);
-            Assert.AreEqual(webReponseStream.GetBytesRead(), int.MaxValue * 2L);
+            var webResponseStream = new Ds3WebStream(new FakeStream(), int.MaxValue*2L);
+            webResponseStream.Read(null, 0, 0);
+            webResponseStream.Read(null, 0, 0);
+            Assert.AreEqual(webResponseStream.GetBytesRead(), int.MaxValue*2L);
         }
     }
 
     internal class FakeStream : Stream
     {
+        public override bool CanRead => false;
+
+        public override bool CanSeek => false;
+
+        public override bool CanWrite => false;
+
+        public override long Length => 0;
+
+        public override long Position { get; set; }
+
         public override void Flush()
         {
             throw new NotImplementedException();
@@ -89,27 +99,5 @@ namespace TestDs3.Runtime
         {
             throw new NotImplementedException();
         }
-
-        public override bool CanRead
-        {
-            get { return false; }
-        }
-
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
-
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
-
-        public override long Length
-        {
-            get { return 0; }
-        }
-
-        public override long Position { get; set; }
     }
 }
