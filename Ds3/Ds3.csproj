@@ -772,7 +772,7 @@
     <Compile Include="Models\TapePartitionFailureType.cs" />
     <Compile Include="Models\TapePartitionList.cs" />
     <Compile Include="Models\TapePartitionState.cs" />
-    <Compile Include="Models\TargetReadPreference.cs" />
+    <Compile Include="Models\TargetReadPreferenceType.cs" />
     <Compile Include="Models\TargetState.cs" />
     <Compile Include="Models\UnavailableMediaUsagePolicy.cs" />
     <Compile Include="Models\User.cs" />

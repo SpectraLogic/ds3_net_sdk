@@ -82,8 +82,8 @@ namespace Ds3.Calls
             set { WithDataPathVerifyCertificate(value); }
         }
 
-        private TargetReadPreference? _defaultReadPreference;
-        public TargetReadPreference? DefaultReadPreference
+        private TargetReadPreferenceType? _defaultReadPreference;
+        public TargetReadPreferenceType? DefaultReadPreference
         {
             get { return _defaultReadPreference; }
             set { WithDefaultReadPreference(value); }
@@ -238,7 +238,7 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyDs3TargetSpectraS3Request WithDefaultReadPreference(TargetReadPreference? defaultReadPreference)
+        public ModifyDs3TargetSpectraS3Request WithDefaultReadPreference(TargetReadPreferenceType? defaultReadPreference)
         {
             this._defaultReadPreference = defaultReadPreference;
             if (defaultReadPreference != null)
