@@ -30,7 +30,7 @@ namespace Ds3.Models
         public int? DataPathPort { get; set; }
         public string DataPathProxy { get; set; }
         public bool DataPathVerifyCertificate { get; set; }
-        public TargetReadPreference DefaultReadPreference { get; set; }
+        public TargetReadPreferenceType DefaultReadPreference { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public bool PermitGoingOutOfSync { get; set; }

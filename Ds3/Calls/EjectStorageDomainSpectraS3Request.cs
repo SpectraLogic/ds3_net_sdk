@@ -15,12 +15,8 @@
 
 // This code is auto-generated, do not modify
 using Ds3.Models;
-using Ds3.Runtime;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
+using System.Net;
 
 namespace Ds3.Calls
 {
@@ -28,8 +24,6 @@ namespace Ds3.Calls
     {
         
         public string StorageDomainId { get; private set; }
-
-        public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
         private string _bucketId;
@@ -114,48 +108,25 @@ namespace Ds3.Calls
         }
 
 
-        public EjectStorageDomainSpectraS3Request(IEnumerable<Ds3Object> objects, Guid storageDomainId) {
+        
+        
+        public EjectStorageDomainSpectraS3Request(Guid storageDomainId)
+        {
             this.StorageDomainId = storageDomainId.ToString();
-            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "eject");
             
             this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
 
-            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
-            {
-                throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
-            }
         }
-        public EjectStorageDomainSpectraS3Request(IEnumerable<Ds3Object> objects, string storageDomainId) {
+
+        
+        public EjectStorageDomainSpectraS3Request(string storageDomainId)
+        {
             this.StorageDomainId = storageDomainId;
-            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "eject");
             
             this.QueryParams.Add("storage_domain_id", storageDomainId);
 
-            if (!objects.ToList().TrueForAll(obj => obj.Size.HasValue))
-            {
-                throw new Ds3RequestException(Resources.ObjectsMissingSizeException);
-            }
-        }
-
-        internal override Stream GetContentStream()
-        {
-            return new XDocument()
-                .AddFluent(
-                    new XElement("Objects").AddAllFluent(
-                        from obj in this.Objects
-                        select new XElement("Object")
-                            .SetAttributeValueFluent("Name", obj.Name)
-                            .SetAttributeValueFluent("Size", obj.Size.Value.ToString("D"))
-                    )
-                )
-                .WriteToMemoryStream();
-        }
-
-        internal override long GetContentLength()
-        {
-            return GetContentStream().Length;
         }
 
         internal override HttpVerb Verb

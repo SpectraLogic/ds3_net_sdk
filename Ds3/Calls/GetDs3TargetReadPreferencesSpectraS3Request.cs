@@ -59,8 +59,8 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
-        private TargetReadPreference? _readPreference;
-        public TargetReadPreference? ReadPreference
+        private TargetReadPreferenceType? _readPreference;
+        public TargetReadPreferenceType? ReadPreference
         {
             get { return _readPreference; }
             set { WithReadPreference(value); }
@@ -179,7 +179,7 @@ namespace Ds3.Calls
         }
 
         
-        public GetDs3TargetReadPreferencesSpectraS3Request WithReadPreference(TargetReadPreference? readPreference)
+        public GetDs3TargetReadPreferencesSpectraS3Request WithReadPreference(TargetReadPreferenceType? readPreference)
         {
             this._readPreference = readPreference;
             if (readPreference != null)

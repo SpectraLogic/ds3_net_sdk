@@ -17,7 +17,7 @@
 
 namespace Ds3.Models
 {
-    public enum TargetReadPreference
+    public enum TargetReadPreferenceType
     {
         MINIMUM_LATENCY,
         AFTER_ONLINE_POOL,
