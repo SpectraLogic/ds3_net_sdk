@@ -1124,7 +1124,7 @@ namespace Ds3.ResponseParsers
                 DataPathPort = ParseNullableInt(element.Element("DataPathPort")),
                 DataPathProxy = ParseNullableString(element.Element("DataPathProxy")),
                 DataPathVerifyCertificate = ParseBool(element.Element("DataPathVerifyCertificate")),
-                DefaultReadPreference = ParseTargetReadPreference(element.Element("DefaultReadPreference")),
+                DefaultReadPreference = ParseTargetReadPreferenceType(element.Element("DefaultReadPreference")),
                 Id = ParseGuid(element.Element("Id")),
                 Name = ParseNullableString(element.Element("Name")),
                 PermitGoingOutOfSync = ParseBool(element.Element("PermitGoingOutOfSync")),
@@ -1164,7 +1164,7 @@ namespace Ds3.ResponseParsers
             {
                 BucketId = ParseGuid(element.Element("BucketId")),
                 Id = ParseGuid(element.Element("Id")),
-                ReadPreference = ParseTargetReadPreference(element.Element("ReadPreference")),
+                ReadPreference = ParseTargetReadPreferenceType(element.Element("ReadPreference")),
                 TargetId = ParseGuid(element.Element("TargetId"))
             };
         }
@@ -3416,30 +3416,30 @@ namespace Ds3.ResponseParsers
         {
             return ParseDs3TargetFailureType(element.Value);
         }
-        public static TargetReadPreference? ParseNullableTargetReadPreference(string targetReadPreferenceOrNull)
+        public static TargetReadPreferenceType? ParseNullableTargetReadPreferenceType(string targetReadPreferenceTypeOrNull)
         {
-            return string.IsNullOrWhiteSpace(targetReadPreferenceOrNull)
-                ? (TargetReadPreference?) null
-                : ParseTargetReadPreference(targetReadPreferenceOrNull);
+            return string.IsNullOrWhiteSpace(targetReadPreferenceTypeOrNull)
+                ? (TargetReadPreferenceType?) null
+                : ParseTargetReadPreferenceType(targetReadPreferenceTypeOrNull);
         }
 
-        public static TargetReadPreference ParseTargetReadPreference(string targetReadPreference)
+        public static TargetReadPreferenceType ParseTargetReadPreferenceType(string targetReadPreferenceType)
         {
-            return ParseEnumType<TargetReadPreference>(targetReadPreference);
+            return ParseEnumType<TargetReadPreferenceType>(targetReadPreferenceType);
         }
 
-        public static TargetReadPreference? ParseNullableTargetReadPreference(XElement element)
+        public static TargetReadPreferenceType? ParseNullableTargetReadPreferenceType(XElement element)
         {
             if (null == element)
             {
                 return null;
             }
-            return ParseNullableTargetReadPreference(element.Value);
+            return ParseNullableTargetReadPreferenceType(element.Value);
         }
 
-        public static TargetReadPreference ParseTargetReadPreference(XElement element)
+        public static TargetReadPreferenceType ParseTargetReadPreferenceType(XElement element)
         {
-            return ParseTargetReadPreference(element.Value);
+            return ParseTargetReadPreferenceType(element.Value);
         }
         public static TargetState? ParseNullableTargetState(string targetStateOrNull)
         {

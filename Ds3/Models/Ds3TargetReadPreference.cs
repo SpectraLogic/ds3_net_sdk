@@ -24,7 +24,7 @@ namespace Ds3.Models
     {
         public Guid BucketId { get; set; }
         public Guid Id { get; set; }
-        public TargetReadPreference ReadPreference { get; set; }
+        public TargetReadPreferenceType ReadPreference { get; set; }
         public Guid TargetId { get; set; }
     }
 }
