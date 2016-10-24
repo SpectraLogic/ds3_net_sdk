@@ -142,6 +142,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It is illegal to specify value &apos;{0}&apos; for type IJob.
+        /// </summary>
+        internal static string ForbiddenPriorityException {
+            get {
+                return ResourceManager.GetString("ForbiddenPriorityException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered an exception when formating xml string..
         /// </summary>
         internal static string FormatXmlException {

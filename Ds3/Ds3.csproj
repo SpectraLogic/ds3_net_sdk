@@ -996,6 +996,7 @@
     <Compile Include="ResponseParsers\VerifyTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyUserIsMemberOfGroupSpectraS3ResponseParser.cs" />
     <Compile Include="Runtime\Ds3AssertException.cs" />
+    <Compile Include="Runtime\Ds3ForbiddenPriorityException.cs" />
     <Compile Include="Runtime\Ds3MaxJobsException.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\DisposableFileStream.cs" />
