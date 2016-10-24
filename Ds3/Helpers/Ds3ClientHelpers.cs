@@ -49,7 +49,7 @@ namespace Ds3.Helpers
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null,
-            IHelperStrategy<string> helperStrategy = null)
+            IHelperStrategy<string> helperStrategy = null, Priority? priority = null)
         {
             var withAggregation = false;
             var request = new PutBulkJobSpectraS3Request(
@@ -67,6 +67,15 @@ namespace Ds3.Helpers
             {
                 withAggregation = true;
                 request.Aggregating = true;
+            }
+
+            if (priority.HasValue)
+            {
+                if (IsForbiddenPriority(priority.Value))
+                {
+                    throw new Ds3ForbiddenPriorityException(string.Format(Resources.ForbiddenPriorityException, priority));
+                }
+                request.WithPriority(priority.Value);
             }
 
             PutBulkJobSpectraS3Response jobResponse = null;
@@ -111,7 +120,7 @@ namespace Ds3.Helpers
         }
 
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead,
-            IHelperStrategy<string> helperStrategy = null)
+            IHelperStrategy<string> helperStrategy = null, Priority? priority = null)
         {
             if (helperStrategy == null)
             {
@@ -124,11 +133,19 @@ namespace Ds3.Helpers
                 processingOrder = JobChunkClientProcessingOrderGuarantee.IN_ORDER;
             }
 
-            var jobResponse = this._client.GetBulkJobSpectraS3(
-                new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
-                    .WithChunkClientProcessingOrderGuarantee(processingOrder)
-                );
+            var request = new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
+                    .WithChunkClientProcessingOrderGuarantee(processingOrder);
 
+            if (priority.HasValue)
+            {
+                if (IsForbiddenPriority(priority.Value))
+                {
+                    throw new Ds3ForbiddenPriorityException(string.Format(Resources.ForbiddenPriorityException, priority));
+                }
+                request.WithPriority(priority.Value);
+            }
+
+            var jobResponse = this._client.GetBulkJobSpectraS3(request);
 
             return FullObjectJob.Create(
                 this._client,
@@ -142,7 +159,8 @@ namespace Ds3.Helpers
             string bucket,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
-            IHelperStrategy<Ds3PartialObject> helperStrategy = null
+            IHelperStrategy<Ds3PartialObject> helperStrategy = null,
+            Priority? priority = null
             )
         {
             var partialObjectList = new SortedSet<Ds3PartialObject>(partialObjects);
@@ -188,9 +206,9 @@ namespace Ds3.Helpers
             return objectList;
         }
 
-        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null)
+        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null, Priority? priority = null)
         {
-            return this.StartReadJob(bucket, this.ListObjects(bucket), helperStrategy);
+            return this.StartReadJob(bucket, this.ListObjects(bucket), helperStrategy, priority);
         }
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName)
@@ -299,6 +317,12 @@ namespace Ds3.Helpers
                 helperStrategy,
                 new ReadTransferrer()
                 );
+        }
+
+        private static bool IsForbiddenPriority(Priority priority)
+        {
+            var forbiddenPriorities = new HashSet<Priority> {Priority.BACKGROUND, Priority.CRITICAL};
+            return forbiddenPriorities.Contains(priority);
         }
     }
 }

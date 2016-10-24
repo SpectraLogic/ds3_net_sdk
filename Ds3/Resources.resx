@@ -225,4 +225,7 @@
   <data name="HttpsNotSupportedOnMono" xml:space="preserve">
     <value>HTTPS requests are not supported on Mono.</value>
   </data>
+  <data name="ForbiddenPriorityException" xml:space="preserve">
+    <value>It is illegal to specify value '{0}' for type IJob</value>
+  </data>
 </root>
