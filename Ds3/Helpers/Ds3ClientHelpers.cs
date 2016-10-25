@@ -35,56 +35,42 @@ namespace Ds3.Helpers
         private readonly int _objectTransferAttempts; //Negative number represents infinite number of retries
         private readonly int _jobRetries;
         private readonly int _jobWaitTime; //in minutes
-        private readonly long? _maximumFileSizeForAggregating;
 
         public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int objectTransferAttempts = 5, int jobRetries = -1,
-            int jobWaitTime = 5, long? maximumFileSizeForAggregating = null)
+            int jobWaitTime = 5)
         {
-            this._client = client;
-            this._retryAfter = retryAfter;
-            this._objectTransferAttempts = objectTransferAttempts;
-            this._jobRetries = jobRetries;
-            this._jobWaitTime = jobWaitTime;
-            this._maximumFileSizeForAggregating = maximumFileSizeForAggregating;
+            _client = client;
+            _retryAfter = retryAfter;
+            _objectTransferAttempts = objectTransferAttempts;
+            _jobRetries = jobRetries;
+            _jobWaitTime = jobWaitTime;
         }
 
-        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null,
-            IHelperStrategy<string> helperStrategy = null, Priority? priority = null)
+        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, IHelperStrategy<string> helperStrategy = null, Ds3WriteJobOptions ds3WriteJobOptions = null)
         {
-            var withAggregation = false;
-            var request = new PutBulkJobSpectraS3Request(
-                bucket,
-                VerifyObjectCount(objectsToWrite)
-                );
+            var request = new PutBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToWrite));
 
-            if (maxBlobSize.HasValue)
+            if (ds3WriteJobOptions != null)
             {
-                request.WithMaxUploadSize(maxBlobSize.Value);
-            }
-
-            if (_maximumFileSizeForAggregating.HasValue &&
-                GetJobSize(objectsToWrite) <= _maximumFileSizeForAggregating.Value)
-            {
-                withAggregation = true;
-                request.Aggregating = true;
-            }
-
-            if (priority.HasValue)
-            {
-                if (IsForbiddenPriority(priority.Value))
+                request.Priority = ds3WriteJobOptions.Priority;
+                request.Aggregating = ds3WriteJobOptions.Aggregating;
+                request.Force = ds3WriteJobOptions.Force;
+                request.IgnoreNamingConflicts = ds3WriteJobOptions.IgnoreNamingConflicts;
+                request.Name = ds3WriteJobOptions.Name;
+                request.MinimizeSpanningAcrossMedia = ds3WriteJobOptions.MinimizeSpanningAcrossMedia;
+                if (ds3WriteJobOptions.MaxUploadSize.HasValue)
                 {
-                    throw new Ds3ForbiddenPriorityException(string.Format(Resources.ForbiddenPriorityException, priority));
+                    request.WithMaxUploadSize(ds3WriteJobOptions.MaxUploadSize.Value);
                 }
-                request.WithPriority(priority.Value);
             }
 
             PutBulkJobSpectraS3Response jobResponse = null;
-            var retriesLeft = this._jobRetries;
+            var retriesLeft = _jobRetries;
             do
             {
                 try
                 {
-                    jobResponse = this._client.PutBulkJobSpectraS3(request);
+                    jobResponse = _client.PutBulkJobSpectraS3(request);
                 }
                 catch (Ds3MaxJobsException)
                 {
@@ -94,17 +80,17 @@ namespace Ds3.Helpers
                     }
 
                     retriesLeft--;
-                    Thread.Sleep(this._jobWaitTime*1000*60);
+                    Thread.Sleep(_jobWaitTime * 1000 * 60);
                 }
             } while (jobResponse == null);
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy(this._retryAfter, withAggregation);
+                helperStrategy = new WriteRandomAccessHelperStrategy(_retryAfter, ds3WriteJobOptions != null && (ds3WriteJobOptions.Aggregating ?? false));
             }
 
             return FullObjectJob.Create(
-                this._client,
+                _client,
                 jobResponse.ResponsePayload,
                 helperStrategy,
                 new WriteTransferrer(),
@@ -120,11 +106,11 @@ namespace Ds3.Helpers
         }
 
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead,
-            IHelperStrategy<string> helperStrategy = null, Priority? priority = null)
+            IHelperStrategy<string> helperStrategy = null)
         {
             if (helperStrategy == null)
             {
-                helperStrategy = new ReadRandomAccessHelperStrategy<string>(this._retryAfter);
+                helperStrategy = new ReadRandomAccessHelperStrategy<string>(_retryAfter);
             }
 
             var processingOrder = JobChunkClientProcessingOrderGuarantee.NONE;
@@ -136,19 +122,10 @@ namespace Ds3.Helpers
             var request = new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
                     .WithChunkClientProcessingOrderGuarantee(processingOrder);
 
-            if (priority.HasValue)
-            {
-                if (IsForbiddenPriority(priority.Value))
-                {
-                    throw new Ds3ForbiddenPriorityException(string.Format(Resources.ForbiddenPriorityException, priority));
-                }
-                request.WithPriority(priority.Value);
-            }
-
-            var jobResponse = this._client.GetBulkJobSpectraS3(request);
+            var jobResponse = _client.GetBulkJobSpectraS3(request);
 
             return FullObjectJob.Create(
-                this._client,
+                _client,
                 jobResponse.ResponsePayload,
                 helperStrategy,
                 new PartialDataTransferrerDecorator(new ReadTransferrer(), _objectTransferAttempts)
@@ -159,9 +136,7 @@ namespace Ds3.Helpers
             string bucket,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
-            IHelperStrategy<Ds3PartialObject> helperStrategy = null,
-            Priority? priority = null
-            )
+            IHelperStrategy<Ds3PartialObject> helperStrategy = null)
         {
             var partialObjectList = new SortedSet<Ds3PartialObject>(partialObjects);
             var fullObjectList = fullObjects.ToList();
@@ -172,7 +147,7 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(this._retryAfter);
+                helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(_retryAfter);
             }
 
             var processingOrder = JobChunkClientProcessingOrderGuarantee.NONE;
@@ -181,13 +156,13 @@ namespace Ds3.Helpers
                 processingOrder = JobChunkClientProcessingOrderGuarantee.IN_ORDER;
             }
 
-            var jobResponse = this._client.GetBulkJobSpectraS3(
+            var jobResponse = _client.GetBulkJobSpectraS3(
                 new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList)
                     .WithChunkClientProcessingOrderGuarantee(processingOrder)
                 );
 
             return PartialReadJob.Create(
-                this._client,
+                _client,
                 jobResponse.ResponsePayload,
                 fullObjectList,
                 partialObjectList,
@@ -206,9 +181,9 @@ namespace Ds3.Helpers
             return objectList;
         }
 
-        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null, Priority? priority = null)
+        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null)
         {
-            return this.StartReadJob(bucket, this.ListObjects(bucket), helperStrategy, priority);
+            return StartReadJob(bucket, ListObjects(bucket), helperStrategy);
         }
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName)
@@ -267,7 +242,7 @@ namespace Ds3.Helpers
 
         public IJob RecoverWriteJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
         {
-            var jobResponse = this._client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
+            var jobResponse = _client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
 
             if (jobResponse.Status == JobStatus.COMPLETED)
             {
@@ -281,11 +256,11 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy(this._retryAfter, false);
+                helperStrategy = new WriteRandomAccessHelperStrategy(_retryAfter, false);
             }
 
             return FullObjectJob.Create(
-                this._client,
+                _client,
                 jobResponse,
                 helperStrategy,
                 new WriteTransferrer()
@@ -294,7 +269,7 @@ namespace Ds3.Helpers
 
         public IJob RecoverReadJob(Guid jobId, IHelperStrategy<string> helperStrategy = null)
         {
-            var jobResponse = this._client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
+            var jobResponse = _client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
 
             if (jobResponse.Status == JobStatus.COMPLETED)
             {
@@ -308,21 +283,15 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new ReadRandomAccessHelperStrategy<string>(this._retryAfter);
+                helperStrategy = new ReadRandomAccessHelperStrategy<string>(_retryAfter);
             }
 
             return FullObjectJob.Create(
-                this._client,
+                _client,
                 jobResponse,
                 helperStrategy,
                 new ReadTransferrer()
                 );
-        }
-
-        private static bool IsForbiddenPriority(Priority priority)
-        {
-            var forbiddenPriorities = new HashSet<Priority> {Priority.BACKGROUND, Priority.CRITICAL};
-            return forbiddenPriorities.Contains(priority);
         }
     }
 }
