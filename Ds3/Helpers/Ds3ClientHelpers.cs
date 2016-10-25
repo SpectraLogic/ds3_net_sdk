@@ -50,19 +50,7 @@ namespace Ds3.Helpers
         {
             var request = new PutBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToWrite));
 
-            if (ds3WriteJobOptions != null)
-            {
-                request.Priority = ds3WriteJobOptions.Priority;
-                request.Aggregating = ds3WriteJobOptions.Aggregating;
-                request.Force = ds3WriteJobOptions.Force;
-                request.IgnoreNamingConflicts = ds3WriteJobOptions.IgnoreNamingConflicts;
-                request.Name = ds3WriteJobOptions.Name;
-                request.MinimizeSpanningAcrossMedia = ds3WriteJobOptions.MinimizeSpanningAcrossMedia;
-                if (ds3WriteJobOptions.MaxUploadSize.HasValue)
-                {
-                    request.WithMaxUploadSize(ds3WriteJobOptions.MaxUploadSize.Value);
-                }
-            }
+            UpdateWriteJobRequest(ds3WriteJobOptions, request);
 
             PutBulkJobSpectraS3Response jobResponse = null;
             var retriesLeft = _jobRetries;
@@ -98,6 +86,22 @@ namespace Ds3.Helpers
                 );
         }
 
+        private static void UpdateWriteJobRequest(Ds3WriteJobOptions ds3WriteJobOptions, PutBulkJobSpectraS3Request request)
+        {
+            if (ds3WriteJobOptions == null) return;
+
+            request.Priority = ds3WriteJobOptions.Priority;
+            request.Aggregating = ds3WriteJobOptions.Aggregating;
+            request.Force = ds3WriteJobOptions.Force;
+            request.IgnoreNamingConflicts = ds3WriteJobOptions.IgnoreNamingConflicts;
+            request.Name = ds3WriteJobOptions.Name;
+            request.MinimizeSpanningAcrossMedia = ds3WriteJobOptions.MinimizeSpanningAcrossMedia;
+            if (ds3WriteJobOptions.MaxUploadSize.HasValue)
+            {
+                request.WithMaxUploadSize(ds3WriteJobOptions.MaxUploadSize.Value);
+            }
+        }
+
         private static long GetJobSize(IEnumerable<Ds3Object> objectsToWrite)
         {
             return
@@ -106,21 +110,16 @@ namespace Ds3.Helpers
         }
 
         public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead,
-            IHelperStrategy<string> helperStrategy = null)
+            IHelperStrategy<string> helperStrategy = null, Ds3ReadJobOptions ds3ReadJobOptions = null)
         {
             if (helperStrategy == null)
             {
                 helperStrategy = new ReadRandomAccessHelperStrategy<string>(_retryAfter);
             }
 
-            var processingOrder = JobChunkClientProcessingOrderGuarantee.NONE;
-            if (helperStrategy.GetType() == typeof(ReadStreamHelperStrategy))
-            {
-                processingOrder = JobChunkClientProcessingOrderGuarantee.IN_ORDER;
-            }
+            var request = new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead));
 
-            var request = new GetBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToRead))
-                    .WithChunkClientProcessingOrderGuarantee(processingOrder);
+            UpdateReadJobRequest(helperStrategy.GetType(), ds3ReadJobOptions, request);
 
             var jobResponse = _client.GetBulkJobSpectraS3(request);
 
@@ -136,7 +135,8 @@ namespace Ds3.Helpers
             string bucket,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
-            IHelperStrategy<Ds3PartialObject> helperStrategy = null)
+            IHelperStrategy<Ds3PartialObject> helperStrategy = null,
+            Ds3ReadJobOptions ds3ReadJobOptions = null)
         {
             var partialObjectList = new SortedSet<Ds3PartialObject>(partialObjects);
             var fullObjectList = fullObjects.ToList();
@@ -150,16 +150,11 @@ namespace Ds3.Helpers
                 helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(_retryAfter);
             }
 
-            var processingOrder = JobChunkClientProcessingOrderGuarantee.NONE;
-            if (helperStrategy.GetType() == typeof(ReadStreamHelperStrategy))
-            {
-                processingOrder = JobChunkClientProcessingOrderGuarantee.IN_ORDER;
-            }
+            var request = new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList);
 
-            var jobResponse = _client.GetBulkJobSpectraS3(
-                new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList)
-                    .WithChunkClientProcessingOrderGuarantee(processingOrder)
-                );
+            UpdateReadJobRequest(helperStrategy.GetType(), ds3ReadJobOptions, request);
+
+            var jobResponse = _client.GetBulkJobSpectraS3(request);
 
             return PartialReadJob.Create(
                 _client,
@@ -169,6 +164,28 @@ namespace Ds3.Helpers
                 helperStrategy,
                 _objectTransferAttempts
                 );
+        }
+
+        private static void UpdateReadJobRequest(Type helperStrategyType, Ds3ReadJobOptions ds3ReadJobOptions, GetBulkJobSpectraS3Request request)
+        {
+            if (ds3ReadJobOptions != null)
+            {
+                request.Aggregating = ds3ReadJobOptions.Aggregating;
+                request.Name = ds3ReadJobOptions.Name;
+                request.Priority = ds3ReadJobOptions.Priority;
+                if (ds3ReadJobOptions.ChunkClientProcessingOrderGuarantee.HasValue)
+                {
+                    request.WithChunkClientProcessingOrderGuarantee(
+                        ds3ReadJobOptions.ChunkClientProcessingOrderGuarantee.Value);
+                }
+            }
+
+            //When using ReadStreamHelperStrategy the JobChunkClientProcessingOrderGuarantee must be IN_ORDER
+            if (helperStrategyType == typeof(ReadStreamHelperStrategy) &&
+                request.ChunkClientProcessingOrderGuarantee != JobChunkClientProcessingOrderGuarantee.IN_ORDER)
+            {
+                request.WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee.IN_ORDER);
+            }
         }
 
         private static List<T> VerifyObjectCount<T>(IEnumerable<T> objects)
@@ -181,9 +198,9 @@ namespace Ds3.Helpers
             return objectList;
         }
 
-        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null)
+        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null, Ds3ReadJobOptions ds3ReadJobOptions = null)
         {
-            return StartReadJob(bucket, ListObjects(bucket), helperStrategy);
+            return StartReadJob(bucket, ListObjects(bucket), helperStrategy, ds3ReadJobOptions);
         }
 
         public IEnumerable<Ds3Object> ListObjects(string bucketName)

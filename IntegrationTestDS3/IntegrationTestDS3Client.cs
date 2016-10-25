@@ -1392,12 +1392,20 @@ namespace IntegrationTestDs3
             client.GetService(new GetServiceRequest());
         }
 
-        private static readonly object[] Priorities = {
-            new object[] { null, null, null, null, null, null, null},
-            new object[] { true, "test", Priority.HIGH, BlobSize, true, true, true},
-            new object[] { false, "test", Priority.LOW, null, false, false, false},
-            new object[] { true, null, Priority.NORMAL, BlobSize, true, false, true},
-            new object[] { null, "test", Priority.URGENT, BlobSize, false, true, false}
+        private static readonly object[] WriteJobOptions = {
+            new object[] { null, null, null, null, null, null, null },
+            new object[] { true, "test put", Priority.HIGH, BlobSize, true, true, true },
+            new object[] { false, "test put", Priority.LOW, null, false, false, false },
+            new object[] { true, null, Priority.NORMAL, BlobSize, true, false, true },
+            new object[] { null, "test put", Priority.URGENT, BlobSize, false, true, false }
+        };
+
+        private static readonly object[] ReadJobOptions = {
+            new object[] { null, null, null, null },
+            new object[] { true, "test get", Priority.HIGH, JobChunkClientProcessingOrderGuarantee.IN_ORDER },
+            new object[] { false, "test get", Priority.LOW, JobChunkClientProcessingOrderGuarantee.NONE },
+            new object[] { true, null, Priority.NORMAL, null},
+            new object[] { null, "test get", Priority.URGENT, JobChunkClientProcessingOrderGuarantee.IN_ORDER }
         };
 
         private static readonly object[] ForbiddenPriorities =
@@ -1414,10 +1422,10 @@ namespace IntegrationTestDs3
             new object[] {9*1024*1024L},
         };
 
-        [Test, TestCaseSource(nameof(Priorities))]
-        public void TestPutJobWithPriority(bool? aggregating, string name, Priority? priority, long? maxUploadSize, bool? force, bool? ignoreNamingConflicts, bool? minimizeSpanningAcrossMedia)
+        [Test, TestCaseSource(nameof(WriteJobOptions))]
+        public void TestStartWriteJobWithOptions(bool? aggregating, string name, Priority? priority, long? maxUploadSize, bool? force, bool? ignoreNamingConflicts, bool? minimizeSpanningAcrossMedia)
         {
-            const string bucketName = "TestPutJobWithPriority";
+            const string bucketName = "TestStartWriteJobWithOptions";
             try
             {
                 Helpers.EnsureBucketExists(bucketName);
@@ -1466,9 +1474,9 @@ namespace IntegrationTestDs3
         }
 
         [Test, TestCaseSource(nameof(ForbiddenPriorities))]
-        public void TestPutJobWithForbiddenPriority(Priority? priority)
+        public void TestStartWriteJobWithForbiddenPriority(Priority? priority)
         {
-            const string bucketName = "TestPutJobWithForbiddenPriority";
+            const string bucketName = "TestStartWriteJobWithForbiddenPriority";
             try
             {
                 Helpers.EnsureBucketExists(bucketName);
@@ -1489,9 +1497,9 @@ namespace IntegrationTestDs3
         }
 
         [Test, TestCaseSource(nameof(InvalidMaxBlobSize))]
-        public void TestPutJobWithInvalidMaxBlobSize(long maxBlobSize)
+        public void TestStartWriteJobWithInvalidMaxBlobSize(long maxBlobSize)
         {
-            const string bucketName = "TestPutJobWithInvalidMaxBlobSize";
+            const string bucketName = "TestStartWriteJobWithInvalidMaxBlobSize";
             try
             {
                 Helpers.EnsureBucketExists(bucketName);
@@ -1504,6 +1512,85 @@ namespace IntegrationTestDs3
                             new Ds3Object("obj", 0L)
                         },
                        ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = maxBlobSize }));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test, TestCaseSource(nameof(ReadJobOptions))]
+        public void TestStartReadJobWithOptions(bool? aggregating, string name, Priority? priority, JobChunkClientProcessingOrderGuarantee? chunkClientProcessingOrderGuarantee)
+        {
+            const string bucketName = "TestStartReadJobWithOptions";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+
+                var job = Helpers.StartReadAllJob(
+                    bucketName,
+                    ds3ReadJobOptions: new Ds3ReadJobOptions
+                    {
+                        Aggregating = aggregating,
+                        Name = name,
+                        Priority = priority,
+                        ChunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee
+                    });
+
+                var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
+
+                Assert.AreEqual(aggregating ?? false, response.Aggregating);
+                Assert.AreEqual(name ?? $"GET by {LocalIpAddress()}", response.Name);
+                Assert.AreEqual(priority ?? Priority.HIGH, response.Priority);
+                Assert.AreEqual(chunkClientProcessingOrderGuarantee ?? JobChunkClientProcessingOrderGuarantee.NONE, response.ChunkClientProcessingOrderGuarantee);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test, TestCaseSource(nameof(ForbiddenPriorities))]
+        public void TestReadJobWithForbiddenPriority(Priority? priority)
+        {
+            const string bucketName = "TestReadJobWithForbiddenPriority";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+
+                Assert.Throws<Ds3ForbiddenPriorityException>(
+                    () => Helpers.StartReadAllJob(
+                        bucketName,
+                        ds3ReadJobOptions: new Ds3ReadJobOptions { Priority = priority }));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestReadJobWithStreamStrategyAndChunkOrderingNotSet()
+        {
+            const string bucketName = "TestReadJobWithStreamStrategyAndChunkOrderingNotSet";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+
+                var job = Helpers.StartReadAllJob(
+                    bucketName,
+                    new ReadStreamHelperStrategy());
+
+                var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
+
+                Assert.AreEqual(JobChunkClientProcessingOrderGuarantee.IN_ORDER, response.ChunkClientProcessingOrderGuarantee);
+
             }
             finally
             {

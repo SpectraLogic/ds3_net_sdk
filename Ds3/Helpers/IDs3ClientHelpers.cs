@@ -34,23 +34,26 @@ namespace Ds3.Helpers
         /// <param name="ds3WriteJobOptions">(Optional) The options to set on a write job</param>
         /// <returns>An IJob implementation that can put each object per the DS3 protocol.</returns>
         IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, IHelperStrategy<string> helperStrategy = null, Ds3WriteJobOptions ds3WriteJobOptions = null);
+
         /// <summary>
         /// Runs a DS3 bulk GET request with a set of objects and returns an
         /// interface that can GET individual objects efficiently from the server.
         /// </summary>
         /// <param name="bucket">The name of the bucket to get the objects from.</param>
         /// <param name="objectsToRead">The object names to get.</param>
-        /// <param name="helperStrategy"></param>
+        /// <param name="helperStrategy">(Optional) The helper strategy</param>
+        /// <param name="ds3ReadJobOptions">(Optional) The options to set on a read job</param>
         /// <returns>An IJob implementation that can get each object per the DS3 protocol.</returns>
-        IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null);
+        IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, IHelperStrategy<string> helperStrategy = null, Ds3ReadJobOptions ds3ReadJobOptions = null);
 
         /// <summary>
         /// Runs a DS3 bulk GET request for all of the objects in a bucket.
         /// </summary>
         /// <param name="bucket">The name of the bucket to get the objects from.</param>
-        /// <param name="helperStrategy"></param>
+        /// <param name="helperStrategy">(Optional) The helper strategy</param>
+        /// <param name="ds3ReadJobOptions">(Optional) The options to set on a read job</param>
         /// <returns>An IJob implementation that can get each object per the DS3 protocol.</returns>
-        IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null);
+        IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null, Ds3ReadJobOptions ds3ReadJobOptions = null);
 
         /// <summary>
         /// Runs a DS3 bulk GET request with a set of partial object transfers and
@@ -62,13 +65,15 @@ namespace Ds3.Helpers
         /// <param name="bucket">The name of the bucket to get the objects from.</param>
         /// <param name="fullObjects">The list of full objects to get.</param>
         /// <param name="partialObjects">The object parts to get.</param>
-        /// <param name="helperStrategy"></param>
+        /// <param name="helperStrategy">(Optional) The helper strategy</param>
+        /// <param name="ds3ReadJobOptions">(Optional) The options to set on a partial read job</param>
         /// <returns>The IPartialReadJob implementation that can get each partial object per the DS3 protocol.</returns>
         IPartialReadJob StartPartialReadJob(
             string bucket,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
-            IHelperStrategy<Ds3PartialObject> helperStrategy = null);
+            IHelperStrategy<Ds3PartialObject> helperStrategy = null,
+            Ds3ReadJobOptions ds3ReadJobOptions = null);
 
         /// <summary>
         /// Returns information about all of the objects in a bucket.

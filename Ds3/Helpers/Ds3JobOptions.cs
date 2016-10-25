@@ -21,13 +21,13 @@ namespace Ds3.Helpers
 {
     public abstract class Ds3JobOptions
     {
+        private Priority? _priority;
         public bool? Aggregating { get; set; }
         public string Name { get; set; }
 
-        private Priority? _priority;
         public Priority? Priority
         {
-            get { return _priority;}
+            get { return _priority; }
             set
             {
                 if (!value.HasValue) return;
@@ -42,7 +42,7 @@ namespace Ds3.Helpers
 
         private static bool IsForbiddenPriority(Priority priority)
         {
-            var forbiddenPriorities = new HashSet<Priority> { Models.Priority.BACKGROUND, Models.Priority.CRITICAL };
+            var forbiddenPriorities = new HashSet<Priority> {Models.Priority.BACKGROUND, Models.Priority.CRITICAL};
             return forbiddenPriorities.Contains(priority);
         }
     }

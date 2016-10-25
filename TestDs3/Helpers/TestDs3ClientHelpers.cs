@@ -74,7 +74,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
@@ -164,7 +164,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     fullObjects,
                     partialObjects
                 )))
@@ -333,7 +333,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
@@ -615,7 +615,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
@@ -752,7 +752,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
