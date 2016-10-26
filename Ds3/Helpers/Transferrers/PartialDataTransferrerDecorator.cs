@@ -35,7 +35,8 @@ namespace Ds3.Helpers.Transferrers
 
         public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts)
+            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
+            ChecksumType checksum, ChecksumType.Type checksumType)
         {
             var currentTry = 0;
             var transferrer = _transferrer;
@@ -46,7 +47,7 @@ namespace Ds3.Helpers.Transferrers
                 try
                 {
                     transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, tRanges, stream,
-                        metadataAccess, metadataListener, objectTransferAttempts);
+                        metadataAccess, metadataListener, objectTransferAttempts, checksum, checksumType);
                     return;
                 }
                 catch (Ds3ContentLengthNotMatch ex)
