@@ -184,5 +184,28 @@ namespace IntegrationTestDS3
 
             writeStrategyList.ForEach(action);
         }
+
+        public static string ComputeChecksum(FileStream file, ChecksumType.Type type)
+        {
+            switch (type)
+            {
+                case ChecksumType.Type.MD5:
+                    return Convert.ToBase64String(MD5.Create().ComputeHash(file));
+                case ChecksumType.Type.SHA_256:
+                    return
+                        Convert.ToBase64String(SHA256.Create().ComputeHash(file));
+                case ChecksumType.Type.SHA_512:
+                    return
+                        Convert.ToBase64String(SHA512.Create().ComputeHash(file));
+                case ChecksumType.Type.CRC_32:
+                    return
+                        Convert.ToBase64String(Crc32.Create().ComputeHash(file));
+                case ChecksumType.Type.CRC_32C:
+                    return
+                        Convert.ToBase64String(Crc32C.Create().ComputeHash(file));
+                default:
+                    return "";
+            }
+        }
     }
 }

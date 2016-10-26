@@ -25,7 +25,8 @@ namespace Ds3.Helpers.Transferrers
     {
         public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts)
+            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
+            ChecksumType checksum, ChecksumType.Type checksumType)
         {
             var currentTry = 0;
 
@@ -38,6 +39,11 @@ namespace Ds3.Helpers.Transferrers
                 if (blobOffset == 0 && metadataAccess != null)
                 {
                     request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(metadataAccess.GetMetadataValue(objectName)));
+                }
+
+                if (checksum != null)
+                {
+                    request.WithChecksum(checksum, checksumType);
                 }
 
                 try

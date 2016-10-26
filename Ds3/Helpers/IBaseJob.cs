@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Ds3.Models;
 
 namespace Ds3.Helpers
 {
@@ -63,6 +64,15 @@ namespace Ds3.Helpers
         /// <param name="metadataAccess"></param>
         /// <returns>This IJob instance.</returns>
         TSelf WithMetadata(IMetadataAccess metadataAccess);
+
+        /// <summary>
+        /// Must always be called before the Transfer method.
+        /// Allows the client to add checksum to objects.
+        /// </summary>
+        /// <param name="checksum"></param>
+        /// <param name="checksumType">(Option) The Checksum type</param>
+        /// <returns>This IJob instance.</returns>
+        TSelf WithChecksum(ChecksumType checksum, ChecksumType.Type checksumType = ChecksumType.Type.MD5);
 
         /// <summary>
         /// Performs all GETs or PUTs for the job (depending on the type
