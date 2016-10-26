@@ -1597,5 +1597,102 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
         }
+        
+        private static readonly object[] ChecksumTestCaseSource =
+        {
+            new object[] {ChecksumType.Compute, ChecksumType.Type.MD5, "rCu751L6xhB5zyL+soa3fg=="},
+            new object[] {ChecksumType.Compute, ChecksumType.Type.CRC_32, "bgHSXg=="},
+            new object[] {ChecksumType.Compute, ChecksumType.Type.CRC_32C, "+ZBZbQ=="},
+            new object[]
+                {ChecksumType.Compute, ChecksumType.Type.SHA_256, "SbLeE3Wb46VCj1atLhS3FRC/Li87wTGH1ZtYIqOjO+E="},
+            new object[]
+            {
+                ChecksumType.Compute, ChecksumType.Type.SHA_512,
+                "qNLwiDVNQ3YCYs9gjyB2LS5cYHMvKdnLaMveIazkWKROKr03F9i+sV5YEvTBjY6YowRE8Hsqw+iwP9KOKM0Xvw=="
+            }
+        };
+
+
+        [Test, TestCaseSource(nameof(ChecksumTestCaseSource))]
+        public void TestBulkPutWithChecksum(ChecksumType checksum, ChecksumType.Type checksumType, string value)
+        {
+            const string bucketName = "TestBulkPutWithChecksum";
+            try
+            {
+                Client.ModifyDataPolicySpectraS3(
+                    new ModifyDataPolicySpectraS3Request(FixtureName).WithChecksumType(checksumType));
+
+                // Creates a bucket if it does not already exist.
+                Helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var obj = FileHelpers.ListObjectsForDirectory(TestDirectorySrc).First();
+                var job = Helpers.StartWriteJob(bucketName, new List<Ds3Object> {obj});
+
+                job.WithChecksum(checksum, checksumType);
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(TestDirectorySrc));
+
+                /******************************/
+                /* Verify end-to-end checksum */
+                /******************************/
+
+                // Creates a bulk job with all of the objects in the bucket.
+                job = Helpers.StartReadAllJob(bucketName);
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFileGetter(TestDirectoryDest, "checksumTest_"));
+
+                foreach (var file in Directory.GetFiles(TestDirectoryDest))
+                {
+                    var fileName = Path.GetFileName(file);
+                    if (!fileName.StartsWith("checksumTest_")) continue;
+
+                    var newFile = File.OpenRead(file);
+
+                    Assert.AreEqual(
+                        value,
+                        Ds3TestUtils.ComputeChecksum(newFile, checksumType)
+                    );
+                    newFile.Close();
+                    File.Delete(file);
+                }
+
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+
+                //restore the default checksum type on the data policy
+                Client.ModifyDataPolicySpectraS3(
+                    new ModifyDataPolicySpectraS3Request(FixtureName).WithChecksumType(ChecksumType.Type.MD5));
+            }
+        }
+
+        [Test]
+        public void TestBulkPutWithChecksumAfterTransfer()
+        {
+            const string bucketName = "TestBulkPutWithChecksumAfterTransfer";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                Helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var obj = FileHelpers.ListObjectsForDirectory(TestDirectorySrc).First();
+                var job = Helpers.StartWriteJob(bucketName, new List<Ds3Object> {obj});
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(TestDirectorySrc));
+
+                Assert.Throws<Ds3AssertException>(() => job.WithChecksum(ChecksumType.Compute));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
     }
 }
