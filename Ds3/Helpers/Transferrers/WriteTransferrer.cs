@@ -14,48 +14,42 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using Ds3.Calls;
-using Ds3.Models;
 
 namespace Ds3.Helpers.Transferrers
 {
     internal class WriteTransferrer : ITransferrer
     {
-        public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
-            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
-            ChecksumType checksum, ChecksumType.Type checksumType)
+        public void Transfer(TransferrerOptions transferrerOptions)
         {
             var currentTry = 0;
 
             while (true)
             {
-                var request = new PutObjectRequest(bucketName, objectName, stream)
-                    .WithJob(jobId)
-                    .WithOffset(blobOffset);
+                var request = new PutObjectRequest(transferrerOptions.BucketName, transferrerOptions.ObjectName, transferrerOptions.Stream)
+                    .WithJob(transferrerOptions.JobId)
+                    .WithOffset(transferrerOptions.BlobOffset);
 
-                if (blobOffset == 0 && metadataAccess != null)
+                if (transferrerOptions.BlobOffset == 0 && transferrerOptions.MetadataAccess != null)
                 {
-                    request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(metadataAccess.GetMetadataValue(objectName)));
+                    request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(transferrerOptions.MetadataAccess.GetMetadataValue(transferrerOptions.ObjectName)));
                 }
 
-                if (checksum != null)
+                if (transferrerOptions.Checksum != null)
                 {
-                    request.WithChecksum(checksum, checksumType);
+                    request.WithChecksum(transferrerOptions.Checksum, transferrerOptions.ChecksumType);
                 }
 
                 try
                 {
-                    client.PutObject(request);
+                    transferrerOptions.Client.PutObject(request);
                     return;
                 }
                 catch (Exception ex)
                 {
                     if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        BestEffort.ModifyForRetry(stream, objectTransferAttempts, ref currentTry, request.ObjectName, request.Offset.Value, ex);
+                        BestEffort.ModifyForRetry(transferrerOptions.Stream, transferrerOptions.ObjectTransferAttempts, ref currentTry, request.ObjectName, request.Offset.Value, ex);
                     }
                     else
                     {

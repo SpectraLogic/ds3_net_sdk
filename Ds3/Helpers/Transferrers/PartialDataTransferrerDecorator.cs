@@ -14,9 +14,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using Ds3.Models;
 using Ds3.Runtime;
 
 namespace Ds3.Helpers.Transferrers
@@ -33,32 +30,30 @@ namespace Ds3.Helpers.Transferrers
             _retries = retries;
         }
 
-        public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
-            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
-            ChecksumType checksum, ChecksumType.Type checksumType)
+        public void Transfer(TransferrerOptions transferrerOptions)
         {
             var currentTry = 0;
             var transferrer = _transferrer;
-            var tRanges = ranges;
+            var tRanges = transferrerOptions.Ranges;
 
             while (true)
             {
                 try
                 {
-                    transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, tRanges, stream,
-                        metadataAccess, metadataListener, objectTransferAttempts, checksum, checksumType);
+                    transferrerOptions.Ranges = tRanges;
+                    transferrer.Transfer(transferrerOptions);
                     return;
                 }
                 catch (Ds3ContentLengthNotMatch ex)
                 {
-                    BestEffort.ModifyForRetry(stream, objectTransferAttempts, ref currentTry, objectName, blobOffset, ref tRanges, ref transferrer, ex);
+                    BestEffort.ModifyForRetry(transferrerOptions.Stream, transferrerOptions.ObjectTransferAttempts, 
+                        ref currentTry, transferrerOptions.ObjectName, transferrerOptions.BlobOffset, ref tRanges, ref transferrer, ex);
                 }
                 catch (Exception ex)
                 {
                     if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        BestEffort.ModifyForRetry(stream, _retries, ref currentTry, objectName, blobOffset, ex);
+                        BestEffort.ModifyForRetry(transferrerOptions.Stream, _retries, ref currentTry, transferrerOptions.ObjectName, transferrerOptions.BlobOffset, ex);
                     }
                     else
                     {

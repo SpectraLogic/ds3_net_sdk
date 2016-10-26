@@ -41,8 +41,17 @@ namespace TestDs3.Helpers.Transferrers
                 var exceptionTransferrer = new ReadTransferrer();
                 var retries = 1;
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, retries);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
-                    new List<Range>(), stream, null, null, retries, null, ChecksumType.Type.NONE);
+                decorator.Transfer(new TransferrerOptions
+                {
+                    Client = client.Object,
+                    BucketName = JobResponseStubs.BucketName,
+                    ObjectName = "bar",
+                    BlobOffset = 0,
+                    JobId = JobResponseStubs.JobId,
+                    Ranges = new List<Range>(),
+                    Stream = stream,
+                    ObjectTransferAttempts = retries
+                });
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)
@@ -66,8 +75,17 @@ namespace TestDs3.Helpers.Transferrers
                 var stream = new MemoryStream(200);
                 var exceptionTransferrer = new ReadTransferrer();
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 0);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
-                    new List<Range>(), stream, null, null, 0, null, ChecksumType.Type.NONE);
+                decorator.Transfer(new TransferrerOptions
+                {
+                    Client = client.Object,
+                    BucketName = JobResponseStubs.BucketName,
+                    ObjectName = "bar",
+                    BlobOffset = 0,
+                    JobId = JobResponseStubs.JobId,
+                    Ranges = new List<Range>(),
+                    Stream = stream,
+                    ObjectTransferAttempts = 0
+                });
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)

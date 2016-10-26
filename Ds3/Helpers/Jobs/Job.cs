@@ -170,20 +170,22 @@ namespace Ds3.Helpers.Jobs
 
             try
             {
-                this._transferrer.Transfer(
-                    client,
-                    this.BucketName,
-                    blob.Context,
-                    blob.Range.Start,
-                    this.JobId,
-                    ranges,
-                    stream,
-                    _metadataAccess,
-                    MetadataListener,
-                    _objectTransferAttempts,
-                    _checksum,
-                    _checksumType
-                    );
+
+                this._transferrer.Transfer(new TransferrerOptions
+                {
+                    Client = client,
+                    BucketName = BucketName,
+                    ObjectName = blob.Context,
+                    BlobOffset = blob.Range.Start,
+                    JobId = JobId,
+                    Ranges = ranges,
+                    Stream = stream,
+                    MetadataAccess = _metadataAccess,
+                    MetadataListener = MetadataListener,
+                    ObjectTransferAttempts = _objectTransferAttempts,
+                    Checksum = _checksum,
+                    ChecksumType = _checksumType
+                });
             }
             finally
             {

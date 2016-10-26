@@ -22,9 +22,22 @@ namespace Ds3.Helpers.Transferrers
 {
     internal interface ITransferrer
     {
-        void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
-            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
-            ChecksumType checksum, ChecksumType.Type checksumType);
+        void Transfer(TransferrerOptions transferrerOptions);
+    }
+
+    internal class TransferrerOptions
+    {
+        public IDs3Client Client { get; set; }
+        public string BucketName { get; set; }
+        public string ObjectName { get; set; }
+        public long BlobOffset { get; set; }
+        public Guid JobId { get; set; }
+        public IEnumerable<Range> Ranges { get; set; }
+        public Stream Stream { get; set; }
+        public IMetadataAccess MetadataAccess { get; set; }
+        public Action<string, IDictionary<string, string>> MetadataListener { get; set; }
+        public int ObjectTransferAttempts { get; set; }
+        public ChecksumType Checksum { get; set; }
+        public ChecksumType.Type ChecksumType { get; set; }
     }
 }
