@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ds3;
 using Ds3.Helpers.Transferrers;
+using Ds3.Models;
 using Ds3.Runtime;
 using Moq;
 using NUnit.Framework;
@@ -41,7 +42,7 @@ namespace TestDs3.Helpers.Transferrers
                 var retries = 1;
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, retries);
                 decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
-                    new List<Range>(), stream, null, null, retries);
+                    new List<Range>(), stream, null, null, retries, null, ChecksumType.Type.NONE);
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)
@@ -66,7 +67,7 @@ namespace TestDs3.Helpers.Transferrers
                 var exceptionTransferrer = new ReadTransferrer();
                 var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 0);
                 decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
-                    new List<Range>(), stream, null, null, 0);
+                    new List<Range>(), stream, null, null, 0, null, ChecksumType.Type.NONE);
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)

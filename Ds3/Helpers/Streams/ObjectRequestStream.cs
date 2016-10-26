@@ -24,6 +24,7 @@ namespace Ds3.Helpers.Streams
         private long _streamLength;
         private long _totalBytesRead = 0;
         private bool _disposed;
+        private long _streamStartPoint;
 
         public ObjectRequestStream(Stream stream, long length)
         {
@@ -34,7 +35,7 @@ namespace Ds3.Helpers.Streams
         public ObjectRequestStream(Stream stream, long offset, long length)
         {
             this._stream = stream;
-            this._stream.Position = offset;
+            this._stream.Position = _streamStartPoint = offset;
             this._streamLength = length;
         }
 
@@ -111,7 +112,7 @@ namespace Ds3.Helpers.Streams
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return _stream.Seek(Position + offset, origin);
+            return _stream.Seek(_streamStartPoint + offset, origin);
         }
 
         public override void SetLength(long value)

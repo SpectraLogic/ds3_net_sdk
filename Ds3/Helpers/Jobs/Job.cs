@@ -47,6 +47,8 @@ namespace Ds3.Helpers.Jobs
         private Func<TItem, Stream> _createStreamForTransferItem;
         private IMetadataAccess _metadataAccess;
         private readonly int _objectTransferAttempts;
+        private ChecksumType _checksum;
+        private ChecksumType.Type _checksumType;
         private bool TransferStarted { get; set; }
 
         public event Action<long> DataTransferred;
@@ -79,6 +81,16 @@ namespace Ds3.Helpers.Jobs
             if (TransferStarted) throw new Ds3AssertException("WithMetadata Must always be called before the Transfer method.");
 
             this._metadataAccess = metadataAccess;
+            return (TSelf)(IBaseJob<TSelf, TItem>)this;
+        }
+
+        public TSelf WithChecksum(ChecksumType checksum, ChecksumType.Type checksumType = ChecksumType.Type.MD5)
+        {
+            if (TransferStarted) throw new Ds3AssertException("WithChecksum Must always be called before the Transfer method.");
+
+            this._checksum = checksum;
+            this._checksumType = checksumType;
+
             return (TSelf)(IBaseJob<TSelf, TItem>)this;
         }
 
@@ -168,7 +180,9 @@ namespace Ds3.Helpers.Jobs
                     stream,
                     _metadataAccess,
                     MetadataListener,
-                    _objectTransferAttempts
+                    _objectTransferAttempts,
+                    _checksum,
+                    _checksumType
                     );
             }
             finally
