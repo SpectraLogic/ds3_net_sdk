@@ -584,7 +584,7 @@ namespace IntegrationTestDs3
                 Assert.Greater(directoryObjects.Count, 0);
 
                 // Test the PUT
-                var putJob = Helpers.StartWriteJob(bucketName, directoryObjects, new WriteStreamHelperStrategy(), new Ds3WriteJobOptions { MaxUploadSize = BlobSize });
+                var putJob = Helpers.StartWriteJob(bucketName, directoryObjects, new Ds3WriteJobOptions { MaxUploadSize = BlobSize }, new WriteStreamHelperStrategy());
                 using (Stream fileStream = File.OpenRead(TestDirectoryBigFolder + _bigFiles.First()))
                 {
                     var md5 = MD5.Create();
@@ -1436,7 +1436,7 @@ namespace IntegrationTestDs3
                     {
                         new Ds3Object("obj", 0L)
                     },
-                    ds3WriteJobOptions: new Ds3WriteJobOptions
+                    new Ds3WriteJobOptions
                     {
                         Aggregating = aggregating,
                         Name = name,
@@ -1488,7 +1488,7 @@ namespace IntegrationTestDs3
                         {
                             new Ds3Object("obj", 0L)
                         },
-                       ds3WriteJobOptions: new Ds3WriteJobOptions { Priority = priority }));
+                       new Ds3WriteJobOptions { Priority = priority }));
             }
             finally
             {
@@ -1511,7 +1511,7 @@ namespace IntegrationTestDs3
                         {
                             new Ds3Object("obj", 0L)
                         },
-                       ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = maxBlobSize }));
+                       new Ds3WriteJobOptions { MaxUploadSize = maxBlobSize }));
             }
             finally
             {
@@ -1531,7 +1531,7 @@ namespace IntegrationTestDs3
 
                 var job = Helpers.StartReadAllJob(
                     bucketName,
-                    ds3ReadJobOptions: new Ds3ReadJobOptions
+                    new Ds3ReadJobOptions
                     {
                         Aggregating = aggregating,
                         Name = name,
@@ -1565,7 +1565,7 @@ namespace IntegrationTestDs3
                 Assert.Throws<Ds3ForbiddenPriorityException>(
                     () => Helpers.StartReadAllJob(
                         bucketName,
-                        ds3ReadJobOptions: new Ds3ReadJobOptions { Priority = priority }));
+                        new Ds3ReadJobOptions { Priority = priority }));
             }
             finally
             {

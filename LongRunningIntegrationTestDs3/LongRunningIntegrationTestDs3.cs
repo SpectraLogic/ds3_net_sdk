@@ -107,7 +107,7 @@ namespace LongRunningIntegrationTestDs3
                 const long blobSize = 1L * 1024L * 1024L * 1024L;
 
                 // Test the PUT
-                var putJob = _helpers.StartWriteJob(bucketName, directoryObjects, new WriteStreamHelperStrategy(), new Ds3WriteJobOptions { MaxUploadSize = blobSize });
+                var putJob = _helpers.StartWriteJob(bucketName, directoryObjects, new Ds3WriteJobOptions { MaxUploadSize = blobSize }, new WriteStreamHelperStrategy());
                 using (var fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value))
                 {
                     var md5 = MD5.Create();
@@ -169,7 +169,7 @@ namespace LongRunningIntegrationTestDs3
                 };
 
                 // Test the PUT
-                var putJob = _helpers.StartWriteJob(bucketName, directoryObjects, new WriteStreamHelperStrategy(), new Ds3WriteJobOptions { MaxUploadSize = blobSize });
+                var putJob = _helpers.StartWriteJob(bucketName, directoryObjects, new Ds3WriteJobOptions { MaxUploadSize = blobSize }, new WriteStreamHelperStrategy());
 
                 var putCryptoStreams = new Dictionary<string, CryptoStream>();
                 var putMd5s = new Dictionary<string, MD5>();
