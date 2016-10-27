@@ -38,6 +38,7 @@ namespace Ds3.Calls
         public GetBulkJobSpectraS3Request WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee chunkClientProcessingOrderGuarantee)
         {
             this.ChunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
+            this.QueryParams.Add("chunkClientProcessingOrderGuarantee", BuildChunkOrderingEnumString(this.ChunkClientProcessingOrderGuarantee.Value));
             return this;
         }
 
@@ -155,13 +156,6 @@ namespace Ds3.Calls
                         .SetAttributeValueFluent("Offset", partial.Range.Start.ToString())
                         .SetAttributeValueFluent("Length", partial.Range.Length.ToString())
                 );
-            if (this.ChunkClientProcessingOrderGuarantee.HasValue)
-            {
-                root.SetAttributeValue(
-                    "ChunkClientProcessingOrderGuarantee",
-                    BuildChunkOrderingEnumString(this.ChunkClientProcessingOrderGuarantee.Value)
-                );
-            }
             return new XDocument().AddFluent(root).WriteToMemoryStream();
         }
 
