@@ -33,11 +33,24 @@ namespace Ds3.Calls
 
         public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
 
-        public JobChunkClientProcessingOrderGuarantee? ChunkClientProcessingOrderGuarantee { get; private set; }
-
-        public GetBulkJobSpectraS3Request WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee chunkClientProcessingOrderGuarantee)
+        private JobChunkClientProcessingOrderGuarantee? _chunkClientProcessingOrderGuarantee;
+        public JobChunkClientProcessingOrderGuarantee? ChunkClientProcessingOrderGuarantee
         {
-            this.ChunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
+            get { return _chunkClientProcessingOrderGuarantee; }
+            set { WithChunkClientProcessingOrderGuarantee(value); }
+        }
+
+        public GetBulkJobSpectraS3Request WithChunkClientProcessingOrderGuarantee(JobChunkClientProcessingOrderGuarantee? chunkClientProcessingOrderGuarantee)
+        {
+            this._chunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee;
+            if (chunkClientProcessingOrderGuarantee != null)
+            {
+                this.QueryParams.Add("chunkClientProcessingOrderGuarantee", BuildChunkOrderingEnumString(chunkClientProcessingOrderGuarantee.Value));
+            }
+            else
+            {
+                this.QueryParams.Remove("chunkClientProcessingOrderGuarantee");
+            }
             return this;
         }
 
@@ -155,13 +168,6 @@ namespace Ds3.Calls
                         .SetAttributeValueFluent("Offset", partial.Range.Start.ToString())
                         .SetAttributeValueFluent("Length", partial.Range.Length.ToString())
                 );
-            if (this.ChunkClientProcessingOrderGuarantee.HasValue)
-            {
-                root.SetAttributeValue(
-                    "ChunkClientProcessingOrderGuarantee",
-                    BuildChunkOrderingEnumString(this.ChunkClientProcessingOrderGuarantee.Value)
-                );
-            }
             return new XDocument().AddFluent(root).WriteToMemoryStream();
         }
 
