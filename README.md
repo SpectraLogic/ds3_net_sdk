@@ -31,6 +31,20 @@ on your computer using the latest release:
 2. Follow the NuGet instructions on [Creating Local Feeds](http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds#Creating_Local_Feeds)
    using the directory that you've created.
 
+Or you can use Spectra Logic Bintray NuGet repository:
+
+To configure the NuGet Visual Studio Extension to use Bintray, you need to add Bintray as another Package.
+
+1. Under the "Tools > Options" menu
+2. Select "NuGet Package Manager > Package Sources" and add a new Package Source:
+
+   Name: SpectraLogic .NET SDK (or any other resource name)
+   
+   Paste the url below into the Source field:
+   
+   `https://api.bintray.com/nuget/spectralogic/ds3_net`
+3. Make sure you have enabled the new source by using the checkbox in the available sources list.
+
 This makes the DS3 SDK available for installation into a Visual Studio .NET
 Project.
 
