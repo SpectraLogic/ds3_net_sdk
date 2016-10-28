@@ -1694,5 +1694,32 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
         }
+
+        [Test]
+        public void TestBulkPutWithBlobsAndMetadata()
+        {
+            const string bucketName = "TestBulkPutWithBlobsAndMetadata";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                Helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(TestDirectoryBigFolder);
+                Assert.Greater(directoryObjects.Count(), 0);
+                var job = Helpers.StartWriteJob(bucketName, directoryObjects, BlobSize);
+
+                job.WithMetadata(new MetadataAccess());
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(TestDirectoryBigFolder));
+
+                VerifyFiles(bucketName, TestDirectoryBigFolder);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
     }
 }
