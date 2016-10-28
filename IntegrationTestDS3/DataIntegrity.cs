@@ -131,7 +131,7 @@ namespace IntegrationTestDS3
                     var counter = 0;
                     var dataTransfered = 0L;
 
-                    var job = helpers.StartReadJob(bucketName, ds3ObjList, strategy);
+                    var job = helpers.StartReadJob(bucketName, ds3ObjList, helperStrategy: strategy);
 
                     job.ItemCompleted += item => { counter++; };
 

@@ -125,7 +125,7 @@ namespace LongRunningIntegrationTestDs3
                 }
 
                 // Test the GET
-                var getJob = _helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
+                var getJob = _helpers.StartReadAllJob(bucketName, helperStrategy: new ReadStreamHelperStrategy());
                 using (Stream fileStream = new ChecksumStream(streamLength, this._copyBufferSize.Value))
                 {
                     var md5 = MD5.Create();
@@ -197,7 +197,7 @@ namespace LongRunningIntegrationTestDs3
                 }
 
                 // Test the GET
-                var getJob = _helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
+                var getJob = _helpers.StartReadAllJob(bucketName, helperStrategy: new ReadStreamHelperStrategy());
 
                 var getCryptoStreams = new Dictionary<string, CryptoStream>();
                 var getMd5s = new Dictionary<string, MD5>();

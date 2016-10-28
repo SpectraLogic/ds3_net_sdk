@@ -433,7 +433,7 @@ namespace IntegrationTestDs3
                     Ds3TestUtils.LoadTestData(Client, bucketName);
 
                     // Creates a bulk job with all of the objects in the bucket.
-                    var job = Helpers.StartReadAllJob(bucketName, strategy);
+                    var job = Helpers.StartReadAllJob(bucketName, helperStrategy: strategy);
 
                     // Transfer all of the files.
                     job.Transfer(FileHelpers.BuildFileGetter(TestDirectoryDest));
@@ -462,7 +462,7 @@ namespace IntegrationTestDs3
                     Ds3TestUtils.LoadTestData(Client, bucketName);
 
                     // Creates a bulk job with all of the objects in the bucket.
-                    var job = Helpers.StartReadAllJob(bucketName, strategy);
+                    var job = Helpers.StartReadAllJob(bucketName, helperStrategy: strategy);
 
                     // Transfer all of the files.
                     job.Transfer(FileHelpers.BuildFileGetter(TestDirectoryDestPrefix, Prefix));
@@ -601,7 +601,7 @@ namespace IntegrationTestDs3
                 }
 
                 // Test the GET
-                var getJob = Helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
+                var getJob = Helpers.StartReadAllJob(bucketName, helperStrategy: new ReadStreamHelperStrategy());
                 using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
                 {
                     var md5 = MD5.Create();
@@ -1585,7 +1585,7 @@ namespace IntegrationTestDs3
 
                 var job = Helpers.StartReadAllJob(
                     bucketName,
-                    new ReadStreamHelperStrategy());
+                    helperStrategy: new ReadStreamHelperStrategy());
 
                 var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
 
@@ -1707,7 +1707,7 @@ namespace IntegrationTestDs3
                 // Creates a bulk job with the server based on the files in a directory (recursively).
                 var directoryObjects = FileHelpers.ListObjectsForDirectory(TestDirectoryBigFolder);
                 Assert.Greater(directoryObjects.Count(), 0);
-                var job = Helpers.StartWriteJob(bucketName, directoryObjects, BlobSize);
+                var job = Helpers.StartWriteJob(bucketName, directoryObjects, new Ds3WriteJobOptions { MaxUploadSize = BlobSize });
 
                 job.WithMetadata(new MetadataAccess());
 

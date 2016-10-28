@@ -70,7 +70,7 @@ namespace IntegrationTestDS3
                 }
 
                 var job = helper.StartReadJob(bucketName, new List<Ds3Object> {new Ds3Object(objectName, null)},
-                    helperStrategy);
+                    helperStrategy: helperStrategy);
 
                 job.Transfer(key => fileStream);
 
@@ -93,7 +93,7 @@ namespace IntegrationTestDS3
                 }
 
                 var job = helper.StartPartialReadJob(bucketName, new List<string>(),
-                    new List<Ds3PartialObject> {new Ds3PartialObject(range, objectName)}, helperStrategy);
+                    new List<Ds3PartialObject> {new Ds3PartialObject(range, objectName)}, helperStrategy: helperStrategy);
 
                 job.Transfer(key => fileStream);
 

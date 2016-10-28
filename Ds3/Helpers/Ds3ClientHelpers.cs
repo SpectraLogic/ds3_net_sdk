@@ -46,13 +46,10 @@ namespace Ds3.Helpers
             _jobWaitTime = jobWaitTime;
         }
 
-        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, IHelperStrategy<string> helperStrategy = null)
+        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, Ds3WriteJobOptions ds3WriteJobOptions  = null, IHelperStrategy < string> helperStrategy = null)
         {
-            return StartWriteJob(bucket,objectsToWrite, new Ds3WriteJobOptions(), helperStrategy);
-        }
-        
-        public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, Ds3WriteJobOptions ds3WriteJobOptions, IHelperStrategy < string> helperStrategy = null)
-        {
+            ds3WriteJobOptions = ds3WriteJobOptions ?? new Ds3WriteJobOptions();
+
             var request = new PutBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToWrite));
 
             UpdateWriteJobRequest(ds3WriteJobOptions, request);
@@ -112,14 +109,11 @@ namespace Ds3.Helpers
                     .Sum(objectToWrite => objectToWrite.Size.Value);
         }
 
-        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead,
+        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, Ds3ReadJobOptions ds3ReadJobOptions = null,
             IHelperStrategy<string> helperStrategy = null)
         {
-            return StartReadJob(bucket, objectsToRead, new Ds3ReadJobOptions(), helperStrategy);
-        }
-        public IJob StartReadJob(string bucket, IEnumerable<Ds3Object> objectsToRead, Ds3ReadJobOptions ds3ReadJobOptions,
-            IHelperStrategy<string> helperStrategy = null)
-        {
+            ds3ReadJobOptions = ds3ReadJobOptions ?? new Ds3ReadJobOptions();
+
             if (helperStrategy == null)
             {
                 helperStrategy = new ReadRandomAccessHelperStrategy<string>(_retryAfter);
@@ -143,18 +137,11 @@ namespace Ds3.Helpers
             string bucket,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects,
+            Ds3ReadJobOptions ds3ReadJobOptions = null,
             IHelperStrategy<Ds3PartialObject> helperStrategy = null)
         {
-            return StartPartialReadJob(bucket, fullObjects, partialObjects, new Ds3ReadJobOptions(), helperStrategy);
-        }
+            ds3ReadJobOptions = ds3ReadJobOptions ?? new Ds3ReadJobOptions();
 
-        public IPartialReadJob StartPartialReadJob(
-            string bucket,
-            IEnumerable<string> fullObjects,
-            IEnumerable<Ds3PartialObject> partialObjects,
-            Ds3ReadJobOptions ds3ReadJobOptions,
-            IHelperStrategy<Ds3PartialObject> helperStrategy = null)
-        {
             var partialObjectList = new SortedSet<Ds3PartialObject>(partialObjects);
             var fullObjectList = fullObjects.ToList();
             if (partialObjectList.Count + fullObjectList.Count == 0)
@@ -213,12 +200,7 @@ namespace Ds3.Helpers
             return objectList;
         }
 
-        public IJob StartReadAllJob(string bucket, IHelperStrategy<string> helperStrategy = null)
-        {
-            return StartReadAllJob(bucket, new Ds3ReadJobOptions(), helperStrategy);
-        }
-        
-        public IJob StartReadAllJob(string bucket, Ds3ReadJobOptions ds3ReadJobOptions, IHelperStrategy < string> helperStrategy = null)
+        public IJob StartReadAllJob(string bucket, Ds3ReadJobOptions ds3ReadJobOptions = null, IHelperStrategy < string> helperStrategy = null)
         {
             return StartReadJob(bucket, ListObjects(bucket), ds3ReadJobOptions, helperStrategy);
         }
