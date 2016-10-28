@@ -36,7 +36,7 @@ namespace Ds3.Helpers.Transferrers
                     .WithJob(jobId)
                     .WithOffset(blobOffset);
 
-                if (blobOffset == 0 && metadataAccess != null)
+                if (metadataAccess != null)
                 {
                     request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(metadataAccess.GetMetadataValue(objectName)));
                 }
