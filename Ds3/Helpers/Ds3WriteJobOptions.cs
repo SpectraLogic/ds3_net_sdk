@@ -15,16 +15,11 @@
 
 namespace Ds3.Helpers
 {
-    /// <summary>
-    /// Provides a simple API to efficiently transfer objects for a bulk job.
-    /// </summary>
-    /// <seealso>
-    ///     <cref>IDs3ClientHelpers.StartWriteJob</cref>
-    /// </seealso>
-    /// <seealso>
-    ///     <cref>IDs3ClientHelpers.StartReadJob</cref>
-    /// </seealso>
-    public interface IJob : IBaseJob<IJob, string>
+    public class Ds3WriteJobOptions : Ds3JobOptions
     {
+        public long? MaxUploadSize { get; set; }
+        public bool? Force { get; set; }
+        public bool? IgnoreNamingConflicts { get; set; }
+        public bool? MinimizeSpanningAcrossMedia { get; set; }
     }
 }

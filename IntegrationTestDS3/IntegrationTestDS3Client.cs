@@ -17,6 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
@@ -431,7 +433,7 @@ namespace IntegrationTestDs3
                     Ds3TestUtils.LoadTestData(Client, bucketName);
 
                     // Creates a bulk job with all of the objects in the bucket.
-                    var job = Helpers.StartReadAllJob(bucketName, strategy);
+                    var job = Helpers.StartReadAllJob(bucketName, helperStrategy: strategy);
 
                     // Transfer all of the files.
                     job.Transfer(FileHelpers.BuildFileGetter(TestDirectoryDest));
@@ -460,7 +462,7 @@ namespace IntegrationTestDs3
                     Ds3TestUtils.LoadTestData(Client, bucketName);
 
                     // Creates a bulk job with all of the objects in the bucket.
-                    var job = Helpers.StartReadAllJob(bucketName, strategy);
+                    var job = Helpers.StartReadAllJob(bucketName, helperStrategy: strategy);
 
                     // Transfer all of the files.
                     job.Transfer(FileHelpers.BuildFileGetter(TestDirectoryDestPrefix, Prefix));
@@ -519,7 +521,7 @@ namespace IntegrationTestDs3
                 // Creates a bulk job with the server based on the files in a directory (recursively).
                 var directoryObjects = FileHelpers.ListObjectsForDirectory(TestDirectoryBigFolder);
                 Assert.Greater(directoryObjects.Count(), 0);
-                var job = Helpers.StartWriteJob(bucketName, directoryObjects, BlobSize);
+                var job = Helpers.StartWriteJob(bucketName, directoryObjects, ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = BlobSize});
 
                 // Transfer all of the files.
                 job.Transfer(FileHelpers.BuildFilePutter(TestDirectoryBigFolder));
@@ -582,8 +584,7 @@ namespace IntegrationTestDs3
                 Assert.Greater(directoryObjects.Count, 0);
 
                 // Test the PUT
-                var putJob = Helpers.StartWriteJob(bucketName, directoryObjects, BlobSize,
-                    new WriteStreamHelperStrategy());
+                var putJob = Helpers.StartWriteJob(bucketName, directoryObjects, new Ds3WriteJobOptions { MaxUploadSize = BlobSize }, new WriteStreamHelperStrategy());
                 using (Stream fileStream = File.OpenRead(TestDirectoryBigFolder + _bigFiles.First()))
                 {
                     var md5 = MD5.Create();
@@ -600,7 +601,7 @@ namespace IntegrationTestDs3
                 }
 
                 // Test the GET
-                var getJob = Helpers.StartReadAllJob(bucketName, new ReadStreamHelperStrategy());
+                var getJob = Helpers.StartReadAllJob(bucketName, helperStrategy: new ReadStreamHelperStrategy());
                 using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
                 {
                     var md5 = MD5.Create();
@@ -1391,6 +1392,212 @@ namespace IntegrationTestDs3
             client.GetService(new GetServiceRequest());
         }
 
+        private static readonly object[] WriteJobOptions = {
+            new object[] { null, null, null, null, null, null, null },
+            new object[] { true, "test put", Priority.HIGH, BlobSize, true, true, true },
+            new object[] { false, "test put", Priority.LOW, null, false, false, false },
+            new object[] { true, null, Priority.NORMAL, BlobSize, true, false, true },
+            new object[] { null, "test put", Priority.URGENT, BlobSize, false, true, false }
+        };
+
+        private static readonly object[] ReadJobOptions = {
+            new object[] { null, null, null, null },
+            new object[] { true, "test get", Priority.HIGH, JobChunkClientProcessingOrderGuarantee.IN_ORDER },
+            new object[] { false, "test get", Priority.LOW, JobChunkClientProcessingOrderGuarantee.NONE },
+            new object[] { true, null, Priority.NORMAL, null},
+            new object[] { null, "test get", Priority.URGENT, JobChunkClientProcessingOrderGuarantee.IN_ORDER }
+        };
+
+        private static readonly object[] ForbiddenPriorities =
+        {
+            new object[] {Priority.CRITICAL},
+            new object[] {Priority.BACKGROUND}
+        };
+
+        private static readonly object[] InvalidMaxBlobSize =
+{
+            new object[] {0L},
+            new object[] {10L},
+            new object[] {100L},
+            new object[] {9*1024*1024L},
+        };
+
+        [Test, TestCaseSource(nameof(WriteJobOptions))]
+        public void TestStartWriteJobWithOptions(bool? aggregating, string name, Priority? priority, long? maxUploadSize, bool? force, bool? ignoreNamingConflicts, bool? minimizeSpanningAcrossMedia)
+        {
+            const string bucketName = "TestStartWriteJobWithOptions";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                var job = Helpers.StartWriteJob(
+                    bucketName,
+                    new List<Ds3Object>
+                    {
+                        new Ds3Object("obj", 0L)
+                    },
+                    new Ds3WriteJobOptions
+                    {
+                        Aggregating = aggregating,
+                        Name = name,
+                        Priority = priority,
+                        MaxUploadSize = maxUploadSize,
+                        Force = force,
+                        IgnoreNamingConflicts = ignoreNamingConflicts,
+                        MinimizeSpanningAcrossMedia = minimizeSpanningAcrossMedia
+                    });
+
+                var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
+
+                Assert.AreEqual(aggregating ?? false, response.Aggregating);
+                Assert.AreEqual(name ?? $"PUT by {LocalIpAddress()}", response.Name);
+                Assert.AreEqual(priority ?? Priority.NORMAL, response.Priority);
+                Assert.AreEqual(minimizeSpanningAcrossMedia ?? false, response.MinimizeSpanningAcrossMedia);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+        private static IPAddress LocalIpAddress()
+        {
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                return null;
+            }
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+
+            return host
+                .AddressList
+                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+        }
+
+        [Test, TestCaseSource(nameof(ForbiddenPriorities))]
+        public void TestStartWriteJobWithForbiddenPriority(Priority? priority)
+        {
+            const string bucketName = "TestStartWriteJobWithForbiddenPriority";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Assert.Throws<Ds3ForbiddenPriorityException>(
+                    () => Helpers.StartWriteJob(
+                        bucketName,
+                        new List<Ds3Object>
+                        {
+                            new Ds3Object("obj", 0L)
+                        },
+                       new Ds3WriteJobOptions { Priority = priority }));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test, TestCaseSource(nameof(InvalidMaxBlobSize))]
+        public void TestStartWriteJobWithInvalidMaxBlobSize(long maxBlobSize)
+        {
+            const string bucketName = "TestStartWriteJobWithInvalidMaxBlobSize";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Assert.Throws<Ds3BadStatusCodeException>(
+                    () => Helpers.StartWriteJob(
+                        bucketName,
+                        new List<Ds3Object>
+                        {
+                            new Ds3Object("obj", 0L)
+                        },
+                       new Ds3WriteJobOptions { MaxUploadSize = maxBlobSize }));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test, TestCaseSource(nameof(ReadJobOptions))]
+        public void TestStartReadJobWithOptions(bool? aggregating, string name, Priority? priority, JobChunkClientProcessingOrderGuarantee? chunkClientProcessingOrderGuarantee)
+        {
+            const string bucketName = "TestStartReadJobWithOptions";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+
+                var job = Helpers.StartReadAllJob(
+                    bucketName,
+                    new Ds3ReadJobOptions
+                    {
+                        Aggregating = aggregating,
+                        Name = name,
+                        Priority = priority,
+                        ChunkClientProcessingOrderGuarantee = chunkClientProcessingOrderGuarantee
+                    });
+
+                var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
+
+                Assert.AreEqual(aggregating ?? false, response.Aggregating);
+                Assert.AreEqual(name ?? $"GET by {LocalIpAddress()}", response.Name);
+                Assert.AreEqual(priority ?? Priority.HIGH, response.Priority);
+                Assert.AreEqual(chunkClientProcessingOrderGuarantee ?? JobChunkClientProcessingOrderGuarantee.NONE, response.ChunkClientProcessingOrderGuarantee);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test, TestCaseSource(nameof(ForbiddenPriorities))]
+        public void TestReadJobWithForbiddenPriority(Priority? priority)
+        {
+            const string bucketName = "TestReadJobWithForbiddenPriority";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+
+                Assert.Throws<Ds3ForbiddenPriorityException>(
+                    () => Helpers.StartReadAllJob(
+                        bucketName,
+                        new Ds3ReadJobOptions { Priority = priority }));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestReadJobWithStreamStrategyAndChunkOrderingNotSet()
+        {
+            const string bucketName = "TestReadJobWithStreamStrategyAndChunkOrderingNotSet";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+
+                var job = Helpers.StartReadAllJob(
+                    bucketName,
+                    helperStrategy: new ReadStreamHelperStrategy());
+
+                var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
+
+                Assert.AreEqual(JobChunkClientProcessingOrderGuarantee.IN_ORDER, response.ChunkClientProcessingOrderGuarantee);
+
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+        
         private static readonly object[] ChecksumTestCaseSource =
         {
             new object[] {ChecksumType.Compute, ChecksumType.Type.MD5, "rCu751L6xhB5zyL+soa3fg=="},
@@ -1481,6 +1688,33 @@ namespace IntegrationTestDs3
                 job.Transfer(FileHelpers.BuildFilePutter(TestDirectorySrc));
 
                 Assert.Throws<Ds3AssertException>(() => job.WithChecksum(ChecksumType.Compute));
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestBulkPutWithBlobsAndMetadata()
+        {
+            const string bucketName = "TestBulkPutWithBlobsAndMetadata";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                Helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(TestDirectoryBigFolder);
+                Assert.Greater(directoryObjects.Count(), 0);
+                var job = Helpers.StartWriteJob(bucketName, directoryObjects, new Ds3WriteJobOptions { MaxUploadSize = BlobSize });
+
+                job.WithMetadata(new MetadataAccess());
+
+                // Transfer all of the files.
+                job.Transfer(FileHelpers.BuildFilePutter(TestDirectoryBigFolder));
+
+                VerifyFiles(bucketName, TestDirectoryBigFolder);
             }
             finally
             {

@@ -574,6 +574,9 @@
     <Compile Include="Calls\VerifyTapeSpectraS3Response.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
+    <Compile Include="Helpers\Ds3JobOptions.cs" />
+    <Compile Include="Helpers\Ds3ReadJobOptions.cs" />
+    <Compile Include="Helpers\Ds3WriteJobOptions.cs" />
     <Compile Include="Helpers\IMetadataAccess.cs" />
     <Compile Include="Helpers\MetaDataUtils.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ChunkUtils.cs" />
@@ -996,6 +999,7 @@
     <Compile Include="ResponseParsers\VerifyTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyUserIsMemberOfGroupSpectraS3ResponseParser.cs" />
     <Compile Include="Runtime\Ds3AssertException.cs" />
+    <Compile Include="Runtime\Ds3ForbiddenPriorityException.cs" />
     <Compile Include="Runtime\Ds3MaxJobsException.cs" />
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\DisposableFileStream.cs" />
