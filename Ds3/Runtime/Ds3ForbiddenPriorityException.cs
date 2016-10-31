@@ -13,18 +13,14 @@
  * ****************************************************************************
  */
 
-namespace Ds3.Helpers
+using System;
+
+namespace Ds3.Runtime
 {
-    /// <summary>
-    /// Provides a simple API to efficiently transfer objects for a bulk job.
-    /// </summary>
-    /// <seealso>
-    ///     <cref>IDs3ClientHelpers.StartWriteJob</cref>
-    /// </seealso>
-    /// <seealso>
-    ///     <cref>IDs3ClientHelpers.StartReadJob</cref>
-    /// </seealso>
-    public interface IJob : IBaseJob<IJob, string>
+    public class Ds3ForbiddenPriorityException : Exception
     {
+        public Ds3ForbiddenPriorityException(string message) : base(message)
+        {
+        }
     }
 }

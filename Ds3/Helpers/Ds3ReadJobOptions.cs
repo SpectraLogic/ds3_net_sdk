@@ -13,18 +13,12 @@
  * ****************************************************************************
  */
 
+using Ds3.Models;
+
 namespace Ds3.Helpers
 {
-    /// <summary>
-    /// Provides a simple API to efficiently transfer objects for a bulk job.
-    /// </summary>
-    /// <seealso>
-    ///     <cref>IDs3ClientHelpers.StartWriteJob</cref>
-    /// </seealso>
-    /// <seealso>
-    ///     <cref>IDs3ClientHelpers.StartReadJob</cref>
-    /// </seealso>
-    public interface IJob : IBaseJob<IJob, string>
+    public class Ds3ReadJobOptions : Ds3JobOptions
     {
+        public JobChunkClientProcessingOrderGuarantee? ChunkClientProcessingOrderGuarantee { get; set; }
     }
 }

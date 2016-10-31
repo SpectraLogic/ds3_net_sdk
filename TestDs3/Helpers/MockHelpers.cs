@@ -61,7 +61,7 @@ namespace TestDs3.Helpers
 
         public static GetBulkJobSpectraS3Request ItIsBulkGetRequest(
             string bucketName,
-            JobChunkClientProcessingOrderGuarantee chunkOrdering,
+            JobChunkClientProcessingOrderGuarantee? chunkOrdering,
             IEnumerable<string> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects)
         {
@@ -72,7 +72,7 @@ namespace TestDs3.Helpers
                     && r.FullObjects.Sorted().SequenceEqual(fullObjects.Sorted())
                     && r.PartialObjects.Sorted().SequenceEqual(partialObjects.Sorted()),
                 () => new GetBulkJobSpectraS3Request(bucketName, fullObjects, partialObjects)
-                    .WithChunkClientProcessingOrderGuarantee(chunkOrdering)
+                    .WithChunkClientProcessingOrderGuarantee(chunkOrdering.Value)
             );
         }
 

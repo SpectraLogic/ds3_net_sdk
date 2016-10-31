@@ -74,7 +74,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
@@ -164,7 +164,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     fullObjects,
                     partialObjects
                 )))
@@ -270,7 +270,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
                 .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, maxBlobSize);
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = maxBlobSize });
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -333,7 +333,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
@@ -432,7 +432,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
                 .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -520,7 +520,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.AllocateJobChunkSpectraS3(MockHelpers.ItIsAllocateRequest(Stubs.ChunkId3)))
                 .Returns(AllocateJobChunkSpectraS3Response.Success(Stubs.Chunk3(Stubs.NodeId1, false, false)));
 
-            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object).StartWriteJob(Stubs.BucketName, ds3Objects);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -615,7 +615,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
@@ -752,7 +752,7 @@ namespace TestDs3.Helpers
             client
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
-                    JobChunkClientProcessingOrderGuarantee.NONE,
+                    null,
                     Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
@@ -861,7 +861,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:1).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:1).StartWriteJob(Stubs.BucketName, ds3Objects);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -957,7 +957,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -1057,7 +1057,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();
@@ -1157,7 +1157,7 @@ namespace TestDs3.Helpers
                     }
                 });
 
-            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects, null);
+            var job = new Ds3ClientHelpers(client.Object, objectTransferAttempts:2).StartWriteJob(Stubs.BucketName, ds3Objects);
 
             var dataTransfers = new ConcurrentQueue<long>();
             var itemsCompleted = new ConcurrentQueue<string>();

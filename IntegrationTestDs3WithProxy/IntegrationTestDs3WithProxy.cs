@@ -140,7 +140,7 @@ namespace IntegrationTestDs3WithProxy
                 //Upload data for the test
                 //3 files: 1 with 3 blobs, 1 with 2 blobs and 1 with 1 blob
                 const int blobSize = 10485760; //10MB blob size
-                var putJob = helpers.StartWriteJob(bucketName, Utils.Objects, blobSize);
+                var putJob = helpers.StartWriteJob(bucketName, Utils.Objects, ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = blobSize });
                 putJob.Transfer(Utils.ReadResource);
 
 
@@ -178,7 +178,7 @@ namespace IntegrationTestDs3WithProxy
                 //Upload data for the test
                 //3 files: 1 with 3 blobs, 1 with 2 blobs and 1 with 1 blob
                 const int blobSize = 10485760; //10MB blob size
-                var putJob = helpers.StartWriteJob(bucketName, Utils.Objects, blobSize);
+                var putJob = helpers.StartWriteJob(bucketName, Utils.Objects, ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = blobSize });
 
                 var dataTransfers = new ConcurrentQueue<long>();
                 var itemsCompleted = new ConcurrentQueue<string>();
