@@ -12,7 +12,7 @@ Join us at our [Google Groups](https://groups.google.com/d/forum/spectralogicds3
 
 ## Setting up NuGet
 
-The SDK is distributed as a [NuGet](http://www.nuget.org) package for .Net 4.5.2
+The SDK is distributed as a [NuGet](http://www.nuget.org) package for .Net 4.5.1
 and above. From the NuGet website:
 
 > *What is NuGet?*
