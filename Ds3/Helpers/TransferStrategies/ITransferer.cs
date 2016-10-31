@@ -18,14 +18,14 @@ using System.Collections.Generic;
 using System.IO;
 using Ds3.Models;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal interface ITransferrer
+    internal interface ITransferStrategy
     {
-        void Transfer(TransferrerOptions transferrerOptions);
+        void Transfer(TransferStrategyOptions transferStrategyOptions);
     }
 
-    internal class TransferrerOptions
+    internal class TransferStrategyOptions
     {
         public IDs3Client Client { get; set; }
         public string BucketName { get; set; }

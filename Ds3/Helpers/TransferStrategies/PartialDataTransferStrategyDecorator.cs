@@ -16,44 +16,44 @@
 using System;
 using Ds3.Runtime;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal class PartialDataTransferrerDecorator : ITransferrer
+    internal class PartialDataTransferStrategyDecorator : ITransferStrategy
     {
         private readonly int _retries;
 
-        private readonly ITransferrer _transferrer;
+        private readonly ITransferStrategy _transferStrategy;
 
-        internal PartialDataTransferrerDecorator(ITransferrer transferrer, int retries = 5)
+        internal PartialDataTransferStrategyDecorator(ITransferStrategy transferStrategy, int retries = 5)
         {
-            _transferrer = transferrer;
+            _transferStrategy = transferStrategy;
             _retries = retries;
         }
 
-        public void Transfer(TransferrerOptions transferrerOptions)
+        public void Transfer(TransferStrategyOptions transferStrategyOptions)
         {
             var currentTry = 0;
-            var transferrer = _transferrer;
-            var tRanges = transferrerOptions.Ranges;
+            var transferStrategy = _transferStrategy;
+            var tRanges = transferStrategyOptions.Ranges;
 
             while (true)
             {
                 try
                 {
-                    transferrerOptions.Ranges = tRanges;
-                    transferrer.Transfer(transferrerOptions);
+                    transferStrategyOptions.Ranges = tRanges;
+                    transferStrategy.Transfer(transferStrategyOptions);
                     return;
                 }
                 catch (Ds3ContentLengthNotMatch ex)
                 {
-                    BestEffort.ModifyForRetry(transferrerOptions.Stream, transferrerOptions.ObjectTransferAttempts, 
-                        ref currentTry, transferrerOptions.ObjectName, transferrerOptions.BlobOffset, ref tRanges, ref transferrer, ex);
+                    BestEffort.ModifyForRetry(transferStrategyOptions.Stream, transferStrategyOptions.ObjectTransferAttempts, 
+                        ref currentTry, transferStrategyOptions.ObjectName, transferStrategyOptions.BlobOffset, ref tRanges, ref transferStrategy, ex);
                 }
                 catch (Exception ex)
                 {
                     if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        BestEffort.ModifyForRetry(transferrerOptions.Stream, _retries, ref currentTry, transferrerOptions.ObjectName, transferrerOptions.BlobOffset, ex);
+                        BestEffort.ModifyForRetry(transferStrategyOptions.Stream, _retries, ref currentTry, transferStrategyOptions.ObjectName, transferStrategyOptions.BlobOffset, ex);
                     }
                     else
                     {

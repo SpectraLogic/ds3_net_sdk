@@ -16,7 +16,7 @@
 using System;
 using System.IO;
 
-namespace TestDs3.Helpers.Transferrers
+namespace TestDs3.Helpers.TransferStrategies
 {
     internal class NonSeekableStream : Stream
     {

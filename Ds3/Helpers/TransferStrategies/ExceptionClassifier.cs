@@ -19,9 +19,9 @@ using System.IO;
 using System.Net;
 using Ds3.Runtime;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal class ExceptionClassifier
+    internal static class ExceptionClassifier
     {
         private static readonly IList<Type> RecoverableExceptions = new List<Type>
         {

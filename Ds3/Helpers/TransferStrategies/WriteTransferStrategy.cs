@@ -16,40 +16,40 @@
 using System;
 using Ds3.Calls;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal class WriteTransferrer : ITransferrer
+    internal class WriteTransferStrategy : ITransferStrategy
     {
-        public void Transfer(TransferrerOptions transferrerOptions)
+        public void Transfer(TransferStrategyOptions transferStrategyOptions)
         {
             var currentTry = 0;
 
             while (true)
             {
-                var request = new PutObjectRequest(transferrerOptions.BucketName, transferrerOptions.ObjectName, transferrerOptions.Stream)
-                    .WithJob(transferrerOptions.JobId)
-                    .WithOffset(transferrerOptions.BlobOffset);
+                var request = new PutObjectRequest(transferStrategyOptions.BucketName, transferStrategyOptions.ObjectName, transferStrategyOptions.Stream)
+                    .WithJob(transferStrategyOptions.JobId)
+                    .WithOffset(transferStrategyOptions.BlobOffset);
 
-                if (transferrerOptions.BlobOffset == 0 && transferrerOptions.MetadataAccess != null)
+                if (transferStrategyOptions.BlobOffset == 0 && transferStrategyOptions.MetadataAccess != null)
                 {
-                    request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(transferrerOptions.MetadataAccess.GetMetadataValue(transferrerOptions.ObjectName)));
+                    request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(transferStrategyOptions.MetadataAccess.GetMetadataValue(transferStrategyOptions.ObjectName)));
                 }
 
-                if (transferrerOptions.Checksum != null)
+                if (transferStrategyOptions.Checksum != null)
                 {
-                    request.WithChecksum(transferrerOptions.Checksum, transferrerOptions.ChecksumType);
+                    request.WithChecksum(transferStrategyOptions.Checksum, transferStrategyOptions.ChecksumType);
                 }
 
                 try
                 {
-                    transferrerOptions.Client.PutObject(request);
+                    transferStrategyOptions.Client.PutObject(request);
                     return;
                 }
                 catch (Exception ex)
                 {
                     if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        BestEffort.ModifyForRetry(transferrerOptions.Stream, transferrerOptions.ObjectTransferAttempts, ref currentTry, request.ObjectName, request.Offset.Value, ex);
+                        BestEffort.ModifyForRetry(transferStrategyOptions.Stream, transferStrategyOptions.ObjectTransferAttempts, ref currentTry, request.ObjectName, request.Offset.Value, ex);
                     }
                     else
                     {

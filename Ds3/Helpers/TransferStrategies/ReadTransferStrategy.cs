@@ -15,20 +15,17 @@
 
 using Ds3.Calls;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal class PartialReadTransferrer : ITransferrer
+    internal class ReadTransferStrategy : ITransferStrategy
     {
-        public void Transfer(TransferrerOptions transferrerOptions)
+        public void Transfer(TransferStrategyOptions transferStrategyOptions)
         {
-            var response = transferrerOptions.Client.GetObject(
-                new GetObjectRequest(transferrerOptions.BucketName, transferrerOptions.ObjectName, transferrerOptions.Stream, transferrerOptions.JobId, transferrerOptions.BlobOffset)
-                    .WithByteRanges(transferrerOptions.Ranges)
-                );
-
-            if (transferrerOptions.BlobOffset == 0)
+            var response = transferStrategyOptions.Client.GetObject(new GetObjectRequest(
+                transferStrategyOptions.BucketName, transferStrategyOptions.ObjectName, transferStrategyOptions.Stream, transferStrategyOptions.JobId, transferStrategyOptions.BlobOffset));
+            if (transferStrategyOptions.BlobOffset == 0)
             {
-                transferrerOptions.MetadataListener?.Invoke(transferrerOptions.ObjectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
+                transferStrategyOptions.MetadataListener?.Invoke(transferStrategyOptions.ObjectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
             }
         }
     }
