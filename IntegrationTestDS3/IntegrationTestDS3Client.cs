@@ -1456,7 +1456,7 @@ namespace IntegrationTestDs3
                 }
                 else
                 {
-                    Assert.Contains(response.Name, LocalIpAddress().Select(ip => $"PUT by {ip}").ToList());
+                    Assert.AreEqual(true, response.Name.StartsWith("PUT by"));
                 }
                 
                 Assert.AreEqual(priority ?? Priority.NORMAL, response.Priority);
@@ -1466,19 +1466,6 @@ namespace IntegrationTestDs3
             {
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
-        }
-        private static IEnumerable<IPAddress> LocalIpAddress()
-        {
-            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                return null;
-            }
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-
-            return host
-                .AddressList
-                .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
         }
 
         [Test, TestCaseSource(nameof(ForbiddenPriorities))]
@@ -1556,7 +1543,7 @@ namespace IntegrationTestDs3
                 }
                 else
                 {
-                    Assert.Contains(response.Name, LocalIpAddress().Select(ip => $"GET by {ip}").ToList());
+                    Assert.AreEqual(true, response.Name.StartsWith("GET by"));
                 }
                 Assert.AreEqual(priority ?? Priority.HIGH, response.Priority);
                 Assert.AreEqual(chunkClientProcessingOrderGuarantee ?? JobChunkClientProcessingOrderGuarantee.NONE, response.ChunkClientProcessingOrderGuarantee);
