@@ -1450,7 +1450,15 @@ namespace IntegrationTestDs3
                 var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
 
                 Assert.AreEqual(aggregating ?? false, response.Aggregating);
-                Assert.AreEqual(name ?? $"PUT by {LocalIpAddress()}", response.Name);
+                if (name != null)
+                {
+                    Assert.AreEqual(name, response.Name);
+                }
+                else
+                {
+                    Assert.AreEqual(true, response.Name.StartsWith("PUT by"));
+                }
+                
                 Assert.AreEqual(priority ?? Priority.NORMAL, response.Priority);
                 Assert.AreEqual(minimizeSpanningAcrossMedia ?? false, response.MinimizeSpanningAcrossMedia);
             }
@@ -1458,19 +1466,6 @@ namespace IntegrationTestDs3
             {
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
-        }
-        private static IPAddress LocalIpAddress()
-        {
-            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-            {
-                return null;
-            }
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-
-            return host
-                .AddressList
-                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
         }
 
         [Test, TestCaseSource(nameof(ForbiddenPriorities))]
@@ -1542,7 +1537,14 @@ namespace IntegrationTestDs3
                 var response = Client.GetActiveJobSpectraS3(new GetActiveJobSpectraS3Request(job.JobId)).ResponsePayload;
 
                 Assert.AreEqual(aggregating ?? false, response.Aggregating);
-                Assert.AreEqual(name ?? $"GET by {LocalIpAddress()}", response.Name);
+                if (name != null)
+                {
+                    Assert.AreEqual(name, response.Name);
+                }
+                else
+                {
+                    Assert.AreEqual(true, response.Name.StartsWith("GET by"));
+                }
                 Assert.AreEqual(priority ?? Priority.HIGH, response.Priority);
                 Assert.AreEqual(chunkClientProcessingOrderGuarantee ?? JobChunkClientProcessingOrderGuarantee.NONE, response.ChunkClientProcessingOrderGuarantee);
             }
