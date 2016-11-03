@@ -13,25 +13,22 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Ds3.Calls;
-using Ds3.Models;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal class ReadTransferrer : ITransferrer
+    internal class PartialReadTransferStrategy : ITransferStrategy
     {
-        public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
-            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
-            ChecksumType checksum, ChecksumType.Type checksumType)
+        public void Transfer(TransferStrategyOptions transferStrategyOptions)
         {
-            var response = client.GetObject(new GetObjectRequest(bucketName, objectName, stream, jobId, blobOffset));
-            if (blobOffset == 0)
+            var response = transferStrategyOptions.Client.GetObject(
+                new GetObjectRequest(transferStrategyOptions.BucketName, transferStrategyOptions.ObjectName, transferStrategyOptions.Stream, transferStrategyOptions.JobId, transferStrategyOptions.BlobOffset)
+                    .WithByteRanges(transferStrategyOptions.Ranges)
+                );
+
+            if (transferStrategyOptions.BlobOffset == 0)
             {
-                metadataListener?.Invoke(objectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
+                transferStrategyOptions.MetadataListener?.Invoke(transferStrategyOptions.ObjectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
             }
         }
     }

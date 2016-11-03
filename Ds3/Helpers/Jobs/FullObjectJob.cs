@@ -16,11 +16,11 @@
 using Ds3.Calls;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.Strategies;
-using Ds3.Helpers.Transferrers;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ds3.Helpers.TransferStrategies;
 
 namespace Ds3.Helpers.Jobs
 {
@@ -30,7 +30,7 @@ namespace Ds3.Helpers.Jobs
             IDs3Client client,
             MasterObjectList jobResponse,
             IHelperStrategy<string> helperStrategy,
-            ITransferrer transferrer,
+            ITransferStrategy transferStrategy,
             int objectTransferAttempts = 5)
         {
             var blobs = Blob.Convert(jobResponse);
@@ -41,7 +41,7 @@ namespace Ds3.Helpers.Jobs
                 jobResponse.BucketName,
                 jobResponse.JobId,
                 helperStrategy,
-                transferrer,
+                transferStrategy,
                 rangesForRequests,
                 blobs,
                 objectTransferAttempts
@@ -54,7 +54,7 @@ namespace Ds3.Helpers.Jobs
             string bucketName,
             Guid jobId,
             IHelperStrategy<string> helperStrategy,
-            ITransferrer transferrer,
+            ITransferStrategy transferStrategy,
             ILookup<Blob, Range> rangesForRequests,
             IEnumerable<ContextRange<string>> itemsToTrack,
             int objectTransferAttempts  = 5)
@@ -64,7 +64,7 @@ namespace Ds3.Helpers.Jobs
                       bucketName,
                       jobId,
                       helperStrategy,
-                      transferrer,
+                      transferStrategy,
                       rangesForRequests,
                       new RequestToObjectRangeTranslator(rangesForRequests),
                       itemsToTrack,

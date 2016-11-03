@@ -16,11 +16,11 @@
 using Ds3.Calls;
 using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.Strategies;
-using Ds3.Helpers.Transferrers;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ds3.Helpers.TransferStrategies;
 
 namespace Ds3.Helpers.Jobs
 {
@@ -67,7 +67,7 @@ namespace Ds3.Helpers.Jobs
                         bucketName,
                         jobId,
                         helperStrategy,
-                        new PartialDataTransferrerDecorator(new PartialReadTransferrer(), objectTransferAttempts),
+                        new PartialDataTransferStrategyDecorator(new PartialReadTransferStrategy(), objectTransferAttempts),
                         rangesForRequests,
                         new RequestToObjectRangeTranslator(rangesForRequests).ComposedWith(new ObjectToPartRangeTranslator(allItems)),
                         itemsToTrack,

@@ -16,17 +16,16 @@
 using System.Collections.Generic;
 using System.IO;
 using Ds3;
-using Ds3.Helpers.Transferrers;
-using Ds3.Models;
+using Ds3.Helpers.TransferStrategies;
 using Ds3.Runtime;
 using Moq;
 using NUnit.Framework;
 using Range = Ds3.Models.Range;
 
-namespace TestDs3.Helpers.Transferrers
+namespace TestDs3.Helpers.TransferStrategies
 {
     [TestFixture]
-    internal class TestPartialDataTransferrerDecorator
+    internal class TestPartialDataTransferStrategyDecorator
     {
         [Test]
         public void Test1Retries()
@@ -38,11 +37,20 @@ namespace TestDs3.Helpers.Transferrers
             try
             {
                 var stream = new MemoryStream(200);
-                var exceptionTransferrer = new ReadTransferrer();
+                var exceptionTransferStrategy = new ReadTransferStrategy();
                 var retries = 1;
-                var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, retries);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
-                    new List<Range>(), stream, null, null, retries, null, ChecksumType.Type.NONE);
+                var decorator = new PartialDataTransferStrategyDecorator(exceptionTransferStrategy, retries);
+                decorator.Transfer(new TransferStrategyOptions
+                {
+                    Client = client.Object,
+                    BucketName = JobResponseStubs.BucketName,
+                    ObjectName = "bar",
+                    BlobOffset = 0,
+                    JobId = JobResponseStubs.JobId,
+                    Ranges = new List<Range>(),
+                    Stream = stream,
+                    ObjectTransferAttempts = retries
+                });
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)
@@ -64,10 +72,19 @@ namespace TestDs3.Helpers.Transferrers
             try
             {
                 var stream = new MemoryStream(200);
-                var exceptionTransferrer = new ReadTransferrer();
-                var decorator = new PartialDataTransferrerDecorator(exceptionTransferrer, 0);
-                decorator.Transfer(client.Object, JobResponseStubs.BucketName, "bar", 0, JobResponseStubs.JobId,
-                    new List<Range>(), stream, null, null, 0, null, ChecksumType.Type.NONE);
+                var exceptionTransferStrategy = new ReadTransferStrategy();
+                var decorator = new PartialDataTransferStrategyDecorator(exceptionTransferStrategy, 0);
+                decorator.Transfer(new TransferStrategyOptions
+                {
+                    Client = client.Object,
+                    BucketName = JobResponseStubs.BucketName,
+                    ObjectName = "bar",
+                    BlobOffset = 0,
+                    JobId = JobResponseStubs.JobId,
+                    Ranges = new List<Range>(),
+                    Stream = stream,
+                    ObjectTransferAttempts = 0
+                });
                 Assert.Fail();
             }
             catch (Ds3NoMoreRetransmitException ex)

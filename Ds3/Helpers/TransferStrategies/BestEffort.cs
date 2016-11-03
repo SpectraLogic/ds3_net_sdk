@@ -20,7 +20,7 @@ using Ds3.Helpers.Jobs;
 using Ds3.Models;
 using Ds3.Runtime;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
     internal static class BestEffort
     {
@@ -32,7 +32,7 @@ namespace Ds3.Helpers.Transferrers
             stream.Position = offset;
         }
 
-        public static void ModifyForRetry(Stream stream, int retries, ref int currentTry, string objectName, long offset, ref IEnumerable<Range> ranges, ref ITransferrer transferrer, Ds3ContentLengthNotMatch ex)
+        public static void ModifyForRetry(Stream stream, int retries, ref int currentTry, string objectName, long offset, ref IEnumerable<Range> ranges, ref ITransferStrategy transferStrategy, Ds3ContentLengthNotMatch ex)
         {
             CanRetry(stream, retries, currentTry, objectName, offset, ex);
 
@@ -41,7 +41,7 @@ namespace Ds3.Helpers.Transferrers
             stream.Seek(-1, SeekOrigin.Current);
 
             ranges = JobsUtil.RetryRanges(ranges, ex.BytesRead, ex.ContentLength);
-            transferrer = new PartialReadTransferrer();
+            transferStrategy = new PartialReadTransferStrategy();
 
             currentTry++;
         }

@@ -15,13 +15,13 @@
 
 using Ds3.Calls;
 using Ds3.Helpers.Jobs;
-using Ds3.Helpers.Transferrers;
 using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Ds3.Helpers.Strategies;
+using Ds3.Helpers.TransferStrategies;
 using Ds3.Runtime;
 
 namespace Ds3.Helpers
@@ -83,7 +83,7 @@ namespace Ds3.Helpers
                 _client,
                 jobResponse.ResponsePayload,
                 helperStrategy,
-                new WriteTransferrer(),
+                new WriteTransferStrategy(),
                 _objectTransferAttempts
                 );
         }
@@ -129,7 +129,7 @@ namespace Ds3.Helpers
                 _client,
                 jobResponse.ResponsePayload,
                 helperStrategy,
-                new PartialDataTransferrerDecorator(new ReadTransferrer(), _objectTransferAttempts)
+                new PartialDataTransferStrategyDecorator(new ReadTransferStrategy(), _objectTransferAttempts)
                 );
         }
 
@@ -282,7 +282,7 @@ namespace Ds3.Helpers
                 _client,
                 jobResponse,
                 helperStrategy,
-                new WriteTransferrer()
+                new WriteTransferStrategy()
                 );
         }
 
@@ -309,7 +309,7 @@ namespace Ds3.Helpers
                 _client,
                 jobResponse,
                 helperStrategy,
-                new ReadTransferrer()
+                new ReadTransferStrategy()
                 );
         }
     }

@@ -601,8 +601,8 @@
     <Compile Include="Helpers\Strategies\WriteRandomAccessHelperStrategy.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\IStreamFactory.cs" />
     <Compile Include="Helpers\Streams\NonDisposablePutObjectRequestStream.cs" />
-    <Compile Include="Helpers\Transferrers\BestEffort.cs" />
-    <Compile Include="Helpers\Transferrers\ExceptionClassifier.cs" />
+    <Compile Include="Helpers\TransferStrategies\BestEffort.cs" />
+    <Compile Include="Helpers\TransferStrategies\ExceptionClassifier.cs" />
     <Compile Include="Models\ActiveJob.cs" />
     <Compile Include="Models\ActiveJobList.cs" />
     <Compile Include="Models\AutoInspectMode.cs" />
@@ -1004,7 +1004,7 @@
     <Compile Include="Helpers\Jobs\JobsUtil.cs" />
     <Compile Include="Helpers\Streams\DisposableFileStream.cs" />
     <Compile Include="Helpers\Streams\ObjectRequestStream.cs" />
-    <Compile Include="Helpers\Transferrers\PartialDataTransferrerDecorator.cs" />
+    <Compile Include="Helpers\TransferStrategies\PartialDataTransferStrategyDecorator.cs" />
     <Compile Include="Lang\StreamsUtil.cs" />
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
@@ -1020,12 +1020,12 @@
     <Compile Include="Helpers\Jobs\PartialReadJob.cs" />
     <Compile Include="Helpers\RangeTranslators\PartialObjectRangeUtilities.cs" />
     <Compile Include="Helpers\Streams\IResourceStore.cs" />
-    <Compile Include="Helpers\Transferrers\ITransferer.cs" />
+    <Compile Include="Helpers\TransferStrategies\ITransferer.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\TransferItem.cs" />
     <Compile Include="Helpers\Streams\ResourceStore.cs" />
-    <Compile Include="Helpers\Transferrers\PartialReadTransferrer.cs" />
-    <Compile Include="Helpers\Transferrers\ReadTransferrer.cs" />
-    <Compile Include="Helpers\Transferrers\WriteTransferrer.cs" />
+    <Compile Include="Helpers\TransferStrategies\PartialReadTransferStrategy.cs" />
+    <Compile Include="Helpers\TransferStrategies\ReadTransferStrategy.cs" />
+    <Compile Include="Helpers\TransferStrategies\WriteTransferStrategy.cs" />
     <Compile Include="Lang\EventExtensions.cs" />
     <Compile Include="Lang\Parallel.cs" />
     <Compile Include="Lang\ThreadSafeEnumerator.cs" />

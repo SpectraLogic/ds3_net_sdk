@@ -13,18 +13,20 @@
  * ****************************************************************************
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Ds3.Models;
+using Ds3.Calls;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal interface ITransferrer
+    internal class ReadTransferStrategy : ITransferStrategy
     {
-        void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
-            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
-            ChecksumType checksum, ChecksumType.Type checksumType);
+        public void Transfer(TransferStrategyOptions transferStrategyOptions)
+        {
+            var response = transferStrategyOptions.Client.GetObject(new GetObjectRequest(
+                transferStrategyOptions.BucketName, transferStrategyOptions.ObjectName, transferStrategyOptions.Stream, transferStrategyOptions.JobId, transferStrategyOptions.BlobOffset));
+            if (transferStrategyOptions.BlobOffset == 0)
+            {
+                transferStrategyOptions.MetadataListener?.Invoke(transferStrategyOptions.ObjectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
+            }
+        }
     }
 }

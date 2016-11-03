@@ -16,12 +16,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Ds3.Helpers.Transferrers;
+using Ds3.Helpers.TransferStrategies;
 using Ds3.Models;
 using Ds3.Runtime;
 using NUnit.Framework;
 
-namespace TestDs3.Helpers.Transferrers
+namespace TestDs3.Helpers.TransferStrategies
 {
     [TestFixture]
     internal class TestBestEffort
@@ -60,8 +60,8 @@ namespace TestDs3.Helpers.Transferrers
             stream.Position = 10;
             var currentTryBefore = 0;
             IEnumerable<Range> rages = new List<Range>();
-            ITransferrer transferrer = new ReadTransferrer();
-            BestEffort.ModifyForRetry(stream, 5, ref currentTryBefore, "Test", 10, ref rages, ref transferrer,
+            ITransferStrategy transferStrategy = new ReadTransferStrategy();
+            BestEffort.ModifyForRetry(stream, 5, ref currentTryBefore, "Test", 10, ref rages, ref transferStrategy,
                 new Ds3ContentLengthNotMatch("", 0, 0));
 
             Assert.AreEqual(1, currentTryBefore);

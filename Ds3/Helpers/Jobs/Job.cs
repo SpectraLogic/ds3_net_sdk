@@ -18,7 +18,6 @@ using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.Strategies;
 using Ds3.Helpers.Strategies.ChunkStrategies;
 using Ds3.Helpers.Strategies.StreamFactory;
-using Ds3.Helpers.Transferrers;
 using Ds3.Lang;
 using Ds3.Models;
 using System;
@@ -26,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Ds3.Helpers.TransferStrategies;
 using Ds3.Runtime;
 
 namespace Ds3.Helpers.Jobs
@@ -34,7 +34,7 @@ namespace Ds3.Helpers.Jobs
         where TSelf : IBaseJob<TSelf, TItem>
         where TItem : IComparable<TItem>
     {
-        private readonly ITransferrer _transferrer;
+        private readonly ITransferStrategy _transferStrategy;
         private readonly ILookup<Blob, Range> _rangesForRequests;
         private readonly IRangeTranslator<Blob, TItem> _rangeTranslator;
         private readonly JobItemTracker<TItem> _itemTracker;
@@ -100,7 +100,7 @@ namespace Ds3.Helpers.Jobs
             string bucketName,
             Guid jobId,
             IHelperStrategy<TItem> helperStrategy,
-            ITransferrer transferrer,
+            ITransferStrategy transferStrategy,
             ILookup<Blob, Range> rangesForRequests,
             IRangeTranslator<Blob, TItem> rangeTranslator,
             IEnumerable<ContextRange<TItem>> itemsToTrack,
@@ -112,7 +112,7 @@ namespace Ds3.Helpers.Jobs
             this.JobId = jobId;
             this._chunkStrategy = helperStrategy.GetChunkStrategy();
             this._streamFactory = helperStrategy.GetStreamFactory();
-            this._transferrer = transferrer;
+            this._transferStrategy = transferStrategy;
             this._rangesForRequests = rangesForRequests;
             this._rangeTranslator = rangeTranslator;
             TransferStarted = false;
@@ -170,20 +170,22 @@ namespace Ds3.Helpers.Jobs
 
             try
             {
-                this._transferrer.Transfer(
-                    client,
-                    this.BucketName,
-                    blob.Context,
-                    blob.Range.Start,
-                    this.JobId,
-                    ranges,
-                    stream,
-                    _metadataAccess,
-                    MetadataListener,
-                    _objectTransferAttempts,
-                    _checksum,
-                    _checksumType
-                    );
+
+                this._transferStrategy.Transfer(new TransferStrategyOptions
+                {
+                    Client = client,
+                    BucketName = BucketName,
+                    ObjectName = blob.Context,
+                    BlobOffset = blob.Range.Start,
+                    JobId = JobId,
+                    Ranges = ranges,
+                    Stream = stream,
+                    MetadataAccess = _metadataAccess,
+                    MetadataListener = MetadataListener,
+                    ObjectTransferAttempts = _objectTransferAttempts,
+                    Checksum = _checksum,
+                    ChecksumType = _checksumType
+                });
             }
             finally
             {

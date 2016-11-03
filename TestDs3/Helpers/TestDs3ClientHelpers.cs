@@ -289,7 +289,7 @@ namespace TestDs3.Helpers
         }
 
         [Test]
-        public void ReadTransferFailsUponTransferrerException()
+        public void ReadTransferFailsUponTransferStrategyException()
         {
             var initialJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),
@@ -372,7 +372,7 @@ namespace TestDs3.Helpers
 
         private static readonly object[] RecoverableExceptions = {new IOException(), new Ds3ContentLengthNotMatch(""), new WebException()};
         [Test, TestCaseSource(nameof(RecoverableExceptions))]
-        public void WriteTransferFailsUponTransferrerRecoverableException(Exception ex)
+        public void WriteTransferFailsUponTransferStrategyRecoverableException(Exception ex)
         {
             var initialJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),
@@ -460,7 +460,7 @@ namespace TestDs3.Helpers
 
         private static readonly object[] NotRecoverableExceptions = { new Exception(), new NullReferenceException(), new AggregateException() };
         [Test, TestCaseSource(nameof(NotRecoverableExceptions))]
-        public void WriteTransferFailsUponTransferrerNotRecoverableException(Exception ex)
+        public void WriteTransferFailsUponTransferStrategyNotRecoverableException(Exception ex)
         {
             var initialJobResponse = Stubs.BuildJobResponse(
                 Stubs.Chunk1(null, false, false),

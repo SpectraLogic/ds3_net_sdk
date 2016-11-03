@@ -14,51 +14,46 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using Ds3.Models;
 using Ds3.Runtime;
 
-namespace Ds3.Helpers.Transferrers
+namespace Ds3.Helpers.TransferStrategies
 {
-    internal class PartialDataTransferrerDecorator : ITransferrer
+    internal class PartialDataTransferStrategyDecorator : ITransferStrategy
     {
         private readonly int _retries;
 
-        private readonly ITransferrer _transferrer;
+        private readonly ITransferStrategy _transferStrategy;
 
-        internal PartialDataTransferrerDecorator(ITransferrer transferrer, int retries = 5)
+        internal PartialDataTransferStrategyDecorator(ITransferStrategy transferStrategy, int retries = 5)
         {
-            _transferrer = transferrer;
+            _transferStrategy = transferStrategy;
             _retries = retries;
         }
 
-        public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
-            IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
-            Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts,
-            ChecksumType checksum, ChecksumType.Type checksumType)
+        public void Transfer(TransferStrategyOptions transferStrategyOptions)
         {
             var currentTry = 0;
-            var transferrer = _transferrer;
-            var tRanges = ranges;
+            var transferStrategy = _transferStrategy;
+            var tRanges = transferStrategyOptions.Ranges;
 
             while (true)
             {
                 try
                 {
-                    transferrer.Transfer(client, bucketName, objectName, blobOffset, jobId, tRanges, stream,
-                        metadataAccess, metadataListener, objectTransferAttempts, checksum, checksumType);
+                    transferStrategyOptions.Ranges = tRanges;
+                    transferStrategy.Transfer(transferStrategyOptions);
                     return;
                 }
                 catch (Ds3ContentLengthNotMatch ex)
                 {
-                    BestEffort.ModifyForRetry(stream, objectTransferAttempts, ref currentTry, objectName, blobOffset, ref tRanges, ref transferrer, ex);
+                    BestEffort.ModifyForRetry(transferStrategyOptions.Stream, transferStrategyOptions.ObjectTransferAttempts, 
+                        ref currentTry, transferStrategyOptions.ObjectName, transferStrategyOptions.BlobOffset, ref tRanges, ref transferStrategy, ex);
                 }
                 catch (Exception ex)
                 {
                     if (ExceptionClassifier.IsRecoverableException(ex))
                     {
-                        BestEffort.ModifyForRetry(stream, _retries, ref currentTry, objectName, blobOffset, ex);
+                        BestEffort.ModifyForRetry(transferStrategyOptions.Stream, _retries, ref currentTry, transferStrategyOptions.ObjectName, transferStrategyOptions.BlobOffset, ex);
                     }
                     else
                     {
