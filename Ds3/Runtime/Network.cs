@@ -165,6 +165,7 @@ namespace Ds3.Runtime
             }
             httpRequest.ReadWriteTimeout = this._readWriteTimeout;
             httpRequest.Timeout = this._requestTimeout;
+            httpRequest.UserAgent = "Spectra S3 .Net Client";
 
             var chucksumValue = ComputeChecksum(request.ChecksumValue, content, request.CType);
             if (!string.IsNullOrEmpty(chucksumValue))
