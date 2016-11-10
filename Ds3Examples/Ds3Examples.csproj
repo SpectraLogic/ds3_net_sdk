@@ -36,8 +36,8 @@
     <StartupObject>Ds3Examples.BulkPutExample</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ds3_net_sdk, Version=3.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\ds3_net_sdk.3.2.5.0\lib\net45\ds3_net_sdk.dll</HintPath>
+    <Reference Include="ds3_net_sdk, Version=3.2.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ds3_net_sdk.3.2.8.0\lib\net451\ds3_net_sdk.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
