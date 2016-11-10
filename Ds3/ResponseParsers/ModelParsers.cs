@@ -67,6 +67,7 @@ namespace Ds3.ResponseParsers
             {
                 CreationDate = ParseDateTime(element.Element("CreationDate")),
                 DataPolicyId = ParseGuid(element.Element("DataPolicyId")),
+                Empty = ParseNullableBool(element.Element("Empty")),
                 Id = ParseGuid(element.Element("Id")),
                 LastPreferredChunkSizeInBytes = ParseNullableLong(element.Element("LastPreferredChunkSizeInBytes")),
                 LogicalUsedCapacity = ParseNullableLong(element.Element("LogicalUsedCapacity")),
@@ -181,6 +182,8 @@ namespace Ds3.ResponseParsers
                 AutoActivateTimeoutInMins = ParseNullableInt(element.Element("AutoActivateTimeoutInMins")),
                 AutoInspect = ParseAutoInspectMode(element.Element("AutoInspect")),
                 DefaultImportConflictResolutionMode = ParseImportConflictResolutionMode(element.Element("DefaultImportConflictResolutionMode")),
+                DefaultVerifyDataAfterImport = ParseNullablePriority(element.Element("DefaultVerifyDataAfterImport")),
+                DefaultVerifyDataPriorToImport = ParseBool(element.Element("DefaultVerifyDataPriorToImport")),
                 Id = ParseGuid(element.Element("Id")),
                 InstanceId = ParseGuid(element.Element("InstanceId")),
                 LastHeartbeat = ParseDateTime(element.Element("LastHeartbeat")),
@@ -351,8 +354,10 @@ namespace Ds3.ResponseParsers
                 OriginalSizeInBytes = ParseLong(element.Element("OriginalSizeInBytes")),
                 Priority = ParsePriority(element.Element("Priority")),
                 Rechunked = ParseNullableDateTime(element.Element("Rechunked")),
+                Replicating = ParseBool(element.Element("Replicating")),
                 RequestType = ParseJobRequestType(element.Element("RequestType")),
                 Truncated = ParseBool(element.Element("Truncated")),
+                TruncatedDueToTimeout = ParseBool(element.Element("TruncatedDueToTimeout")),
                 UserId = ParseGuid(element.Element("UserId"))
             };
         }
@@ -1498,7 +1503,7 @@ namespace Ds3.ResponseParsers
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
-                EntirelyInCache = ParseBool(element.AttributeText("EntirelyInCache")),
+                EntirelyInCache = ParseNullableBool(element.AttributeTextOrNull("EntirelyInCache")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
@@ -1545,7 +1550,7 @@ namespace Ds3.ResponseParsers
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
-                EntirelyInCache = ParseBool(element.AttributeText("EntirelyInCache")),
+                EntirelyInCache = ParseNullableBool(element.AttributeTextOrNull("EntirelyInCache")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
