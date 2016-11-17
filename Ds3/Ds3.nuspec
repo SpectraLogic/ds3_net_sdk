@@ -15,8 +15,4 @@
     <copyright>Copyright 2014</copyright>
     <tags>DS3 Tape BlackPearl SpectraLogic S3 AWS</tags>
   </metadata>
-    <files>
-    <file src="Bin\Release\ds3_net_sdk.dll" target="lib\Net451" />
-    <file src="Bin\Release\ds3_net_sdk.xml" target="lib\Net451" />
-  </files>
 </package>
