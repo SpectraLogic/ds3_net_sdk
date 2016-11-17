@@ -176,6 +176,8 @@
     <Compile Include="Calls\GetActiveJobsSpectraS3Response.cs" />
     <Compile Include="Calls\GetBlobPersistenceSpectraS3Request.cs" />
     <Compile Include="Calls\GetBlobPersistenceSpectraS3Response.cs" />
+    <Compile Include="Calls\GetBlobsOnDs3TargetSpectraS3Request.cs" />
+    <Compile Include="Calls\GetBlobsOnDs3TargetSpectraS3Response.cs" />
     <Compile Include="Calls\GetBlobsOnPoolSpectraS3Request.cs" />
     <Compile Include="Calls\GetBlobsOnPoolSpectraS3Response.cs" />
     <Compile Include="Calls\GetBlobsOnTapeSpectraS3Request.cs" />
@@ -810,6 +812,7 @@
     <Compile Include="ResponseParsers\GetActiveJobSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetActiveJobsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBlobPersistenceSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetBlobsOnDs3TargetSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBlobsOnPoolSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBlobsOnTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketAclSpectraS3ResponseParser.cs" />
