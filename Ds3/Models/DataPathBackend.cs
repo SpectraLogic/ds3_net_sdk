@@ -26,6 +26,8 @@ namespace Ds3.Models
         public int? AutoActivateTimeoutInMins { get; set; }
         public AutoInspectMode AutoInspect { get; set; }
         public ImportConflictResolutionMode DefaultImportConflictResolutionMode { get; set; }
+        public Priority? DefaultVerifyDataAfterImport { get; set; }
+        public bool DefaultVerifyDataPriorToImport { get; set; }
         public Guid Id { get; set; }
         public Guid InstanceId { get; set; }
         public DateTime LastHeartbeat { get; set; }
