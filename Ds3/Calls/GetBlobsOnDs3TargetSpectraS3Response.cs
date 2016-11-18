@@ -14,34 +14,17 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public enum TapeState
+    public class GetBlobsOnDs3TargetSpectraS3Response
     {
-        NORMAL,
-        OFFLINE,
-        ONLINE_PENDING,
-        ONLINE_IN_PROGRESS,
-        PENDING_INSPECTION,
-        UNKNOWN,
-        DATA_CHECKPOINT_FAILURE,
-        DATA_CHECKPOINT_FAILURE_DUE_TO_READ_ONLY,
-        DATA_CHECKPOINT_MISSING,
-        LTFS_WITH_FOREIGN_DATA,
-        FOREIGN,
-        IMPORT_PENDING,
-        IMPORT_IN_PROGRESS,
-        INCOMPATIBLE,
-        LOST,
-        BAD,
-        CANNOT_FORMAT_DUE_TO_WRITE_PROTECTION,
-        SERIAL_NUMBER_MISMATCH,
-        BAR_CODE_MISSING,
-        FORMAT_PENDING,
-        FORMAT_IN_PROGRESS,
-        EJECT_TO_EE_IN_PROGRESS,
-        EJECT_FROM_EE_PENDING,
-        EJECTED
+        public BulkObjectList ResponsePayload { get; private set; }
+
+        public GetBlobsOnDs3TargetSpectraS3Response(BulkObjectList responsePayload)
+        {
+            this.ResponsePayload = responsePayload;
+        }
     }
 }

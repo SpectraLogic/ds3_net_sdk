@@ -36,8 +36,10 @@ namespace Ds3.Models
         public long OriginalSizeInBytes { get; set; }
         public Priority Priority { get; set; }
         public DateTime? Rechunked { get; set; }
+        public bool Replicating { get; set; }
         public JobRequestType RequestType { get; set; }
         public bool Truncated { get; set; }
+        public bool TruncatedDueToTimeout { get; set; }
         public Guid UserId { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace Ds3.Models
     {
         public DateTime CreationDate { get; set; }
         public Guid DataPolicyId { get; set; }
+        public bool? Empty { get; set; }
         public Guid Id { get; set; }
         public long? LastPreferredChunkSizeInBytes { get; set; }
         public long? LogicalUsedCapacity { get; set; }
