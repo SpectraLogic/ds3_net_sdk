@@ -431,6 +431,8 @@ namespace Ds3
         
         PutDs3TargetReadPreferenceSpectraS3Response PutDs3TargetReadPreferenceSpectraS3(PutDs3TargetReadPreferenceSpectraS3Request request);
         
+        GetBlobsOnDs3TargetSpectraS3Response GetBlobsOnDs3TargetSpectraS3(GetBlobsOnDs3TargetSpectraS3Request request);
+        
         GetDs3TargetDataPoliciesSpectraS3Response GetDs3TargetDataPoliciesSpectraS3(GetDs3TargetDataPoliciesSpectraS3Request request);
         
         GetDs3TargetFailuresSpectraS3Response GetDs3TargetFailuresSpectraS3(GetDs3TargetFailuresSpectraS3Request request);

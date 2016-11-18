@@ -52,6 +52,20 @@ namespace Ds3.Calls
             set { WithDefaultImportConflictResolutionMode(value); }
         }
 
+        private Priority? _defaultVerifyDataAfterImport;
+        public Priority? DefaultVerifyDataAfterImport
+        {
+            get { return _defaultVerifyDataAfterImport; }
+            set { WithDefaultVerifyDataAfterImport(value); }
+        }
+
+        private bool? _defaultVerifyDataPriorToImport;
+        public bool? DefaultVerifyDataPriorToImport
+        {
+            get { return _defaultVerifyDataPriorToImport; }
+            set { WithDefaultVerifyDataPriorToImport(value); }
+        }
+
         private int? _partiallyVerifyLastPercentOfTapes;
         public int? PartiallyVerifyLastPercentOfTapes
         {
@@ -136,6 +150,36 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("default_import_conflict_resolution_mode");
+            }
+            return this;
+        }
+
+        
+        public ModifyDataPathBackendSpectraS3Request WithDefaultVerifyDataAfterImport(Priority? defaultVerifyDataAfterImport)
+        {
+            this._defaultVerifyDataAfterImport = defaultVerifyDataAfterImport;
+            if (defaultVerifyDataAfterImport != null)
+            {
+                this.QueryParams.Add("default_verify_data_after_import", defaultVerifyDataAfterImport.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("default_verify_data_after_import");
+            }
+            return this;
+        }
+
+        
+        public ModifyDataPathBackendSpectraS3Request WithDefaultVerifyDataPriorToImport(bool? defaultVerifyDataPriorToImport)
+        {
+            this._defaultVerifyDataPriorToImport = defaultVerifyDataPriorToImport;
+            if (defaultVerifyDataPriorToImport != null)
+            {
+                this.QueryParams.Add("default_verify_data_prior_to_import", defaultVerifyDataPriorToImport.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("default_verify_data_prior_to_import");
             }
             return this;
         }

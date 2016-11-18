@@ -1046,6 +1046,11 @@ namespace Ds3
             return new PutDs3TargetReadPreferenceSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public GetBlobsOnDs3TargetSpectraS3Response GetBlobsOnDs3TargetSpectraS3(GetBlobsOnDs3TargetSpectraS3Request request)
+        {
+            return new GetBlobsOnDs3TargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public GetDs3TargetDataPoliciesSpectraS3Response GetDs3TargetDataPoliciesSpectraS3(GetDs3TargetDataPoliciesSpectraS3Request request)
         {
             return new GetDs3TargetDataPoliciesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
