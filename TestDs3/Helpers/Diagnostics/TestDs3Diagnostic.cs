@@ -69,7 +69,7 @@ namespace TestDs3.Helpers.Diagnostics
             };
 
             Assert.AreEqual(expected, ds3Diagnostic.RunAll());
-            Assert.AreEqual(2, ds3Diagnostic.CacheFilesystemInformations.Count());
+            Assert.AreEqual(2, ds3Diagnostic.CacheFilesystemInformation.Count());
             Assert.AreEqual(1, ds3Diagnostic.OfflineTapes.Count());
 
             client.VerifyAll();

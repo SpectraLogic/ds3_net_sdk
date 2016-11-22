@@ -27,11 +27,11 @@ namespace Ds3.Helpers.Ds3Diagnostics
         private IDs3Client Client { get; }
 
         /// <summary>
-        /// Gets the <see cref="CacheFilesystemInformation"/> for all cache that are near capacity.
+        /// Gets the <see cref="Models.CacheFilesystemInformation"/> for all cache that are near capacity.
         /// A cache is determined near capacity if the current utilization is at or exceeds <see cref="CacheNearCapacity.CacheUtilizationNearCapacityLevel"/>.
         /// If no file systems are near capacity, than an empty collection is returned.
         /// </summary>
-        public IEnumerable<CacheFilesystemInformation> CacheFilesystemInformations { get; private set; }
+        public IEnumerable<CacheFilesystemInformation> CacheFilesystemInformation { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="Tape"/> for all tapes with status of OFFLINE.
@@ -60,8 +60,8 @@ namespace Ds3.Helpers.Ds3Diagnostics
         {
             var ds3DiagnosticsResults = new HashSet<Ds3DiagnosticsResult>();
 
-            CacheFilesystemInformations = Get(new CacheNearCapacity());
-            if (CacheFilesystemInformations.Any())
+            CacheFilesystemInformation = Get(new CacheNearCapacity());
+            if (CacheFilesystemInformation.Any())
             {
                 ds3DiagnosticsResults.Add(Ds3DiagnosticsResult.CacheNearCapacity);
             }
