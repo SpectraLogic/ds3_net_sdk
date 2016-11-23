@@ -1019,7 +1019,6 @@
     <Compile Include="Lang\StreamsUtil.cs" />
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
-    <Compile Include="Runtime\Ds3NoCacheFileSystemException.cs" />
     <Compile Include="Runtime\Ds3NoMoreRetransmitException.cs" />
     <Compile Include="Runtime\Ds3NotSupportedStream.cs" />
     <Compile Include="Runtime\Ds3ServerCertificateValidation.cs" />

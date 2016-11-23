@@ -23,17 +23,19 @@ namespace Ds3.Helpers.Ds3Diagnostics
     {
         public Ds3DiagnosticResult<Tape> Get(IDs3Client client)
         {
-            var getTapesRequest = new GetTapesSpectraS3Request().WithState(TapeState.OFFLINE);
+            var getTapesRequest = new GetTapesSpectraS3Request();
             var getTapesResponse = client.GetTapesSpectraS3(getTapesRequest);
-
             var tapes = getTapesResponse.ResponsePayload.Tapes;
 
-            if (tapes == null)
+            if (!tapes.Any())
             {
                 return new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.NoTapesFound, "No tapes found in the system",
                     null);
             }
 
+            getTapesRequest = new GetTapesSpectraS3Request().WithState(TapeState.OFFLINE);
+            getTapesResponse = client.GetTapesSpectraS3(getTapesRequest);
+            tapes = getTapesResponse.ResponsePayload.Tapes;
 
             return tapes.Any()
                 //TODO extract string to resource file

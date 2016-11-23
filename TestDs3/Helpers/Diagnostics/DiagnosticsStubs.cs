@@ -72,13 +72,7 @@ namespace TestDs3.Helpers.Diagnostics
                 }
             });
 
-        public static readonly GetTapesSpectraS3Response NullTapes =
-            new GetTapesSpectraS3Response(new TapeList
-            {
-                Tapes = null
-            }, null, null);
-
-        public static readonly GetTapesSpectraS3Response EmptyTapes =
+        public static readonly GetTapesSpectraS3Response NoTapes =
             new GetTapesSpectraS3Response(new TapeList
             {
                 Tapes = new List<Tape>()

@@ -79,8 +79,9 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoNearCapacity);
 
             client
-                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.EmptyTapes);
+                .SetupSequence(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.OneTape)
+                .Returns(DiagnosticsStubs.NoTapes);
 
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);

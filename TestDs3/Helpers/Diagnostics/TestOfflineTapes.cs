@@ -30,8 +30,9 @@ namespace TestDs3.Helpers.Diagnostics
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.EmptyTapes);
+                .SetupSequence(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.OneTape)
+                .Returns(DiagnosticsStubs.NoTapes);
 
             var offlineTapes = new OfflineTapes();
             var offlineTapesResult = offlineTapes.Get(client.Object);
@@ -44,12 +45,12 @@ namespace TestDs3.Helpers.Diagnostics
         }
 
         [Test]
-        public void TestGetWithNullTapes()
+        public void TestGetWithNoTapes()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NullTapes);
+                .SetupSequence(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.NoTapes);
 
             var offlineTapes = new OfflineTapes();
             var offlineTapesResult = offlineTapes.Get(client.Object);
