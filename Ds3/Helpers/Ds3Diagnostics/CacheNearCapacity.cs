@@ -31,9 +31,8 @@ namespace Ds3.Helpers.Ds3Diagnostics
 
             if (fileSystemsInfo == null || !fileSystemsInfo.Any())
             {
-                //TODO extract string to resource file
                 return new Ds3DiagnosticResult<CacheFilesystemInformation>(Ds3DiagnosticsCode.NoCacheSystemFound,
-                    "No cache file systems were found", null);
+                    DiagnosticsMessages.NoCacheFound, null);
             }
 
             var fileSystems =
@@ -46,9 +45,8 @@ namespace Ds3.Helpers.Ds3Diagnostics
             ).ToList();
 
             return fileSystems.Any()
-                //TODO extract string to resource file
                 ? new Ds3DiagnosticResult<CacheFilesystemInformation>(Ds3DiagnosticsCode.CacheNearCapacity,
-                    "Found cache file systems that near the capacity limit", fileSystems)
+                    string.Format(DiagnosticsMessages.FoundCacheNearCapacityLimit, fileSystems.Count), fileSystems)
                 : new Ds3DiagnosticResult<CacheFilesystemInformation>(Ds3DiagnosticsCode.Ok, null, null);
         }
     }

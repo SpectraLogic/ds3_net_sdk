@@ -37,7 +37,7 @@ namespace TestDs3.Helpers.Diagnostics
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
-            Assert.AreEqual("No cache file systems were found", cacheNearCapacityResult.ErrorMessage);
+            Assert.AreEqual(DiagnosticsMessages.NoCacheFound, cacheNearCapacityResult.ErrorMessage);
             Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
 
             client.VerifyAll();
@@ -73,7 +73,7 @@ namespace TestDs3.Helpers.Diagnostics
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
-            Assert.AreEqual("No cache file systems were found", cacheNearCapacityResult.ErrorMessage);
+            Assert.AreEqual(DiagnosticsMessages.NoCacheFound, cacheNearCapacityResult.ErrorMessage);
             Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
 
             client.VerifyAll();
@@ -91,7 +91,7 @@ namespace TestDs3.Helpers.Diagnostics
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);
-            Assert.AreEqual("Found cache file systems that near the capacity limit",
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundCacheNearCapacityLimit, 1),
                 cacheNearCapacityResult.ErrorMessage);
             Assert.AreEqual(1, cacheNearCapacityResult.ErrorInfo.Count());
 
@@ -110,7 +110,7 @@ namespace TestDs3.Helpers.Diagnostics
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);
-            Assert.AreEqual("Found cache file systems that near the capacity limit",
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundCacheNearCapacityLimit, 2),
                 cacheNearCapacityResult.ErrorMessage);
             Assert.AreEqual(2, cacheNearCapacityResult.ErrorInfo.Count());
 

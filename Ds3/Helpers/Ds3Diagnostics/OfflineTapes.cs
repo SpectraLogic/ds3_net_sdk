@@ -29,7 +29,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
 
             if (!tapes.Any())
             {
-                return new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.NoTapesFound, "No tapes found in the system",
+                return new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.NoTapesFound, DiagnosticsMessages.NoTapesFound,
                     null);
             }
 
@@ -38,9 +38,8 @@ namespace Ds3.Helpers.Ds3Diagnostics
             tapes = getTapesResponse.ResponsePayload.Tapes;
 
             return tapes.Any()
-                //TODO extract string to resource file
                 ? new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.OfflineTapes,
-                    $"Found {tapes.Count()} tapes that are in OFFLINE state",
+                    string.Format(DiagnosticsMessages.FoundOfflineTapes, tapes.Count()),
                     getTapesResponse.ResponsePayload.Tapes)
                 : new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.Ok, null, null);
         }

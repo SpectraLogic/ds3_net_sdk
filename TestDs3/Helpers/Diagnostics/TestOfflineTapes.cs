@@ -56,7 +56,7 @@ namespace TestDs3.Helpers.Diagnostics
             var offlineTapesResult = offlineTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, offlineTapesResult.Code);
-            Assert.AreEqual("No tapes found in the system", offlineTapesResult.ErrorMessage);
+            Assert.AreEqual(DiagnosticsMessages.NoTapesFound, offlineTapesResult.ErrorMessage);
             Assert.AreEqual(null, offlineTapesResult.ErrorInfo);
 
             client.VerifyAll();
@@ -74,7 +74,7 @@ namespace TestDs3.Helpers.Diagnostics
             var offlineTapesResult = offlineTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);
-            Assert.AreEqual("Found 1 tapes that are in OFFLINE state", offlineTapesResult.ErrorMessage);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundOfflineTapes, 1), offlineTapesResult.ErrorMessage);
             Assert.AreEqual(1, offlineTapesResult.ErrorInfo.Count());
 
             client.VerifyAll();
@@ -92,7 +92,7 @@ namespace TestDs3.Helpers.Diagnostics
             var offlineTapesResult = offlineTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);
-            Assert.AreEqual("Found 2 tapes that are in OFFLINE state", offlineTapesResult.ErrorMessage);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundOfflineTapes, 2), offlineTapesResult.ErrorMessage);
             Assert.AreEqual(2, offlineTapesResult.ErrorInfo.Count());
 
             client.VerifyAll();
