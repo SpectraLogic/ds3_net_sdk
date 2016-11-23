@@ -13,7 +13,6 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
 using System.Linq;
 using Ds3;
 using Ds3.Calls;
@@ -27,21 +26,19 @@ namespace TestDs3.Helpers.Diagnostics
     public class TestDs3Diagnostic
     {
         [Test]
-        public void TestRunAllAllOk()
+        public void TestCacheGet()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
 
             client
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoNearCapacity);
+                .Returns(DiagnosticsStubs.TwoNearCapacity);
 
-            client
-                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.EmptyTapes);
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new CacheNearCapacity());
 
-
-            var ds3Diagnostic = new Ds3Diagnostic(client.Object);
-            Assert.IsEmpty(ds3Diagnostic.RunAll());
+            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, ds3DiagnosticResult.Code);
+            Assert.AreEqual(2, ds3DiagnosticResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -60,32 +57,37 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneTape);
 
 
-            var ds3Diagnostic = new Ds3Diagnostic(client.Object);
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
 
-            var expected = new List<Ds3DiagnosticsResult>
-            {
-                Ds3DiagnosticsResult.CacheNearCapacity,
-                Ds3DiagnosticsResult.OfflineTapes
-            };
+            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, ds3DiagnosticResult.CacheNearCapacityDiagnostic.Code);
+            Assert.AreEqual(2, ds3DiagnosticResult.CacheNearCapacityDiagnostic.ErrorInfo.Count());
 
-            Assert.AreEqual(expected, ds3Diagnostic.RunAll());
-            Assert.AreEqual(2, ds3Diagnostic.CacheFilesystemInformation.Count());
-            Assert.AreEqual(1, ds3Diagnostic.OfflineTapes.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, ds3DiagnosticResult.OfflineTapeDiagnostic.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.OfflineTapeDiagnostic.ErrorInfo.Count());
 
             client.VerifyAll();
         }
 
         [Test]
-        public void TestCacheGet()
+        public void TestRunAllAllOk()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
 
             client
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.TwoNearCapacity);
+                .Returns(DiagnosticsStubs.NoNearCapacity);
 
-            var ds3Diagnostic = new Ds3Diagnostic(client.Object);
-            Assert.AreEqual(2, ds3Diagnostic.Get(new CacheNearCapacity()).Count());
+            client
+                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.EmptyTapes);
+
+
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
+
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.CacheNearCapacityDiagnostic.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.OfflineTapeDiagnostic.Code);
 
             client.VerifyAll();
         }
@@ -99,8 +101,12 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.OneTape);
 
-            var ds3Diagnostic = new Ds3Diagnostic(client.Object);
-            Assert.AreEqual(1, ds3Diagnostic.Get(new OfflineTapes()).Count());
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new OfflineTapes());
+
+
+            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, ds3DiagnosticResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }

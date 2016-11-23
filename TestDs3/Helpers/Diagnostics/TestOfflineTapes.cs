@@ -26,21 +26,7 @@ namespace TestDs3.Helpers.Diagnostics
     public class TestOfflineTapes
     {
         [Test]
-        public void TestGetWithNullTapes()
-        {
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client
-                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NullTapes);
-            
-            var offlineTapes = new OfflineTapes();
-            Assert.AreEqual(null, offlineTapes.Get(client.Object));
-
-            client.VerifyAll();
-        }
-
-        [Test]
-        public void TestGetWithNoTapes()
+        public void TestGetWithNoOfflineTapes()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
@@ -48,7 +34,29 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.EmptyTapes);
 
             var offlineTapes = new OfflineTapes();
-            Assert.IsEmpty(offlineTapes.Get(client.Object));
+            var offlineTapesResult = offlineTapes.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, offlineTapesResult.Code);
+            Assert.AreEqual(null, offlineTapesResult.ErrorMessage);
+            Assert.AreEqual(null, offlineTapesResult.ErrorInfo);
+
+            client.VerifyAll();
+        }
+
+        [Test]
+        public void TestGetWithNullTapes()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.NullTapes);
+
+            var offlineTapes = new OfflineTapes();
+            var offlineTapesResult = offlineTapes.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, offlineTapesResult.Code);
+            Assert.AreEqual("No tapes found in the system", offlineTapesResult.ErrorMessage);
+            Assert.AreEqual(null, offlineTapesResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -62,7 +70,11 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneTape);
 
             var offlineTapes = new OfflineTapes();
-            Assert.AreEqual(1, offlineTapes.Get(client.Object).Count());
+            var offlineTapesResult = offlineTapes.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);
+            Assert.AreEqual("Found 1 tapes that are in OFFLINE state", offlineTapesResult.ErrorMessage);
+            Assert.AreEqual(1, offlineTapesResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -76,7 +88,11 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.TwoTapes);
 
             var offlineTapes = new OfflineTapes();
-            Assert.AreEqual(2, offlineTapes.Get(client.Object).Count());
+            var offlineTapesResult = offlineTapes.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);
+            Assert.AreEqual("Found 2 tapes that are in OFFLINE state", offlineTapesResult.ErrorMessage);
+            Assert.AreEqual(2, offlineTapesResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }

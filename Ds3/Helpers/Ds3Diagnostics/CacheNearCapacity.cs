@@ -13,35 +13,43 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
 using System.Linq;
 using Ds3.Calls;
 using Ds3.Models;
-using Ds3.Runtime;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
     internal class CacheNearCapacity : IDs3DiagnosticCheck<CacheFilesystemInformation>
     {
+        //TODO check if this value is right
         private const double CacheUtilizationNearCapacityLevel = 0.95;
 
-        public IEnumerable<CacheFilesystemInformation> Get(IDs3Client client)
+        public Ds3DiagnosticResult<CacheFilesystemInformation> Get(IDs3Client client)
         {
             var response = client.GetCacheStateSpectraS3(new GetCacheStateSpectraS3Request());
             var fileSystemsInfo = response.ResponsePayload.Filesystems;
 
             if (fileSystemsInfo == null || !fileSystemsInfo.Any())
             {
-                throw new Ds3NoCacheFileSystemException("No cache file systems were found");
-                    //TODO move string to resource
+                //TODO extract string to resource file
+                return new Ds3DiagnosticResult<CacheFilesystemInformation>(Ds3DiagnosticsCode.NoCacheSystemFound,
+                    "No cache file systems were found", null);
             }
 
-            return (
+            var fileSystems =
+            (
                 from filesystemInfo in fileSystemsInfo
-                let percentUtilization = (double)filesystemInfo.UsedCapacityInBytes/filesystemInfo.AvailableCapacityInBytes
+                let percentUtilization =
+                (double) filesystemInfo.UsedCapacityInBytes/filesystemInfo.AvailableCapacityInBytes
                 where percentUtilization >= CacheUtilizationNearCapacityLevel
                 select filesystemInfo
             ).ToList();
+
+            return fileSystems.Any()
+                //TODO extract string to resource file
+                ? new Ds3DiagnosticResult<CacheFilesystemInformation>(Ds3DiagnosticsCode.CacheNearCapacity,
+                    "Found cache file systems that near the capacity limit", fileSystems)
+                : new Ds3DiagnosticResult<CacheFilesystemInformation>(Ds3DiagnosticsCode.Ok, null, null);
         }
     }
 }

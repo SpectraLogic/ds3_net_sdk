@@ -13,7 +13,7 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
+using System.Linq;
 using Ds3.Calls;
 using Ds3.Models;
 
@@ -21,11 +21,26 @@ namespace Ds3.Helpers.Ds3Diagnostics
 {
     internal class OfflineTapes : IDs3DiagnosticCheck<Tape>
     {
-        public IEnumerable<Tape> Get(IDs3Client client)
+        public Ds3DiagnosticResult<Tape> Get(IDs3Client client)
         {
             var getTapesRequest = new GetTapesSpectraS3Request().WithState(TapeState.OFFLINE);
             var getTapesResponse = client.GetTapesSpectraS3(getTapesRequest);
-            return getTapesResponse.ResponsePayload.Tapes;
+
+            var tapes = getTapesResponse.ResponsePayload.Tapes;
+
+            if (tapes == null)
+            {
+                return new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.NoTapesFound, "No tapes found in the system",
+                    null);
+            }
+
+
+            return tapes.Any()
+                //TODO extract string to resource file
+                ? new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.OfflineTapes,
+                    $"Found {tapes.Count()} tapes that are in OFFLINE state",
+                    getTapesResponse.ResponsePayload.Tapes)
+                : new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.Ok, null, null);
         }
     }
 }

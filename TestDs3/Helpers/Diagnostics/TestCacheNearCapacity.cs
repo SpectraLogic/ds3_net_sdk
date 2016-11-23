@@ -17,7 +17,6 @@ using System.Linq;
 using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers.Ds3Diagnostics;
-using Ds3.Runtime;
 using Moq;
 using NUnit.Framework;
 
@@ -27,20 +26,6 @@ namespace TestDs3.Helpers.Diagnostics
     public class TestCacheNearCapacity
     {
         [Test]
-        public void TestGetWithNullFilesystems()
-        {
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-            client
-                .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NullFilesystems);
-
-            var cacheNearCapacity = new CacheNearCapacity();
-            Assert.Throws<Ds3NoCacheFileSystemException>(() => cacheNearCapacity.Get(client.Object));
-
-            client.VerifyAll();
-        }
-
-        [Test]
         public void TestGetWithNoFilesystems()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
@@ -49,7 +34,11 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.EmptyFilesystems);
 
             var cacheNearCapacity = new CacheNearCapacity();
-            Assert.Throws<Ds3NoCacheFileSystemException>(() => cacheNearCapacity.Get(client.Object));
+            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
+            Assert.AreEqual("No cache file systems were found", cacheNearCapacityResult.ErrorMessage);
+            Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -63,7 +52,29 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacity();
-            Assert.IsEmpty(cacheNearCapacity.Get(client.Object));
+            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, cacheNearCapacityResult.Code);
+            Assert.AreEqual(null, cacheNearCapacityResult.ErrorMessage);
+            Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
+
+            client.VerifyAll();
+        }
+
+        [Test]
+        public void TestGetWithNullFilesystems()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
+                .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.NullFilesystems);
+
+            var cacheNearCapacity = new CacheNearCapacity();
+            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
+            Assert.AreEqual("No cache file systems were found", cacheNearCapacityResult.ErrorMessage);
+            Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -77,7 +88,12 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacity();
-            Assert.AreEqual(1, cacheNearCapacity.Get(client.Object).Count());
+            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);
+            Assert.AreEqual("Found cache file systems that near the capacity limit",
+                cacheNearCapacityResult.ErrorMessage);
+            Assert.AreEqual(1, cacheNearCapacityResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -91,7 +107,12 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.TwoNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacity();
-            Assert.AreEqual(2, cacheNearCapacity.Get(client.Object).Count());
+            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);
+            Assert.AreEqual("Found cache file systems that near the capacity limit",
+                cacheNearCapacityResult.ErrorMessage);
+            Assert.AreEqual(2, cacheNearCapacityResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
