@@ -21,7 +21,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
     {
         /// <summary>
         /// Gets the <see cref="CacheFilesystemInformation"/> for all cache that are near capacity.
-        /// A cache is determined near capacity if the current utilization is at or exceeds <see cref="CacheNearCapacity.CacheUtilizationNearCapacityLevel"/>.
+        /// A cache is determined near capacity if the current utilization is at or exceeds <see cref="CacheNearCapacityDiagnostic.CacheUtilizationNearCapacityLevel"/>.
         /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no cache file system is near capacity limit
         /// <see cref="Ds3DiagnosticsCode.CacheNearCapacity"/> code will be return if found a cache file system that is near capacity limit
         /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all cache file systems that are near capacity limit.

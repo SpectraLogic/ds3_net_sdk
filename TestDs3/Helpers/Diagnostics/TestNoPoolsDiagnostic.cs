@@ -32,7 +32,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.NoPools);
 
-            var noPools = new NoPools();
+            var noPools = new NoPoolsDiagnostic();
             var noPoolsResult = noPools.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, noPoolsResult.Code);
@@ -50,7 +50,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
-            var noPools = new NoPools();
+            var noPools = new NoPoolsDiagnostic();
             var noPoolsResult = noPools.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, noPoolsResult.Code);

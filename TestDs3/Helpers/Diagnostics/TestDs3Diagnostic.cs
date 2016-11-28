@@ -35,7 +35,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.TwoNearCapacity);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
-            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new CacheNearCapacity());
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new CacheNearCapacityDiagnostic());
 
             Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, ds3DiagnosticResult.Code);
             Assert.AreEqual(2, ds3DiagnosticResult.ErrorInfo.Count());
@@ -53,7 +53,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoTapes);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
-            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new NoTapes());
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new NoTapesDiagnostic());
 
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, ds3DiagnosticResult.Code);
@@ -71,7 +71,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoPools);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
-            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new NoPools());
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new NoPoolsDiagnostic());
 
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, ds3DiagnosticResult.Code);
@@ -89,7 +89,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneTape);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
-            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new OfflineTapes());
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new OfflineTapesDiagnostic());
 
 
             Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, ds3DiagnosticResult.Code);
@@ -108,7 +108,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
-            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new PoweredOffPools());
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new PoweredOffPoolsDiagnostic());
 
 
             Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, ds3DiagnosticResult.Code);

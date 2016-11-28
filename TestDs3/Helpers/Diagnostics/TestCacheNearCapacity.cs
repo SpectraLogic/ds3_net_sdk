@@ -33,7 +33,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.EmptyFilesystems);
 
-            var cacheNearCapacity = new CacheNearCapacity();
+            var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
@@ -51,7 +51,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.NoNearCapacity);
 
-            var cacheNearCapacity = new CacheNearCapacity();
+            var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, cacheNearCapacityResult.Code);
@@ -69,7 +69,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.NullFilesystems);
 
-            var cacheNearCapacity = new CacheNearCapacity();
+            var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
@@ -87,7 +87,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.OneNearCapacity);
 
-            var cacheNearCapacity = new CacheNearCapacity();
+            var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);
@@ -106,7 +106,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.TwoNearCapacity);
 
-            var cacheNearCapacity = new CacheNearCapacity();
+            var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);

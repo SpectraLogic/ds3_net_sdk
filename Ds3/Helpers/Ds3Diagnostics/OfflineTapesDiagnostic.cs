@@ -19,7 +19,7 @@ using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class OfflineTapes : IDs3DiagnosticCheck<Tape>
+    internal class OfflineTapesDiagnostic : IDs3DiagnosticCheck<Tape>
     {
         public Ds3DiagnosticResult<Tape> Get(IDs3Client client)
         {

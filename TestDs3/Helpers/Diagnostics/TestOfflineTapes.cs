@@ -33,7 +33,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.NoTapes);
 
-            var offlineTapes = new OfflineTapes();
+            var offlineTapes = new OfflineTapesDiagnostic();
             var offlineTapesResult = offlineTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, offlineTapesResult.Code);
@@ -52,7 +52,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.OneTape);
 
-            var offlineTapes = new OfflineTapes();
+            var offlineTapes = new OfflineTapesDiagnostic();
             var offlineTapesResult = offlineTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);
@@ -70,7 +70,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.TwoTapes);
 
-            var offlineTapes = new OfflineTapes();
+            var offlineTapes = new OfflineTapesDiagnostic();
             var offlineTapesResult = offlineTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);

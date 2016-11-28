@@ -18,7 +18,7 @@ using Ds3.Calls;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class NoTapes : IDs3DiagnosticCheck<object>
+    internal class NoTapesDiagnostic : IDs3DiagnosticCheck<object>
     {
         public Ds3DiagnosticResult<object> Get(IDs3Client client)
         {

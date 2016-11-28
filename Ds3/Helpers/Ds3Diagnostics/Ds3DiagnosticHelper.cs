@@ -33,11 +33,11 @@ namespace Ds3.Helpers.Ds3Diagnostics
 
         /// <summary>
         /// Runs all diagnostics.
-        /// <see cref="CacheNearCapacity"/>
-        /// <see cref="OfflineTapes"/>
-        /// <see cref="NoTapes"/>
-        /// <see cref="PoweredOffPools"/>
-        /// <see cref="NoPools"/>
+        /// <see cref="CacheNearCapacityDiagnostic"/>
+        /// <see cref="OfflineTapesDiagnostic"/>
+        /// <see cref="NoTapesDiagnostic"/>
+        /// <see cref="PoweredOffPoolsDiagnostic"/>
+        /// <see cref="NoPoolsDiagnostic"/>
         /// </summary>
         /// <returns>
         /// <see cref="Ds3Diagnostic"/>
@@ -46,11 +46,11 @@ namespace Ds3.Helpers.Ds3Diagnostics
         {
             var ds3Diagnostic = new Ds3Diagnostic
             {
-                CacheNearCapacityDiagnostic = Get(new CacheNearCapacity()),
-                OfflineTapesDiagnostic = Get(new OfflineTapes()),
-                NoTapesDiagnostic = Get(new NoTapes()),
-                PoweredOffPoolsDiagnostic = Get(new PoweredOffPools()),
-                NoPoolsDiagnostic = Get(new NoPools())
+                CacheNearCapacityDiagnostic = Get(new CacheNearCapacityDiagnostic()),
+                OfflineTapesDiagnostic = Get(new OfflineTapesDiagnostic()),
+                NoTapesDiagnostic = Get(new NoTapesDiagnostic()),
+                PoweredOffPoolsDiagnostic = Get(new PoweredOffPoolsDiagnostic()),
+                NoPoolsDiagnostic = Get(new NoPoolsDiagnostic())
             };
 
             return ds3Diagnostic;
@@ -60,11 +60,11 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// Gets a specified DS3 diagnostic to preform.
         /// </summary>
         /// <typeparam name="T">
-        /// <see cref="CacheNearCapacity"/>
-        /// <see cref="OfflineTapes"/>
-        /// <see cref="NoTapes"/>
-        /// <see cref="PoweredOffPools"/>
-        /// <see cref="NoPools"/>
+        /// <see cref="CacheNearCapacityDiagnostic"/>
+        /// <see cref="OfflineTapesDiagnostic"/>
+        /// <see cref="NoTapesDiagnostic"/>
+        /// <see cref="PoweredOffPoolsDiagnostic"/>
+        /// <see cref="NoPoolsDiagnostic"/>
         /// </typeparam>
         /// <param name="ds3Diagnostic">The DS3 diagnostic.</param>
         /// <returns>

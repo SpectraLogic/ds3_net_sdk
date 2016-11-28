@@ -15,24 +15,20 @@
 
 using System.Linq;
 using Ds3.Calls;
-using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class PoweredOffPools : IDs3DiagnosticCheck<Pool>
+    internal class NoPoolsDiagnostic : IDs3DiagnosticCheck<object>
     {
-        public Ds3DiagnosticResult<Pool> Get(IDs3Client client)
+        public Ds3DiagnosticResult<object> Get(IDs3Client client)
         {
             var getPoolsRequest = new GetPoolsSpectraS3Request();
             var getPoolsResponse = client.GetPoolsSpectraS3(getPoolsRequest);
             var pools = getPoolsResponse.ResponsePayload.Pools;
-            var poweredOffPools = pools.Where(pool => !pool.PoweredOn);
 
-            return poweredOffPools.Any()
-                ? new Ds3DiagnosticResult<Pool>(Ds3DiagnosticsCode.PoweredOffPools,
-                    string.Format(DiagnosticsMessages.FoundPowerOffPools, poweredOffPools.Count()),
-                    poweredOffPools)
-                : new Ds3DiagnosticResult<Pool>(Ds3DiagnosticsCode.Ok, null, null);
+            return !pools.Any()
+                ? new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.NoPoolsFound, DiagnosticsMessages.NoPoolsFound, null)
+                : new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.Ok, null, null);
         }
     }
 }

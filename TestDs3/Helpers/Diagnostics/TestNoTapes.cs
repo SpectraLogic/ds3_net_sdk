@@ -32,7 +32,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.NoTapes);
 
-            var noTapes = new NoTapes();
+            var noTapes = new NoTapesDiagnostic();
             var noTapesResult = noTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, noTapesResult.Code);
@@ -50,7 +50,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.OneTape);
 
-            var noTapes = new NoTapes();
+            var noTapes = new NoTapesDiagnostic();
             var noTapesResult = noTapes.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, noTapesResult.Code);

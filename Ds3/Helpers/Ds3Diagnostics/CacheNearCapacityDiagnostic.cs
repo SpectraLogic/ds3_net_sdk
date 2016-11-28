@@ -19,7 +19,7 @@ using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class CacheNearCapacity : IDs3DiagnosticCheck<CacheFilesystemInformation>
+    internal class CacheNearCapacityDiagnostic : IDs3DiagnosticCheck<CacheFilesystemInformation>
     {
         //TODO check if this value is right
         private const double CacheUtilizationNearCapacityLevel = 0.95;

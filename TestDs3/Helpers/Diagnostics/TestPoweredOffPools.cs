@@ -33,7 +33,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.NoPoweredOffPools);
 
-            var poweredOffPools = new PoweredOffPools();
+            var poweredOffPools = new PoweredOffPoolsDiagnostic();
             var poweredOffPoolsResult = poweredOffPools.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, poweredOffPoolsResult.Code);
@@ -52,7 +52,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
-            var poweredOffPools = new PoweredOffPools();
+            var poweredOffPools = new PoweredOffPoolsDiagnostic();
             var poweredOffPoolsResult = poweredOffPools.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, poweredOffPoolsResult.Code);
@@ -70,7 +70,7 @@ namespace TestDs3.Helpers.Diagnostics
                 .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
                 .Returns(DiagnosticsStubs.TwoPoweredOffPool);
 
-            var poweredOffPools = new PoweredOffPools();
+            var poweredOffPools = new PoweredOffPoolsDiagnostic();
             var poweredOffPoolsResult = poweredOffPools.Get(client.Object);
 
             Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, poweredOffPoolsResult.Code);
