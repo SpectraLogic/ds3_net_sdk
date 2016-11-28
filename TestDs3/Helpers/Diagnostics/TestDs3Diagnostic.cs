@@ -62,6 +62,24 @@ namespace TestDs3.Helpers.Diagnostics
         }
 
         [Test]
+        public void TestNoPoolsGet()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+
+            client
+                .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.NoPools);
+
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new NoPools());
+
+
+            Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, ds3DiagnosticResult.Code);
+
+            client.VerifyAll();
+        }
+
+        [Test]
         public void TestOfflineTapeGet()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
@@ -114,9 +132,9 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoTapes);
 
             client
-                .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.OnePoweredOffPool);
-
+                .SetupSequence(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.OnePoweredOffPool)
+                .Returns(DiagnosticsStubs.NoPools);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
@@ -131,6 +149,8 @@ namespace TestDs3.Helpers.Diagnostics
 
             Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.Code);
             Assert.AreEqual(1, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.ErrorInfo.Count());
+
+            Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
 
             client.VerifyAll();
         }
@@ -150,8 +170,9 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneTape);
 
             client
-                .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoPoweredOffPools);
+                .SetupSequence(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.NoPoweredOffPools)
+                .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
@@ -160,6 +181,7 @@ namespace TestDs3.Helpers.Diagnostics
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.OfflineTapesDiagnostic.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoTapesDiagnostic.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
 
             client.VerifyAll();
         }

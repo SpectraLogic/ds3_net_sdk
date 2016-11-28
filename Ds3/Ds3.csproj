@@ -579,6 +579,7 @@
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\CacheNearCapacity.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\NoPools.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\NoTapes.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\DiagnosticsMessages.Designer.cs">
       <DependentUpon>DiagnosticsMessages.resx</DependentUpon>

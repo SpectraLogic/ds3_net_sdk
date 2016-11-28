@@ -97,6 +97,15 @@ namespace Ds3.Helpers.Ds3Diagnostics {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No pools found in the system.
+        /// </summary>
+        internal static string NoPoolsFound {
+            get {
+                return ResourceManager.GetString("NoPoolsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No tapes found in the system.
         /// </summary>
         internal static string NoTapesFound {

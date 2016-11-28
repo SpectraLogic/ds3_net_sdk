@@ -97,10 +97,22 @@ namespace TestDs3.Helpers.Diagnostics
                 }
             }, null, null);
 
-        public static readonly GetPoolsSpectraS3Response NoPoweredOffPools =
+        public static readonly GetPoolsSpectraS3Response NoPools =
             new GetPoolsSpectraS3Response(new PoolList
             {
                 Pools = new List<Pool>()
+            }, null, null);
+
+        public static readonly GetPoolsSpectraS3Response NoPoweredOffPools =
+            new GetPoolsSpectraS3Response(new PoolList
+            {
+                Pools = new List<Pool>
+                {
+                    new Pool
+                    {
+                        PoweredOn = true
+                    }
+                }
             }, null, null);
 
         public static readonly GetPoolsSpectraS3Response OnePoweredOffPool =

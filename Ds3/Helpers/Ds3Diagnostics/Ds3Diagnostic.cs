@@ -52,5 +52,12 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all powered off pools
         /// </summary>
         public Ds3DiagnosticResult<Pool> PoweredOffPoolsDiagnostic { get; set; }
+
+        /// <summary>
+        /// The no pools diagnostic.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if found at least one pool in the system
+        /// <see cref="Ds3DiagnosticsCode.NoPoolsFound"/> code will be return if no pools found in the system
+        /// </summary>
+        public Ds3DiagnosticResult<object> NoPoolsDiagnostic { get; set; }
     }
 }

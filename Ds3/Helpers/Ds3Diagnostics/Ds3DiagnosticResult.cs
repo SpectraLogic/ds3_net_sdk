@@ -55,6 +55,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         CacheNearCapacity,
         NoTapesFound,
         OfflineTapes,
-        PoweredOffPools
+        PoweredOffPools,
+        NoPoolsFound
     }
 }

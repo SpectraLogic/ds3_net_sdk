@@ -129,6 +129,9 @@
   <data name="NoCacheFound" xml:space="preserve">
     <value>No cache file systems were found</value>
   </data>
+  <data name="NoPoolsFound" xml:space="preserve">
+    <value>No pools found in the system</value>
+  </data>
   <data name="NoTapesFound" xml:space="preserve">
     <value>No tapes found in the system</value>
   </data>
