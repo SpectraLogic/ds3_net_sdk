@@ -22,14 +22,27 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <summary>
         /// Gets the <see cref="CacheFilesystemInformation"/> for all cache that are near capacity.
         /// A cache is determined near capacity if the current utilization is at or exceeds <see cref="CacheNearCapacity.CacheUtilizationNearCapacityLevel"/>.
-        /// If no file systems are near capacity or no cache system was found in the system, than a null collection is returned.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no cache file system is near capacity limit
+        /// <see cref="Ds3DiagnosticsCode.CacheNearCapacity"/> code will be return if found a cache file system that is near capacity limit
+        /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all cache file systems that are near capacity limit.
+        /// <see cref="Ds3DiagnosticsCode.NoCacheSystemFound"/> code will be return if no cache system is found in the system.
         /// </summary>
         public Ds3DiagnosticResult<CacheFilesystemInformation> CacheNearCapacityDiagnostic { get; set; }
 
         /// <summary>
         /// Gets the <see cref="Tape"/> for all tapes with status of OFFLINE.
-        /// If no tapes are offline, than a null collection is returned.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no tapes are offline
+        /// <see cref="Ds3DiagnosticsCode.OfflineTapes"/> code will be return if offline tapes are found 
+        /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all offline tapes
         /// </summary>
-        public Ds3DiagnosticResult<Tape> OfflineTapeDiagnostic { get; set; }
+        public Ds3DiagnosticResult<Tape> OfflineTapesDiagnostic { get; set; }
+
+        /// <summary>
+        /// The no tapes diagnostic.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if found at least one tape in the system
+        /// <see cref="Ds3DiagnosticsCode.NoTapesFound"/> code will be return if no tapes found in the system
+        /// </summary>
+        public Ds3DiagnosticResult<object> NoTapesDiagnostic { get; set; }
+
     }
 }

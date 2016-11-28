@@ -15,23 +15,20 @@
 
 using System.Linq;
 using Ds3.Calls;
-using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class OfflineTapes : IDs3DiagnosticCheck<Tape>
+    internal class NoTapes : IDs3DiagnosticCheck<object>
     {
-        public Ds3DiagnosticResult<Tape> Get(IDs3Client client)
+        public Ds3DiagnosticResult<object> Get(IDs3Client client)
         {
-            var getTapesRequest = new GetTapesSpectraS3Request().WithState(TapeState.OFFLINE);
+            var getTapesRequest = new GetTapesSpectraS3Request();
             var getTapesResponse = client.GetTapesSpectraS3(getTapesRequest);
             var tapes = getTapesResponse.ResponsePayload.Tapes;
 
-            return tapes.Any()
-                ? new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.OfflineTapes,
-                    string.Format(DiagnosticsMessages.FoundOfflineTapes, tapes.Count()),
-                    getTapesResponse.ResponsePayload.Tapes)
-                : new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.Ok, null, null);
+            return !tapes.Any()
+                ? new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.NoTapesFound, DiagnosticsMessages.NoTapesFound, null)
+                : new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.Ok, null, null);
         }
     }
 }

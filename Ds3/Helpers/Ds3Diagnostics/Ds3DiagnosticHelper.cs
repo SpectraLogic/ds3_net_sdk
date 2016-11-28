@@ -35,6 +35,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// Runs all diagnostics.
         /// <see cref="CacheNearCapacity"/>
         /// <see cref="OfflineTapes"/>
+        /// <see cref="NoTapes"/>
         /// </summary>
         /// <returns>
         /// <see cref="Ds3Diagnostic"/>
@@ -44,7 +45,8 @@ namespace Ds3.Helpers.Ds3Diagnostics
             var ds3Diagnostic = new Ds3Diagnostic
             {
                 CacheNearCapacityDiagnostic = Get(new CacheNearCapacity()),
-                OfflineTapeDiagnostic = Get(new OfflineTapes())
+                OfflineTapesDiagnostic = Get(new OfflineTapes()),
+                NoTapesDiagnostic = Get(new NoTapes())
 
                 //TODO add more checks
             };
@@ -54,12 +56,16 @@ namespace Ds3.Helpers.Ds3Diagnostics
 
         /// <summary>
         /// Gets a specified DS3 diagnostic to preform.
+        /// </summary>
+        /// <typeparam name="T">
         /// <see cref="CacheNearCapacity"/>
         /// <see cref="OfflineTapes"/>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <see cref="NoTapes"/>
+        /// </typeparam>
         /// <param name="ds3Diagnostic">The DS3 diagnostic.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// <see cref="Ds3DiagnosticResult{T}"/>
+        /// </returns>
         public Ds3DiagnosticResult<T> Get<T>(IDs3DiagnosticCheck<T> ds3Diagnostic)
         {
             return ds3Diagnostic.Get(Client);

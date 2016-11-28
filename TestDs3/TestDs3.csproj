@@ -69,6 +69,7 @@
     <Compile Include="Helpers\Diagnostics\DiagnosticsStubs.cs" />
     <Compile Include="Helpers\Diagnostics\TestCacheNearCapacity.cs" />
     <Compile Include="Helpers\Diagnostics\TestDs3Diagnostic.cs" />
+    <Compile Include="Helpers\Diagnostics\TestNoTapes.cs" />
     <Compile Include="Helpers\Diagnostics\TestOfflineTapes.cs" />
     <Compile Include="Helpers\JobResponseStubs.cs" />
     <Compile Include="Helpers\Jobs\TestJobsUtil.cs" />
