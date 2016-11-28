@@ -123,6 +123,9 @@
   <data name="FoundOfflineTapes" xml:space="preserve">
     <value>Found {0} offline tapes</value>
   </data>
+  <data name="FoundPowerOffPools" xml:space="preserve">
+    <value>Found {0} powered off pools</value>
+  </data>
   <data name="NoCacheFound" xml:space="preserve">
     <value>No cache file systems were found</value>
   </data>

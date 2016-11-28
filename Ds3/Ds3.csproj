@@ -580,7 +580,6 @@
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\CacheNearCapacity.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\NoTapes.cs" />
-    <Compile Include="Helpers\Ds3Diagnostics\OfflinePools.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\DiagnosticsMessages.Designer.cs">
       <DependentUpon>DiagnosticsMessages.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -591,6 +590,7 @@
     <Compile Include="Helpers\Ds3Diagnostics\Ds3Diagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\IDs3DiagnosticCheck.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\OfflineTapes.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\PoweredOffPools.cs" />
     <Compile Include="Helpers\Ds3JobOptions.cs" />
     <Compile Include="Helpers\Ds3ReadJobOptions.cs" />
     <Compile Include="Helpers\Ds3WriteJobOptions.cs" />
@@ -1118,6 +1118,7 @@
     <EmbeddedResource Include="Helpers\Ds3Diagnostics\DiagnosticsMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>DiagnosticsMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

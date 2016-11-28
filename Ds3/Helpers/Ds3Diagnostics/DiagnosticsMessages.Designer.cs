@@ -79,6 +79,15 @@ namespace Ds3.Helpers.Ds3Diagnostics {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Found {0} powered off pools.
+        /// </summary>
+        internal static string FoundPowerOffPools {
+            get {
+                return ResourceManager.GetString("FoundPowerOffPools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No cache file systems were found.
         /// </summary>
         internal static string NoCacheFound {

@@ -54,8 +54,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         NoCacheSystemFound,
         CacheNearCapacity,
         NoTapesFound,
-        OfflineTapes
-
-        //TODO add more results
+        OfflineTapes,
+        PoweredOffPools
     }
 }

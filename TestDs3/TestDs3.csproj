@@ -71,6 +71,7 @@
     <Compile Include="Helpers\Diagnostics\TestDs3Diagnostic.cs" />
     <Compile Include="Helpers\Diagnostics\TestNoTapes.cs" />
     <Compile Include="Helpers\Diagnostics\TestOfflineTapes.cs" />
+    <Compile Include="Helpers\Diagnostics\TestPoweredOffPools.cs" />
     <Compile Include="Helpers\JobResponseStubs.cs" />
     <Compile Include="Helpers\Jobs\TestJobsUtil.cs" />
     <Compile Include="Helpers\MockHelpers.cs" />

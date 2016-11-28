@@ -44,5 +44,13 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// </summary>
         public Ds3DiagnosticResult<object> NoTapesDiagnostic { get; set; }
 
+
+        /// <summary>
+        /// Gets the <see cref="Pool"/> for all powered off pools.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no powered off pools were found
+        /// <see cref="Ds3DiagnosticsCode.PoweredOffPools"/> code will be return if powered off pools are found 
+        /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all powered off pools
+        /// </summary>
+        public Ds3DiagnosticResult<Pool> PoweredOffPoolsDiagnostic { get; set; }
     }
 }
