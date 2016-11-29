@@ -163,11 +163,18 @@ namespace TestDs3.Helpers.Diagnostics
                     {
                         new BlobStoreTaskInformation
                         {
-                            Name = "VerifyTapeTask"
+                            Name = "VerifyTapeTask",
+                            State = BlobStoreTaskState.PENDING_EXECUTION
                         },
                         new BlobStoreTaskInformation
                         {
-                            Name = "ReadChunkFromTapeTask"
+                            Name = "ReadChunkFromTapeTask",
+                            State = BlobStoreTaskState.IN_PROGRESS
+                        },
+                        new BlobStoreTaskInformation
+                        {
+                            Name = "ReadChunkFromTapeTask",
+                            State = BlobStoreTaskState.READY
                         }
                     }
                 }
@@ -189,11 +196,18 @@ namespace TestDs3.Helpers.Diagnostics
                     {
                         new BlobStoreTaskInformation
                         {
-                            Name = "VerifyTapeTask"
+                            Name = "VerifyTapeTask",
+                            State = BlobStoreTaskState.PENDING_EXECUTION
                         },
                         new BlobStoreTaskInformation
                         {
-                            Name = "WriteChunkFromTapeTask"
+                            Name = "WriteChunkFromTapeTask",
+                            State = BlobStoreTaskState.IN_PROGRESS
+                        },
+                        new BlobStoreTaskInformation
+                        {
+                            Name = "WriteChunkFromTapeTask",
+                            State = BlobStoreTaskState.READY
                         }
                     }
                 }

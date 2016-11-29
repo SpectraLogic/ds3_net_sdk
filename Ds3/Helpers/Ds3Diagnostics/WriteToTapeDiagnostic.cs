@@ -27,7 +27,9 @@ namespace Ds3.Helpers.Ds3Diagnostics
         {
             var response =
                 client.GetDataPlannerBlobStoreTasksSpectraS3(new GetDataPlannerBlobStoreTasksSpectraS3Request());
-            var tasks = response.ResponsePayload.Tasks.Where(t => t.Name.Equals(TaskName));
+            var tasks =
+                response.ResponsePayload.Tasks.Where(
+                    t => t.Name.Equals(TaskName) && t.State == BlobStoreTaskState.IN_PROGRESS);
 
             return tasks.Any()
                 ? new Ds3DiagnosticResult<BlobStoreTaskInformation>(Ds3DiagnosticsCode.WritingToTape,

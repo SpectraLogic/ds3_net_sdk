@@ -140,28 +140,6 @@ namespace TestDs3.Helpers.Diagnostics
         }
 
         [Test]
-        public void TestWritingToTapeGet()
-        {
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-
-            client
-                .Setup(
-                    c =>
-                        c.GetDataPlannerBlobStoreTasksSpectraS3(
-                            It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.OneWritingTasks);
-
-            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
-            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new WriteToTapeDiagnostic());
-
-
-            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, ds3DiagnosticResult.Code);
-            Assert.AreEqual(1, ds3DiagnosticResult.ErrorInfo.Count());
-
-            client.VerifyAll();
-        }
-
-        [Test]
         public void TestRunAll()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
@@ -250,6 +228,28 @@ namespace TestDs3.Helpers.Diagnostics
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.ReadingFromTapeTasks.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.WritingFromTapeTasks.Code);
+
+            client.VerifyAll();
+        }
+
+        [Test]
+        public void TestWritingToTapeGet()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+
+            client
+                .Setup(
+                    c =>
+                        c.GetDataPlannerBlobStoreTasksSpectraS3(
+                            It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.OneWritingTasks);
+
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new WriteToTapeDiagnostic());
+
+
+            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, ds3DiagnosticResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
