@@ -48,13 +48,13 @@ namespace Ds3.Helpers.Ds3Diagnostics
         {
             var ds3Diagnostic = new Ds3Diagnostic
             {
-                CacheNearCapacityDiagnostic = Get(new CacheNearCapacityDiagnostic()),
-                OfflineTapesDiagnostic = Get(new OfflineTapesDiagnostic()),
-                NoTapesDiagnostic = Get(new NoTapesDiagnostic()),
-                PoweredOffPoolsDiagnostic = Get(new PoweredOffPoolsDiagnostic()),
-                NoPoolsDiagnostic = Get(new NoPoolsDiagnostic()),
-                ReadingFromTapeTasks = Get(new ReadFromTapeDiagnostic()),
-                WritingFromTapeTasks = Get(new WriteToTapeDiagnostic())
+                CacheNearCapacityDiagnosticResult = Get(new CacheNearCapacityDiagnostic()),
+                OfflineTapesDiagnosticResult = Get(new OfflineTapesDiagnostic()),
+                NoTapesDiagnosticResult = Get(new NoTapesDiagnostic()),
+                PoweredOffPoolsDiagnosticResult = Get(new PoweredOffPoolsDiagnostic()),
+                NoPoolsDiagnosticResult = Get(new NoPoolsDiagnostic()),
+                ReadingFromTapeTasksResult = Get(new ReadFromTapeDiagnostic()),
+                WritingFromTapeTasksResult = Get(new WriteToTapeDiagnostic())
             };
 
             return ds3Diagnostic;

@@ -169,24 +169,24 @@ namespace TestDs3.Helpers.Diagnostics
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
 
-            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, ds3DiagnosticResult.CacheNearCapacityDiagnostic.Code);
-            Assert.AreEqual(2, ds3DiagnosticResult.CacheNearCapacityDiagnostic.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, ds3DiagnosticResult.CacheNearCapacityDiagnosticResult.Code);
+            Assert.AreEqual(2, ds3DiagnosticResult.CacheNearCapacityDiagnosticResult.ErrorInfo.Count());
 
-            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, ds3DiagnosticResult.OfflineTapesDiagnostic.Code);
-            Assert.AreEqual(1, ds3DiagnosticResult.OfflineTapesDiagnostic.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, ds3DiagnosticResult.OfflineTapesDiagnosticResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.OfflineTapesDiagnosticResult.ErrorInfo.Count());
 
-            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, ds3DiagnosticResult.NoTapesDiagnostic.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, ds3DiagnosticResult.NoTapesDiagnosticResult.Code);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.Code);
-            Assert.AreEqual(1, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.ErrorInfo.Count());
 
-            Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, ds3DiagnosticResult.NoPoolsDiagnosticResult.Code);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape, ds3DiagnosticResult.ReadingFromTapeTasks.Code);
-            Assert.AreEqual(1, ds3DiagnosticResult.ReadingFromTapeTasks.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape, ds3DiagnosticResult.ReadingFromTapeTasksResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.ReadingFromTapeTasksResult.ErrorInfo.Count());
 
-            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, ds3DiagnosticResult.WritingFromTapeTasks.Code);
-            Assert.AreEqual(1, ds3DiagnosticResult.WritingFromTapeTasks.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, ds3DiagnosticResult.WritingFromTapeTasksResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.WritingFromTapeTasksResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -221,13 +221,13 @@ namespace TestDs3.Helpers.Diagnostics
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.CacheNearCapacityDiagnostic.Code);
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.OfflineTapesDiagnostic.Code);
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoTapesDiagnostic.Code);
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.Code);
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.ReadingFromTapeTasks.Code);
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.WritingFromTapeTasks.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.CacheNearCapacityDiagnosticResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.OfflineTapesDiagnosticResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoTapesDiagnosticResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoPoolsDiagnosticResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.ReadingFromTapeTasksResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.WritingFromTapeTasksResult.Code);
 
             client.VerifyAll();
         }

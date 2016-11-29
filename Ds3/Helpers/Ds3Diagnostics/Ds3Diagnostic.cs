@@ -27,7 +27,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all cache file systems that are near capacity limit.
         /// <see cref="Ds3DiagnosticsCode.NoCacheSystemFound"/> code will be return if no cache system is found in the system.
         /// </summary>
-        public Ds3DiagnosticResult<CacheFilesystemInformation> CacheNearCapacityDiagnostic { get; set; }
+        public Ds3DiagnosticResult<CacheFilesystemInformation> CacheNearCapacityDiagnosticResult { get; set; }
 
         /// <summary>
         /// Gets the <see cref="Tape"/> for all tapes with status of OFFLINE.
@@ -35,14 +35,14 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <see cref="Ds3DiagnosticsCode.OfflineTapes"/> code will be return if offline tapes are found 
         /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all offline tapes
         /// </summary>
-        public Ds3DiagnosticResult<Tape> OfflineTapesDiagnostic { get; set; }
+        public Ds3DiagnosticResult<Tape> OfflineTapesDiagnosticResult { get; set; }
 
         /// <summary>
         /// The no tapes diagnostic.
         /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if found at least one tape in the system
         /// <see cref="Ds3DiagnosticsCode.NoTapesFound"/> code will be return if no tapes found in the system
         /// </summary>
-        public Ds3DiagnosticResult<object> NoTapesDiagnostic { get; set; }
+        public Ds3DiagnosticResult<object> NoTapesDiagnosticResult { get; set; }
 
 
         /// <summary>
@@ -51,27 +51,27 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <see cref="Ds3DiagnosticsCode.PoweredOffPools"/> code will be return if powered off pools are found 
         /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all powered off pools
         /// </summary>
-        public Ds3DiagnosticResult<Pool> PoweredOffPoolsDiagnostic { get; set; }
+        public Ds3DiagnosticResult<Pool> PoweredOffPoolsDiagnosticResult { get; set; }
 
         /// <summary>
         /// The no pools diagnostic.
         /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if found at least one pool in the system
         /// <see cref="Ds3DiagnosticsCode.NoPoolsFound"/> code will be return if no pools found in the system
         /// </summary>
-        public Ds3DiagnosticResult<object> NoPoolsDiagnostic { get; set; }
+        public Ds3DiagnosticResult<object> NoPoolsDiagnosticResult { get; set; }
 
         /// <summary>
         /// Gets the <see cref="BlobStoreTaskInformation"/> for all reading chunks from tape.
         /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no reading chunks from tape found
         /// <see cref="Ds3DiagnosticsCode.ReadingFromTape"/> code will be return if reading chunks from tape found
         /// </summary>
-        public Ds3DiagnosticResult<BlobStoreTaskInformation> ReadingFromTapeTasks { get; set; }
+        public Ds3DiagnosticResult<BlobStoreTaskInformation> ReadingFromTapeTasksResult { get; set; }
 
         /// <summary>
         /// Gets the <see cref="BlobStoreTaskInformation"/> for all writing chunks to tape.
         /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no writing chunks to tape found
         /// <see cref="Ds3DiagnosticsCode.WritingToTape"/> code will be return if writing chunks to tape found
         /// </summary>
-        public Ds3DiagnosticResult<BlobStoreTaskInformation> WritingFromTapeTasks { get; set; }
+        public Ds3DiagnosticResult<BlobStoreTaskInformation> WritingFromTapeTasksResult { get; set; }
     }
 }
