@@ -23,7 +23,7 @@ using NUnit.Framework;
 namespace TestDs3.Helpers.Diagnostics
 {
     [TestFixture]
-    public class TestReadingFromTapeDiagnostic
+    public class TestReadFromTapeDiagnostic
     {
         [Test]
         public void TestGetWithNoReadingTasks()

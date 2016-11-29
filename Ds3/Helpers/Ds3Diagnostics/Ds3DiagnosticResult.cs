@@ -58,6 +58,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         OfflineTapes,
         PoweredOffPools,
         NoPoolsFound,
-        ReadingFromTape
+        ReadingFromTape,
+        WritingToTape
     }
 }

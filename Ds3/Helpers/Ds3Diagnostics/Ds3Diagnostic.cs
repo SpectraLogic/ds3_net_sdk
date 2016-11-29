@@ -66,5 +66,12 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <see cref="Ds3DiagnosticsCode.ReadingFromTape"/> code will be return if reading chunks from tape found
         /// </summary>
         public Ds3DiagnosticResult<BlobStoreTaskInformation> ReadingFromTapeTasks { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="BlobStoreTaskInformation"/> for all writing chunks to tape.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no writing chunks to tape found
+        /// <see cref="Ds3DiagnosticsCode.WritingToTape"/> code will be return if writing chunks to tape found
+        /// </summary>
+        public Ds3DiagnosticResult<BlobStoreTaskInformation> WritingFromTapeTasks { get; set; }
     }
 }

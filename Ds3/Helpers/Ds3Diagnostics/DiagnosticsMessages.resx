@@ -138,4 +138,7 @@
   <data name="ReadingFromTape" xml:space="preserve">
     <value>Reading {0} chunks from tape</value>
   </data>
+  <data name="WritingToTape" xml:space="preserve">
+    <value>Writing {0} chunks to tape</value>
+  </data>
 </root>

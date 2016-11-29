@@ -73,7 +73,8 @@
     <Compile Include="Helpers\Diagnostics\TestNoTapes.cs" />
     <Compile Include="Helpers\Diagnostics\TestOfflineTapes.cs" />
     <Compile Include="Helpers\Diagnostics\TestPoweredOffPools.cs" />
-    <Compile Include="Helpers\Diagnostics\TestReadingFromTapeDiagnostic.cs" />
+    <Compile Include="Helpers\Diagnostics\TestReadFromTapeDiagnostic.cs" />
+    <Compile Include="Helpers\Diagnostics\TestWriteToTapeDiagnostic.cs" />
     <Compile Include="Helpers\JobResponseStubs.cs" />
     <Compile Include="Helpers\Jobs\TestJobsUtil.cs" />
     <Compile Include="Helpers\MockHelpers.cs" />

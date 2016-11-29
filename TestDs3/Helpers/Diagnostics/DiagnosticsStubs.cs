@@ -172,5 +172,31 @@ namespace TestDs3.Helpers.Diagnostics
                     }
                 }
             );
+
+        public static readonly GetDataPlannerBlobStoreTasksSpectraS3Response NoWritingTasks =
+            new GetDataPlannerBlobStoreTasksSpectraS3Response(
+                new BlobStoreTasksInformation
+                {
+                    Tasks = new List<BlobStoreTaskInformation>()
+                }
+            );
+
+        public static readonly GetDataPlannerBlobStoreTasksSpectraS3Response OneWritingTasks =
+            new GetDataPlannerBlobStoreTasksSpectraS3Response(
+                new BlobStoreTasksInformation
+                {
+                    Tasks = new List<BlobStoreTaskInformation>
+                    {
+                        new BlobStoreTaskInformation
+                        {
+                            Name = "VerifyTapeTask"
+                        },
+                        new BlobStoreTaskInformation
+                        {
+                            Name = "WriteChunkFromTapeTask"
+                        }
+                    }
+                }
+            );
     }
 }

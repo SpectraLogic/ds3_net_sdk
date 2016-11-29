@@ -140,6 +140,28 @@ namespace TestDs3.Helpers.Diagnostics
         }
 
         [Test]
+        public void TestWritingToTapeGet()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+
+            client
+                .Setup(
+                    c =>
+                        c.GetDataPlannerBlobStoreTasksSpectraS3(
+                            It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.OneWritingTasks);
+
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new WriteToTapeDiagnostic());
+
+
+            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, ds3DiagnosticResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.ErrorInfo.Count());
+
+            client.VerifyAll();
+        }
+
+        [Test]
         public void TestRunAll()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
@@ -159,11 +181,12 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoPools);
 
             client
-                .Setup(
+                .SetupSequence(
                     c =>
                         c.GetDataPlannerBlobStoreTasksSpectraS3(
                             It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.OneReadingTasks);
+                .Returns(DiagnosticsStubs.OneReadingTasks)
+                .Returns(DiagnosticsStubs.OneWritingTasks);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
@@ -183,6 +206,9 @@ namespace TestDs3.Helpers.Diagnostics
 
             Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape, ds3DiagnosticResult.ReadingFromTapeTasks.Code);
             Assert.AreEqual(1, ds3DiagnosticResult.ReadingFromTapeTasks.ErrorInfo.Count());
+
+            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, ds3DiagnosticResult.WritingFromTapeTasks.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.WritingFromTapeTasks.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -207,11 +233,12 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
             client
-                .Setup(
+                .SetupSequence(
                     c =>
                         c.GetDataPlannerBlobStoreTasksSpectraS3(
                             It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoReadingTasks);
+                .Returns(DiagnosticsStubs.NoReadingTasks)
+                .Returns(DiagnosticsStubs.NoWritingTasks);
 
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
@@ -222,6 +249,7 @@ namespace TestDs3.Helpers.Diagnostics
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.ReadingFromTapeTasks.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.WritingFromTapeTasks.Code);
 
             client.VerifyAll();
         }

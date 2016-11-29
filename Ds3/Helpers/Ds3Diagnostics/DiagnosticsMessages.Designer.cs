@@ -122,5 +122,14 @@ namespace Ds3.Helpers.Ds3Diagnostics {
                 return ResourceManager.GetString("ReadingFromTape", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writing {0} chunks to tape.
+        /// </summary>
+        internal static string WritingToTape {
+            get {
+                return ResourceManager.GetString("WritingToTape", resourceCulture);
+            }
+        }
     }
 }
