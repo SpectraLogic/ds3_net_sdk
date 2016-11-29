@@ -1731,13 +1731,5 @@ namespace IntegrationTestDs3
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(Client);
             ds3DiagnosticHelper.RunAll();
         }
-
-        [Test]
-        public void X()
-        {
-            //Client.ForceFullCacheReclaimSpectraS3(new ForceFullCacheReclaimSpectraS3Request());
-            Client.GetDataPlannerBlobStoreTasksSpectraS3(new GetDataPlannerBlobStoreTasksSpectraS3Request().WithFullDetails(false));
-
-        }
     }
 }
