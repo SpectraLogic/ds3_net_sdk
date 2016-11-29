@@ -135,4 +135,7 @@
   <data name="NoTapesFound" xml:space="preserve">
     <value>No tapes found in the system</value>
   </data>
+  <data name="ReadingFromTape" xml:space="preserve">
+    <value>Reading {0} chunks from tape</value>
+  </data>
 </root>

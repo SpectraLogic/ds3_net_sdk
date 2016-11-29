@@ -38,6 +38,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <see cref="NoTapesDiagnostic"/>
         /// <see cref="PoweredOffPoolsDiagnostic"/>
         /// <see cref="NoPoolsDiagnostic"/>
+        /// <see cref="ReadFromTapeDiagnostic"/>
         /// </summary>
         /// <returns>
         /// <see cref="Ds3Diagnostic"/>
@@ -50,7 +51,8 @@ namespace Ds3.Helpers.Ds3Diagnostics
                 OfflineTapesDiagnostic = Get(new OfflineTapesDiagnostic()),
                 NoTapesDiagnostic = Get(new NoTapesDiagnostic()),
                 PoweredOffPoolsDiagnostic = Get(new PoweredOffPoolsDiagnostic()),
-                NoPoolsDiagnostic = Get(new NoPoolsDiagnostic())
+                NoPoolsDiagnostic = Get(new NoPoolsDiagnostic()),
+                ReadingFromTapeTasks = Get(new ReadFromTapeDiagnostic())
             };
 
             return ds3Diagnostic;
@@ -65,6 +67,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <see cref="NoTapesDiagnostic"/>
         /// <see cref="PoweredOffPoolsDiagnostic"/>
         /// <see cref="NoPoolsDiagnostic"/>
+        /// <see cref="ReadFromTapeDiagnostic"/>
         /// </typeparam>
         /// <param name="ds3Diagnostic">The DS3 diagnostic.</param>
         /// <returns>

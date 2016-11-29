@@ -44,24 +44,6 @@ namespace TestDs3.Helpers.Diagnostics
         }
 
         [Test]
-        public void TestNoTapeGet()
-        {
-            var client = new Mock<IDs3Client>(MockBehavior.Strict);
-
-            client
-                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoTapes);
-
-            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
-            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new NoTapesDiagnostic());
-
-
-            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, ds3DiagnosticResult.Code);
-
-            client.VerifyAll();
-        }
-
-        [Test]
         public void TestNoPoolsGet()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
@@ -75,6 +57,24 @@ namespace TestDs3.Helpers.Diagnostics
 
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, ds3DiagnosticResult.Code);
+
+            client.VerifyAll();
+        }
+
+        [Test]
+        public void TestNoTapeGet()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+
+            client
+                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.NoTapes);
+
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new NoTapesDiagnostic());
+
+
+            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, ds3DiagnosticResult.Code);
 
             client.VerifyAll();
         }
@@ -118,6 +118,28 @@ namespace TestDs3.Helpers.Diagnostics
         }
 
         [Test]
+        public void TestReadingFromTapeGet()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+
+            client
+                .Setup(
+                    c =>
+                        c.GetDataPlannerBlobStoreTasksSpectraS3(
+                            It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.OneReadingTasks);
+
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
+            var ds3DiagnosticResult = ds3DiagnosticHelper.Get(new ReadFromTapeDiagnostic());
+
+
+            Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape, ds3DiagnosticResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.ErrorInfo.Count());
+
+            client.VerifyAll();
+        }
+
+        [Test]
         public void TestRunAll()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
@@ -136,6 +158,13 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OnePoweredOffPool)
                 .Returns(DiagnosticsStubs.NoPools);
 
+            client
+                .Setup(
+                    c =>
+                        c.GetDataPlannerBlobStoreTasksSpectraS3(
+                            It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.OneReadingTasks);
+
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
 
@@ -151,6 +180,9 @@ namespace TestDs3.Helpers.Diagnostics
             Assert.AreEqual(1, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.ErrorInfo.Count());
 
             Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape, ds3DiagnosticResult.ReadingFromTapeTasks.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.ReadingFromTapeTasks.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -174,6 +206,13 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoPoweredOffPools)
                 .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
+            client
+                .Setup(
+                    c =>
+                        c.GetDataPlannerBlobStoreTasksSpectraS3(
+                            It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
+                .Returns(DiagnosticsStubs.NoReadingTasks);
+
             var ds3DiagnosticHelper = new Ds3DiagnosticHelper(client.Object);
             var ds3DiagnosticResult = ds3DiagnosticHelper.RunAll();
 
@@ -182,6 +221,7 @@ namespace TestDs3.Helpers.Diagnostics
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoTapesDiagnostic.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.PoweredOffPoolsDiagnostic.Code);
             Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.NoPoolsDiagnostic.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, ds3DiagnosticResult.ReadingFromTapeTasks.Code);
 
             client.VerifyAll();
         }

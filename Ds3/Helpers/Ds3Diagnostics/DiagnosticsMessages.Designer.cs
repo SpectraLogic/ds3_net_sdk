@@ -113,5 +113,14 @@ namespace Ds3.Helpers.Ds3Diagnostics {
                 return ResourceManager.GetString("NoTapesFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading {0} chunks from tape.
+        /// </summary>
+        internal static string ReadingFromTape {
+            get {
+                return ResourceManager.GetString("ReadingFromTape", resourceCulture);
+            }
+        }
     }
 }

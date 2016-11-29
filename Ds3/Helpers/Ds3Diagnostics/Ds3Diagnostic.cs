@@ -59,5 +59,12 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <see cref="Ds3DiagnosticsCode.NoPoolsFound"/> code will be return if no pools found in the system
         /// </summary>
         public Ds3DiagnosticResult<object> NoPoolsDiagnostic { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="BlobStoreTaskInformation"/> for all reading chunks from tape.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no reading chunks from tape found
+        /// <see cref="Ds3DiagnosticsCode.ReadingFromTape"/> code will be return if reading chunks from tape found
+        /// </summary>
+        public Ds3DiagnosticResult<BlobStoreTaskInformation> ReadingFromTapeTasks { get; set; }
     }
 }

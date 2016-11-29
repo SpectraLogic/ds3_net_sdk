@@ -13,6 +13,7 @@
  * ****************************************************************************
  */
 
+
 using System.Collections.Generic;
 
 namespace Ds3.Helpers.Ds3Diagnostics
@@ -56,6 +57,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         NoTapesFound,
         OfflineTapes,
         PoweredOffPools,
-        NoPoolsFound
+        NoPoolsFound,
+        ReadingFromTape
     }
 }

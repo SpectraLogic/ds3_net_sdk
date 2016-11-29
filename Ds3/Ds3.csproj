@@ -592,6 +592,7 @@
     <Compile Include="Helpers\Ds3Diagnostics\IDs3DiagnosticCheck.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\OfflineTapesDiagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\PoweredOffPoolsDiagnostic.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\ReadFromTapeDiagnostic.cs" />
     <Compile Include="Helpers\Ds3JobOptions.cs" />
     <Compile Include="Helpers\Ds3ReadJobOptions.cs" />
     <Compile Include="Helpers\Ds3WriteJobOptions.cs" />

@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using Ds3;
 using Ds3.Calls;
 using Ds3.Helpers;
+using Ds3.Helpers.Ds3Diagnostics;
 using Ds3.Helpers.Strategies;
 using Ds3.Helpers.Streams;
 using Ds3.Models;
@@ -1722,6 +1723,21 @@ namespace IntegrationTestDs3
             {
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
+        }
+
+        [Test]
+        public void TestDs3DiagnosticHelper()
+        {
+            var ds3DiagnosticHelper = new Ds3DiagnosticHelper(Client);
+            ds3DiagnosticHelper.RunAll();
+        }
+
+        [Test]
+        public void X()
+        {
+            //Client.ForceFullCacheReclaimSpectraS3(new ForceFullCacheReclaimSpectraS3Request());
+            Client.GetDataPlannerBlobStoreTasksSpectraS3(new GetDataPlannerBlobStoreTasksSpectraS3Request().WithFullDetails(false));
+
         }
     }
 }
