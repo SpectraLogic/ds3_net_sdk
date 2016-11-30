@@ -47,17 +47,11 @@ namespace TestDs3.Helpers.Diagnostics
                 ds3DiagnosticResult.CacheNearCapacityDiagnosticResult.TargetsResults[1].TargetsResults.Count);
 
             Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes,
-                ds3DiagnosticResult.OfflineTapesDiagnosticResult.ClientResult.Code);
-            Assert.AreEqual(1, ds3DiagnosticResult.OfflineTapesDiagnosticResult.ClientResult.ErrorInfo.Count());
-            Assert.AreEqual(2, ds3DiagnosticResult.OfflineTapesDiagnosticResult.TargetsResults.Count);
-            Assert.AreEqual(2, ds3DiagnosticResult.OfflineTapesDiagnosticResult.TargetsResults[0].TargetsResults.Count);
-            Assert.AreEqual(1, ds3DiagnosticResult.OfflineTapesDiagnosticResult.TargetsResults[1].TargetsResults.Count);
-
-            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound,
-                ds3DiagnosticResult.NoTapesDiagnosticResult.ClientResult.Code);
-            Assert.AreEqual(2, ds3DiagnosticResult.NoTapesDiagnosticResult.TargetsResults.Count);
-            Assert.AreEqual(2, ds3DiagnosticResult.NoTapesDiagnosticResult.TargetsResults[0].TargetsResults.Count);
-            Assert.AreEqual(1, ds3DiagnosticResult.NoTapesDiagnosticResult.TargetsResults[1].TargetsResults.Count);
+                ds3DiagnosticResult.TapesDiagnosticResult.ClientResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.TapesDiagnosticResult.ClientResult.ErrorInfo.Count());
+            Assert.AreEqual(2, ds3DiagnosticResult.TapesDiagnosticResult.TargetsResults.Count);
+            Assert.AreEqual(2, ds3DiagnosticResult.TapesDiagnosticResult.TargetsResults[0].TargetsResults.Count);
+            Assert.AreEqual(1, ds3DiagnosticResult.TapesDiagnosticResult.TargetsResults[1].TargetsResults.Count);
 
             Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools,
                 ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.ClientResult.Code);

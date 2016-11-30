@@ -40,9 +40,8 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubResponses.TwoNearCapacity);
 
             Client
-                .SetupSequence(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubResponses.OneTape)
-                .Returns(DiagnosticsStubResponses.NoTapes);
+                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubResponses.OneTape);
 
             Client
                 .SetupSequence(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))

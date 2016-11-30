@@ -23,40 +23,62 @@ using NUnit.Framework;
 namespace TestDs3.Helpers.Diagnostics
 {
     [TestFixture]
-    public class TestOfflineTapes
+    public class TestTapesDiagnostic
     {
         [Test]
-        public void TestGetWithNoOfflineTapes()
+        public void TestGetWithNoTapes()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubResponses.NoTapes);
 
-            var offlineTapes = new OfflineTapesDiagnostic();
+            var noTapes = new TapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
             {
                 Client = client.Object
             };
-            var offlineTapesResult = offlineTapes.Get(ds3DiagnosticClient);
+            var noTapesResult = noTapes.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, offlineTapesResult.ClientResult.Code);
-            Assert.AreEqual(null, offlineTapesResult.ClientResult.ErrorMessage);
-            Assert.AreEqual(null, offlineTapesResult.ClientResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, noTapesResult.ClientResult.Code);
+            Assert.AreEqual(DiagnosticsMessages.NoTapesFound, noTapesResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, noTapesResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
-
 
         [Test]
         public void TestGetWithOneTape()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
+                .SetupSequence(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubResponses.OneTape)
+                .Returns(DiagnosticsStubResponses.NoTapes);
+
+            var noTapes = new TapesDiagnostic();
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var noTapesResult = noTapes.Get(ds3DiagnosticClient);
+
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, noTapesResult.ClientResult.Code);
+            Assert.AreEqual(null, noTapesResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, noTapesResult.ClientResult.ErrorInfo);
+
+            client.VerifyAll();
+        }
+
+        [Test]
+        public void TestGetWithOneOfflineTape()
+        {
+            var client = new Mock<IDs3Client>(MockBehavior.Strict);
+            client
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubResponses.OneTape);
 
-            var offlineTapes = new OfflineTapesDiagnostic();
+            var offlineTapes = new TapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
             {
                 Client = client.Object
@@ -71,14 +93,14 @@ namespace TestDs3.Helpers.Diagnostics
         }
 
         [Test]
-        public void TestGetWithTwoTape()
+        public void TestGetWithTwoOfflineTapes()
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
                 .Returns(DiagnosticsStubResponses.TwoTapes);
 
-            var offlineTapes = new OfflineTapesDiagnostic();
+            var offlineTapes = new TapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
             {
                 Client = client.Object

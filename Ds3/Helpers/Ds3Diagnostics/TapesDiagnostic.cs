@@ -15,25 +15,37 @@
 
 using System.Linq;
 using Ds3.Calls;
+using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class NoTapesDiagnostic : Ds3DiagnosticCheck<object>
+    internal class TapesDiagnostic : Ds3DiagnosticCheck<Tape>
     {
-        public override Ds3DiagnosticResults<object> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        public override Ds3DiagnosticResults<Tape> Get(Ds3DiagnosticClient ds3DiagnosticClient)
         {
             return Get(ds3DiagnosticClient, Func);
         }
 
-        private static Ds3DiagnosticResult<object> Func(IDs3Client client)
+        private static Ds3DiagnosticResult<Tape> Func(IDs3Client client)
         {
             var getTapesRequest = new GetTapesSpectraS3Request();
             var getTapesResponse = client.GetTapesSpectraS3(getTapesRequest);
             var tapes = getTapesResponse.ResponsePayload.Tapes;
 
-            return !tapes.Any()
-                ? new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.NoTapesFound, DiagnosticsMessages.NoTapesFound, null)
-                : new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.Ok, null, null);
+            if (!tapes.Any())
+            {
+                return new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.NoTapesFound, DiagnosticsMessages.NoTapesFound,
+                    null);
+            }
+
+            var getOfflieTapesRequest = new GetTapesSpectraS3Request().WithState(TapeState.OFFLINE);
+            var getOfflineTapesResponse = client.GetTapesSpectraS3(getOfflieTapesRequest);
+            var offlineTapes = getOfflineTapesResponse.ResponsePayload.Tapes;
+
+            return offlineTapes.Any()
+                ? new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.OfflineTapes,
+                    string.Format(DiagnosticsMessages.FoundOfflineTapes, offlineTapes.Count()), offlineTapes)
+                : new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.Ok, null, null);
         }
     }
 }

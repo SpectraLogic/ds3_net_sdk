@@ -77,8 +77,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <summary>
         /// Runs all diagnostics.
         /// <see cref="CacheNearCapacityDiagnostic"/>
-        /// <see cref="OfflineTapesDiagnostic"/>
-        /// <see cref="NoTapesDiagnostic"/>
+        /// <see cref="TapesDiagnostic"/>
         /// <see cref="PoweredOffPoolsDiagnostic"/>
         /// <see cref="NoPoolsDiagnostic"/>
         /// <see cref="ReadFromTapeDiagnostic"/>
@@ -92,8 +91,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
             var ds3Diagnostic = new Ds3Diagnostic
             {
                 CacheNearCapacityDiagnosticResult = Get(new CacheNearCapacityDiagnostic()),
-                OfflineTapesDiagnosticResult = Get(new OfflineTapesDiagnostic()),
-                NoTapesDiagnosticResult = Get(new NoTapesDiagnostic()),
+                TapesDiagnosticResult = Get(new TapesDiagnostic()),
                 PoweredOffPoolsDiagnosticResult = Get(new PoweredOffPoolsDiagnostic()),
                 NoPoolsDiagnosticResult = Get(new NoPoolsDiagnostic()),
                 ReadingFromTapeTasksResult = Get(new ReadFromTapeDiagnostic()),
@@ -108,8 +106,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// </summary>
         /// <typeparam name="T">
         /// <see cref="CacheNearCapacityDiagnostic"/>
-        /// <see cref="OfflineTapesDiagnostic"/>
-        /// <see cref="NoTapesDiagnostic"/>
+        /// <see cref="TapesDiagnostic"/>
         /// <see cref="PoweredOffPoolsDiagnostic"/>
         /// <see cref="NoPoolsDiagnostic"/>
         /// <see cref="ReadFromTapeDiagnostic"/>
@@ -119,7 +116,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <returns>
         /// <see cref="Ds3DiagnosticResult{T}"/>
         /// </returns>
-        public Ds3DiagnosticResults<T> Get<T>(IDs3DiagnosticCheck<T> ds3Diagnostic)
+        private Ds3DiagnosticResults<T> Get<T>(IDs3DiagnosticCheck<T> ds3Diagnostic)
         {
             return ds3Diagnostic.Get(Ds3DiagnosticClient);
         }

@@ -32,19 +32,12 @@ namespace Ds3.Helpers.Ds3Diagnostics
 
         /// <summary>
         /// Gets the <see cref="Tape"/> for all tapes with status of OFFLINE.
-        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no tapes are offline
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if tapes are found and none are offline
         /// <see cref="Ds3DiagnosticsCode.OfflineTapes"/> code will be return if offline tapes are found 
+        /// <see cref="Ds3DiagnosticsCode.NoTapesFound"/> code will be return if no tapes found in the system
         /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all offline tapes
         /// </summary>
-        public Ds3DiagnosticResults<Tape> OfflineTapesDiagnosticResult { get; set; }
-
-        /// <summary>
-        /// The no tapes diagnostic.
-        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if found at least one tape in the system
-        /// <see cref="Ds3DiagnosticsCode.NoTapesFound"/> code will be return if no tapes found in the system
-        /// </summary>
-        public Ds3DiagnosticResults<object> NoTapesDiagnosticResult { get; set; }
-
+        public Ds3DiagnosticResults<Tape> TapesDiagnosticResult { get; set; }
 
         /// <summary>
         /// Gets the <see cref="Pool"/> for all powered off pools.
