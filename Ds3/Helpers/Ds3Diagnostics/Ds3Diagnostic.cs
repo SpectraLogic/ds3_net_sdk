@@ -13,7 +13,6 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
 using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics

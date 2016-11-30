@@ -111,7 +111,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// </typeparam>
         /// <param name="ds3Diagnostic">The DS3 diagnostic.</param>
         /// <returns>
-        /// <see cref="Ds3DiagnosticResult{T}"/>
+        /// <see cref="Ds3DiagnosticResults{T}"/>
         /// </returns>
         private Ds3DiagnosticResults<T> Get<T>(IDs3DiagnosticCheck<T> ds3Diagnostic)
         {
