@@ -54,19 +54,13 @@ namespace TestDs3.Helpers.Diagnostics
             Assert.AreEqual(1, ds3DiagnosticResult.TapesDiagnosticResult.TargetsResults[1].TargetsResults.Count);
 
             Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools,
-                ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.ClientResult.Code);
-            Assert.AreEqual(1, ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.ClientResult.ErrorInfo.Count());
-            Assert.AreEqual(2, ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.TargetsResults.Count);
+                ds3DiagnosticResult.PoolsDiagnosticResult.ClientResult.Code);
+            Assert.AreEqual(1, ds3DiagnosticResult.PoolsDiagnosticResult.ClientResult.ErrorInfo.Count());
+            Assert.AreEqual(2, ds3DiagnosticResult.PoolsDiagnosticResult.TargetsResults.Count);
             Assert.AreEqual(2,
-                ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.TargetsResults[0].TargetsResults.Count);
+                ds3DiagnosticResult.PoolsDiagnosticResult.TargetsResults[0].TargetsResults.Count);
             Assert.AreEqual(1,
-                ds3DiagnosticResult.PoweredOffPoolsDiagnosticResult.TargetsResults[1].TargetsResults.Count);
-
-            Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound,
-                ds3DiagnosticResult.NoPoolsDiagnosticResult.ClientResult.Code);
-            Assert.AreEqual(2, ds3DiagnosticResult.NoPoolsDiagnosticResult.TargetsResults.Count);
-            Assert.AreEqual(2, ds3DiagnosticResult.NoPoolsDiagnosticResult.TargetsResults[0].TargetsResults.Count);
-            Assert.AreEqual(1, ds3DiagnosticResult.NoPoolsDiagnosticResult.TargetsResults[1].TargetsResults.Count);
+                ds3DiagnosticResult.PoolsDiagnosticResult.TargetsResults[1].TargetsResults.Count);
 
             Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape,
                 ds3DiagnosticResult.ReadingFromTapeTasksResult.ClientResult.Code);

@@ -78,8 +78,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// Runs all diagnostics.
         /// <see cref="CacheNearCapacityDiagnostic"/>
         /// <see cref="TapesDiagnostic"/>
-        /// <see cref="PoweredOffPoolsDiagnostic"/>
-        /// <see cref="NoPoolsDiagnostic"/>
+        /// <see cref="PoolsDiagnostic"/>
         /// <see cref="ReadFromTapeDiagnostic"/>
         /// <see cref="WriteToTapeDiagnostic"/>
         /// </summary>
@@ -92,8 +91,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
             {
                 CacheNearCapacityDiagnosticResult = Get(new CacheNearCapacityDiagnostic()),
                 TapesDiagnosticResult = Get(new TapesDiagnostic()),
-                PoweredOffPoolsDiagnosticResult = Get(new PoweredOffPoolsDiagnostic()),
-                NoPoolsDiagnosticResult = Get(new NoPoolsDiagnostic()),
+                PoolsDiagnosticResult = Get(new PoolsDiagnostic()),
                 ReadingFromTapeTasksResult = Get(new ReadFromTapeDiagnostic()),
                 WritingFromTapeTasksResult = Get(new WriteToTapeDiagnostic())
             };
@@ -107,8 +105,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <typeparam name="T">
         /// <see cref="CacheNearCapacityDiagnostic"/>
         /// <see cref="TapesDiagnostic"/>
-        /// <see cref="PoweredOffPoolsDiagnostic"/>
-        /// <see cref="NoPoolsDiagnostic"/>
+        /// <see cref="PoolsDiagnostic"/>
         /// <see cref="ReadFromTapeDiagnostic"/>
         /// <see cref="WriteToTapeDiagnostic"/>
         /// </typeparam>

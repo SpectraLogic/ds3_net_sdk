@@ -584,7 +584,7 @@
     <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticResults.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\Ds3TargetClientBuilder.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\IDs3TargetClientBuilder.cs" />
-    <Compile Include="Helpers\Ds3Diagnostics\NoPoolsDiagnostic.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\PoolsDiagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\TapesDiagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\DiagnosticsMessages.Designer.cs">
       <DependentUpon>DiagnosticsMessages.resx</DependentUpon>
@@ -595,7 +595,6 @@
     <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticResult.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\Ds3Diagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\IDs3DiagnosticCheck.cs" />
-    <Compile Include="Helpers\Ds3Diagnostics\PoweredOffPoolsDiagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\ReadFromTapeDiagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\WriteToTapeDiagnostic.cs" />
     <Compile Include="Helpers\Ds3JobOptions.cs" />

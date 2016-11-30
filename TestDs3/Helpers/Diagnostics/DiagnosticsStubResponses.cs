@@ -115,6 +115,7 @@ namespace TestDs3.Helpers.Diagnostics
                 }
             }, null, null);
 
+
         public static readonly GetPoolsSpectraS3Response OnePoweredOffPool =
             new GetPoolsSpectraS3Response(new PoolList
             {

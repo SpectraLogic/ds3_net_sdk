@@ -15,25 +15,36 @@
 
 using System.Linq;
 using Ds3.Calls;
+using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class NoPoolsDiagnostic : Ds3DiagnosticCheck<object>
+    internal class PoolsDiagnostic : Ds3DiagnosticCheck<Pool>
     {
-        public override Ds3DiagnosticResults<object> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        public override Ds3DiagnosticResults<Pool> Get(Ds3DiagnosticClient ds3DiagnosticClient)
         {
             return Get(ds3DiagnosticClient, Func);
         }
 
-        private static Ds3DiagnosticResult<object> Func(IDs3Client client)
+        private static Ds3DiagnosticResult<Pool> Func(IDs3Client client)
         {
             var getPoolsRequest = new GetPoolsSpectraS3Request();
             var getPoolsResponse = client.GetPoolsSpectraS3(getPoolsRequest);
             var pools = getPoolsResponse.ResponsePayload.Pools;
 
-            return !pools.Any()
-                ? new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.NoPoolsFound, DiagnosticsMessages.NoPoolsFound, null)
-                : new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.Ok, null, null);
+            if (!pools.Any())
+            {
+                return new Ds3DiagnosticResult<Pool>(Ds3DiagnosticsCode.NoPoolsFound, DiagnosticsMessages.NoPoolsFound,
+                    null);
+            }
+
+            var poweredOffPools = pools.Where(pool => !pool.PoweredOn);
+
+            return poweredOffPools.Any()
+                ? new Ds3DiagnosticResult<Pool>(Ds3DiagnosticsCode.PoweredOffPools,
+                    string.Format(DiagnosticsMessages.FoundPowerOffPools, poweredOffPools.Count()),
+                    poweredOffPools)
+                : new Ds3DiagnosticResult<Pool>(Ds3DiagnosticsCode.Ok, null, null);
         }
     }
 }

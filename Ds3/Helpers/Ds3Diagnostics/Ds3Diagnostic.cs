@@ -31,7 +31,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
         public Ds3DiagnosticResults<CacheFilesystemInformation> CacheNearCapacityDiagnosticResult { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Tape"/> for all tapes with status of OFFLINE.
+        /// The tape diagnostic result
         /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if tapes are found and none are offline
         /// <see cref="Ds3DiagnosticsCode.OfflineTapes"/> code will be return if offline tapes are found 
         /// <see cref="Ds3DiagnosticsCode.NoTapesFound"/> code will be return if no tapes found in the system
@@ -40,19 +40,12 @@ namespace Ds3.Helpers.Ds3Diagnostics
         public Ds3DiagnosticResults<Tape> TapesDiagnosticResult { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Pool"/> for all powered off pools.
-        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if no powered off pools were found
-        /// <see cref="Ds3DiagnosticsCode.PoweredOffPools"/> code will be return if powered off pools are found 
-        /// and <see cref="Ds3DiagnosticResult{T}.ErrorInfo"/> will include all powered off pools
-        /// </summary>
-        public Ds3DiagnosticResults<Pool> PoweredOffPoolsDiagnosticResult { get; set; }
-
-        /// <summary>
-        /// The no pools diagnostic.
-        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if found at least one pool in the system
+        /// The pools diagnostic result.
+        /// <see cref="Ds3DiagnosticsCode.Ok"/> code will be return if pools are found and none are powered off
         /// <see cref="Ds3DiagnosticsCode.NoPoolsFound"/> code will be return if no pools found in the system
+        /// <see cref="Ds3DiagnosticsCode.PoweredOffPools"/> code will be return if powered off pools are found
         /// </summary>
-        public Ds3DiagnosticResults<object> NoPoolsDiagnosticResult { get; set; }
+        public Ds3DiagnosticResults<Pool> PoolsDiagnosticResult { get; set; }
 
         /// <summary>
         /// Gets the <see cref="BlobStoreTaskInformation"/> for all reading chunks from tape.

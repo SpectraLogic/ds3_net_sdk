@@ -44,9 +44,8 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubResponses.OneTape);
 
             Client
-                .SetupSequence(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
-                .Returns(DiagnosticsStubResponses.OnePoweredOffPool)
-                .Returns(DiagnosticsStubResponses.NoPools);
+                .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
+                .Returns(DiagnosticsStubResponses.OnePoweredOffPool);
 
             Client
                 .SetupSequence(
