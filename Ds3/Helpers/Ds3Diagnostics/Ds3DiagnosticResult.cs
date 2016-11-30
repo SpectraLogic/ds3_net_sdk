@@ -31,19 +31,19 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// Gets the return code of the diagnostic.
         /// <see cref="Ds3DiagnosticsCode"/>.
         /// </summary>
-        public Ds3DiagnosticsCode Code { get; set; }
+        public Ds3DiagnosticsCode Code { get; private set; }
 
         /// <summary>
         /// Gets the error message.
         /// A null message will be return if no error was found.
         /// </summary>
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; private set; }
 
         /// <summary>
         /// Gets the error information.
         /// A null collection will be return if no error was found.
         /// </summary>
-        public IEnumerable<T> ErrorInfo { get; set; }
+        public IEnumerable<T> ErrorInfo { get; private set; }
     }
 
     /// <summary>
