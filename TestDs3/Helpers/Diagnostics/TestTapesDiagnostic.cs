@@ -52,9 +52,8 @@ namespace TestDs3.Helpers.Diagnostics
         {
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
-                .SetupSequence(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubResponses.OneTape)
-                .Returns(DiagnosticsStubResponses.NoTapes);
+                .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
+                .Returns(DiagnosticsStubResponses.OneTape);
 
             var noTapes = new TapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -76,7 +75,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubResponses.OneTape);
+                .Returns(DiagnosticsStubResponses.OneOfflineTape);
 
             var offlineTapes = new TapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -98,7 +97,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubResponses.TwoTapes);
+                .Returns(DiagnosticsStubResponses.TwoOfflineTapes);
 
             var offlineTapes = new TapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient

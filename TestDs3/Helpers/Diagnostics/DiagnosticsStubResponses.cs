@@ -83,17 +83,38 @@ namespace TestDs3.Helpers.Diagnostics
             {
                 Tapes = new List<Tape>
                 {
-                    new Tape()
+                    new Tape
+                    {
+                        State = TapeState.NORMAL
+                    }
                 }
             }, null, null);
 
-        public static readonly GetTapesSpectraS3Response TwoTapes =
+        public static readonly GetTapesSpectraS3Response OneOfflineTape =
             new GetTapesSpectraS3Response(new TapeList
             {
                 Tapes = new List<Tape>
                 {
-                    new Tape(),
-                    new Tape()
+                    new Tape
+                    {
+                        State = TapeState.OFFLINE
+                    }
+                }
+            }, null, null);
+
+        public static readonly GetTapesSpectraS3Response TwoOfflineTapes =
+            new GetTapesSpectraS3Response(new TapeList
+            {
+                Tapes = new List<Tape>
+                {
+                    new Tape
+                    {
+                        State = TapeState.OFFLINE
+                    },
+                    new Tape
+                    {
+                        State = TapeState.OFFLINE
+                    }
                 }
             }, null, null);
 

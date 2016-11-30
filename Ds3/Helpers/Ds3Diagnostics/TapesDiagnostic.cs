@@ -38,10 +38,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
                     null);
             }
 
-            //TODO filter the tapes instead of retrieving it again (like the pools)
-            var getOfflieTapesRequest = new GetTapesSpectraS3Request().WithState(TapeState.OFFLINE);
-            var getOfflineTapesResponse = client.GetTapesSpectraS3(getOfflieTapesRequest);
-            var offlineTapes = getOfflineTapesResponse.ResponsePayload.Tapes;
+            var offlineTapes = tapes.Where(t => t.State == TapeState.OFFLINE);
 
             return offlineTapes.Any()
                 ? new Ds3DiagnosticResult<Tape>(Ds3DiagnosticsCode.OfflineTapes,
