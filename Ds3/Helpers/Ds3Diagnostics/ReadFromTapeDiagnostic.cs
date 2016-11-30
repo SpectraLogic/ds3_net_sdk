@@ -19,11 +19,16 @@ using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class ReadFromTapeDiagnostic : IDs3DiagnosticCheck<BlobStoreTaskInformation>
+    internal class ReadFromTapeDiagnostic : Ds3DiagnosticCheck<BlobStoreTaskInformation>
     {
         private const string TaskName = "ReadChunkFromTapeTask";
 
-        public Ds3DiagnosticResult<BlobStoreTaskInformation> Get(IDs3Client client)
+        public override Ds3DiagnosticResults<BlobStoreTaskInformation> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        {
+            return Get(ds3DiagnosticClient, Func);
+        }
+
+        private static Ds3DiagnosticResult<BlobStoreTaskInformation> Func(IDs3Client client)
         {
             var response =
                 client.GetDataPlannerBlobStoreTasksSpectraS3(new GetDataPlannerBlobStoreTasksSpectraS3Request());

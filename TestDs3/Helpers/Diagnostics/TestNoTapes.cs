@@ -33,11 +33,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoTapes);
 
             var noTapes = new NoTapesDiagnostic();
-            var noTapesResult = noTapes.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var noTapesResult = noTapes.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, noTapesResult.Code);
-            Assert.AreEqual(DiagnosticsMessages.NoTapesFound, noTapesResult.ErrorMessage);
-            Assert.AreEqual(null, noTapesResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.NoTapesFound, noTapesResult.ClientResult.Code);
+            Assert.AreEqual(DiagnosticsMessages.NoTapesFound, noTapesResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, noTapesResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -51,11 +55,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneTape);
 
             var noTapes = new NoTapesDiagnostic();
-            var noTapesResult = noTapes.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var noTapesResult = noTapes.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, noTapesResult.Code);
-            Assert.AreEqual(null, noTapesResult.ErrorMessage);
-            Assert.AreEqual(null, noTapesResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, noTapesResult.ClientResult.Code);
+            Assert.AreEqual(null, noTapesResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, noTapesResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }

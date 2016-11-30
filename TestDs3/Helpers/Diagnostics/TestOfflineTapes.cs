@@ -34,11 +34,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoTapes);
 
             var offlineTapes = new OfflineTapesDiagnostic();
-            var offlineTapesResult = offlineTapes.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var offlineTapesResult = offlineTapes.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, offlineTapesResult.Code);
-            Assert.AreEqual(null, offlineTapesResult.ErrorMessage);
-            Assert.AreEqual(null, offlineTapesResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, offlineTapesResult.ClientResult.Code);
+            Assert.AreEqual(null, offlineTapesResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, offlineTapesResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -53,11 +57,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneTape);
 
             var offlineTapes = new OfflineTapesDiagnostic();
-            var offlineTapesResult = offlineTapes.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var offlineTapesResult = offlineTapes.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);
-            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundOfflineTapes, 1), offlineTapesResult.ErrorMessage);
-            Assert.AreEqual(1, offlineTapesResult.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.ClientResult.Code);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundOfflineTapes, 1), offlineTapesResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(1, offlineTapesResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -71,11 +79,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.TwoTapes);
 
             var offlineTapes = new OfflineTapesDiagnostic();
-            var offlineTapesResult = offlineTapes.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var offlineTapesResult = offlineTapes.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.Code);
-            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundOfflineTapes, 2), offlineTapesResult.ErrorMessage);
-            Assert.AreEqual(2, offlineTapesResult.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.OfflineTapes, offlineTapesResult.ClientResult.Code);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundOfflineTapes, 2), offlineTapesResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(2, offlineTapesResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }

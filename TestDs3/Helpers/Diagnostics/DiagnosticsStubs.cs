@@ -212,5 +212,11 @@ namespace TestDs3.Helpers.Diagnostics
                     }
                 }
             );
+
+        public static readonly GetDs3TargetsSpectraS3Response NoTargets =
+            new GetDs3TargetsSpectraS3Response(new Ds3TargetList
+            {
+                Ds3Targets = new List<Ds3Target>()
+            }, null, null);
     }
 }

@@ -18,9 +18,14 @@ using Ds3.Calls;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class NoTapesDiagnostic : IDs3DiagnosticCheck<object>
+    internal class NoTapesDiagnostic : Ds3DiagnosticCheck<object>
     {
-        public Ds3DiagnosticResult<object> Get(IDs3Client client)
+        public override Ds3DiagnosticResults<object> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        {
+            return Get(ds3DiagnosticClient, Func);
+        }
+
+        private static Ds3DiagnosticResult<object> Func(IDs3Client client)
         {
             var getTapesRequest = new GetTapesSpectraS3Request();
             var getTapesResponse = client.GetTapesSpectraS3(getTapesRequest);

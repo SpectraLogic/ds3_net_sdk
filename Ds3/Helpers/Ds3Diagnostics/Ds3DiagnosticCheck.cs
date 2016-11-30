@@ -13,27 +13,32 @@
  * ****************************************************************************
  */
 
-using System.Linq;
-using Ds3.Calls;
+using System;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class NoPoolsDiagnostic : Ds3DiagnosticCheck<object>
+    internal abstract class Ds3DiagnosticCheck<T> : IDs3DiagnosticCheck<T>
     {
-        public override Ds3DiagnosticResults<object> Get(Ds3DiagnosticClient ds3DiagnosticClient)
-        {
-            return Get(ds3DiagnosticClient, Func);
-        }
+        public abstract Ds3DiagnosticResults<T> Get(Ds3DiagnosticClient ds3DiagnosticClient);
 
-        private static Ds3DiagnosticResult<object> Func(IDs3Client client)
+        protected Ds3DiagnosticResults<T> Get(Ds3DiagnosticClient ds3DiagnosticClient,
+            Func<IDs3Client, Ds3DiagnosticResult<T>> func)
         {
-            var getPoolsRequest = new GetPoolsSpectraS3Request();
-            var getPoolsResponse = client.GetPoolsSpectraS3(getPoolsRequest);
-            var pools = getPoolsResponse.ResponsePayload.Pools;
+            var results = new Ds3DiagnosticResults<T> {ClientResult = func(ds3DiagnosticClient.Client)};
 
-            return !pools.Any()
-                ? new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.NoPoolsFound, DiagnosticsMessages.NoPoolsFound, null)
-                : new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.Ok, null, null);
+            if (ds3DiagnosticClient.Targets == null)
+            {
+                results.TargetsResults = null;
+            }
+            else
+            {
+                foreach (var target in ds3DiagnosticClient.Targets)
+                {
+                    results.TargetsResults.Add(Get(target, func));
+                }
+            }
+
+            return results;
         }
     }
 }

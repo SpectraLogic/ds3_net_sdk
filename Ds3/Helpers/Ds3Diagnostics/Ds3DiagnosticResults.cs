@@ -13,27 +13,18 @@
  * ****************************************************************************
  */
 
-using System.Linq;
-using Ds3.Calls;
+using System.Collections.Generic;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class NoPoolsDiagnostic : Ds3DiagnosticCheck<object>
+    public class Ds3DiagnosticResults<T>
     {
-        public override Ds3DiagnosticResults<object> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        public Ds3DiagnosticResults()
         {
-            return Get(ds3DiagnosticClient, Func);
+            TargetsResults = new List<Ds3DiagnosticResults<T>>();
         }
 
-        private static Ds3DiagnosticResult<object> Func(IDs3Client client)
-        {
-            var getPoolsRequest = new GetPoolsSpectraS3Request();
-            var getPoolsResponse = client.GetPoolsSpectraS3(getPoolsRequest);
-            var pools = getPoolsResponse.ResponsePayload.Pools;
-
-            return !pools.Any()
-                ? new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.NoPoolsFound, DiagnosticsMessages.NoPoolsFound, null)
-                : new Ds3DiagnosticResult<object>(Ds3DiagnosticsCode.Ok, null, null);
-        }
+        public Ds3DiagnosticResult<T> ClientResult { get; set; }
+        public IList<Ds3DiagnosticResults<T>> TargetsResults { get; set; }
     }
 }

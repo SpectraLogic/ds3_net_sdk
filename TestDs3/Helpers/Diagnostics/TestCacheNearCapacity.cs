@@ -34,11 +34,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.EmptyFilesystems);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
-            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var cacheNearCapacityResult = cacheNearCapacity.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
-            Assert.AreEqual(DiagnosticsMessages.NoCacheFound, cacheNearCapacityResult.ErrorMessage);
-            Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.ClientResult.Code);
+            Assert.AreEqual(DiagnosticsMessages.NoCacheFound, cacheNearCapacityResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, cacheNearCapacityResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -52,11 +56,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
-            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var cacheNearCapacityResult = cacheNearCapacity.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, cacheNearCapacityResult.Code);
-            Assert.AreEqual(null, cacheNearCapacityResult.ErrorMessage);
-            Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, cacheNearCapacityResult.ClientResult.Code);
+            Assert.AreEqual(null, cacheNearCapacityResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, cacheNearCapacityResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -70,11 +78,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NullFilesystems);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
-            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var cacheNearCapacityResult = cacheNearCapacity.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.Code);
-            Assert.AreEqual(DiagnosticsMessages.NoCacheFound, cacheNearCapacityResult.ErrorMessage);
-            Assert.AreEqual(null, cacheNearCapacityResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.NoCacheSystemFound, cacheNearCapacityResult.ClientResult.Code);
+            Assert.AreEqual(DiagnosticsMessages.NoCacheFound, cacheNearCapacityResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, cacheNearCapacityResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -88,12 +100,16 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
-            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var cacheNearCapacityResult = cacheNearCapacity.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.ClientResult.Code);
             Assert.AreEqual(string.Format(DiagnosticsMessages.FoundCacheNearCapacityLimit, 1),
-                cacheNearCapacityResult.ErrorMessage);
-            Assert.AreEqual(1, cacheNearCapacityResult.ErrorInfo.Count());
+                cacheNearCapacityResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(1, cacheNearCapacityResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -107,12 +123,16 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.TwoNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
-            var cacheNearCapacityResult = cacheNearCapacity.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var cacheNearCapacityResult = cacheNearCapacity.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.Code);
+            Assert.AreEqual(Ds3DiagnosticsCode.CacheNearCapacity, cacheNearCapacityResult.ClientResult.Code);
             Assert.AreEqual(string.Format(DiagnosticsMessages.FoundCacheNearCapacityLimit, 2),
-                cacheNearCapacityResult.ErrorMessage);
-            Assert.AreEqual(2, cacheNearCapacityResult.ErrorInfo.Count());
+                cacheNearCapacityResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(2, cacheNearCapacityResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }

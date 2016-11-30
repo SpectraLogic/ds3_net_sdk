@@ -19,9 +19,14 @@ using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class OfflineTapesDiagnostic : IDs3DiagnosticCheck<Tape>
+    internal class OfflineTapesDiagnostic : Ds3DiagnosticCheck<Tape>
     {
-        public Ds3DiagnosticResult<Tape> Get(IDs3Client client)
+        public override Ds3DiagnosticResults<Tape> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        {
+            return Get(ds3DiagnosticClient, Func);
+        }
+
+        private static Ds3DiagnosticResult<Tape> Func(IDs3Client client)
         {
             var getTapesRequest = new GetTapesSpectraS3Request().WithState(TapeState.OFFLINE);
             var getTapesResponse = client.GetTapesSpectraS3(getTapesRequest);

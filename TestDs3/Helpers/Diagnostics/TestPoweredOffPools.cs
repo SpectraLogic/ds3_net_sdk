@@ -34,11 +34,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoPoweredOffPools);
 
             var poweredOffPools = new PoweredOffPoolsDiagnostic();
-            var poweredOffPoolsResult = poweredOffPools.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var poweredOffPoolsResult = poweredOffPools.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, poweredOffPoolsResult.Code);
-            Assert.AreEqual(null, poweredOffPoolsResult.ErrorMessage);
-            Assert.AreEqual(null, poweredOffPoolsResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, poweredOffPoolsResult.ClientResult.Code);
+            Assert.AreEqual(null, poweredOffPoolsResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, poweredOffPoolsResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -53,11 +57,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
             var poweredOffPools = new PoweredOffPoolsDiagnostic();
-            var poweredOffPoolsResult = poweredOffPools.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var poweredOffPoolsResult = poweredOffPools.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, poweredOffPoolsResult.Code);
-            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundPowerOffPools, 1), poweredOffPoolsResult.ErrorMessage);
-            Assert.AreEqual(1, poweredOffPoolsResult.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, poweredOffPoolsResult.ClientResult.Code);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundPowerOffPools, 1), poweredOffPoolsResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(1, poweredOffPoolsResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
@@ -71,11 +79,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.TwoPoweredOffPool);
 
             var poweredOffPools = new PoweredOffPoolsDiagnostic();
-            var poweredOffPoolsResult = poweredOffPools.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var poweredOffPoolsResult = poweredOffPools.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, poweredOffPoolsResult.Code);
-            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundPowerOffPools, 2), poweredOffPoolsResult.ErrorMessage);
-            Assert.AreEqual(2, poweredOffPoolsResult.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.PoweredOffPools, poweredOffPoolsResult.ClientResult.Code);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.FoundPowerOffPools, 2), poweredOffPoolsResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(2, poweredOffPoolsResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }

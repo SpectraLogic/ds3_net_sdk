@@ -34,11 +34,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoWritingTasks);
 
             var writeToTapeDiagnostic = new WriteToTapeDiagnostic();
-            var writeToTapeResult = writeToTapeDiagnostic.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var writeToTapeResult = writeToTapeDiagnostic.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, writeToTapeResult.Code);
-            Assert.AreEqual(null, writeToTapeResult.ErrorMessage);
-            Assert.AreEqual(null, writeToTapeResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, writeToTapeResult.ClientResult.Code);
+            Assert.AreEqual(null, writeToTapeResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, writeToTapeResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -52,11 +56,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneWritingTasks);
 
             var writeToTapeDiagnostic = new WriteToTapeDiagnostic();
-            var writeToTapeResult = writeToTapeDiagnostic.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var writeToTapeResult = writeToTapeDiagnostic.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, writeToTapeResult.Code);
-            Assert.AreEqual(string.Format(DiagnosticsMessages.WritingToTape, 1), writeToTapeResult.ErrorMessage);
-            Assert.AreEqual(1, writeToTapeResult.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.WritingToTape, writeToTapeResult.ClientResult.Code);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.WritingToTape, 1), writeToTapeResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(1, writeToTapeResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }

@@ -19,9 +19,14 @@ using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class PoweredOffPoolsDiagnostic : IDs3DiagnosticCheck<Pool>
+    internal class PoweredOffPoolsDiagnostic : Ds3DiagnosticCheck<Pool>
     {
-        public Ds3DiagnosticResult<Pool> Get(IDs3Client client)
+        public override Ds3DiagnosticResults<Pool> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        {
+            return Get(ds3DiagnosticClient, Func);
+        }
+
+        private static Ds3DiagnosticResult<Pool> Func(IDs3Client client)
         {
             var getPoolsRequest = new GetPoolsSpectraS3Request();
             var getPoolsResponse = client.GetPoolsSpectraS3(getPoolsRequest);

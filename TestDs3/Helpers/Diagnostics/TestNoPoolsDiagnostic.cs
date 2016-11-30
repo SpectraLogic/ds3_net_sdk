@@ -33,11 +33,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoPools);
 
             var noPools = new NoPoolsDiagnostic();
-            var noPoolsResult = noPools.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var noPoolsResult = noPools.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, noPoolsResult.Code);
-            Assert.AreEqual(DiagnosticsMessages.NoPoolsFound, noPoolsResult.ErrorMessage);
-            Assert.AreEqual(null, noPoolsResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.NoPoolsFound, noPoolsResult.ClientResult.Code);
+            Assert.AreEqual(DiagnosticsMessages.NoPoolsFound, noPoolsResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, noPoolsResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -51,11 +55,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OnePoweredOffPool);
 
             var noPools = new NoPoolsDiagnostic();
-            var noPoolsResult = noPools.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var noPoolsResult = noPools.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, noPoolsResult.Code);
-            Assert.AreEqual(null, noPoolsResult.ErrorMessage);
-            Assert.AreEqual(null, noPoolsResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, noPoolsResult.ClientResult.Code);
+            Assert.AreEqual(null, noPoolsResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, noPoolsResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }

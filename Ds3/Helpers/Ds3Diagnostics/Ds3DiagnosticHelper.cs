@@ -13,6 +13,10 @@
  * ****************************************************************************
  */
 
+using System.Collections.Generic;
+using System.Linq;
+using Ds3.Calls;
+
 namespace Ds3.Helpers.Ds3Diagnostics
 {
     /// <summary>
@@ -26,10 +30,42 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <param name="client">The client.</param>
         public Ds3DiagnosticHelper(IDs3Client client)
         {
-            Client = client;
+            Ds3DiagnosticClient = new Ds3DiagnosticClient()
+            {
+                Client = client,
+                Targets = GetDs3Target(client)
+            };
         }
 
-        private IDs3Client Client { get; }
+        private Ds3DiagnosticClient Ds3DiagnosticClient { get; }
+
+        private static IEnumerable<Ds3DiagnosticClient> GetDs3Target(IDs3Client client)
+        {
+            var response = client.GetDs3TargetsSpectraS3(new GetDs3TargetsSpectraS3Request());
+            var targets = response.ResponsePayload.Ds3Targets;
+            if (!targets.Any())
+            {
+                return null;
+            }
+
+            var clientTargets = new List<Ds3DiagnosticClient>();
+            foreach (var target in targets)
+            {
+                var targetEndpoint = target.DataPathEndPoint;
+                var targetAccessId = target.AdminAuthId;
+                var targetSecretKey = target.AdminSecretKey;
+                var targetClient =
+                    new Ds3Builder(targetEndpoint, new Credentials(targetAccessId, targetSecretKey)).Build();
+                var ds3DiagnosticClient = new Ds3DiagnosticClient
+                {
+                    Client = targetClient,
+                    Targets = GetDs3Target(targetClient)
+                };
+                clientTargets.Add(ds3DiagnosticClient);
+            }
+
+            return clientTargets;
+        }
 
         /// <summary>
         /// Runs all diagnostics.
@@ -76,9 +112,9 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// <returns>
         /// <see cref="Ds3DiagnosticResult{T}"/>
         /// </returns>
-        public Ds3DiagnosticResult<T> Get<T>(IDs3DiagnosticCheck<T> ds3Diagnostic)
+        public Ds3DiagnosticResults<T> Get<T>(IDs3DiagnosticCheck<T> ds3Diagnostic)
         {
-            return ds3Diagnostic.Get(Client);
+            return ds3Diagnostic.Get(Ds3DiagnosticClient);
         }
     }
 }

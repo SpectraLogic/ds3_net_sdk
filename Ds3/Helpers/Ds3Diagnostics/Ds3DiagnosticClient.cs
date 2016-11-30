@@ -13,17 +13,13 @@
  * ****************************************************************************
  */
 
-using System;
+using System.Collections.Generic;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    public interface IDs3DiagnosticCheck<T>
+    public class Ds3DiagnosticClient
     {
-        /// <summary>
-        /// Gets the specified client.
-        /// </summary>
-        /// <param name="ds3DiagnosticClient">The base client. <see cref="Ds3DiagnosticClient"/></param>
-        /// <returns></returns>
-        Ds3DiagnosticResults<T> Get(Ds3DiagnosticClient ds3DiagnosticClient);
+        public IDs3Client Client { get; set; }
+        public IEnumerable<Ds3DiagnosticClient> Targets { get; set; }
     }
 }

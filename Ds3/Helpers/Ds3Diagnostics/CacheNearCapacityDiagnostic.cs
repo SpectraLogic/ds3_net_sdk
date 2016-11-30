@@ -19,12 +19,17 @@ using Ds3.Models;
 
 namespace Ds3.Helpers.Ds3Diagnostics
 {
-    internal class CacheNearCapacityDiagnostic : IDs3DiagnosticCheck<CacheFilesystemInformation>
+    internal class CacheNearCapacityDiagnostic : Ds3DiagnosticCheck<CacheFilesystemInformation>
     {
         //TODO check if this value is right
         private const double CacheUtilizationNearCapacityLevel = 0.95;
 
-        public Ds3DiagnosticResult<CacheFilesystemInformation> Get(IDs3Client client)
+        public override Ds3DiagnosticResults<CacheFilesystemInformation> Get(Ds3DiagnosticClient ds3DiagnosticClient)
+        {
+            return Get(ds3DiagnosticClient, Func);
+        }
+
+        private static Ds3DiagnosticResult<CacheFilesystemInformation> Func(IDs3Client client)
         {
             var response = client.GetCacheStateSpectraS3(new GetCacheStateSpectraS3Request());
             var fileSystemsInfo = response.ResponsePayload.Filesystems;

@@ -34,11 +34,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.NoReadingTasks);
 
             var readFromTapeDiagnostic = new ReadFromTapeDiagnostic();
-            var readingFromTapeResult = readFromTapeDiagnostic.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var readingFromTapeResult = readFromTapeDiagnostic.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.Ok, readingFromTapeResult.Code);
-            Assert.AreEqual(null, readingFromTapeResult.ErrorMessage);
-            Assert.AreEqual(null, readingFromTapeResult.ErrorInfo);
+            Assert.AreEqual(Ds3DiagnosticsCode.Ok, readingFromTapeResult.ClientResult.Code);
+            Assert.AreEqual(null, readingFromTapeResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(null, readingFromTapeResult.ClientResult.ErrorInfo);
 
             client.VerifyAll();
         }
@@ -52,11 +56,15 @@ namespace TestDs3.Helpers.Diagnostics
                 .Returns(DiagnosticsStubs.OneReadingTasks);
 
             var readFromTapeDiagnostic = new ReadFromTapeDiagnostic();
-            var readingFromTapeResult = readFromTapeDiagnostic.Get(client.Object);
+            var ds3DiagnosticClient = new Ds3DiagnosticClient
+            {
+                Client = client.Object
+            };
+            var readingFromTapeResult = readFromTapeDiagnostic.Get(ds3DiagnosticClient);
 
-            Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape, readingFromTapeResult.Code);
-            Assert.AreEqual(string.Format(DiagnosticsMessages.ReadingFromTape, 1), readingFromTapeResult.ErrorMessage);
-            Assert.AreEqual(1, readingFromTapeResult.ErrorInfo.Count());
+            Assert.AreEqual(Ds3DiagnosticsCode.ReadingFromTape, readingFromTapeResult.ClientResult.Code);
+            Assert.AreEqual(string.Format(DiagnosticsMessages.ReadingFromTape, 1), readingFromTapeResult.ClientResult.ErrorMessage);
+            Assert.AreEqual(1, readingFromTapeResult.ClientResult.ErrorInfo.Count());
 
             client.VerifyAll();
         }
