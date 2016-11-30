@@ -4,7 +4,7 @@ using Ds3.Models;
 
 namespace TestDs3.Helpers.Diagnostics
 {
-    internal static class DiagnosticsStubs
+    internal static class DiagnosticsStubResponses
     {
         public static readonly GetCacheStateSpectraS3Response NullFilesystems =
             new GetCacheStateSpectraS3Response(new CacheInformation
@@ -217,6 +217,60 @@ namespace TestDs3.Helpers.Diagnostics
             new GetDs3TargetsSpectraS3Response(new Ds3TargetList
             {
                 Ds3Targets = new List<Ds3Target>()
+            }, null, null);
+
+        public static readonly GetDs3TargetsSpectraS3Response ClientTargets =
+            new GetDs3TargetsSpectraS3Response(new Ds3TargetList
+            {
+                Ds3Targets = new List<Ds3Target>
+                {
+                    new Ds3Target
+                    {
+                        DataPathEndPoint = "T1",
+                        AdminAuthId = "Id1",
+                        AdminSecretKey = "Key1"
+                    },
+                    new Ds3Target
+                    {
+                        DataPathEndPoint = "T2",
+                        AdminAuthId = "Id2",
+                        AdminSecretKey = "Key2"
+                    }
+                }
+            }, null, null);
+
+        public static readonly GetDs3TargetsSpectraS3Response ClientT1Targets =
+            new GetDs3TargetsSpectraS3Response(new Ds3TargetList
+            {
+                Ds3Targets = new List<Ds3Target>
+                {
+                    new Ds3Target
+                    {
+                        DataPathEndPoint = "T3",
+                        AdminAuthId = "Id3",
+                        AdminSecretKey = "Key3"
+                    },
+                    new Ds3Target
+                    {
+                        DataPathEndPoint = "T4",
+                        AdminAuthId = "Id4",
+                        AdminSecretKey = "Key4"
+                    }
+                }
+            }, null, null);
+
+        public static readonly GetDs3TargetsSpectraS3Response ClientT2Targets =
+            new GetDs3TargetsSpectraS3Response(new Ds3TargetList
+            {
+                Ds3Targets = new List<Ds3Target>
+                {
+                    new Ds3Target
+                    {
+                        DataPathEndPoint = "T5",
+                        AdminAuthId = "Id5",
+                        AdminSecretKey = "Key5"
+                    }
+                }
             }, null, null);
     }
 }

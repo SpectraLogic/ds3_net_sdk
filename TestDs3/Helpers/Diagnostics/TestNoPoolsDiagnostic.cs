@@ -30,7 +30,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoPools);
+                .Returns(DiagnosticsStubResponses.NoPools);
 
             var noPools = new NoPoolsDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -52,7 +52,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetPoolsSpectraS3(It.IsAny<GetPoolsSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.OnePoweredOffPool);
+                .Returns(DiagnosticsStubResponses.OnePoweredOffPool);
 
             var noPools = new NoPoolsDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient

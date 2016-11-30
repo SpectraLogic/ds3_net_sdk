@@ -31,7 +31,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetDataPlannerBlobStoreTasksSpectraS3(It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoWritingTasks);
+                .Returns(DiagnosticsStubResponses.NoWritingTasks);
 
             var writeToTapeDiagnostic = new WriteToTapeDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -53,7 +53,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetDataPlannerBlobStoreTasksSpectraS3(It.IsAny<GetDataPlannerBlobStoreTasksSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.OneWritingTasks);
+                .Returns(DiagnosticsStubResponses.OneWritingTasks);
 
             var writeToTapeDiagnostic = new WriteToTapeDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient

@@ -66,7 +66,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\Diagnostics\DiagnosticsStubs.cs" />
+    <Compile Include="Helpers\Diagnostics\DiagnosticsStubClients.cs" />
+    <Compile Include="Helpers\Diagnostics\DiagnosticsStubResponses.cs" />
     <Compile Include="Helpers\Diagnostics\TestCacheNearCapacity.cs" />
     <Compile Include="Helpers\Diagnostics\TestDs3Diagnostic.cs" />
     <Compile Include="Helpers\Diagnostics\TestNoPoolsDiagnostic.cs" />

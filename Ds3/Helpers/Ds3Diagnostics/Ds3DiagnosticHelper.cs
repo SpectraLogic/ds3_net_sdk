@@ -29,8 +29,15 @@ namespace Ds3.Helpers.Ds3Diagnostics
         /// </summary>
         /// <param name="client">The client.</param>
         public Ds3DiagnosticHelper(IDs3Client client)
+            : this(client, new Ds3TargetClientBuilder())
         {
-            Ds3DiagnosticClient = new Ds3DiagnosticClient()
+        }
+
+        public Ds3DiagnosticHelper(IDs3Client client, IDs3TargetClientBuilder ds3TargetClientBuilder)
+        {
+            Ds3TargetClientBuilder = ds3TargetClientBuilder;
+
+            Ds3DiagnosticClient = new Ds3DiagnosticClient
             {
                 Client = client,
                 Targets = GetDs3Target(client)
@@ -38,8 +45,9 @@ namespace Ds3.Helpers.Ds3Diagnostics
         }
 
         private Ds3DiagnosticClient Ds3DiagnosticClient { get; }
+        private IDs3TargetClientBuilder Ds3TargetClientBuilder { get; }
 
-        private static IEnumerable<Ds3DiagnosticClient> GetDs3Target(IDs3Client client)
+        private IEnumerable<Ds3DiagnosticClient> GetDs3Target(IDs3Client client)
         {
             var response = client.GetDs3TargetsSpectraS3(new GetDs3TargetsSpectraS3Request());
             var targets = response.ResponsePayload.Ds3Targets;
@@ -54,8 +62,7 @@ namespace Ds3.Helpers.Ds3Diagnostics
                 var targetEndpoint = target.DataPathEndPoint;
                 var targetAccessId = target.AdminAuthId;
                 var targetSecretKey = target.AdminSecretKey;
-                var targetClient =
-                    new Ds3Builder(targetEndpoint, new Credentials(targetAccessId, targetSecretKey)).Build();
+                var targetClient = Ds3TargetClientBuilder.Build(targetEndpoint, targetAccessId, targetSecretKey);
                 var ds3DiagnosticClient = new Ds3DiagnosticClient
                 {
                     Client = targetClient,

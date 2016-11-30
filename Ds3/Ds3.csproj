@@ -582,6 +582,8 @@
     <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticCheck.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticClient.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticResults.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3TargetClientBuilder.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\IDs3TargetClientBuilder.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\NoPoolsDiagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\NoTapesDiagnostic.cs" />
     <Compile Include="Helpers\Ds3Diagnostics\DiagnosticsMessages.Designer.cs">

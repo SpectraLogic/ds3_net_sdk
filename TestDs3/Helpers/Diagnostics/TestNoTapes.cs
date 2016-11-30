@@ -30,7 +30,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoTapes);
+                .Returns(DiagnosticsStubResponses.NoTapes);
 
             var noTapes = new NoTapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -52,7 +52,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetTapesSpectraS3(It.IsAny<GetTapesSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.OneTape);
+                .Returns(DiagnosticsStubResponses.OneTape);
 
             var noTapes = new NoTapesDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient

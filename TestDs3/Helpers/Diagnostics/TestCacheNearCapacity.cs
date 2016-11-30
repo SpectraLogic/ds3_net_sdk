@@ -31,7 +31,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.EmptyFilesystems);
+                .Returns(DiagnosticsStubResponses.EmptyFilesystems);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -53,7 +53,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NoNearCapacity);
+                .Returns(DiagnosticsStubResponses.NoNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -75,7 +75,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.NullFilesystems);
+                .Returns(DiagnosticsStubResponses.NullFilesystems);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -97,7 +97,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.OneNearCapacity);
+                .Returns(DiagnosticsStubResponses.OneNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
@@ -120,7 +120,7 @@ namespace TestDs3.Helpers.Diagnostics
             var client = new Mock<IDs3Client>(MockBehavior.Strict);
             client
                 .Setup(c => c.GetCacheStateSpectraS3(It.IsAny<GetCacheStateSpectraS3Request>()))
-                .Returns(DiagnosticsStubs.TwoNearCapacity);
+                .Returns(DiagnosticsStubResponses.TwoNearCapacity);
 
             var cacheNearCapacity = new CacheNearCapacityDiagnostic();
             var ds3DiagnosticClient = new Ds3DiagnosticClient
