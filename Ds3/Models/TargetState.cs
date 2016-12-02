@@ -20,7 +20,6 @@ namespace Ds3.Models
     public enum TargetState
     {
         ONLINE,
-        LIMITED_ACCESS,
         OFFLINE
     }
 }

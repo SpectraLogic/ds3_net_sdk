@@ -32,33 +32,11 @@ namespace Ds3.Calls
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
         
-        private bool? _replicate;
-        public bool? Replicate
-        {
-            get { return _replicate; }
-            set { WithReplicate(value); }
-        }
-
         private bool? _rollBack;
         public bool? RollBack
         {
             get { return _rollBack; }
             set { WithRollBack(value); }
-        }
-
-        
-        public DeleteObjectsRequest WithReplicate(bool? replicate)
-        {
-            this._replicate = replicate;
-            if (replicate != null)
-            {
-                this.QueryParams.Add("replicate", replicate.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("replicate");
-            }
-            return this;
         }
 
         

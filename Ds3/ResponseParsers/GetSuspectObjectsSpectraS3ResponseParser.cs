@@ -34,8 +34,10 @@ namespace Ds3.ResponseParsers
                 using (var stream = response.GetResponseStream())
                 {
                     return new GetSuspectObjectsSpectraS3Response(
-                        ModelParsers.ParsePhysicalPlacement(
-                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
+                        ModelParsers.ParseS3ObjectList(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data")),
+                        ResponseParseUtilities.ParseIntHeader("page-truncated", response.Headers),
+                        ResponseParseUtilities.ParseIntHeader("total-result-count", response.Headers)
                     );
                 }
             }

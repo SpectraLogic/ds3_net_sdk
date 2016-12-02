@@ -30,8 +30,10 @@ namespace Ds3.ResponseParsers
         {
             return new PhysicalPlacement
             {
+                AzureTargets = ParseEncapsulatedList(element, "AzureTarget", "AzureTargets", ParseAzureTarget),
                 Ds3Targets = ParseEncapsulatedList(element, "Ds3Target", "Ds3Targets", ParseDs3Target),
                 Pools = ParseEncapsulatedList(element, "Pool", "Pools", ParsePool),
+                S3Targets = ParseEncapsulatedList(element, "S3Target", "S3Targets", ParseS3Target),
                 Tapes = ParseEncapsulatedList(element, "Tape", "Tapes", ParseTape)
             };
         }
@@ -41,6 +43,26 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParsePhysicalPlacement(element);
+        }
+        public static AzureDataReplicationRule ParseAzureDataReplicationRule(XElement element)
+        {
+            return new AzureDataReplicationRule
+            {
+                DataPolicyId = ParseGuid(element.Element("DataPolicyId")),
+                Id = ParseGuid(element.Element("Id")),
+                MaxBlobPartSizeInBytes = ParseLong(element.Element("MaxBlobPartSizeInBytes")),
+                ReplicateDeletes = ParseBool(element.Element("ReplicateDeletes")),
+                State = ParseDataPlacementRuleState(element.Element("State")),
+                TargetId = ParseGuid(element.Element("TargetId")),
+                Type = ParseDataReplicationRuleType(element.Element("Type"))
+            };
+        }
+
+        public static AzureDataReplicationRule ParseNullableAzureDataReplicationRule(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureDataReplicationRule(element);
         }
         public static Blob ParseBlob(XElement element)
         {
@@ -208,7 +230,7 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 IsolationLevel = ParseDataIsolationLevel(element.Element("IsolationLevel")),
                 MinimumDaysToRetain = ParseNullableInt(element.Element("MinimumDaysToRetain")),
-                State = ParseDataPersistenceRuleState(element.Element("State")),
+                State = ParseDataPlacementRuleState(element.Element("State")),
                 StorageDomainId = ParseGuid(element.Element("StorageDomainId")),
                 Type = ParseDataPersistenceRuleType(element.Element("Type"))
             };
@@ -226,17 +248,16 @@ namespace Ds3.ResponseParsers
             {
                 AlwaysForcePutJobCreation = ParseBool(element.Element("AlwaysForcePutJobCreation")),
                 AlwaysMinimizeSpanningAcrossMedia = ParseBool(element.Element("AlwaysMinimizeSpanningAcrossMedia")),
-                AlwaysReplicateDeletes = ParseBool(element.Element("AlwaysReplicateDeletes")),
                 BlobbingEnabled = ParseBool(element.Element("BlobbingEnabled")),
                 ChecksumType = ParseChecksumType(element.Element("ChecksumType")),
                 CreationDate = ParseDateTime(element.Element("CreationDate")),
                 DefaultBlobSize = ParseNullableLong(element.Element("DefaultBlobSize")),
                 DefaultGetJobPriority = ParsePriority(element.Element("DefaultGetJobPriority")),
                 DefaultPutJobPriority = ParsePriority(element.Element("DefaultPutJobPriority")),
+                DefaultVerifyAfterWrite = ParseBool(element.Element("DefaultVerifyAfterWrite")),
                 DefaultVerifyJobPriority = ParsePriority(element.Element("DefaultVerifyJobPriority")),
                 EndToEndCrcRequired = ParseBool(element.Element("EndToEndCrcRequired")),
                 Id = ParseGuid(element.Element("Id")),
-                LtfsObjectNamingAllowed = ParseBool(element.Element("LtfsObjectNamingAllowed")),
                 Name = ParseNullableString(element.Element("Name")),
                 RebuildPriority = ParsePriority(element.Element("RebuildPriority")),
                 Versioning = ParseVersioningLevel(element.Element("Versioning"))
@@ -266,34 +287,17 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseDataPolicyAcl(element);
         }
-        public static DataReplicationRule ParseDataReplicationRule(XElement element)
-        {
-            return new DataReplicationRule
-            {
-                DataPolicyId = ParseGuid(element.Element("DataPolicyId")),
-                Ds3TargetDataPolicy = ParseNullableString(element.Element("Ds3TargetDataPolicy")),
-                Ds3TargetId = ParseGuid(element.Element("Ds3TargetId")),
-                Id = ParseGuid(element.Element("Id")),
-                State = ParseDataPersistenceRuleState(element.Element("State")),
-                Type = ParseDataReplicationRuleType(element.Element("Type"))
-            };
-        }
-
-        public static DataReplicationRule ParseNullableDataReplicationRule(XElement element)
-        {
-            return element == null || element.IsEmpty
-                ? null
-                : ParseDataReplicationRule(element);
-        }
         public static DegradedBlob ParseDegradedBlob(XElement element)
         {
             return new DegradedBlob
             {
+                AzureReplicationRuleId = ParseNullableGuid(element.Element("AzureReplicationRuleId")),
                 BlobId = ParseGuid(element.Element("BlobId")),
                 BucketId = ParseGuid(element.Element("BucketId")),
+                Ds3ReplicationRuleId = ParseNullableGuid(element.Element("Ds3ReplicationRuleId")),
                 Id = ParseGuid(element.Element("Id")),
                 PersistenceRuleId = ParseNullableGuid(element.Element("PersistenceRuleId")),
-                ReplicationRuleId = ParseNullableGuid(element.Element("ReplicationRuleId"))
+                S3ReplicationRuleId = ParseNullableGuid(element.Element("S3ReplicationRuleId"))
             };
         }
 
@@ -302,6 +306,45 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseDegradedBlob(element);
+        }
+        public static Ds3DataReplicationRule ParseDs3DataReplicationRule(XElement element)
+        {
+            return new Ds3DataReplicationRule
+            {
+                DataPolicyId = ParseGuid(element.Element("DataPolicyId")),
+                Id = ParseGuid(element.Element("Id")),
+                ReplicateDeletes = ParseBool(element.Element("ReplicateDeletes")),
+                State = ParseDataPlacementRuleState(element.Element("State")),
+                TargetDataPolicy = ParseNullableString(element.Element("TargetDataPolicy")),
+                TargetId = ParseGuid(element.Element("TargetId")),
+                Type = ParseDataReplicationRuleType(element.Element("Type"))
+            };
+        }
+
+        public static Ds3DataReplicationRule ParseNullableDs3DataReplicationRule(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseDs3DataReplicationRule(element);
+        }
+        public static FeatureKey ParseFeatureKey(XElement element)
+        {
+            return new FeatureKey
+            {
+                CurrentValue = ParseNullableLong(element.Element("CurrentValue")),
+                ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
+                ExpirationDate = ParseNullableDateTime(element.Element("ExpirationDate")),
+                Id = ParseGuid(element.Element("Id")),
+                Key = ParseFeatureKeyType(element.Element("Key")),
+                LimitValue = ParseNullableLong(element.Element("LimitValue"))
+            };
+        }
+
+        public static FeatureKey ParseNullableFeatureKey(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseFeatureKey(element);
         }
         public static Group ParseGroup(XElement element)
         {
@@ -348,6 +391,7 @@ namespace Ds3.ResponseParsers
                 CreatedAt = ParseDateTime(element.Element("CreatedAt")),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
                 Id = ParseGuid(element.Element("Id")),
+                ImplicitJobIdResolution = ParseBool(element.Element("ImplicitJobIdResolution")),
                 MinimizeSpanningAcrossMedia = ParseBool(element.Element("MinimizeSpanningAcrossMedia")),
                 Naked = ParseBool(element.Element("Naked")),
                 Name = ParseNullableString(element.Element("Name")),
@@ -358,7 +402,8 @@ namespace Ds3.ResponseParsers
                 RequestType = ParseJobRequestType(element.Element("RequestType")),
                 Truncated = ParseBool(element.Element("Truncated")),
                 TruncatedDueToTimeout = ParseBool(element.Element("TruncatedDueToTimeout")),
-                UserId = ParseGuid(element.Element("UserId"))
+                UserId = ParseGuid(element.Element("UserId")),
+                VerifyAfterWrite = ParseBool(element.Element("VerifyAfterWrite"))
             };
         }
 
@@ -379,8 +424,10 @@ namespace Ds3.ResponseParsers
                 JobId = ParseGuid(element.Element("JobId")),
                 NodeId = ParseNullableGuid(element.Element("NodeId")),
                 PendingTargetCommit = ParseBool(element.Element("PendingTargetCommit")),
+                ReadFromAzureTargetId = ParseNullableGuid(element.Element("ReadFromAzureTargetId")),
                 ReadFromDs3TargetId = ParseNullableGuid(element.Element("ReadFromDs3TargetId")),
                 ReadFromPoolId = ParseNullableGuid(element.Element("ReadFromPoolId")),
+                ReadFromS3TargetId = ParseNullableGuid(element.Element("ReadFromS3TargetId")),
                 ReadFromTapeId = ParseNullableGuid(element.Element("ReadFromTapeId"))
             };
         }
@@ -411,6 +458,27 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseNode(element);
+        }
+        public static S3DataReplicationRule ParseS3DataReplicationRule(XElement element)
+        {
+            return new S3DataReplicationRule
+            {
+                DataPolicyId = ParseGuid(element.Element("DataPolicyId")),
+                Id = ParseGuid(element.Element("Id")),
+                InitialDataPlacement = ParseS3InitialDataPlacementPolicy(element.Element("InitialDataPlacement")),
+                MaxBlobPartSizeInBytes = ParseLong(element.Element("MaxBlobPartSizeInBytes")),
+                ReplicateDeletes = ParseBool(element.Element("ReplicateDeletes")),
+                State = ParseDataPlacementRuleState(element.Element("State")),
+                TargetId = ParseGuid(element.Element("TargetId")),
+                Type = ParseDataReplicationRuleType(element.Element("Type"))
+            };
+        }
+
+        public static S3DataReplicationRule ParseNullableS3DataReplicationRule(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3DataReplicationRule(element);
         }
         public static S3Object ParseS3Object(XElement element)
         {
@@ -547,6 +615,30 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseSpectraUser(element);
+        }
+        public static AzureTargetFailureNotificationRegistration ParseAzureTargetFailureNotificationRegistration(XElement element)
+        {
+            return new AzureTargetFailureNotificationRegistration
+            {
+                CreationDate = ParseDateTime(element.Element("CreationDate")),
+                Format = ParseHttpResponseFormatType(element.Element("Format")),
+                Id = ParseGuid(element.Element("Id")),
+                LastFailure = ParseNullableString(element.Element("LastFailure")),
+                LastHttpResponseCode = ParseNullableInt(element.Element("LastHttpResponseCode")),
+                LastNotification = ParseNullableDateTime(element.Element("LastNotification")),
+                NamingConvention = ParseNamingConventionType(element.Element("NamingConvention")),
+                NotificationEndPoint = ParseNullableString(element.Element("NotificationEndPoint")),
+                NotificationHttpMethod = ParseRequestType(element.Element("NotificationHttpMethod")),
+                NumberOfFailuresSinceLastSuccess = ParseInt(element.Element("NumberOfFailuresSinceLastSuccess")),
+                UserId = ParseNullableGuid(element.Element("UserId"))
+            };
+        }
+
+        public static AzureTargetFailureNotificationRegistration ParseNullableAzureTargetFailureNotificationRegistration(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetFailureNotificationRegistration(element);
         }
         public static Ds3TargetFailureNotificationRegistration ParseDs3TargetFailureNotificationRegistration(XElement element)
         {
@@ -742,6 +834,30 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseS3ObjectPersistedNotificationRegistration(element);
+        }
+        public static S3TargetFailureNotificationRegistration ParseS3TargetFailureNotificationRegistration(XElement element)
+        {
+            return new S3TargetFailureNotificationRegistration
+            {
+                CreationDate = ParseDateTime(element.Element("CreationDate")),
+                Format = ParseHttpResponseFormatType(element.Element("Format")),
+                Id = ParseGuid(element.Element("Id")),
+                LastFailure = ParseNullableString(element.Element("LastFailure")),
+                LastHttpResponseCode = ParseNullableInt(element.Element("LastHttpResponseCode")),
+                LastNotification = ParseNullableDateTime(element.Element("LastNotification")),
+                NamingConvention = ParseNamingConventionType(element.Element("NamingConvention")),
+                NotificationEndPoint = ParseNullableString(element.Element("NotificationEndPoint")),
+                NotificationHttpMethod = ParseRequestType(element.Element("NotificationHttpMethod")),
+                NumberOfFailuresSinceLastSuccess = ParseInt(element.Element("NumberOfFailuresSinceLastSuccess")),
+                UserId = ParseNullableGuid(element.Element("UserId"))
+            };
+        }
+
+        public static S3TargetFailureNotificationRegistration ParseNullableS3TargetFailureNotificationRegistration(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetFailureNotificationRegistration(element);
         }
         public static StorageDomainFailureNotificationRegistration ParseStorageDomainFailureNotificationRegistration(XElement element)
         {
@@ -1117,6 +1233,84 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseTapePartitionFailure(element);
         }
+        public static AzureTarget ParseAzureTarget(XElement element)
+        {
+            return new AzureTarget
+            {
+                AccountKey = ParseNullableString(element.Element("AccountKey")),
+                AccountName = ParseNullableString(element.Element("AccountName")),
+                AutoVerifyFrequencyInDays = ParseNullableInt(element.Element("AutoVerifyFrequencyInDays")),
+                CloudBucketPrefix = ParseNullableString(element.Element("CloudBucketPrefix")),
+                CloudBucketSuffix = ParseNullableString(element.Element("CloudBucketSuffix")),
+                DefaultReadPreference = ParseTargetReadPreferenceType(element.Element("DefaultReadPreference")),
+                Https = ParseBool(element.Element("Https")),
+                Id = ParseGuid(element.Element("Id")),
+                LastFullyVerified = ParseNullableDateTime(element.Element("LastFullyVerified")),
+                Name = ParseNullableString(element.Element("Name")),
+                PermitGoingOutOfSync = ParseBool(element.Element("PermitGoingOutOfSync")),
+                Quiesced = ParseQuiesced(element.Element("Quiesced")),
+                State = ParseTargetState(element.Element("State"))
+            };
+        }
+
+        public static AzureTarget ParseNullableAzureTarget(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTarget(element);
+        }
+        public static AzureTargetBucketName ParseAzureTargetBucketName(XElement element)
+        {
+            return new AzureTargetBucketName
+            {
+                BucketId = ParseGuid(element.Element("BucketId")),
+                Id = ParseGuid(element.Element("Id")),
+                Name = ParseNullableString(element.Element("Name")),
+                TargetId = ParseGuid(element.Element("TargetId"))
+            };
+        }
+
+        public static AzureTargetBucketName ParseNullableAzureTargetBucketName(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetBucketName(element);
+        }
+        public static AzureTargetFailure ParseAzureTargetFailure(XElement element)
+        {
+            return new AzureTargetFailure
+            {
+                Date = ParseDateTime(element.Element("Date")),
+                ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
+                Id = ParseGuid(element.Element("Id")),
+                TargetId = ParseGuid(element.Element("TargetId")),
+                Type = ParseTargetFailureType(element.Element("Type"))
+            };
+        }
+
+        public static AzureTargetFailure ParseNullableAzureTargetFailure(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetFailure(element);
+        }
+        public static AzureTargetReadPreference ParseAzureTargetReadPreference(XElement element)
+        {
+            return new AzureTargetReadPreference
+            {
+                BucketId = ParseGuid(element.Element("BucketId")),
+                Id = ParseGuid(element.Element("Id")),
+                ReadPreference = ParseTargetReadPreferenceType(element.Element("ReadPreference")),
+                TargetId = ParseGuid(element.Element("TargetId"))
+            };
+        }
+
+        public static AzureTargetReadPreference ParseNullableAzureTargetReadPreference(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetReadPreference(element);
+        }
         public static Ds3Target ParseDs3Target(XElement element)
         {
             return new Ds3Target
@@ -1153,7 +1347,7 @@ namespace Ds3.ResponseParsers
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
                 Id = ParseGuid(element.Element("Id")),
                 TargetId = ParseGuid(element.Element("TargetId")),
-                Type = ParseDs3TargetFailureType(element.Element("Type"))
+                Type = ParseTargetFailureType(element.Element("Type"))
             };
         }
 
@@ -1180,21 +1374,140 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseDs3TargetReadPreference(element);
         }
-        public static SuspectBlobTarget ParseSuspectBlobTarget(XElement element)
+        public static S3Target ParseS3Target(XElement element)
         {
-            return new SuspectBlobTarget
+            return new S3Target
             {
-                BlobId = ParseGuid(element.Element("BlobId")),
-                Ds3TargetId = ParseGuid(element.Element("Ds3TargetId")),
-                Id = ParseGuid(element.Element("Id"))
+                AccessKey = ParseNullableString(element.Element("AccessKey")),
+                AutoVerifyFrequencyInDays = ParseNullableInt(element.Element("AutoVerifyFrequencyInDays")),
+                CloudBucketPrefix = ParseNullableString(element.Element("CloudBucketPrefix")),
+                CloudBucketSuffix = ParseNullableString(element.Element("CloudBucketSuffix")),
+                DataPathEndPoint = ParseNullableString(element.Element("DataPathEndPoint")),
+                DefaultReadPreference = ParseTargetReadPreferenceType(element.Element("DefaultReadPreference")),
+                Https = ParseBool(element.Element("Https")),
+                Id = ParseGuid(element.Element("Id")),
+                LastFullyVerified = ParseNullableDateTime(element.Element("LastFullyVerified")),
+                Name = ParseNullableString(element.Element("Name")),
+                OfflineDataStagingWindowInTb = ParseInt(element.Element("OfflineDataStagingWindowInTb")),
+                PermitGoingOutOfSync = ParseBool(element.Element("PermitGoingOutOfSync")),
+                ProxyDomain = ParseNullableString(element.Element("ProxyDomain")),
+                ProxyHost = ParseNullableString(element.Element("ProxyHost")),
+                ProxyPassword = ParseNullableString(element.Element("ProxyPassword")),
+                ProxyPort = ParseNullableInt(element.Element("ProxyPort")),
+                ProxyUsername = ParseNullableString(element.Element("ProxyUsername")),
+                Quiesced = ParseQuiesced(element.Element("Quiesced")),
+                Region = ParseS3Region(element.Element("Region")),
+                SecretKey = ParseNullableString(element.Element("SecretKey")),
+                StagedDataExpirationInDays = ParseInt(element.Element("StagedDataExpirationInDays")),
+                State = ParseTargetState(element.Element("State"))
             };
         }
 
-        public static SuspectBlobTarget ParseNullableSuspectBlobTarget(XElement element)
+        public static S3Target ParseNullableS3Target(XElement element)
         {
             return element == null || element.IsEmpty
                 ? null
-                : ParseSuspectBlobTarget(element);
+                : ParseS3Target(element);
+        }
+        public static S3TargetBucketName ParseS3TargetBucketName(XElement element)
+        {
+            return new S3TargetBucketName
+            {
+                BucketId = ParseGuid(element.Element("BucketId")),
+                Id = ParseGuid(element.Element("Id")),
+                Name = ParseNullableString(element.Element("Name")),
+                TargetId = ParseGuid(element.Element("TargetId"))
+            };
+        }
+
+        public static S3TargetBucketName ParseNullableS3TargetBucketName(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetBucketName(element);
+        }
+        public static S3TargetFailure ParseS3TargetFailure(XElement element)
+        {
+            return new S3TargetFailure
+            {
+                Date = ParseDateTime(element.Element("Date")),
+                ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
+                Id = ParseGuid(element.Element("Id")),
+                TargetId = ParseGuid(element.Element("TargetId")),
+                Type = ParseTargetFailureType(element.Element("Type"))
+            };
+        }
+
+        public static S3TargetFailure ParseNullableS3TargetFailure(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetFailure(element);
+        }
+        public static S3TargetReadPreference ParseS3TargetReadPreference(XElement element)
+        {
+            return new S3TargetReadPreference
+            {
+                BucketId = ParseGuid(element.Element("BucketId")),
+                Id = ParseGuid(element.Element("Id")),
+                ReadPreference = ParseTargetReadPreferenceType(element.Element("ReadPreference")),
+                TargetId = ParseGuid(element.Element("TargetId"))
+            };
+        }
+
+        public static S3TargetReadPreference ParseNullableS3TargetReadPreference(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetReadPreference(element);
+        }
+        public static SuspectBlobAzureTarget ParseSuspectBlobAzureTarget(XElement element)
+        {
+            return new SuspectBlobAzureTarget
+            {
+                BlobId = ParseGuid(element.Element("BlobId")),
+                Id = ParseGuid(element.Element("Id")),
+                TargetId = ParseGuid(element.Element("TargetId"))
+            };
+        }
+
+        public static SuspectBlobAzureTarget ParseNullableSuspectBlobAzureTarget(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseSuspectBlobAzureTarget(element);
+        }
+        public static SuspectBlobDs3Target ParseSuspectBlobDs3Target(XElement element)
+        {
+            return new SuspectBlobDs3Target
+            {
+                BlobId = ParseGuid(element.Element("BlobId")),
+                Id = ParseGuid(element.Element("Id")),
+                TargetId = ParseGuid(element.Element("TargetId"))
+            };
+        }
+
+        public static SuspectBlobDs3Target ParseNullableSuspectBlobDs3Target(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseSuspectBlobDs3Target(element);
+        }
+        public static SuspectBlobS3Target ParseSuspectBlobS3Target(XElement element)
+        {
+            return new SuspectBlobS3Target
+            {
+                BlobId = ParseGuid(element.Element("BlobId")),
+                Id = ParseGuid(element.Element("Id")),
+                TargetId = ParseGuid(element.Element("TargetId"))
+            };
+        }
+
+        public static SuspectBlobS3Target ParseNullableSuspectBlobS3Target(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseSuspectBlobS3Target(element);
         }
         public static BulkObject ParseBulkObject(XElement element)
         {
@@ -1256,13 +1569,14 @@ namespace Ds3.ResponseParsers
                 DateStarted = ParseNullableDateTime(element.Element("DateStarted")),
                 Description = ParseNullableString(element.Element("Description")),
                 DriveId = ParseNullableGuid(element.Element("DriveId")),
-                Ds3TargetId = ParseNullableGuid(element.Element("Ds3TargetId")),
                 Id = ParseLong(element.Element("Id")),
                 Name = ParseNullableString(element.Element("Name")),
                 PoolId = ParseNullableGuid(element.Element("PoolId")),
                 Priority = ParsePriority(element.Element("Priority")),
                 State = ParseBlobStoreTaskState(element.Element("State")),
-                TapeId = ParseNullableGuid(element.Element("TapeId"))
+                TapeId = ParseNullableGuid(element.Element("TapeId")),
+                TargetId = ParseNullableGuid(element.Element("TargetId")),
+                TargetType = ParseNullableString(element.Element("TargetType"))
             };
         }
 
@@ -1503,7 +1817,7 @@ namespace Ds3.ResponseParsers
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
-                EntirelyInCache = ParseNullableBool(element.AttributeTextOrNull("EntirelyInCache")),
+                EntirelyInCache = ParseBool(element.AttributeText("EntirelyInCache")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
@@ -1550,7 +1864,7 @@ namespace Ds3.ResponseParsers
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
-                EntirelyInCache = ParseNullableBool(element.AttributeTextOrNull("EntirelyInCache")),
+                EntirelyInCache = ParseBool(element.AttributeText("EntirelyInCache")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
@@ -1901,6 +2215,20 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseCacheFilesystemList(element);
         }
+        public static AzureDataReplicationRuleList ParseAzureDataReplicationRuleList(XElement element)
+        {
+            return new AzureDataReplicationRuleList
+            {
+                AzureDataReplicationRules = element.Elements("AzureDataReplicationRule").Select(ParseAzureDataReplicationRule).ToList()
+            };
+        }
+
+        public static AzureDataReplicationRuleList ParseNullableAzureDataReplicationRuleList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureDataReplicationRuleList(element);
+        }
         public static DataPersistenceRuleList ParseDataPersistenceRuleList(XElement element)
         {
             return new DataPersistenceRuleList
@@ -1929,19 +2257,33 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseDataPolicyList(element);
         }
-        public static DataReplicationRuleList ParseDataReplicationRuleList(XElement element)
+        public static Ds3DataReplicationRuleList ParseDs3DataReplicationRuleList(XElement element)
         {
-            return new DataReplicationRuleList
+            return new Ds3DataReplicationRuleList
             {
-                DataReplicationRules = element.Elements("DataReplicationRule").Select(ParseDataReplicationRule).ToList()
+                Ds3DataReplicationRules = element.Elements("Ds3DataReplicationRule").Select(ParseDs3DataReplicationRule).ToList()
             };
         }
 
-        public static DataReplicationRuleList ParseNullableDataReplicationRuleList(XElement element)
+        public static Ds3DataReplicationRuleList ParseNullableDs3DataReplicationRuleList(XElement element)
         {
             return element == null || element.IsEmpty
                 ? null
-                : ParseDataReplicationRuleList(element);
+                : ParseDs3DataReplicationRuleList(element);
+        }
+        public static S3DataReplicationRuleList ParseS3DataReplicationRuleList(XElement element)
+        {
+            return new S3DataReplicationRuleList
+            {
+                S3DataReplicationRules = element.Elements("S3DataReplicationRule").Select(ParseS3DataReplicationRule).ToList()
+            };
+        }
+
+        public static S3DataReplicationRuleList ParseNullableS3DataReplicationRuleList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3DataReplicationRuleList(element);
         }
         public static DegradedBlobList ParseDegradedBlobList(XElement element)
         {
@@ -1957,6 +2299,34 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseDegradedBlobList(element);
         }
+        public static SuspectBlobAzureTargetList ParseSuspectBlobAzureTargetList(XElement element)
+        {
+            return new SuspectBlobAzureTargetList
+            {
+                SuspectBlobAzureTargets = element.Elements("SuspectBlobAzureTarget").Select(ParseSuspectBlobAzureTarget).ToList()
+            };
+        }
+
+        public static SuspectBlobAzureTargetList ParseNullableSuspectBlobAzureTargetList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseSuspectBlobAzureTargetList(element);
+        }
+        public static SuspectBlobDs3TargetList ParseSuspectBlobDs3TargetList(XElement element)
+        {
+            return new SuspectBlobDs3TargetList
+            {
+                SuspectBlobDs3Targets = element.Elements("SuspectBlobDs3Target").Select(ParseSuspectBlobDs3Target).ToList()
+            };
+        }
+
+        public static SuspectBlobDs3TargetList ParseNullableSuspectBlobDs3TargetList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseSuspectBlobDs3TargetList(element);
+        }
         public static SuspectBlobPoolList ParseSuspectBlobPoolList(XElement element)
         {
             return new SuspectBlobPoolList
@@ -1970,6 +2340,20 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseSuspectBlobPoolList(element);
+        }
+        public static SuspectBlobS3TargetList ParseSuspectBlobS3TargetList(XElement element)
+        {
+            return new SuspectBlobS3TargetList
+            {
+                SuspectBlobS3Targets = element.Elements("SuspectBlobS3Target").Select(ParseSuspectBlobS3Target).ToList()
+            };
+        }
+
+        public static SuspectBlobS3TargetList ParseNullableSuspectBlobS3TargetList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseSuspectBlobS3TargetList(element);
         }
         public static SuspectBlobTapeList ParseSuspectBlobTapeList(XElement element)
         {
@@ -1985,19 +2369,19 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseSuspectBlobTapeList(element);
         }
-        public static SuspectBlobTargetList ParseSuspectBlobTargetList(XElement element)
+        public static S3ObjectList ParseS3ObjectList(XElement element)
         {
-            return new SuspectBlobTargetList
+            return new S3ObjectList
             {
-                SuspectBlobTargets = element.Elements("SuspectBlobTarget").Select(ParseSuspectBlobTarget).ToList()
+                S3Objects = element.Elements("S3Object").Select(ParseS3Object).ToList()
             };
         }
 
-        public static SuspectBlobTargetList ParseNullableSuspectBlobTargetList(XElement element)
+        public static S3ObjectList ParseNullableS3ObjectList(XElement element)
         {
             return element == null || element.IsEmpty
                 ? null
-                : ParseSuspectBlobTargetList(element);
+                : ParseS3ObjectList(element);
         }
         public static GroupMemberList ParseGroupMemberList(XElement element)
         {
@@ -2082,6 +2466,20 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseNodeList(element);
+        }
+        public static AzureTargetFailureNotificationRegistrationList ParseAzureTargetFailureNotificationRegistrationList(XElement element)
+        {
+            return new AzureTargetFailureNotificationRegistrationList
+            {
+                AzureTargetFailureNotificationRegistrations = element.Elements("AzureTargetFailureNotificationRegistration").Select(ParseAzureTargetFailureNotificationRegistration).ToList()
+            };
+        }
+
+        public static AzureTargetFailureNotificationRegistrationList ParseNullableAzureTargetFailureNotificationRegistrationList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetFailureNotificationRegistrationList(element);
         }
         public static Ds3TargetFailureNotificationRegistrationList ParseDs3TargetFailureNotificationRegistrationList(XElement element)
         {
@@ -2195,6 +2593,20 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParsePoolFailureNotificationRegistrationList(element);
         }
+        public static S3TargetFailureNotificationRegistrationList ParseS3TargetFailureNotificationRegistrationList(XElement element)
+        {
+            return new S3TargetFailureNotificationRegistrationList
+            {
+                S3TargetFailureNotificationRegistrations = element.Elements("S3TargetFailureNotificationRegistration").Select(ParseS3TargetFailureNotificationRegistration).ToList()
+            };
+        }
+
+        public static S3TargetFailureNotificationRegistrationList ParseNullableS3TargetFailureNotificationRegistrationList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetFailureNotificationRegistrationList(element);
+        }
         public static StorageDomainFailureNotificationRegistrationList ParseStorageDomainFailureNotificationRegistrationList(XElement element)
         {
             return new StorageDomainFailureNotificationRegistrationList
@@ -2250,20 +2662,6 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseTapePartitionFailureNotificationRegistrationList(element);
-        }
-        public static S3ObjectList ParseS3ObjectList(XElement element)
-        {
-            return new S3ObjectList
-            {
-                S3Objects = element.Elements("S3Object").Select(ParseS3Object).ToList()
-            };
-        }
-
-        public static S3ObjectList ParseNullableS3ObjectList(XElement element)
-        {
-            return element == null || element.IsEmpty
-                ? null
-                : ParseS3ObjectList(element);
         }
         public static DetailedS3ObjectList ParseDetailedS3ObjectList(XElement element)
         {
@@ -2362,6 +2760,20 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseStorageDomainList(element);
+        }
+        public static FeatureKeyList ParseFeatureKeyList(XElement element)
+        {
+            return new FeatureKeyList
+            {
+                FeatureKeys = element.Elements("FeatureKey").Select(ParseFeatureKey).ToList()
+            };
+        }
+
+        public static FeatureKeyList ParseNullableFeatureKeyList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseFeatureKeyList(element);
         }
         public static SystemFailureList ParseSystemFailureList(XElement element)
         {
@@ -2489,6 +2901,62 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseTapeList(element);
         }
+        public static AzureTargetBucketNameList ParseAzureTargetBucketNameList(XElement element)
+        {
+            return new AzureTargetBucketNameList
+            {
+                AzureTargetBucketNames = element.Elements("AzureTargetBucketName").Select(ParseAzureTargetBucketName).ToList()
+            };
+        }
+
+        public static AzureTargetBucketNameList ParseNullableAzureTargetBucketNameList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetBucketNameList(element);
+        }
+        public static AzureTargetFailureList ParseAzureTargetFailureList(XElement element)
+        {
+            return new AzureTargetFailureList
+            {
+                AzureTargetFailures = element.Elements("AzureTargetFailure").Select(ParseAzureTargetFailure).ToList()
+            };
+        }
+
+        public static AzureTargetFailureList ParseNullableAzureTargetFailureList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetFailureList(element);
+        }
+        public static AzureTargetReadPreferenceList ParseAzureTargetReadPreferenceList(XElement element)
+        {
+            return new AzureTargetReadPreferenceList
+            {
+                AzureTargetReadPreferences = element.Elements("AzureTargetReadPreference").Select(ParseAzureTargetReadPreference).ToList()
+            };
+        }
+
+        public static AzureTargetReadPreferenceList ParseNullableAzureTargetReadPreferenceList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetReadPreferenceList(element);
+        }
+        public static AzureTargetList ParseAzureTargetList(XElement element)
+        {
+            return new AzureTargetList
+            {
+                AzureTargets = element.Elements("AzureTarget").Select(ParseAzureTarget).ToList()
+            };
+        }
+
+        public static AzureTargetList ParseNullableAzureTargetList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseAzureTargetList(element);
+        }
         public static Ds3TargetFailureList ParseDs3TargetFailureList(XElement element)
         {
             return new Ds3TargetFailureList
@@ -2530,6 +2998,62 @@ namespace Ds3.ResponseParsers
             return element == null || element.IsEmpty
                 ? null
                 : ParseDs3TargetList(element);
+        }
+        public static S3TargetBucketNameList ParseS3TargetBucketNameList(XElement element)
+        {
+            return new S3TargetBucketNameList
+            {
+                S3TargetBucketNames = element.Elements("S3TargetBucketName").Select(ParseS3TargetBucketName).ToList()
+            };
+        }
+
+        public static S3TargetBucketNameList ParseNullableS3TargetBucketNameList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetBucketNameList(element);
+        }
+        public static S3TargetFailureList ParseS3TargetFailureList(XElement element)
+        {
+            return new S3TargetFailureList
+            {
+                S3TargetFailures = element.Elements("S3TargetFailure").Select(ParseS3TargetFailure).ToList()
+            };
+        }
+
+        public static S3TargetFailureList ParseNullableS3TargetFailureList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetFailureList(element);
+        }
+        public static S3TargetReadPreferenceList ParseS3TargetReadPreferenceList(XElement element)
+        {
+            return new S3TargetReadPreferenceList
+            {
+                S3TargetReadPreferences = element.Elements("S3TargetReadPreference").Select(ParseS3TargetReadPreference).ToList()
+            };
+        }
+
+        public static S3TargetReadPreferenceList ParseNullableS3TargetReadPreferenceList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetReadPreferenceList(element);
+        }
+        public static S3TargetList ParseS3TargetList(XElement element)
+        {
+            return new S3TargetList
+            {
+                S3Targets = element.Elements("S3Target").Select(ParseS3Target).ToList()
+            };
+        }
+
+        public static S3TargetList ParseNullableS3TargetList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseS3TargetList(element);
         }
         public static SpectraUserList ParseSpectraUserList(XElement element)
         {
@@ -2646,31 +3170,6 @@ namespace Ds3.ResponseParsers
         {
             return ParseDataIsolationLevel(element.Value);
         }
-        public static DataPersistenceRuleState? ParseNullableDataPersistenceRuleState(string dataPersistenceRuleStateOrNull)
-        {
-            return string.IsNullOrWhiteSpace(dataPersistenceRuleStateOrNull)
-                ? (DataPersistenceRuleState?) null
-                : ParseDataPersistenceRuleState(dataPersistenceRuleStateOrNull);
-        }
-
-        public static DataPersistenceRuleState ParseDataPersistenceRuleState(string dataPersistenceRuleState)
-        {
-            return ParseEnumType<DataPersistenceRuleState>(dataPersistenceRuleState);
-        }
-
-        public static DataPersistenceRuleState? ParseNullableDataPersistenceRuleState(XElement element)
-        {
-            if (null == element)
-            {
-                return null;
-            }
-            return ParseNullableDataPersistenceRuleState(element.Value);
-        }
-
-        public static DataPersistenceRuleState ParseDataPersistenceRuleState(XElement element)
-        {
-            return ParseDataPersistenceRuleState(element.Value);
-        }
         public static DataPersistenceRuleType? ParseNullableDataPersistenceRuleType(string dataPersistenceRuleTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(dataPersistenceRuleTypeOrNull)
@@ -2696,6 +3195,31 @@ namespace Ds3.ResponseParsers
         {
             return ParseDataPersistenceRuleType(element.Value);
         }
+        public static DataPlacementRuleState? ParseNullableDataPlacementRuleState(string dataPlacementRuleStateOrNull)
+        {
+            return string.IsNullOrWhiteSpace(dataPlacementRuleStateOrNull)
+                ? (DataPlacementRuleState?) null
+                : ParseDataPlacementRuleState(dataPlacementRuleStateOrNull);
+        }
+
+        public static DataPlacementRuleState ParseDataPlacementRuleState(string dataPlacementRuleState)
+        {
+            return ParseEnumType<DataPlacementRuleState>(dataPlacementRuleState);
+        }
+
+        public static DataPlacementRuleState? ParseNullableDataPlacementRuleState(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableDataPlacementRuleState(element.Value);
+        }
+
+        public static DataPlacementRuleState ParseDataPlacementRuleState(XElement element)
+        {
+            return ParseDataPlacementRuleState(element.Value);
+        }
         public static DataReplicationRuleType? ParseNullableDataReplicationRuleType(string dataReplicationRuleTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(dataReplicationRuleTypeOrNull)
@@ -2720,6 +3244,31 @@ namespace Ds3.ResponseParsers
         public static DataReplicationRuleType ParseDataReplicationRuleType(XElement element)
         {
             return ParseDataReplicationRuleType(element.Value);
+        }
+        public static FeatureKeyType? ParseNullableFeatureKeyType(string featureKeyTypeOrNull)
+        {
+            return string.IsNullOrWhiteSpace(featureKeyTypeOrNull)
+                ? (FeatureKeyType?) null
+                : ParseFeatureKeyType(featureKeyTypeOrNull);
+        }
+
+        public static FeatureKeyType ParseFeatureKeyType(string featureKeyType)
+        {
+            return ParseEnumType<FeatureKeyType>(featureKeyType);
+        }
+
+        public static FeatureKeyType? ParseNullableFeatureKeyType(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableFeatureKeyType(element.Value);
+        }
+
+        public static FeatureKeyType ParseFeatureKeyType(XElement element)
+        {
+            return ParseFeatureKeyType(element.Value);
         }
         public static JobChunkBlobStoreState? ParseNullableJobChunkBlobStoreState(string jobChunkBlobStoreStateOrNull)
         {
@@ -2821,6 +3370,31 @@ namespace Ds3.ResponseParsers
         {
             return ParseLtfsFileNamingMode(element.Value);
         }
+        public static S3InitialDataPlacementPolicy? ParseNullableS3InitialDataPlacementPolicy(string s3InitialDataPlacementPolicyOrNull)
+        {
+            return string.IsNullOrWhiteSpace(s3InitialDataPlacementPolicyOrNull)
+                ? (S3InitialDataPlacementPolicy?) null
+                : ParseS3InitialDataPlacementPolicy(s3InitialDataPlacementPolicyOrNull);
+        }
+
+        public static S3InitialDataPlacementPolicy ParseS3InitialDataPlacementPolicy(string s3InitialDataPlacementPolicy)
+        {
+            return ParseEnumType<S3InitialDataPlacementPolicy>(s3InitialDataPlacementPolicy);
+        }
+
+        public static S3InitialDataPlacementPolicy? ParseNullableS3InitialDataPlacementPolicy(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableS3InitialDataPlacementPolicy(element.Value);
+        }
+
+        public static S3InitialDataPlacementPolicy ParseS3InitialDataPlacementPolicy(XElement element)
+        {
+            return ParseS3InitialDataPlacementPolicy(element.Value);
+        }
         public static S3ObjectType? ParseNullableS3ObjectType(string s3ObjectTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(s3ObjectTypeOrNull)
@@ -2845,6 +3419,31 @@ namespace Ds3.ResponseParsers
         public static S3ObjectType ParseS3ObjectType(XElement element)
         {
             return ParseS3ObjectType(element.Value);
+        }
+        public static S3Region? ParseNullableS3Region(string s3RegionOrNull)
+        {
+            return string.IsNullOrWhiteSpace(s3RegionOrNull)
+                ? (S3Region?) null
+                : ParseS3Region(s3RegionOrNull);
+        }
+
+        public static S3Region ParseS3Region(string s3Region)
+        {
+            return ParseEnumType<S3Region>(s3Region);
+        }
+
+        public static S3Region? ParseNullableS3Region(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableS3Region(element.Value);
+        }
+
+        public static S3Region ParseS3Region(XElement element)
+        {
+            return ParseS3Region(element.Value);
         }
         public static StorageDomainFailureType? ParseNullableStorageDomainFailureType(string storageDomainFailureTypeOrNull)
         {
@@ -3396,30 +3995,30 @@ namespace Ds3.ResponseParsers
         {
             return ParseDs3TargetAccessControlReplication(element.Value);
         }
-        public static Ds3TargetFailureType? ParseNullableDs3TargetFailureType(string ds3TargetFailureTypeOrNull)
+        public static TargetFailureType? ParseNullableTargetFailureType(string targetFailureTypeOrNull)
         {
-            return string.IsNullOrWhiteSpace(ds3TargetFailureTypeOrNull)
-                ? (Ds3TargetFailureType?) null
-                : ParseDs3TargetFailureType(ds3TargetFailureTypeOrNull);
+            return string.IsNullOrWhiteSpace(targetFailureTypeOrNull)
+                ? (TargetFailureType?) null
+                : ParseTargetFailureType(targetFailureTypeOrNull);
         }
 
-        public static Ds3TargetFailureType ParseDs3TargetFailureType(string ds3TargetFailureType)
+        public static TargetFailureType ParseTargetFailureType(string targetFailureType)
         {
-            return ParseEnumType<Ds3TargetFailureType>(ds3TargetFailureType);
+            return ParseEnumType<TargetFailureType>(targetFailureType);
         }
 
-        public static Ds3TargetFailureType? ParseNullableDs3TargetFailureType(XElement element)
+        public static TargetFailureType? ParseNullableTargetFailureType(XElement element)
         {
             if (null == element)
             {
                 return null;
             }
-            return ParseNullableDs3TargetFailureType(element.Value);
+            return ParseNullableTargetFailureType(element.Value);
         }
 
-        public static Ds3TargetFailureType ParseDs3TargetFailureType(XElement element)
+        public static TargetFailureType ParseTargetFailureType(XElement element)
         {
-            return ParseDs3TargetFailureType(element.Value);
+            return ParseTargetFailureType(element.Value);
         }
         public static TargetReadPreferenceType? ParseNullableTargetReadPreferenceType(string targetReadPreferenceTypeOrNull)
         {

@@ -66,8 +66,8 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
-        private DataPersistenceRuleState? _state;
-        public DataPersistenceRuleState? State
+        private DataPlacementRuleState? _state;
+        public DataPlacementRuleState? State
         {
             get { return _state; }
             set { WithState(value); }
@@ -208,7 +208,7 @@ namespace Ds3.Calls
         }
 
         
-        public GetDataPersistenceRulesSpectraS3Request WithState(DataPersistenceRuleState? state)
+        public GetDataPersistenceRulesSpectraS3Request WithState(DataPlacementRuleState? state)
         {
             this._state = state;
             if (state != null)

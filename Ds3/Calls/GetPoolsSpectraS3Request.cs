@@ -52,6 +52,13 @@ namespace Ds3.Calls
             set { WithLastPage(value); }
         }
 
+        private DateTime? _lastVerified;
+        public DateTime? LastVerified
+        {
+            get { return _lastVerified; }
+            set { WithLastVerified(value); }
+        }
+
         private string _name;
         public string Name
         {
@@ -186,6 +193,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("last_page");
+            }
+            return this;
+        }
+
+        
+        public GetPoolsSpectraS3Request WithLastVerified(DateTime? lastVerified)
+        {
+            this._lastVerified = lastVerified;
+            if (lastVerified != null)
+            {
+                this.QueryParams.Add("last_verified", lastVerified.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("last_verified");
             }
             return this;
         }

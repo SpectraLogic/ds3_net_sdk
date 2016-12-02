@@ -24,17 +24,16 @@ namespace Ds3.Models
     {
         public bool AlwaysForcePutJobCreation { get; set; }
         public bool AlwaysMinimizeSpanningAcrossMedia { get; set; }
-        public bool AlwaysReplicateDeletes { get; set; }
         public bool BlobbingEnabled { get; set; }
         public ChecksumType.Type ChecksumType { get; set; }
         public DateTime CreationDate { get; set; }
         public long? DefaultBlobSize { get; set; }
         public Priority DefaultGetJobPriority { get; set; }
         public Priority DefaultPutJobPriority { get; set; }
+        public bool DefaultVerifyAfterWrite { get; set; }
         public Priority DefaultVerifyJobPriority { get; set; }
         public bool EndToEndCrcRequired { get; set; }
         public Guid Id { get; set; }
-        public bool LtfsObjectNamingAllowed { get; set; }
         public string Name { get; set; }
         public Priority RebuildPriority { get; set; }
         public VersioningLevel Versioning { get; set; }

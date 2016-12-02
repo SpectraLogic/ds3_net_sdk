@@ -38,13 +38,6 @@ namespace Ds3.Calls
             set { WithAlwaysMinimizeSpanningAcrossMedia(value); }
         }
 
-        private bool? _alwaysReplicateDeletes;
-        public bool? AlwaysReplicateDeletes
-        {
-            get { return _alwaysReplicateDeletes; }
-            set { WithAlwaysReplicateDeletes(value); }
-        }
-
         private ChecksumType.Type? _checksumType;
         public ChecksumType.Type? ChecksumType
         {
@@ -120,21 +113,6 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("always_minimize_spanning_across_media");
-            }
-            return this;
-        }
-
-        
-        public GetDataPoliciesSpectraS3Request WithAlwaysReplicateDeletes(bool? alwaysReplicateDeletes)
-        {
-            this._alwaysReplicateDeletes = alwaysReplicateDeletes;
-            if (alwaysReplicateDeletes != null)
-            {
-                this.QueryParams.Add("always_replicate_deletes", alwaysReplicateDeletes.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("always_replicate_deletes");
             }
             return this;
         }
