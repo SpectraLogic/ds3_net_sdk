@@ -26,7 +26,7 @@ namespace Ds3.Models
         public Guid Id { get; set; }
         public DataIsolationLevel IsolationLevel { get; set; }
         public int? MinimumDaysToRetain { get; set; }
-        public DataPersistenceRuleState State { get; set; }
+        public DataPlacementRuleState State { get; set; }
         public Guid StorageDomainId { get; set; }
         public DataPersistenceRuleType Type { get; set; }
     }

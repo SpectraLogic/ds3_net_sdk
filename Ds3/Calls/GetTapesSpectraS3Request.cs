@@ -31,6 +31,13 @@ namespace Ds3.Calls
             set { WithAssignedToStorageDomain(value); }
         }
 
+        private long? _availableRawCapacity;
+        public long? AvailableRawCapacity
+        {
+            get { return _availableRawCapacity; }
+            set { WithAvailableRawCapacity(value); }
+        }
+
         private string _barCode;
         public string BarCode
         {
@@ -71,6 +78,13 @@ namespace Ds3.Calls
         {
             get { return _lastPage; }
             set { WithLastPage(value); }
+        }
+
+        private DateTime? _lastVerified;
+        public DateTime? LastVerified
+        {
+            get { return _lastVerified; }
+            set { WithLastVerified(value); }
         }
 
         private int? _pageLength;
@@ -143,6 +157,13 @@ namespace Ds3.Calls
             set { WithType(value); }
         }
 
+        private Priority? _verifyPending;
+        public Priority? VerifyPending
+        {
+            get { return _verifyPending; }
+            set { WithVerifyPending(value); }
+        }
+
         private bool? _writeProtected;
         public bool? WriteProtected
         {
@@ -161,6 +182,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("assigned_to_storage_domain");
+            }
+            return this;
+        }
+
+        
+        public GetTapesSpectraS3Request WithAvailableRawCapacity(long? availableRawCapacity)
+        {
+            this._availableRawCapacity = availableRawCapacity;
+            if (availableRawCapacity != null)
+            {
+                this.QueryParams.Add("available_raw_capacity", availableRawCapacity.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("available_raw_capacity");
             }
             return this;
         }
@@ -266,6 +302,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("last_page");
+            }
+            return this;
+        }
+
+        
+        public GetTapesSpectraS3Request WithLastVerified(DateTime? lastVerified)
+        {
+            this._lastVerified = lastVerified;
+            if (lastVerified != null)
+            {
+                this.QueryParams.Add("last_verified", lastVerified.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("last_verified");
             }
             return this;
         }
@@ -461,6 +512,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("type");
+            }
+            return this;
+        }
+
+        
+        public GetTapesSpectraS3Request WithVerifyPending(Priority? verifyPending)
+        {
+            this._verifyPending = verifyPending;
+            if (verifyPending != null)
+            {
+                this.QueryParams.Add("verify_pending", verifyPending.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("verify_pending");
             }
             return this;
         }

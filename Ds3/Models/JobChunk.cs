@@ -29,8 +29,10 @@ namespace Ds3.Models
         public Guid JobId { get; set; }
         public Guid? NodeId { get; set; }
         public bool PendingTargetCommit { get; set; }
+        public Guid? ReadFromAzureTargetId { get; set; }
         public Guid? ReadFromDs3TargetId { get; set; }
         public Guid? ReadFromPoolId { get; set; }
+        public Guid? ReadFromS3TargetId { get; set; }
         public Guid? ReadFromTapeId { get; set; }
     }
 }

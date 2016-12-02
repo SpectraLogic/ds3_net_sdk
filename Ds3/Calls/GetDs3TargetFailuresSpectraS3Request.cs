@@ -66,8 +66,8 @@ namespace Ds3.Calls
             set { WithTargetId(value); }
         }
 
-        private Ds3TargetFailureType? _type;
-        public Ds3TargetFailureType? Type
+        private TargetFailureType? _type;
+        public TargetFailureType? Type
         {
             get { return _type; }
             set { WithType(value); }
@@ -194,7 +194,7 @@ namespace Ds3.Calls
         }
 
         
-        public GetDs3TargetFailuresSpectraS3Request WithType(Ds3TargetFailureType? type)
+        public GetDs3TargetFailuresSpectraS3Request WithType(TargetFailureType? type)
         {
             this._type = type;
             if (type != null)

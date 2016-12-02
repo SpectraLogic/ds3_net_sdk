@@ -26,6 +26,6 @@ namespace Ds3.Models
         public string ErrorMessage { get; set; }
         public Guid Id { get; set; }
         public Guid TargetId { get; set; }
-        public Ds3TargetFailureType Type { get; set; }
+        public TargetFailureType Type { get; set; }
     }
 }

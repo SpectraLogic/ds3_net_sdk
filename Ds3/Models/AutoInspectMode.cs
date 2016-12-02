@@ -21,6 +21,6 @@ namespace Ds3.Models
     {
         NEVER,
         MINIMAL,
-        DEFAULT
+        FULL
     }
 }
