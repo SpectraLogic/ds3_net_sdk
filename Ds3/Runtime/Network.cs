@@ -13,35 +13,41 @@
  * ****************************************************************************
  */
 
+using Ds3.Calls;
+using Ds3.Models;
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-
-using Ds3.Models;
-using Ds3.Calls;
 
 namespace Ds3.Runtime
 {
     internal class Network : INetwork
     {
-        private static readonly TraceSwitch SdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
+        #region Internal Fields
 
         internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
-
-        private readonly Uri _endpoint;
-        private readonly Credentials _creds;
-        private readonly int _redirectRetryCount;
-        private readonly int _readWriteTimeout;
-        private readonly int _requestTimeout;
-        private readonly int _connectionLimit;
-
         internal Uri Proxy = null;
-        private readonly char[] _noChars = new char[0];
 
+        #endregion Internal Fields
+
+        #region Private Fields
+
+        private static readonly TraceSwitch SdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
+        private readonly int _connectionLimit;
         private readonly Func<Ds3Request, Stream, IWebRequest> _createDs3WebRequestFunc;
+        private readonly Credentials _creds;
+        private readonly Uri _endpoint;
+        private readonly char[] _noChars = new char[0];
+        private readonly int _readWriteTimeout;
+        private readonly int _redirectRetryCount;
+        private readonly int _requestTimeout;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public Network(
             Uri endpoint,
@@ -63,6 +69,10 @@ namespace Ds3.Runtime
             _createDs3WebRequestFunc = this.CreateDs3WebRequest;
         }
 
+        #endregion Public Constructors
+
+        #region Internal Constructors
+
         internal Network(
             Uri endpoint,
             Credentials creds,
@@ -76,7 +86,15 @@ namespace Ds3.Runtime
             _createDs3WebRequestFunc = createDs3WebRequestFunc;
         }
 
+        #endregion Internal Constructors
+
+        #region Public Properties
+
         public int CopyBufferSize { get; private set; }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public IWebResponse Invoke(Ds3Request request)
         {
@@ -122,6 +140,68 @@ namespace Ds3.Runtime
             throw new Ds3RedirectLimitException(Resources.TooManyRedirectsException, redirectCount);
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static string ComputeChecksum(ChecksumType checksum, Stream content, ChecksumType.Type type = ChecksumType.Type.MD5)
+        {
+            return checksum.Match(
+                () => "",
+                () =>
+                {
+                    switch (type)
+                    {
+                        case ChecksumType.Type.MD5:
+                            return Convert.ToBase64String(System.Security.Cryptography.MD5.Create().ComputeHash(content));
+
+                        case ChecksumType.Type.SHA_256:
+                            return
+                                Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(content));
+                        case ChecksumType.Type.SHA_512:
+                            return
+                                Convert.ToBase64String(System.Security.Cryptography.SHA512.Create().ComputeHash(content));
+                        case ChecksumType.Type.CRC_32:
+                            return
+                                Convert.ToBase64String(Ds3.Models.Crc32.Create().ComputeHash(content));
+                        case ChecksumType.Type.CRC_32C:
+                            return
+                                Convert.ToBase64String(Ds3.Models.Crc32C.Create().ComputeHash(content));
+                        default:
+                            return "";
+                    }
+                },
+                hash => Convert.ToBase64String(hash)
+                );
+        }
+
+        private static string CreateHostString(Uri endpoint)
+        {
+            if (endpoint.Port > 0)
+            {
+                return endpoint.Host + ":" + endpoint.Port;
+            }
+            return endpoint.Host;
+        }
+
+        private static bool Is307(IWebResponse httpResponse)
+        {
+            return httpResponse.StatusCode.Equals(HttpStatusCode.TemporaryRedirect);
+        }
+
+        private string BuildQueryParams(Dictionary<string, string> queryParams)
+        {
+            return String.Join(
+                "&",
+                from kvp in queryParams
+                orderby kvp.Key
+                let encodedKey = HttpHelper.PercentEncodePath(kvp.Key, _noChars)
+                select kvp.Value != null && kvp.Value.Length > 0
+                    ? encodedKey + "=" + HttpHelper.PercentEncodePath(kvp.Value, _noChars)
+                    : encodedKey
+            );
+        }
+
         private IWebRequest CreateDs3WebRequest(Ds3Request request, Stream content)
         {
             if (request.Verb == HttpVerb.PUT || request.Verb == HttpVerb.POST)
@@ -165,6 +245,8 @@ namespace Ds3.Runtime
             }
             httpRequest.ReadWriteTimeout = this._readWriteTimeout;
             httpRequest.Timeout = this._requestTimeout;
+            httpRequest.UserAgent = "Spectra S3 .Net Client";
+            httpRequest.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.BypassCache);
 
             var chucksumValue = ComputeChecksum(request.ChecksumValue, content, request.CType);
             if (!string.IsNullOrEmpty(chucksumValue))
@@ -175,18 +257,22 @@ namespace Ds3.Runtime
                         if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("MD5 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
                         break;
+
                     case ChecksumType.Type.SHA_256:
                         if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-256 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
                         break;
+
                     case ChecksumType.Type.SHA_512:
                         if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("SHA-512 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
                         break;
+
                     case ChecksumType.Type.CRC_32:
                         if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32, chucksumValue);
                         break;
+
                     case ChecksumType.Type.CRC_32C:
                         if (SdkNetworkSwitch.TraceVerbose) Trace.WriteLine(string.Format("Crc32C checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32C, chucksumValue);
@@ -277,66 +363,11 @@ namespace Ds3.Runtime
             return new Ds3WebRequest(httpRequest);
         }
 
-        private static string ComputeChecksum(ChecksumType checksum, Stream content, ChecksumType.Type type = ChecksumType.Type.MD5)
-        {
-            return checksum.Match(
-                () => "",
-                () =>
-                {
-                    switch (type)
-                    {
-                        case ChecksumType.Type.MD5:
-                            return Convert.ToBase64String(System.Security.Cryptography.MD5.Create().ComputeHash(content));
-                        case ChecksumType.Type.SHA_256:
-                            return
-                                Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(content));
-                        case ChecksumType.Type.SHA_512:
-                            return
-                                Convert.ToBase64String(System.Security.Cryptography.SHA512.Create().ComputeHash(content));
-                        case ChecksumType.Type.CRC_32:
-                            return
-                                Convert.ToBase64String(Ds3.Models.Crc32.Create().ComputeHash(content));
-                        case ChecksumType.Type.CRC_32C:
-                            return
-                                Convert.ToBase64String(Ds3.Models.Crc32C.Create().ComputeHash(content));
-                        default:
-                            return "";
-                    }
-                },
-                hash => Convert.ToBase64String(hash)
-                );
-        }
-
-        private static string CreateHostString(Uri endpoint)
-        {
-            if (endpoint.Port > 0)
-            {
-                return endpoint.Host + ":" + endpoint.Port;
-            }
-            return endpoint.Host;
-        }
-
-        private static bool Is307(IWebResponse httpResponse)
-        {
-            return httpResponse.StatusCode.Equals(HttpStatusCode.TemporaryRedirect);
-        }
-
         private string FormatedDateString()
         {
             return DateTime.Now.ToString("ddd, dd MMM yyyy HH:mm:ss K");
         }
 
-        private string BuildQueryParams(Dictionary<string, string> queryParams)
-        {
-            return String.Join(
-                "&",
-                from kvp in queryParams
-                orderby kvp.Key
-                let encodedKey = HttpHelper.PercentEncodePath(kvp.Key, _noChars)
-                select kvp.Value != null && kvp.Value.Length > 0
-                    ? encodedKey + "=" + HttpHelper.PercentEncodePath(kvp.Value, _noChars)
-                    : encodedKey
-            );
-        }
+        #endregion Private Methods
     }
 }
