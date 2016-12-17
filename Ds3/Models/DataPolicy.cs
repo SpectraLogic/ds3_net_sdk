@@ -24,7 +24,7 @@ namespace Ds3.Models
     {
         public bool AlwaysForcePutJobCreation { get; set; }
         public bool AlwaysMinimizeSpanningAcrossMedia { get; set; }
-        public bool AlwaysReplicateDeletes { get; set; }
+        public bool? AlwaysReplicateDeletes { get; set; }
         public bool BlobbingEnabled { get; set; }
         public ChecksumType.Type ChecksumType { get; set; }
         public DateTime CreationDate { get; set; }
@@ -34,7 +34,7 @@ namespace Ds3.Models
         public Priority DefaultVerifyJobPriority { get; set; }
         public bool EndToEndCrcRequired { get; set; }
         public Guid Id { get; set; }
-        public bool LtfsObjectNamingAllowed { get; set; }
+        public bool? LtfsObjectNamingAllowed { get; set; }
         public string Name { get; set; }
         public Priority RebuildPriority { get; set; }
         public VersioningLevel Versioning { get; set; }
