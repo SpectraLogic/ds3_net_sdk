@@ -223,7 +223,7 @@ namespace Ds3.ResponseParsers
             {
                 AlwaysForcePutJobCreation = ParseBool(element.Element("AlwaysForcePutJobCreation")),
                 AlwaysMinimizeSpanningAcrossMedia = ParseBool(element.Element("AlwaysMinimizeSpanningAcrossMedia")),
-                AlwaysReplicateDeletes = ParseBool(element.Element("AlwaysReplicateDeletes")),
+                AlwaysReplicateDeletes = ParseNullableBool(element.Element("AlwaysReplicateDeletes")),
                 BlobbingEnabled = ParseBool(element.Element("BlobbingEnabled")),
                 ChecksumType = ParseChecksumType(element.Element("ChecksumType")),
                 CreationDate = ParseDateTime(element.Element("CreationDate")),
@@ -233,7 +233,7 @@ namespace Ds3.ResponseParsers
                 DefaultVerifyJobPriority = ParsePriority(element.Element("DefaultVerifyJobPriority")),
                 EndToEndCrcRequired = ParseBool(element.Element("EndToEndCrcRequired")),
                 Id = ParseGuid(element.Element("Id")),
-                LtfsObjectNamingAllowed = ParseBool(element.Element("LtfsObjectNamingAllowed")),
+                LtfsObjectNamingAllowed = ParseNullableBool(element.Element("LtfsObjectNamingAllowed")),
                 Name = ParseNullableString(element.Element("Name")),
                 RebuildPriority = ParsePriority(element.Element("RebuildPriority")),
                 Versioning = ParseVersioningLevel(element.Element("Versioning"))
