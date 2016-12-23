@@ -33,6 +33,13 @@ namespace Ds3.Calls
             set { WithMaxBlobPartSizeInBytes(value); }
         }
 
+        private bool? _replicateDeletes;
+        public bool? ReplicateDeletes
+        {
+            get { return _replicateDeletes; }
+            set { WithReplicateDeletes(value); }
+        }
+
         private DataReplicationRuleType? _type;
         public DataReplicationRuleType? Type
         {
@@ -51,6 +58,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("max_blob_part_size_in_bytes");
+            }
+            return this;
+        }
+
+        
+        public ModifyAzureDataReplicationRuleSpectraS3Request WithReplicateDeletes(bool? replicateDeletes)
+        {
+            this._replicateDeletes = replicateDeletes;
+            if (replicateDeletes != null)
+            {
+                this.QueryParams.Add("replicate_deletes", replicateDeletes.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("replicate_deletes");
             }
             return this;
         }
