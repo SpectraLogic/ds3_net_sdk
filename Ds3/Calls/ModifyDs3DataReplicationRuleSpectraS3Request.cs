@@ -26,6 +26,13 @@ namespace Ds3.Calls
         public string Ds3DataReplicationRule { get; private set; }
 
         
+        private bool? _replicateDeletes;
+        public bool? ReplicateDeletes
+        {
+            get { return _replicateDeletes; }
+            set { WithReplicateDeletes(value); }
+        }
+
         private string _targetDataPolicy;
         public string TargetDataPolicy
         {
@@ -38,6 +45,21 @@ namespace Ds3.Calls
         {
             get { return _type; }
             set { WithType(value); }
+        }
+
+        
+        public ModifyDs3DataReplicationRuleSpectraS3Request WithReplicateDeletes(bool? replicateDeletes)
+        {
+            this._replicateDeletes = replicateDeletes;
+            if (replicateDeletes != null)
+            {
+                this.QueryParams.Add("replicate_deletes", replicateDeletes.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("replicate_deletes");
+            }
+            return this;
         }
 
         
