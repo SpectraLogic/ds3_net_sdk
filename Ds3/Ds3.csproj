@@ -1194,6 +1194,7 @@
     <Compile Include="ResponseParsers\VerifySystemHealthSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyUserIsMemberOfGroupSpectraS3ResponseParser.cs" />
+    <Compile Include="Runtime\CustomPercentEscaper.cs" />
     <Compile Include="Runtime\Ds3AssertException.cs" />
     <Compile Include="Runtime\Ds3ForbiddenPriorityException.cs" />
     <Compile Include="Runtime\Ds3MaxJobsException.cs" />
@@ -1283,6 +1284,7 @@
     <Compile Include="Runtime\HttpHelper.cs" />
     <Compile Include="Runtime\INetwork.cs" />
     <Compile Include="Runtime\IWebResponse.cs" />
+    <Compile Include="Runtime\MetadataUtil.cs" />
     <Compile Include="Runtime\Network.cs" />
     <Compile Include="Runtime\RuntimeUtils.cs" />
     <Compile Include="Runtime\S3Signer.cs" />
