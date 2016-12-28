@@ -32,7 +32,7 @@ namespace Ds3.Helpers.TransferStrategies
 
                 if (transferStrategyOptions.BlobOffset == 0 && transferStrategyOptions.MetadataAccess != null)
                 {
-                    request.WithMetadata(MetadataUtils.GetUriEscapeMetadata(transferStrategyOptions.MetadataAccess.GetMetadataValue(transferStrategyOptions.ObjectName)));
+                    request.WithMetadata(transferStrategyOptions.MetadataAccess.GetMetadataValue(transferStrategyOptions.ObjectName));
                 }
 
                 if (transferStrategyOptions.Checksum != null)
