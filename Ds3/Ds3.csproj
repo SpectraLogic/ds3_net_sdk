@@ -695,7 +695,6 @@
     <Compile Include="Helpers\Ds3ReadJobOptions.cs" />
     <Compile Include="Helpers\Ds3WriteJobOptions.cs" />
     <Compile Include="Helpers\IMetadataAccess.cs" />
-    <Compile Include="Helpers\MetaDataUtils.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ChunkUtils.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\IChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ReadStreamChunkStrategy.cs" />
@@ -1286,6 +1285,8 @@
     <Compile Include="Runtime\IWebResponse.cs" />
     <Compile Include="Runtime\MetadataUtil.cs" />
     <Compile Include="Runtime\Network.cs" />
+    <Compile Include="Runtime\IRequestHeaders.cs" />
+    <Compile Include="Runtime\RequestHeaders.cs" />
     <Compile Include="Runtime\RuntimeUtils.cs" />
     <Compile Include="Runtime\S3Signer.cs" />
     <Compile Include="Runtime\Ds3WebResponse.cs" />

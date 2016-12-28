@@ -146,5 +146,93 @@ namespace TestDs3.Runtime
             var decoded = MetadataUtil.UnescapeMetadata(encoded);
             Assert.AreEqual(decoded, metadata);
         }
+
+        [Test]
+        public void TestEscapeMetadataWithEmptyDic()
+        {
+            var emptyMetadata = new Dictionary<string, string>();
+            CollectionAssert.AreEqual(emptyMetadata,
+                MetadataUtil.EscapeMetadata(new Dictionary<string, string>()));
+        }
+
+        [Test]
+        public void TestEscapeMetadataWithEnglishDic()
+        {
+            var metadata = new Dictionary<string, string>
+            {
+                {"key1", "value1"},
+                {"key 2", "value 2"}
+            };
+
+            var expected = new Dictionary<string, string>
+            {
+                {"key1", "value1"},
+                {"key%202", "value%202"}
+            };
+
+            CollectionAssert.AreEqual(expected, MetadataUtil.EscapeMetadata(metadata));
+        }
+
+        [Test]
+        public void TestEscapeMetadataWithHebrewDic()
+        {
+            var metadata = new Dictionary<string, string>
+            {
+                { "מפתח 1", "ערך 1"},
+                { "מפתח 2", "ערך 2"}
+            };
+
+            var expected = new Dictionary<string, string>
+            {
+                {"%D7%9E%D7%A4%D7%AA%D7%97%201", "%D7%A2%D7%A8%D7%9A%201"},
+                {"%D7%9E%D7%A4%D7%AA%D7%97%202", "%D7%A2%D7%A8%D7%9A%202"}
+            };
+
+            CollectionAssert.AreEqual(expected, MetadataUtil.EscapeMetadata(metadata));
+        }
+
+        [Test]
+        public void TestUnescapeMetadataWithEmptyDic()
+        {
+            var emptyMetadata = new Dictionary<string, string>();
+            CollectionAssert.AreEqual(emptyMetadata,
+                MetadataUtil.UnescapeMetadata(new Dictionary<string, string>()));
+        }
+
+        [Test]
+        public void TestUnescapeMetadataWithEnglishDic()
+        {
+            var expected = new Dictionary<string, string>
+            {
+                {"key1", "value1"},
+                {"key 2", "value 2"}
+            };
+
+            var metadata = new Dictionary<string, string>
+            {
+                {"key1", "value1"},
+                {"key%202", "value%202"}
+            };
+
+            CollectionAssert.AreEqual(expected, MetadataUtil.UnescapeMetadata(metadata));
+        }
+
+        [Test]
+        public void TestUnescapeMetadataWithHebrewDic()
+        {
+            var expected = new Dictionary<string, string>
+            {
+                { "מפתח 1", "ערך 1"},
+                { "מפתח 2", "ערך 2"}
+            };
+
+            var metadata = new Dictionary<string, string>
+            {
+                {"%D7%9E%D7%A4%D7%AA%D7%97%201", "%D7%A2%D7%A8%D7%9A%201"},
+                {"%D7%9E%D7%A4%D7%AA%D7%97%202", "%D7%A2%D7%A8%D7%9A%202"}
+            };
+
+            CollectionAssert.AreEqual(expected, MetadataUtil.UnescapeMetadata(metadata));
+        }
     }
 }

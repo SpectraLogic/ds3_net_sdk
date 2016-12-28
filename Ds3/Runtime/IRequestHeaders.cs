@@ -13,26 +13,15 @@
  * ****************************************************************************
  */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Ds3.Helpers
+namespace Ds3.Runtime
 {
-    public static class MetadataUtils
+    interface IRequestHeaders
     {
-        public static IDictionary<string, string> GetUriEscapeMetadata(IDictionary<string, string> metadata)
-        {
-            return metadata.ToDictionary(
-                data => Uri.EscapeDataString(data.Key),
-                data => Uri.EscapeDataString(data.Value));
-        }
-
-        public static IDictionary<string, string> GetUriUnEscapeMetadata(IDictionary<string, string> metadata)
-        {
-            return metadata.ToDictionary(
-                data => Uri.UnescapeDataString(data.Key),
-                data => Uri.UnescapeDataString(data.Value));
-        }
+        Dictionary<string, string> Headers { get; }
+        Dictionary<string, string>.KeyCollection Keys();
+        bool Remove(string key);
+        void Add(string key, string value);
     }
 }
