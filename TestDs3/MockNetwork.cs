@@ -64,7 +64,7 @@ namespace TestDs3
             CollectionAssert.AreEquivalent(_queryParams, request.QueryParams);
             if (_requestHeaders != null)
             {
-                CollectionAssert.AreEquivalent(_requestHeaders, request.Headers);
+                CollectionAssert.AreEquivalent(_requestHeaders, request.Headers.Headers);
             }
             Assert.AreEqual(_requestContent, HelpersForTest.StringFromStream(request.GetContentStream()));
             return new MockWebResponse(_responseContent, _statusCode, _responseHeaders);

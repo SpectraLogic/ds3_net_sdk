@@ -202,7 +202,7 @@ namespace Ds3.Runtime
                 request.Path,
                 request.QueryParams,
                 chucksumValue,
-                amzHeaders: request.Headers
+                amzHeaders: request.Headers.Headers
             ));
 
             foreach (var byteRange in request.GetByteRanges())
@@ -210,7 +210,7 @@ namespace Ds3.Runtime
                 httpRequest.AddRange(byteRange.Start, byteRange.End);
             }
 
-            foreach (var header in request.Headers)
+            foreach (var header in request.Headers.Headers)
             {
                 httpRequest.Headers.Add(header.Key, header.Value);
             }
