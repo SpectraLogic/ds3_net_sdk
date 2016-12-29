@@ -46,9 +46,14 @@ namespace Ds3.Runtime
             get { return _headers ?? (_headers = ConvertToDictionary(_webResponse.Headers)); }
         }
 
+        /// <summary>
+        /// Converts the WebHeaderCollection into a header dictionary and percent-decodes the key and header values
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <returns></returns>
         private static IDictionary<string, string> ConvertToDictionary(WebHeaderCollection headers)
         {
-            return headers.Keys.Cast<string>().ToDictionary(key => key.ToLowerInvariant(), key => headers[key]);
+            return headers.Keys.Cast<string>().ToDictionary(key => MetadataUtil.UnescapeString(key).ToLowerInvariant(), key => MetadataUtil.UnescapeString(headers[key]));
         }
 
         public void Dispose()
