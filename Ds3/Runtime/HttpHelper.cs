@@ -18,19 +18,16 @@ namespace Ds3.Runtime
 {
     internal static class HttpHelper
     {
-        private static readonly char[] _hexChars = new char[] {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-        };
 
         /// <summary>
         /// Specified as "Unreserved" by the RFC
         /// </summary>
-        private static readonly char[] _unreservedCharsParam = { '-', '.', '_', '~', '(', ')' };
+        private static readonly char[] UnreservedCharsParam = { '-', '.', '_', '~', '(', ')' };
 
         /// <summary>
         /// Specified as "Unreserved" by the RFC, plus (+), and forward slash (/)
         /// </summary>
-        private static readonly char[] _unreservedCharsPath = { '-', '.', '_', '~', '(', ')' , '+', '/' };
+        private static readonly char[] UnreservedCharsPath = { '-', '.', '_', '~', '(', ')' , '+', '/' };
 
         /// <summary>
         /// Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
@@ -46,7 +43,7 @@ namespace Ds3.Runtime
         /// <returns></returns>
         public static string PercentEncodePath(string path)
         {
-            return CustomPercentEscaper.PercentEncode(path, _unreservedCharsPath);
+            return CustomPercentEscaper.PercentEncode(path, UnreservedCharsPath);
         }
 
         /// <summary>
@@ -63,7 +60,7 @@ namespace Ds3.Runtime
         /// <returns></returns>
         public static string PercentEncodeParam(string path)
         {
-            return CustomPercentEscaper.PercentEncode(path, _unreservedCharsParam);
+            return CustomPercentEscaper.PercentEncode(path, UnreservedCharsParam);
         }
     }
 }

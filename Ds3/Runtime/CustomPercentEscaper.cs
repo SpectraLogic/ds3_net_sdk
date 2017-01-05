@@ -20,7 +20,7 @@ namespace Ds3.Runtime
 {
     internal static class CustomPercentEscaper
     {
-        private static readonly char[] _hexChars = new char[] {
+        private static readonly char[] HexChars = new char[] {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
         };
 
@@ -56,8 +56,8 @@ namespace Ds3.Runtime
                     for (var i = 0; i < count; i++)
                     {
                         sb.Append('%');
-                        sb.Append(_hexChars[byteBuffer[i] >> 4]);
-                        sb.Append(_hexChars[byteBuffer[i] & 0x0f]);
+                        sb.Append(HexChars[byteBuffer[i] >> 4]);
+                        sb.Append(HexChars[byteBuffer[i] & 0x0f]);
                     }
                 }
             }
