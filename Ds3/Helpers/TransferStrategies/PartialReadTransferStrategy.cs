@@ -28,7 +28,7 @@ namespace Ds3.Helpers.TransferStrategies
 
             if (transferStrategyOptions.BlobOffset == 0)
             {
-                transferStrategyOptions.MetadataListener?.Invoke(transferStrategyOptions.ObjectName, MetadataUtils.GetUriUnEscapeMetadata(response.Metadata));
+                transferStrategyOptions.MetadataListener?.Invoke(transferStrategyOptions.ObjectName, response.Metadata);
             }
         }
     }

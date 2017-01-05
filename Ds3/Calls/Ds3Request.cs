@@ -14,6 +14,7 @@
  */
 
 using Ds3.Models;
+using Ds3.Runtime;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -63,12 +64,16 @@ namespace Ds3.Calls
             get { return _queryParams; }
         }
 
-        private Dictionary<string, string> _headers = new Dictionary<string, string>()
-        {
-             { "Naming-Convention", "s3" }
-        };
+        private IRequestHeaders _headers = InitRequestHeaders();
 
-        internal virtual Dictionary<string, string> Headers
+        internal static IRequestHeaders InitRequestHeaders()
+        {
+            IRequestHeaders rh = new RequestHeaders();
+            rh.Add("Naming-Convention", "s3");
+            return rh;
+        }
+
+        internal virtual IRequestHeaders Headers
         {
             get { return _headers; }
         }

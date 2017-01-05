@@ -87,7 +87,6 @@
     <Compile Include="Helpers\Strategies\TestHelperStrategy.cs" />
     <Compile Include="Helpers\Streams\TestPutObjectRequestStream.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\TransferItemSourceHelpers.cs" />
-    <Compile Include="Helpers\TestMetadataUtils.cs" />
     <Compile Include="Helpers\TransferStrategies\NonSeekableStream.cs" />
     <Compile Include="Helpers\TransferStrategies\TestBestEffort.cs" />
     <Compile Include="Helpers\TransferStrategies\TestPartialDataTransferrerDecorator.cs" />
@@ -112,6 +111,8 @@
     <Compile Include="HelpersForTest.cs" />
     <Compile Include="MockNetwork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\TestMetadataUtil.cs" />
+    <Compile Include="Runtime\TestRequestHeaders.cs" />
     <Compile Include="Runtime\TestS3Signer.cs" />
     <Compile Include="Runtime\TestWebStream.cs" />
     <Compile Include="TestDs3Client.cs" />

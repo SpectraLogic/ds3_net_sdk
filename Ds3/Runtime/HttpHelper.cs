@@ -13,16 +13,21 @@
  * ****************************************************************************
  */
 
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ds3.Runtime
 {
     internal static class HttpHelper
     {
-        private static readonly char[] _hexChars = new char[] {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-        };
+
+        /// <summary>
+        /// Specified as "Unreserved" by the RFC
+        /// </summary>
+        private static readonly char[] UnreservedCharsParam = { '-', '.', '_', '~', '(', ')' };
+
+        /// <summary>
+        /// Specified as "Unreserved" by the RFC, plus (+), and forward slash (/)
+        /// </summary>
+        private static readonly char[] UnreservedCharsPath = { '-', '.', '_', '~', '(', ')' , '+', '/' };
 
         /// <summary>
         /// Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
@@ -38,7 +43,7 @@ namespace Ds3.Runtime
         /// <returns></returns>
         public static string PercentEncodePath(string path)
         {
-            return PercentEncodePath(path, '/', '+');
+            return CustomPercentEscaper.PercentEncode(path, UnreservedCharsPath);
         }
 
         /// <summary>
@@ -52,47 +57,10 @@ namespace Ds3.Runtime
         /// methods are incomplete in one way or another.
         /// </summary>
         /// <param name="path"></param>
-        /// <param name="allowedChars"></param>
         /// <returns></returns>
-        public static string PercentEncodePath(string path, params char[] allowedChars)
+        public static string PercentEncodeParam(string path)
         {
-            var sb = new StringBuilder();
-            var charBuffer = new char[1];
-            var byteBuffer = new byte[4];
-            var allowedCharSet = new HashSet<char>(allowedChars);
-            foreach (var ch in path)
-            {
-                if (IsUnreserved(ch) || allowedCharSet.Contains(ch))
-                {
-                    sb.Append(ch);
-                }
-                else
-                {
-                    charBuffer[0] = ch;
-                    var count = Encoding.UTF8.GetBytes(charBuffer, 0, 1, byteBuffer, 0);
-                    for (var i = 0; i < count; i++)
-                    {
-                        sb.Append('%');
-                        sb.Append(_hexChars[byteBuffer[i] >> 4]);
-                        sb.Append(_hexChars[byteBuffer[i] & 0x0f]);
-                    }
-                }
-            }
-            return sb.ToString();
-        }
-
-        private static bool IsUnreserved(char ch)
-        {
-            return
-                ('a' <= ch && ch <= 'z')
-                || ('A' <= ch && ch <= 'Z')
-                || ('0' <= ch && ch <= '9')
-                || (ch == '-')
-                || (ch == '.')
-                || (ch == '_')
-                || (ch == '~')
-                || (ch == '(')
-                || (ch == ')');
+            return CustomPercentEscaper.PercentEncode(path, UnreservedCharsParam);
         }
     }
 }

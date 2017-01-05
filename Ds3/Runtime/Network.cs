@@ -39,7 +39,6 @@ namespace Ds3.Runtime
         private readonly int _connectionLimit;
 
         internal Uri Proxy = null;
-        private readonly char[] _noChars = new char[0];
 
         private readonly Func<Ds3Request, Stream, IWebRequest> _createDs3WebRequestFunc;
 
@@ -203,7 +202,7 @@ namespace Ds3.Runtime
                 request.Path,
                 request.QueryParams,
                 chucksumValue,
-                amzHeaders: request.Headers
+                amzHeaders: request.Headers.Headers
             ));
 
             foreach (var byteRange in request.GetByteRanges())
@@ -211,7 +210,7 @@ namespace Ds3.Runtime
                 httpRequest.AddRange(byteRange.Start, byteRange.End);
             }
 
-            foreach (var header in request.Headers)
+            foreach (var header in request.Headers.Headers)
             {
                 httpRequest.Headers.Add(header.Key, header.Value);
             }
@@ -334,9 +333,9 @@ namespace Ds3.Runtime
                 "&",
                 from kvp in queryParams
                 orderby kvp.Key
-                let encodedKey = HttpHelper.PercentEncodePath(kvp.Key, _noChars)
+                let encodedKey = HttpHelper.PercentEncodeParam(kvp.Key)
                 select kvp.Value != null && kvp.Value.Length > 0
-                    ? encodedKey + "=" + HttpHelper.PercentEncodePath(kvp.Value, _noChars)
+                    ? encodedKey + "=" + HttpHelper.PercentEncodeParam(kvp.Value)
                     : encodedKey
             );
         }
