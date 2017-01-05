@@ -23,7 +23,7 @@ namespace Ds3.Runtime
     /// Percent encodes and decodes metadata keys and values. The encoding comforms to the HTTP header
     /// key requirements. Header keys contain only printable US-ASCII characters that are non-separators.
     /// </summary>
-    class MetadataUtil
+    static class MetadataUtil
     {
         /// <summary>
         /// List of printable US-ASCII characters that do not need percent encoding.
@@ -32,11 +32,11 @@ namespace Ds3.Runtime
         /// Excludes Percent "%": not considered safe because it is used in percent encoding
         /// Excludes Plus "+": not considered safe because its interpreted as space during decoding
         /// </summary>
-        private static readonly char[] _allowedChars = { '!', '#', '$', '&', '\'', '*', '-', '.', '~', '^', '_', '`', '|', ',', '=' };
+        private static readonly char[] AllowedChars = { '!', '#', '$', '&', '\'', '*', '-', '.', '~', '^', '_', '`', '|', ',', '=' };
 
         /// <summary>
         /// Percent encodes non-alpha-numeric characters within the specified string
-        /// excluding the symbols listed in <see cref="_allowedChars" /> using UTF-8
+        /// excluding the symbols listed in <see cref="AllowedChars" /> using UTF-8
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -46,7 +46,7 @@ namespace Ds3.Runtime
             {
                 return null;
             }
-            return Runtime.CustomPercentEscaper.PercentEncode(str, _allowedChars);
+            return Runtime.CustomPercentEscaper.PercentEncode(str, AllowedChars);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Ds3.Runtime
 
         /// <summary>
         /// Percent encodes non-alpha-numeric characters within the specified dictionary
-        /// excluding the symbols listed in <see cref="_allowedChars" /> using UTF-8
+        /// excluding the symbols listed in <see cref="AllowedChars" /> using UTF-8
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
