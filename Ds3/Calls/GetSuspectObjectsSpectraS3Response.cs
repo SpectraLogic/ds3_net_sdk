@@ -20,11 +20,15 @@ namespace Ds3.Calls
 {
     public class GetSuspectObjectsSpectraS3Response
     {
-        public PhysicalPlacement ResponsePayload { get; private set; }
+        public S3ObjectList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
 
-        public GetSuspectObjectsSpectraS3Response(PhysicalPlacement responsePayload)
+        public GetSuspectObjectsSpectraS3Response(S3ObjectList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
         {
             this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
         }
     }
 }

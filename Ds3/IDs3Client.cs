@@ -97,11 +97,19 @@ namespace Ds3
         
         ModifyDataPathBackendSpectraS3Response ModifyDataPathBackendSpectraS3(ModifyDataPathBackendSpectraS3Request request);
         
+        PutAzureDataReplicationRuleSpectraS3Response PutAzureDataReplicationRuleSpectraS3(PutAzureDataReplicationRuleSpectraS3Request request);
+        
         PutDataPersistenceRuleSpectraS3Response PutDataPersistenceRuleSpectraS3(PutDataPersistenceRuleSpectraS3Request request);
         
         PutDataPolicySpectraS3Response PutDataPolicySpectraS3(PutDataPolicySpectraS3Request request);
         
-        PutDataReplicationRuleSpectraS3Response PutDataReplicationRuleSpectraS3(PutDataReplicationRuleSpectraS3Request request);
+        PutDs3DataReplicationRuleSpectraS3Response PutDs3DataReplicationRuleSpectraS3(PutDs3DataReplicationRuleSpectraS3Request request);
+        
+        PutS3DataReplicationRuleSpectraS3Response PutS3DataReplicationRuleSpectraS3(PutS3DataReplicationRuleSpectraS3Request request);
+        
+        GetAzureDataReplicationRuleSpectraS3Response GetAzureDataReplicationRuleSpectraS3(GetAzureDataReplicationRuleSpectraS3Request request);
+        
+        GetAzureDataReplicationRulesSpectraS3Response GetAzureDataReplicationRulesSpectraS3(GetAzureDataReplicationRulesSpectraS3Request request);
         
         GetDataPersistenceRuleSpectraS3Response GetDataPersistenceRuleSpectraS3(GetDataPersistenceRuleSpectraS3Request request);
         
@@ -111,15 +119,25 @@ namespace Ds3
         
         GetDataPolicySpectraS3Response GetDataPolicySpectraS3(GetDataPolicySpectraS3Request request);
         
-        GetDataReplicationRuleSpectraS3Response GetDataReplicationRuleSpectraS3(GetDataReplicationRuleSpectraS3Request request);
+        GetDs3DataReplicationRuleSpectraS3Response GetDs3DataReplicationRuleSpectraS3(GetDs3DataReplicationRuleSpectraS3Request request);
         
-        GetDataReplicationRulesSpectraS3Response GetDataReplicationRulesSpectraS3(GetDataReplicationRulesSpectraS3Request request);
+        GetDs3DataReplicationRulesSpectraS3Response GetDs3DataReplicationRulesSpectraS3(GetDs3DataReplicationRulesSpectraS3Request request);
+        
+        GetS3DataReplicationRuleSpectraS3Response GetS3DataReplicationRuleSpectraS3(GetS3DataReplicationRuleSpectraS3Request request);
+        
+        GetS3DataReplicationRulesSpectraS3Response GetS3DataReplicationRulesSpectraS3(GetS3DataReplicationRulesSpectraS3Request request);
+        
+        ModifyAzureDataReplicationRuleSpectraS3Response ModifyAzureDataReplicationRuleSpectraS3(ModifyAzureDataReplicationRuleSpectraS3Request request);
         
         ModifyDataPersistenceRuleSpectraS3Response ModifyDataPersistenceRuleSpectraS3(ModifyDataPersistenceRuleSpectraS3Request request);
         
         ModifyDataPolicySpectraS3Response ModifyDataPolicySpectraS3(ModifyDataPolicySpectraS3Request request);
         
-        ModifyDataReplicationRuleSpectraS3Response ModifyDataReplicationRuleSpectraS3(ModifyDataReplicationRuleSpectraS3Request request);
+        ModifyDs3DataReplicationRuleSpectraS3Response ModifyDs3DataReplicationRuleSpectraS3(ModifyDs3DataReplicationRuleSpectraS3Request request);
+        
+        ModifyS3DataReplicationRuleSpectraS3Response ModifyS3DataReplicationRuleSpectraS3(ModifyS3DataReplicationRuleSpectraS3Request request);
+        
+        GetDegradedAzureDataReplicationRulesSpectraS3Response GetDegradedAzureDataReplicationRulesSpectraS3(GetDegradedAzureDataReplicationRulesSpectraS3Request request);
         
         GetDegradedBlobsSpectraS3Response GetDegradedBlobsSpectraS3(GetDegradedBlobsSpectraS3Request request);
         
@@ -127,13 +145,19 @@ namespace Ds3
         
         GetDegradedDataPersistenceRulesSpectraS3Response GetDegradedDataPersistenceRulesSpectraS3(GetDegradedDataPersistenceRulesSpectraS3Request request);
         
-        GetDegradedDataReplicationRulesSpectraS3Response GetDegradedDataReplicationRulesSpectraS3(GetDegradedDataReplicationRulesSpectraS3Request request);
+        GetDegradedDs3DataReplicationRulesSpectraS3Response GetDegradedDs3DataReplicationRulesSpectraS3(GetDegradedDs3DataReplicationRulesSpectraS3Request request);
+        
+        GetDegradedS3DataReplicationRulesSpectraS3Response GetDegradedS3DataReplicationRulesSpectraS3(GetDegradedS3DataReplicationRulesSpectraS3Request request);
+        
+        GetSuspectBlobAzureTargetsSpectraS3Response GetSuspectBlobAzureTargetsSpectraS3(GetSuspectBlobAzureTargetsSpectraS3Request request);
+        
+        GetSuspectBlobDs3TargetsSpectraS3Response GetSuspectBlobDs3TargetsSpectraS3(GetSuspectBlobDs3TargetsSpectraS3Request request);
         
         GetSuspectBlobPoolsSpectraS3Response GetSuspectBlobPoolsSpectraS3(GetSuspectBlobPoolsSpectraS3Request request);
         
-        GetSuspectBlobTapesSpectraS3Response GetSuspectBlobTapesSpectraS3(GetSuspectBlobTapesSpectraS3Request request);
+        GetSuspectBlobS3TargetsSpectraS3Response GetSuspectBlobS3TargetsSpectraS3(GetSuspectBlobS3TargetsSpectraS3Request request);
         
-        GetSuspectBlobTargetsSpectraS3Response GetSuspectBlobTargetsSpectraS3(GetSuspectBlobTargetsSpectraS3Request request);
+        GetSuspectBlobTapesSpectraS3Response GetSuspectBlobTapesSpectraS3(GetSuspectBlobTapesSpectraS3Request request);
         
         GetSuspectBucketsSpectraS3Response GetSuspectBucketsSpectraS3(GetSuspectBucketsSpectraS3Request request);
         
@@ -203,6 +227,8 @@ namespace Ds3
         
         ModifyNodeSpectraS3Response ModifyNodeSpectraS3(ModifyNodeSpectraS3Request request);
         
+        PutAzureTargetFailureNotificationRegistrationSpectraS3Response PutAzureTargetFailureNotificationRegistrationSpectraS3(PutAzureTargetFailureNotificationRegistrationSpectraS3Request request);
+        
         PutDs3TargetFailureNotificationRegistrationSpectraS3Response PutDs3TargetFailureNotificationRegistrationSpectraS3(PutDs3TargetFailureNotificationRegistrationSpectraS3Request request);
         
         PutJobCompletedNotificationRegistrationSpectraS3Response PutJobCompletedNotificationRegistrationSpectraS3(PutJobCompletedNotificationRegistrationSpectraS3Request request);
@@ -219,6 +245,8 @@ namespace Ds3
         
         PutPoolFailureNotificationRegistrationSpectraS3Response PutPoolFailureNotificationRegistrationSpectraS3(PutPoolFailureNotificationRegistrationSpectraS3Request request);
         
+        PutS3TargetFailureNotificationRegistrationSpectraS3Response PutS3TargetFailureNotificationRegistrationSpectraS3(PutS3TargetFailureNotificationRegistrationSpectraS3Request request);
+        
         PutStorageDomainFailureNotificationRegistrationSpectraS3Response PutStorageDomainFailureNotificationRegistrationSpectraS3(PutStorageDomainFailureNotificationRegistrationSpectraS3Request request);
         
         PutSystemFailureNotificationRegistrationSpectraS3Response PutSystemFailureNotificationRegistrationSpectraS3(PutSystemFailureNotificationRegistrationSpectraS3Request request);
@@ -226,6 +254,10 @@ namespace Ds3
         PutTapeFailureNotificationRegistrationSpectraS3Response PutTapeFailureNotificationRegistrationSpectraS3(PutTapeFailureNotificationRegistrationSpectraS3Request request);
         
         PutTapePartitionFailureNotificationRegistrationSpectraS3Response PutTapePartitionFailureNotificationRegistrationSpectraS3(PutTapePartitionFailureNotificationRegistrationSpectraS3Request request);
+        
+        GetAzureTargetFailureNotificationRegistrationSpectraS3Response GetAzureTargetFailureNotificationRegistrationSpectraS3(GetAzureTargetFailureNotificationRegistrationSpectraS3Request request);
+        
+        GetAzureTargetFailureNotificationRegistrationsSpectraS3Response GetAzureTargetFailureNotificationRegistrationsSpectraS3(GetAzureTargetFailureNotificationRegistrationsSpectraS3Request request);
         
         GetDs3TargetFailureNotificationRegistrationSpectraS3Response GetDs3TargetFailureNotificationRegistrationSpectraS3(GetDs3TargetFailureNotificationRegistrationSpectraS3Request request);
         
@@ -258,6 +290,10 @@ namespace Ds3
         GetPoolFailureNotificationRegistrationSpectraS3Response GetPoolFailureNotificationRegistrationSpectraS3(GetPoolFailureNotificationRegistrationSpectraS3Request request);
         
         GetPoolFailureNotificationRegistrationsSpectraS3Response GetPoolFailureNotificationRegistrationsSpectraS3(GetPoolFailureNotificationRegistrationsSpectraS3Request request);
+        
+        GetS3TargetFailureNotificationRegistrationSpectraS3Response GetS3TargetFailureNotificationRegistrationSpectraS3(GetS3TargetFailureNotificationRegistrationSpectraS3Request request);
+        
+        GetS3TargetFailureNotificationRegistrationsSpectraS3Response GetS3TargetFailureNotificationRegistrationsSpectraS3(GetS3TargetFailureNotificationRegistrationsSpectraS3Request request);
         
         GetStorageDomainFailureNotificationRegistrationSpectraS3Response GetStorageDomainFailureNotificationRegistrationSpectraS3(GetStorageDomainFailureNotificationRegistrationSpectraS3Request request);
         
@@ -292,6 +328,8 @@ namespace Ds3
         VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Response VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3(VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request request);
         
         CancelImportPoolSpectraS3Response CancelImportPoolSpectraS3(CancelImportPoolSpectraS3Request request);
+        
+        CancelVerifyPoolSpectraS3Response CancelVerifyPoolSpectraS3(CancelVerifyPoolSpectraS3Request request);
         
         CompactPoolSpectraS3Response CompactPoolSpectraS3(CompactPoolSpectraS3Request request);
         
@@ -338,6 +376,8 @@ namespace Ds3
         ModifyStorageDomainMemberSpectraS3Response ModifyStorageDomainMemberSpectraS3(ModifyStorageDomainMemberSpectraS3Request request);
         
         ModifyStorageDomainSpectraS3Response ModifyStorageDomainSpectraS3(ModifyStorageDomainSpectraS3Request request);
+        
+        GetFeatureKeysSpectraS3Response GetFeatureKeysSpectraS3(GetFeatureKeysSpectraS3Request request);
         
         GetSystemFailuresSpectraS3Response GetSystemFailuresSpectraS3(GetSystemFailuresSpectraS3Request request);
         
@@ -425,9 +465,35 @@ namespace Ds3
         
         OnlineTapeSpectraS3Response OnlineTapeSpectraS3(OnlineTapeSpectraS3Request request);
         
+        RawImportTapeSpectraS3Response RawImportTapeSpectraS3(RawImportTapeSpectraS3Request request);
+        
         VerifyAllTapesSpectraS3Response VerifyAllTapesSpectraS3(VerifyAllTapesSpectraS3Request request);
         
         VerifyTapeSpectraS3Response VerifyTapeSpectraS3(VerifyTapeSpectraS3Request request);
+        
+        PutAzureTargetBucketNameSpectraS3Response PutAzureTargetBucketNameSpectraS3(PutAzureTargetBucketNameSpectraS3Request request);
+        
+        PutAzureTargetReadPreferenceSpectraS3Response PutAzureTargetReadPreferenceSpectraS3(PutAzureTargetReadPreferenceSpectraS3Request request);
+        
+        GetAzureTargetBucketNamesSpectraS3Response GetAzureTargetBucketNamesSpectraS3(GetAzureTargetBucketNamesSpectraS3Request request);
+        
+        GetAzureTargetFailuresSpectraS3Response GetAzureTargetFailuresSpectraS3(GetAzureTargetFailuresSpectraS3Request request);
+        
+        GetAzureTargetReadPreferenceSpectraS3Response GetAzureTargetReadPreferenceSpectraS3(GetAzureTargetReadPreferenceSpectraS3Request request);
+        
+        GetAzureTargetReadPreferencesSpectraS3Response GetAzureTargetReadPreferencesSpectraS3(GetAzureTargetReadPreferencesSpectraS3Request request);
+        
+        GetAzureTargetSpectraS3Response GetAzureTargetSpectraS3(GetAzureTargetSpectraS3Request request);
+        
+        GetAzureTargetsSpectraS3Response GetAzureTargetsSpectraS3(GetAzureTargetsSpectraS3Request request);
+        
+        GetBlobsOnAzureTargetSpectraS3Response GetBlobsOnAzureTargetSpectraS3(GetBlobsOnAzureTargetSpectraS3Request request);
+        
+        ModifyAzureTargetSpectraS3Response ModifyAzureTargetSpectraS3(ModifyAzureTargetSpectraS3Request request);
+        
+        RegisterAzureTargetSpectraS3Response RegisterAzureTargetSpectraS3(RegisterAzureTargetSpectraS3Request request);
+        
+        VerifyAzureTargetSpectraS3Response VerifyAzureTargetSpectraS3(VerifyAzureTargetSpectraS3Request request);
         
         PutDs3TargetReadPreferenceSpectraS3Response PutDs3TargetReadPreferenceSpectraS3(PutDs3TargetReadPreferenceSpectraS3Request request);
         
@@ -450,6 +516,30 @@ namespace Ds3
         RegisterDs3TargetSpectraS3Response RegisterDs3TargetSpectraS3(RegisterDs3TargetSpectraS3Request request);
         
         VerifyDs3TargetSpectraS3Response VerifyDs3TargetSpectraS3(VerifyDs3TargetSpectraS3Request request);
+        
+        PutS3TargetBucketNameSpectraS3Response PutS3TargetBucketNameSpectraS3(PutS3TargetBucketNameSpectraS3Request request);
+        
+        PutS3TargetReadPreferenceSpectraS3Response PutS3TargetReadPreferenceSpectraS3(PutS3TargetReadPreferenceSpectraS3Request request);
+        
+        GetBlobsOnS3TargetSpectraS3Response GetBlobsOnS3TargetSpectraS3(GetBlobsOnS3TargetSpectraS3Request request);
+        
+        GetS3TargetBucketNamesSpectraS3Response GetS3TargetBucketNamesSpectraS3(GetS3TargetBucketNamesSpectraS3Request request);
+        
+        GetS3TargetFailuresSpectraS3Response GetS3TargetFailuresSpectraS3(GetS3TargetFailuresSpectraS3Request request);
+        
+        GetS3TargetReadPreferenceSpectraS3Response GetS3TargetReadPreferenceSpectraS3(GetS3TargetReadPreferenceSpectraS3Request request);
+        
+        GetS3TargetReadPreferencesSpectraS3Response GetS3TargetReadPreferencesSpectraS3(GetS3TargetReadPreferencesSpectraS3Request request);
+        
+        GetS3TargetSpectraS3Response GetS3TargetSpectraS3(GetS3TargetSpectraS3Request request);
+        
+        GetS3TargetsSpectraS3Response GetS3TargetsSpectraS3(GetS3TargetsSpectraS3Request request);
+        
+        ModifyS3TargetSpectraS3Response ModifyS3TargetSpectraS3(ModifyS3TargetSpectraS3Request request);
+        
+        RegisterS3TargetSpectraS3Response RegisterS3TargetSpectraS3(RegisterS3TargetSpectraS3Request request);
+        
+        VerifyS3TargetSpectraS3Response VerifyS3TargetSpectraS3(VerifyS3TargetSpectraS3Request request);
         
         DelegateCreateUserSpectraS3Response DelegateCreateUserSpectraS3(DelegateCreateUserSpectraS3Request request);
         
@@ -481,23 +571,35 @@ namespace Ds3
         
         void ForceFullCacheReclaimSpectraS3(ForceFullCacheReclaimSpectraS3Request request);
         
+        void DeleteAzureDataReplicationRuleSpectraS3(DeleteAzureDataReplicationRuleSpectraS3Request request);
+        
         void DeleteDataPersistenceRuleSpectraS3(DeleteDataPersistenceRuleSpectraS3Request request);
         
         void DeleteDataPolicySpectraS3(DeleteDataPolicySpectraS3Request request);
         
-        void DeleteDataReplicationRuleSpectraS3(DeleteDataReplicationRuleSpectraS3Request request);
+        void DeleteDs3DataReplicationRuleSpectraS3(DeleteDs3DataReplicationRuleSpectraS3Request request);
+        
+        void DeleteS3DataReplicationRuleSpectraS3(DeleteS3DataReplicationRuleSpectraS3Request request);
+        
+        void ClearSuspectBlobAzureTargetsSpectraS3(ClearSuspectBlobAzureTargetsSpectraS3Request request);
+        
+        void ClearSuspectBlobDs3TargetsSpectraS3(ClearSuspectBlobDs3TargetsSpectraS3Request request);
         
         void ClearSuspectBlobPoolsSpectraS3(ClearSuspectBlobPoolsSpectraS3Request request);
         
+        void ClearSuspectBlobS3TargetsSpectraS3(ClearSuspectBlobS3TargetsSpectraS3Request request);
+        
         void ClearSuspectBlobTapesSpectraS3(ClearSuspectBlobTapesSpectraS3Request request);
         
-        void ClearSuspectBlobTargetsSpectraS3(ClearSuspectBlobTargetsSpectraS3Request request);
+        void MarkSuspectBlobAzureTargetsAsDegradedSpectraS3(MarkSuspectBlobAzureTargetsAsDegradedSpectraS3Request request);
+        
+        void MarkSuspectBlobDs3TargetsAsDegradedSpectraS3(MarkSuspectBlobDs3TargetsAsDegradedSpectraS3Request request);
         
         void MarkSuspectBlobPoolsAsDegradedSpectraS3(MarkSuspectBlobPoolsAsDegradedSpectraS3Request request);
         
-        void MarkSuspectBlobTapesAsDegradedSpectraS3(MarkSuspectBlobTapesAsDegradedSpectraS3Request request);
+        void MarkSuspectBlobS3TargetsAsDegradedSpectraS3(MarkSuspectBlobS3TargetsAsDegradedSpectraS3Request request);
         
-        void MarkSuspectBlobTargetsAsDegradedSpectraS3(MarkSuspectBlobTargetsAsDegradedSpectraS3Request request);
+        void MarkSuspectBlobTapesAsDegradedSpectraS3(MarkSuspectBlobTapesAsDegradedSpectraS3Request request);
         
         void DeleteGroupMemberSpectraS3(DeleteGroupMemberSpectraS3Request request);
         
@@ -525,6 +627,8 @@ namespace Ds3
         
         void VerifySafeToCreatePutJobSpectraS3(VerifySafeToCreatePutJobSpectraS3Request request);
         
+        void DeleteAzureTargetFailureNotificationRegistrationSpectraS3(DeleteAzureTargetFailureNotificationRegistrationSpectraS3Request request);
+        
         void DeleteDs3TargetFailureNotificationRegistrationSpectraS3(DeleteDs3TargetFailureNotificationRegistrationSpectraS3Request request);
         
         void DeleteJobCompletedNotificationRegistrationSpectraS3(DeleteJobCompletedNotificationRegistrationSpectraS3Request request);
@@ -541,6 +645,8 @@ namespace Ds3
         
         void DeletePoolFailureNotificationRegistrationSpectraS3(DeletePoolFailureNotificationRegistrationSpectraS3Request request);
         
+        void DeleteS3TargetFailureNotificationRegistrationSpectraS3(DeleteS3TargetFailureNotificationRegistrationSpectraS3Request request);
+        
         void DeleteStorageDomainFailureNotificationRegistrationSpectraS3(DeleteStorageDomainFailureNotificationRegistrationSpectraS3Request request);
         
         void DeleteSystemFailureNotificationRegistrationSpectraS3(DeleteSystemFailureNotificationRegistrationSpectraS3Request request);
@@ -552,6 +658,8 @@ namespace Ds3
         void DeleteFolderRecursivelySpectraS3(DeleteFolderRecursivelySpectraS3Request request);
         
         void CancelImportOnAllPoolsSpectraS3(CancelImportOnAllPoolsSpectraS3Request request);
+        
+        void CancelVerifyOnAllPoolsSpectraS3(CancelVerifyOnAllPoolsSpectraS3Request request);
         
         void CompactAllPoolsSpectraS3(CompactAllPoolsSpectraS3Request request);
         
@@ -581,6 +689,8 @@ namespace Ds3
         
         void DeleteStorageDomainSpectraS3(DeleteStorageDomainSpectraS3Request request);
         
+        void ForceFeatureKeyValidationSpectraS3(ForceFeatureKeyValidationSpectraS3Request request);
+        
         void DeletePermanentlyLostTapeSpectraS3(DeletePermanentlyLostTapeSpectraS3Request request);
         
         void DeleteTapeDensityDirectiveSpectraS3(DeleteTapeDensityDirectiveSpectraS3Request request);
@@ -601,17 +711,43 @@ namespace Ds3
         
         void ModifyAllTapePartitionsSpectraS3(ModifyAllTapePartitionsSpectraS3Request request);
         
+        void RawImportAllTapesSpectraS3(RawImportAllTapesSpectraS3Request request);
+        
+        void ForceTargetEnvironmentRefreshSpectraS3(ForceTargetEnvironmentRefreshSpectraS3Request request);
+        
+        void DeleteAzureTargetBucketNameSpectraS3(DeleteAzureTargetBucketNameSpectraS3Request request);
+        
+        void DeleteAzureTargetFailureSpectraS3(DeleteAzureTargetFailureSpectraS3Request request);
+        
+        void DeleteAzureTargetReadPreferenceSpectraS3(DeleteAzureTargetReadPreferenceSpectraS3Request request);
+        
+        void DeleteAzureTargetSpectraS3(DeleteAzureTargetSpectraS3Request request);
+        
+        void ImportAzureTargetSpectraS3(ImportAzureTargetSpectraS3Request request);
+        
+        void ModifyAllAzureTargetsSpectraS3(ModifyAllAzureTargetsSpectraS3Request request);
+        
         void DeleteDs3TargetFailureSpectraS3(DeleteDs3TargetFailureSpectraS3Request request);
         
         void DeleteDs3TargetReadPreferenceSpectraS3(DeleteDs3TargetReadPreferenceSpectraS3Request request);
         
         void DeleteDs3TargetSpectraS3(DeleteDs3TargetSpectraS3Request request);
         
-        void ForceTargetEnvironmentRefreshSpectraS3(ForceTargetEnvironmentRefreshSpectraS3Request request);
-        
         void ModifyAllDs3TargetsSpectraS3(ModifyAllDs3TargetsSpectraS3Request request);
         
         void PairBackRegisteredDs3TargetSpectraS3(PairBackRegisteredDs3TargetSpectraS3Request request);
+        
+        void DeleteS3TargetBucketNameSpectraS3(DeleteS3TargetBucketNameSpectraS3Request request);
+        
+        void DeleteS3TargetFailureSpectraS3(DeleteS3TargetFailureSpectraS3Request request);
+        
+        void DeleteS3TargetReadPreferenceSpectraS3(DeleteS3TargetReadPreferenceSpectraS3Request request);
+        
+        void DeleteS3TargetSpectraS3(DeleteS3TargetSpectraS3Request request);
+        
+        void ImportS3TargetSpectraS3(ImportS3TargetSpectraS3Request request);
+        
+        void ModifyAllS3TargetsSpectraS3(ModifyAllS3TargetsSpectraS3Request request);
         
         void DelegateDeleteUserSpectraS3(DelegateDeleteUserSpectraS3Request request);
         

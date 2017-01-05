@@ -31,6 +31,7 @@ namespace Ds3.Models
         public long? DefaultBlobSize { get; set; }
         public Priority DefaultGetJobPriority { get; set; }
         public Priority DefaultPutJobPriority { get; set; }
+        public bool DefaultVerifyAfterWrite { get; set; }
         public Priority DefaultVerifyJobPriority { get; set; }
         public bool EndToEndCrcRequired { get; set; }
         public Guid Id { get; set; }

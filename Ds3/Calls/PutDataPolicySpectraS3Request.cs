@@ -40,13 +40,6 @@ namespace Ds3.Calls
             set { WithAlwaysMinimizeSpanningAcrossMedia(value); }
         }
 
-        private bool? _alwaysReplicateDeletes;
-        public bool? AlwaysReplicateDeletes
-        {
-            get { return _alwaysReplicateDeletes; }
-            set { WithAlwaysReplicateDeletes(value); }
-        }
-
         private bool? _blobbingEnabled;
         public bool? BlobbingEnabled
         {
@@ -80,6 +73,13 @@ namespace Ds3.Calls
         {
             get { return _defaultPutJobPriority; }
             set { WithDefaultPutJobPriority(value); }
+        }
+
+        private bool? _defaultVerifyAfterWrite;
+        public bool? DefaultVerifyAfterWrite
+        {
+            get { return _defaultVerifyAfterWrite; }
+            set { WithDefaultVerifyAfterWrite(value); }
         }
 
         private Priority? _defaultVerifyJobPriority;
@@ -136,21 +136,6 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("always_minimize_spanning_across_media");
-            }
-            return this;
-        }
-
-        
-        public PutDataPolicySpectraS3Request WithAlwaysReplicateDeletes(bool? alwaysReplicateDeletes)
-        {
-            this._alwaysReplicateDeletes = alwaysReplicateDeletes;
-            if (alwaysReplicateDeletes != null)
-            {
-                this.QueryParams.Add("always_replicate_deletes", alwaysReplicateDeletes.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("always_replicate_deletes");
             }
             return this;
         }
@@ -226,6 +211,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("default_put_job_priority");
+            }
+            return this;
+        }
+
+        
+        public PutDataPolicySpectraS3Request WithDefaultVerifyAfterWrite(bool? defaultVerifyAfterWrite)
+        {
+            this._defaultVerifyAfterWrite = defaultVerifyAfterWrite;
+            if (defaultVerifyAfterWrite != null)
+            {
+                this.QueryParams.Add("default_verify_after_write", defaultVerifyAfterWrite.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("default_verify_after_write");
             }
             return this;
         }

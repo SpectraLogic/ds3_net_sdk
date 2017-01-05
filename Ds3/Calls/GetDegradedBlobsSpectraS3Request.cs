@@ -38,6 +38,13 @@ namespace Ds3.Calls
             set { WithBucketId(value); }
         }
 
+        private string _ds3ReplicationRuleId;
+        public string Ds3ReplicationRuleId
+        {
+            get { return _ds3ReplicationRuleId; }
+            set { WithDs3ReplicationRuleId(value); }
+        }
+
         private bool? _lastPage;
         public bool? LastPage
         {
@@ -71,13 +78,6 @@ namespace Ds3.Calls
         {
             get { return _persistenceRuleId; }
             set { WithPersistenceRuleId(value); }
-        }
-
-        private string _replicationRuleId;
-        public string ReplicationRuleId
-        {
-            get { return _replicationRuleId; }
-            set { WithReplicationRuleId(value); }
         }
 
         
@@ -136,6 +136,36 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+
+        
+        public GetDegradedBlobsSpectraS3Request WithDs3ReplicationRuleId(Guid? ds3ReplicationRuleId)
+        {
+            this._ds3ReplicationRuleId = ds3ReplicationRuleId.ToString();
+            if (ds3ReplicationRuleId != null)
+            {
+                this.QueryParams.Add("ds3_replication_rule_id", ds3ReplicationRuleId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("ds3_replication_rule_id");
+            }
+            return this;
+        }
+
+        
+        public GetDegradedBlobsSpectraS3Request WithDs3ReplicationRuleId(string ds3ReplicationRuleId)
+        {
+            this._ds3ReplicationRuleId = ds3ReplicationRuleId;
+            if (ds3ReplicationRuleId != null)
+            {
+                this.QueryParams.Add("ds3_replication_rule_id", ds3ReplicationRuleId);
+            }
+            else
+            {
+                this.QueryParams.Remove("ds3_replication_rule_id");
             }
             return this;
         }
@@ -241,36 +271,6 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("persistence_rule_id");
-            }
-            return this;
-        }
-
-        
-        public GetDegradedBlobsSpectraS3Request WithReplicationRuleId(Guid? replicationRuleId)
-        {
-            this._replicationRuleId = replicationRuleId.ToString();
-            if (replicationRuleId != null)
-            {
-                this.QueryParams.Add("replication_rule_id", replicationRuleId.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("replication_rule_id");
-            }
-            return this;
-        }
-
-        
-        public GetDegradedBlobsSpectraS3Request WithReplicationRuleId(string replicationRuleId)
-        {
-            this._replicationRuleId = replicationRuleId;
-            if (replicationRuleId != null)
-            {
-                this.QueryParams.Add("replication_rule_id", replicationRuleId);
-            }
-            else
-            {
-                this.QueryParams.Remove("replication_rule_id");
             }
             return this;
         }

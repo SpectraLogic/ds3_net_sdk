@@ -211,6 +211,11 @@ namespace Ds3
             return new ModifyDataPathBackendSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public PutAzureDataReplicationRuleSpectraS3Response PutAzureDataReplicationRuleSpectraS3(PutAzureDataReplicationRuleSpectraS3Request request)
+        {
+            return new PutAzureDataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public PutDataPersistenceRuleSpectraS3Response PutDataPersistenceRuleSpectraS3(PutDataPersistenceRuleSpectraS3Request request)
         {
             return new PutDataPersistenceRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -221,9 +226,24 @@ namespace Ds3
             return new PutDataPolicySpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public PutDataReplicationRuleSpectraS3Response PutDataReplicationRuleSpectraS3(PutDataReplicationRuleSpectraS3Request request)
+        public PutDs3DataReplicationRuleSpectraS3Response PutDs3DataReplicationRuleSpectraS3(PutDs3DataReplicationRuleSpectraS3Request request)
         {
-            return new PutDataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+            return new PutDs3DataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public PutS3DataReplicationRuleSpectraS3Response PutS3DataReplicationRuleSpectraS3(PutS3DataReplicationRuleSpectraS3Request request)
+        {
+            return new PutS3DataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureDataReplicationRuleSpectraS3Response GetAzureDataReplicationRuleSpectraS3(GetAzureDataReplicationRuleSpectraS3Request request)
+        {
+            return new GetAzureDataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureDataReplicationRulesSpectraS3Response GetAzureDataReplicationRulesSpectraS3(GetAzureDataReplicationRulesSpectraS3Request request)
+        {
+            return new GetAzureDataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetDataPersistenceRuleSpectraS3Response GetDataPersistenceRuleSpectraS3(GetDataPersistenceRuleSpectraS3Request request)
@@ -246,14 +266,29 @@ namespace Ds3
             return new GetDataPolicySpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public GetDataReplicationRuleSpectraS3Response GetDataReplicationRuleSpectraS3(GetDataReplicationRuleSpectraS3Request request)
+        public GetDs3DataReplicationRuleSpectraS3Response GetDs3DataReplicationRuleSpectraS3(GetDs3DataReplicationRuleSpectraS3Request request)
         {
-            return new GetDataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+            return new GetDs3DataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public GetDataReplicationRulesSpectraS3Response GetDataReplicationRulesSpectraS3(GetDataReplicationRulesSpectraS3Request request)
+        public GetDs3DataReplicationRulesSpectraS3Response GetDs3DataReplicationRulesSpectraS3(GetDs3DataReplicationRulesSpectraS3Request request)
         {
-            return new GetDataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+            return new GetDs3DataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3DataReplicationRuleSpectraS3Response GetS3DataReplicationRuleSpectraS3(GetS3DataReplicationRuleSpectraS3Request request)
+        {
+            return new GetS3DataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3DataReplicationRulesSpectraS3Response GetS3DataReplicationRulesSpectraS3(GetS3DataReplicationRulesSpectraS3Request request)
+        {
+            return new GetS3DataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public ModifyAzureDataReplicationRuleSpectraS3Response ModifyAzureDataReplicationRuleSpectraS3(ModifyAzureDataReplicationRuleSpectraS3Request request)
+        {
+            return new ModifyAzureDataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public ModifyDataPersistenceRuleSpectraS3Response ModifyDataPersistenceRuleSpectraS3(ModifyDataPersistenceRuleSpectraS3Request request)
@@ -266,9 +301,19 @@ namespace Ds3
             return new ModifyDataPolicySpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public ModifyDataReplicationRuleSpectraS3Response ModifyDataReplicationRuleSpectraS3(ModifyDataReplicationRuleSpectraS3Request request)
+        public ModifyDs3DataReplicationRuleSpectraS3Response ModifyDs3DataReplicationRuleSpectraS3(ModifyDs3DataReplicationRuleSpectraS3Request request)
         {
-            return new ModifyDataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+            return new ModifyDs3DataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public ModifyS3DataReplicationRuleSpectraS3Response ModifyS3DataReplicationRuleSpectraS3(ModifyS3DataReplicationRuleSpectraS3Request request)
+        {
+            return new ModifyS3DataReplicationRuleSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetDegradedAzureDataReplicationRulesSpectraS3Response GetDegradedAzureDataReplicationRulesSpectraS3(GetDegradedAzureDataReplicationRulesSpectraS3Request request)
+        {
+            return new GetDegradedAzureDataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetDegradedBlobsSpectraS3Response GetDegradedBlobsSpectraS3(GetDegradedBlobsSpectraS3Request request)
@@ -286,9 +331,24 @@ namespace Ds3
             return new GetDegradedDataPersistenceRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
-        public GetDegradedDataReplicationRulesSpectraS3Response GetDegradedDataReplicationRulesSpectraS3(GetDegradedDataReplicationRulesSpectraS3Request request)
+        public GetDegradedDs3DataReplicationRulesSpectraS3Response GetDegradedDs3DataReplicationRulesSpectraS3(GetDegradedDs3DataReplicationRulesSpectraS3Request request)
         {
-            return new GetDegradedDataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+            return new GetDegradedDs3DataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetDegradedS3DataReplicationRulesSpectraS3Response GetDegradedS3DataReplicationRulesSpectraS3(GetDegradedS3DataReplicationRulesSpectraS3Request request)
+        {
+            return new GetDegradedS3DataReplicationRulesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetSuspectBlobAzureTargetsSpectraS3Response GetSuspectBlobAzureTargetsSpectraS3(GetSuspectBlobAzureTargetsSpectraS3Request request)
+        {
+            return new GetSuspectBlobAzureTargetsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetSuspectBlobDs3TargetsSpectraS3Response GetSuspectBlobDs3TargetsSpectraS3(GetSuspectBlobDs3TargetsSpectraS3Request request)
+        {
+            return new GetSuspectBlobDs3TargetsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetSuspectBlobPoolsSpectraS3Response GetSuspectBlobPoolsSpectraS3(GetSuspectBlobPoolsSpectraS3Request request)
@@ -296,14 +356,14 @@ namespace Ds3
             return new GetSuspectBlobPoolsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public GetSuspectBlobS3TargetsSpectraS3Response GetSuspectBlobS3TargetsSpectraS3(GetSuspectBlobS3TargetsSpectraS3Request request)
+        {
+            return new GetSuspectBlobS3TargetsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public GetSuspectBlobTapesSpectraS3Response GetSuspectBlobTapesSpectraS3(GetSuspectBlobTapesSpectraS3Request request)
         {
             return new GetSuspectBlobTapesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
-        }
-
-        public GetSuspectBlobTargetsSpectraS3Response GetSuspectBlobTargetsSpectraS3(GetSuspectBlobTargetsSpectraS3Request request)
-        {
-            return new GetSuspectBlobTargetsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetSuspectBucketsSpectraS3Response GetSuspectBucketsSpectraS3(GetSuspectBucketsSpectraS3Request request)
@@ -476,6 +536,11 @@ namespace Ds3
             return new ModifyNodeSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public PutAzureTargetFailureNotificationRegistrationSpectraS3Response PutAzureTargetFailureNotificationRegistrationSpectraS3(PutAzureTargetFailureNotificationRegistrationSpectraS3Request request)
+        {
+            return new PutAzureTargetFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public PutDs3TargetFailureNotificationRegistrationSpectraS3Response PutDs3TargetFailureNotificationRegistrationSpectraS3(PutDs3TargetFailureNotificationRegistrationSpectraS3Request request)
         {
             return new PutDs3TargetFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -516,6 +581,11 @@ namespace Ds3
             return new PutPoolFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public PutS3TargetFailureNotificationRegistrationSpectraS3Response PutS3TargetFailureNotificationRegistrationSpectraS3(PutS3TargetFailureNotificationRegistrationSpectraS3Request request)
+        {
+            return new PutS3TargetFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public PutStorageDomainFailureNotificationRegistrationSpectraS3Response PutStorageDomainFailureNotificationRegistrationSpectraS3(PutStorageDomainFailureNotificationRegistrationSpectraS3Request request)
         {
             return new PutStorageDomainFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -534,6 +604,16 @@ namespace Ds3
         public PutTapePartitionFailureNotificationRegistrationSpectraS3Response PutTapePartitionFailureNotificationRegistrationSpectraS3(PutTapePartitionFailureNotificationRegistrationSpectraS3Request request)
         {
             return new PutTapePartitionFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetFailureNotificationRegistrationSpectraS3Response GetAzureTargetFailureNotificationRegistrationSpectraS3(GetAzureTargetFailureNotificationRegistrationSpectraS3Request request)
+        {
+            return new GetAzureTargetFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetFailureNotificationRegistrationsSpectraS3Response GetAzureTargetFailureNotificationRegistrationsSpectraS3(GetAzureTargetFailureNotificationRegistrationsSpectraS3Request request)
+        {
+            return new GetAzureTargetFailureNotificationRegistrationsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetDs3TargetFailureNotificationRegistrationSpectraS3Response GetDs3TargetFailureNotificationRegistrationSpectraS3(GetDs3TargetFailureNotificationRegistrationSpectraS3Request request)
@@ -614,6 +694,16 @@ namespace Ds3
         public GetPoolFailureNotificationRegistrationsSpectraS3Response GetPoolFailureNotificationRegistrationsSpectraS3(GetPoolFailureNotificationRegistrationsSpectraS3Request request)
         {
             return new GetPoolFailureNotificationRegistrationsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetFailureNotificationRegistrationSpectraS3Response GetS3TargetFailureNotificationRegistrationSpectraS3(GetS3TargetFailureNotificationRegistrationSpectraS3Request request)
+        {
+            return new GetS3TargetFailureNotificationRegistrationSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetFailureNotificationRegistrationsSpectraS3Response GetS3TargetFailureNotificationRegistrationsSpectraS3(GetS3TargetFailureNotificationRegistrationsSpectraS3Request request)
+        {
+            return new GetS3TargetFailureNotificationRegistrationsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetStorageDomainFailureNotificationRegistrationSpectraS3Response GetStorageDomainFailureNotificationRegistrationSpectraS3(GetStorageDomainFailureNotificationRegistrationSpectraS3Request request)
@@ -699,6 +789,11 @@ namespace Ds3
         public CancelImportPoolSpectraS3Response CancelImportPoolSpectraS3(CancelImportPoolSpectraS3Request request)
         {
             return new CancelImportPoolSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public CancelVerifyPoolSpectraS3Response CancelVerifyPoolSpectraS3(CancelVerifyPoolSpectraS3Request request)
+        {
+            return new CancelVerifyPoolSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public CompactPoolSpectraS3Response CompactPoolSpectraS3(CompactPoolSpectraS3Request request)
@@ -814,6 +909,11 @@ namespace Ds3
         public ModifyStorageDomainSpectraS3Response ModifyStorageDomainSpectraS3(ModifyStorageDomainSpectraS3Request request)
         {
             return new ModifyStorageDomainSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetFeatureKeysSpectraS3Response GetFeatureKeysSpectraS3(GetFeatureKeysSpectraS3Request request)
+        {
+            return new GetFeatureKeysSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public GetSystemFailuresSpectraS3Response GetSystemFailuresSpectraS3(GetSystemFailuresSpectraS3Request request)
@@ -1031,6 +1131,11 @@ namespace Ds3
             return new OnlineTapeSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public RawImportTapeSpectraS3Response RawImportTapeSpectraS3(RawImportTapeSpectraS3Request request)
+        {
+            return new RawImportTapeSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public VerifyAllTapesSpectraS3Response VerifyAllTapesSpectraS3(VerifyAllTapesSpectraS3Request request)
         {
             return new VerifyAllTapesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -1039,6 +1144,66 @@ namespace Ds3
         public VerifyTapeSpectraS3Response VerifyTapeSpectraS3(VerifyTapeSpectraS3Request request)
         {
             return new VerifyTapeSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public PutAzureTargetBucketNameSpectraS3Response PutAzureTargetBucketNameSpectraS3(PutAzureTargetBucketNameSpectraS3Request request)
+        {
+            return new PutAzureTargetBucketNameSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public PutAzureTargetReadPreferenceSpectraS3Response PutAzureTargetReadPreferenceSpectraS3(PutAzureTargetReadPreferenceSpectraS3Request request)
+        {
+            return new PutAzureTargetReadPreferenceSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetBucketNamesSpectraS3Response GetAzureTargetBucketNamesSpectraS3(GetAzureTargetBucketNamesSpectraS3Request request)
+        {
+            return new GetAzureTargetBucketNamesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetFailuresSpectraS3Response GetAzureTargetFailuresSpectraS3(GetAzureTargetFailuresSpectraS3Request request)
+        {
+            return new GetAzureTargetFailuresSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetReadPreferenceSpectraS3Response GetAzureTargetReadPreferenceSpectraS3(GetAzureTargetReadPreferenceSpectraS3Request request)
+        {
+            return new GetAzureTargetReadPreferenceSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetReadPreferencesSpectraS3Response GetAzureTargetReadPreferencesSpectraS3(GetAzureTargetReadPreferencesSpectraS3Request request)
+        {
+            return new GetAzureTargetReadPreferencesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetSpectraS3Response GetAzureTargetSpectraS3(GetAzureTargetSpectraS3Request request)
+        {
+            return new GetAzureTargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetAzureTargetsSpectraS3Response GetAzureTargetsSpectraS3(GetAzureTargetsSpectraS3Request request)
+        {
+            return new GetAzureTargetsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetBlobsOnAzureTargetSpectraS3Response GetBlobsOnAzureTargetSpectraS3(GetBlobsOnAzureTargetSpectraS3Request request)
+        {
+            return new GetBlobsOnAzureTargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public ModifyAzureTargetSpectraS3Response ModifyAzureTargetSpectraS3(ModifyAzureTargetSpectraS3Request request)
+        {
+            return new ModifyAzureTargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public RegisterAzureTargetSpectraS3Response RegisterAzureTargetSpectraS3(RegisterAzureTargetSpectraS3Request request)
+        {
+            return new RegisterAzureTargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public VerifyAzureTargetSpectraS3Response VerifyAzureTargetSpectraS3(VerifyAzureTargetSpectraS3Request request)
+        {
+            return new VerifyAzureTargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public PutDs3TargetReadPreferenceSpectraS3Response PutDs3TargetReadPreferenceSpectraS3(PutDs3TargetReadPreferenceSpectraS3Request request)
@@ -1094,6 +1259,66 @@ namespace Ds3
         public VerifyDs3TargetSpectraS3Response VerifyDs3TargetSpectraS3(VerifyDs3TargetSpectraS3Request request)
         {
             return new VerifyDs3TargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public PutS3TargetBucketNameSpectraS3Response PutS3TargetBucketNameSpectraS3(PutS3TargetBucketNameSpectraS3Request request)
+        {
+            return new PutS3TargetBucketNameSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public PutS3TargetReadPreferenceSpectraS3Response PutS3TargetReadPreferenceSpectraS3(PutS3TargetReadPreferenceSpectraS3Request request)
+        {
+            return new PutS3TargetReadPreferenceSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetBlobsOnS3TargetSpectraS3Response GetBlobsOnS3TargetSpectraS3(GetBlobsOnS3TargetSpectraS3Request request)
+        {
+            return new GetBlobsOnS3TargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetBucketNamesSpectraS3Response GetS3TargetBucketNamesSpectraS3(GetS3TargetBucketNamesSpectraS3Request request)
+        {
+            return new GetS3TargetBucketNamesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetFailuresSpectraS3Response GetS3TargetFailuresSpectraS3(GetS3TargetFailuresSpectraS3Request request)
+        {
+            return new GetS3TargetFailuresSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetReadPreferenceSpectraS3Response GetS3TargetReadPreferenceSpectraS3(GetS3TargetReadPreferenceSpectraS3Request request)
+        {
+            return new GetS3TargetReadPreferenceSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetReadPreferencesSpectraS3Response GetS3TargetReadPreferencesSpectraS3(GetS3TargetReadPreferencesSpectraS3Request request)
+        {
+            return new GetS3TargetReadPreferencesSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetSpectraS3Response GetS3TargetSpectraS3(GetS3TargetSpectraS3Request request)
+        {
+            return new GetS3TargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public GetS3TargetsSpectraS3Response GetS3TargetsSpectraS3(GetS3TargetsSpectraS3Request request)
+        {
+            return new GetS3TargetsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public ModifyS3TargetSpectraS3Response ModifyS3TargetSpectraS3(ModifyS3TargetSpectraS3Request request)
+        {
+            return new ModifyS3TargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public RegisterS3TargetSpectraS3Response RegisterS3TargetSpectraS3(RegisterS3TargetSpectraS3Request request)
+        {
+            return new RegisterS3TargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public VerifyS3TargetSpectraS3Response VerifyS3TargetSpectraS3(VerifyS3TargetSpectraS3Request request)
+        {
+            return new VerifyS3TargetSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public DelegateCreateUserSpectraS3Response DelegateCreateUserSpectraS3(DelegateCreateUserSpectraS3Request request)
@@ -1201,6 +1426,14 @@ namespace Ds3
             }
         }
 
+        public void DeleteAzureDataReplicationRuleSpectraS3(DeleteAzureDataReplicationRuleSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public void DeleteDataPersistenceRuleSpectraS3(DeleteDataPersistenceRuleSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1217,7 +1450,31 @@ namespace Ds3
             }
         }
 
-        public void DeleteDataReplicationRuleSpectraS3(DeleteDataReplicationRuleSpectraS3Request request)
+        public void DeleteDs3DataReplicationRuleSpectraS3(DeleteDs3DataReplicationRuleSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteS3DataReplicationRuleSpectraS3(DeleteS3DataReplicationRuleSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void ClearSuspectBlobAzureTargetsSpectraS3(ClearSuspectBlobAzureTargetsSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void ClearSuspectBlobDs3TargetsSpectraS3(ClearSuspectBlobDs3TargetsSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
             {
@@ -1233,6 +1490,14 @@ namespace Ds3
             }
         }
 
+        public void ClearSuspectBlobS3TargetsSpectraS3(ClearSuspectBlobS3TargetsSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public void ClearSuspectBlobTapesSpectraS3(ClearSuspectBlobTapesSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1241,7 +1506,15 @@ namespace Ds3
             }
         }
 
-        public void ClearSuspectBlobTargetsSpectraS3(ClearSuspectBlobTargetsSpectraS3Request request)
+        public void MarkSuspectBlobAzureTargetsAsDegradedSpectraS3(MarkSuspectBlobAzureTargetsAsDegradedSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void MarkSuspectBlobDs3TargetsAsDegradedSpectraS3(MarkSuspectBlobDs3TargetsAsDegradedSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
             {
@@ -1257,7 +1530,7 @@ namespace Ds3
             }
         }
 
-        public void MarkSuspectBlobTapesAsDegradedSpectraS3(MarkSuspectBlobTapesAsDegradedSpectraS3Request request)
+        public void MarkSuspectBlobS3TargetsAsDegradedSpectraS3(MarkSuspectBlobS3TargetsAsDegradedSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
             {
@@ -1265,7 +1538,7 @@ namespace Ds3
             }
         }
 
-        public void MarkSuspectBlobTargetsAsDegradedSpectraS3(MarkSuspectBlobTargetsAsDegradedSpectraS3Request request)
+        public void MarkSuspectBlobTapesAsDegradedSpectraS3(MarkSuspectBlobTapesAsDegradedSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
             {
@@ -1377,6 +1650,14 @@ namespace Ds3
             }
         }
 
+        public void DeleteAzureTargetFailureNotificationRegistrationSpectraS3(DeleteAzureTargetFailureNotificationRegistrationSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public void DeleteDs3TargetFailureNotificationRegistrationSpectraS3(DeleteDs3TargetFailureNotificationRegistrationSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1441,6 +1722,14 @@ namespace Ds3
             }
         }
 
+        public void DeleteS3TargetFailureNotificationRegistrationSpectraS3(DeleteS3TargetFailureNotificationRegistrationSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public void DeleteStorageDomainFailureNotificationRegistrationSpectraS3(DeleteStorageDomainFailureNotificationRegistrationSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1482,6 +1771,14 @@ namespace Ds3
         }
 
         public void CancelImportOnAllPoolsSpectraS3(CancelImportOnAllPoolsSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void CancelVerifyOnAllPoolsSpectraS3(CancelVerifyOnAllPoolsSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
             {
@@ -1601,6 +1898,14 @@ namespace Ds3
             }
         }
 
+        public void ForceFeatureKeyValidationSpectraS3(ForceFeatureKeyValidationSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public void DeletePermanentlyLostTapeSpectraS3(DeletePermanentlyLostTapeSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1681,6 +1986,70 @@ namespace Ds3
             }
         }
 
+        public void RawImportAllTapesSpectraS3(RawImportAllTapesSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void ForceTargetEnvironmentRefreshSpectraS3(ForceTargetEnvironmentRefreshSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteAzureTargetBucketNameSpectraS3(DeleteAzureTargetBucketNameSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteAzureTargetFailureSpectraS3(DeleteAzureTargetFailureSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteAzureTargetReadPreferenceSpectraS3(DeleteAzureTargetReadPreferenceSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteAzureTargetSpectraS3(DeleteAzureTargetSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void ImportAzureTargetSpectraS3(ImportAzureTargetSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void ModifyAllAzureTargetsSpectraS3(ModifyAllAzureTargetsSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
         public void DeleteDs3TargetFailureSpectraS3(DeleteDs3TargetFailureSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1705,14 +2074,6 @@ namespace Ds3
             }
         }
 
-        public void ForceTargetEnvironmentRefreshSpectraS3(ForceTargetEnvironmentRefreshSpectraS3Request request)
-        {
-            using (var response = _netLayer.Invoke(request))
-            {
-                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
-            }
-        }
-
         public void ModifyAllDs3TargetsSpectraS3(ModifyAllDs3TargetsSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
@@ -1722,6 +2083,54 @@ namespace Ds3
         }
 
         public void PairBackRegisteredDs3TargetSpectraS3(PairBackRegisteredDs3TargetSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteS3TargetBucketNameSpectraS3(DeleteS3TargetBucketNameSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteS3TargetFailureSpectraS3(DeleteS3TargetFailureSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteS3TargetReadPreferenceSpectraS3(DeleteS3TargetReadPreferenceSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void DeleteS3TargetSpectraS3(DeleteS3TargetSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void ImportS3TargetSpectraS3(ImportS3TargetSpectraS3Request request)
+        {
+            using (var response = _netLayer.Invoke(request))
+            {
+                ResponseParseUtilities.HandleStatusCode(response, HttpStatusCode.NoContent);
+            }
+        }
+
+        public void ModifyAllS3TargetsSpectraS3(ModifyAllS3TargetsSpectraS3Request request)
         {
             using (var response = _netLayer.Invoke(request))
             {

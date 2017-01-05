@@ -22,8 +22,10 @@ namespace Ds3.Models
 {
     public class PhysicalPlacement
     {
+        public IEnumerable<AzureTarget> AzureTargets { get; set; }
         public IEnumerable<Ds3Target> Ds3Targets { get; set; }
         public IEnumerable<Pool> Pools { get; set; }
+        public IEnumerable<S3Target> S3Targets { get; set; }
         public IEnumerable<Tape> Tapes { get; set; }
     }
 }

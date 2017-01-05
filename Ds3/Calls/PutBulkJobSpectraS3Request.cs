@@ -61,6 +61,13 @@ namespace Ds3.Calls
             set { WithIgnoreNamingConflicts(value); }
         }
 
+        private bool? _implicitJobIdResolution;
+        public bool? ImplicitJobIdResolution
+        {
+            get { return _implicitJobIdResolution; }
+            set { WithImplicitJobIdResolution(value); }
+        }
+
         private bool? _minimizeSpanningAcrossMedia;
         public bool? MinimizeSpanningAcrossMedia
         {
@@ -80,6 +87,13 @@ namespace Ds3.Calls
         {
             get { return _priority; }
             set { WithPriority(value); }
+        }
+
+        private bool? _verifyAfterWrite;
+        public bool? VerifyAfterWrite
+        {
+            get { return _verifyAfterWrite; }
+            set { WithVerifyAfterWrite(value); }
         }
 
         
@@ -128,6 +142,21 @@ namespace Ds3.Calls
         }
 
         
+        public PutBulkJobSpectraS3Request WithImplicitJobIdResolution(bool? implicitJobIdResolution)
+        {
+            this._implicitJobIdResolution = implicitJobIdResolution;
+            if (implicitJobIdResolution != null)
+            {
+                this.QueryParams.Add("implicit_job_id_resolution", implicitJobIdResolution.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("implicit_job_id_resolution");
+            }
+            return this;
+        }
+
+        
         public PutBulkJobSpectraS3Request WithMinimizeSpanningAcrossMedia(bool? minimizeSpanningAcrossMedia)
         {
             this._minimizeSpanningAcrossMedia = minimizeSpanningAcrossMedia;
@@ -168,6 +197,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("priority");
+            }
+            return this;
+        }
+
+        
+        public PutBulkJobSpectraS3Request WithVerifyAfterWrite(bool? verifyAfterWrite)
+        {
+            this._verifyAfterWrite = verifyAfterWrite;
+            if (verifyAfterWrite != null)
+            {
+                this.QueryParams.Add("verify_after_write", verifyAfterWrite.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("verify_after_write");
             }
             return this;
         }

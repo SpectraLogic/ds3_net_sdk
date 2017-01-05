@@ -62,6 +62,13 @@ namespace Ds3.Calls
             set { WithAggregating(value); }
         }
 
+        private bool? _implicitJobIdResolution;
+        public bool? ImplicitJobIdResolution
+        {
+            get { return _implicitJobIdResolution; }
+            set { WithImplicitJobIdResolution(value); }
+        }
+
         private string _name;
         public string Name
         {
@@ -87,6 +94,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("aggregating");
+            }
+            return this;
+        }
+
+        
+        public GetBulkJobSpectraS3Request WithImplicitJobIdResolution(bool? implicitJobIdResolution)
+        {
+            this._implicitJobIdResolution = implicitJobIdResolution;
+            if (implicitJobIdResolution != null)
+            {
+                this.QueryParams.Add("implicit_job_id_resolution", implicitJobIdResolution.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("implicit_job_id_resolution");
             }
             return this;
         }
