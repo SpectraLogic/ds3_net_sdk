@@ -22,10 +22,12 @@ namespace Ds3.Models
 {
     public class DegradedBlob
     {
+        public Guid? AzureReplicationRuleId { get; set; }
         public Guid BlobId { get; set; }
         public Guid BucketId { get; set; }
+        public Guid? Ds3ReplicationRuleId { get; set; }
         public Guid Id { get; set; }
         public Guid? PersistenceRuleId { get; set; }
-        public Guid? ReplicationRuleId { get; set; }
+        public Guid? S3ReplicationRuleId { get; set; }
     }
 }
