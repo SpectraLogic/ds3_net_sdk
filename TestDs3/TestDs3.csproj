@@ -66,6 +66,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Diagnostics\DiagnosticsStubClients.cs" />
+    <Compile Include="Helpers\Diagnostics\DiagnosticsStubResponses.cs" />
+    <Compile Include="Helpers\Diagnostics\TestCacheNearCapacity.cs" />
+    <Compile Include="Helpers\Diagnostics\TestDs3Diagnostic.cs" />
+    <Compile Include="Helpers\Diagnostics\TestPoolsDiagnostic.cs" />
+    <Compile Include="Helpers\Diagnostics\TestTapesDiagnostic.cs" />
+    <Compile Include="Helpers\Diagnostics\TestReadFromTapeDiagnostic.cs" />
+    <Compile Include="Helpers\Diagnostics\TestWriteToTapeDiagnostic.cs" />
     <Compile Include="Helpers\JobResponseStubs.cs" />
     <Compile Include="Helpers\Jobs\TestJobsUtil.cs" />
     <Compile Include="Helpers\MockHelpers.cs" />

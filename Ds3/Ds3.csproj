@@ -691,6 +691,25 @@
     <Compile Include="Calls\VerifyTapeSpectraS3Response.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\CacheNearCapacityDiagnostic.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticCheck.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticClient.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticResults.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3TargetClientBuilder.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\IDs3TargetClientBuilder.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\PoolsDiagnostic.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\TapesDiagnostic.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\DiagnosticsMessages.Designer.cs">
+      <DependentUpon>DiagnosticsMessages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticHelper.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3DiagnosticResult.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\Ds3Diagnostic.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\IDs3DiagnosticCheck.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\ReadFromTapeDiagnostic.cs" />
+    <Compile Include="Helpers\Ds3Diagnostics\WriteToTapeDiagnostic.cs" />
     <Compile Include="Helpers\Ds3JobOptions.cs" />
     <Compile Include="Helpers\Ds3ReadJobOptions.cs" />
     <Compile Include="Helpers\Ds3WriteJobOptions.cs" />
@@ -1296,6 +1315,11 @@
     <Compile Include="Runtime\Ds3RequestException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Helpers\Ds3Diagnostics\DiagnosticsMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DiagnosticsMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
