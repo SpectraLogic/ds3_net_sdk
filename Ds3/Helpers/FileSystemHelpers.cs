@@ -25,10 +25,10 @@ namespace Ds3.Helpers
     public static class FileSystemHelpers
     {
         /// <summary>
-        /// Determines the amount of free space on a drive (local or remote) in bytes
+        /// Determines if the objects to read using a GET job can be saved on the given path
         /// </summary>
         /// <param name="path">Directory or UNC path of the volume to
-        /// be checked (can be a networked drive)</param>
+        /// be checked (can be a network drive)</param>
         /// <param name="objectsToRead"></param>
         /// <returns><see cref="DriveResult"/></returns>
         public static DriveResult Check(string path, IEnumerable<Ds3Object> objectsToRead)
