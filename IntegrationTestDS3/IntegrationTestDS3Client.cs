@@ -17,8 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
@@ -1002,7 +1000,7 @@ namespace IntegrationTestDs3
 
                 var objects = new List<Ds3Object>
                 {
-                    new Ds3Object("obj1", contentBytes.Length + 1),
+                    new Ds3Object("obj1", contentBytes.Length + 1)
                 };
 
                 var job = Helpers.StartWriteJob(bucketName, objects);
@@ -1011,11 +1009,11 @@ namespace IntegrationTestDs3
                     Assert.AreEqual("obj1", fileName);
                     Assert.AreEqual(0, offset);
                     var expectedMessage =
-                        $"The Content length ({contentBytes.Length + 1}) not match the number of byte read ({contentBytes.Length})";
-                    Assert.AreEqual(expectedMessage, exception.Message);
+                        $"The Content length ({contentBytes.Length + 1}) not match the number of byte read";
+                    Assert.True(exception.InnerException.Message.StartsWith(expectedMessage));
                 };
 
-                Assert.Throws<AggregateException>(() => job.Transfer(s => stream));
+                Assert.Throws<Ds3NoMoreRetransmitException>(() => job.Transfer(s => stream));
             }
             finally
             {
@@ -1717,6 +1715,29 @@ namespace IntegrationTestDs3
                 job.Transfer(FileHelpers.BuildFilePutter(TestDirectoryBigFolder));
 
                 VerifyFiles(bucketName, TestDirectoryBigFolder);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestNotEnoughSpaceOnDiskWithReadJob()
+        {
+            const string bucketName = "TestNotEnoughSpaceOnDiskWithReadJob";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+                var stream = new MemoryStream(contentBytes);
+                Client.PutObject(new PutObjectRequest(bucketName, "object", contentBytes.Length, stream));
+
+                var job = Helpers.StartReadAllJob(bucketName);
+
+                Assert.Throws<Ds3NotEnoughSpaceOnDiskException>(() => job.Transfer(file => new NotEnoughSpaceOnDiskStream()));
             }
             finally
             {

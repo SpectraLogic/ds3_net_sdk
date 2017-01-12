@@ -41,6 +41,10 @@ namespace Ds3
             var secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");
             var proxy = Environment.GetEnvironmentVariable("http_proxy");
 
+            endpoint = "http://sm2u-11.eng.sldomain.com";
+            accesskey = "c3BlY3RyYQ==";
+            secretkey = "WVC99EZE";
+
             var credentials = new Credentials(accesskey, secretkey);
             var builder = new Ds3Builder(endpoint, credentials);
             if (!string.IsNullOrEmpty(proxy))

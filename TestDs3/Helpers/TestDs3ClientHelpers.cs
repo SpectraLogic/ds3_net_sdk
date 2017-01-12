@@ -357,9 +357,9 @@ namespace TestDs3.Helpers
                 job.Transfer(key => new MockStream());
                 Assert.Fail("Should have thrown an exception.");
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.IsInstanceOf<NullReferenceException>(e.InnerException);
+                Assert.IsInstanceOf<NullReferenceException>(e);
             }
 
             node2Client.VerifyAll();
@@ -444,9 +444,9 @@ namespace TestDs3.Helpers
                 job.Transfer(key => new MockStream(streams[key]));
                 Assert.Fail("Should have thrown an exception.");
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.IsInstanceOf<Ds3NoMoreRetransmitException>(e.InnerException);
+                Assert.IsInstanceOf<Ds3NoMoreRetransmitException>(e);
             }
 
             node1Client.VerifyAll();
@@ -532,9 +532,9 @@ namespace TestDs3.Helpers
                 job.Transfer(key => new MockStream(streams[key]));
                 Assert.Fail("Should have thrown an exception.");
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.AreEqual(ex, e.InnerException);
+                Assert.AreEqual(ex, e);
             }
 
             node1Client.VerifyAll();
@@ -781,9 +781,9 @@ namespace TestDs3.Helpers
                 job.Transfer(key => new MockStream());
                 Assert.Fail("Should have thrown an exception.");
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                Assert.IsInstanceOf<NullReferenceException>(e.InnerException);
+                Assert.IsInstanceOf<NullReferenceException>(e);
             }
 
             node2Client.VerifyAll();
@@ -873,10 +873,10 @@ namespace TestDs3.Helpers
                 job.Transfer(key => new MockStream(streams[key]));
 
             }
-            catch (AggregateException age)
+            catch (Exception e)
             {
                 var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "1", "hello", "0");
-                Assert.AreEqual(expectedMessage, age.InnerExceptions[0].Message);
+                Assert.AreEqual(expectedMessage, e.Message);
             }
 
 
@@ -1169,10 +1169,10 @@ namespace TestDs3.Helpers
                 job.Transfer(key => new MockStream(streams[key]));
 
             }
-            catch (AggregateException age)
+            catch (Exception e)
             {
                 var expectedMessage = string.Format(Resources.NoMoreRetransmitException, "2", "bar", "0");
-                Assert.AreEqual(expectedMessage, age.InnerExceptions[0].Message);
+                Assert.AreEqual(expectedMessage, e.Message);
             }
 
 
