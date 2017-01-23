@@ -91,8 +91,10 @@ namespace Ds3.Helpers
         {
             try
             {
-                var directoryInfo = new DirectoryInfo(path);
-                directoryInfo.GetAccessControl();
+                using (File.Create(Path.Combine(path, Path.GetRandomFileName()), 1, FileOptions.DeleteOnClose))
+                {
+                    //do nothing
+                }
                 return true;
             }
             catch (UnauthorizedAccessException)
@@ -101,15 +103,6 @@ namespace Ds3.Helpers
             }
         }
 
-
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetDiskFreeSpaceEx(
-            string lpDirectoryName,
-            out ulong lpFreeBytesAvailable,
-            out ulong lpTotalNumberOfBytes,
-            out ulong lpTotalNumberOfFreeBytes);
-
         private static ulong DriveFreeBytes(string path)
         {
             if (!path.EndsWith("\\"))
@@ -117,18 +110,9 @@ namespace Ds3.Helpers
                 path += '\\';
             }
 
-            ulong freeBytesAvailable;
-            ulong dummy1;
-            ulong dummy2;
+            var driveInfo  = new DriveInfo(Path.GetPathRoot(path));
 
-            var success = GetDiskFreeSpaceEx(path,
-                out freeBytesAvailable,
-                out dummy1,
-                out dummy2);
-            if (!success)
-                throw new System.ComponentModel.Win32Exception();
-
-            return freeBytesAvailable;
+            return (ulong)driveInfo.AvailableFreeSpace;
         }
     }
 
