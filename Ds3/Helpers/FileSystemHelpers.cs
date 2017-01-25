@@ -67,7 +67,7 @@ namespace Ds3.Helpers
                 try
                 {
                     var freeBytes = DriveFreeBytes(path);
-                    var jobSize = (ulong)objectsToRead.Where(o => o.Size.HasValue).Sum(o => o.Size.Value);
+                    var jobSize = objectsToRead.Where(o => o.Size.HasValue).Sum(o => o.Size.Value);
 
                     if (freeBytes < jobSize)
                     {
@@ -103,7 +103,7 @@ namespace Ds3.Helpers
             }
         }
 
-        private static ulong DriveFreeBytes(string path)
+        private static long DriveFreeBytes(string path)
         {
             if (!path.EndsWith("\\"))
             {
@@ -112,7 +112,7 @@ namespace Ds3.Helpers
 
             var driveInfo  = new DriveInfo(Path.GetPathRoot(path));
 
-            return (ulong)driveInfo.AvailableFreeSpace;
+            return driveInfo.AvailableFreeSpace;
         }
     }
 
