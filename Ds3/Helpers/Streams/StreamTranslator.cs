@@ -132,7 +132,10 @@ namespace Ds3.Helpers.Streams
                     }
                     catch (IOException e)
                     {
-                        if (e.Message.StartsWith("There is not enough space on the disk"))
+                        var hResult = e.HResult;
+                        const int ERROR_HANDLE_DISK_FULL = 0x27;
+                        const int ERROR_DISK_FULL = 0x70;
+                        if ((hResult & 0xFFFF) == ERROR_HANDLE_DISK_FULL || (hResult & 0xFFFF) == ERROR_DISK_FULL)
                         {
                             throw new Ds3NotEnoughSpaceOnDiskException(e.Message, e);
                         }
