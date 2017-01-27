@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Ds3.Lang
@@ -60,7 +61,11 @@ namespace Ds3.Lang
                 {
                     thread.Join();
                 }
-                if (exceptionsThrown.Count > 0)
+                if (exceptionsThrown.Count == 1)
+                {
+                    throw exceptionsThrown.ElementAt(0);
+                }
+                if (exceptionsThrown.Count > 1)
                 {
                     throw new AggregateException(exceptionsThrown);
                 }
