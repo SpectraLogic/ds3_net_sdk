@@ -99,11 +99,17 @@ namespace Ds3.Runtime
                         if (Is307(response))
                         {
                             redirectCount++;
-                            if (SdkNetworkSwitch.TraceWarning) { Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network"); }
+                            if (SdkNetworkSwitch.TraceWarning)
+                            {
+                                Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network");
+                            }
                         }
                         else
                         {
-                            if (SdkNetworkSwitch.TraceInfo) { Trace.WriteLine(string.Format(Resources.ResponseLogging, response.StatusCode, millis)); }
+                            if (SdkNetworkSwitch.TraceInfo)
+                            {
+                                Trace.WriteLine(string.Format(Resources.ResponseLogging, response.StatusCode, millis));
+                            }
                             return response;
                         }
                     }

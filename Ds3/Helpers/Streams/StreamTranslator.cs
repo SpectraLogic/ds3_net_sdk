@@ -18,6 +18,7 @@ using Ds3.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Ds3.Runtime;
 
 namespace Ds3.Helpers.Streams
 {
@@ -125,7 +126,21 @@ namespace Ds3.Helpers.Streams
                 this._streamStore.Access(range.Context, stream =>
                 {
                     stream.Position = range.Range.Start;
-                    stream.Write(buffer, progress + offset, rangeLength);
+                    try
+                    {
+                        stream.Write(buffer, progress + offset, rangeLength);
+                    }
+                    catch (IOException e)
+                    {
+                        var hResult = e.HResult;
+                        const int ERROR_HANDLE_DISK_FULL = 0x27;
+                        const int ERROR_DISK_FULL = 0x70;
+                        if ((hResult & 0xFFFF) == ERROR_HANDLE_DISK_FULL || (hResult & 0xFFFF) == ERROR_DISK_FULL)
+                        {
+                            throw new Ds3NotEnoughSpaceOnDiskException(e.Message, e);
+                        }
+                        throw;
+                    }
                 });
                 progress += rangeLength;
             }

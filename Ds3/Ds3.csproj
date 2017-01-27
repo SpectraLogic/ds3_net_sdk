@@ -691,6 +691,7 @@
     <Compile Include="Calls\VerifyTapeSpectraS3Response.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyUserIsMemberOfGroupSpectraS3Response.cs" />
+    <Compile Include="Helpers\FileSystemHelpers.cs" />
     <Compile Include="Helpers\Ds3JobOptions.cs" />
     <Compile Include="Helpers\Ds3ReadJobOptions.cs" />
     <Compile Include="Helpers\Ds3WriteJobOptions.cs" />
@@ -1205,6 +1206,7 @@
     <Compile Include="Models\Crc32.cs" />
     <Compile Include="Runtime\Ds3ContentLengthNotMatch.cs" />
     <Compile Include="Runtime\Ds3NoMoreRetransmitException.cs" />
+    <Compile Include="Runtime\Ds3NotEnoughSpaceOnDiskException.cs" />
     <Compile Include="Runtime\Ds3NotSupportedStream.cs" />
     <Compile Include="Runtime\Ds3ServerCertificateValidation.cs" />
     <Compile Include="Runtime\IWebRequest.cs" />

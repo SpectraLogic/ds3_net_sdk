@@ -59,6 +59,7 @@
     <Compile Include="Ds3TestUtils.cs" />
     <Compile Include="IntegrationTestDS3Client.cs" />
     <Compile Include="MetadataAccess.cs" />
+    <Compile Include="NotEnoughSpaceOnDiskStream.cs" />
     <Compile Include="TempStorageUtil.cs" />
   </ItemGroup>
   <ItemGroup>
