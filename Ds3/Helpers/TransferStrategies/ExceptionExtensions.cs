@@ -21,7 +21,7 @@ using Ds3.Runtime;
 
 namespace Ds3.Helpers.TransferStrategies
 {
-    internal static class ExceptionClassifier
+    internal static class ExceptionExtensions
     {
         private static readonly IList<Type> RecoverableExceptions = new List<Type>
         {
@@ -30,13 +30,13 @@ namespace Ds3.Helpers.TransferStrategies
             typeof(IOException)
         };
 
-        public static bool IsRecoverableException(Exception t)
+        public static bool IsRecoverableException(this Exception e)
         {
-            return RecoverableExceptions.Contains(t.GetType());
+            return RecoverableExceptions.Contains(e.GetType());
         }
 
-        public static bool IsUnrecoverableException(Exception t) {
-            return !IsRecoverableException(t);
+        public static bool IsUnrecoverableException(this Exception e) {
+            return !IsRecoverableException(e);
         }
     }
 }

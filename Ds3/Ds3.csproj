@@ -719,7 +719,7 @@
     <Compile Include="Helpers\Strategies\StreamFactory\IStreamFactory.cs" />
     <Compile Include="Helpers\Streams\NonDisposablePutObjectRequestStream.cs" />
     <Compile Include="Helpers\TransferStrategies\BestEffort.cs" />
-    <Compile Include="Helpers\TransferStrategies\ExceptionClassifier.cs" />
+    <Compile Include="Helpers\TransferStrategies\ExceptionExtensions.cs" />
     <Compile Include="Models\ActiveJob.cs" />
     <Compile Include="Models\ActiveJobList.cs" />
     <Compile Include="Models\AutoInspectMode.cs" />

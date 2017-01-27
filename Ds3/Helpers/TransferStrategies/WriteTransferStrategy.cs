@@ -47,7 +47,7 @@ namespace Ds3.Helpers.TransferStrategies
                 }
                 catch (Exception ex)
                 {
-                    if (ExceptionClassifier.IsRecoverableException(ex))
+                    if (ex.IsRecoverableException())
                     {
                         BestEffort.ModifyForRetry(transferStrategyOptions.Stream, transferStrategyOptions.ObjectTransferAttempts, ref currentTry, request.ObjectName, request.Offset.Value, ex);
                     }
