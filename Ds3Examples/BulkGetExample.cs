@@ -46,23 +46,40 @@ namespace Ds3Examples
             string bucket = "bucket-name";
             string directory = "DataFromBucket";
 
-            // Creates a bulk job with all of the objects in the bucket.
-            IJob job = helpers.StartReadAllJob(bucket);
-            // Same as: IJob job = helpers.StartReadJob(bucket, helpers.ListObjects(bucket));
+            var driveResult = FileSystemHelpers.Check(directory, helpers.ListObjects(bucket));
+            switch (driveResult.Status)
+            {
+                case DriveStatus.NoPermission:
+                case DriveStatus.NotEnoughSpace:
+                case DriveStatus.DirectoryNotExists:
+                case DriveStatus.Error:
+                case DriveStatus.Unknown:
+                    Console.WriteLine($"FileSystemHelpers check failed with [{driveResult.Status}, {driveResult.ErrorMessage}]");
+                    break;
+                case DriveStatus.Ok:
+                    // Creates a bulk job with all of the objects in the bucket.
+                    IJob job = helpers.StartReadAllJob(bucket);
+                    // Same as: IJob job = helpers.StartReadJob(bucket, helpers.ListObjects(bucket));
 
-            // Keep the job id around. This is useful for job recovery in the case of a failure.
-            Console.WriteLine("Job id {0} started.", job.JobId);
+                    // Keep the job id around. This is useful for job recovery in the case of a failure.
+                    Console.WriteLine("Job id {0} started.", job.JobId);
 
-            // Tracing example 
-            if (clientSwitch.TraceInfo) { Trace.WriteLine(string.Format("StartReadAllJob({0})", bucket)); }
-            if (clientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("dd files from: {0}", directory)); }
+                    // Tracing example 
+                    if (clientSwitch.TraceInfo) { Trace.WriteLine(string.Format("StartReadAllJob({0})", bucket)); }
+                    if (clientSwitch.TraceVerbose) { Trace.WriteLine(string.Format("dd files from: {0}", directory)); }
 
-            // Transfer all of the files.
-            job.Transfer(FileHelpers.BuildFileGetter(directory));
+                    // Transfer all of the files.
+                    job.Transfer(FileHelpers.BuildFileGetter(directory));
 
-            // Wait for user input.
-            Console.WriteLine("Press enter to continue.");
-            Console.ReadLine();
+                    // Wait for user input.
+                    Console.WriteLine("Press enter to continue.");
+                    Console.ReadLine();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
         }
     }
 }
