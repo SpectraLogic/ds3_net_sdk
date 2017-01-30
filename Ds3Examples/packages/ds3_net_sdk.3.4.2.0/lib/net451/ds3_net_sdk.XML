@@ -94,6 +94,15 @@
             <param name="retryAfter">The function to call if the response object is "retryAfter".</param>
             <returns>What success, jobGone, or  retryAfter return.</returns>
         </member>
+        <member name="M:Ds3.Helpers.FileSystemHelpers.Check(System.String,System.Collections.Generic.IEnumerable{Ds3.Models.Ds3Object})">
+            <summary>
+            Determines if the objects to read using a GET job can be saved on the given path
+            </summary>
+            <param name="path">Directory or UNC path of the volume to
+            be checked (can be a network drive)</param>
+            <param name="objectsToRead"></param>
+            <returns><see cref="T:Ds3.Helpers.DriveResult"/></returns>
+        </member>
         <member name="M:Ds3.Helpers.Strategies.ChunkStrategies.IChunkStrategy.GetNextTransferItems(Ds3.IDs3Client,Ds3.Models.MasterObjectList)">
             <summary>
             Allocate chunks using a specific strategy and returning allocated blobs
@@ -557,6 +566,31 @@
             for computation in Intel hardware
             </remarks>
         </member>
+        <member name="M:Ds3.Runtime.CustomPercentEscaper.PercentEncode(System.String,System.Char[])">
+            <summary>
+            Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
+            http://tools.ietf.org/html/rfc3986#section-2.1
+            
+            This method percent encodes the UTF-8 representation of all characters except those
+            specified in the "allowedChars" parameter.
+            
+            We've implemented this method because all of the available built-in .NET framework
+            methods are incomplete in one way or another.
+            </summary>
+            <param name="path"></param>
+            <param name="allowedChars"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Ds3.Runtime.HttpHelper.UnreservedCharsParam">
+            <summary>
+            Specified as "Unreserved" by the RFC
+            </summary>
+        </member>
+        <member name="F:Ds3.Runtime.HttpHelper.UnreservedCharsPath">
+            <summary>
+            Specified as "Unreserved" by the RFC, plus (+), and forward slash (/)
+            </summary>
+        </member>
         <member name="M:Ds3.Runtime.HttpHelper.PercentEncodePath(System.String)">
             <summary>
             Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
@@ -571,7 +605,7 @@
             <param name="path"></param>
             <returns></returns>
         </member>
-        <member name="M:Ds3.Runtime.HttpHelper.PercentEncodePath(System.String,System.Char[])">
+        <member name="M:Ds3.Runtime.HttpHelper.PercentEncodeParam(System.String)">
             <summary>
             Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
             http://tools.ietf.org/html/rfc3986#section-2.1
@@ -583,8 +617,77 @@
             methods are incomplete in one way or another.
             </summary>
             <param name="path"></param>
-            <param name="allowedChars"></param>
             <returns></returns>
+        </member>
+        <member name="T:Ds3.Runtime.MetadataUtil">
+            <summary>
+            Percent encodes and decodes metadata keys and values. The encoding comforms to the HTTP header
+            key requirements. Header keys contain only printable US-ASCII characters that are non-separators.
+            </summary>
+        </member>
+        <member name="F:Ds3.Runtime.MetadataUtil.AllowedChars">
+            <summary>
+            List of printable US-ASCII characters that do not need percent encoding.
+            Includes separators equals "=" and comma ",": not encoded for use in creating Range header
+            Excludes separators: <![CDATA["(" | ")" | "<" | ">" | "@" | ";" | ":" | "\" | <"> | "/" | "[" | "]" | "?" | "{" | "}"]]>
+            Excludes Percent "%": not considered safe because it is used in percent encoding
+            Excludes Plus "+": not considered safe because its interpreted as space during decoding
+            </summary>
+        </member>
+        <member name="M:Ds3.Runtime.MetadataUtil.EscapeString(System.String)">
+            <summary>
+            Percent encodes non-alpha-numeric characters within the specified string
+            excluding the symbols listed in <see cref="F:Ds3.Runtime.MetadataUtil.AllowedChars" /> using UTF-8
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ds3.Runtime.MetadataUtil.UnescapeString(System.String)">
+            <summary>
+            Decodes a percent-encoded string
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ds3.Runtime.MetadataUtil.EscapeMetadata(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Percent encodes non-alpha-numeric characters within the specified dictionary
+            excluding the symbols listed in <see cref="F:Ds3.Runtime.MetadataUtil.AllowedChars" /> using UTF-8
+            </summary>
+            <param name="metadata"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Ds3.Runtime.MetadataUtil.UnescapeMetadata(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Decodes all keys and values within a dictionary that are percent-encoded
+            </summary>
+            <param name="metadata"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Ds3.Runtime.RequestHeaders.Headers">
+            <summary>
+            The percent encoded request headers dictionary
+            </summary>
+        </member>
+        <member name="M:Ds3.Runtime.RequestHeaders.Keys">
+            <summary>
+            Gets a collection containing the non-percent-encoded keys in request headers
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Ds3.Runtime.RequestHeaders.Remove(System.String)">
+            <summary>
+            Removes the value with the specified key from request headers
+            </summary>
+            <param name="key">The non-percent-encoded value to be removed</param>
+            <returns></returns>
+        </member>
+        <member name="M:Ds3.Runtime.RequestHeaders.Add(System.String,System.String)">
+            <summary>
+            Percent encodes and adds a key-value-pair to request headers
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
         </member>
         <member name="F:Ds3.Runtime.S3Signer._subresourcesToCanonicalize">
             <summary>
@@ -592,6 +695,13 @@
             See "Constructing the CanonicalizedResource Element" -> "Launch Process" -> table row 4
             http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
             </summary>
+        </member>
+        <member name="M:Ds3.Runtime.Ds3WebResponse.ConvertToDictionary(System.Net.WebHeaderCollection)">
+            <summary>
+            Converts the WebHeaderCollection into a header dictionary and percent-decodes the key and header values
+            </summary>
+            <param name="headers"></param>
+            <returns></returns>
         </member>
         <member name="M:Ds3.IDs3ClientFactory.GetClientForNodeId(System.Nullable{System.Guid})">
             <summary>
