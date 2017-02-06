@@ -316,8 +316,8 @@ namespace IntegrationTestDs3
                 });
                 thread.Start();
 
-                //give the thread a sec to start
-                Thread.Sleep(1000);
+                //wait until we received at least 300 objects
+                SpinWait.SpinUntil(() => filesTransfered > 300);
 
                 //cancel the job
                 cancellationTokenSource.Cancel();
@@ -393,8 +393,8 @@ namespace IntegrationTestDs3
                 });
                 thread.Start();
 
-                //give the thread a sec to start
-                Thread.Sleep(1000);
+                //wait until we put at least 300 objects
+                SpinWait.SpinUntil(() => filesTransfered > 300);
 
                 //cancel the job
                 cancellationTokenSource.Cancel();
