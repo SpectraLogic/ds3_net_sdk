@@ -328,7 +328,8 @@ namespace IntegrationTestDs3
                 Assert.Less(filesTransfered, numberOfObjects);
 
                 //Make sure the job is still active in order to resume it
-                Assert.True(Client.GetActiveJobsSpectraS3(new GetActiveJobsSpectraS3Request()).ResponsePayload.ActiveJobs.Any(a => a.Id == getJob.JobId));
+                Assert.True(Client.GetActiveJobsSpectraS3(new GetActiveJobsSpectraS3Request()).ResponsePayload.ActiveJobs.Any(activeJob => activeJob.Id == getJob.JobId));
+
                 //resume the job
                 var resumedJob = Helpers.RecoverReadJob(getJob.JobId);
 
@@ -405,8 +406,9 @@ namespace IntegrationTestDs3
                 thread.Join();
 
                 Assert.Less(filesTransfered, numberOfObjects);
+
                 //Make sure the job is still active in order to resume it
-                Assert.True(Client.GetActiveJobsSpectraS3(new GetActiveJobsSpectraS3Request()).ResponsePayload.ActiveJobs.Any(a => a.Id == job.JobId));
+                Assert.True(Client.GetActiveJobsSpectraS3(new GetActiveJobsSpectraS3Request()).ResponsePayload.ActiveJobs.Any(activeJob => activeJob.Id == job.JobId));
 
                 //resume the job
                 var resumedJob = Helpers.RecoverWriteJob(job.JobId);
