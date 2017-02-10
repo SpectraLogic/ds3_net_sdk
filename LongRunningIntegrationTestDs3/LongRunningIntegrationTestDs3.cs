@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using Ds3.Runtime;
 
 namespace LongRunningIntegrationTestDs3
 {
@@ -66,6 +67,8 @@ namespace LongRunningIntegrationTestDs3
         [Test]
         public void PutLargeNumberOfObjects()
         {
+            if (RuntimeUtils.IsRunningOnMono()) Assert.Ignore();
+
             const string bucketName = "PutLargeNumberOfObjects";
             const int numberOfObjects = 10000;
 
