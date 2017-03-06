@@ -1,6 +1,7 @@
 var searchData=
 [
   ['range',['Range',['../struct_ds3_1_1_models_1_1_range.html',1,'Ds3::Models']]],
+  ['rangeextensions',['RangeExtensions',['../class_ds3_1_1_models_1_1_range_extensions.html',1,'Ds3::Models']]],
   ['rawimportalltapesspectras3request',['RawImportAllTapesSpectraS3Request',['../class_ds3_1_1_calls_1_1_raw_import_all_tapes_spectra_s3_request.html',1,'Ds3::Calls']]],
   ['rawimporttapespectras3request',['RawImportTapeSpectraS3Request',['../class_ds3_1_1_calls_1_1_raw_import_tape_spectra_s3_request.html',1,'Ds3::Calls']]],
   ['rawimporttapespectras3response',['RawImportTapeSpectraS3Response',['../class_ds3_1_1_calls_1_1_raw_import_tape_spectra_s3_response.html',1,'Ds3::Calls']]],
@@ -26,5 +27,6 @@ var searchData=
   ['requestheaders',['RequestHeaders',['../class_ds3_1_1_runtime_1_1_request_headers.html',1,'Ds3::Runtime']]],
   ['resetinstanceidentifierspectras3request',['ResetInstanceIdentifierSpectraS3Request',['../class_ds3_1_1_calls_1_1_reset_instance_identifier_spectra_s3_request.html',1,'Ds3::Calls']]],
   ['resetinstanceidentifierspectras3response',['ResetInstanceIdentifierSpectraS3Response',['../class_ds3_1_1_calls_1_1_reset_instance_identifier_spectra_s3_response.html',1,'Ds3::Calls']]],
-  ['retryafter',['RetryAfter',['../class_ds3_1_1_helpers_1_1_strategies_1_1_chunk_strategies_1_1_retry_after.html',1,'Ds3.Helpers.Strategies.ChunkStrategies.RetryAfter'],['../class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a6aab0f3bed9c619525956e2db61163ae',1,'Ds3.Calls.AllocateJobChunkSpectraS3Response.RetryAfter()'],['../class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#ad3bec89042a1e52f3148a6ea49ffcaf8',1,'Ds3.Calls.GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter()']]]
+  ['retryafter',['RetryAfter',['../class_ds3_1_1_helpers_1_1_strategies_1_1_chunk_strategies_1_1_retry_after.html',1,'Ds3.Helpers.Strategies.ChunkStrategies.RetryAfter'],['../class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a6aab0f3bed9c619525956e2db61163ae',1,'Ds3.Calls.AllocateJobChunkSpectraS3Response.RetryAfter()'],['../class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#ad3bec89042a1e52f3148a6ea49ffcaf8',1,'Ds3.Calls.GetJobChunksReadyForClientProcessingSpectraS3Response.RetryAfter()']]],
+  ['runtimeutils',['RuntimeUtils',['../class_ds3_1_1_runtime_1_1_runtime_utils.html',1,'Ds3::Runtime']]]
 ];

@@ -98,6 +98,7 @@ var searchData=
   ['ds3redirectlimitexception',['Ds3RedirectLimitException',['../class_ds3_1_1_runtime_1_1_ds3_redirect_limit_exception.html',1,'Ds3::Runtime']]],
   ['ds3request',['Ds3Request',['../class_ds3_1_1_calls_1_1_ds3_request.html',1,'Ds3::Calls']]],
   ['ds3requestexception',['Ds3RequestException',['../class_ds3_1_1_runtime_1_1_ds3_request_exception.html',1,'Ds3::Runtime']]],
+  ['ds3servercertificatevalidation',['Ds3ServerCertificateValidation',['../class_ds3_1_1_runtime_1_1_ds3_server_certificate_validation.html',1,'Ds3::Runtime']]],
   ['ds3target',['Ds3Target',['../class_ds3_1_1_models_1_1_ds3_target.html',1,'Ds3::Models']]],
   ['ds3targetfailure',['Ds3TargetFailure',['../class_ds3_1_1_models_1_1_ds3_target_failure.html',1,'Ds3::Models']]],
   ['ds3targetfailurelist',['Ds3TargetFailureList',['../class_ds3_1_1_models_1_1_ds3_target_failure_list.html',1,'Ds3::Models']]],

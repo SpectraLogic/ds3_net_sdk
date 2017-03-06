@@ -1,5 +1,11 @@
 var NAVTREEINDEX10 =
 {
+"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html":[0,0,0,0,336],
+"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#a49ad5c5e24bdf6b7db593d41872ee1da":[0,0,0,0,336,2],
+"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#a5e9c2a2bbf2f1f794eed10a288076596":[0,0,0,0,336,3],
+"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#ae51559b34fbfbe3b0cc2af6b9313afdf":[0,0,0,0,336,0],
+"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#af455d3c28483d6f8f02acc3f3a231bef":[0,0,0,0,336,1],
+"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_response.html":[0,0,0,0,337],
 "class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_response.html#a9fe657f1422e7db0e1ad347a0721e550":[0,0,0,0,337,0],
 "class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_response.html#af1e0400e39aed5269718248a70e476f8":[0,0,0,0,337,1],
 "class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registrations_spectra_s3_request.html":[0,0,0,0,338],
@@ -243,11 +249,5 @@ var NAVTREEINDEX10 =
 "class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_request.html#ac7b74a048f6de324cac8050aec13b1a6":[0,0,0,0,358,2],
 "class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_request.html#ae5314fe9992d88defb1098eda07bddfc":[0,0,0,0,358,3],
 "class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_request.html#ae5fcc23f1a743b922731e11fb8701c59":[0,0,0,0,358,1],
-"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_request.html#af5e5c35d1619a7ecd1cd267fc6f35cda":[0,0,0,0,358,0],
-"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_request.html#afcd049bc8483d3164104c0d7a45d4d71":[0,0,0,0,358,9],
-"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_request.html#afeafff60dc6e21df8d40b51de60e489d":[0,0,0,0,358,5],
-"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_response.html":[0,0,0,0,359],
-"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_response.html#a3cd22759fc9395f3f86e5effde4bb4a6":[0,0,0,0,359,0],
-"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_response.html#ad1a9691a75658e949e4810741dcdbc8e":[0,0,0,0,359,1],
-"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_response.html#ad3583209b7f59b2439f858dd3e2ee033":[0,0,0,0,359,2]
+"class_ds3_1_1_calls_1_1_get_suspect_blob_tapes_spectra_s3_request.html#af5e5c35d1619a7ecd1cd267fc6f35cda":[0,0,0,0,358,0]
 };

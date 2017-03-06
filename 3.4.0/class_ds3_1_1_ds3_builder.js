@@ -3,6 +3,7 @@ var class_ds3_1_1_ds3_builder =
     [ "Ds3Builder", "class_ds3_1_1_ds3_builder.html#a91c737a658d9bff288fa877531e42a27", null ],
     [ "Ds3Builder", "class_ds3_1_1_ds3_builder.html#ac248147642725f6ae9aa95be4615dfe5", null ],
     [ "Build", "class_ds3_1_1_ds3_builder.html#a62929f21b5f6dd4127f284288b7c9d1e", null ],
+    [ "FromEnv", "class_ds3_1_1_ds3_builder.html#a006830bcad66355952aa266b5917b6bc", null ],
     [ "WithConnectionLimit", "class_ds3_1_1_ds3_builder.html#a6915a26969d9e4a83a802109ab240cee", null ],
     [ "WithCopyBufferSize", "class_ds3_1_1_ds3_builder.html#a7e11b809ce45c780e7607dd33f6aacf4", null ],
     [ "WithProxy", "class_ds3_1_1_ds3_builder.html#a5ab9b5e3b4e3ffadd4d59e819f2dc921", null ],

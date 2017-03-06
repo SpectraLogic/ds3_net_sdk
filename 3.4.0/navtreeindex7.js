@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"class_ds3_1_1_calls_1_1_get_groups_spectra_s3_request.html#a8414e5acc295fac0efec69a8ad025eb8":[0,0,0,0,244,4],
+"class_ds3_1_1_calls_1_1_get_groups_spectra_s3_request.html#aa41745025baee3ec5cc29674a83300ed":[0,0,0,0,244,11],
+"class_ds3_1_1_calls_1_1_get_groups_spectra_s3_request.html#aa5ac93691e6375b20ed24c80661a5086":[0,0,0,0,244,2],
 "class_ds3_1_1_calls_1_1_get_groups_spectra_s3_request.html#aaac4d94a76759676c0b817f8ef917df4":[0,0,0,0,244,7],
 "class_ds3_1_1_calls_1_1_get_groups_spectra_s3_request.html#ab6b29306fcdd59685095d61349b9e68b":[0,0,0,0,244,0],
 "class_ds3_1_1_calls_1_1_get_groups_spectra_s3_request.html#ac4f0e22db0bf724b9e4fe5a4f28b482a":[0,0,0,0,244,1],
@@ -40,10 +43,13 @@ var NAVTREEINDEX7 =
 "class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_request.html#ab90eecfc23d91323d3590670ace05f63":[0,0,0,0,250,4],
 "class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_request.html#ab9a8a712a18b40bfcdd9957aa599d06c":[0,0,0,0,250,1],
 "class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html":[0,0,0,0,251],
+"class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#a1b91eab6530af3c5bb7b3e72103cda49":[0,0,0,0,251,6],
 "class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#a6dd868943157c40d005baf5759135ee7":[0,0,0,0,251,2],
 "class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#a8fbec0930dfec6d0da35c14143492b28":[0,0,0,0,251,1],
 "class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#ab669c1fbeddf7b785b100b044e9bd853":[0,0,0,0,251,0],
 "class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#ad2285c7053067b2e52971d8503e9a49c":[0,0,0,0,251,3],
+"class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#ad3bec89042a1e52f3148a6ea49ffcaf8":[0,0,0,0,251,4],
+"class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#afd0d41089826c60efa4bbd5043bfb494":[0,0,0,0,251,5],
 "class_ds3_1_1_calls_1_1_get_job_completed_notification_registration_spectra_s3_request.html":[0,0,0,0,252],
 "class_ds3_1_1_calls_1_1_get_job_completed_notification_registration_spectra_s3_request.html#a3cc00e47ca342cf338ef9f30c8f59677":[0,0,0,0,252,3],
 "class_ds3_1_1_calls_1_1_get_job_completed_notification_registration_spectra_s3_request.html#a3d6473a189eb11cfcc8d962251d0e61d":[0,0,0,0,252,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX7 =
 "class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#aa54e10c58a14174489cef5efe997e0f9":[0,0,0,0,282,4],
 "class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ac126fe379e9d1cd2684b75b04fe10904":[0,0,0,0,282,10],
 "class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ac2509eef2f37fad4cdb413f085274923":[0,0,0,0,282,1],
-"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ac27695bca41a90cfc16b6a119adebb89":[0,0,0,0,282,9],
-"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ada78c9610010a592ad15249804d6baf1":[0,0,0,0,282,8],
-"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ae156cb769d54203ce13ca9211ed27ac5":[0,0,0,0,282,6],
-"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ae3173912d7abf9fec60e7bef81111ec0":[0,0,0,0,282,12],
-"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ae378f27b950779b4d355723a020e553a":[0,0,0,0,282,3],
-"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#aead2496ebc97f1cc3ff6623123bf3681":[0,0,0,0,282,0],
-"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#aee3eb5f80c192f8da0c02027ebbbeb32":[0,0,0,0,282,7]
+"class_ds3_1_1_calls_1_1_get_object_lost_notification_registrations_spectra_s3_request.html#ac27695bca41a90cfc16b6a119adebb89":[0,0,0,0,282,9]
 };

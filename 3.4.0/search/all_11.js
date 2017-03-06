@@ -39,6 +39,7 @@ var searchData=
   ['storagedomainmemberlist',['StorageDomainMemberList',['../class_ds3_1_1_models_1_1_storage_domain_member_list.html',1,'Ds3::Models']]],
   ['streamfactory',['StreamFactory',['../class_ds3_1_1_helpers_1_1_strategies_1_1_stream_factory_1_1_stream_factory.html',1,'Ds3::Helpers::Strategies::StreamFactory']]],
   ['streamnotfoundexception',['StreamNotFoundException',['../class_ds3_1_1_helpers_1_1_strategies_1_1_stream_factory_1_1_stream_not_found_exception.html',1,'Ds3::Helpers::Strategies::StreamFactory']]],
+  ['streamsutil',['StreamsUtil',['../class_ds3_1_1_lang_1_1_streams_util.html',1,'Ds3::Lang']]],
   ['success',['Success',['../class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a317ffca6ae5e413721987ea4136d3812',1,'Ds3.Calls.AllocateJobChunkSpectraS3Response.Success()'],['../class_ds3_1_1_calls_1_1_get_job_chunks_ready_for_client_processing_spectra_s3_response.html#afd0d41089826c60efa4bbd5043bfb494',1,'Ds3.Calls.GetJobChunksReadyForClientProcessingSpectraS3Response.Success()']]],
   ['suspectblobazuretarget',['SuspectBlobAzureTarget',['../class_ds3_1_1_models_1_1_suspect_blob_azure_target.html',1,'Ds3::Models']]],
   ['suspectblobazuretargetlist',['SuspectBlobAzureTargetList',['../class_ds3_1_1_models_1_1_suspect_blob_azure_target_list.html',1,'Ds3::Models']]],

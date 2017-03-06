@@ -34,6 +34,7 @@ var searchData=
   ['storagedomainmemberlist',['StorageDomainMemberList',['../class_ds3_1_1_models_1_1_storage_domain_member_list.html',1,'Ds3::Models']]],
   ['streamfactory',['StreamFactory',['../class_ds3_1_1_helpers_1_1_strategies_1_1_stream_factory_1_1_stream_factory.html',1,'Ds3::Helpers::Strategies::StreamFactory']]],
   ['streamnotfoundexception',['StreamNotFoundException',['../class_ds3_1_1_helpers_1_1_strategies_1_1_stream_factory_1_1_stream_not_found_exception.html',1,'Ds3::Helpers::Strategies::StreamFactory']]],
+  ['streamsutil',['StreamsUtil',['../class_ds3_1_1_lang_1_1_streams_util.html',1,'Ds3::Lang']]],
   ['suspectblobazuretarget',['SuspectBlobAzureTarget',['../class_ds3_1_1_models_1_1_suspect_blob_azure_target.html',1,'Ds3::Models']]],
   ['suspectblobazuretargetlist',['SuspectBlobAzureTargetList',['../class_ds3_1_1_models_1_1_suspect_blob_azure_target_list.html',1,'Ds3::Models']]],
   ['suspectblobds3target',['SuspectBlobDs3Target',['../class_ds3_1_1_models_1_1_suspect_blob_ds3_target.html',1,'Ds3::Models']]],

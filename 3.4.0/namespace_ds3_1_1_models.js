@@ -110,6 +110,7 @@ var namespace_ds3_1_1_models =
     [ "PoolPartition", "class_ds3_1_1_models_1_1_pool_partition.html", "class_ds3_1_1_models_1_1_pool_partition" ],
     [ "PoolPartitionList", "class_ds3_1_1_models_1_1_pool_partition_list.html", "class_ds3_1_1_models_1_1_pool_partition_list" ],
     [ "Range", "struct_ds3_1_1_models_1_1_range.html", "struct_ds3_1_1_models_1_1_range" ],
+    [ "RangeExtensions", "class_ds3_1_1_models_1_1_range_extensions.html", "class_ds3_1_1_models_1_1_range_extensions" ],
     [ "S3DataReplicationRule", "class_ds3_1_1_models_1_1_s3_data_replication_rule.html", "class_ds3_1_1_models_1_1_s3_data_replication_rule" ],
     [ "S3DataReplicationRuleList", "class_ds3_1_1_models_1_1_s3_data_replication_rule_list.html", "class_ds3_1_1_models_1_1_s3_data_replication_rule_list" ],
     [ "S3Object", "class_ds3_1_1_models_1_1_s3_object.html", "class_ds3_1_1_models_1_1_s3_object" ],

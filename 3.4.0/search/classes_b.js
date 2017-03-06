@@ -6,6 +6,7 @@ var searchData=
   ['marksuspectblobs3targetsasdegradedspectras3request',['MarkSuspectBlobS3TargetsAsDegradedSpectraS3Request',['../class_ds3_1_1_calls_1_1_mark_suspect_blob_s3_targets_as_degraded_spectra_s3_request.html',1,'Ds3::Calls']]],
   ['marksuspectblobtapesasdegradedspectras3request',['MarkSuspectBlobTapesAsDegradedSpectraS3Request',['../class_ds3_1_1_calls_1_1_mark_suspect_blob_tapes_as_degraded_spectra_s3_request.html',1,'Ds3::Calls']]],
   ['masterobjectlist',['MasterObjectList',['../class_ds3_1_1_models_1_1_master_object_list.html',1,'Ds3::Models']]],
+  ['metadatautil',['MetadataUtil',['../class_ds3_1_1_runtime_1_1_metadata_util.html',1,'Ds3::Runtime']]],
   ['modifyactivejobspectras3request',['ModifyActiveJobSpectraS3Request',['../class_ds3_1_1_calls_1_1_modify_active_job_spectra_s3_request.html',1,'Ds3::Calls']]],
   ['modifyactivejobspectras3response',['ModifyActiveJobSpectraS3Response',['../class_ds3_1_1_calls_1_1_modify_active_job_spectra_s3_response.html',1,'Ds3::Calls']]],
   ['modifyallazuretargetsspectras3request',['ModifyAllAzureTargetsSpectraS3Request',['../class_ds3_1_1_calls_1_1_modify_all_azure_targets_spectra_s3_request.html',1,'Ds3::Calls']]],

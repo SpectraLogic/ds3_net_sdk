@@ -1,5 +1,11 @@
 var NAVTREEINDEX9 =
 {
+"class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a36648eca51cac8f80bb1ae0e994e06d4":[0,0,0,0,310,30],
+"class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a372bf69183499dff4bdf67d094459821":[0,0,0,0,310,22],
+"class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a3a7becda9105e644b885ed131c0e1752":[0,0,0,0,310,27],
+"class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a3cee498a78dbcf6689b57ef3997db5c1":[0,0,0,0,310,20],
+"class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a4f4dc7cba5356ffbb754f62c1ab31afd":[0,0,0,0,310,9],
+"class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a5571d62e70236c0cc4022184e78c54c1":[0,0,0,0,310,33],
 "class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a5a69a48c2866789e1d99ff803f8bfd20":[0,0,0,0,310,21],
 "class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a5be82885e826f2a20eac5692c7f8cbfa":[0,0,0,0,310,8],
 "class_ds3_1_1_calls_1_1_get_pools_spectra_s3_request.html#a8a427f2f67c9ddf620e38c9512eae7aa":[0,0,0,0,310,18],
@@ -243,11 +249,5 @@ var NAVTREEINDEX9 =
 "class_ds3_1_1_calls_1_1_get_storage_domain_capacity_summary_spectra_s3_request.html#af655492e58f33fad6599b1f8ca22284b":[0,0,0,0,334,5],
 "class_ds3_1_1_calls_1_1_get_storage_domain_capacity_summary_spectra_s3_response.html":[0,0,0,0,335],
 "class_ds3_1_1_calls_1_1_get_storage_domain_capacity_summary_spectra_s3_response.html#a43377b6adcfa426cd47aafa2a8086dd7":[0,0,0,0,335,0],
-"class_ds3_1_1_calls_1_1_get_storage_domain_capacity_summary_spectra_s3_response.html#a5af2dada282c4f33749c759ec830ae0e":[0,0,0,0,335,1],
-"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html":[0,0,0,0,336],
-"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#a49ad5c5e24bdf6b7db593d41872ee1da":[0,0,0,0,336,2],
-"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#a5e9c2a2bbf2f1f794eed10a288076596":[0,0,0,0,336,3],
-"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#ae51559b34fbfbe3b0cc2af6b9313afdf":[0,0,0,0,336,0],
-"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_request.html#af455d3c28483d6f8f02acc3f3a231bef":[0,0,0,0,336,1],
-"class_ds3_1_1_calls_1_1_get_storage_domain_failure_notification_registration_spectra_s3_response.html":[0,0,0,0,337]
+"class_ds3_1_1_calls_1_1_get_storage_domain_capacity_summary_spectra_s3_response.html#a5af2dada282c4f33749c759ec830ae0e":[0,0,0,0,335,1]
 };

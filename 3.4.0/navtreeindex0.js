@@ -17,8 +17,11 @@ var NAVTREEINDEX0 =
 "class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_request.html#aa0da11bf16ac4a71eefd354100fb877a":[0,0,0,0,1,4],
 "class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html":[0,0,0,0,2],
 "class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a1c8bb927eca892a4cadca8ed1fe5a547":[0,0,0,0,2,0],
+"class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a317ffca6ae5e413721987ea4136d3812":[0,0,0,0,2,5],
+"class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a6aab0f3bed9c619525956e2db61163ae":[0,0,0,0,2,4],
 "class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a6b308edc9d171d9275fcfc3e78ae7371":[0,0,0,0,2,3],
 "class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#a9cbf78e401f025937eefaf515278c67c":[0,0,0,0,2,2],
+"class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#ada593bad287547c4b4781dcaa2878f1d":[0,0,0,0,2,6],
 "class_ds3_1_1_calls_1_1_allocate_job_chunk_spectra_s3_response.html#aff2bd4910809f264887d9cb808d71cf0":[0,0,0,0,2,1],
 "class_ds3_1_1_calls_1_1_cancel_active_job_spectra_s3_request.html":[0,0,0,0,3],
 "class_ds3_1_1_calls_1_1_cancel_active_job_spectra_s3_request.html#a076e728d55dab5246db1eb42752d4764":[0,0,0,0,3,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#a73b75b46475d23a7c03a8d0fa0bd215c":[0,0,0,0,49,4],
 "class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#a746b472dedb636a6b2939e5bc03bb6a2":[0,0,0,0,49,3],
 "class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#a8fa4530cbe902333f22b0dc8e259fb2c":[0,0,0,0,49,5],
-"class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#a92510a60672f652c197bf5220bd1917f":[0,0,0,0,49,8],
-"class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#ab307ce6e62480495762f27dea625115d":[0,0,0,0,49,6],
-"class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#abafe24130c2cec661a41b10ec831b910":[0,0,0,0,49,1],
-"class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#aee225ad37a93df99c23aab82310f9398":[0,0,0,0,49,0]
+"class_ds3_1_1_calls_1_1_delegate_create_user_spectra_s3_request.html#a92510a60672f652c197bf5220bd1917f":[0,0,0,0,49,8]
 };

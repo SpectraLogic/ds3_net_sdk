@@ -12,7 +12,10 @@ var namespace_ds3_1_1_runtime =
     [ "Ds3NotSupportedStream", "class_ds3_1_1_runtime_1_1_ds3_not_supported_stream.html", "class_ds3_1_1_runtime_1_1_ds3_not_supported_stream" ],
     [ "Ds3RedirectLimitException", "class_ds3_1_1_runtime_1_1_ds3_redirect_limit_exception.html", "class_ds3_1_1_runtime_1_1_ds3_redirect_limit_exception" ],
     [ "Ds3RequestException", "class_ds3_1_1_runtime_1_1_ds3_request_exception.html", "class_ds3_1_1_runtime_1_1_ds3_request_exception" ],
+    [ "Ds3ServerCertificateValidation", "class_ds3_1_1_runtime_1_1_ds3_server_certificate_validation.html", "class_ds3_1_1_runtime_1_1_ds3_server_certificate_validation" ],
     [ "Ds3WebStream", "class_ds3_1_1_runtime_1_1_ds3_web_stream.html", "class_ds3_1_1_runtime_1_1_ds3_web_stream" ],
     [ "IRequestHeaders", "interface_ds3_1_1_runtime_1_1_i_request_headers.html", "interface_ds3_1_1_runtime_1_1_i_request_headers" ],
-    [ "RequestHeaders", "class_ds3_1_1_runtime_1_1_request_headers.html", "class_ds3_1_1_runtime_1_1_request_headers" ]
+    [ "MetadataUtil", "class_ds3_1_1_runtime_1_1_metadata_util.html", "class_ds3_1_1_runtime_1_1_metadata_util" ],
+    [ "RequestHeaders", "class_ds3_1_1_runtime_1_1_request_headers.html", "class_ds3_1_1_runtime_1_1_request_headers" ],
+    [ "RuntimeUtils", "class_ds3_1_1_runtime_1_1_runtime_utils.html", "class_ds3_1_1_runtime_1_1_runtime_utils" ]
 ];

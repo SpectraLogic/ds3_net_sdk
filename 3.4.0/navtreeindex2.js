@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"class_ds3_1_1_calls_1_1_delete_tape_density_directive_spectra_s3_request.html":[0,0,0,0,97],
+"class_ds3_1_1_calls_1_1_delete_tape_density_directive_spectra_s3_request.html#a428e3696d82ad697bec5c59b4d00542f":[0,0,0,0,97,3],
+"class_ds3_1_1_calls_1_1_delete_tape_density_directive_spectra_s3_request.html#a8723ecfb7064eff06367f825170bfaf6":[0,0,0,0,97,0],
 "class_ds3_1_1_calls_1_1_delete_tape_density_directive_spectra_s3_request.html#a9141bf79cc5821918ff1dcc7b14e9555":[0,0,0,0,97,1],
 "class_ds3_1_1_calls_1_1_delete_tape_density_directive_spectra_s3_request.html#ae135259a4b431e468630466990ffdcaa":[0,0,0,0,97,2],
 "class_ds3_1_1_calls_1_1_delete_tape_drive_spectra_s3_request.html":[0,0,0,0,98],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#a8c09daadb2e562c87c005bfbba9b314d":[0,0,0,0,132,4],
 "class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#a8ef4007033c33365dccf6407123e8b72":[0,0,0,0,132,2],
 "class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#a9082a6c378a5ee8ac41c4ba8b148757a":[0,0,0,0,132,6],
-"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#ab4675ef6eb88d28008cde8b15faad937":[0,0,0,0,132,13],
-"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#abdbf24f22818d37f784e00d5b2a3d42d":[0,0,0,0,132,19],
-"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#ac763e0d24db39ecbc08f44cc2ab50ace":[0,0,0,0,132,3],
-"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#acb3ae7953b57d963397479b7490f7ae2":[0,0,0,0,132,5]
+"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#ab4675ef6eb88d28008cde8b15faad937":[0,0,0,0,132,13]
 };

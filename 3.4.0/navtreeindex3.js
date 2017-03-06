@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#abdbf24f22818d37f784e00d5b2a3d42d":[0,0,0,0,132,19],
+"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#ac763e0d24db39ecbc08f44cc2ab50ace":[0,0,0,0,132,3],
+"class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#acb3ae7953b57d963397479b7490f7ae2":[0,0,0,0,132,5],
 "class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#adefa4cceae463eb5fa37d7c302e3cc38":[0,0,0,0,132,8],
 "class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#ae7e46edc83220ec542a0fe19855b2e96":[0,0,0,0,132,18],
 "class_ds3_1_1_calls_1_1_get_azure_target_bucket_names_spectra_s3_request.html#aee6a29297cc7349d39c12f7f9b22dc00":[0,0,0,0,132,15],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "class_ds3_1_1_calls_1_1_get_bucket_capacity_summary_spectra_s3_request.html#afb43f609551c79783bc0e9bf38efc5b2":[0,0,0,0,164,1],
 "class_ds3_1_1_calls_1_1_get_bucket_capacity_summary_spectra_s3_response.html":[0,0,0,0,165],
 "class_ds3_1_1_calls_1_1_get_bucket_capacity_summary_spectra_s3_response.html#a1969c6ffce88ee752faef7b6aec83511":[0,0,0,0,165,0],
-"class_ds3_1_1_calls_1_1_get_bucket_capacity_summary_spectra_s3_response.html#a38d5c8a653633dfc8e8fece87e51a91b":[0,0,0,0,165,1],
-"class_ds3_1_1_calls_1_1_get_bucket_request.html":[0,0,0,0,166],
-"class_ds3_1_1_calls_1_1_get_bucket_request.html#a0978e139bab583bf5dbc114e3e98f201":[0,0,0,0,166,8],
-"class_ds3_1_1_calls_1_1_get_bucket_request.html#a2299b6fd674e5882cc650416729c60b8":[0,0,0,0,166,3]
+"class_ds3_1_1_calls_1_1_get_bucket_capacity_summary_spectra_s3_response.html#a38d5c8a653633dfc8e8fece87e51a91b":[0,0,0,0,165,1]
 };

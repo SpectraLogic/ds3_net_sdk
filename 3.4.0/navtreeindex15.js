@@ -1,5 +1,11 @@
 var NAVTREEINDEX15 =
 {
+"class_ds3_1_1_calls_1_1_modify_ds3_target_spectra_s3_request.html#ae9fc2d00b04f2806104fe68473c9ae04":[0,0,0,0,466,11],
+"class_ds3_1_1_calls_1_1_modify_ds3_target_spectra_s3_request.html#af16b6c0747bfc1c0ae24197a05cc6633":[0,0,0,0,466,6],
+"class_ds3_1_1_calls_1_1_modify_ds3_target_spectra_s3_request.html#af48710cbcc0afd209f455dcb72011aff":[0,0,0,0,466,21],
+"class_ds3_1_1_calls_1_1_modify_ds3_target_spectra_s3_request.html#af7beb708f7b32cf67d47429e99738fd6":[0,0,0,0,466,17],
+"class_ds3_1_1_calls_1_1_modify_ds3_target_spectra_s3_response.html":[0,0,0,0,467],
+"class_ds3_1_1_calls_1_1_modify_ds3_target_spectra_s3_response.html#a7d0bf54ca418567416b06a617fedda4d":[0,0,0,0,467,1],
 "class_ds3_1_1_calls_1_1_modify_ds3_target_spectra_s3_response.html#af856836b8c9416dbe1d49b3af1d2e176":[0,0,0,0,467,0],
 "class_ds3_1_1_calls_1_1_modify_group_spectra_s3_request.html":[0,0,0,0,468],
 "class_ds3_1_1_calls_1_1_modify_group_spectra_s3_request.html#a0606b82aec5ed839afe3c2e7a6b8f575":[0,0,0,0,468,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX15 =
 "class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#a95d036bcad5d0777d1ab679509690f72":[0,0,0,0,496,9],
 "class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#aa4cd576be0386b9d95e36e731dd6e077":[0,0,0,0,496,1],
 "class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#aa9a9724da55b241e689a9bf6a6551f1e":[0,0,0,0,496,21],
-"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#aaabb4568a586a1af19486a8bb5e41b28":[0,0,0,0,496,2],
-"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#aad9dd9572f0c9da70178c90b0f4cc07a":[0,0,0,0,496,13],
-"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#ab0f64a3deb80f9f76710b1ee63f1be2f":[0,0,0,0,496,0],
-"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#aba21cf4a6816d2ed0c05665df6b25282":[0,0,0,0,496,22],
-"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#acb39ce88560316f4eabba2eb466034bd":[0,0,0,0,496,16],
-"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#acc019a1063fd8d7f6464010273ad866a":[0,0,0,0,496,24],
-"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#acf88856b07253bef2f313aa3ce68af38":[0,0,0,0,496,6]
+"class_ds3_1_1_calls_1_1_pair_back_registered_ds3_target_spectra_s3_request.html#aaabb4568a586a1af19486a8bb5e41b28":[0,0,0,0,496,2]
 };

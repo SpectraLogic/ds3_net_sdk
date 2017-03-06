@@ -1,5 +1,7 @@
 var struct_ds3_1_1_models_1_1_range =
 [
+    [ "ByLength", "struct_ds3_1_1_models_1_1_range.html#a269569a92ac615f2089acab480777d6b", null ],
+    [ "ByPosition", "struct_ds3_1_1_models_1_1_range.html#ac636bd4a64570303d993aec844ea86e1", null ],
     [ "CompareTo", "struct_ds3_1_1_models_1_1_range.html#a5c3dd35083b14a23727385aef2c8104b", null ],
     [ "CompareTo", "struct_ds3_1_1_models_1_1_range.html#a089d89c59a8b46a08e29671e8f09fcec", null ],
     [ "Equals", "struct_ds3_1_1_models_1_1_range.html#adec6e5bfe9088468f0da9b870408b596", null ],
