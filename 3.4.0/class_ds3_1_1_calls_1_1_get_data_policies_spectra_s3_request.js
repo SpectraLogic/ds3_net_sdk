@@ -1,0 +1,25 @@
+var class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request =
+[
+    [ "GetDataPoliciesSpectraS3Request", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a555140c0b72413766bb45a7f0d28e109", null ],
+    [ "WithAlwaysForcePutJobCreation", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#ae52ef1b95f8363e2bbb4945b9615aec1", null ],
+    [ "WithAlwaysMinimizeSpanningAcrossMedia", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#aa317b3cbd9ea2a57b6ba5f9cc3f5f319", null ],
+    [ "WithChecksumType", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a4e8beab08de9c1a14e6e7362da8b8ca6", null ],
+    [ "WithEndToEndCrcRequired", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a74e7449199f9629cb72345a9b6368abf", null ],
+    [ "WithLastPage", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a7ab260340ece68af9f1c8acc54c74e10", null ],
+    [ "WithName", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a142aa7c5da52fb6836c4ee943e8086a2", null ],
+    [ "WithPageLength", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#ac309d33c2ee0396c03e153809ef093cb", null ],
+    [ "WithPageOffset", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a178cfa64785d1721d6b1ec6c70ed8e4b", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a2588997f8f077143a75d75ad8fc3646a", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a7e6c1fcb171a0c171fcb566181b5ac11", null ],
+    [ "AlwaysForcePutJobCreation", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a0f45d2af220158dbcc632e99bc2f3d6e", null ],
+    [ "AlwaysMinimizeSpanningAcrossMedia", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a67b69d51288b90444e360cc0e12ca732", null ],
+    [ "ChecksumType", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a287389edaf320da14ff633acafc64d4f", null ],
+    [ "EndToEndCrcRequired", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a58900569e312e7ad01c71dc1065e8dde", null ],
+    [ "LastPage", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#ac40a70de41263d57e02499d4f11d3495", null ],
+    [ "Name", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#aa2c7ff9c5e160638447f9a826dddc53c", null ],
+    [ "PageLength", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a38d12394d57b548c01d5f9282021f23b", null ],
+    [ "PageOffset", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a6809ad8319530d358db66a9f9e0fef4e", null ],
+    [ "PageStartMarker", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a12ce610bb8a265615f9b78b5fa7c0f84", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#acde59e06bad9444e939558aaf49461c5", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_get_data_policies_spectra_s3_request.html#a9e1e0ebda53ddef20a50e02a9c5b4cfc", null ]
+];

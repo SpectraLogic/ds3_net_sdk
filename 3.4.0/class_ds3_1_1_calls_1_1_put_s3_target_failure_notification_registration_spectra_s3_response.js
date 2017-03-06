@@ -1,0 +1,5 @@
+var class_ds3_1_1_calls_1_1_put_s3_target_failure_notification_registration_spectra_s3_response =
+[
+    [ "PutS3TargetFailureNotificationRegistrationSpectraS3Response", "class_ds3_1_1_calls_1_1_put_s3_target_failure_notification_registration_spectra_s3_response.html#ae224ef16edcce321996af4e654a27920", null ],
+    [ "ResponsePayload", "class_ds3_1_1_calls_1_1_put_s3_target_failure_notification_registration_spectra_s3_response.html#a648f6b1b17488667d1704c73b2f7a6cf", null ]
+];

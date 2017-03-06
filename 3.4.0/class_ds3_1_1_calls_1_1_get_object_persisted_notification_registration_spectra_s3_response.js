@@ -1,0 +1,5 @@
+var class_ds3_1_1_calls_1_1_get_object_persisted_notification_registration_spectra_s3_response =
+[
+    [ "GetObjectPersistedNotificationRegistrationSpectraS3Response", "class_ds3_1_1_calls_1_1_get_object_persisted_notification_registration_spectra_s3_response.html#af78761b3e65d50800370b4766ad688cf", null ],
+    [ "ResponsePayload", "class_ds3_1_1_calls_1_1_get_object_persisted_notification_registration_spectra_s3_response.html#a5089bd1ac467f2c9ffac30c561326397", null ]
+];

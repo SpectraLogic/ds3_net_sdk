@@ -1,0 +1,26 @@
+var class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request =
+[
+    [ "ModifyDataPathBackendSpectraS3Request", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#ad0ad4b04aa5d8b7f2c59b184171521d3", null ],
+    [ "WithActivated", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a5d03331a17f1b1a518bab79e1796bb73", null ],
+    [ "WithAutoActivateTimeoutInMins", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a2ba5c2cd44ff10cc3dd92504247eb0f0", null ],
+    [ "WithAutoInspect", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a1e55aa686c929601a0a5df26a0896f41", null ],
+    [ "WithDefaultImportConflictResolutionMode", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a5d4b21d690827dce9d6da49af74ff782", null ],
+    [ "WithDefaultVerifyDataAfterImport", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a604a1ccd6dbe7f16d7ea69e5623af069", null ],
+    [ "WithDefaultVerifyDataPriorToImport", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#aaea01bdc7f25a86c1505e6bb1ea9123d", null ],
+    [ "WithPartiallyVerifyLastPercentOfTapes", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a10cf41bf20a54a4030094ff4f95a27d6", null ],
+    [ "WithUnavailableMediaPolicy", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a73927c39aeaec0e7634e0a3808dc71a8", null ],
+    [ "WithUnavailablePoolMaxJobRetryInMins", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a780c78cd41ffead117be3dd4d67cdf17", null ],
+    [ "WithUnavailableTapePartitionMaxJobRetryInMins", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a1006366367956e08c23f768822d7da72", null ],
+    [ "Activated", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a4c48c3d3e84b091618854bf21c4e3527", null ],
+    [ "AutoActivateTimeoutInMins", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#ae044e77e01fce45866be80a26f116f53", null ],
+    [ "AutoInspect", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a41e0c0b574f65c0212967fdbe5bcb94e", null ],
+    [ "DefaultImportConflictResolutionMode", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a78ab5cbbd568164d1ab840146dc91982", null ],
+    [ "DefaultVerifyDataAfterImport", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a4d4a1e5b2d20ee1109592368b74d4e5b", null ],
+    [ "DefaultVerifyDataPriorToImport", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a3af8a23b17f4cfd43a94d3bcd3e7606d", null ],
+    [ "PartiallyVerifyLastPercentOfTapes", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a4d0b532a3221b678b9748f21897dbaf7", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#acc90e210bf7239f2deade56cee9eed97", null ],
+    [ "UnavailableMediaPolicy", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a9e2574837e7ecbf12345b5a25130347e", null ],
+    [ "UnavailablePoolMaxJobRetryInMins", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a8dadd4f72ecf33c1170593db6fd3ec76", null ],
+    [ "UnavailableTapePartitionMaxJobRetryInMins", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a74c149e6b749f32b904a0a46561f90a4", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_modify_data_path_backend_spectra_s3_request.html#a7ea7292fc938ded578dc6590a7b6c3f8", null ]
+];
