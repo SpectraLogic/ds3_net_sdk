@@ -27,6 +27,6 @@ namespace Ds3.Models
         public DateTime? LastModified { get; set; }
         public User Owner { get; set; }
         public long Size { get; set; }
-        public Object StorageClass { get; set; }
+        public string StorageClass { get; set; }
     }
 }
