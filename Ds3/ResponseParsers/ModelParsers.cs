@@ -391,6 +391,7 @@ namespace Ds3.ResponseParsers
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.Element("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.Element("CompletedSizeInBytes")),
                 CreatedAt = ParseDateTime(element.Element("CreatedAt")),
+                DeadJobCleanupAllowed = ParseBool(element.Element("DeadJobCleanupAllowed")),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
                 Id = ParseGuid(element.Element("Id")),
                 ImplicitJobIdResolution = ParseBool(element.Element("ImplicitJobIdResolution")),
@@ -1141,10 +1142,12 @@ namespace Ds3.ResponseParsers
         {
             return new TapeDrive
             {
+                CleaningRequired = ParseBool(element.Element("CleaningRequired")),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
                 ForceTapeRemoval = ParseBool(element.Element("ForceTapeRemoval")),
                 Id = ParseGuid(element.Element("Id")),
                 LastCleaned = ParseNullableDateTime(element.Element("LastCleaned")),
+                MfgSerialNumber = ParseNullableString(element.Element("MfgSerialNumber")),
                 PartitionId = ParseGuid(element.Element("PartitionId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapeDriveState(element.Element("State")),

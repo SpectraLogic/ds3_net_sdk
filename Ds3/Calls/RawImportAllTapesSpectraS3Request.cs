@@ -26,11 +26,48 @@ namespace Ds3.Calls
         public string BucketId { get; private set; }
 
         
+        private string _storageDomainId;
+        public string StorageDomainId
+        {
+            get { return _storageDomainId; }
+            set { WithStorageDomainId(value); }
+        }
+
         private Priority? _taskPriority;
         public Priority? TaskPriority
         {
             get { return _taskPriority; }
             set { WithTaskPriority(value); }
+        }
+
+        
+        public RawImportAllTapesSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
+        {
+            this._storageDomainId = storageDomainId.ToString();
+            if (storageDomainId != null)
+            {
+                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("storage_domain_id");
+            }
+            return this;
+        }
+
+        
+        public RawImportAllTapesSpectraS3Request WithStorageDomainId(string storageDomainId)
+        {
+            this._storageDomainId = storageDomainId;
+            if (storageDomainId != null)
+            {
+                this.QueryParams.Add("storage_domain_id", storageDomainId);
+            }
+            else
+            {
+                this.QueryParams.Remove("storage_domain_id");
+            }
+            return this;
         }
 
         

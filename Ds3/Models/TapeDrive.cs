@@ -22,10 +22,12 @@ namespace Ds3.Models
 {
     public class TapeDrive
     {
+        public bool CleaningRequired { get; set; }
         public string ErrorMessage { get; set; }
         public bool ForceTapeRemoval { get; set; }
         public Guid Id { get; set; }
         public DateTime? LastCleaned { get; set; }
+        public string MfgSerialNumber { get; set; }
         public Guid PartitionId { get; set; }
         public string SerialNumber { get; set; }
         public TapeDriveState State { get; set; }

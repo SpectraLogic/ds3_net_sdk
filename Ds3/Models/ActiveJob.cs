@@ -28,6 +28,7 @@ namespace Ds3.Models
         public JobChunkClientProcessingOrderGuarantee ChunkClientProcessingOrderGuarantee { get; set; }
         public long CompletedSizeInBytes { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool DeadJobCleanupAllowed { get; set; }
         public string ErrorMessage { get; set; }
         public Guid Id { get; set; }
         public bool ImplicitJobIdResolution { get; set; }
