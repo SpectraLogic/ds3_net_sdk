@@ -23,15 +23,22 @@ namespace Ds3.Calls
     public class DeleteDataPersistenceRuleSpectraS3Request : Ds3Request
     {
         
-        public string DataPersistenceRule { get; private set; }
+        public string DataPersistenceRuleId { get; private set; }
 
         
 
         
         
-        public DeleteDataPersistenceRuleSpectraS3Request(string dataPersistenceRule)
+        public DeleteDataPersistenceRuleSpectraS3Request(Guid dataPersistenceRuleId)
         {
-            this.DataPersistenceRule = dataPersistenceRule;
+            this.DataPersistenceRuleId = dataPersistenceRuleId.ToString();
+            
+        }
+
+        
+        public DeleteDataPersistenceRuleSpectraS3Request(string dataPersistenceRuleId)
+        {
+            this.DataPersistenceRuleId = dataPersistenceRuleId;
             
         }
 
@@ -47,7 +54,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_persistence_rule/" + DataPersistenceRule;
+                return "/_rest_/data_persistence_rule/" + DataPersistenceRuleId.ToString();
             }
         }
     }
