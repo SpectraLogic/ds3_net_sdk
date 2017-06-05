@@ -60,6 +60,7 @@
     <Compile Include="MetadataAccess.cs" />
     <Compile Include="NotEnoughSpaceOnDiskStream.cs" />
     <Compile Include="TempStorageUtil.cs" />
+    <Compile Include="ThrowingExceptionStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestData\beowulf.txt" />

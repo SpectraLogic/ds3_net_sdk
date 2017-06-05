@@ -346,6 +346,49 @@ namespace IntegrationTestDs3
         }
 
         [Test]
+        public void TestGetObjectsWithResumeAfterException()
+        {
+            const string bucketName = "TestGetObjectsWithResumeAfterException";
+            IJob job = null;
+
+            try
+            {
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+                var client = Ds3Builder.FromEnv().Build();
+                var helper = new Ds3ClientHelpers(client);
+                // Creates a bulk job with all of the objects in the bucket.
+                job = helper.StartReadAllJob(bucketName);
+
+                job.Transfer(key =>
+                {
+                    var fullPath = Path.Combine(TestDirectoryDest, key.Replace('/', Path.DirectorySeparatorChar));
+                    return new ThrowingExceptionStream(File.OpenWrite(fullPath));
+                });
+
+                Assert.Fail("Trasfer should throw an exception");
+            }
+            catch (AssertionException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+                var resumedJob = Helpers.RecoverReadJob(job.JobId);
+                resumedJob.Transfer(FileHelpers.BuildFileGetter(TestDirectoryDest));
+                var postFolder = FileHelpers.ListObjectsForDirectory(TestDirectoryDest);
+                var postFolderCount = postFolder.Count();
+                Assert.AreEqual(postFolderCount, ListBucketObjects(bucketName).Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+                DeleteFilesFromLocalDirectory(TestDirectoryDest);
+            }
+        }
+
+        [Test]
         public void GetSystemInfo()
         {
             // get valid data and populate properties
