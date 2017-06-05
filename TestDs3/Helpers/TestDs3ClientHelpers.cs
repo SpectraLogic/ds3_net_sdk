@@ -357,9 +357,13 @@ namespace TestDs3.Helpers
                 job.Transfer(key => new MockStream());
                 Assert.Fail("Should have thrown an exception.");
             }
-            catch (Exception e)
+            catch (AssertionException ex)
             {
-                Assert.IsInstanceOf<NullReferenceException>(e);
+                throw ex;
+            }
+            catch (Exception)
+            {
+                Assert.Pass();
             }
 
             node2Client.VerifyAll();
