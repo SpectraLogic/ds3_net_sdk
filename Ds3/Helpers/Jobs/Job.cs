@@ -187,15 +187,28 @@ namespace Ds3.Helpers.Jobs
                     ChecksumType = _checksumType
                 });
             }
+            catch(Exception ex)
+            {
+                //only closing the stream in the event of exception
+                ContextRangeCloseHelper(blobLength, blob, contextRange => this._streamFactory.CloseStream(contextRange.Context));
+
+                throw ex;
+            }
             finally
             {
                 this._streamFactory.CloseBlob(blob);
             }
 
+            //closing the stream and trgger ItemCompleted event
+            ContextRangeCloseHelper(blobLength, blob, contextRange => this._itemTracker.CompleteRange(contextRange));
+        }
+
+        private void ContextRangeCloseHelper(long blobLength, Blob blob, Action<ContextRange<TItem>> block)
+        {
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, blobLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))
             {
-                this._itemTracker.CompleteRange(contextRange);
+                block(contextRange);
             }
         }
     }
