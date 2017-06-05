@@ -203,12 +203,12 @@ namespace Ds3.Helpers.Jobs
             ContextRangeCloseHelper(blobLength, blob, contextRange => this._itemTracker.CompleteRange(contextRange));
         }
 
-        private void ContextRangeCloseHelper(long blobLength, Blob blob, Action<ContextRange<TItem>> block)
+        private void ContextRangeCloseHelper(long blobLength, Blob blob, Action<ContextRange<TItem>> contextHandlerFunction)
         {
             var fullRequestRange = ContextRange.Create(Range.ByLength(0L, blobLength), blob);
             foreach (var contextRange in this._rangeTranslator.Translate(fullRequestRange))
             {
-                block(contextRange);
+                contextHandlerFunction(contextRange);
             }
         }
     }
