@@ -1149,6 +1149,7 @@ namespace Ds3.ResponseParsers
                 LastCleaned = ParseNullableDateTime(element.Element("LastCleaned")),
                 MfgSerialNumber = ParseNullableString(element.Element("MfgSerialNumber")),
                 PartitionId = ParseGuid(element.Element("PartitionId")),
+                Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapeDriveState(element.Element("State")),
                 TapeId = ParseNullableGuid(element.Element("TapeId")),
@@ -1209,6 +1210,7 @@ namespace Ds3.ResponseParsers
                 LibraryId = ParseGuid(element.Element("LibraryId")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
+                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State"))
             };
@@ -1767,6 +1769,7 @@ namespace Ds3.ResponseParsers
                 LibraryId = ParseGuid(element.Element("LibraryId")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
+                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
                 TapeTypes = element.Elements("TapeTypes").Select(ParseTapeType).ToList()
@@ -1822,7 +1825,7 @@ namespace Ds3.ResponseParsers
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
-                EntirelyInCache = ParseBool(element.AttributeText("EntirelyInCache")),
+                EntirelyInCache = ParseNullableBool(element.AttributeTextOrNull("EntirelyInCache")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
@@ -1869,7 +1872,7 @@ namespace Ds3.ResponseParsers
                 CachedSizeInBytes = ParseLong(element.AttributeText("CachedSizeInBytes")),
                 ChunkClientProcessingOrderGuarantee = ParseJobChunkClientProcessingOrderGuarantee(element.AttributeText("ChunkClientProcessingOrderGuarantee")),
                 CompletedSizeInBytes = ParseLong(element.AttributeText("CompletedSizeInBytes")),
-                EntirelyInCache = ParseBool(element.AttributeText("EntirelyInCache")),
+                EntirelyInCache = ParseNullableBool(element.AttributeTextOrNull("EntirelyInCache")),
                 JobId = ParseGuid(element.AttributeText("JobId")),
                 Naked = ParseBool(element.AttributeText("Naked")),
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
@@ -2123,6 +2126,7 @@ namespace Ds3.ResponseParsers
                 LibraryId = ParseGuid(element.Element("LibraryId")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
+                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
                 TapeTypes = element.Elements("TapeTypes").Select(ParseTapeType).ToList()

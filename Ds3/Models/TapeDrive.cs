@@ -29,6 +29,7 @@ namespace Ds3.Models
         public DateTime? LastCleaned { get; set; }
         public string MfgSerialNumber { get; set; }
         public Guid PartitionId { get; set; }
+        public Quiesced Quiesced { get; set; }
         public string SerialNumber { get; set; }
         public TapeDriveState State { get; set; }
         public Guid? TapeId { get; set; }

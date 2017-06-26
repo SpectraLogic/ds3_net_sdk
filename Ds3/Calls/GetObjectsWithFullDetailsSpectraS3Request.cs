@@ -31,13 +31,6 @@ namespace Ds3.Calls
             set { WithBucketId(value); }
         }
 
-        private string _folder;
-        public string Folder
-        {
-            get { return _folder; }
-            set { WithFolder(value); }
-        }
-
         private bool? _includePhysicalPlacement;
         public bool? IncludePhysicalPlacement
         {
@@ -127,21 +120,6 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("bucket_id");
-            }
-            return this;
-        }
-
-        
-        public GetObjectsWithFullDetailsSpectraS3Request WithFolder(string folder)
-        {
-            this._folder = folder;
-            if (folder != null)
-            {
-                this.QueryParams.Add("folder", folder);
-            }
-            else
-            {
-                this.QueryParams.Remove("folder");
             }
             return this;
         }
