@@ -185,6 +185,8 @@ namespace Ds3
         
         AllocateJobChunkSpectraS3Response AllocateJobChunkSpectraS3(AllocateJobChunkSpectraS3Request request);
         
+        CloseAggregatingJobSpectraS3Response CloseAggregatingJobSpectraS3(CloseAggregatingJobSpectraS3Request request);
+        
         GetBulkJobSpectraS3Response GetBulkJobSpectraS3(GetBulkJobSpectraS3Request request);
         
         PutBulkJobSpectraS3Response PutBulkJobSpectraS3(PutBulkJobSpectraS3Request request);
@@ -456,6 +458,8 @@ namespace Ds3
         InspectAllTapesSpectraS3Response InspectAllTapesSpectraS3(InspectAllTapesSpectraS3Request request);
         
         InspectTapeSpectraS3Response InspectTapeSpectraS3(InspectTapeSpectraS3Request request);
+        
+        ModifyTapeDriveSpectraS3Response ModifyTapeDriveSpectraS3(ModifyTapeDriveSpectraS3Request request);
         
         ModifyTapePartitionSpectraS3Response ModifyTapePartitionSpectraS3(ModifyTapePartitionSpectraS3Request request);
         

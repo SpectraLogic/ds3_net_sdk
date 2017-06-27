@@ -23,6 +23,8 @@ namespace IntegrationTestDS3
 {
     public static class TempStorageUtil
     {
+        private const string DefaultUser = "Administrator";
+        
         /// <summary>
         /// Sets up a temporary data policy with a temporary storage domain and partition
         /// for use in integration tests where the BP may not currently have access to a
@@ -152,7 +154,7 @@ namespace IntegrationTestDS3
             }
             var dataPolicyResponse = client.PutDataPolicySpectraS3(dataPolicyRequest);
 
-            client.ModifyUserSpectraS3(new ModifyUserSpectraS3Request("spectra")
+            client.ModifyUserSpectraS3(new ModifyUserSpectraS3Request(DefaultUser)
                 .WithDefaultDataPolicyId(dataPolicyResponse.ResponsePayload.Id));
 
             return dataPolicyResponse.ResponsePayload.Id;

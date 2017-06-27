@@ -136,6 +136,13 @@ namespace Ds3.Calls
             set { WithSerialNumber(value); }
         }
 
+        private string _sortBy;
+        public string SortBy
+        {
+            get { return _sortBy; }
+            set { WithSortBy(value); }
+        }
+
         private TapeState? _state;
         public TapeState? State
         {
@@ -452,6 +459,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("serial_number");
+            }
+            return this;
+        }
+
+        
+        public GetTapesSpectraS3Request WithSortBy(string sortBy)
+        {
+            this._sortBy = sortBy;
+            if (sortBy != null)
+            {
+                this.QueryParams.Add("sort_by", sortBy);
+            }
+            else
+            {
+                this.QueryParams.Remove("sort_by");
             }
             return this;
         }
