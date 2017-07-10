@@ -431,6 +431,11 @@ namespace Ds3
             return new AllocateJobChunkSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public CloseAggregatingJobSpectraS3Response CloseAggregatingJobSpectraS3(CloseAggregatingJobSpectraS3Request request)
+        {
+            return new CloseAggregatingJobSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public GetBulkJobSpectraS3Response GetBulkJobSpectraS3(GetBulkJobSpectraS3Request request)
         {
             return new GetBulkJobSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -1109,6 +1114,11 @@ namespace Ds3
         public InspectTapeSpectraS3Response InspectTapeSpectraS3(InspectTapeSpectraS3Request request)
         {
             return new InspectTapeSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public ModifyTapeDriveSpectraS3Response ModifyTapeDriveSpectraS3(ModifyTapeDriveSpectraS3Request request)
+        {
+            return new ModifyTapeDriveSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public ModifyTapePartitionSpectraS3Response ModifyTapePartitionSpectraS3(ModifyTapePartitionSpectraS3Request request)

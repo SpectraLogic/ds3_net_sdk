@@ -106,6 +106,8 @@
     <Compile Include="Calls\ClearSuspectBlobPoolsSpectraS3Request.cs" />
     <Compile Include="Calls\ClearSuspectBlobS3TargetsSpectraS3Request.cs" />
     <Compile Include="Calls\ClearSuspectBlobTapesSpectraS3Request.cs" />
+    <Compile Include="Calls\CloseAggregatingJobSpectraS3Request.cs" />
+    <Compile Include="Calls\CloseAggregatingJobSpectraS3Response.cs" />
     <Compile Include="Calls\CompactAllPoolsSpectraS3Request.cs" />
     <Compile Include="Calls\CompactPoolSpectraS3Request.cs" />
     <Compile Include="Calls\CompactPoolSpectraS3Response.cs" />
@@ -550,6 +552,8 @@
     <Compile Include="Calls\ModifyStorageDomainMemberSpectraS3Response.cs" />
     <Compile Include="Calls\ModifyStorageDomainSpectraS3Request.cs" />
     <Compile Include="Calls\ModifyStorageDomainSpectraS3Response.cs" />
+    <Compile Include="Calls\ModifyTapeDriveSpectraS3Request.cs" />
+    <Compile Include="Calls\ModifyTapeDriveSpectraS3Response.cs" />
     <Compile Include="Calls\ModifyTapePartitionSpectraS3Request.cs" />
     <Compile Include="Calls\ModifyTapePartitionSpectraS3Response.cs" />
     <Compile Include="Calls\ModifyTapeSpectraS3Request.cs" />
@@ -946,6 +950,7 @@
     <Compile Include="ResponseParsers\CancelVerifyPoolSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\CancelVerifyTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\CleanTapeDriveSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\CloseAggregatingJobSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\CompactPoolSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\CompleteMultiPartUploadResponseParser.cs" />
     <Compile Include="ResponseParsers\DelegateCreateUserSpectraS3ResponseParser.cs" />
@@ -1129,6 +1134,7 @@
     <Compile Include="ResponseParsers\ModifyS3TargetSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ModifyStorageDomainMemberSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ModifyStorageDomainSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\ModifyTapeDriveSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ModifyTapePartitionSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ModifyTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ModifyUserSpectraS3ResponseParser.cs" />

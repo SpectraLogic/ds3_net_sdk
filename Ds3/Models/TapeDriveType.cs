@@ -23,6 +23,7 @@ namespace Ds3.Models
         LTO5,
         LTO6,
         LTO7,
+        LTO8,
         TS1140,
         TS1150
     }

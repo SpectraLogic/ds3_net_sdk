@@ -14,24 +14,17 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public enum TapeType
+    public class CloseAggregatingJobSpectraS3Response
     {
-        LTO5,
-        LTO6,
-        LTO7,
-        LTO8,
-        LTO_CLEANING_TAPE,
-        TS_JC,
-        TS_JY,
-        TS_JK,
-        TS_JD,
-        TS_JZ,
-        TS_JL,
-        TS_CLEANING_TAPE,
-        UNKNOWN,
-        FORBIDDEN
+        public MasterObjectList ResponsePayload { get; private set; }
+
+        public CloseAggregatingJobSpectraS3Response(MasterObjectList responsePayload)
+        {
+            this.ResponsePayload = responsePayload;
+        }
     }
 }

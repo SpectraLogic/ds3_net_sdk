@@ -20,6 +20,7 @@ namespace Ds3.Models
     public enum TargetFailureType
     {
         IMPORT_FAILED,
+        IMPORT_INCOMPLETE,
         NOT_ONLINE,
         WRITE_FAILED,
         WRITE_INITIATE_FAILED,
