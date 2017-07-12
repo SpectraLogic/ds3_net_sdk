@@ -56,7 +56,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_drive/" + TapeDriveId.ToString();
+                return "/_rest_/tape_drive/" + TapeDriveId;
             }
         }
     }

@@ -54,7 +54,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_library/" + TapeLibraryId.ToString();
+                return "/_rest_/tape_library/" + TapeLibraryId;
             }
         }
     }
