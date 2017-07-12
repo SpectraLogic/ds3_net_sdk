@@ -135,7 +135,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/user/" + UserId.ToString();
+                return "/_rest_/user/" + UserId;
             }
         }
     }

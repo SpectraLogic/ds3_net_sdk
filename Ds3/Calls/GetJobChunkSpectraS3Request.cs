@@ -54,7 +54,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/job_chunk/" + JobChunkId.ToString();
+                return "/_rest_/job_chunk/" + JobChunkId;
             }
         }
     }

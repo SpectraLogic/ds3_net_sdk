@@ -54,7 +54,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_policy/" + DataPolicyId.ToString();
+                return "/_rest_/data_policy/" + DataPolicyId;
             }
         }
     }
