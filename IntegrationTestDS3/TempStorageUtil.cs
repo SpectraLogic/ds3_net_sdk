@@ -23,8 +23,21 @@ namespace IntegrationTestDS3
 {
     public static class TempStorageUtil
     {
-        private const string DefaultUser = "Administrator";
-        
+        private static string DefaultUser;
+
+        static TempStorageUtil()
+        {
+            var user =  Environment.GetEnvironmentVariable("DS3_USER");
+            if (string.IsNullOrEmpty(user))
+            {
+                DefaultUser = "Administrator";
+            }
+            else
+            {
+                DefaultUser = user;
+            }
+        }
+
         /// <summary>
         /// Sets up a temporary data policy with a temporary storage domain and partition
         /// for use in integration tests where the BP may not currently have access to a
