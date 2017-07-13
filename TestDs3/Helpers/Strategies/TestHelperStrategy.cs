@@ -18,6 +18,7 @@ using Ds3.Helpers.Strategies.ChunkStrategies;
 using Ds3.Helpers.Strategies.StreamFactory;
 using Ds3.Models;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace TestDs3.Helpers.Strategies
 {
@@ -83,12 +84,22 @@ namespace TestDs3.Helpers.Strategies
         public void TestWriteStreamHelperStrategy()
         {
             var helperStrategy = new WriteStreamHelperStrategy();
-            ;
             var chunkStrategy = helperStrategy.GetChunkStrategy();
             var streamFactory = helperStrategy.GetStreamFactory();
 
             Assert.AreEqual(typeof(WriteStreamChunkStrategy), chunkStrategy.GetType());
             Assert.AreEqual(typeof(WriteStreamStreamFactory), streamFactory.GetType());
+        }
+
+        [Test]
+        public void TestWriteAggregateJobsHelperStrategy()
+        {
+            var helperStrategy = new WriteAggregateJobsHelperStrategy(new List<Ds3Object> { new Ds3Object("foo", 10) });
+            var chunkStrategy = helperStrategy.GetChunkStrategy();
+            var streamFactory = helperStrategy.GetStreamFactory();
+
+            Assert.AreEqual(typeof(WriteAggregateJobsChunkStrategy), chunkStrategy.GetType());
+            Assert.AreEqual(typeof(WriteRandomAccessStreamFactory), streamFactory.GetType());
         }
     }
 }

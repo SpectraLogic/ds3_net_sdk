@@ -228,4 +228,7 @@
   <data name="ForbiddenPriorityException" xml:space="preserve">
     <value>It is illegal to specify value '{0}' for type IJob</value>
   </data>
+  <data name="UseRecoverAggregatedWriteJob" xml:space="preserve">
+    <value>Please use RecoverAggregatedWriteJob when trying to recover an aggregated job.</value>
+  </data>
 </root>

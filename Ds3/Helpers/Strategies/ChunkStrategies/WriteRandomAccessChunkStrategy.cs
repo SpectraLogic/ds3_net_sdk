@@ -32,18 +32,16 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
 
         private readonly object _chunksRemainingLock = new object();
         private ISet<Guid> _toAllocateChunks;
-        private readonly bool _withAggregation;
 
         public readonly RetryAfter RetryAfer;
 
-        public WriteRandomAccessChunkStrategy(int retryAfter = -1, bool withAggregation = false)
-            :this(Thread.Sleep, retryAfter, withAggregation)
+        public WriteRandomAccessChunkStrategy(int retryAfter = -1)
+            : this(Thread.Sleep, retryAfter)
         {
         }
 
-        public WriteRandomAccessChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1, bool withAggregation = false)
+        public WriteRandomAccessChunkStrategy(Action<TimeSpan> wait, int retryAfter = -1)
         {
-            this._withAggregation = withAggregation;
             this.RetryAfer = new RetryAfter(wait, retryAfter);
         }
 
@@ -51,11 +49,6 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
         {
             this._client = client;
             this._jobResponse = jobResponse;
-
-            if (_withAggregation)
-            {
-                _jobResponse.Objects = GetObjectsNotInCache();
-            }
 
             lock (this._chunksRemainingLock)
             {
@@ -142,35 +135,6 @@ namespace Ds3.Helpers.Strategies.ChunkStrategies
                     );
             }
             return chunk;
-        }
-
-        /// <summary>
-        /// Filtering the objects that are already in cache, 
-        /// this helps us when using aggregating jobs to determinate which object are related to the current running job.
-        /// </summary>
-        /// <returns> A new list of objects to be processed by the running job</returns>
-        private IEnumerable<Objects> GetObjectsNotInCache()
-        {
-            var notCachedObject = new List<Objects>();
-            var hasCachedObject = false;
-            foreach (var objectList in _jobResponse.Objects)
-            {
-                if (objectList.ObjectsList.Any(obj => obj.InCache.HasValue && obj.InCache.Value))
-                {
-                    hasCachedObject = true;
-                }
-
-                if (!hasCachedObject)
-                {
-                    notCachedObject.Add(objectList);
-                }
-                else
-                {
-                    hasCachedObject = false; //reset for next chunk
-                }
-            }
-
-            return notCachedObject;
         }
     }
 }

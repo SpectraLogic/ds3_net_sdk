@@ -385,6 +385,15 @@ namespace Ds3 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please use RecoverAggregatedWriteJob when trying to recover an aggregated job..
+        /// </summary>
+        internal static string UseRecoverAggregatedWriteJob {
+            get {
+                return ResourceManager.GetString("UseRecoverAggregatedWriteJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encountered an error while reading XML response: &quot;{0}&quot;.
         /// </summary>
         internal static string XmlResponseErrorException {
