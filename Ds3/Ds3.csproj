@@ -65,6 +65,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Calls\AbortMultiPartUploadRequest.cs" />
+    <Compile Include="Calls\AbstractIdsPayloadRequest.cs" />
     <Compile Include="Calls\AllocateJobChunkSpectraS3Request.cs" />
     <Compile Include="Calls\AllocateJobChunkSpectraS3Response.cs" />
     <Compile Include="Calls\CancelActiveJobSpectraS3Request.cs" />
