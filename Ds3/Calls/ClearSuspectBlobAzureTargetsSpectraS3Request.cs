@@ -16,11 +16,12 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Ds3.Calls
 {
-    public class ClearSuspectBlobAzureTargetsSpectraS3Request : Ds3Request
+    public class ClearSuspectBlobAzureTargetsSpectraS3Request : AbstractIdsPayloadRequest
     {
         
         
@@ -49,7 +50,7 @@ namespace Ds3.Calls
 
         
         
-        public ClearSuspectBlobAzureTargetsSpectraS3Request()
+        public ClearSuspectBlobAzureTargetsSpectraS3Request(List<string> ids) : base(ids)
         {
             
         }

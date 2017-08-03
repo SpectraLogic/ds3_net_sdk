@@ -1350,5 +1350,19 @@ namespace TestDs3
                 .AsClient
                 .VerifySystemHealthSpectraS3(new VerifySystemHealthSpectraS3Request()));
         }
+
+        [Test]
+        public void TestClearSuspectBobAzureTargets()
+        {
+            const string expectedRequestContent = "<Ids><Id>id1</Id><Id>id2</Id><Id>id3</Id></Ids>";
+
+            var ids = new List<string> {"id1", "id2", "id3"};
+
+            MockNetwork
+                .Expecting(HttpVerb.DELETE, "/_rest_/suspect_blob_azure_target", EmptyQueryParams, expectedRequestContent)
+                .Returning(HttpStatusCode.NoContent, "", EmptyHeaders)
+                .AsClient
+                .ClearSuspectBlobAzureTargetsSpectraS3(new ClearSuspectBlobAzureTargetsSpectraS3Request(ids));
+        }
     }
 }
