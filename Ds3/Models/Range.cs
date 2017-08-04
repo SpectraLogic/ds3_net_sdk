@@ -31,7 +31,7 @@ namespace Ds3.Models
 
         public static Range ByPosition(long start, long end)
         {
-            if (start == 0 & end == 0)
+            if (start == 0 && end == 0)
             {
                 return new Range(start, start, 0);
             }
