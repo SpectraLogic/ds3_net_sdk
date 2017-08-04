@@ -21,11 +21,19 @@ namespace Ds3.Models
     {
         public static Range ByLength(long start, long length)
         {
+            if (length == 0)
+            {
+                return new Range(start, start, length);
+            }
             return new Range(start, start + length - 1, length);
         }
 
         public static Range ByPosition(long start, long end)
         {
+            if (start == 0 & end == 0)
+            {
+                return new Range(start, start, 0);
+            }
             return new Range(start, end, end - start + 1);
         }
 

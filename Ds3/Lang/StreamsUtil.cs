@@ -25,13 +25,23 @@ namespace Ds3.Lang
             var totalBytesRead = 0;
             int bytesRead;
 
-            while ((bytesRead = src.Read(buffer, totalBytesRead, bufferSize - totalBytesRead)) != 0)
+            bytesRead = src.Read(buffer, totalBytesRead, bufferSize - totalBytesRead);
+
+            //in case the file we are getting is zero length, we still want to write it and create the file localy
+            if (bytesRead == 0)
+            {
+                dst.Write(buffer, 0, totalBytesRead);
+                return;
+            }
+
+            do
             {
                 totalBytesRead += bytesRead;
                 if (totalBytesRead != bufferSize) continue;
                 dst.Write(buffer, 0, totalBytesRead);
                 totalBytesRead = 0;
-            }
+            } while ((bytesRead = src.Read(buffer, totalBytesRead, bufferSize - totalBytesRead)) != 0);
+
 
             if (totalBytesRead > 0)
             {
