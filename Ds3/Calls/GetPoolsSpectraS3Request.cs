@@ -38,6 +38,13 @@ namespace Ds3.Calls
             set { WithBucketId(value); }
         }
 
+        private string _guid;
+        public string Guid
+        {
+            get { return _guid; }
+            set { WithGuid(value); }
+        }
+
         private PoolHealth? _health;
         public PoolHealth? Health
         {
@@ -163,6 +170,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+
+        
+        public GetPoolsSpectraS3Request WithGuid(string guid)
+        {
+            this._guid = guid;
+            if (guid != null)
+            {
+                this.QueryParams.Add("guid", guid);
+            }
+            else
+            {
+                this.QueryParams.Remove("guid");
             }
             return this;
         }
