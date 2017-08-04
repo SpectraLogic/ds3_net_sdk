@@ -14,13 +14,11 @@
  */
 
 // This code is auto-generated, do not modify
-using Ds3.Models;
-using System;
-using System.Net;
+using System.Collections.Generic;
 
 namespace Ds3.Calls
 {
-    public class ClearSuspectBlobS3TargetsSpectraS3Request : Ds3Request
+    public class ClearSuspectBlobS3TargetsSpectraS3Request : AbstractIdsPayloadRequest
     {
         
         
@@ -48,11 +46,11 @@ namespace Ds3.Calls
 
 
         
-        
-        public ClearSuspectBlobS3TargetsSpectraS3Request()
+        public ClearSuspectBlobS3TargetsSpectraS3Request(List<string> ids) : base(ids)
         {
             
         }
+
 
         internal override HttpVerb Verb
         {

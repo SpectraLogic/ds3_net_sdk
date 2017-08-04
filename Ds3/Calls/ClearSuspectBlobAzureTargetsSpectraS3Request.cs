@@ -14,10 +14,7 @@
  */
 
 // This code is auto-generated, do not modify
-using Ds3.Models;
-using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace Ds3.Calls
 {
@@ -49,11 +46,11 @@ namespace Ds3.Calls
 
 
         
-        
         public ClearSuspectBlobAzureTargetsSpectraS3Request(List<string> ids) : base(ids)
         {
             
         }
+
 
         internal override HttpVerb Verb
         {
