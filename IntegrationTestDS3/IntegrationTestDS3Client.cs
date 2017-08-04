@@ -36,23 +36,26 @@ namespace IntegrationTestDs3
     [TestFixture]
     public class IntegrationTestDs3Client
     {
-        private readonly string[] _books = {"beowulf.txt", "sherlock_holmes.txt", "tale_of_two_cities.txt"};
-        private readonly string[] _joyceBooks = {"ulysses.txt"};
-        private readonly string[] _bigFiles = {"big_book_file.txt"};
+        private readonly string[] _books = { "beowulf.txt", "sherlock_holmes.txt", "tale_of_two_cities.txt" };
+        private readonly string[] _joyceBooks = { "ulysses.txt" };
+        private readonly string[] _bigFiles = { "big_book_file.txt" };
+        private readonly string[] _zeroLengthFiles = { "zero_length.txt" };
 
         private const string Testdir = "TestObjectData";
         private const string Prefix = "test_";
         private const string Folder = "joyce";
         private const string Big = "big";
         private const string BigForMaxBlob = "bigForMaxBlob";
+        private const string Zero = "zero";
         private const string FixtureName = "integration_test_ds3client";
-        private const long BlobSize = 10*1024*1024;
+        private const long BlobSize = 10 * 1024 * 1024;
 
         private string TestDirectorySrc { get; set; }
         private string TestDirectoryBigFolder { get; set; }
         private string TestDirectoryBigFolderForMaxBlob { get; set; }
         private string TestDirectoryDest { get; set; }
         private string TestDirectoryDestPrefix { get; set; }
+        private string TestDirectoryZeroLengthFolder { get; set; }
 
         private IDs3Client Client { get; set; }
         private Ds3ClientHelpers Helpers { get; set; }
@@ -100,6 +103,7 @@ namespace IntegrationTestDs3
 
             TestDirectoryBigFolder = root + Big + Path.DirectorySeparatorChar;
             TestDirectoryBigFolderForMaxBlob = root + BigForMaxBlob + Path.DirectorySeparatorChar;
+            TestDirectoryZeroLengthFolder = root + Zero + Path.DirectorySeparatorChar;
 
             // create and populate a new test dir
             if (Directory.Exists(root))
@@ -113,6 +117,7 @@ namespace IntegrationTestDs3
             Directory.CreateDirectory(TestDirectoryDestPrefix);
             Directory.CreateDirectory(TestDirectoryBigFolder);
             Directory.CreateDirectory(TestDirectoryBigFolderForMaxBlob);
+            Directory.CreateDirectory(TestDirectoryZeroLengthFolder);
 
             foreach (var book in _books)
             {
@@ -149,6 +154,19 @@ namespace IntegrationTestDs3
 
                 writer.Close();
                 writerForMaxBlob.Close();
+            }
+
+            foreach (var zeroLengthFile in _zeroLengthFiles)
+            {
+                var writer = File.OpenWrite(TestDirectoryZeroLengthFolder + zeroLengthFile);
+
+                using (var bookstream = ReadResource("IntegrationTestDS3.TestData." + zeroLengthFile))
+                {
+                    bookstream.CopyTo(writer);
+                    bookstream.Seek(0, SeekOrigin.Begin);
+                }
+
+                writer.Close();
             }
         }
 
@@ -210,7 +228,7 @@ namespace IntegrationTestDs3
                     Parallel.ForEach(chunk.ObjectsList,
                         obj =>
                         {
-                            if ((bool) obj.InCache) return;
+                            if ((bool)obj.InCache) return;
                             PutObject(client, obj, bulkResult);
                         });
                     Console.WriteLine();
@@ -568,7 +586,7 @@ namespace IntegrationTestDs3
                 // Creates a bulk job with the server based on the files in a directory (recursively).
                 var directoryObjects = FileHelpers.ListObjectsForDirectory(TestDirectoryBigFolder);
                 Assert.Greater(directoryObjects.Count(), 0);
-                var job = Helpers.StartWriteJob(bucketName, directoryObjects, ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = BlobSize});
+                var job = Helpers.StartWriteJob(bucketName, directoryObjects, ds3WriteJobOptions: new Ds3WriteJobOptions { MaxUploadSize = BlobSize });
 
                 // Transfer all of the files.
                 job.Transfer(FileHelpers.BuildFilePutter(TestDirectoryBigFolder));
@@ -626,7 +644,7 @@ namespace IntegrationTestDs3
                 var bigFile =
                     FileHelpers.ListObjectsForDirectory(TestDirectoryBigFolder)
                         .First(obj => obj.Name.Equals(_bigFiles.First()));
-                var directoryObjects = new List<Ds3Object> {bigFile};
+                var directoryObjects = new List<Ds3Object> { bigFile };
 
                 Assert.Greater(directoryObjects.Count, 0);
 
@@ -830,10 +848,10 @@ namespace IntegrationTestDs3
             try
             {
                 Client.PutBucket(new PutBucketRequest(bucketName));
-                var stream = new MemoryStream(new byte[] {});
+                var stream = new MemoryStream(new byte[] { });
                 Client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", stream));
 
-                stream = new MemoryStream(new byte[] {});
+                stream = new MemoryStream(new byte[] { });
                 Client.PutObject(new PutObjectRequest(bucketName, "i_am_a_zero_length_object", stream));
 
                 var objects = Helpers.ListObjects(bucketName);
@@ -857,7 +875,7 @@ namespace IntegrationTestDs3
             try
             {
                 Client.PutBucket(new PutBucketRequest(bucketName));
-                var stream = new MemoryStream(new byte[] {});
+                var stream = new MemoryStream(new byte[] { });
                 Client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", stream));
 
                 var objects = Helpers.ListObjects(bucketName);
@@ -1009,10 +1027,10 @@ namespace IntegrationTestDs3
             try
             {
                 Client.PutBucket(new PutBucketRequest(bucketName));
-                var stream = new MemoryStream(new byte[] {});
+                var stream = new MemoryStream(new byte[] { });
                 Client.PutObject(new PutObjectRequest(bucketName, "i_am_a_folder/", stream));
 
-                stream = new MemoryStream(new byte[] {});
+                stream = new MemoryStream(new byte[] { });
                 Client.PutObject(new PutObjectRequest(bucketName, "i_am_a_zero_length_object", stream));
 
                 var objects = Helpers.ListObjects(bucketName);
@@ -1081,7 +1099,7 @@ namespace IntegrationTestDs3
 
                 const string fileName = "Test+Plus+Character";
                 var obj = new Ds3Object(fileName, 1024);
-                var objs = new List<Ds3Object> {obj};
+                var objs = new List<Ds3Object> { obj };
                 var job = Helpers.StartWriteJob(bucketName, objs);
 
                 job.Transfer(key =>
@@ -1159,7 +1177,7 @@ namespace IntegrationTestDs3
                         retryAfter =>
                         {
                             // if we did not got some chunks than sleep and retry.  This could mean that the cache is full
-                            Thread.Sleep((int) (retryAfter.TotalMilliseconds*1000));
+                            Thread.Sleep((int)(retryAfter.TotalMilliseconds * 1000));
                         });
                 }
 
@@ -1245,7 +1263,7 @@ namespace IntegrationTestDs3
                 const string testBadChecksumCrc32C = "4awSwg=="; // transposed two pairs
 
                 var testObject = new Ds3Object("numbers_badcrc.txt", 9);
-                var ds3Objs = new List<Ds3Object> {testObject};
+                var ds3Objs = new List<Ds3Object> { testObject };
 
                 using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
                 {
@@ -1288,7 +1306,7 @@ namespace IntegrationTestDs3
                 var directoryObjects = FileHelpers.ListObjectsForDirectory(TestDirectorySrc);
                 Assert.IsNotEmpty(directoryObjects);
                 var testObject = directoryObjects.First();
-                var ds3Objs = new List<Ds3Object> {testObject};
+                var ds3Objs = new List<Ds3Object> { testObject };
 
                 // create or ensure bucket
                 Helpers.EnsureBucketExists(bucketName);
@@ -1328,7 +1346,7 @@ namespace IntegrationTestDs3
                 const string testChecksumCrc32C = "4waSgw==";
 
                 var testObject = new Ds3Object("numbers.txt", 9);
-                var ds3Objs = new List<Ds3Object> {testObject};
+                var ds3Objs = new List<Ds3Object> { testObject };
 
                 using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
                 {
@@ -1361,7 +1379,7 @@ namespace IntegrationTestDs3
                 const string fileName =
                     "varsity1314/_projects/VARSITY 13-14/_versions/Varsity 13-14 (2015-10-05 1827)/_project/Trash/PCMAC HD.avb";
                 var obj = new Ds3Object(fileName, 1024);
-                var objs = new List<Ds3Object> {obj};
+                var objs = new List<Ds3Object> { obj };
                 var job = Helpers.StartWriteJob(bucketName, objs);
 
                 job.Transfer(key =>
@@ -1400,7 +1418,7 @@ namespace IntegrationTestDs3
             try
             {
                 Client.PutBucket(new PutBucketRequest(bucketName));
-                var stream = new MemoryStream(new byte[] {});
+                var stream = new MemoryStream(new byte[] { });
                 Client.PutObject(new PutObjectRequest(bucketName, "i_am_a_zero_length_object", stream));
 
                 var objects = Helpers.ListObjects(bucketName);
@@ -1505,7 +1523,7 @@ namespace IntegrationTestDs3
                 {
                     Assert.AreEqual(true, response.Name.StartsWith("PUT by"));
                 }
-                
+
                 Assert.AreEqual(priority ?? Priority.NORMAL, response.Priority);
                 Assert.AreEqual(minimizeSpanningAcrossMedia ?? false, response.MinimizeSpanningAcrossMedia);
             }
@@ -1646,7 +1664,7 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
         }
-        
+
         private static readonly object[] ChecksumTestCaseSource =
         {
             new object[] {ChecksumType.Compute, ChecksumType.Type.MD5, "rCu751L6xhB5zyL+soa3fg=="},
@@ -1676,7 +1694,7 @@ namespace IntegrationTestDs3
 
                 // Creates a bulk job with the server based on the files in a directory (recursively).
                 var obj = FileHelpers.ListObjectsForDirectory(TestDirectorySrc).First();
-                var job = Helpers.StartWriteJob(bucketName, new List<Ds3Object> {obj});
+                var job = Helpers.StartWriteJob(bucketName, new List<Ds3Object> { obj });
 
                 job.WithChecksum(checksum, checksumType);
 
@@ -1731,7 +1749,7 @@ namespace IntegrationTestDs3
 
                 // Creates a bulk job with the server based on the files in a directory (recursively).
                 var obj = FileHelpers.ListObjectsForDirectory(TestDirectorySrc).First();
-                var job = Helpers.StartWriteJob(bucketName, new List<Ds3Object> {obj});
+                var job = Helpers.StartWriteJob(bucketName, new List<Ds3Object> { obj });
 
                 // Transfer all of the files.
                 job.Transfer(FileHelpers.BuildFilePutter(TestDirectorySrc));
@@ -1791,6 +1809,46 @@ namespace IntegrationTestDs3
             finally
             {
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestZeroLengthFileGet()
+        {
+            const string bucketName = "TestZeroLengthFileGet";
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                Helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var directoryObjects = FileHelpers.ListObjectsForDirectory(TestDirectoryZeroLengthFolder);
+                Assert.Greater(directoryObjects.Count(), 0);
+                var putJob = Helpers.StartWriteJob(bucketName, directoryObjects);
+
+                // Transfer all of the files.
+                putJob.Transfer(FileHelpers.BuildFilePutter(TestDirectoryZeroLengthFolder));
+
+                // all files there?
+                var folderCount = ListBucketObjects(bucketName).Count();
+                Assert.AreEqual(directoryObjects.Count(), folderCount);
+
+
+                // Creates a bulk job with all of the objects in the bucket.
+                var getJob = Helpers.StartReadAllJob(bucketName);
+
+                // Transfer all of the files.
+                getJob.Transfer(FileHelpers.BuildFileGetter(TestDirectoryDest));
+
+                var postFolder = FileHelpers.ListObjectsForDirectory(TestDirectoryDest);
+                var postFolderCount = postFolder.Count();
+                Assert.AreEqual(ListBucketObjects(bucketName).Count(), postFolderCount);
+
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+                DeleteFilesFromLocalDirectory(TestDirectoryDest);
             }
         }
     }
