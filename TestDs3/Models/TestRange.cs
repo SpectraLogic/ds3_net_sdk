@@ -88,6 +88,11 @@ namespace TestDs3.Models
             Assert.AreEqual(20, range.Start);
             Assert.AreEqual(49, range.End);
             Assert.AreEqual(30, range.Length);
+
+            range = Range.ByLength(0, 0);
+            Assert.AreEqual(0, range.Start);
+            Assert.AreEqual(0, range.End);
+            Assert.AreEqual(0, range.Length);
         }
 
         [Test]
@@ -97,6 +102,11 @@ namespace TestDs3.Models
             Assert.AreEqual(20, range.Start);
             Assert.AreEqual(49, range.End);
             Assert.AreEqual(30, range.Length);
+
+            range = Range.ByPosition(0, 0);
+            Assert.AreEqual(0, range.Start);
+            Assert.AreEqual(0, range.End);
+            Assert.AreEqual(0, range.Length);
         }
 
         [Test]
