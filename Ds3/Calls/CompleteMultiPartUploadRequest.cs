@@ -16,12 +16,16 @@
 // This code is auto-generated, do not modify
 using Ds3.Models;
 using System;
-using System.Net;
+using System.Collections.Generic;
+using System.IO;
+using Ds3.Calls.Util;
+using System.Linq;
 
 namespace Ds3.Calls
 {
     public class CompleteMultiPartUploadRequest : Ds3Request
     {
+        public IEnumerable<Part> Parts { get; private set; }
         
         public string BucketName { get; private set; }
 
@@ -33,22 +37,24 @@ namespace Ds3.Calls
 
         
         
-        public CompleteMultiPartUploadRequest(string bucketName, string objectName, Guid uploadId)
+        public CompleteMultiPartUploadRequest(string bucketName, string objectName, IEnumerable<Part> parts, Guid uploadId)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.UploadId = uploadId.ToString();
+            this.Parts = parts.ToList();
             
             this.QueryParams.Add("upload_id", uploadId.ToString());
 
         }
 
         
-        public CompleteMultiPartUploadRequest(string bucketName, string objectName, string uploadId)
+        public CompleteMultiPartUploadRequest(string bucketName, string objectName, IEnumerable<Part> parts, string uploadId)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
             this.UploadId = uploadId;
+            this.Parts = parts.ToList();
             
             this.QueryParams.Add("upload_id", uploadId);
 
@@ -68,6 +74,16 @@ namespace Ds3.Calls
             {
                 return "/" + BucketName + "/" + ObjectName;
             }
+        }
+
+        internal override Stream GetContentStream()
+        {
+            return RequestPayloadUtil.MarshalPartsToStream(Parts);
+        }
+
+        internal override long GetContentLength()
+        {
+            return GetContentStream().Length;
         }
     }
 }

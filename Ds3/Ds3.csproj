@@ -672,6 +672,7 @@
     <Compile Include="Calls\TruncateAllActiveJobsSpectraS3Request.cs" />
     <Compile Include="Calls\TruncateAllJobsSpectraS3Request.cs" />
     <Compile Include="Calls\TruncateJobSpectraS3Request.cs" />
+    <Compile Include="Calls\Util\RequestPayloadUtil.cs" />
     <Compile Include="Calls\VerifyAllPoolsSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyAllTapesSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyAllTapesSpectraS3Response.cs" />
@@ -762,6 +763,7 @@
     <Compile Include="Models\CanceledJobList.cs" />
     <Compile Include="Models\CapacitySummaryContainer.cs" />
     <Compile Include="Models\ChecksumType.cs" />
+    <Compile Include="Models\requestpayloads\Part.cs" />
     <Compile Include="Models\CompletedJob.cs" />
     <Compile Include="Models\CompletedJobList.cs" />
     <Compile Include="Models\CompleteMultipartUploadResult.cs" />
@@ -1315,6 +1317,7 @@
     <None Include="Ds3.nuspec" />
     <None Include="package.bat" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
