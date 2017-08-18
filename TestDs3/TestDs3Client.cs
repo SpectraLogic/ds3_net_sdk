@@ -1627,7 +1627,6 @@ namespace TestDs3
                 .VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3(new VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request(bucketName, SimpleDs3Objects));
         }
 
-        /* TODO uncomment once JIRA SA-208 has been fixed
         [Test]
         public void TestEjectStorageDomainBlobs()
         {
@@ -1638,16 +1637,15 @@ namespace TestDs3
                 { "operation", "eject" },
                 { "blobs", null },
                 { "bucket_id", bucketId },
-                { "storage_domainId", storageDomainId }
+                { "storage_domain_id", storageDomainId }
             };
 
             MockNetwork
-                .Expecting(HttpVerb.GET, "/_rest_/tape", queryParams, SimpleDs3ObjectPayload)
+                .Expecting(HttpVerb.PUT, "/_rest_/tape", queryParams, SimpleDs3ObjectPayload)
                 .Returning(HttpStatusCode.NoContent, "", EmptyHeaders)
                 .AsClient
                 .EjectStorageDomainBlobsSpectraS3(new EjectStorageDomainBlobsSpectraS3Request(bucketId, SimpleDs3Objects, storageDomainId));
         }
-        */
 
         [Test]
         public void TestReplicatePutJob()

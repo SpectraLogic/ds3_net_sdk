@@ -46,5 +46,26 @@ namespace Ds3.Calls.Util
                 )
                 .WriteToMemoryStream();
         }
+
+        /// <summary>
+        /// Iterates over a group of Ds3Objects and marshals them into an xml stream.
+        /// Only the name for the Ds3Objects are marshaled. This is used to marshal
+        /// the request payloads for:
+        ///   EjectStorageDomainBlobsSpectraS3Request
+        /// </summary>
+        /// <param name="ds3Objects">The Ds3Objects to be marshaled to xml</param>
+        /// <returns>Stream containing xml marshaling of Ds3Object names</returns>
+        public static Stream MarshalDs3ObjectNames(IEnumerable<Ds3Object> ds3Objects)
+        {
+            return new XDocument()
+                .AddFluent(
+                    new XElement("Objects").AddAllFluent(
+                        from obj in ds3Objects
+                        select new XElement("Object")
+                            .SetAttributeValueFluent("Name", obj.Name)
+                    )
+                )
+                .WriteToMemoryStream();
+        }
     }
 }
