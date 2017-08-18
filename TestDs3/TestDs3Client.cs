@@ -1680,5 +1680,31 @@ namespace TestDs3
                 .AsClient
                 .GetBlobPersistenceSpectraS3(new GetBlobPersistenceSpectraS3Request(requestPayload));
         }
+
+        [Test]
+        public void TestCompleteMultiPartUpload()
+        {
+            const string expectedRequestPayload = "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>eTag1</ETag></Part><Part><PartNumber>2</PartNumber><ETag>eTag2</ETag></Part><Part><PartNumber>3</PartNumber><ETag>eTag3</ETag></Part></CompleteMultipartUpload>";
+            const string responsePayload = "<CompleteMultipartUploadResult><Bucket>BucketName</Bucket><ETag>98d476a1d168aa4c4592ce06cab9880f-3</ETag><Key>test_object</Key><Location>9c49ab34-8d9e-4f4b-9c33-2c90b7d87c7d</Location></CompleteMultipartUploadResult>";
+            const string bucketName = "BucketName";
+            const string objectName = "ObjectName";
+            const string uploadId = "UploadId";
+
+            var queryParams = new Dictionary<string, string> { { "upload_id", uploadId } };
+
+            var parts = new List<Part>
+            {
+                new Part(1, "eTag1"),
+                new Part(2, "eTag2"),
+                new Part(3, "eTag3")
+            };
+            
+            var result = MockNetwork.Expecting(HttpVerb.POST, "/" + bucketName + "/" + objectName, queryParams, expectedRequestPayload)
+                .Returning(HttpStatusCode.OK, responsePayload, EmptyHeaders)
+                .AsClient
+                .CompleteMultiPartUpload(new CompleteMultiPartUploadRequest(bucketName, objectName, parts, uploadId));
+
+            Assert.AreEqual(result.ResponsePayload.Bucket, bucketName);
+        }
     }
 }
