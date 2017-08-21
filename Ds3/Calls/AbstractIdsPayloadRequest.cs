@@ -13,11 +13,11 @@
  * ****************************************************************************
  */
 
+using Ds3.Runtime;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Ds3.Runtime;
 
 namespace Ds3.Calls
 {
@@ -31,9 +31,9 @@ namespace Ds3.Calls
 
         internal long contentLength;
 
-        public AbstractIdsPayloadRequest(List<string> ids)
+        public AbstractIdsPayloadRequest(IEnumerable<string> ids)
         {
-            this.ids = ids;
+            this.ids = ids.ToList();
         }
 
         internal override Stream GetContentStream()
