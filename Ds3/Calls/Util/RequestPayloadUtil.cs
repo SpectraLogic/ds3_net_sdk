@@ -97,5 +97,62 @@ namespace Ds3.Calls.Util
                 );
             return new XDocument().AddFluent(root).WriteToMemoryStream();
         }
+
+        /// <summary>
+        /// Iterates over a group of Ds3Objects and marshals them into an xml stream
+        /// describing objects to be deleted. Only the name for the Ds3Objects are 
+        /// marshaled. This is used to marshal the request payload for:
+        ///   DeleteObjectsRequest
+        /// </summary>
+        /// <param name="ds3Objects">List of objects to be deleted</param>
+        /// <returns>Stream containing xml marshaling of object names to be deleted</returns>
+        public static Stream MarshalDeleteObjectNames(IEnumerable<Ds3Object> ds3Objects)
+        {
+            return new XDocument()
+                .AddFluent(
+                    new XElement("Delete").AddAllFluent(
+                        from curObject in ds3Objects
+                        select new XElement("Object").AddFluent(new XElement("Key").SetValueFluent(curObject.Name))
+                    )
+                )
+                .WriteToMemoryStream();
+        }
+
+        /// <summary>
+        /// Iterates over a group of Ds3Objects and marshals them into an xml stream
+        /// describing their name and size. This is used to marshal the request payload
+        /// for command:
+        ///   PutBulkJobSpectraS3Request
+        /// </summary>
+        /// <param name="ds3Objects">List of objects being marshaled</param>
+        /// <returns>Stream containing xml marshaling of objects' name and size</returns>
+        public static Stream MarshalDs3ObjectNameAndSize(IEnumerable<Ds3Object> ds3Objects)
+        {
+            return new XDocument()
+                .AddFluent(
+                    new XElement("Objects").AddAllFluent(
+                        from obj in ds3Objects
+                        select new XElement("Object")
+                            .SetAttributeValueFluent("Name", obj.Name)
+                            .SetAttributeValueFluent("Size", ToDs3ObjectSize(obj))
+                    )
+                )
+                .WriteToMemoryStream();
+        }
+
+        /// <summary>
+        /// Retrieves the string representation of a Ds3Object's size, or null if
+        /// it does not have one.
+        /// </summary>
+        /// <param name="ds3Object">The object whose size we are retrieving</param>
+        /// <returns></returns>
+        internal static string ToDs3ObjectSize(Ds3Object ds3Object)
+        {
+            if (ds3Object.Size == null)
+            {
+                return null;
+            }
+            return ds3Object.Size.Value.ToString("D");
+        }
     }
 }

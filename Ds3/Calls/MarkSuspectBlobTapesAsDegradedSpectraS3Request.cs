@@ -46,11 +46,10 @@ namespace Ds3.Calls
 
 
         
-        public MarkSuspectBlobTapesAsDegradedSpectraS3Request(List<string> ids) : base(ids)
+        public MarkSuspectBlobTapesAsDegradedSpectraS3Request(IEnumerable<string> ids) : base(ids)
         {
             
         }
-
 
         internal override HttpVerb Verb
         {
