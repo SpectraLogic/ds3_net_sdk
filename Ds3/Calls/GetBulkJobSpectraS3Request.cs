@@ -14,13 +14,12 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Calls.Util;
 using Ds3.Models;
-using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
@@ -155,8 +154,8 @@ namespace Ds3.Calls
             
         }
 
-        public GetBulkJobSpectraS3Request(string bucketName, List<Ds3Object> objects)
-            : this(bucketName, objects.Select(o => o.Name), Enumerable.Empty<Ds3PartialObject>())
+        public GetBulkJobSpectraS3Request(string bucketName, List<Ds3Object> ds3Objects)
+            : this(bucketName, ds3Objects.Select(o => o.Name), Enumerable.Empty<Ds3PartialObject>())
         {
         }
 
@@ -178,19 +177,7 @@ namespace Ds3.Calls
 
         internal override Stream GetContentStream()
         {
-            var root = new XElement("Objects")
-                .AddAllFluent(
-                    from name in this.FullObjects
-                    select new XElement("Object").SetAttributeValueFluent("Name", name)
-                )
-                .AddAllFluent(
-                    from partial in this.PartialObjects
-                    select new XElement("Object")
-                        .SetAttributeValueFluent("Name", partial.Name)
-                        .SetAttributeValueFluent("Offset", partial.Range.Start.ToString())
-                        .SetAttributeValueFluent("Length", partial.Range.Length.ToString())
-                );
-            return new XDocument().AddFluent(root).WriteToMemoryStream();
+            return RequestPayloadUtil.MarshalFullAndPartialObjects(this.FullObjects, this.PartialObjects);
         }
 
         internal override long GetContentLength()

@@ -14,13 +14,12 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Calls.Util;
 using Ds3.Models;
-using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
@@ -29,7 +28,9 @@ namespace Ds3.Calls
         
         public string BucketName { get; private set; }
 
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public IEnumerable<string> FullObjects { get; private set; }
+
+        public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
 
         
         private bool? _aggregating;
@@ -100,39 +101,19 @@ namespace Ds3.Calls
 
 
         
-        public VerifyBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {
+        
+        public VerifyBulkJobSpectraS3Request(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
+        {
             this.BucketName = bucketName;
-            this.Objects = objects.ToList();
+            this.FullObjects = fullObjects.ToList();
+            this.PartialObjects = partialObjects.ToList();
             this.QueryParams.Add("operation", "start_bulk_verify");
             
         }
 
-        internal override Stream GetContentStream()
+        public VerifyBulkJobSpectraS3Request(string bucketName, List<Ds3Object> ds3Objects)
+            : this(bucketName, ds3Objects.Select(o => o.Name), Enumerable.Empty<Ds3PartialObject>())
         {
-            return new XDocument()
-                .AddFluent(
-                    new XElement("Objects").AddAllFluent(
-                        from obj in this.Objects
-                        select new XElement("Object")
-                            .SetAttributeValueFluent("Name", obj.Name)
-                            .SetAttributeValueFluent("Size", ToDs3ObjectSize(obj))
-                    )
-                )
-                .WriteToMemoryStream();
-        }
-
-        internal string ToDs3ObjectSize(Ds3Object ds3Object)
-        {
-            if (ds3Object.Size == null)
-            {
-                return null;
-            }
-            return ds3Object.Size.Value.ToString("D");
-        }
-
-        internal override long GetContentLength()
-        {
-            return GetContentStream().Length;
         }
 
         internal override HttpVerb Verb
@@ -149,6 +130,16 @@ namespace Ds3.Calls
             {
                 return "/_rest_/bucket/" + BucketName;
             }
+        }
+
+        internal override Stream GetContentStream()
+        {
+            return RequestPayloadUtil.MarshalFullAndPartialObjects(this.FullObjects, this.PartialObjects);
+        }
+
+        internal override long GetContentLength()
+        {
+            return GetContentStream().Length;
         }
     }
 }
