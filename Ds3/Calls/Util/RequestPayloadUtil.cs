@@ -52,6 +52,10 @@ namespace Ds3.Calls.Util
         /// Only the name for the Ds3Objects are marshaled. This is used to marshal
         /// the request payloads for:
         ///   EjectStorageDomainBlobsSpectraS3Request
+        ///   GetPhysicalPlacementForObjectsSpectraS3Request
+        ///   GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request
+        ///   VerifyPhysicalPlacementForObjectsSpectraS3Request
+        ///   VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request
         /// </summary>
         /// <param name="ds3Objects">The Ds3Objects to be marshaled to xml</param>
         /// <returns>Stream containing xml marshaling of Ds3Object names</returns>
@@ -66,6 +70,32 @@ namespace Ds3.Calls.Util
                     )
                 )
                 .WriteToMemoryStream();
+        }
+
+        /// <summary>
+        /// Marshals object names and Ds3PartialObjects into an xml formatted stream.
+        /// This is used to marshal the request payloads for:
+        ///   GetBulkJobSpectraS3Request
+        ///   VerifyBulkJobSpectraS3Request
+        /// </summary>
+        /// <param name="fullObjectNames">List of object names representing full objects to be marshaled to xml</param>
+        /// <param name="ds3PartialObjects">List of Ds3PartialObjects to be marshaled to xml</param>
+        /// <returns>Stream containing xml marshaling of full objects followed by Ds3PartialObjects</returns>
+        public static Stream MarshalFullAndPartialObjects(IEnumerable<string> fullObjectNames, IEnumerable<Ds3PartialObject> ds3PartialObjects)
+        {
+            var root = new XElement("Objects")
+                .AddAllFluent(
+                    from name in fullObjectNames
+                    select new XElement("Object").SetAttributeValueFluent("Name", name)
+                )
+                .AddAllFluent(
+                    from partial in ds3PartialObjects
+                    select new XElement("Object")
+                        .SetAttributeValueFluent("Name", partial.Name)
+                        .SetAttributeValueFluent("Offset", partial.Range.Start.ToString())
+                        .SetAttributeValueFluent("Length", partial.Range.Length.ToString())
+                );
+            return new XDocument().AddFluent(root).WriteToMemoryStream();
         }
     }
 }

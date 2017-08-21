@@ -62,6 +62,8 @@ namespace TestDs3
             new Ds3Object("obj3", null)
         };
 
+        private const string SimpleBulkObjectListResponse = "<Data><Object Bucket=\"default_bucket_name\" Id=\"161853d9-d409-4775-b4c1-ace43cb4dc57\" Latest=\"true\" Length=\"10\" Name=\"o1\" Offset=\"0\" Version=\"1\"/><Object Bucket=\"default_bucket_name\" Id=\"1022fdf0-6d5c-4fb5-83f5-031423af8a8b\" Latest=\"true\" Length=\"10\" Name=\"o2\" Offset=\"0\" Version=\"1\"/></Data>";
+
         private static void RunBulkTest(
             string operation,
             Func<IDs3Client, List<Ds3Object>, MasterObjectList> makeCall,
@@ -1562,6 +1564,64 @@ namespace TestDs3
         }
 
         [Test]
+        public void TestVerifyBulkJobWithObjectNames()
+        {
+            const string responsePayload = "<MasterObjectList Aggregating=\"false\" BucketName=\"default_bucket_name\" CachedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CompletedSizeInBytes=\"0\" EntirelyInCache=\"false\" JobId=\"1e66c043-e741-436a-8f5c-561320922fda\" Naked=\"false\" Name=\"GET by null\" OriginalSizeInBytes=\"0\" Priority=\"LOW\" RequestType=\"GET\" StartDate=\"2017-03-23T23:24:06.000Z\" Status=\"IN_PROGRESS\" UserId=\"fcc976f8-afda-4a3c-a4f8-565cea8b9c08\" UserName=\"default_user_name\"><Nodes><Node EndPoint=\"NOT_INITIALIZED_YET\" Id=\"acda9183-9b30-4de6-88cc-3f073051e978\"/></Nodes><Objects ChunkId=\"5aaa294b-45b0-458d-92a2-a6ca0ae6068c\" ChunkNumber=\"1\"><Object Id=\"0b56d39c-5711-4d9f-b161-c730b3acf1ae\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o2\" Offset=\"0\" Version=\"1\"/></Objects><Objects ChunkId=\"80f5f6f2-a3e4-4b15-ac68-c0184eed38f2\" ChunkNumber=\"2\"><Object Id=\"5008ebef-95fa-4cf6-9be0-88d0ed20f450\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o1\" Offset=\"0\" Version=\"1\"/></Objects></MasterObjectList>";
+            const string bucketName = "BucketName";
+
+            var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_verify" } };
+
+            MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/" + bucketName, queryParams, SimpleDs3ObjectPayload)
+                .Returning(HttpStatusCode.OK, responsePayload, EmptyHeaders)
+                .AsClient
+                .VerifyBulkJobSpectraS3(new VerifyBulkJobSpectraS3Request(bucketName, SimpleDs3Objects));
+        }
+
+        [Test]
+        public void TestVerifyBulkJobWithPartialObjects()
+        {
+            const string expectedRequestPayload = "<Objects><Object Name=\"obj1\" Offset=\"0\" Length=\"100\" /><Object Name=\"obj2\" Offset=\"0\" Length=\"199\" /><Object Name=\"obj2\" Offset=\"200\" Length=\"100\" /></Objects>";
+            const string responsePayload = "<MasterObjectList Aggregating=\"false\" BucketName=\"default_bucket_name\" CachedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CompletedSizeInBytes=\"0\" EntirelyInCache=\"false\" JobId=\"1e66c043-e741-436a-8f5c-561320922fda\" Naked=\"false\" Name=\"GET by null\" OriginalSizeInBytes=\"0\" Priority=\"LOW\" RequestType=\"GET\" StartDate=\"2017-03-23T23:24:06.000Z\" Status=\"IN_PROGRESS\" UserId=\"fcc976f8-afda-4a3c-a4f8-565cea8b9c08\" UserName=\"default_user_name\"><Nodes><Node EndPoint=\"NOT_INITIALIZED_YET\" Id=\"acda9183-9b30-4de6-88cc-3f073051e978\"/></Nodes><Objects ChunkId=\"5aaa294b-45b0-458d-92a2-a6ca0ae6068c\" ChunkNumber=\"1\"><Object Id=\"0b56d39c-5711-4d9f-b161-c730b3acf1ae\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o2\" Offset=\"0\" Version=\"1\"/></Objects><Objects ChunkId=\"80f5f6f2-a3e4-4b15-ac68-c0184eed38f2\" ChunkNumber=\"2\"><Object Id=\"5008ebef-95fa-4cf6-9be0-88d0ed20f450\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o1\" Offset=\"0\" Version=\"1\"/></Objects></MasterObjectList>";
+            const string bucketName = "BucketName";
+            var partialObjects = new List<Ds3PartialObject> {
+                new Ds3PartialObject(Range.ByLength(0, 100), "obj1"),
+                new Ds3PartialObject(Range.ByLength(0, 199), "obj2"),
+                new Ds3PartialObject(Range.ByLength(200, 100), "obj2")
+            };
+
+            var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_verify" } };
+
+            MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/" + bucketName, queryParams, expectedRequestPayload)
+                .Returning(HttpStatusCode.OK, responsePayload, EmptyHeaders)
+                .AsClient
+                .VerifyBulkJobSpectraS3(new VerifyBulkJobSpectraS3Request(bucketName, new List<string>(), partialObjects));
+        }
+
+        [Test]
+        public void TestVerifyBulkJobWithMixedObjects()
+        {
+            const string expectedRequestPayload = "<Objects><Object Name=\"obj1\" /><Object Name=\"obj2\" Offset=\"2\" Length=\"20\" /><Object Name=\"obj3\" Offset=\"3\" Length=\"30\" /></Objects>";
+            const string responsePayload = "<MasterObjectList Aggregating=\"false\" BucketName=\"default_bucket_name\" CachedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CompletedSizeInBytes=\"0\" EntirelyInCache=\"false\" JobId=\"1e66c043-e741-436a-8f5c-561320922fda\" Naked=\"false\" Name=\"GET by null\" OriginalSizeInBytes=\"0\" Priority=\"LOW\" RequestType=\"GET\" StartDate=\"2017-03-23T23:24:06.000Z\" Status=\"IN_PROGRESS\" UserId=\"fcc976f8-afda-4a3c-a4f8-565cea8b9c08\" UserName=\"default_user_name\"><Nodes><Node EndPoint=\"NOT_INITIALIZED_YET\" Id=\"acda9183-9b30-4de6-88cc-3f073051e978\"/></Nodes><Objects ChunkId=\"5aaa294b-45b0-458d-92a2-a6ca0ae6068c\" ChunkNumber=\"1\"><Object Id=\"0b56d39c-5711-4d9f-b161-c730b3acf1ae\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o2\" Offset=\"0\" Version=\"1\"/></Objects><Objects ChunkId=\"80f5f6f2-a3e4-4b15-ac68-c0184eed38f2\" ChunkNumber=\"2\"><Object Id=\"5008ebef-95fa-4cf6-9be0-88d0ed20f450\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o1\" Offset=\"0\" Version=\"1\"/></Objects></MasterObjectList>";
+            const string bucketName = "BucketName";
+            var partialObjects = new List<Ds3PartialObject> {
+                new Ds3PartialObject(Range.ByLength(2, 20), "obj2"),
+                new Ds3PartialObject(Range.ByLength(3, 30), "obj3")
+            };
+
+            var fullObjects = new List<string> { "obj1" };
+
+            var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_verify" } };
+
+            MockNetwork
+                .Expecting(HttpVerb.PUT, "/_rest_/bucket/" + bucketName, queryParams, expectedRequestPayload)
+                .Returning(HttpStatusCode.OK, responsePayload, EmptyHeaders)
+                .AsClient
+                .VerifyBulkJobSpectraS3(new VerifyBulkJobSpectraS3Request(bucketName, fullObjects, partialObjects));
+        }
+
+        [Test]
         public void TestGetPhysicalPlacementForObjects()
         {
             const string responsePayload = "<Data><AzureTargets/><Ds3Targets/><Pools/><S3Targets/><Tapes/></Data>";
@@ -1703,6 +1763,71 @@ namespace TestDs3
                 .CompleteMultiPartUpload(new CompleteMultiPartUploadRequest(bucketName, objectName, parts, uploadId));
 
             Assert.AreEqual(result.ResponsePayload.Bucket, bucketName);
+        }
+
+        [Test]
+        public void TestGetBlobsOnAzureTarget()
+        {
+            const string target = "Target";
+
+            var queryParams = new Dictionary<string, string> { { "operation", "get_physical_placement" } };
+
+            MockNetwork.Expecting(HttpVerb.GET, "/_rest_/azure_target/" + target, queryParams, "")
+                .Returning(HttpStatusCode.OK, SimpleBulkObjectListResponse, EmptyHeaders)
+                .AsClient
+                .GetBlobsOnAzureTargetSpectraS3(new GetBlobsOnAzureTargetSpectraS3Request(target));
+        }
+
+        [Test]
+        public void TestGetBlobsOnTape()
+        {
+            const string target = "Target";
+
+            var queryParams = new Dictionary<string, string> { { "operation", "get_physical_placement" } };
+
+            MockNetwork.Expecting(HttpVerb.GET, "/_rest_/tape/" + target, queryParams, "")
+                .Returning(HttpStatusCode.OK, SimpleBulkObjectListResponse, EmptyHeaders)
+                .AsClient
+                .GetBlobsOnTapeSpectraS3(new GetBlobsOnTapeSpectraS3Request(target));
+        }
+
+        [Test]
+        public void TestGetBlobsOnDs3Target()
+        {
+            const string target = "Target";
+
+            var queryParams = new Dictionary<string, string> { { "operation", "get_physical_placement" } };
+
+            MockNetwork.Expecting(HttpVerb.GET, "/_rest_/ds3_target/" + target, queryParams, "")
+                .Returning(HttpStatusCode.OK, SimpleBulkObjectListResponse, EmptyHeaders)
+                .AsClient
+                .GetBlobsOnDs3TargetSpectraS3(new GetBlobsOnDs3TargetSpectraS3Request(target));
+        }
+
+        [Test]
+        public void TestGetBlobsOnPool()
+        {
+            const string target = "Target";
+
+            var queryParams = new Dictionary<string, string> { { "operation", "get_physical_placement" } };
+
+            MockNetwork.Expecting(HttpVerb.GET, "/_rest_/pool/" + target, queryParams, "")
+                .Returning(HttpStatusCode.OK, SimpleBulkObjectListResponse, EmptyHeaders)
+                .AsClient
+                .GetBlobsOnPoolSpectraS3(new GetBlobsOnPoolSpectraS3Request(target));
+        }
+
+        [Test]
+        public void TestGetBlobsOnS3Target()
+        {
+            const string target = "Target";
+
+            var queryParams = new Dictionary<string, string> { { "operation", "get_physical_placement" } };
+
+            MockNetwork.Expecting(HttpVerb.GET, "/_rest_/s3_target/" + target, queryParams, "")
+                .Returning(HttpStatusCode.OK, SimpleBulkObjectListResponse, EmptyHeaders)
+                .AsClient
+                .GetBlobsOnS3TargetSpectraS3(new GetBlobsOnS3TargetSpectraS3Request(target));
         }
     }
 }
