@@ -1016,6 +1016,7 @@ namespace IntegrationTestDs3
             finally
             {
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
+                DeleteFilesFromLocalDirectory(TestDirectoryDest);
             }
         }
 
