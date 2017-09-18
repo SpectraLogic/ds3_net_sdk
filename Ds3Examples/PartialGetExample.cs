@@ -36,14 +36,14 @@ namespace Ds3Examples
                     ConfigurationManager.AppSettings["Ds3AccessKey"],
                     ConfigurationManager.AppSettings["Ds3SecretKey"]
                 )
-            ).WithProxy(new Uri("http://localhost:8888")).Build();
+            ).Build();
 
             // Set up the high-level abstractions.
             IDs3ClientHelpers helpers = new Ds3ClientHelpers(client);
 
-            string bucket = "sharon_test";
-            string directory = @"C:\Users\sharons\Desktop\test";
-            string filename = "elasticsearch-5.3.0.zip";
+            string bucket = "bucket-name";
+            string directory = "DataFromBucket";
+            string filename = "filename";
 
             var driveResult = FileSystemHelpers.Check(directory, helpers.ListObjects(bucket));
             switch (driveResult.Status)
@@ -59,8 +59,7 @@ namespace Ds3Examples
 
                     var partialObjects = new List<Ds3PartialObject>
                     {
-                        new Ds3PartialObject(Range.ByPosition(0, 10), filename),
-                        new Ds3PartialObject(Range.ByPosition(20, 30), filename)
+                        new Ds3PartialObject(Range.ByPosition(0, 100), filename)
                     };
                     IEnumerable<string> empty = new string[] { };
 
