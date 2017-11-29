@@ -30,8 +30,22 @@ namespace Ds3.ResponseParsers
         {
             return headers
                 .Keys
-                .Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix))
-                .ToDictionary(key => key.Substring(HttpHeaders.AwsMetadataPrefix.Length), key => headers[key]);
+                .Where(key => key.StartsWith(HttpHeaders.AwsMetadataPrefix) || 
+                              key.StartsWith(HttpHeaders.LtfsMetadataPrefix))
+                .ToDictionary(NormalizeMetadataKeyName, key => headers[key]);
+        }
+
+        internal static string NormalizeMetadataKeyName(string key)
+        {
+            if (key.StartsWith(HttpHeaders.AwsMetadataPrefix))
+            {
+                return key.Substring(HttpHeaders.AwsMetadataPrefix.Length);
+            }
+            if (key.StartsWith(HttpHeaders.LtfsMetadataPrefix))
+            {
+                return key.Substring(HttpHeaders.LtfsMetadataPrefix.Length);
+            }
+            return key;
         }
 
         internal static JobStatus ParseJobStatus(string jobStatus)
