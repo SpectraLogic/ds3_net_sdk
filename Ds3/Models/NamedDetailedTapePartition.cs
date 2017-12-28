@@ -33,6 +33,6 @@ namespace Ds3.Models
         public string SerialId { get; set; }
         public string SerialNumber { get; set; }
         public TapePartitionState State { get; set; }
-        public IEnumerable<TapeType> TapeTypes { get; set; }
+        public IEnumerable<string> TapeTypes { get; set; }
     }
 }

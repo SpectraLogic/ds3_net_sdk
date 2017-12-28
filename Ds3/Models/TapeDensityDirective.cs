@@ -25,6 +25,6 @@ namespace Ds3.Models
         public TapeDriveType Density { get; set; }
         public Guid Id { get; set; }
         public Guid PartitionId { get; set; }
-        public TapeType TapeType { get; set; }
+        public string TapeType { get; set; }
     }
 }

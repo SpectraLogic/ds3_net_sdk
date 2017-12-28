@@ -27,13 +27,13 @@ namespace Ds3.Calls
 
         public string PartitionId { get; private set; }
 
-        public TapeType TapeType { get; private set; }
+        public string TapeType { get; private set; }
 
         
 
         
         
-        public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, Guid partitionId, TapeType tapeType)
+        public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, Guid partitionId, string tapeType)
         {
             this.Density = density;
             this.PartitionId = partitionId.ToString();
@@ -43,12 +43,12 @@ namespace Ds3.Calls
 
             this.QueryParams.Add("partition_id", partitionId.ToString());
 
-            this.QueryParams.Add("tape_type", tapeType.ToString());
+            this.QueryParams.Add("tape_type", tapeType);
 
         }
 
         
-        public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, string partitionId, TapeType tapeType)
+        public PutTapeDensityDirectiveSpectraS3Request(TapeDriveType density, string partitionId, string tapeType)
         {
             this.Density = density;
             this.PartitionId = partitionId;
@@ -58,7 +58,7 @@ namespace Ds3.Calls
 
             this.QueryParams.Add("partition_id", partitionId);
 
-            this.QueryParams.Add("tape_type", tapeType.ToString());
+            this.QueryParams.Add("tape_type", tapeType);
 
         }
 

@@ -27,7 +27,7 @@ namespace Ds3.Models
         public StorageDomainMemberState State { get; set; }
         public Guid StorageDomainId { get; set; }
         public Guid? TapePartitionId { get; set; }
-        public TapeType? TapeType { get; set; }
+        public string TapeType { get; set; }
         public WritePreferenceLevel WritePreference { get; set; }
     }
 }
