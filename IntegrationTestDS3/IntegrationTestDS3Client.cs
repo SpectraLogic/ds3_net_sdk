@@ -1793,5 +1793,25 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
         }
+
+        [Test]
+        public void TestGetJobs()
+        {
+            const string bucketName = "TestGetJobs";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                Ds3TestUtils.LoadTestData(Client, bucketName);
+
+                var response = Client.GetJobsSpectraS3(new GetJobsSpectraS3Request().WithBucketId(bucketName));
+                var jobs = response.ResponsePayload.Jobs.ToList();
+                Assert.AreEqual(1, jobs.Count);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
     }
 }
