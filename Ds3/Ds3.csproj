@@ -1275,7 +1275,6 @@
     <Compile Include="Models\Range.cs" />
     <Compile Include="Models\Tape.cs" />
     <Compile Include="Models\TapeState.cs" />
-    <Compile Include="Models\TapeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
