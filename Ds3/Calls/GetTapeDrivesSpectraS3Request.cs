@@ -59,6 +59,13 @@ namespace Ds3.Calls
             set { WithPartitionId(value); }
         }
 
+        private ReservedTaskType? _reservedTaskType;
+        public ReservedTaskType? ReservedTaskType
+        {
+            get { return _reservedTaskType; }
+            set { WithReservedTaskType(value); }
+        }
+
         private string _serialNumber;
         public string SerialNumber
         {
@@ -181,6 +188,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("partition_id");
+            }
+            return this;
+        }
+
+        
+        public GetTapeDrivesSpectraS3Request WithReservedTaskType(ReservedTaskType? reservedTaskType)
+        {
+            this._reservedTaskType = reservedTaskType;
+            if (reservedTaskType != null)
+            {
+                this.QueryParams.Add("reserved_task_type", reservedTaskType.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("reserved_task_type");
             }
             return this;
         }

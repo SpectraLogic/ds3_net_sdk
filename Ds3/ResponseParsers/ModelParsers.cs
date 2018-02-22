@@ -201,8 +201,10 @@ namespace Ds3.ResponseParsers
             return new DataPathBackend
             {
                 Activated = ParseBool(element.Element("Activated")),
+                AllowNewJobRequests = ParseBool(element.Element("AllowNewJobRequests")),
                 AutoActivateTimeoutInMins = ParseNullableInt(element.Element("AutoActivateTimeoutInMins")),
                 AutoInspect = ParseAutoInspectMode(element.Element("AutoInspect")),
+                CacheAvailableRetryAfterInSeconds = ParseInt(element.Element("CacheAvailableRetryAfterInSeconds")),
                 DefaultImportConflictResolutionMode = ParseImportConflictResolutionMode(element.Element("DefaultImportConflictResolutionMode")),
                 DefaultVerifyDataAfterImport = ParseNullablePriority(element.Element("DefaultVerifyDataAfterImport")),
                 DefaultVerifyDataPriorToImport = ParseBool(element.Element("DefaultVerifyDataPriorToImport")),
@@ -1150,6 +1152,7 @@ namespace Ds3.ResponseParsers
                 MfgSerialNumber = ParseNullableString(element.Element("MfgSerialNumber")),
                 PartitionId = ParseGuid(element.Element("PartitionId")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
+                ReservedTaskType = ParseReservedTaskType(element.Element("ReservedTaskType")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapeDriveState(element.Element("State")),
                 TapeId = ParseNullableGuid(element.Element("TapeId")),
@@ -1208,6 +1211,8 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 ImportExportConfiguration = ParseImportExportConfiguration(element.Element("ImportExportConfiguration")),
                 LibraryId = ParseGuid(element.Element("LibraryId")),
+                MinimumReadReservedDrives = ParseInt(element.Element("MinimumReadReservedDrives")),
+                MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 SerialId = ParseNullableString(element.Element("SerialId")),
@@ -1767,6 +1772,8 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 ImportExportConfiguration = ParseImportExportConfiguration(element.Element("ImportExportConfiguration")),
                 LibraryId = ParseGuid(element.Element("LibraryId")),
+                MinimumReadReservedDrives = ParseInt(element.Element("MinimumReadReservedDrives")),
+                MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 SerialId = ParseNullableString(element.Element("SerialId")),
@@ -2124,6 +2131,8 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 ImportExportConfiguration = ParseImportExportConfiguration(element.Element("ImportExportConfiguration")),
                 LibraryId = ParseGuid(element.Element("LibraryId")),
+                MinimumReadReservedDrives = ParseInt(element.Element("MinimumReadReservedDrives")),
+                MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 SerialId = ParseNullableString(element.Element("SerialId")),
@@ -3778,6 +3787,31 @@ namespace Ds3.ResponseParsers
         public static Quiesced ParseQuiesced(XElement element)
         {
             return ParseQuiesced(element.Value);
+        }
+        public static ReservedTaskType? ParseNullableReservedTaskType(string reservedTaskTypeOrNull)
+        {
+            return string.IsNullOrWhiteSpace(reservedTaskTypeOrNull)
+                ? (ReservedTaskType?) null
+                : ParseReservedTaskType(reservedTaskTypeOrNull);
+        }
+
+        public static ReservedTaskType ParseReservedTaskType(string reservedTaskType)
+        {
+            return ParseEnumType<ReservedTaskType>(reservedTaskType);
+        }
+
+        public static ReservedTaskType? ParseNullableReservedTaskType(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableReservedTaskType(element.Value);
+        }
+
+        public static ReservedTaskType ParseReservedTaskType(XElement element)
+        {
+            return ParseReservedTaskType(element.Value);
         }
         public static ImportExportConfiguration? ParseNullableImportExportConfiguration(string importExportConfigurationOrNull)
         {

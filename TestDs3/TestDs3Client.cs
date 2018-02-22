@@ -1829,5 +1829,42 @@ namespace TestDs3
                 .AsClient
                 .GetBlobsOnS3TargetSpectraS3(new GetBlobsOnS3TargetSpectraS3Request(target));
         }
+
+        [Test]
+        public void TestHeadObject()
+        {
+            var objectName = "obj";
+            var bucketName = "testBuckete";
+            
+            var responseHeaders = new Dictionary<string, string> {
+                {"content-length", "10"},
+                {"etag", "etag"},
+                {"x-amz-meta-key", "value"},
+                {"ds3-blob-checksum-type", "MD5"},
+                {"ds3-blob-checksum-offset-0", "4nQGNX4nyz0pi8Hvap79PQ=="},
+                {"ds3-blob-checksum-offset-10485760", "965Aa0/n8DlO1IwXYFh4bg=="},
+                {"ds3-blob-checksum-offset-20971520", "iV2OqJaXJ/jmqgRSb1HmFA=="},
+            };
+
+            var result = MockNetwork.Expecting(HttpVerb.HEAD, "/" + bucketName + "/" + objectName, EmptyQueryParams, "")
+                .Returning(HttpStatusCode.OK, "", responseHeaders)
+                .AsClient
+                .HeadObject(new HeadObjectRequest(bucketName, objectName));
+
+            Assert.AreEqual(result.Length, 10);
+            Assert.AreEqual(result.ETag, "etag");
+
+            Assert.AreEqual(ChecksumType.Type.MD5, result.BlobChecksumType);
+            Assert.AreEqual(3, result.BlobChecksums.Count);
+
+            var expectedBlobChecksums = new Dictionary<long, string>
+            {
+                {0, "4nQGNX4nyz0pi8Hvap79PQ=="},
+                {10485760, "965Aa0/n8DlO1IwXYFh4bg=="},
+                {20971520, "iV2OqJaXJ/jmqgRSb1HmFA=="},
+            };
+
+            CollectionAssert.AreEqual(expectedBlobChecksums, result.BlobChecksums);
+        }
     }
 }
