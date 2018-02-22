@@ -300,7 +300,7 @@ namespace TestDs3
             SerialNumber = "123456",
             State = TapeState.EJECTED,
             TotalRawCapacity = 20000,
-            Type = TapeType.LTO5,
+            Type = "LTO5",
             WriteProtected = false,
         };
 

@@ -45,7 +45,7 @@ namespace Ds3.Models
         public Guid? StorageDomainId { get; set; }
         public bool TakeOwnershipPending { get; set; }
         public long? TotalRawCapacity { get; set; }
-        public TapeType Type { get; set; }
+        public string Type { get; set; }
         public Priority? VerifyPending { get; set; }
         public bool WriteProtected { get; set; }
     }

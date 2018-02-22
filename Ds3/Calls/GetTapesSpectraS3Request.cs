@@ -157,8 +157,8 @@ namespace Ds3.Calls
             set { WithStorageDomainId(value); }
         }
 
-        private TapeType? _type;
-        public TapeType? Type
+        private string _type;
+        public string Type
         {
             get { return _type; }
             set { WithType(value); }
@@ -524,12 +524,12 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapesSpectraS3Request WithType(TapeType? type)
+        public GetTapesSpectraS3Request WithType(string type)
         {
             this._type = type;
             if (type != null)
             {
-                this.QueryParams.Add("type", type.ToString());
+                this.QueryParams.Add("type", type);
             }
             else
             {
