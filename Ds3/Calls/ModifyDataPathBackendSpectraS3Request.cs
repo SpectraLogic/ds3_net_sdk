@@ -31,6 +31,13 @@ namespace Ds3.Calls
             set { WithActivated(value); }
         }
 
+        private bool? _allowNewJobRequests;
+        public bool? AllowNewJobRequests
+        {
+            get { return _allowNewJobRequests; }
+            set { WithAllowNewJobRequests(value); }
+        }
+
         private int? _autoActivateTimeoutInMins;
         public int? AutoActivateTimeoutInMins
         {
@@ -43,6 +50,13 @@ namespace Ds3.Calls
         {
             get { return _autoInspect; }
             set { WithAutoInspect(value); }
+        }
+
+        private int? _cacheAvailableRetryAfterInSeconds;
+        public int? CacheAvailableRetryAfterInSeconds
+        {
+            get { return _cacheAvailableRetryAfterInSeconds; }
+            set { WithCacheAvailableRetryAfterInSeconds(value); }
         }
 
         private ImportConflictResolutionMode? _defaultImportConflictResolutionMode;
@@ -110,6 +124,21 @@ namespace Ds3.Calls
         }
 
         
+        public ModifyDataPathBackendSpectraS3Request WithAllowNewJobRequests(bool? allowNewJobRequests)
+        {
+            this._allowNewJobRequests = allowNewJobRequests;
+            if (allowNewJobRequests != null)
+            {
+                this.QueryParams.Add("allow_new_job_requests", allowNewJobRequests.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("allow_new_job_requests");
+            }
+            return this;
+        }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithAutoActivateTimeoutInMins(int? autoActivateTimeoutInMins)
         {
             this._autoActivateTimeoutInMins = autoActivateTimeoutInMins;
@@ -135,6 +164,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("auto_inspect");
+            }
+            return this;
+        }
+
+        
+        public ModifyDataPathBackendSpectraS3Request WithCacheAvailableRetryAfterInSeconds(int? cacheAvailableRetryAfterInSeconds)
+        {
+            this._cacheAvailableRetryAfterInSeconds = cacheAvailableRetryAfterInSeconds;
+            if (cacheAvailableRetryAfterInSeconds != null)
+            {
+                this.QueryParams.Add("cache_available_retry_after_in_seconds", cacheAvailableRetryAfterInSeconds.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("cache_available_retry_after_in_seconds");
             }
             return this;
         }

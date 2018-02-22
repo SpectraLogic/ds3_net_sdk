@@ -15,24 +15,12 @@
 
 // This code is auto-generated, do not modify
 
-using System;
-using System.Collections.Generic;
-
 namespace Ds3.Models
 {
-    public class TapePartition
+    public enum ReservedTaskType
     {
-        public TapeDriveType? DriveType { get; set; }
-        public string ErrorMessage { get; set; }
-        public Guid Id { get; set; }
-        public ImportExportConfiguration ImportExportConfiguration { get; set; }
-        public Guid LibraryId { get; set; }
-        public int MinimumReadReservedDrives { get; set; }
-        public int MinimumWriteReservedDrives { get; set; }
-        public string Name { get; set; }
-        public Quiesced Quiesced { get; set; }
-        public string SerialId { get; set; }
-        public string SerialNumber { get; set; }
-        public TapePartitionState State { get; set; }
+        ANY,
+        READ,
+        WRITE
     }
 }

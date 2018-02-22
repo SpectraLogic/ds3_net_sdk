@@ -30,6 +30,7 @@ namespace Ds3.Models
         public string MfgSerialNumber { get; set; }
         public Guid PartitionId { get; set; }
         public Quiesced Quiesced { get; set; }
+        public ReservedTaskType ReservedTaskType { get; set; }
         public string SerialNumber { get; set; }
         public TapeDriveState State { get; set; }
         public Guid? TapeId { get; set; }

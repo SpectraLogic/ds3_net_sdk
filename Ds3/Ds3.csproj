@@ -855,6 +855,7 @@
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Quiesced.cs" />
     <Compile Include="Models\RequestType.cs" />
+    <Compile Include="Models\ReservedTaskType.cs" />
     <Compile Include="Models\RestOperationType.cs" />
     <Compile Include="Models\S3DataReplicationRule.cs" />
     <Compile Include="Models\S3DataReplicationRuleList.cs" />
