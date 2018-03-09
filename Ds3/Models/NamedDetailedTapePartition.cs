@@ -22,6 +22,7 @@ namespace Ds3.Models
 {
     public class NamedDetailedTapePartition
     {
+        public bool AutoCompactionEnabled { get; set; }
         public TapeDriveType? DriveType { get; set; }
         public IEnumerable<TapeDriveType> DriveTypes { get; set; }
         public string ErrorMessage { get; set; }

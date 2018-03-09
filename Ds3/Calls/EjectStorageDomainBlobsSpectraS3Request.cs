@@ -28,7 +28,7 @@ namespace Ds3.Calls
         
         public string BucketId { get; private set; }
 
-        public string StorageDomainId { get; private set; }
+        public string StorageDomain { get; private set; }
 
         public IEnumerable<Ds3Object> Objects { get; private set; }
 
@@ -80,10 +80,10 @@ namespace Ds3.Calls
 
         
         
-        public EjectStorageDomainBlobsSpectraS3Request(Guid bucketId, IEnumerable<Ds3Object> objects, Guid storageDomainId)
+        public EjectStorageDomainBlobsSpectraS3Request(Guid bucketId, IEnumerable<Ds3Object> objects, string storageDomain)
         {
             this.BucketId = bucketId.ToString();
-            this.StorageDomainId = storageDomainId.ToString();
+            this.StorageDomain = storageDomain;
             this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "eject");
             
@@ -91,15 +91,15 @@ namespace Ds3.Calls
 
             this.QueryParams.Add("bucket_id", bucketId.ToString());
 
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            this.QueryParams.Add("storage_domain", storageDomain);
 
         }
 
         
-        public EjectStorageDomainBlobsSpectraS3Request(string bucketId, IEnumerable<Ds3Object> objects, string storageDomainId)
+        public EjectStorageDomainBlobsSpectraS3Request(string bucketId, IEnumerable<Ds3Object> objects, string storageDomain)
         {
             this.BucketId = bucketId;
-            this.StorageDomainId = storageDomainId;
+            this.StorageDomain = storageDomain;
             this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "eject");
             
@@ -107,7 +107,7 @@ namespace Ds3.Calls
 
             this.QueryParams.Add("bucket_id", bucketId);
 
-            this.QueryParams.Add("storage_domain_id", storageDomainId);
+            this.QueryParams.Add("storage_domain", storageDomain);
 
         }
 

@@ -24,6 +24,7 @@ namespace Ds3.Models
     {
         public Guid BlobId { get; set; }
         public Guid Id { get; set; }
+        public Guid? ObsoletionId { get; set; }
         public int OrderIndex { get; set; }
         public Guid TapeId { get; set; }
     }

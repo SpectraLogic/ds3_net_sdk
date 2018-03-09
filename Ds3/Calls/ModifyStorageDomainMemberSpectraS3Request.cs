@@ -26,11 +26,55 @@ namespace Ds3.Calls
         public string StorageDomainMember { get; private set; }
 
         
+        private int? _autoCompactionThreshold;
+        public int? AutoCompactionThreshold
+        {
+            get { return _autoCompactionThreshold; }
+            set { WithAutoCompactionThreshold(value); }
+        }
+
+        private StorageDomainMemberState? _state;
+        public StorageDomainMemberState? State
+        {
+            get { return _state; }
+            set { WithState(value); }
+        }
+
         private WritePreferenceLevel? _writePreference;
         public WritePreferenceLevel? WritePreference
         {
             get { return _writePreference; }
             set { WithWritePreference(value); }
+        }
+
+        
+        public ModifyStorageDomainMemberSpectraS3Request WithAutoCompactionThreshold(int? autoCompactionThreshold)
+        {
+            this._autoCompactionThreshold = autoCompactionThreshold;
+            if (autoCompactionThreshold != null)
+            {
+                this.QueryParams.Add("auto_compaction_threshold", autoCompactionThreshold.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("auto_compaction_threshold");
+            }
+            return this;
+        }
+
+        
+        public ModifyStorageDomainMemberSpectraS3Request WithState(StorageDomainMemberState? state)
+        {
+            this._state = state;
+            if (state != null)
+            {
+                this.QueryParams.Add("state", state.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("state");
+            }
+            return this;
         }
 
         

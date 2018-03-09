@@ -22,6 +22,7 @@ namespace Ds3.Models
 {
     public class StorageDomainMember
     {
+        public int? AutoCompactionThreshold { get; set; }
         public Guid Id { get; set; }
         public Guid? PoolPartitionId { get; set; }
         public StorageDomainMemberState State { get; set; }

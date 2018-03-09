@@ -26,6 +26,13 @@ namespace Ds3.Calls
         public string TapePartition { get; private set; }
 
         
+        private bool? _autoCompactionEnabled;
+        public bool? AutoCompactionEnabled
+        {
+            get { return _autoCompactionEnabled; }
+            set { WithAutoCompactionEnabled(value); }
+        }
+
         private int? _minimumReadReservedDrives;
         public int? MinimumReadReservedDrives
         {
@@ -45,6 +52,21 @@ namespace Ds3.Calls
         {
             get { return _quiesced; }
             set { WithQuiesced(value); }
+        }
+
+        
+        public ModifyTapePartitionSpectraS3Request WithAutoCompactionEnabled(bool? autoCompactionEnabled)
+        {
+            this._autoCompactionEnabled = autoCompactionEnabled;
+            if (autoCompactionEnabled != null)
+            {
+                this.QueryParams.Add("auto_compaction_enabled", autoCompactionEnabled.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("auto_compaction_enabled");
+            }
+            return this;
         }
 
         

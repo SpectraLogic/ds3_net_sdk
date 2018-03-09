@@ -36,6 +36,5 @@ namespace Ds3.Models
         public string Owner { get; set; }
         public long Size { get; set; }
         public S3ObjectType Type { get; set; }
-        public long Version { get; set; }
     }
 }

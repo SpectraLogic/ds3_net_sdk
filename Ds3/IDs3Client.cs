@@ -223,6 +223,8 @@ namespace Ds3
         
         ReplicatePutJobSpectraS3Response ReplicatePutJobSpectraS3(ReplicatePutJobSpectraS3Request request);
         
+        StageObjectsJobSpectraS3Response StageObjectsJobSpectraS3(StageObjectsJobSpectraS3Request request);
+        
         GetNodeSpectraS3Response GetNodeSpectraS3(GetNodeSpectraS3Request request);
         
         GetNodesSpectraS3Response GetNodesSpectraS3(GetNodesSpectraS3Request request);
@@ -324,6 +326,8 @@ namespace Ds3
         GetPhysicalPlacementForObjectsSpectraS3Response GetPhysicalPlacementForObjectsSpectraS3(GetPhysicalPlacementForObjectsSpectraS3Request request);
         
         GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Response GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3(GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request request);
+        
+        UndeleteObjectSpectraS3Response UndeleteObjectSpectraS3(UndeleteObjectSpectraS3Request request);
         
         VerifyPhysicalPlacementForObjectsSpectraS3Response VerifyPhysicalPlacementForObjectsSpectraS3(VerifyPhysicalPlacementForObjectsSpectraS3Request request);
         

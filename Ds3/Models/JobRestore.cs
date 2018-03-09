@@ -17,10 +17,10 @@
 
 namespace Ds3.Models
 {
-    public enum ImportConflictResolutionMode
+    public enum JobRestore
     {
-        CANCEL,
-        ACCEPT_MOST_RECENT,
-        ACCEPT_EXISTING
+        NO,
+        YES,
+        PERMANENT_ONLY
     }
 }

@@ -27,11 +27,11 @@ namespace Ds3.Models
         public int? AutoActivateTimeoutInMins { get; set; }
         public AutoInspectMode AutoInspect { get; set; }
         public int CacheAvailableRetryAfterInSeconds { get; set; }
-        public ImportConflictResolutionMode DefaultImportConflictResolutionMode { get; set; }
         public Priority? DefaultVerifyDataAfterImport { get; set; }
         public bool DefaultVerifyDataPriorToImport { get; set; }
         public Guid Id { get; set; }
         public Guid InstanceId { get; set; }
+        public bool IomEnabled { get; set; }
         public DateTime LastHeartbeat { get; set; }
         public int? PartiallyVerifyLastPercentOfTapes { get; set; }
         public UnavailableMediaUsagePolicy UnavailableMediaPolicy { get; set; }
