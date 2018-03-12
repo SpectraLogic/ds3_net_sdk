@@ -40,7 +40,7 @@ namespace Ds3.Models
         public int? ProxyPort { get; set; }
         public string ProxyUsername { get; set; }
         public Quiesced Quiesced { get; set; }
-        public S3Region Region { get; set; }
+        public S3Region? Region { get; set; }
         public string SecretKey { get; set; }
         public int StagedDataExpirationInDays { get; set; }
         public TargetState State { get; set; }

@@ -54,6 +54,13 @@ namespace Ds3.Calls
             set { WithPrefix(value); }
         }
 
+        private bool? _versions;
+        public bool? Versions
+        {
+            get { return _versions; }
+            set { WithVersions(value); }
+        }
+
         
         public GetBucketRequest WithDelimiter(string delimiter)
         {
@@ -110,6 +117,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("prefix");
+            }
+            return this;
+        }
+
+        
+        public GetBucketRequest WithVersions(bool? versions)
+        {
+            this._versions = versions;
+            if (versions != null)
+            {
+                this.QueryParams.Add("versions", versions.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("versions");
             }
             return this;
         }

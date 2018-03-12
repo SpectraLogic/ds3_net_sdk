@@ -23,10 +23,12 @@ namespace Ds3.Models
     public class Contents
     {
         public string ETag { get; set; }
+        public bool? IsLatest { get; set; }
         public string Key { get; set; }
         public DateTime? LastModified { get; set; }
         public User Owner { get; set; }
         public long Size { get; set; }
         public string StorageClass { get; set; }
+        public Guid? VersionId { get; set; }
     }
 }

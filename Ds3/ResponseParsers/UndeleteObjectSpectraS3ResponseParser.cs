@@ -15,28 +15,30 @@
 
 // This code is auto-generated, do not modify
 
-using System.Collections.Generic;
+using Ds3.Calls;
 using Ds3.Models;
-
 using Ds3.Runtime;
+using System.Linq;
+using System.Net;
+using System.Xml.Linq;
 
-namespace Ds3.Calls
+namespace Ds3.ResponseParsers
 {
-    public class HeadObjectResponse
+    internal class UndeleteObjectSpectraS3ResponseParser : IResponseParser<UndeleteObjectSpectraS3Request, UndeleteObjectSpectraS3Response>
     {
-        public IDictionary<long, string> BlobChecksums { get; private set; }
-        public ChecksumType.Type BlobChecksumType { get; private set; }
-        public IDictionary<string, string> Metadata { get; private set; }
-        public string ETag { get; private set; }
-        public long Length { get; private set; }
-
-        public HeadObjectResponse(IDictionary<long, string> blobChecksums, ChecksumType.Type blobChecksumType, long length, string eTag, IDictionary<string, string> metadata)
+        public UndeleteObjectSpectraS3Response Parse(UndeleteObjectSpectraS3Request request, IWebResponse response)
         {
-            this.BlobChecksums = blobChecksums;
-            this.BlobChecksumType = blobChecksumType;
-            this.Length = length;
-            this.ETag = eTag;
-            this.Metadata = metadata;
+            using (response)
+            {
+                ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
+                using (var stream = response.GetResponseStream())
+                {
+                    return new UndeleteObjectSpectraS3Response(
+                        ModelParsers.ParseS3Object(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
+                    );
+                }
+            }
         }
     }
 }

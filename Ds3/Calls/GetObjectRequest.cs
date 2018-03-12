@@ -34,6 +34,43 @@ namespace Ds3.Calls
         public long Offset { get; private set; }
 
         
+        private string _versionId;
+        public string VersionId
+        {
+            get { return _versionId; }
+            set { WithVersionId(value); }
+        }
+
+        
+        public GetObjectRequest WithVersionId(Guid? versionId)
+        {
+            this._versionId = versionId.ToString();
+            if (versionId != null)
+            {
+                this.QueryParams.Add("version_id", versionId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("version_id");
+            }
+            return this;
+        }
+
+        
+        public GetObjectRequest WithVersionId(string versionId)
+        {
+            this._versionId = versionId;
+            if (versionId != null)
+            {
+                this.QueryParams.Add("version_id", versionId);
+            }
+            else
+            {
+                this.QueryParams.Remove("version_id");
+            }
+            return this;
+        }
+
 
         private IEnumerable<Range> _byteRanges = Enumerable.Empty<Range>();
         public IEnumerable<Range> ByteRanges

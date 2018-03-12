@@ -20,6 +20,7 @@ namespace Ds3.Models
     public enum VersioningLevel
     {
         NONE,
-        KEEP_LATEST
+        KEEP_LATEST,
+        KEEP_MULTIPLE_VERSIONS
     }
 }

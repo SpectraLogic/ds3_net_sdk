@@ -20,12 +20,12 @@ using System.Net;
 
 namespace Ds3.Calls
 {
-    public class DeleteObjectRequest : Ds3Request
+    public class UndeleteObjectSpectraS3Request : Ds3Request
     {
         
-        public string BucketName { get; private set; }
+        public string BucketId { get; private set; }
 
-        public string ObjectName { get; private set; }
+        public string Name { get; private set; }
 
         
         private string _versionId;
@@ -36,7 +36,7 @@ namespace Ds3.Calls
         }
 
         
-        public DeleteObjectRequest WithVersionId(Guid? versionId)
+        public UndeleteObjectSpectraS3Request WithVersionId(Guid? versionId)
         {
             this._versionId = versionId.ToString();
             if (versionId != null)
@@ -51,7 +51,7 @@ namespace Ds3.Calls
         }
 
         
-        public DeleteObjectRequest WithVersionId(string versionId)
+        public UndeleteObjectSpectraS3Request WithVersionId(string versionId)
         {
             this._versionId = versionId;
             if (versionId != null)
@@ -68,18 +68,34 @@ namespace Ds3.Calls
 
         
         
-        public DeleteObjectRequest(string bucketName, string objectName)
+        public UndeleteObjectSpectraS3Request(Guid bucketId, string name)
         {
-            this.BucketName = bucketName;
-            this.ObjectName = objectName;
+            this.BucketId = bucketId.ToString();
+            this.Name = name;
             
+            this.QueryParams.Add("bucket_id", bucketId.ToString());
+
+            this.QueryParams.Add("name", name);
+
+        }
+
+        
+        public UndeleteObjectSpectraS3Request(string bucketId, string name)
+        {
+            this.BucketId = bucketId;
+            this.Name = name;
+            
+            this.QueryParams.Add("bucket_id", bucketId);
+
+            this.QueryParams.Add("name", name);
+
         }
 
         internal override HttpVerb Verb
         {
             get
             {
-                return HttpVerb.DELETE;
+                return HttpVerb.PUT;
             }
         }
 
@@ -87,7 +103,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/" + BucketName + "/" + ObjectName;
+                return "/_rest_/object";
             }
         }
     }

@@ -28,28 +28,6 @@ namespace Ds3.Calls
         public string BucketId { get; private set; }
 
         
-        private bool? _rollBack;
-        public bool? RollBack
-        {
-            get { return _rollBack; }
-            set { WithRollBack(value); }
-        }
-
-        
-        public DeleteFolderRecursivelySpectraS3Request WithRollBack(bool? rollBack)
-        {
-            this._rollBack = rollBack;
-            if (rollBack != null)
-            {
-                this.QueryParams.Add("roll_back", rollBack.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("roll_back");
-            }
-            return this;
-        }
-
 
         
         

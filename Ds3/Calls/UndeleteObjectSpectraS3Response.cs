@@ -14,26 +14,17 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 
-using System;
-using System.Collections.Generic;
-
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public class TapePartition
+    public class UndeleteObjectSpectraS3Response
     {
-        public bool AutoCompactionEnabled { get; set; }
-        public TapeDriveType? DriveType { get; set; }
-        public string ErrorMessage { get; set; }
-        public Guid Id { get; set; }
-        public ImportExportConfiguration ImportExportConfiguration { get; set; }
-        public Guid LibraryId { get; set; }
-        public int MinimumReadReservedDrives { get; set; }
-        public int MinimumWriteReservedDrives { get; set; }
-        public string Name { get; set; }
-        public Quiesced Quiesced { get; set; }
-        public string SerialId { get; set; }
-        public string SerialNumber { get; set; }
-        public TapePartitionState State { get; set; }
+        public S3Object ResponsePayload { get; private set; }
+
+        public UndeleteObjectSpectraS3Response(S3Object responsePayload)
+        {
+            this.ResponsePayload = responsePayload;
+        }
     }
 }

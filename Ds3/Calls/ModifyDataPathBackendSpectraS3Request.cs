@@ -59,13 +59,6 @@ namespace Ds3.Calls
             set { WithCacheAvailableRetryAfterInSeconds(value); }
         }
 
-        private ImportConflictResolutionMode? _defaultImportConflictResolutionMode;
-        public ImportConflictResolutionMode? DefaultImportConflictResolutionMode
-        {
-            get { return _defaultImportConflictResolutionMode; }
-            set { WithDefaultImportConflictResolutionMode(value); }
-        }
-
         private Priority? _defaultVerifyDataAfterImport;
         public Priority? DefaultVerifyDataAfterImport
         {
@@ -78,6 +71,13 @@ namespace Ds3.Calls
         {
             get { return _defaultVerifyDataPriorToImport; }
             set { WithDefaultVerifyDataPriorToImport(value); }
+        }
+
+        private bool? _iomEnabled;
+        public bool? IomEnabled
+        {
+            get { return _iomEnabled; }
+            set { WithIomEnabled(value); }
         }
 
         private int? _partiallyVerifyLastPercentOfTapes;
@@ -184,21 +184,6 @@ namespace Ds3.Calls
         }
 
         
-        public ModifyDataPathBackendSpectraS3Request WithDefaultImportConflictResolutionMode(ImportConflictResolutionMode? defaultImportConflictResolutionMode)
-        {
-            this._defaultImportConflictResolutionMode = defaultImportConflictResolutionMode;
-            if (defaultImportConflictResolutionMode != null)
-            {
-                this.QueryParams.Add("default_import_conflict_resolution_mode", defaultImportConflictResolutionMode.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("default_import_conflict_resolution_mode");
-            }
-            return this;
-        }
-
-        
         public ModifyDataPathBackendSpectraS3Request WithDefaultVerifyDataAfterImport(Priority? defaultVerifyDataAfterImport)
         {
             this._defaultVerifyDataAfterImport = defaultVerifyDataAfterImport;
@@ -224,6 +209,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("default_verify_data_prior_to_import");
+            }
+            return this;
+        }
+
+        
+        public ModifyDataPathBackendSpectraS3Request WithIomEnabled(bool? iomEnabled)
+        {
+            this._iomEnabled = iomEnabled;
+            if (iomEnabled != null)
+            {
+                this.QueryParams.Add("iom_enabled", iomEnabled.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("iom_enabled");
             }
             return this;
         }

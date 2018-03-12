@@ -150,11 +150,11 @@ namespace Ds3.Calls
             set { WithState(value); }
         }
 
-        private string _storageDomainId;
-        public string StorageDomainId
+        private string _storageDomainMemberId;
+        public string StorageDomainMemberId
         {
-            get { return _storageDomainId; }
-            set { WithStorageDomainId(value); }
+            get { return _storageDomainMemberId; }
+            set { WithStorageDomainMemberId(value); }
         }
 
         private string _type;
@@ -494,31 +494,31 @@ namespace Ds3.Calls
         }
 
         
-        public GetTapesSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
+        public GetTapesSpectraS3Request WithStorageDomainMemberId(Guid? storageDomainMemberId)
         {
-            this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null)
+            this._storageDomainMemberId = storageDomainMemberId.ToString();
+            if (storageDomainMemberId != null)
             {
-                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+                this.QueryParams.Add("storage_domain_member_id", storageDomainMemberId.ToString());
             }
             else
             {
-                this.QueryParams.Remove("storage_domain_id");
+                this.QueryParams.Remove("storage_domain_member_id");
             }
             return this;
         }
 
         
-        public GetTapesSpectraS3Request WithStorageDomainId(string storageDomainId)
+        public GetTapesSpectraS3Request WithStorageDomainMemberId(string storageDomainMemberId)
         {
-            this._storageDomainId = storageDomainId;
-            if (storageDomainId != null)
+            this._storageDomainMemberId = storageDomainMemberId;
+            if (storageDomainMemberId != null)
             {
-                this.QueryParams.Add("storage_domain_id", storageDomainId);
+                this.QueryParams.Add("storage_domain_member_id", storageDomainMemberId);
             }
             else
             {
-                this.QueryParams.Remove("storage_domain_id");
+                this.QueryParams.Remove("storage_domain_member_id");
             }
             return this;
         }
