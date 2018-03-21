@@ -28,7 +28,7 @@ namespace Ds3.Calls
         
         public string BucketName { get; private set; }
 
-        public IEnumerable<string> FullObjects { get; private set; }
+        public IEnumerable<Ds3Object> FullObjects { get; private set; }
 
         public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
 
@@ -145,7 +145,7 @@ namespace Ds3.Calls
 
         
         
-        public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
+        public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
         {
             this.BucketName = bucketName;
             this.FullObjects = fullObjects.ToList();
@@ -154,8 +154,13 @@ namespace Ds3.Calls
             
         }
 
-        public GetBulkJobSpectraS3Request(string bucketName, List<Ds3Object> ds3Objects)
-            : this(bucketName, ds3Objects.Select(o => o.Name), Enumerable.Empty<Ds3PartialObject>())
+        public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> ds3Objects)
+            : this(bucketName, ds3Objects, Enumerable.Empty<Ds3PartialObject>())
+        {
+        }
+
+        public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<string> objectNames)
+            : this(bucketName, objectNames.Select(name => new Ds3Object(name, null)), Enumerable.Empty<Ds3PartialObject>())
         {
         }
 

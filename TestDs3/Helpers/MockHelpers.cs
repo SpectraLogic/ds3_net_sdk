@@ -62,7 +62,7 @@ namespace TestDs3.Helpers
         public static GetBulkJobSpectraS3Request ItIsBulkGetRequest(
             string bucketName,
             JobChunkClientProcessingOrderGuarantee? chunkOrdering,
-            IEnumerable<string> fullObjects,
+            IEnumerable<Ds3Object> fullObjects,
             IEnumerable<Ds3PartialObject> partialObjects)
         {
             return Match.Create(

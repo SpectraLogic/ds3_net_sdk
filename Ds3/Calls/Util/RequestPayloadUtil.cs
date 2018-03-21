@@ -81,12 +81,14 @@ namespace Ds3.Calls.Util
         /// <param name="fullObjectNames">List of object names representing full objects to be marshaled to xml</param>
         /// <param name="ds3PartialObjects">List of Ds3PartialObjects to be marshaled to xml</param>
         /// <returns>Stream containing xml marshaling of full objects followed by Ds3PartialObjects</returns>
-        public static Stream MarshalFullAndPartialObjects(IEnumerable<string> fullObjectNames, IEnumerable<Ds3PartialObject> ds3PartialObjects)
+        public static Stream MarshalFullAndPartialObjects(IEnumerable<Ds3Object> fullObjectNames, IEnumerable<Ds3PartialObject> ds3PartialObjects)
         {
             var root = new XElement("Objects")
                 .AddAllFluent(
-                    from name in fullObjectNames
-                    select new XElement("Object").SetAttributeValueFluent("Name", name)
+                    from obj in fullObjectNames
+                    select new XElement("Object")
+                        .SetAttributeValueFluent("Name", obj.Name)
+                        .SetAttributeValueFluent("VersionId", obj.VersionId)
                 )
                 .AddAllFluent(
                     from partial in ds3PartialObjects
@@ -94,6 +96,7 @@ namespace Ds3.Calls.Util
                         .SetAttributeValueFluent("Name", partial.Name)
                         .SetAttributeValueFluent("Offset", partial.Range.Start.ToString())
                         .SetAttributeValueFluent("Length", partial.Range.Length.ToString())
+                        .SetAttributeValueFluent("VersionId", partial.VersionId)
                 );
             return new XDocument().AddFluent(root).WriteToMemoryStream();
         }

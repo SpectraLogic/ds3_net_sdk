@@ -1534,7 +1534,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/" + bucketName, queryParams, expectedRequestPayload)
                 .Returning(HttpStatusCode.OK, responsePayload, EmptyHeaders)
                 .AsClient
-                .GetBulkJobSpectraS3(new GetBulkJobSpectraS3Request(bucketName, new List<string>(), partialObjects));
+                .GetBulkJobSpectraS3(new GetBulkJobSpectraS3Request(bucketName, new List<Ds3Object>(), partialObjects));
         }
 
         [Test]
@@ -1548,7 +1548,7 @@ namespace TestDs3
                 new Ds3PartialObject(Range.ByLength(3, 30), "obj3")
             };
 
-            var fullObjects = new List<string> { "obj1" };
+            var fullObjects = new List<Ds3Object> { new Ds3Object("obj1", null) };
 
             var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_get" } };
 
@@ -1562,15 +1562,18 @@ namespace TestDs3
         [Test]
         public void TestStageObjectsWithMixedObjects()
         {
-            const string expectedRequestPayload = "<Objects><Object Name=\"obj1\" /><Object Name=\"obj2\" Offset=\"2\" Length=\"20\" /><Object Name=\"obj3\" Offset=\"3\" Length=\"30\" /></Objects>";
+            const string expectedRequestPayload = "<Objects><Object Name=\"obj1\" /><Object Name=\"obj2\" VersionId=\"version2\" /><Object Name=\"obj3\" Offset=\"2\" Length=\"20\" /><Object Name=\"obj4\" Offset=\"3\" Length=\"30\" VersionId=\"version4\" /></Objects>";
             const string responsePayload = "<MasterObjectList Aggregating=\"false\" BucketName=\"default_bucket_name\" CachedSizeInBytes=\"0\" ChunkClientProcessingOrderGuarantee=\"IN_ORDER\" CompletedSizeInBytes=\"0\" EntirelyInCache=\"false\" JobId=\"1e66c043-e741-436a-8f5c-561320922fda\" Naked=\"false\" Name=\"GET by null\" OriginalSizeInBytes=\"0\" Priority=\"LOW\" RequestType=\"GET\" StartDate=\"2017-03-23T23:24:06.000Z\" Status=\"IN_PROGRESS\" UserId=\"fcc976f8-afda-4a3c-a4f8-565cea8b9c08\" UserName=\"default_user_name\"><Nodes><Node EndPoint=\"NOT_INITIALIZED_YET\" Id=\"acda9183-9b30-4de6-88cc-3f073051e978\"/></Nodes><Objects ChunkId=\"5aaa294b-45b0-458d-92a2-a6ca0ae6068c\" ChunkNumber=\"1\"><Object Id=\"0b56d39c-5711-4d9f-b161-c730b3acf1ae\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o2\" Offset=\"0\" VersionId=\"2af042b1-4543-4e88-a4f9-554570fcf50d\"/></Objects><Objects ChunkId=\"80f5f6f2-a3e4-4b15-ac68-c0184eed38f2\" ChunkNumber=\"2\"><Object Id=\"5008ebef-95fa-4cf6-9be0-88d0ed20f450\" InCache=\"false\" Latest=\"true\" Length=\"10\" Name=\"o1\" Offset=\"0\" VersionId=\"2af042b1-4543-4e88-a4f9-554570fcf50d\"/></Objects></MasterObjectList>";
             const string bucketName = "BucketName";
             var partialObjects = new List<Ds3PartialObject> {
-                new Ds3PartialObject(Range.ByLength(2, 20), "obj2"),
-                new Ds3PartialObject(Range.ByLength(3, 30), "obj3")
+                new Ds3PartialObject(Range.ByLength(2, 20), "obj3"),
+                new Ds3PartialObject(Range.ByLength(3, 30), "obj4", "version4")
             };
 
-            var fullObjects = new List<string> { "obj1" };
+            var fullObjects = new List<Ds3Object> {
+                new Ds3Object("obj1", null),
+                new Ds3Object("obj2", null, "version2")
+            };
 
             var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_stage" } };
 
@@ -1614,7 +1617,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/" + bucketName, queryParams, expectedRequestPayload)
                 .Returning(HttpStatusCode.OK, responsePayload, EmptyHeaders)
                 .AsClient
-                .VerifyBulkJobSpectraS3(new VerifyBulkJobSpectraS3Request(bucketName, new List<string>(), partialObjects));
+                .VerifyBulkJobSpectraS3(new VerifyBulkJobSpectraS3Request(bucketName, new List<Ds3Object>(), partialObjects));
         }
 
         [Test]
@@ -1628,7 +1631,7 @@ namespace TestDs3
                 new Ds3PartialObject(Range.ByLength(3, 30), "obj3")
             };
 
-            var fullObjects = new List<string> { "obj1" };
+            var fullObjects = new List<Ds3Object> { new Ds3Object("obj1", null) };
 
             var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_verify" } };
 
