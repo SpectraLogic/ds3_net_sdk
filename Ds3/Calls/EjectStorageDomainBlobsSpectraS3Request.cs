@@ -120,8 +120,8 @@ namespace Ds3.Calls
         {
         }
 
-        public EjectStorageDomainBlobsSpectraS3Request(string bucketName, IEnumerable<string> objectnames, string storageDomain)
-            : this(bucketName, objectnames.Select(name => new Ds3Object(name, null)), Enumerable.Empty<Ds3PartialObject>(), storageDomain)
+        public EjectStorageDomainBlobsSpectraS3Request(string bucketName, IEnumerable<string> objectNames, string storageDomain)
+            : this(bucketName, objectNames.Select(name => new Ds3Object(name, null)), Enumerable.Empty<Ds3PartialObject>(), storageDomain)
         {
         }
 
