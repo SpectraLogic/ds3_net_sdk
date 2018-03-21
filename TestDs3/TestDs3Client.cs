@@ -1534,7 +1534,7 @@ namespace TestDs3
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/" + bucketName, queryParams, expectedRequestPayload)
                 .Returning(HttpStatusCode.OK, responsePayload, EmptyHeaders)
                 .AsClient
-                .GetBulkJobSpectraS3(new GetBulkJobSpectraS3Request(bucketName, new List<Ds3Object>(), partialObjects));
+                .GetBulkJobSpectraS3(new GetBulkJobSpectraS3Request(bucketName, new List<string>(), partialObjects));
         }
 
         [Test]
@@ -1548,7 +1548,7 @@ namespace TestDs3
                 new Ds3PartialObject(Range.ByLength(3, 30), "obj3")
             };
 
-            var fullObjects = new List<Ds3Object> { new Ds3Object("obj1", null) };
+            var fullObjects = new List<string> { "obj1" };
 
             var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_get" } };
 

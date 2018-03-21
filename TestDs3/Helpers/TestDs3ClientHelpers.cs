@@ -75,7 +75,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
                     null,
-                    Stubs.ObjectNames.Select(name => new Ds3Object(name, null)),
+                    Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
                 .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
@@ -165,7 +165,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
                     null,
-                    fullObjects.Select(name => new Ds3Object(name, null)),
+                    fullObjects,
                     partialObjects
                 )))
                 .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
@@ -334,7 +334,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
                     null,
-                    Stubs.ObjectNames.Select(name => new Ds3Object(name, null)),
+                    Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
                 .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
@@ -620,7 +620,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
                     null,
-                    Stubs.ObjectNames.Select(name => new Ds3Object(name, null)),
+                    Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
                 .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));
@@ -757,7 +757,7 @@ namespace TestDs3.Helpers
                 .Setup(c => c.GetBulkJobSpectraS3(MockHelpers.ItIsBulkGetRequest(
                     Stubs.BucketName,
                     null,
-                    Stubs.ObjectNames.Select(name => new Ds3Object(name, null)),
+                    Stubs.ObjectNames,
                     Enumerable.Empty<Ds3PartialObject>()
                 )))
                 .Returns(new GetBulkJobSpectraS3Response(initialJobResponse));

@@ -36,6 +36,9 @@ namespace Ds3
         /// </summary>
         public static Ds3Builder FromEnv()
         {
+            Environment.SetEnvironmentVariable("DS3_ENDPOINT", "http://sm2u-11.eng.sldomain.com");
+            Environment.SetEnvironmentVariable("DS3_ACCESS_KEY", "QWRtaW5pc3RyYXRvcg==");
+            Environment.SetEnvironmentVariable("DS3_SECRET_KEY", "WMVPWuJp");
             var endpoint = Environment.GetEnvironmentVariable("DS3_ENDPOINT");
             var accesskey = Environment.GetEnvironmentVariable("DS3_ACCESS_KEY");
             var secretkey = Environment.GetEnvironmentVariable("DS3_SECRET_KEY");

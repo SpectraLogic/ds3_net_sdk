@@ -154,7 +154,7 @@ namespace Ds3.Helpers
                 helperStrategy = new ReadRandomAccessHelperStrategy<Ds3PartialObject>(_retryAfter);
             }
 
-            var request = new GetBulkJobSpectraS3Request(bucket, fullObjectList.Select(name => new Ds3Object(name, null)), partialObjectList);
+            var request = new GetBulkJobSpectraS3Request(bucket, fullObjectList, partialObjectList);
 
             UpdateReadJobRequest(helperStrategy.GetType(), ds3ReadJobOptions, request);
 

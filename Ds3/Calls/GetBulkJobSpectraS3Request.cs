@@ -154,6 +154,11 @@ namespace Ds3.Calls
             
         }
 
+        public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<string> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
+            : this(bucketName, fullObjects.Select(name => new Ds3Object(name, null)), partialObjects)
+        {
+        }
+
         public GetBulkJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> ds3Objects)
             : this(bucketName, ds3Objects, Enumerable.Empty<Ds3PartialObject>())
         {
