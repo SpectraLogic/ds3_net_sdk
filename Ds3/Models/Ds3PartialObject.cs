@@ -20,13 +20,20 @@ namespace Ds3.Models
 {
     public sealed class Ds3PartialObject : ContextRange<string>
     {
+        public string VersionId { get; private set; }
+
         public string Name
         {
             get { return this.Context; }
         }
 
+        public Ds3PartialObject(Range range, string objectName, string versionId) : base(range, objectName)
+        {
+            this.VersionId = versionId;
+        }
+
         public Ds3PartialObject(Range range, string objectName)
-            : base(range, objectName)
+            : this(range, objectName, null)
         {
         }
     }

@@ -28,7 +28,9 @@ namespace Ds3.Calls
         
         public string BucketName { get; private set; }
 
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> FullObjects { get; private set; }
+
+        public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
 
         
         private string _storageDomain;
@@ -56,14 +58,25 @@ namespace Ds3.Calls
 
         
         
-        public VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects)
+        public VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
         {
             this.BucketName = bucketName;
-            this.Objects = objects.ToList();
+            this.FullObjects = fullObjects.ToList();
+            this.PartialObjects = partialObjects.ToList();
             this.QueryParams.Add("operation", "verify_physical_placement");
             
             this.QueryParams.Add("full_details", null);
 
+        }
+
+        public VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> ds3Objects)
+            : this(bucketName, ds3Objects, Enumerable.Empty<Ds3PartialObject>())
+        {
+        }
+
+        public VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request(string bucketName, IEnumerable<string> objectNames)
+            : this(bucketName, objectNames.Select(name => new Ds3Object(name, null)), Enumerable.Empty<Ds3PartialObject>())
+        {
         }
 
         internal override HttpVerb Verb
@@ -84,7 +97,7 @@ namespace Ds3.Calls
 
         internal override Stream GetContentStream()
         {
-            return RequestPayloadUtil.MarshalDs3ObjectNames(this.Objects);
+            return RequestPayloadUtil.MarshalFullAndPartialObjects(this.FullObjects, this.PartialObjects);
         }
 
         internal override long GetContentLength()
