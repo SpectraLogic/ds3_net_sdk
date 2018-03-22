@@ -27,7 +27,6 @@ namespace Ds3.Models
         public DateTime DateWritten { get; set; }
         public Guid Id { get; set; }
         public DateTime LastAccessed { get; set; }
-        public Guid? ObsoletionId { get; set; }
         public Guid PoolId { get; set; }
     }
 }

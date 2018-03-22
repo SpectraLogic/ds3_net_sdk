@@ -1058,7 +1058,6 @@ namespace Ds3.ResponseParsers
                 DateWritten = ParseDateTime(element.Element("DateWritten")),
                 Id = ParseGuid(element.Element("Id")),
                 LastAccessed = ParseDateTime(element.Element("LastAccessed")),
-                ObsoletionId = ParseNullableGuid(element.Element("ObsoletionId")),
                 PoolId = ParseGuid(element.Element("PoolId"))
             };
         }
@@ -1075,7 +1074,6 @@ namespace Ds3.ResponseParsers
             {
                 BlobId = ParseGuid(element.Element("BlobId")),
                 Id = ParseGuid(element.Element("Id")),
-                ObsoletionId = ParseNullableGuid(element.Element("ObsoletionId")),
                 OrderIndex = ParseInt(element.Element("OrderIndex")),
                 TapeId = ParseGuid(element.Element("TapeId"))
             };
