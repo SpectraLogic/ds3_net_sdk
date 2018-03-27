@@ -1217,7 +1217,6 @@ namespace Ds3.ResponseParsers
                 MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
-                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State"))
             };
@@ -1780,7 +1779,6 @@ namespace Ds3.ResponseParsers
                 MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
-                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
                 TapeTypes = element.Elements("TapeTypes").Select(ParseString).ToList()
@@ -2141,7 +2139,6 @@ namespace Ds3.ResponseParsers
                 MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
-                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
                 TapeTypes = element.Elements("TapeTypes").Select(ParseString).ToList()

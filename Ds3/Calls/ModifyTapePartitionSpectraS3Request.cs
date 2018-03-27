@@ -54,6 +54,13 @@ namespace Ds3.Calls
             set { WithQuiesced(value); }
         }
 
+        private string _serialNumber;
+        public string SerialNumber
+        {
+            get { return _serialNumber; }
+            set { WithSerialNumber(value); }
+        }
+
         
         public ModifyTapePartitionSpectraS3Request WithAutoCompactionEnabled(bool? autoCompactionEnabled)
         {
@@ -110,6 +117,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("quiesced");
+            }
+            return this;
+        }
+
+        
+        public ModifyTapePartitionSpectraS3Request WithSerialNumber(string serialNumber)
+        {
+            this._serialNumber = serialNumber;
+            if (serialNumber != null)
+            {
+                this.QueryParams.Add("serial_number", serialNumber);
+            }
+            else
+            {
+                this.QueryParams.Remove("serial_number");
             }
             return this;
         }
