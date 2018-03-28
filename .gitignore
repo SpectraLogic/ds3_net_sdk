@@ -17,6 +17,12 @@ build/
 [Bb]in/
 [Oo]bj/
 
+# Visual Studio cache/options directory
+.vs/
+
+# AxoCover
+.axoCover/
+
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
 
