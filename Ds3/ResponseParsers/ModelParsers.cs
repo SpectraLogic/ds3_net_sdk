@@ -3078,7 +3078,7 @@ namespace Ds3.ResponseParsers
         public static AutoInspectMode? ParseNullableAutoInspectMode(string autoInspectModeOrNull)
         {
             return string.IsNullOrWhiteSpace(autoInspectModeOrNull)
-                ? (AutoInspectMode?) null
+                ? (AutoInspectMode?)null
                 : ParseAutoInspectMode(autoInspectModeOrNull);
         }
 
@@ -3103,7 +3103,7 @@ namespace Ds3.ResponseParsers
         public static Priority? ParseNullablePriority(string priorityOrNull)
         {
             return string.IsNullOrWhiteSpace(priorityOrNull)
-                ? (Priority?) null
+                ? (Priority?)null
                 : ParsePriority(priorityOrNull);
         }
 
@@ -3128,7 +3128,7 @@ namespace Ds3.ResponseParsers
         public static BucketAclPermission? ParseNullableBucketAclPermission(string bucketAclPermissionOrNull)
         {
             return string.IsNullOrWhiteSpace(bucketAclPermissionOrNull)
-                ? (BucketAclPermission?) null
+                ? (BucketAclPermission?)null
                 : ParseBucketAclPermission(bucketAclPermissionOrNull);
         }
 
@@ -3153,7 +3153,7 @@ namespace Ds3.ResponseParsers
         public static DataIsolationLevel? ParseNullableDataIsolationLevel(string dataIsolationLevelOrNull)
         {
             return string.IsNullOrWhiteSpace(dataIsolationLevelOrNull)
-                ? (DataIsolationLevel?) null
+                ? (DataIsolationLevel?)null
                 : ParseDataIsolationLevel(dataIsolationLevelOrNull);
         }
 
@@ -3178,7 +3178,7 @@ namespace Ds3.ResponseParsers
         public static DataPersistenceRuleType? ParseNullableDataPersistenceRuleType(string dataPersistenceRuleTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(dataPersistenceRuleTypeOrNull)
-                ? (DataPersistenceRuleType?) null
+                ? (DataPersistenceRuleType?)null
                 : ParseDataPersistenceRuleType(dataPersistenceRuleTypeOrNull);
         }
 
@@ -3203,7 +3203,7 @@ namespace Ds3.ResponseParsers
         public static DataPlacementRuleState? ParseNullableDataPlacementRuleState(string dataPlacementRuleStateOrNull)
         {
             return string.IsNullOrWhiteSpace(dataPlacementRuleStateOrNull)
-                ? (DataPlacementRuleState?) null
+                ? (DataPlacementRuleState?)null
                 : ParseDataPlacementRuleState(dataPlacementRuleStateOrNull);
         }
 
@@ -3228,7 +3228,7 @@ namespace Ds3.ResponseParsers
         public static DataReplicationRuleType? ParseNullableDataReplicationRuleType(string dataReplicationRuleTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(dataReplicationRuleTypeOrNull)
-                ? (DataReplicationRuleType?) null
+                ? (DataReplicationRuleType?)null
                 : ParseDataReplicationRuleType(dataReplicationRuleTypeOrNull);
         }
 
@@ -3253,7 +3253,7 @@ namespace Ds3.ResponseParsers
         public static FeatureKeyType? ParseNullableFeatureKeyType(string featureKeyTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(featureKeyTypeOrNull)
-                ? (FeatureKeyType?) null
+                ? (FeatureKeyType?)null
                 : ParseFeatureKeyType(featureKeyTypeOrNull);
         }
 
@@ -3278,7 +3278,7 @@ namespace Ds3.ResponseParsers
         public static JobChunkBlobStoreState? ParseNullableJobChunkBlobStoreState(string jobChunkBlobStoreStateOrNull)
         {
             return string.IsNullOrWhiteSpace(jobChunkBlobStoreStateOrNull)
-                ? (JobChunkBlobStoreState?) null
+                ? (JobChunkBlobStoreState?)null
                 : ParseJobChunkBlobStoreState(jobChunkBlobStoreStateOrNull);
         }
 
@@ -3303,7 +3303,7 @@ namespace Ds3.ResponseParsers
         public static JobChunkClientProcessingOrderGuarantee? ParseNullableJobChunkClientProcessingOrderGuarantee(string jobChunkClientProcessingOrderGuaranteeOrNull)
         {
             return string.IsNullOrWhiteSpace(jobChunkClientProcessingOrderGuaranteeOrNull)
-                ? (JobChunkClientProcessingOrderGuarantee?) null
+                ? (JobChunkClientProcessingOrderGuarantee?)null
                 : ParseJobChunkClientProcessingOrderGuarantee(jobChunkClientProcessingOrderGuaranteeOrNull);
         }
 
@@ -3328,7 +3328,7 @@ namespace Ds3.ResponseParsers
         public static JobRequestType? ParseNullableJobRequestType(string jobRequestTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(jobRequestTypeOrNull)
-                ? (JobRequestType?) null
+                ? (JobRequestType?)null
                 : ParseJobRequestType(jobRequestTypeOrNull);
         }
 
@@ -3353,7 +3353,7 @@ namespace Ds3.ResponseParsers
         public static LtfsFileNamingMode? ParseNullableLtfsFileNamingMode(string ltfsFileNamingModeOrNull)
         {
             return string.IsNullOrWhiteSpace(ltfsFileNamingModeOrNull)
-                ? (LtfsFileNamingMode?) null
+                ? (LtfsFileNamingMode?)null
                 : ParseLtfsFileNamingMode(ltfsFileNamingModeOrNull);
         }
 
@@ -3378,7 +3378,7 @@ namespace Ds3.ResponseParsers
         public static S3InitialDataPlacementPolicy? ParseNullableS3InitialDataPlacementPolicy(string s3InitialDataPlacementPolicyOrNull)
         {
             return string.IsNullOrWhiteSpace(s3InitialDataPlacementPolicyOrNull)
-                ? (S3InitialDataPlacementPolicy?) null
+                ? (S3InitialDataPlacementPolicy?)null
                 : ParseS3InitialDataPlacementPolicy(s3InitialDataPlacementPolicyOrNull);
         }
 
@@ -3403,7 +3403,7 @@ namespace Ds3.ResponseParsers
         public static S3ObjectType? ParseNullableS3ObjectType(string s3ObjectTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(s3ObjectTypeOrNull)
-                ? (S3ObjectType?) null
+                ? (S3ObjectType?)null
                 : ParseS3ObjectType(s3ObjectTypeOrNull);
         }
 
@@ -3428,7 +3428,7 @@ namespace Ds3.ResponseParsers
         public static S3Region? ParseNullableS3Region(string s3RegionOrNull)
         {
             return string.IsNullOrWhiteSpace(s3RegionOrNull)
-                ? (S3Region?) null
+                ? (S3Region?)null
                 : ParseS3Region(s3RegionOrNull);
         }
 
@@ -3453,7 +3453,7 @@ namespace Ds3.ResponseParsers
         public static StorageDomainFailureType? ParseNullableStorageDomainFailureType(string storageDomainFailureTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(storageDomainFailureTypeOrNull)
-                ? (StorageDomainFailureType?) null
+                ? (StorageDomainFailureType?)null
                 : ParseStorageDomainFailureType(storageDomainFailureTypeOrNull);
         }
 
@@ -3478,7 +3478,7 @@ namespace Ds3.ResponseParsers
         public static StorageDomainMemberState? ParseNullableStorageDomainMemberState(string storageDomainMemberStateOrNull)
         {
             return string.IsNullOrWhiteSpace(storageDomainMemberStateOrNull)
-                ? (StorageDomainMemberState?) null
+                ? (StorageDomainMemberState?)null
                 : ParseStorageDomainMemberState(storageDomainMemberStateOrNull);
         }
 
@@ -3503,7 +3503,7 @@ namespace Ds3.ResponseParsers
         public static SystemFailureType? ParseNullableSystemFailureType(string systemFailureTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(systemFailureTypeOrNull)
-                ? (SystemFailureType?) null
+                ? (SystemFailureType?)null
                 : ParseSystemFailureType(systemFailureTypeOrNull);
         }
 
@@ -3528,7 +3528,7 @@ namespace Ds3.ResponseParsers
         public static UnavailableMediaUsagePolicy? ParseNullableUnavailableMediaUsagePolicy(string unavailableMediaUsagePolicyOrNull)
         {
             return string.IsNullOrWhiteSpace(unavailableMediaUsagePolicyOrNull)
-                ? (UnavailableMediaUsagePolicy?) null
+                ? (UnavailableMediaUsagePolicy?)null
                 : ParseUnavailableMediaUsagePolicy(unavailableMediaUsagePolicyOrNull);
         }
 
@@ -3553,7 +3553,7 @@ namespace Ds3.ResponseParsers
         public static VersioningLevel? ParseNullableVersioningLevel(string versioningLevelOrNull)
         {
             return string.IsNullOrWhiteSpace(versioningLevelOrNull)
-                ? (VersioningLevel?) null
+                ? (VersioningLevel?)null
                 : ParseVersioningLevel(versioningLevelOrNull);
         }
 
@@ -3578,7 +3578,7 @@ namespace Ds3.ResponseParsers
         public static WriteOptimization? ParseNullableWriteOptimization(string writeOptimizationOrNull)
         {
             return string.IsNullOrWhiteSpace(writeOptimizationOrNull)
-                ? (WriteOptimization?) null
+                ? (WriteOptimization?)null
                 : ParseWriteOptimization(writeOptimizationOrNull);
         }
 
@@ -3603,7 +3603,7 @@ namespace Ds3.ResponseParsers
         public static WritePreferenceLevel? ParseNullableWritePreferenceLevel(string writePreferenceLevelOrNull)
         {
             return string.IsNullOrWhiteSpace(writePreferenceLevelOrNull)
-                ? (WritePreferenceLevel?) null
+                ? (WritePreferenceLevel?)null
                 : ParseWritePreferenceLevel(writePreferenceLevelOrNull);
         }
 
@@ -3628,7 +3628,7 @@ namespace Ds3.ResponseParsers
         public static PoolFailureType? ParseNullablePoolFailureType(string poolFailureTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(poolFailureTypeOrNull)
-                ? (PoolFailureType?) null
+                ? (PoolFailureType?)null
                 : ParsePoolFailureType(poolFailureTypeOrNull);
         }
 
@@ -3653,7 +3653,7 @@ namespace Ds3.ResponseParsers
         public static PoolHealth? ParseNullablePoolHealth(string poolHealthOrNull)
         {
             return string.IsNullOrWhiteSpace(poolHealthOrNull)
-                ? (PoolHealth?) null
+                ? (PoolHealth?)null
                 : ParsePoolHealth(poolHealthOrNull);
         }
 
@@ -3678,7 +3678,7 @@ namespace Ds3.ResponseParsers
         public static PoolState? ParseNullablePoolState(string poolStateOrNull)
         {
             return string.IsNullOrWhiteSpace(poolStateOrNull)
-                ? (PoolState?) null
+                ? (PoolState?)null
                 : ParsePoolState(poolStateOrNull);
         }
 
@@ -3703,7 +3703,7 @@ namespace Ds3.ResponseParsers
         public static PoolType? ParseNullablePoolType(string poolTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(poolTypeOrNull)
-                ? (PoolType?) null
+                ? (PoolType?)null
                 : ParsePoolType(poolTypeOrNull);
         }
 
@@ -3728,7 +3728,7 @@ namespace Ds3.ResponseParsers
         public static ImportConflictResolutionMode? ParseNullableImportConflictResolutionMode(string importConflictResolutionModeOrNull)
         {
             return string.IsNullOrWhiteSpace(importConflictResolutionModeOrNull)
-                ? (ImportConflictResolutionMode?) null
+                ? (ImportConflictResolutionMode?)null
                 : ParseImportConflictResolutionMode(importConflictResolutionModeOrNull);
         }
 
@@ -3753,7 +3753,7 @@ namespace Ds3.ResponseParsers
         public static Quiesced? ParseNullableQuiesced(string quiescedOrNull)
         {
             return string.IsNullOrWhiteSpace(quiescedOrNull)
-                ? (Quiesced?) null
+                ? (Quiesced?)null
                 : ParseQuiesced(quiescedOrNull);
         }
 
@@ -3778,7 +3778,7 @@ namespace Ds3.ResponseParsers
         public static ImportExportConfiguration? ParseNullableImportExportConfiguration(string importExportConfigurationOrNull)
         {
             return string.IsNullOrWhiteSpace(importExportConfigurationOrNull)
-                ? (ImportExportConfiguration?) null
+                ? (ImportExportConfiguration?)null
                 : ParseImportExportConfiguration(importExportConfigurationOrNull);
         }
 
@@ -3803,7 +3803,7 @@ namespace Ds3.ResponseParsers
         public static TapeDriveState? ParseNullableTapeDriveState(string tapeDriveStateOrNull)
         {
             return string.IsNullOrWhiteSpace(tapeDriveStateOrNull)
-                ? (TapeDriveState?) null
+                ? (TapeDriveState?)null
                 : ParseTapeDriveState(tapeDriveStateOrNull);
         }
 
@@ -3828,7 +3828,7 @@ namespace Ds3.ResponseParsers
         public static TapeDriveType? ParseNullableTapeDriveType(string tapeDriveTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(tapeDriveTypeOrNull)
-                ? (TapeDriveType?) null
+                ? (TapeDriveType?)null
                 : ParseTapeDriveType(tapeDriveTypeOrNull);
         }
 
@@ -3853,7 +3853,7 @@ namespace Ds3.ResponseParsers
         public static TapeFailureType? ParseNullableTapeFailureType(string tapeFailureTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(tapeFailureTypeOrNull)
-                ? (TapeFailureType?) null
+                ? (TapeFailureType?)null
                 : ParseTapeFailureType(tapeFailureTypeOrNull);
         }
 
@@ -3878,7 +3878,7 @@ namespace Ds3.ResponseParsers
         public static TapePartitionFailureType? ParseNullableTapePartitionFailureType(string tapePartitionFailureTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(tapePartitionFailureTypeOrNull)
-                ? (TapePartitionFailureType?) null
+                ? (TapePartitionFailureType?)null
                 : ParseTapePartitionFailureType(tapePartitionFailureTypeOrNull);
         }
 
@@ -3903,7 +3903,7 @@ namespace Ds3.ResponseParsers
         public static TapePartitionState? ParseNullableTapePartitionState(string tapePartitionStateOrNull)
         {
             return string.IsNullOrWhiteSpace(tapePartitionStateOrNull)
-                ? (TapePartitionState?) null
+                ? (TapePartitionState?)null
                 : ParseTapePartitionState(tapePartitionStateOrNull);
         }
 
@@ -3928,7 +3928,7 @@ namespace Ds3.ResponseParsers
         public static TapeState? ParseNullableTapeState(string tapeStateOrNull)
         {
             return string.IsNullOrWhiteSpace(tapeStateOrNull)
-                ? (TapeState?) null
+                ? (TapeState?)null
                 : ParseTapeState(tapeStateOrNull);
         }
 
@@ -3953,7 +3953,7 @@ namespace Ds3.ResponseParsers
         public static TapeType? ParseNullableTapeType(string tapeTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(tapeTypeOrNull)
-                ? (TapeType?) null
+                ? (TapeType?)null
                 : ParseTapeType(tapeTypeOrNull);
         }
 
@@ -3978,7 +3978,7 @@ namespace Ds3.ResponseParsers
         public static Ds3TargetAccessControlReplication? ParseNullableDs3TargetAccessControlReplication(string ds3TargetAccessControlReplicationOrNull)
         {
             return string.IsNullOrWhiteSpace(ds3TargetAccessControlReplicationOrNull)
-                ? (Ds3TargetAccessControlReplication?) null
+                ? (Ds3TargetAccessControlReplication?)null
                 : ParseDs3TargetAccessControlReplication(ds3TargetAccessControlReplicationOrNull);
         }
 
@@ -4003,7 +4003,7 @@ namespace Ds3.ResponseParsers
         public static TargetFailureType? ParseNullableTargetFailureType(string targetFailureTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(targetFailureTypeOrNull)
-                ? (TargetFailureType?) null
+                ? (TargetFailureType?)null
                 : ParseTargetFailureType(targetFailureTypeOrNull);
         }
 
@@ -4028,7 +4028,7 @@ namespace Ds3.ResponseParsers
         public static TargetReadPreferenceType? ParseNullableTargetReadPreferenceType(string targetReadPreferenceTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(targetReadPreferenceTypeOrNull)
-                ? (TargetReadPreferenceType?) null
+                ? (TargetReadPreferenceType?)null
                 : ParseTargetReadPreferenceType(targetReadPreferenceTypeOrNull);
         }
 
@@ -4053,7 +4053,7 @@ namespace Ds3.ResponseParsers
         public static TargetState? ParseNullableTargetState(string targetStateOrNull)
         {
             return string.IsNullOrWhiteSpace(targetStateOrNull)
-                ? (TargetState?) null
+                ? (TargetState?)null
                 : ParseTargetState(targetStateOrNull);
         }
 
@@ -4078,7 +4078,7 @@ namespace Ds3.ResponseParsers
         public static BlobStoreTaskState? ParseNullableBlobStoreTaskState(string blobStoreTaskStateOrNull)
         {
             return string.IsNullOrWhiteSpace(blobStoreTaskStateOrNull)
-                ? (BlobStoreTaskState?) null
+                ? (BlobStoreTaskState?)null
                 : ParseBlobStoreTaskState(blobStoreTaskStateOrNull);
         }
 
@@ -4103,7 +4103,7 @@ namespace Ds3.ResponseParsers
         public static CacheEntryState? ParseNullableCacheEntryState(string cacheEntryStateOrNull)
         {
             return string.IsNullOrWhiteSpace(cacheEntryStateOrNull)
-                ? (CacheEntryState?) null
+                ? (CacheEntryState?)null
                 : ParseCacheEntryState(cacheEntryStateOrNull);
         }
 
@@ -4128,7 +4128,7 @@ namespace Ds3.ResponseParsers
         public static JobStatus? ParseNullableJobStatus(string jobStatusOrNull)
         {
             return string.IsNullOrWhiteSpace(jobStatusOrNull)
-                ? (JobStatus?) null
+                ? (JobStatus?)null
                 : ParseJobStatus(jobStatusOrNull);
         }
 
@@ -4153,7 +4153,7 @@ namespace Ds3.ResponseParsers
         public static RestOperationType? ParseNullableRestOperationType(string restOperationTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(restOperationTypeOrNull)
-                ? (RestOperationType?) null
+                ? (RestOperationType?)null
                 : ParseRestOperationType(restOperationTypeOrNull);
         }
 
@@ -4178,7 +4178,7 @@ namespace Ds3.ResponseParsers
         public static DatabasePhysicalSpaceState? ParseNullableDatabasePhysicalSpaceState(string databasePhysicalSpaceStateOrNull)
         {
             return string.IsNullOrWhiteSpace(databasePhysicalSpaceStateOrNull)
-                ? (DatabasePhysicalSpaceState?) null
+                ? (DatabasePhysicalSpaceState?)null
                 : ParseDatabasePhysicalSpaceState(databasePhysicalSpaceStateOrNull);
         }
 
@@ -4203,7 +4203,7 @@ namespace Ds3.ResponseParsers
         public static HttpResponseFormatType? ParseNullableHttpResponseFormatType(string httpResponseFormatTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(httpResponseFormatTypeOrNull)
-                ? (HttpResponseFormatType?) null
+                ? (HttpResponseFormatType?)null
                 : ParseHttpResponseFormatType(httpResponseFormatTypeOrNull);
         }
 
@@ -4228,7 +4228,7 @@ namespace Ds3.ResponseParsers
         public static RequestType? ParseNullableRequestType(string requestTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(requestTypeOrNull)
-                ? (RequestType?) null
+                ? (RequestType?)null
                 : ParseRequestType(requestTypeOrNull);
         }
 
@@ -4253,7 +4253,7 @@ namespace Ds3.ResponseParsers
         public static NamingConventionType? ParseNullableNamingConventionType(string namingConventionTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(namingConventionTypeOrNull)
-                ? (NamingConventionType?) null
+                ? (NamingConventionType?)null
                 : ParseNamingConventionType(namingConventionTypeOrNull);
         }
 
@@ -4281,7 +4281,7 @@ namespace Ds3.ResponseParsers
         public static ChecksumType.Type? ParseNullableChecksumType(string checksumTypeOrNull)
         {
             return string.IsNullOrWhiteSpace(checksumTypeOrNull)
-                ? (ChecksumType.Type?) null
+                ? (ChecksumType.Type?)null
                 : ParseChecksumType(checksumTypeOrNull);
         }
 
@@ -4522,8 +4522,8 @@ namespace Ds3.ResponseParsers
             string encapsulatingXmlTag,
             Func<XElement, TResult> parser)
         {
-            var encapsulatingElement = element.Element(encapsulatingXmlTag);
-            if (null == encapsulatingElement || encapsulatingElement.IsEmpty)
+            var encapsulatingElement = element.Elements(encapsulatingXmlTag);
+            if (null == encapsulatingElement || encapsulatingElement.Count() == 0)
             {
                 return Enumerable.Empty<TResult>();
             }
