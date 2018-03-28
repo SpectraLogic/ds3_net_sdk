@@ -90,7 +90,7 @@ namespace TestDs3
 
             var inputObjects = files.Select(f => new Ds3Object(f.Key, f.Size)).ToList();
 
-            var queryParams = new Dictionary<string, string> {{"operation", operation}};
+            var queryParams = new Dictionary<string, string> { { "operation", operation } };
             foreach (var kvp in additionalQueryParams)
             {
                 queryParams.Add(kvp.Key, kvp.Value);
@@ -214,7 +214,7 @@ namespace TestDs3
             var src = root + "src" + Path.DirectorySeparatorChar;
             var dest = root + "dest" + Path.DirectorySeparatorChar;
             var destPut = root + "destput" + Path.DirectorySeparatorChar;
-            string[] files = {"one.txt", "two.txt", "three.txt"};
+            string[] files = { "one.txt", "two.txt", "three.txt" };
             var testdata = "On the shore dimly seen, through the mists of the deep";
             testdata += "Where our foe's haughty host, in dread silence reposes.";
 
@@ -306,7 +306,7 @@ namespace TestDs3
 
         private static readonly PhysicalPlacement TestObjectPlacement = new PhysicalPlacement
         {
-            Tapes = new[] {TestTape}
+            Tapes = new[] { TestTape }
         };
 
         private class BulkObjectComparer : IComparer, IComparer<BulkObject>
@@ -394,7 +394,7 @@ namespace TestDs3
         [Test]
         public void AllocateChunkReturnsChunkGoneWhen404()
         {
-            var queryParams = new Dictionary<string, string> {{"operation", "allocate"}};
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
             var client = MockNetwork
                 .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
                 .Returning(HttpStatusCode.NotFound, "", EmptyHeaders)
@@ -415,7 +415,7 @@ namespace TestDs3
         public void AllocateChunkReturnsChunkWithNodeWhenAllocated()
         {
             var responseContent = ReadResource(AllocateJobChunkResponseResourceName);
-            var queryParams = new Dictionary<string, string> {{"operation", "allocate"}};
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
             var client = MockNetwork
                 .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
                 .Returning(HttpStatusCode.OK, responseContent, EmptyHeaders)
@@ -439,8 +439,8 @@ namespace TestDs3
         [Test]
         public void AllocateChunkReturnsRetryWhen503AndHeader()
         {
-            var queryParams = new Dictionary<string, string> {{"operation", "allocate"}};
-            var headers = new Dictionary<string, string> {{"Retry-After", "300"}};
+            var queryParams = new Dictionary<string, string> { { "operation", "allocate" } };
+            var headers = new Dictionary<string, string> { { "Retry-After", "300" } };
             var client = MockNetwork
                 .Expecting(HttpVerb.PUT, "/_rest_/job_chunk/f58370c2-2538-4e78-a9f8-e4d2676bdf44", queryParams, "")
                 .Returning(HttpStatusCode.ServiceUnavailable, "", headers)
@@ -461,7 +461,7 @@ namespace TestDs3
         [Test]
         public void GetAvailableChunksReturnsJobGoneWhen404()
         {
-            var queryParams = new Dictionary<string, string> {{"job", "1a85e743-ec8f-4789-afec-97e587a26936"}};
+            var queryParams = new Dictionary<string, string> { { "job", "1a85e743-ec8f-4789-afec-97e587a26936" } };
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job_chunk", queryParams, "")
                 .Returning(HttpStatusCode.NotFound, "", EmptyHeaders)
@@ -483,11 +483,11 @@ namespace TestDs3
         [Test]
         public void GetAvailableChunksReturnsJobWhenSuccess()
         {
-            var queryParams = new Dictionary<string, string> {{"job", "1a85e743-ec8f-4789-afec-97e587a26936"}};
+            var queryParams = new Dictionary<string, string> { { "job", "1a85e743-ec8f-4789-afec-97e587a26936" } };
             var responseContent = ReadResource(GetAvailableJobChunksResponseResourceName);
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job_chunk", queryParams, "")
-                .Returning(HttpStatusCode.OK, responseContent, new Dictionary<string, string> {{"retry-after", "123"}})
+                .Returning(HttpStatusCode.OK, responseContent, new Dictionary<string, string> { { "retry-after", "123" } })
                 .AsClient;
 
             var response =
@@ -518,8 +518,8 @@ namespace TestDs3
         [Test]
         public void GetAvailableChunksReturnsRetryAfterWhenNoNodes()
         {
-            var queryParams = new Dictionary<string, string> {{"job", "1a85e743-ec8f-4789-afec-97e587a26936"}};
-            var headers = new Dictionary<string, string> {{"Retry-After", "300"}};
+            var queryParams = new Dictionary<string, string> { { "job", "1a85e743-ec8f-4789-afec-97e587a26936" } };
+            var headers = new Dictionary<string, string> { { "Retry-After", "300" } };
             var responseContent = ReadResource(EmptyGetAvailableJobChunksResponseResourceName);
             var client = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/job_chunk", queryParams, "")
@@ -608,7 +608,7 @@ namespace TestDs3
             var result =
                 client.GetPhysicalPlacementForObjectsSpectraS3(
                     new GetPhysicalPlacementForObjectsSpectraS3Request("test_bucket", objects)).ResponsePayload;
-            CollectionAssert.AreEqual(new[] {TestTape}, result.Tapes.ToList(), new TapeComparer());
+            CollectionAssert.AreEqual(new[] { TestTape }, result.Tapes.ToList(), new TapeComparer());
         }
 
         [Test]
@@ -630,7 +630,7 @@ namespace TestDs3
         [Test]
         public void TestBulkPutWithDs3MaxJobsException()
         {
-            var queryParams = new Dictionary<string, string> {{"operation", "start_bulk_put"}};
+            var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_put" } };
             const string stringRequest = "<Objects><Object Name=\"obj1\" Size=\"1234\" /></Objects>";
             var mockClient = MockNetwork
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket", queryParams, stringRequest)
@@ -656,7 +656,7 @@ namespace TestDs3
                     client.PutBulkJobSpectraS3(
                             new PutBulkJobSpectraS3Request("bucket8192000000", objects).WithMaxUploadSize(1048576L))
                         .ResponsePayload,
-                new Dictionary<string, string> {{"max_upload_size", "1048576"}}
+                new Dictionary<string, string> { { "max_upload_size", "1048576" } }
             );
         }
 
@@ -765,7 +765,7 @@ namespace TestDs3
         public void TestGetBucket()
         {
             var id = "ef2fdcac-3c80-410a-8fcb-b567c31dd33d";
-            var xmlResponse = "<ListBucketResult><CreationDate>2014-01-03T13:26:47.000Z</CreationDate><Name>remoteTest16</Name><CommonPrefixes/><Marker/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>user/hduser/gutenberg/20417.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>674570</Size><StorageClass>STANDARD</StorageClass><Owner>"
+            var xmlResponse = "<ListBucketResult><CreationDate>2014-01-03T13:26:47.000Z</CreationDate><Name>remoteTest16</Name><CommonPrefixes><Prefix>spectralogic.com/test/f1/</Prefix></CommonPrefixes><CommonPrefixes><Prefix>spectralogic.com/test/f2/</Prefix></CommonPrefixes><Marker/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>user/hduser/gutenberg/20417.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>674570</Size><StorageClass>STANDARD</StorageClass><Owner>"
                               + "<ID>" + id +
                               "</ID><DisplayName>ryan</DisplayName></Owner></Contents><Contents><Key>user/hduser/gutenberg/5000.txt.utf-8</Key><LastModified>2014-01-03T13:26:47.000Z</LastModified><ETag>NOTRETURNED</ETag><Size>1423803</Size><StorageClass>STANDARD</StorageClass><Owner>"
                               + "<ID>" + id +
@@ -808,6 +808,11 @@ namespace TestDs3
                         StorageClass = "STANDARD",
                         Owner = new User {Id = Guid.Parse(id), DisplayName = "ryan"}
                     }
+                },
+                CommonPrefixes = new[]
+                {
+                    "spectralogic.com/test/f1/",
+                    "spectralogic.com/test/f2/"
                 }
             };
 
@@ -835,6 +840,14 @@ namespace TestDs3
                 Assert.AreEqual(expectedObjects[i].StorageClass, responseObjects[i].StorageClass);
                 Assert.AreEqual(expectedObjects[i].Owner.Id, responseObjects[i].Owner.Id);
                 Assert.AreEqual(expectedObjects[i].Owner.DisplayName, responseObjects[i].Owner.DisplayName);
+            }
+
+            var responseCommonPrefixes = response.CommonPrefixes.ToList();
+            var expectedCommonPrefixes = expected.CommonPrefixes.ToList();
+            Assert.AreEqual(expectedCommonPrefixes.Count, responseCommonPrefixes.Count);
+            for (var i = 0; i < expectedCommonPrefixes.Count; i++)
+            {
+                Assert.AreEqual(expectedCommonPrefixes[i], responseCommonPrefixes[i]);
             }
         }
 
@@ -1316,7 +1329,7 @@ namespace TestDs3
         [Test]
         public void TestStartWriteJobWithDs3MaxJobsException()
         {
-            var queryParams = new Dictionary<string, string> {{"operation", "start_bulk_put"}};
+            var queryParams = new Dictionary<string, string> { { "operation", "start_bulk_put" } };
             const string stringRequest = "<Objects><Object Name=\"obj1\" Size=\"1234\" /></Objects>";
             var mockClient = MockNetwork
                 .Expecting(HttpVerb.PUT, "/_rest_/bucket/bucket", queryParams, stringRequest)
@@ -1338,7 +1351,7 @@ namespace TestDs3
         public void TestVerifySystemHealth()
         {
             const string xmlResponse = @"<Data><MsRequiredToVerifyDataPlannerHealth>666</MsRequiredToVerifyDataPlannerHealth><DatabaseFilesystemFreeSpace>NORMAL</DatabaseFilesystemFreeSpace></Data>";
-            var healthVerificationResult = new HealthVerificationResult {MsRequiredToVerifyDataPlannerHealth = 666L};
+            var healthVerificationResult = new HealthVerificationResult { MsRequiredToVerifyDataPlannerHealth = 666L };
             var expected = new VerifySystemHealthSpectraS3Response(healthVerificationResult);
             var response = MockNetwork
                 .Expecting(HttpVerb.GET, "/_rest_/system_health", EmptyQueryParams, "")
