@@ -30,7 +30,7 @@ namespace Ds3.Helpers.TransferStrategies
                     .WithJob(transferStrategyOptions.JobId)
                     .WithOffset(transferStrategyOptions.BlobOffset);
 
-                if (transferStrategyOptions.BlobOffset == 0 && transferStrategyOptions.MetadataAccess != null)
+                if (transferStrategyOptions.MetadataAccess != null)
                 {
                     request.WithMetadata(transferStrategyOptions.MetadataAccess.GetMetadataValue(transferStrategyOptions.ObjectName));
                 }

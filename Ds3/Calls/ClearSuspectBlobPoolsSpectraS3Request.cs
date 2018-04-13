@@ -14,13 +14,11 @@
  */
 
 // This code is auto-generated, do not modify
-using Ds3.Models;
-using System;
-using System.Net;
+using System.Collections.Generic;
 
 namespace Ds3.Calls
 {
-    public class ClearSuspectBlobPoolsSpectraS3Request : Ds3Request
+    public class ClearSuspectBlobPoolsSpectraS3Request : AbstractIdsPayloadRequest
     {
         
         
@@ -48,8 +46,7 @@ namespace Ds3.Calls
 
 
         
-        
-        public ClearSuspectBlobPoolsSpectraS3Request()
+        public ClearSuspectBlobPoolsSpectraS3Request(IEnumerable<string> ids) : base(ids)
         {
             
         }

@@ -14,13 +14,11 @@
  */
 
 // This code is auto-generated, do not modify
-using Ds3.Models;
-using System;
-using System.Net;
+using System.Collections.Generic;
 
 namespace Ds3.Calls
 {
-    public class MarkSuspectBlobS3TargetsAsDegradedSpectraS3Request : Ds3Request
+    public class MarkSuspectBlobS3TargetsAsDegradedSpectraS3Request : AbstractIdsPayloadRequest
     {
         
         
@@ -48,8 +46,7 @@ namespace Ds3.Calls
 
 
         
-        
-        public MarkSuspectBlobS3TargetsAsDegradedSpectraS3Request()
+        public MarkSuspectBlobS3TargetsAsDegradedSpectraS3Request(IEnumerable<string> ids) : base(ids)
         {
             
         }

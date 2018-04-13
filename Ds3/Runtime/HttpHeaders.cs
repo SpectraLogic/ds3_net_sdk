@@ -25,5 +25,6 @@ namespace Ds3.Runtime
         public const string Authorization = "Authorization";
         public const string AwsPrefix = "x-amz-";
         public const string AwsMetadataPrefix = AwsPrefix + "meta-";
+        public const string LtfsMetadataPrefix = "x-spectra-ltfs-";
     }
 }

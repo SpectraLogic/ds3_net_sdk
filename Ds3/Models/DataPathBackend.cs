@@ -23,8 +23,10 @@ namespace Ds3.Models
     public class DataPathBackend
     {
         public bool Activated { get; set; }
+        public bool AllowNewJobRequests { get; set; }
         public int? AutoActivateTimeoutInMins { get; set; }
         public AutoInspectMode AutoInspect { get; set; }
+        public int CacheAvailableRetryAfterInSeconds { get; set; }
         public ImportConflictResolutionMode DefaultImportConflictResolutionMode { get; set; }
         public Priority? DefaultVerifyDataAfterImport { get; set; }
         public bool DefaultVerifyDataPriorToImport { get; set; }

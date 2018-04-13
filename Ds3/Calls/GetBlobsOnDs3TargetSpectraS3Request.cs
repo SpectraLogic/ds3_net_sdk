@@ -15,12 +15,8 @@
 
 // This code is auto-generated, do not modify
 using Ds3.Models;
-using Ds3.Runtime;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
+using System.Net;
 
 namespace Ds3.Calls
 {
@@ -29,44 +25,15 @@ namespace Ds3.Calls
         
         public string Ds3Target { get; private set; }
 
-        public IEnumerable<Ds3Object> Objects { get; private set; }
-
         
 
         
-        public GetBlobsOnDs3TargetSpectraS3Request(string ds3Target, IEnumerable<Ds3Object> objects) {
+        
+        public GetBlobsOnDs3TargetSpectraS3Request(string ds3Target)
+        {
             this.Ds3Target = ds3Target;
-            this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "get_physical_placement");
             
-        }
-
-        internal override Stream GetContentStream()
-        {
-            return new XDocument()
-                .AddFluent(
-                    new XElement("Objects").AddAllFluent(
-                        from obj in this.Objects
-                        select new XElement("Object")
-                            .SetAttributeValueFluent("Name", obj.Name)
-                            .SetAttributeValueFluent("Size", ToDs3ObjectSize(obj))
-                    )
-                )
-                .WriteToMemoryStream();
-        }
-
-        internal string ToDs3ObjectSize(Ds3Object ds3Object)
-        {
-            if (ds3Object.Size == null)
-            {
-                return null;
-            }
-            return ds3Object.Size.Value.ToString("D");
-        }
-
-        internal override long GetContentLength()
-        {
-            return GetContentStream().Length;
         }
 
         internal override HttpVerb Verb

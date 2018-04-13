@@ -28,11 +28,13 @@ namespace Ds3.Models
         public Guid Id { get; set; }
         public ImportExportConfiguration ImportExportConfiguration { get; set; }
         public Guid LibraryId { get; set; }
+        public int MinimumReadReservedDrives { get; set; }
+        public int MinimumWriteReservedDrives { get; set; }
         public string Name { get; set; }
         public Quiesced Quiesced { get; set; }
         public string SerialId { get; set; }
         public string SerialNumber { get; set; }
         public TapePartitionState State { get; set; }
-        public IEnumerable<TapeType> TapeTypes { get; set; }
+        public IEnumerable<string> TapeTypes { get; set; }
     }
 }

@@ -120,7 +120,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/active_job/" + ActiveJobId.ToString();
+                return "/_rest_/active_job/" + ActiveJobId;
             }
         }
     }

@@ -56,8 +56,8 @@ namespace Ds3.Calls
             set { WithTapeState(value); }
         }
 
-        private TapeType? _tapeType;
-        public TapeType? TapeType
+        private string _tapeType;
+        public string TapeType
         {
             get { return _tapeType; }
             set { WithTapeType(value); }
@@ -124,12 +124,12 @@ namespace Ds3.Calls
         }
 
         
-        public GetBucketCapacitySummarySpectraS3Request WithTapeType(TapeType? tapeType)
+        public GetBucketCapacitySummarySpectraS3Request WithTapeType(string tapeType)
         {
             this._tapeType = tapeType;
             if (tapeType != null)
             {
-                this.QueryParams.Add("tape_type", tapeType.ToString());
+                this.QueryParams.Add("tape_type", tapeType);
             }
             else
             {

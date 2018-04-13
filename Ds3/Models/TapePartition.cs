@@ -27,6 +27,8 @@ namespace Ds3.Models
         public Guid Id { get; set; }
         public ImportExportConfiguration ImportExportConfiguration { get; set; }
         public Guid LibraryId { get; set; }
+        public int MinimumReadReservedDrives { get; set; }
+        public int MinimumWriteReservedDrives { get; set; }
         public string Name { get; set; }
         public Quiesced Quiesced { get; set; }
         public string SerialId { get; set; }

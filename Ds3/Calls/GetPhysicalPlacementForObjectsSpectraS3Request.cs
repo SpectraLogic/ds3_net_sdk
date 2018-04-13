@@ -14,13 +14,12 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Calls.Util;
 using Ds3.Models;
-using Ds3.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
@@ -71,39 +70,13 @@ namespace Ds3.Calls
 
 
         
-        public GetPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects) {
+        
+        public GetPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects)
+        {
             this.BucketName = bucketName;
             this.Objects = objects.ToList();
             this.QueryParams.Add("operation", "get_physical_placement");
             
-        }
-
-        internal override Stream GetContentStream()
-        {
-            return new XDocument()
-                .AddFluent(
-                    new XElement("Objects").AddAllFluent(
-                        from obj in this.Objects
-                        select new XElement("Object")
-                            .SetAttributeValueFluent("Name", obj.Name)
-                            .SetAttributeValueFluent("Size", ToDs3ObjectSize(obj))
-                    )
-                )
-                .WriteToMemoryStream();
-        }
-
-        internal string ToDs3ObjectSize(Ds3Object ds3Object)
-        {
-            if (ds3Object.Size == null)
-            {
-                return null;
-            }
-            return ds3Object.Size.Value.ToString("D");
-        }
-
-        internal override long GetContentLength()
-        {
-            return GetContentStream().Length;
         }
 
         internal override HttpVerb Verb
@@ -120,6 +93,16 @@ namespace Ds3.Calls
             {
                 return "/_rest_/bucket/" + BucketName;
             }
+        }
+
+        internal override Stream GetContentStream()
+        {
+            return RequestPayloadUtil.MarshalDs3ObjectNames(this.Objects);
+        }
+
+        internal override long GetContentLength()
+        {
+            return GetContentStream().Length;
         }
     }
 }

@@ -55,6 +55,22 @@ namespace Ds3.Helpers
             };
         }
 
+        public static Func<Ds3PartialObject, Stream> BuildPartialFileGetter(string root)
+        {
+            return BuildPartialFileGetter(root, string.Empty);
+        }
+
+        public static Func<Ds3PartialObject, Stream> BuildPartialFileGetter(string root, string prefix)
+        {
+            return key =>
+            {
+                var fullPath = Path.Combine(root, ConvertKeyToPath(key.Name));
+                var fixedPath = PrependPrefix(fullPath, prefix);
+                EnsureDirectoryForFile(fixedPath);
+                return new DisposableFileStream(File.OpenWrite(fixedPath));
+            };
+        }
+
         private static void EnsureDirectoryForFile(string path)
         {
             var directory = Path.GetDirectoryName(path);

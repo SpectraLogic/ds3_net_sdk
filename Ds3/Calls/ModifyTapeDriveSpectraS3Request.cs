@@ -33,6 +33,13 @@ namespace Ds3.Calls
             set { WithQuiesced(value); }
         }
 
+        private ReservedTaskType? _reservedTaskType;
+        public ReservedTaskType? ReservedTaskType
+        {
+            get { return _reservedTaskType; }
+            set { WithReservedTaskType(value); }
+        }
+
         
         public ModifyTapeDriveSpectraS3Request WithQuiesced(Quiesced? quiesced)
         {
@@ -44,6 +51,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("quiesced");
+            }
+            return this;
+        }
+
+        
+        public ModifyTapeDriveSpectraS3Request WithReservedTaskType(ReservedTaskType? reservedTaskType)
+        {
+            this._reservedTaskType = reservedTaskType;
+            if (reservedTaskType != null)
+            {
+                this.QueryParams.Add("reserved_task_type", reservedTaskType.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("reserved_task_type");
             }
             return this;
         }
@@ -76,7 +98,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/tape_drive/" + TapeDriveId.ToString();
+                return "/_rest_/tape_drive/" + TapeDriveId;
             }
         }
     }

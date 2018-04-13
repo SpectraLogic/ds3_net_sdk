@@ -54,7 +54,7 @@ namespace Ds3.Calls
         {
             get
             {
-                return "/_rest_/data_persistence_rule/" + DataPersistenceRuleId.ToString();
+                return "/_rest_/data_persistence_rule/" + DataPersistenceRuleId;
             }
         }
     }

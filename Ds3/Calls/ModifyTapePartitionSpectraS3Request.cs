@@ -26,11 +26,55 @@ namespace Ds3.Calls
         public string TapePartition { get; private set; }
 
         
+        private int? _minimumReadReservedDrives;
+        public int? MinimumReadReservedDrives
+        {
+            get { return _minimumReadReservedDrives; }
+            set { WithMinimumReadReservedDrives(value); }
+        }
+
+        private int? _minimumWriteReservedDrives;
+        public int? MinimumWriteReservedDrives
+        {
+            get { return _minimumWriteReservedDrives; }
+            set { WithMinimumWriteReservedDrives(value); }
+        }
+
         private Quiesced? _quiesced;
         public Quiesced? Quiesced
         {
             get { return _quiesced; }
             set { WithQuiesced(value); }
+        }
+
+        
+        public ModifyTapePartitionSpectraS3Request WithMinimumReadReservedDrives(int? minimumReadReservedDrives)
+        {
+            this._minimumReadReservedDrives = minimumReadReservedDrives;
+            if (minimumReadReservedDrives != null)
+            {
+                this.QueryParams.Add("minimum_read_reserved_drives", minimumReadReservedDrives.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("minimum_read_reserved_drives");
+            }
+            return this;
+        }
+
+        
+        public ModifyTapePartitionSpectraS3Request WithMinimumWriteReservedDrives(int? minimumWriteReservedDrives)
+        {
+            this._minimumWriteReservedDrives = minimumWriteReservedDrives;
+            if (minimumWriteReservedDrives != null)
+            {
+                this.QueryParams.Add("minimum_write_reserved_drives", minimumWriteReservedDrives.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("minimum_write_reserved_drives");
+            }
+            return this;
         }
 
         

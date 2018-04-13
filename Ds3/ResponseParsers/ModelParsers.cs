@@ -201,8 +201,10 @@ namespace Ds3.ResponseParsers
             return new DataPathBackend
             {
                 Activated = ParseBool(element.Element("Activated")),
+                AllowNewJobRequests = ParseBool(element.Element("AllowNewJobRequests")),
                 AutoActivateTimeoutInMins = ParseNullableInt(element.Element("AutoActivateTimeoutInMins")),
                 AutoInspect = ParseAutoInspectMode(element.Element("AutoInspect")),
+                CacheAvailableRetryAfterInSeconds = ParseInt(element.Element("CacheAvailableRetryAfterInSeconds")),
                 DefaultImportConflictResolutionMode = ParseImportConflictResolutionMode(element.Element("DefaultImportConflictResolutionMode")),
                 DefaultVerifyDataAfterImport = ParseNullablePriority(element.Element("DefaultVerifyDataAfterImport")),
                 DefaultVerifyDataPriorToImport = ParseBool(element.Element("DefaultVerifyDataPriorToImport")),
@@ -573,7 +575,7 @@ namespace Ds3.ResponseParsers
                 State = ParseStorageDomainMemberState(element.Element("State")),
                 StorageDomainId = ParseGuid(element.Element("StorageDomainId")),
                 TapePartitionId = ParseNullableGuid(element.Element("TapePartitionId")),
-                TapeType = ParseNullableTapeType(element.Element("TapeType")),
+                TapeType = ParseNullableString(element.Element("TapeType")),
                 WritePreference = ParseWritePreferenceLevel(element.Element("WritePreference"))
             };
         }
@@ -1109,7 +1111,7 @@ namespace Ds3.ResponseParsers
                 StorageDomainId = ParseNullableGuid(element.Element("StorageDomainId")),
                 TakeOwnershipPending = ParseBool(element.Element("TakeOwnershipPending")),
                 TotalRawCapacity = ParseNullableLong(element.Element("TotalRawCapacity")),
-                Type = ParseTapeType(element.Element("Type")),
+                Type = ParseString(element.Element("Type")),
                 VerifyPending = ParseNullablePriority(element.Element("VerifyPending")),
                 WriteProtected = ParseBool(element.Element("WriteProtected"))
             };
@@ -1128,7 +1130,7 @@ namespace Ds3.ResponseParsers
                 Density = ParseTapeDriveType(element.Element("Density")),
                 Id = ParseGuid(element.Element("Id")),
                 PartitionId = ParseGuid(element.Element("PartitionId")),
-                TapeType = ParseTapeType(element.Element("TapeType"))
+                TapeType = ParseString(element.Element("TapeType"))
             };
         }
 
@@ -1150,6 +1152,7 @@ namespace Ds3.ResponseParsers
                 MfgSerialNumber = ParseNullableString(element.Element("MfgSerialNumber")),
                 PartitionId = ParseGuid(element.Element("PartitionId")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
+                ReservedTaskType = ParseReservedTaskType(element.Element("ReservedTaskType")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapeDriveState(element.Element("State")),
                 TapeId = ParseNullableGuid(element.Element("TapeId")),
@@ -1208,6 +1211,8 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 ImportExportConfiguration = ParseImportExportConfiguration(element.Element("ImportExportConfiguration")),
                 LibraryId = ParseGuid(element.Element("LibraryId")),
+                MinimumReadReservedDrives = ParseInt(element.Element("MinimumReadReservedDrives")),
+                MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 SerialId = ParseNullableString(element.Element("SerialId")),
@@ -1767,12 +1772,14 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 ImportExportConfiguration = ParseImportExportConfiguration(element.Element("ImportExportConfiguration")),
                 LibraryId = ParseGuid(element.Element("LibraryId")),
+                MinimumReadReservedDrives = ParseInt(element.Element("MinimumReadReservedDrives")),
+                MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
-                TapeTypes = element.Elements("TapeTypes").Select(ParseTapeType).ToList()
+                TapeTypes = element.Elements("TapeTypes").Select(ParseString).ToList()
             };
         }
 
@@ -2124,12 +2131,14 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 ImportExportConfiguration = ParseImportExportConfiguration(element.Element("ImportExportConfiguration")),
                 LibraryId = ParseGuid(element.Element("LibraryId")),
+                MinimumReadReservedDrives = ParseInt(element.Element("MinimumReadReservedDrives")),
+                MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
-                TapeTypes = element.Elements("TapeTypes").Select(ParseTapeType).ToList()
+                TapeTypes = element.Elements("TapeTypes").Select(ParseString).ToList()
             };
         }
 
@@ -3779,6 +3788,31 @@ namespace Ds3.ResponseParsers
         {
             return ParseQuiesced(element.Value);
         }
+        public static ReservedTaskType? ParseNullableReservedTaskType(string reservedTaskTypeOrNull)
+        {
+            return string.IsNullOrWhiteSpace(reservedTaskTypeOrNull)
+                ? (ReservedTaskType?) null
+                : ParseReservedTaskType(reservedTaskTypeOrNull);
+        }
+
+        public static ReservedTaskType ParseReservedTaskType(string reservedTaskType)
+        {
+            return ParseEnumType<ReservedTaskType>(reservedTaskType);
+        }
+
+        public static ReservedTaskType? ParseNullableReservedTaskType(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableReservedTaskType(element.Value);
+        }
+
+        public static ReservedTaskType ParseReservedTaskType(XElement element)
+        {
+            return ParseReservedTaskType(element.Value);
+        }
         public static ImportExportConfiguration? ParseNullableImportExportConfiguration(string importExportConfigurationOrNull)
         {
             return string.IsNullOrWhiteSpace(importExportConfigurationOrNull)
@@ -3953,31 +3987,6 @@ namespace Ds3.ResponseParsers
         public static TapeState ParseTapeState(XElement element)
         {
             return ParseTapeState(element.Value);
-        }
-        public static TapeType? ParseNullableTapeType(string tapeTypeOrNull)
-        {
-            return string.IsNullOrWhiteSpace(tapeTypeOrNull)
-                ? (TapeType?) null
-                : ParseTapeType(tapeTypeOrNull);
-        }
-
-        public static TapeType ParseTapeType(string tapeType)
-        {
-            return ParseEnumType<TapeType>(tapeType);
-        }
-
-        public static TapeType? ParseNullableTapeType(XElement element)
-        {
-            if (null == element)
-            {
-                return null;
-            }
-            return ParseNullableTapeType(element.Value);
-        }
-
-        public static TapeType ParseTapeType(XElement element)
-        {
-            return ParseTapeType(element.Value);
         }
         public static Ds3TargetAccessControlReplication? ParseNullableDs3TargetAccessControlReplication(string ds3TargetAccessControlReplicationOrNull)
         {
@@ -4526,8 +4535,8 @@ namespace Ds3.ResponseParsers
             string encapsulatingXmlTag,
             Func<XElement, TResult> parser)
         {
-            var encapsulatingElement = element.Element(encapsulatingXmlTag);
-            if (null == encapsulatingElement || encapsulatingElement.IsEmpty)
+            var encapsulatingElement = element.Elements(encapsulatingXmlTag);
+            if (null == encapsulatingElement || encapsulatingElement.Count() == 0)
             {
                 return Enumerable.Empty<TResult>();
             }

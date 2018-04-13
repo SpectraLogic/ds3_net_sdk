@@ -14,13 +14,11 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Calls.Util;
 using Ds3.Models;
-using Ds3.Runtime;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Ds3.Calls
 {
@@ -55,6 +53,8 @@ namespace Ds3.Calls
         }
 
 
+        
+        
         public DeleteObjectsRequest(string bucketName, IEnumerable<Ds3Object> objects)
         {
             this.BucketName = bucketName;
@@ -66,14 +66,7 @@ namespace Ds3.Calls
 
         internal override Stream GetContentStream()
         {
-            return new XDocument()
-                .AddFluent(
-                    new XElement("Delete").AddAllFluent(
-                        from curObject in this.Objects
-                        select new XElement("Object").AddFluent(new XElement("Key").SetValueFluent(curObject.Name))
-                    )
-                )
-                .WriteToMemoryStream();
+            return RequestPayloadUtil.MarshalDeleteObjectNames(this.Objects);
         }
 
         internal override long GetContentLength()
