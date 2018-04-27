@@ -27,7 +27,7 @@ namespace Ds3.Runtime
         /// <summary>
         /// Specified as "Unreserved" by the RFC, plus (+), and forward slash (/)
         /// </summary>
-        private static readonly char[] UnreservedCharsPath = { '-', '.', '_', '~', '(', ')' , '+', '/' };
+        private static readonly char[] UnreservedCharsPath = { '-', '.', '_', '~', '(', ')' , '+', '/', ':' };
 
         /// <summary>
         /// Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
