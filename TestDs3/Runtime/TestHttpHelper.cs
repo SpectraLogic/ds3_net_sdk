@@ -23,7 +23,7 @@ namespace TestDs3.Runtime
     public class TestHttpHelper
     {
         private static readonly string _encodedPatternParam = @"^[a-zA-Z0-9-._~()%]*$";
-        private static readonly string _encodedPatternPath = @"^[a-zA-Z0-9-._~()%+/]*$";
+        private static readonly string _encodedPatternPath = @"^[a-zA-Z0-9-._~()%+/:]*$";
 
         private static readonly string _symbols = "1234567890-!@#$%^&*()_+`~[]\\{}|;':\"./<>?∞πϊφϠ";
 
@@ -55,6 +55,17 @@ namespace TestDs3.Runtime
         {
             string result = HttpHelper.PercentEncodeParam(_symbols);
             Assert.IsTrue(IsEncodedSafeParam(result));
+        }
+
+        [Test]
+        public void TestPercentEncodeColon()
+        {
+            Assert.AreEqual("c:/test1", HttpHelper.PercentEncodePath("c:/test1"));
+        }
+        [Test]
+        public void TestPercentEncodeKoreanChars()
+        {
+            Assert.AreEqual("c:/%ED%85%8C%EC%8A%A4%ED%8A%B8", HttpHelper.PercentEncodePath("c:/테스트"));
         }
     }
 }
