@@ -1848,7 +1848,7 @@ namespace IntegrationTestDs3
         [Test]
         public void TestPercentEncodingOfQuery()
         {
-            Client.GetBucketsSpectraS3(new GetBucketsSpectraS3Request().WithName("שרון;/"));
+            Client.GetBucketsSpectraS3(new GetBucketsSpectraS3Request().WithName("שרון;/+"));
         }
     }
 }
