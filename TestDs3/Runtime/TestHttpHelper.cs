@@ -55,7 +55,7 @@ namespace TestDs3.Runtime
         [Test]
         public void TestPercentEncodeParamSymbols()
         {
-            string result = HttpHelper.PercentEncodeParam(_symbols);
+            string result = HttpHelper.PercentEncodeQuery(_symbols);
             Assert.IsTrue(IsEncodedSafeParam(result));
         }
 

@@ -1844,5 +1844,11 @@ namespace IntegrationTestDs3
                 Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
         }
+
+        [Test]
+        public void TestPercentEncodingOfQuery()
+        {
+            Client.GetBucketsSpectraS3(new GetBucketsSpectraS3Request().WithName("שרון;/"));
+        }
     }
 }
