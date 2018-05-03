@@ -14,27 +14,37 @@
  */
 
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Ds3.Runtime
 {
     internal static class HttpHelper
     {
+        private static readonly IEnumerable<char> Alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToArray();
+        private static readonly IEnumerable<char> Digit = "0123456789".ToArray();
+        private static readonly IEnumerable<char> Unreserved = Alpha.Concat(Digit).Concat("-._~".ToArray());
+        private static readonly IEnumerable<char> SubDelims = "!$&'()*+,;=".ToArray();
+
+        private static readonly IEnumerable<char> Pchar = Unreserved.Concat(SubDelims).Concat(":@".ToArray());
+
 
         /// <summary>
-        /// Specified as "Unreserved" by the RFC
+        /// Specified as "Param" by the RFC
         /// </summary>
-        private static readonly char[] UnreservedCharsParam = { '-', '.', '_', '~', '(', ')' };
+        private static readonly char[] AllowedCharsParam = Pchar.Where(ch => ch != ';').ToArray();
 
         /// <summary>
-        /// Specified as "Unreserved" by the RFC, plus (+), and forward slash (/)
+        /// Specified as "Path" by the RFC, forward slash (/) without semicolon (;)
         /// </summary>
-        private static readonly char[] UnreservedCharsPath = { '-', '.', '_', '~', '(', ')' , '+', '/', ':' };
+        private static readonly char[] AllowedCharsPath = Pchar.Concat("/".ToArray()).Where(ch => ch != ';').ToArray();
 
         /// <summary>
-        /// Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
-        /// http://tools.ietf.org/html/rfc3986#section-2.1
+        /// Implements percent encoding of a URI path as specified by RFC 3986
+        /// http://tools.ietf.org/html/rfc3986
         /// 
         /// This method percent encodes the UTF-8 representation of all characters except those
-        /// specified as "Unreserved" by the RFC or a forward slash (/).
+        /// specified as "Path" by the RFC or a forward slash (/) and without semicolon (;).
         /// 
         /// We've implemented this method because all of the available built-in .NET framework
         /// methods are incomplete in one way or another.
@@ -43,15 +53,15 @@ namespace Ds3.Runtime
         /// <returns></returns>
         public static string PercentEncodePath(string path)
         {
-            return CustomPercentEscaper.PercentEncode(path, UnreservedCharsPath);
+            return CustomPercentEscaper.PercentEncode(path, AllowedCharsPath);
         }
 
         /// <summary>
-        /// Implements percent encoding of a URI path as specified by RFC 3986 Section 2.1
-        /// http://tools.ietf.org/html/rfc3986#section-2.1
+        /// Implements percent encoding of a URI path as specified by RFC 3986
+        /// http://tools.ietf.org/html/rfc3986
         /// 
         /// This method percent encodes the UTF-8 representation of all characters except those
-        /// specified as "Unreserved" by the RFC or specified in the "allowedChars" parame1ter.
+        /// specified as "Param" by the RFC.
         /// 
         /// We've implemented this method because all of the available built-in .NET framework
         /// methods are incomplete in one way or another.
@@ -60,7 +70,7 @@ namespace Ds3.Runtime
         /// <returns></returns>
         public static string PercentEncodeParam(string path)
         {
-            return CustomPercentEscaper.PercentEncode(path, UnreservedCharsParam);
+            return CustomPercentEscaper.PercentEncode(path, AllowedCharsParam);
         }
     }
 }
