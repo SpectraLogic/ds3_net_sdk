@@ -23,7 +23,7 @@ namespace TestDs3.Runtime
     [TestFixture]
     public class TestHttpHelper
     {
-        private static readonly string _encodedPatternParam = @"^[a-zA-Z0-9-\-!$&'()*+,=._~:@%]*$";
+        private static readonly string _encodedPatternParam = @"^[a-zA-Z0-9-\-!$&'()*+,=._~:@/?%]*$";
         private static readonly string _encodedPatternPath = @"^[a-zA-Z0-9-\-!$&'()*+,=._~:@/%]*$";
 
         private static readonly string _symbols = "1234567890-!@#$%^&*()_+`~[]\\{}|;':\"./<>?∞πϊφϠ,=";
