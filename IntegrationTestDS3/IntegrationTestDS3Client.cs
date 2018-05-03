@@ -1848,7 +1848,33 @@ namespace IntegrationTestDs3
         [Test]
         public void TestPercentEncodingOfQuery()
         {
-            Client.GetBucketsSpectraS3(new GetBucketsSpectraS3Request().WithName("שרון;/+"));
+            const string bucketName = "TestPercentEncodingOfQuery";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+                var contentBytesLength = contentBytes.Length;
+
+                var fileName = "שרון;/+";
+                var objects = new List<Ds3Object>
+                {
+                    new Ds3Object(fileName, contentBytesLength)
+                };
+
+                var putJob = Helpers.StartWriteJob(bucketName, objects);
+                putJob.Transfer(key => new MemoryStream(contentBytes));
+
+                var s3Objects = Client.GetObjectsDetailsSpectraS3(new GetObjectsDetailsSpectraS3Request().WithName(fileName)).ResponsePayload.S3Objects;
+                var buckets = s3Objects.Select(obj => Client.GetBucketSpectraS3(new GetBucketSpectraS3Request(obj.BucketId.ToString())).ResponsePayload.Name);
+
+                Assert.AreEqual(bucketName, buckets.First());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
         }
     }
 }
