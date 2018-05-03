@@ -339,9 +339,9 @@ namespace Ds3.Runtime
                 "&",
                 from kvp in queryParams
                 orderby kvp.Key
-                let encodedKey = HttpHelper.PercentEncodeParam(kvp.Key)
+                let encodedKey = HttpHelper.PercentEncodeQuery(kvp.Key)
                 select kvp.Value != null && kvp.Value.Length > 0
-                    ? encodedKey + "=" + HttpHelper.PercentEncodeParam(kvp.Value)
+                    ? encodedKey + "=" + HttpHelper.PercentEncodeQuery(kvp.Value)
                     : encodedKey
             );
         }

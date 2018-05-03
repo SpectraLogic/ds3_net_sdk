@@ -30,9 +30,9 @@ namespace Ds3.Runtime
 
 
         /// <summary>
-        /// Specified as "Param" by the RFC
+        /// Specified as "Query" by the RFC
         /// </summary>
-        private static readonly char[] AllowedCharsParam = Pchar.Where(ch => ch != ';').ToArray();
+        private static readonly char[] AllowedCharsQuery = Pchar.Concat("/?".ToArray()).Where(ch => ch != ';').ToArray();
 
         /// <summary>
         /// Specified as "Path" by the RFC, forward slash (/) without semicolon (;)
@@ -68,9 +68,9 @@ namespace Ds3.Runtime
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string PercentEncodeParam(string path)
+        public static string PercentEncodeQuery(string path)
         {
-            return CustomPercentEscaper.PercentEncode(path, AllowedCharsParam);
+            return CustomPercentEscaper.PercentEncode(path, AllowedCharsQuery);
         }
     }
 }
