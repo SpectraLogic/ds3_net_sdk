@@ -44,7 +44,7 @@ namespace Ds3.Runtime
         /// http://tools.ietf.org/html/rfc3986
         /// 
         /// This method percent encodes the UTF-8 representation of all characters except those
-        /// specified as "Path" by the RFC or a forward slash (/) and without semicolon (;).
+        /// specified as "Path" by the RFC, forward slash (/) and without semicolon (;).
         /// 
         /// We've implemented this method because all of the available built-in .NET framework
         /// methods are incomplete in one way or another.
@@ -61,7 +61,7 @@ namespace Ds3.Runtime
         /// http://tools.ietf.org/html/rfc3986
         /// 
         /// This method percent encodes the UTF-8 representation of all characters except those
-        /// specified as "Param" by the RFC not including plus (+).
+        /// specified as "Param" by the RFC, forward slash (/) and question mark (?) without semicolon (;) and plus (+).
         /// 
         /// We've implemented this method because all of the available built-in .NET framework
         /// methods are incomplete in one way or another.
