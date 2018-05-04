@@ -80,6 +80,9 @@
   <ItemGroup>
     <EmbeddedResource Include="TestData\big_book_file.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\escaped.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

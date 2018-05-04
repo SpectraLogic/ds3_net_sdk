@@ -124,6 +124,7 @@ namespace IntegrationTestDs3
                 }
                 writer.Close();
             }
+
             foreach (var book in _joyceBooks)
             {
                 var writer = File.OpenWrite(testDirectorySrcFolder + book);
@@ -134,6 +135,7 @@ namespace IntegrationTestDs3
                 }
                 writer.Close();
             }
+
             foreach (var bigFile in _bigFiles)
             {
                 var writer = File.OpenWrite(TestDirectoryBigFolder + bigFile);
@@ -1099,21 +1101,15 @@ namespace IntegrationTestDs3
                 });
 
                 // Does a query param escape properly?
-                var getObjectsWithNameRequest = new GetObjectsDetailsSpectraS3Request()
-                    .WithName(fileName);
-
-                var getObjectsResponse = Client.GetObjectsDetailsSpectraS3(getObjectsWithNameRequest);
-
-                var filename =
-                    from f in getObjectsResponse.ResponsePayload.S3Objects
-                    where f.Name == fileName
-                    select f;
+                var filename = from f in Helpers.ListObjects(bucketName)
+                        where f.Name == fileName
+                        select f;
 
                 Assert.AreEqual(1, filename.Count());
             }
             finally
             {
-                Ds3TestUtils.DeleteBucket(Client, bucketName);
+               Ds3TestUtils.DeleteBucket(Client, bucketName);
             }
         }
 
@@ -1807,6 +1803,73 @@ namespace IntegrationTestDs3
                 var response = Client.GetJobsSpectraS3(new GetJobsSpectraS3Request().WithBucketId(bucketName));
                 var jobs = response.ResponsePayload.Jobs.ToList();
                 Assert.AreEqual(1, jobs.Count);
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestEscapedFilesNames()
+        {
+            const string bucketName = "TestEscapedFilesNames";
+            try
+            {
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+                var contentBytesLength = contentBytes.Length;
+
+                var objects = new List<Ds3Object>();
+
+                using (var escapeStream = ReadResource("IntegrationTestDS3.TestData.escaped.txt"))
+                using (var escapeStreamReader = new StreamReader(escapeStream))
+                {
+                    string line;
+                    while ((line = escapeStreamReader.ReadLine()) != null)
+                    {
+                        objects.Add(new Ds3Object(line, contentBytesLength));
+                    }
+                }
+
+                Helpers.EnsureBucketExists(bucketName);
+
+                //upload test files
+                var putJob = Helpers.StartWriteJob(bucketName, objects);
+                putJob.Transfer(key => new MemoryStream(contentBytes));
+
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
+        public void TestPercentEncodingOfQuery()
+        {
+            const string bucketName = "TestPercentEncodingOfQuery";
+            try
+            {
+                Helpers.EnsureBucketExists(bucketName);
+
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+                var contentBytesLength = contentBytes.Length;
+
+                var fileName = "שרון;/+";
+                var objects = new List<Ds3Object>
+                {
+                    new Ds3Object(fileName, contentBytesLength)
+                };
+
+                var putJob = Helpers.StartWriteJob(bucketName, objects);
+                putJob.Transfer(key => new MemoryStream(contentBytes));
+
+                var s3Objects = Client.GetObjectsDetailsSpectraS3(new GetObjectsDetailsSpectraS3Request().WithName(fileName)).ResponsePayload.S3Objects;
+                var buckets = s3Objects.Select(obj => Client.GetBucketSpectraS3(new GetBucketSpectraS3Request(obj.BucketId.ToString())).ResponsePayload.Name);
+
+                Assert.AreEqual(bucketName, buckets.First());
             }
             finally
             {
