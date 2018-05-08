@@ -81,7 +81,7 @@ namespace Ds3.Calls
                 {
                     if (SdkNetworkSwitch.TraceWarning)
                     {
-                        Trace.WriteLine("Key has not been added to metadata because value was null or empty: " + keyValuePair.Key);
+                        Trace.TraceInformation("Key has not been added to metadata because value was null or empty: " + keyValuePair.Key);
                     }
                 }
                 else

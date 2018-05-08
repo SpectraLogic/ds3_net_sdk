@@ -39,7 +39,7 @@ namespace Ds3.Helpers.Strategies.StreamFactory
                     return new NonDisposablePutObjectRequestStream(stream, length);
                 }
 
-                Trace.WriteLineIf(SdkNetworkSwitch.TraceVerbose, string.Format("Creating new stream for {0}", blob.Context));
+                if (SdkNetworkSwitch.TraceVerbose) { Trace.TraceInformation(string.Format("Creating new stream for {0}", blob.Context)); }
                 var innerStream = createStreamForTransferItem(blob.Context);
 
                 this._streamStore.Add(blob.Context, innerStream);
@@ -62,7 +62,7 @@ namespace Ds3.Helpers.Strategies.StreamFactory
                     throw new StreamNotFoundException(string.Format("Stream not found for {0}", item));
                 }
 
-                Trace.WriteLineIf(SdkNetworkSwitch.TraceVerbose, string.Format("Closing stream for {0}", item));
+                if (SdkNetworkSwitch.TraceVerbose) { Trace.TraceInformation(string.Format("Closing stream for {0}", item)); }
                 stream.Close();
                 this._streamStore.Remove(item);
             }
