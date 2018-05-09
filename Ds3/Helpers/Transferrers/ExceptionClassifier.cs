@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Ds3.Runtime;
@@ -23,6 +24,8 @@ namespace Ds3.Helpers.Transferrers
 {
     internal class ExceptionClassifier
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Transferrers", "set in config file");
+
         private static readonly IList<Type> RecoverableExceptions = new List<Type>
         {
             typeof(Ds3ContentLengthNotMatch),
@@ -32,11 +35,17 @@ namespace Ds3.Helpers.Transferrers
 
         public static bool IsRecoverableException(Exception t)
         {
-            return RecoverableExceptions.Contains(t.GetType());
+            var ret = RecoverableExceptions.Contains(t.GetType());
+            if (Log.TraceVerbose) { Trace.TraceInformation("{0} IsRecoverableException = {1}", t.GetType(), ret); }
+
+            return ret;
         }
 
         public static bool IsUnrecoverableException(Exception t) {
-            return !IsRecoverableException(t);
+            var ret = !IsRecoverableException(t);
+            if (Log.TraceVerbose) { Trace.TraceInformation("{0} IsUnrecoverableException = {1}", t.GetType(), ret); }
+
+            return ret;
         }
     }
 }

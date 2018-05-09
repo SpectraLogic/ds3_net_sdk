@@ -27,7 +27,7 @@ namespace Ds3.Runtime
 {
     internal class Network : INetwork
     {
-        private static readonly TraceSwitch SdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Runtime", "set in config file");
 
         internal const int DefaultCopyBufferSize = 1 * 1024 * 1024;
 
@@ -60,6 +60,19 @@ namespace Ds3.Runtime
             this._requestTimeout = requestTimeout;
             this._connectionLimit = connectionLimit;
 
+            if (Log.TraceVerbose)
+            {
+                Trace.TraceInformation("Creating network layer with:\n" +
+"\tendpoint = {0}\n" +
+"\taccessId = {1}\n" +
+"\tredirectRetryCount = {2}\n" +
+"\tcopyBufferSize = {3}\n" +
+"\treadWriteTimeout = {4}\n" +
+"\trequestTimeout = {5}\n" +
+"\tconnectionLimit = {6}",
+endpoint, creds.AccessId, redirectRetryCount, copyBufferSize, readWriteTimeout, requestTimeout, connectionLimit);
+            }
+
             _createDs3WebRequestFunc = this.CreateDs3WebRequest;
         }
 
@@ -86,8 +99,8 @@ namespace Ds3.Runtime
             {
                 do
                 {
-                    if (SdkNetworkSwitch.TraceInfo) { Trace.TraceInformation(string.Format(Resources.RequestLogging, request.GetType())); }
-                    if (SdkNetworkSwitch.TraceVerbose) { Trace.TraceInformation(request.getDescription(BuildQueryParams(request.QueryParams))); }
+                    if (Log.TraceInfo) { Trace.TraceInformation(string.Format(Resources.RequestLogging, request.GetType())); }
+                    if (Log.TraceVerbose) { Trace.TraceInformation(request.getDescription(BuildQueryParams(request.QueryParams))); }
 
                     var ds3WebRequest = _createDs3WebRequestFunc(request, content);
                     try
@@ -98,11 +111,11 @@ namespace Ds3.Runtime
                         if (Is307(response))
                         {
                             redirectCount++;
-                            if (SdkNetworkSwitch.TraceWarning) { Trace.Write(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network"); }
+                            if (Log.TraceWarning) { Trace.TraceWarning(string.Format(Resources.Encountered307NTimes, redirectCount), "Ds3Network"); }
                         }
                         else
                         {
-                            if (SdkNetworkSwitch.TraceInfo) { Trace.TraceInformation(string.Format(Resources.ResponseLogging, response.StatusCode, millis)); }
+                            if (Log.TraceInfo) { Trace.TraceInformation(string.Format(Resources.ResponseLogging, response.StatusCode, millis)); }
 
                             return response;
                         }
@@ -171,23 +184,23 @@ namespace Ds3.Runtime
                 switch (request.CType)
                 {
                     case ChecksumType.Type.MD5:
-                        if (SdkNetworkSwitch.TraceVerbose) Trace.TraceInformation(string.Format("MD5 checksum is {0}", chucksumValue));
+                        if (Log.TraceVerbose) Trace.TraceInformation(string.Format("MD5 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentMd5, chucksumValue);
                         break;
                     case ChecksumType.Type.SHA_256:
-                        if (SdkNetworkSwitch.TraceVerbose) Trace.TraceInformation(string.Format("SHA-256 checksum is {0}", chucksumValue));
+                        if (Log.TraceVerbose) Trace.TraceInformation(string.Format("SHA-256 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha256, chucksumValue);
                         break;
                     case ChecksumType.Type.SHA_512:
-                        if (SdkNetworkSwitch.TraceVerbose) Trace.TraceInformation(string.Format("SHA-512 checksum is {0}", chucksumValue));
+                        if (Log.TraceVerbose) Trace.TraceInformation(string.Format("SHA-512 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentSha512, chucksumValue);
                         break;
                     case ChecksumType.Type.CRC_32:
-                        if (SdkNetworkSwitch.TraceVerbose) Trace.TraceInformation(string.Format("Crc32 checksum is {0}", chucksumValue));
+                        if (Log.TraceVerbose) Trace.TraceInformation(string.Format("Crc32 checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32, chucksumValue);
                         break;
                     case ChecksumType.Type.CRC_32C:
-                        if (SdkNetworkSwitch.TraceVerbose) Trace.TraceInformation(string.Format("Crc32C checksum is {0}", chucksumValue));
+                        if (Log.TraceVerbose) Trace.TraceInformation(string.Format("Crc32C checksum is {0}", chucksumValue));
                         httpRequest.Headers.Add(HttpHeaders.ContentCRC32C, chucksumValue);
                         break;
                 }

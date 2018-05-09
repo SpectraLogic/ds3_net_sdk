@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Ds3.Calls;
 using Ds3.Models;
@@ -23,6 +24,8 @@ namespace Ds3.Helpers.Transferrers
 {
     internal class WriteTransferrer : ITransferrer
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Transferrers", "set in config file");
+
         public void Transfer(IDs3Client client, string bucketName, string objectName, long blobOffset, Guid jobId,
             IEnumerable<Range> ranges, Stream stream, IMetadataAccess metadataAccess,
             Action<string, IDictionary<string, string>> metadataListener, int objectTransferAttempts)
@@ -47,6 +50,8 @@ namespace Ds3.Helpers.Transferrers
                 }
                 catch (Exception ex)
                 {
+                    if (Log.TraceError) { Trace.TraceError("Failed to PutObject {0}:{1}. {2}\n{3}", objectName, blobOffset, ex.Message, ex.StackTrace); }
+
                     if (ExceptionClassifier.IsRecoverableException(ex))
                     {
                         BestEffort.ModifyForRetry(stream, objectTransferAttempts, ref currentTry, request.ObjectName, request.Offset.Value, ex);

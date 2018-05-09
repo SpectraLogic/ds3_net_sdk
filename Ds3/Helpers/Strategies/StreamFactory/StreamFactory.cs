@@ -24,7 +24,7 @@ namespace Ds3.Helpers.Strategies.StreamFactory
 {
     public class StreamFactory : IStreamFactory<string>
     {
-        private static readonly TraceSwitch SdkNetworkSwitch = new TraceSwitch("sdkNetworkSwitch", "set in config file");
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Strategies.StreamFactory", "set in config file");
 
         private readonly object _lock = new object();
         private readonly Dictionary<string, Stream> _streamStore = new Dictionary<string, Stream>();
@@ -39,7 +39,7 @@ namespace Ds3.Helpers.Strategies.StreamFactory
                     return new NonDisposablePutObjectRequestStream(stream, length);
                 }
 
-                if (SdkNetworkSwitch.TraceVerbose) { Trace.TraceInformation(string.Format("Creating new stream for {0}", blob.Context)); }
+                if (Log.TraceVerbose) { Trace.TraceInformation(string.Format("Creating new stream for {0}", blob.Context)); }
                 var innerStream = createStreamForTransferItem(blob.Context);
 
                 this._streamStore.Add(blob.Context, innerStream);
@@ -62,7 +62,7 @@ namespace Ds3.Helpers.Strategies.StreamFactory
                     throw new StreamNotFoundException(string.Format("Stream not found for {0}", item));
                 }
 
-                if (SdkNetworkSwitch.TraceVerbose) { Trace.TraceInformation(string.Format("Closing stream for {0}", item)); }
+                if (Log.TraceVerbose) { Trace.TraceInformation(string.Format("Closing stream for {0}", item)); }
                 stream.Close();
                 this._streamStore.Remove(item);
             }

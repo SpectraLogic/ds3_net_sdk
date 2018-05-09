@@ -27,6 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Ds3.Runtime;
+using System.Diagnostics;
 
 namespace Ds3.Helpers.Jobs
 {
@@ -34,6 +35,8 @@ namespace Ds3.Helpers.Jobs
         where TSelf : IBaseJob<TSelf, TItem>
         where TItem : IComparable<TItem>
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Jobs", "set in config file");
+
         private readonly ITransferrer _transferrer;
         private readonly ILookup<Blob, Range> _rangesForRequests;
         private readonly IRangeTranslator<Blob, TItem> _rangeTranslator;
@@ -131,13 +134,14 @@ namespace Ds3.Helpers.Jobs
                 {
                     try
                     {
+                        if (Log.TraceVerbose) { Trace.TraceInformation("Transfer blob {0}", item.Blob); }
                         this.TransferBlob(item.Client, item.Blob);
                     }
                     catch (Exception ex)
                     {
                         //if we have an OnFailure event then invoke with blob name, offset and the exception
                         OnFailure?.Invoke(item.Blob.Context, item.Blob.Range.Start, ex);
-
+                        if (Log.TraceError) { Trace.TraceError("Failed to transfer blob {0}. {1}\n{2}", item.Blob, ex.Message, ex.StackTrace); }
                         throw;
                     }
                     finally

@@ -23,11 +23,14 @@ using System.Linq;
 using System.Threading;
 using Ds3.Helpers.Strategies;
 using Ds3.Runtime;
+using System.Diagnostics;
 
 namespace Ds3.Helpers
 {
     public class Ds3ClientHelpers : IDs3ClientHelpers
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers", "set in config file");
+
         private readonly IDs3Client _client;
         private const JobRequestType JobTypePut = JobRequestType.PUT;
         private const JobRequestType JobTypeGet = JobRequestType.GET;
@@ -46,11 +49,24 @@ namespace Ds3.Helpers
             this._jobRetries = jobRetries;
             this._jobWaitTime = jobWaitTime;
             this._maximumFileSizeForAggregating = maximumFileSizeForAggregating;
+
+            if (Log.TraceVerbose)
+            {
+                Trace.TraceInformation("Building Client Helpers with:\n" +
+"\tretryAfter = {0}\n" +
+"\tobjectTransferAttempts = {1}\n" +
+"\tjobRetries = {2}\n" +
+"\tjobWaitTime = {3}\n" +
+"\tmaximumFileSizeForAggregating {4}",
+retryAfter, objectTransferAttempts, jobRetries, jobWaitTime, maximumFileSizeForAggregating);
+            }
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, long? maxBlobSize = null,
             IHelperStrategy<string> helperStrategy = null)
         {
+            if (Log.TraceVerbose) { Trace.TraceInformation("Putting {0} files to bucket {1}", objectsToWrite.Count(), bucket); }
+
             var withAggregation = false;
             var request = new PutBulkJobSpectraS3Request(
                 bucket,
@@ -59,12 +75,15 @@ namespace Ds3.Helpers
 
             if (maxBlobSize.HasValue)
             {
+                if (Log.TraceVerbose) { Trace.TraceInformation("Setting max blob size to {0}", maxBlobSize.Value); }
                 request.WithMaxUploadSize(maxBlobSize.Value);
             }
 
             if (_maximumFileSizeForAggregating.HasValue &&
                 GetJobSize(objectsToWrite) <= _maximumFileSizeForAggregating.Value)
             {
+                if (Log.TraceVerbose) { Trace.TraceInformation("withAggregation = true"); }
+
                 withAggregation = true;
                 request.Aggregating = true;
             }
@@ -77,15 +96,17 @@ namespace Ds3.Helpers
                 {
                     jobResponse = this._client.PutBulkJobSpectraS3(request);
                 }
-                catch (Ds3MaxJobsException)
+                catch (Ds3MaxJobsException e)
                 {
                     if (retriesLeft == 0)
                     {
+                        if (Log.TraceError) { Trace.TraceError("Failed to create PutBulkJob. {0}\n{1}", e.Message, e.StackTrace); }
                         throw;
                     }
 
+                    if (Log.TraceWarning) { Trace.TraceWarning("Failed to create PutBulkJob, we will retry in {0} min", _jobWaitTime); }
                     retriesLeft--;
-                    Thread.Sleep(this._jobWaitTime*1000*60);
+                    Thread.Sleep(this._jobWaitTime * 1000 * 60);
                 }
             } while (jobResponse == null);
 
