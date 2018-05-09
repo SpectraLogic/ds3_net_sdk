@@ -13,12 +13,15 @@
  * ****************************************************************************
  */
 
+using System.Diagnostics;
 using System.IO;
 
 namespace Ds3.Runtime
 {
     public class Ds3WebStream : Stream
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Runtime", "set in config file");
+
         private readonly Stream _stream;
         private readonly long _contentLength;
         private long _bytesRead = 0;
@@ -73,8 +76,12 @@ namespace Ds3.Runtime
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            var watch = Stopwatch.StartNew();
             var bytesRead = _stream.Read(buffer, offset, count);
+            watch.Stop();
             _bytesRead += bytesRead;
+
+            if (Log.TraceVerbose) { Trace.TraceInformation("Read {0} bytes in {1} sec", bytesRead, watch.ElapsedMilliseconds * 1000); }
 
             if (_contentLength > -1 && (bytesRead == 0) && (_bytesRead != _contentLength))
                 throw new Ds3ContentLengthNotMatch(Resources.ContentLengthNotMatch, _contentLength, _bytesRead);
