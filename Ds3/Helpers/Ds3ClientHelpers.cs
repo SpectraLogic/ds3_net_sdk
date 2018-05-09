@@ -40,7 +40,7 @@ namespace Ds3.Helpers
         private readonly int _jobWaitTime; //in minutes
         private readonly long? _maximumFileSizeForAggregating;
 
-        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int objectTransferAttempts = 5, int jobRetries = -1,
+        public Ds3ClientHelpers(IDs3Client client, int retryAfter = -1, int objectTransferAttempts = 2, int jobRetries = -1,
             int jobWaitTime = 5, long? maximumFileSizeForAggregating = null)
         {
             this._client = client;
