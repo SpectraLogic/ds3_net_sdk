@@ -28,6 +28,7 @@ namespace Ds3.Runtime
 
         public Ds3WebStream(Stream stream, long contentLength)
         {
+            if (Log.TraceVerbose && stream.CanSeek) { Trace.TraceInformation("Ds3WebStream of type {0} Position={1}, Length={2}", stream.GetType(), stream.Position, stream.Length); }
             _stream = stream;
             _contentLength = contentLength;
         }
@@ -77,15 +78,16 @@ namespace Ds3.Runtime
         public override int Read(byte[] buffer, int offset, int count)
         {
             var watch = Stopwatch.StartNew();
+            if (Log.TraceVerbose && _stream.CanSeek) { Trace.TraceInformation("Position before read={0}", _stream.Position); }
             var bytesRead = _stream.Read(buffer, offset, count);
+            if (Log.TraceVerbose && _stream.CanSeek) { Trace.TraceInformation("Position after read={0}", _stream.Position); }
             watch.Stop();
             _bytesRead += bytesRead;
 
-            if (Log.TraceVerbose) { Trace.TraceInformation("Read {0} bytes in {1} sec", bytesRead, watch.ElapsedMilliseconds * 1000); }
+            if (Log.TraceVerbose) { Trace.TraceInformation("Read {0} bytes in {1} sec. [{2}/{3}]", bytesRead, watch.ElapsedMilliseconds / 1000D, _bytesRead, _contentLength); }
 
             if (_contentLength > -1 && (bytesRead == 0) && (_bytesRead != _contentLength))
                 throw new Ds3ContentLengthNotMatch(Resources.ContentLengthNotMatch, _contentLength, _bytesRead);
-
             return bytesRead;
         }
 

@@ -14,12 +14,15 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Ds3.Helpers.Streams
 {
     public class ObjectRequestStream : Stream, IDisposable
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Streams", "set in config file");
+
         private readonly Stream _stream;
         private long _streamLength;
         private long _totalBytesRead = 0;
@@ -27,12 +30,16 @@ namespace Ds3.Helpers.Streams
 
         public ObjectRequestStream(Stream stream, long length)
         {
+            if (Log.TraceVerbose) { Trace.TraceInformation("ObjectRequestStream of type {0}", stream.GetType()); }
+
             this._stream = stream;
             this._streamLength = length;
         }
 
         public ObjectRequestStream(Stream stream, long offset, long length)
         {
+            if (Log.TraceVerbose) { Trace.TraceInformation("ObjectRequestStream of type {0}", stream.GetType()); }
+
             this._stream = stream;
             this._stream.Position = offset;
             this._streamLength = length;
@@ -101,6 +108,7 @@ namespace Ds3.Helpers.Streams
             set
             {
                 _stream.Position = value;
+                _totalBytesRead = 0;
             }
         }
 

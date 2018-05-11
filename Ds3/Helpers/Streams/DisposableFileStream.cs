@@ -14,12 +14,15 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Ds3.Helpers.Streams
 {
     internal class DisposableFileStream : Stream, IDisposable
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Streams", "set in config file");
+
         private readonly FileStream _stream;
         private bool _disposed;
 
@@ -50,6 +53,8 @@ namespace Ds3.Helpers.Streams
 
         protected override void Dispose(bool disposing)
         {
+            if (Log.TraceVerbose) { Trace.TraceInformation("Dispose of FileStream"); }
+
             if (_disposed)
             {
                 return;

@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using Ds3.Calls;
 using Ds3.Models;
 
@@ -45,6 +46,7 @@ namespace Ds3.Helpers.Transferrers
 
                 try
                 {
+                    if (Log.TraceVerbose) { Trace.TraceInformation("PutObject {0}:{1}.", objectName, blobOffset); }
                     client.PutObject(request);
                     return;
                 }

@@ -17,6 +17,7 @@ using Ds3.Helpers.RangeTranslators;
 using Ds3.Helpers.Streams;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Ds3.Helpers.Strategies.StreamFactory
@@ -26,6 +27,8 @@ namespace Ds3.Helpers.Strategies.StreamFactory
     /// </summary>
     public class WriteRandomAccessStreamFactory : IStreamFactory<string>
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Strategies.StreamFactory", "set in config file");
+
         private readonly object _lock = new object();
         private readonly Dictionary<Blob, Stream> _streamStore = new Dictionary<Blob, Stream>();
 
@@ -37,10 +40,12 @@ namespace Ds3.Helpers.Strategies.StreamFactory
                 /* if the blob length is bigger than the copy buffer size we want to reuse the stream for that blob */
                 if (this._streamStore.TryGetValue(blob, out stream))
                 {
+                    if (Log.TraceVerbose) { Trace.TraceInformation("Reusing stream for blob {0}", blob); }
                     return stream;
                 }
 
                 // Create a new stream for the transfered blob
+                if (Log.TraceVerbose) { Trace.TraceInformation("Creating new stream for blob {0}", blob); }
                 stream = new NonDisposablePutObjectRequestStream(createStreamForTransferItem(blob.Context), blob.Range.Start, length);
 
                 this._streamStore.Add(blob, stream);

@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Ds3.Helpers.Jobs;
 using Ds3.Models;
@@ -24,11 +25,15 @@ namespace Ds3.Helpers.Transferrers
 {
     internal static class BestEffort
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers.Transferrers", "set in config file");
+
         public static void ModifyForRetry(Stream stream, int retries, ref int currentTry, string objectName, long offset, Exception ex)
         {
             CanRetry(stream, retries, currentTry, objectName, offset, ex);
 
             currentTry++;
+
+            if (Log.TraceVerbose) { Trace.TraceInformation("Reset stream position to offset = {0}.", offset); }
             stream.Position = offset;
         }
 
