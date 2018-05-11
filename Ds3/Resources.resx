@@ -205,7 +205,7 @@
     <value>Reached the maximum number of retries when attempting to get cache space</value>
   </data>
   <data name="ContentLengthNotMatch" xml:space="preserve">
-    <value>The Content length ({0}) not match the number of byte read ({1})</value>
+    <value>The Content length ({0}) not match the number of bytes read ({1})</value>
   </data>
   <data name="TooManyRetriesForPartialData" xml:space="preserve">
     <value>Exhausted retries for retrieving data when partial data was received.</value>
