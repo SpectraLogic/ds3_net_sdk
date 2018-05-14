@@ -102,6 +102,7 @@ namespace Ds3.Helpers.Streams
             set
             {
                 _stream.Position = value;
+                _totalBytesRead = 0;
             }
         }
 
