@@ -143,5 +143,11 @@ namespace Ds3.Helpers.Streams
         {
             _stream.Write(buffer, offset, count);
         }
+
+        // Used for testing
+        public long GetTotalBytesRead()
+        {
+            return _totalBytesRead;
+        }
     }
 }
