@@ -102,6 +102,7 @@ namespace Ds3.Helpers.Streams
             set
             {
                 _stream.Position = value;
+                _totalBytesRead = 0;
             }
         }
 
@@ -141,6 +142,12 @@ namespace Ds3.Helpers.Streams
         public override void Write(byte[] buffer, int offset, int count)
         {
             _stream.Write(buffer, offset, count);
+        }
+
+        // Used for testing
+        public long GetTotalBytesRead()
+        {
+            return _totalBytesRead;
         }
     }
 }
