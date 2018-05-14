@@ -151,8 +151,8 @@ namespace Ds3
                 _creds,
                 _redirectRetryCount,
                 _copyBufferSize,
-                _readWriteTimeout,
-                _requestTimeout,
+                86400000,
+                86400000,
                 _connectionLimit
             );
             if (_proxy != null)
