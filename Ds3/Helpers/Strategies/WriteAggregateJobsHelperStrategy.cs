@@ -15,26 +15,25 @@
 
 using Ds3.Helpers.Strategies.ChunkStrategies;
 using Ds3.Helpers.Strategies.StreamFactory;
+using Ds3.Models;
+using System.Collections.Generic;
 
 namespace Ds3.Helpers.Strategies
 {
-    /// <summary>
-    /// The WriteRandomAccessHelperStrategy bundle WriteRandomAccessChunkStrategy with WriteRandomAccessStreamFactory
-    /// </summary>
-    public class WriteRandomAccessHelperStrategy : IHelperStrategy<string>
+    public class WriteAggregateJobsHelperStrategy : IHelperStrategy<string>
     {
-        private readonly IChunkStrategy _writeRandomAccessChunkStrategy;
+        private readonly IChunkStrategy _writeAggregateJobsChunkStrategy;
         private readonly IStreamFactory<string> _writeRandomAccessStreamFactory;
 
-        public WriteRandomAccessHelperStrategy(int retryAfter = -1)
+        public WriteAggregateJobsHelperStrategy(IEnumerable<Ds3Object> objects, int retryAfter = -1)
         {
-            this._writeRandomAccessChunkStrategy = new WriteRandomAccessChunkStrategy(retryAfter);
+            this._writeAggregateJobsChunkStrategy = new WriteAggregateJobsChunkStrategy(objects, retryAfter);
             this._writeRandomAccessStreamFactory = new WriteRandomAccessStreamFactory();
         }
 
         public IChunkStrategy GetChunkStrategy()
         {
-            return this._writeRandomAccessChunkStrategy;
+            return this._writeAggregateJobsChunkStrategy;
         }
 
         public IStreamFactory<string> GetStreamFactory()

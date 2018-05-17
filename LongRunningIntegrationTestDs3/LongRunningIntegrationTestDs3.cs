@@ -26,6 +26,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using Ds3.Runtime;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace LongRunningIntegrationTestDs3
 {
@@ -38,13 +40,17 @@ namespace LongRunningIntegrationTestDs3
         private const string FixtureName = "long_integration_test_ds3client";
         private static TempStorageIds _envStorageIds;
 
+        /* global parameter for resume test */
+        private int _filesTransfered = 0;
+        private Guid _jobId;
+
         [OneTimeSetUp]
         public void Startup()
         {
             try
             {
                 this._client = Ds3TestUtils.CreateClient(this._copyBufferSize);
-                this._helpers = new Ds3ClientHelpers(this._client);
+                this._helpers = new Ds3ClientHelpers(this._client, retryAfter:5, jobWaitTime:1);
 
                 var dataPolicyId = TempStorageUtil.SetupDataPolicy(FixtureName, false, ChecksumType.Type.MD5, _client);
                 _envStorageIds = TempStorageUtil.Setup(FixtureName, dataPolicyId, _client);
@@ -94,7 +100,177 @@ namespace LongRunningIntegrationTestDs3
             }
         }
 
-        [Test]
+        [Test, TestCase(1), TestCase(2)]
+        public void TestAggregationJob(int numberOfThreads)
+        {
+            string bucketName = $"TestAggregationJob{numberOfThreads}";
+            const int numberOfObjects = 10000;
+
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+                var exceptionsThrown = new ConcurrentQueue<Exception>();
+
+                var threads = new List<Thread>();
+                for (var i = 0; i < numberOfThreads; i++)
+                {
+                    var thread = new Thread(AggregationTrasfer(bucketName, contentBytes, GetObjects(numberOfObjects, contentBytes.LongLength), exceptionsThrown, null));
+                    thread.Start();
+                    threads.Add(thread);
+                }
+
+                foreach (var thread in threads)
+                {
+                    thread.Join();
+                }
+
+                if (exceptionsThrown.Count == 1)
+                {
+                    throw exceptionsThrown.ElementAt(0);
+                }
+
+                if (exceptionsThrown.Count > 1)
+                {
+                    throw new AggregateException(exceptionsThrown);
+                }
+
+                Assert.AreEqual(numberOfObjects * numberOfThreads, _helpers.ListObjects(bucketName).Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+            }
+        }
+
+        public ThreadStart AggregationTrasfer(string bucketName, byte[] contentBytes, IEnumerable<Ds3Object> files, ConcurrentQueue<Exception> exceptionsThrown, CancellationTokenSource cancellationTokenSource)
+        {
+            return new ThreadStart(() =>
+            {
+                try
+                {
+                    var strategy = new WriteAggregateJobsHelperStrategy(files);
+
+                    var job = _helpers.StartWriteJob(bucketName, files, helperStrategy: strategy);
+                    if (cancellationTokenSource != null)
+                    {
+                        job.WithCancellationToken(cancellationTokenSource.Token);
+                        job.ItemCompleted += _ => { _filesTransfered++; };
+                        _jobId = job.JobId;
+                    }
+
+                    job.Transfer(key => new MemoryStream(contentBytes));
+                }
+                catch(OperationCanceledException)
+                {
+                    //pass
+                }
+                catch(AggregateException e)
+                {
+                    if (e.InnerExceptions.Any(inner => !(inner is OperationCanceledException)))
+                    {
+                        exceptionsThrown.Enqueue(e);
+                    }
+                }
+                catch (Exception e)
+                {
+                    exceptionsThrown.Enqueue(e);
+                }
+            });
+        }
+
+        private static IList<Ds3Object> GetObjects(int numberOfObjects, long contentBytesLength)
+        {
+            var objects = new List<Ds3Object>();
+            for (var i = 0; i < numberOfObjects; i++)
+            {
+                objects.Add(new Ds3Object(Guid.NewGuid().ToString(), contentBytesLength));
+            }
+
+            return objects;
+        }
+
+        [Test, TestCase(1), TestCase(2)]
+        public void TestRecoverAggregatedWriteJob(int numberOfThreads)
+        {
+            string bucketName = $"TestRecoverAggregatedWriteJob_{numberOfThreads}";
+            const int numberOfObjects = 10000;
+
+            try
+            {
+                _helpers.EnsureBucketExists(bucketName);
+
+                const string content = "hi im content";
+                var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+                var exceptionsThrown = new ConcurrentQueue<Exception>();
+                var cancellationTokenSource = new CancellationTokenSource();
+                IEnumerable<Ds3Object> objects = null;
+
+                var threads = new List<Thread>();
+                for (var i = 0; i < numberOfThreads; i++)
+                {
+                    Thread thread;
+                    if (i == 0)
+                    {
+                        objects = GetObjects(numberOfObjects, contentBytes.LongLength);
+                        thread = new Thread(AggregationTrasfer(bucketName, contentBytes, objects, exceptionsThrown, cancellationTokenSource));
+                    }
+                    else
+                    {
+                        thread = new Thread(AggregationTrasfer(bucketName, contentBytes, GetObjects(numberOfObjects, contentBytes.LongLength), exceptionsThrown, null));
+                    }
+
+                    thread.Start();
+                    threads.Add(thread);
+                }
+
+                //wait until we put at least half of the objects from job1
+                SpinWait.SpinUntil(() => _filesTransfered > (numberOfObjects / 2));
+
+                //cancel the first job
+                cancellationTokenSource.Cancel();
+
+                //wait for the threads to finish
+                foreach (var thread in threads)
+                {
+                    thread.Join();
+                }
+
+                if (exceptionsThrown.Count == 1)
+                {
+                    throw exceptionsThrown.ElementAt(0);
+                }
+
+                if (exceptionsThrown.Count > 1)
+                {
+                    throw new AggregateException(exceptionsThrown);
+                }
+
+                Assert.Less(_filesTransfered, numberOfObjects);
+
+                //Make sure the job is still active in order to resume it
+                Assert.True(_client.GetActiveJobsSpectraS3(new GetActiveJobsSpectraS3Request()).ResponsePayload.ActiveJobs.Any(activeJob => activeJob.Id == _jobId));
+
+                //resume the job
+                var resumedJob = _helpers.RecoverAggregatedWriteJob(_jobId, objects);
+                resumedJob.ItemCompleted += _ => { _filesTransfered++; };
+
+                resumedJob.Transfer(key => new MemoryStream(contentBytes));
+
+                Assert.AreEqual(numberOfObjects, _filesTransfered);
+                Assert.AreEqual(numberOfObjects * numberOfThreads, _helpers.ListObjects(bucketName).Count());
+            }
+            finally
+            {
+                Ds3TestUtils.DeleteBucket(_client, bucketName);
+                _filesTransfered = 0;
+            }
+        }
+
+
+       [Test]
         public void TestChecksumStreamingWithMultiChunks()
         {
             const string bucketName = "TestChecksumStreamingWithMultiChunks";

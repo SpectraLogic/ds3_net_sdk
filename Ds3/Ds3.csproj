@@ -706,6 +706,7 @@
     <Compile Include="Helpers\Strategies\ChunkStrategies\IChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ReadStreamChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\RetryAfter.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\WriteAggregateJobsChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\WriteRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\ReadRandomAccessChunkStrategy.cs" />
     <Compile Include="Helpers\Strategies\ChunkStrategies\WriteNoAllocateChunkStrategy.cs" />
@@ -714,6 +715,7 @@
     <Compile Include="Helpers\Strategies\StreamFactory\ReadStreamStreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\StreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\StreamNotFoundException.cs" />
+    <Compile Include="Helpers\Strategies\WriteAggregateJobsHelperStrategy.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\WriteRandomAccessStreamFactory.cs" />
     <Compile Include="Helpers\Strategies\StreamFactory\WriteStreamStreamFactory.cs" />
     <Compile Include="Helpers\Strategies\WriteStreamHelperStrategy.cs" />

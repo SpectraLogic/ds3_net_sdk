@@ -50,6 +50,12 @@ namespace Ds3.Helpers
         {
             ds3WriteJobOptions = ds3WriteJobOptions ?? new Ds3WriteJobOptions();
 
+            if (helperStrategy != null && helperStrategy is WriteAggregateJobsHelperStrategy)
+            {
+                //make sure that aggregating is marked as true on the request
+                ds3WriteJobOptions.Aggregating = true;
+            }
+
             var request = new PutBulkJobSpectraS3Request(bucket, VerifyObjectCount(objectsToWrite));
 
             UpdateWriteJobRequest(ds3WriteJobOptions, request);
@@ -76,7 +82,7 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy(_retryAfter, ds3WriteJobOptions.Aggregating ?? false);
+                helperStrategy = new WriteRandomAccessHelperStrategy(_retryAfter);
             }
 
             return FullObjectJob.Create(
@@ -275,13 +281,39 @@ namespace Ds3.Helpers
 
             if (helperStrategy == null)
             {
-                helperStrategy = new WriteRandomAccessHelperStrategy(_retryAfter, false);
+                helperStrategy = new WriteRandomAccessHelperStrategy(_retryAfter);
+            }
+            else if (helperStrategy is WriteAggregateJobsHelperStrategy)
+            {
+                throw new InvalidOperationException(Resources.UseRecoverAggregatedWriteJob);
             }
 
             return FullObjectJob.Create(
                 _client,
                 jobResponse,
                 helperStrategy,
+                new WriteTransferStrategy()
+                );
+        }
+
+        public IJob RecoverAggregatedWriteJob(Guid jobId, IEnumerable<Ds3Object> objectsToRecover)
+        {
+            var jobResponse = _client.ModifyJobSpectraS3(new ModifyJobSpectraS3Request(jobId)).ResponsePayload;
+
+            if (jobResponse.Status == JobStatus.COMPLETED)
+            {
+                throw new InvalidOperationException(Resources.JobCompletedException);
+            }
+
+            if (jobResponse.RequestType != JobTypePut)
+            {
+                throw new InvalidOperationException(Resources.ExpectedPutJobButWasGetJobException);
+            }
+
+            return FullObjectJob.Create(
+                _client,
+                jobResponse,
+                new WriteAggregateJobsHelperStrategy(objectsToRecover, _retryAfter),
                 new WriteTransferStrategy()
                 );
         }

@@ -136,6 +136,26 @@ namespace TestDs3.Helpers
             };
         }
 
+        public static Objects Chunk1Filtered(Guid? nodeId, bool firstInCache, bool secondInCache)
+        {
+            return new Objects
+            {
+                ChunkId = ChunkId1,
+                ChunkNumber = 1,
+                NodeId = nodeId,
+                ObjectsList = new[]
+                {
+                    new BulkObject
+                    {
+                        Name = "foo",
+                        Length = 10,
+                        Offset = 0,
+                        InCache = secondInCache
+                    },
+                }
+            };
+        }
+
         public static Objects Chunk2(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
             return new Objects
@@ -162,6 +182,26 @@ namespace TestDs3.Helpers
                 }
             };
         }
+        public static Objects Chunk2Filtered(Guid? nodeId, bool firstInCache, bool secondInCache)
+        {
+            return new Objects
+            {
+                ChunkId = ChunkId2,
+                ChunkNumber = 2,
+                NodeId = nodeId,
+                ObjectsList = new[]
+                {
+                    new BulkObject
+                    {
+                        Name = "foo",
+                        Length = 10,
+                        Offset = 10,
+                        InCache = firstInCache
+                    }
+                }
+            };
+        }
+
 
         public static Objects Chunk3(Guid? nodeId, bool firstInCache, bool secondInCache)
         {
