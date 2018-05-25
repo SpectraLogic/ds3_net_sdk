@@ -14,13 +14,15 @@
  */
 
 using System;
-
+using System.Diagnostics;
 using Ds3.Runtime;
 
 namespace Ds3
 {
     public class Ds3Builder
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3", "set in config file");
+
         private readonly Credentials _creds;
         private readonly Uri _endpoint;
         private Uri _proxy;
@@ -149,6 +151,20 @@ namespace Ds3
             if (IsHttpsScheme() && RuntimeUtils.IsRunningOnMono())
             {
                 throw new Exception(Resources.HttpsNotSupportedOnMono);
+            }
+
+            if (Log.TraceVerbose)
+            {
+                Trace.TraceInformation("Creating network layer with:\n" +
+"\tendpoint = {0}\n" +
+"\taccessId = {1}\n" +
+"\tredirectRetryCount = {2}\n" +
+"\tcopyBufferSize = {3}\n" +
+"\treadWriteTimeout = {4}\n" +
+"\trequestTimeout = {5}\n" +
+"\tconnectionLimit = {6}\n" +
+"\tproxy = {7}",
+_endpoint, _creds.AccessId, _redirectRetryCount, _copyBufferSize, _readWriteTimeout, _requestTimeout, _connectionLimit, _proxy);
             }
 
             var netLayer = new Network(
