@@ -28,8 +28,8 @@ namespace Ds3
         private Uri _proxy;
         private int _redirectRetryCount = 5;
         private int _copyBufferSize = Network.DefaultCopyBufferSize;
-        private int _readWriteTimeout = 60 * 60 * 1000;
-        private int _requestTimeout = 60 * 60 * 1000;
+        private int _readWriteTimeout = 12 * 60 * 60 * 1000; // 12H
+        private int _requestTimeout = 12 * 60 * 60 * 1000; // 12H
         private int _connectionLimit = 12;
 
         /// <summary>
