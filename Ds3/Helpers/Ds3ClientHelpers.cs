@@ -23,11 +23,14 @@ using System.Threading;
 using Ds3.Helpers.Strategies;
 using Ds3.Helpers.TransferStrategies;
 using Ds3.Runtime;
+using System.Diagnostics;
 
 namespace Ds3.Helpers
 {
     public class Ds3ClientHelpers : IDs3ClientHelpers
     {
+        private static readonly TraceSwitch Log = new TraceSwitch("Ds3.Helpers", "set in config file");
+
         private readonly IDs3Client _client;
         private const JobRequestType JobTypePut = JobRequestType.PUT;
         private const JobRequestType JobTypeGet = JobRequestType.GET;
@@ -44,6 +47,16 @@ namespace Ds3.Helpers
             _objectTransferAttempts = objectTransferAttempts;
             _jobRetries = jobRetries;
             _jobWaitTime = jobWaitTime;
+
+            if (Log.TraceVerbose)
+            {
+                Trace.TraceInformation("Building Client Helpers with:\n" +
+"\tretryAfter = {0}\n" +
+"\tobjectTransferAttempts = {1}\n" +
+"\tjobRetries = {2}\n" +
+"\tjobWaitTime = {3}\n",
+retryAfter, objectTransferAttempts, jobRetries, jobWaitTime);
+            }
         }
 
         public IJob StartWriteJob(string bucket, IEnumerable<Ds3Object> objectsToWrite, Ds3WriteJobOptions ds3WriteJobOptions  = null, IHelperStrategy < string> helperStrategy = null)
