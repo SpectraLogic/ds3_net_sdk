@@ -1,0 +1,5 @@
+var class_ds3_1_1_calls_1_1_put_tape_partition_failure_notification_registration_spectra_s3_response =
+[
+    [ "PutTapePartitionFailureNotificationRegistrationSpectraS3Response", "class_ds3_1_1_calls_1_1_put_tape_partition_failure_notification_registration_spectra_s3_response.html#aa0345866dd39c0726c0d1fd6c13512d6", null ],
+    [ "ResponsePayload", "class_ds3_1_1_calls_1_1_put_tape_partition_failure_notification_registration_spectra_s3_response.html#ac7a7d734b181f269163c4937b6915646", null ]
+];

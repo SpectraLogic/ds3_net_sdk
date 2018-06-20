@@ -1,0 +1,26 @@
+var class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request =
+[
+    [ "RegisterDs3TargetSpectraS3Request", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a3cd7948faad5b376ea666132f2a2a66d", null ],
+    [ "WithAccessControlReplication", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#aed6feb36fe4ec3e4442b05f4c8f3d34e", null ],
+    [ "WithDataPathHttps", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a44ed0c65df2ea24a05a80a990a0b1268", null ],
+    [ "WithDataPathPort", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a129ff913952fa391e3c30ea82a865f5f", null ],
+    [ "WithDataPathProxy", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a59e7dc349486d4fd353eabc8bca47eee", null ],
+    [ "WithDataPathVerifyCertificate", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a5654cca6093ca91343dda44066bc3c7a", null ],
+    [ "WithDefaultReadPreference", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#afc8ec7620e7563d0abc4d17fafb2c4e2", null ],
+    [ "WithPermitGoingOutOfSync", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#af0fe6bec402dc371329df4f58f879a92", null ],
+    [ "WithReplicatedUserDefaultDataPolicy", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a26367311b92f20caf5d99620227bd77c", null ],
+    [ "AccessControlReplication", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#ab7afe4e6bffc0905eb178b19054133b6", null ],
+    [ "AdminAuthId", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a4298b44720e4504ad59d0959b19dd53b", null ],
+    [ "AdminSecretKey", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a212631e92ff4d2603322444d6d931ebf", null ],
+    [ "DataPathEndPoint", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a9bffe3d774b292ab8a1cba821eee82ae", null ],
+    [ "DataPathHttps", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a8bd11f8d45ddf6b4158a3049673456f0", null ],
+    [ "DataPathPort", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#ac23dcb8e99003f2de49062baa8e0d21b", null ],
+    [ "DataPathProxy", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#af55d5436f6ae114ef40b853602d1d939", null ],
+    [ "DataPathVerifyCertificate", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a36f7b92642515620602f42c1e460fe90", null ],
+    [ "DefaultReadPreference", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a65a09942cf6e9ddc31fc3e812335d94c", null ],
+    [ "Name", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a8efacb387521a95e0f5b8768266514bd", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#abf437f4978dda697f0015a4932093dfd", null ],
+    [ "PermitGoingOutOfSync", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#a83dce274d84b1847755be3bb5dd82b24", null ],
+    [ "ReplicatedUserDefaultDataPolicy", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#ac68a0cf1fd1cc5991070e30b87fdad4c", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_register_ds3_target_spectra_s3_request.html#aa805d95b8dd81a11d823745c91bb4cb1", null ]
+];
