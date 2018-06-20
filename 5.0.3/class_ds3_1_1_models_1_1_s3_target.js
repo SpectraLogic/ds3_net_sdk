@@ -1,0 +1,25 @@
+var class_ds3_1_1_models_1_1_s3_target =
+[
+    [ "AccessKey", "class_ds3_1_1_models_1_1_s3_target.html#a6f836b39f48cda57631ef335c7b179e2", null ],
+    [ "AutoVerifyFrequencyInDays", "class_ds3_1_1_models_1_1_s3_target.html#aa46aebfa4d16406cfb310e378f54e0d0", null ],
+    [ "CloudBucketPrefix", "class_ds3_1_1_models_1_1_s3_target.html#a01fe358568a408960c8b0d6afb282b4b", null ],
+    [ "CloudBucketSuffix", "class_ds3_1_1_models_1_1_s3_target.html#a7272a53262f3a786ed7824dd20880f11", null ],
+    [ "DataPathEndPoint", "class_ds3_1_1_models_1_1_s3_target.html#ac6ccfe4411fd2a3bb90b678cb9bdcbe0", null ],
+    [ "DefaultReadPreference", "class_ds3_1_1_models_1_1_s3_target.html#acb88809df2f276d03aaf37fe51e7ec09", null ],
+    [ "Https", "class_ds3_1_1_models_1_1_s3_target.html#a0c94b5a89ff6ef85e3a9a1af47482d51", null ],
+    [ "Id", "class_ds3_1_1_models_1_1_s3_target.html#a3d3e5ea91516a1917cae59dc3570e099", null ],
+    [ "LastFullyVerified", "class_ds3_1_1_models_1_1_s3_target.html#afb6e40b10623148735f00044f9026d2b", null ],
+    [ "Name", "class_ds3_1_1_models_1_1_s3_target.html#a59e4df1d6208d70351791888e6aa4dbe", null ],
+    [ "OfflineDataStagingWindowInTb", "class_ds3_1_1_models_1_1_s3_target.html#ae98cb2325e010ad862b55d1a378e8e29", null ],
+    [ "PermitGoingOutOfSync", "class_ds3_1_1_models_1_1_s3_target.html#a6e7994d09d87ebcb1eaf632d41237b8b", null ],
+    [ "ProxyDomain", "class_ds3_1_1_models_1_1_s3_target.html#a48bba5e69040c5f4d73b3517b537274d", null ],
+    [ "ProxyHost", "class_ds3_1_1_models_1_1_s3_target.html#a9dd37c61a94b74d5e44ff763d654cb3b", null ],
+    [ "ProxyPassword", "class_ds3_1_1_models_1_1_s3_target.html#ac07c2e4f21db9750314a190050dfcfbd", null ],
+    [ "ProxyPort", "class_ds3_1_1_models_1_1_s3_target.html#a4ebd76c52ef7747fb4b63e7f4b074f4b", null ],
+    [ "ProxyUsername", "class_ds3_1_1_models_1_1_s3_target.html#aed2f88ca2d2b0f8249a8a61d4a637fb5", null ],
+    [ "Quiesced", "class_ds3_1_1_models_1_1_s3_target.html#a1341f77fc7c882d2ab8c1faa26ba2c0c", null ],
+    [ "Region", "class_ds3_1_1_models_1_1_s3_target.html#aab24f3b8ed24ef682c5a019d58b9a1c8", null ],
+    [ "SecretKey", "class_ds3_1_1_models_1_1_s3_target.html#a46910fd2520c76ef01b4a7058bbf91b9", null ],
+    [ "StagedDataExpirationInDays", "class_ds3_1_1_models_1_1_s3_target.html#a85b08f446334c0c8361f9785c4fddabf", null ],
+    [ "State", "class_ds3_1_1_models_1_1_s3_target.html#a20d0d582df6fc35ab59763baa256700e", null ]
+];

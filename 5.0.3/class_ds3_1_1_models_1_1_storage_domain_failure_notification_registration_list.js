@@ -1,0 +1,4 @@
+var class_ds3_1_1_models_1_1_storage_domain_failure_notification_registration_list =
+[
+    [ "StorageDomainFailureNotificationRegistrations", "class_ds3_1_1_models_1_1_storage_domain_failure_notification_registration_list.html#a9650926385b83d779b2ae07467e9f7ce", null ]
+];
