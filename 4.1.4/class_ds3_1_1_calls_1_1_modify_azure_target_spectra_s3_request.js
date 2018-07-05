@@ -1,0 +1,27 @@
+var class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request =
+[
+    [ "ModifyAzureTargetSpectraS3Request", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a46f072d0e4252a1bb0e0bcc5795747c6", null ],
+    [ "WithAccountKey", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#ab5b5d447fdf9ec7687e669980ed9c169", null ],
+    [ "WithAccountName", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a84931f7f83eef6da29c008c58816015d", null ],
+    [ "WithAutoVerifyFrequencyInDays", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a8b5247adb05dcace55667ab2cac5a258", null ],
+    [ "WithCloudBucketPrefix", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a199f6dfe63bf04decdaf08049dd67dcd", null ],
+    [ "WithCloudBucketSuffix", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a900edb410963a6c7990a2d837616fa4e", null ],
+    [ "WithDefaultReadPreference", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a64fbb2d860ef60a14d66344057334a9b", null ],
+    [ "WithHttps", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#ab24680f6f73647fcb4831f49c880014f", null ],
+    [ "WithName", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a476827102e6435a26c06c70e91761dcc", null ],
+    [ "WithPermitGoingOutOfSync", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a76435e22806dd8c122a99953c29c203e", null ],
+    [ "WithQuiesced", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a50d47c32d9132f30a1f18bf5ac67b626", null ],
+    [ "AccountKey", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a44f8d3fc15965e7cb324a1d5c86e883f", null ],
+    [ "AccountName", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a7eca78f7a32fdf0af1f694d85225eb83", null ],
+    [ "AutoVerifyFrequencyInDays", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#aa8be7a4a896c00f8794c1acec579ecf6", null ],
+    [ "AzureTarget", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a4c742c72c7ba59e42bddf28de148c5fb", null ],
+    [ "CloudBucketPrefix", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a612c5d825bd86e739c8977d6a42c377b", null ],
+    [ "CloudBucketSuffix", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a47fca58e270e8f7c7d8c3e6e0e42f338", null ],
+    [ "DefaultReadPreference", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a7d99b5d83a018606488053c979084efa", null ],
+    [ "Https", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#afc19b7fef4ffdc5089fafa14345955fc", null ],
+    [ "Name", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#aa32d7fa55fce16eb3de39c1a8b6e4ddb", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#aa935ba2f5aabea3f48c2394a18c47207", null ],
+    [ "PermitGoingOutOfSync", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a2eb55b97889731850c8e1ac72bb19de8", null ],
+    [ "Quiesced", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a51eb403bdee414f5ebbb968f022b8e3e", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_modify_azure_target_spectra_s3_request.html#a6ee95634bd430557969b99b783f15dfc", null ]
+];

@@ -1,0 +1,5 @@
+var class_ds3_1_1_calls_1_1_put_job_creation_failed_notification_registration_spectra_s3_response =
+[
+    [ "PutJobCreationFailedNotificationRegistrationSpectraS3Response", "class_ds3_1_1_calls_1_1_put_job_creation_failed_notification_registration_spectra_s3_response.html#ae1644bc670731ae4834ace40bc4e1f2f", null ],
+    [ "ResponsePayload", "class_ds3_1_1_calls_1_1_put_job_creation_failed_notification_registration_spectra_s3_response.html#ad853228ff4f181a6af69cbd94b3e4b6a", null ]
+];
