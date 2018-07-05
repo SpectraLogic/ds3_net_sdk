@@ -1,0 +1,5 @@
+var class_ds3_1_1_calls_1_1_verify_physical_placement_for_objects_with_full_details_spectra_s3_response =
+[
+    [ "VerifyPhysicalPlacementForObjectsWithFullDetailsSpectraS3Response", "class_ds3_1_1_calls_1_1_verify_physical_placement_for_objects_with_full_details_spectra_s3_response.html#adcb459aed2ea4eff6dfd78fc496bbaf6", null ],
+    [ "ResponsePayload", "class_ds3_1_1_calls_1_1_verify_physical_placement_for_objects_with_full_details_spectra_s3_response.html#ad3db254945c03d7c73bbf60377eb36e3", null ]
+];

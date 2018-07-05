@@ -1,0 +1,25 @@
+var class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request =
+[
+    [ "GetTapeFailuresSpectraS3Request", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a63e0019e9dc1eaa7f57ad3b3e76c8f43", null ],
+    [ "WithErrorMessage", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a26bc1941e7aaad7eab3a164e507ebba4", null ],
+    [ "WithLastPage", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#ad713496d500a6b479093f0f1e2cc98f1", null ],
+    [ "WithPageLength", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a1b00a882f311cd536a337d2cad210038", null ],
+    [ "WithPageOffset", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#ac8ceff203f9dff72d44a3a6419e05bef", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a6a7d877bac7b6a78004b3d04e0719a21", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a206dd7c4f234668e6f9f7a1edb0a2072", null ],
+    [ "WithTapeDriveId", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a2b02dbfc950e911e2fd3b0cfd6641ecf", null ],
+    [ "WithTapeDriveId", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a5bccc4b1faf97d15f4de0883f7071b08", null ],
+    [ "WithTapeId", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a4606d4768f5483be0a78a4893fc81861", null ],
+    [ "WithTapeId", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a30b3e11f5338e98a7af26918e6a10a87", null ],
+    [ "WithType", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#acda73f197802f2b9f5fc76f93f86bd80", null ],
+    [ "ErrorMessage", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#aecbe99b5c4c896d01c24310f32d79ebb", null ],
+    [ "LastPage", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a0684b51065fddb470e13a1e5d5ef36e5", null ],
+    [ "PageLength", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#afaef34cd41f26bd6904a6bbf62c84bfc", null ],
+    [ "PageOffset", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a229cd436912b2fe16078cfadd6e6ac5b", null ],
+    [ "PageStartMarker", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a39f19e908ea68a518a39e9f05a21309d", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#af95c5891109bdcc6f632b241178bdfbf", null ],
+    [ "TapeDriveId", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a66a470112884f72b3a2dd986954bc029", null ],
+    [ "TapeId", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a4c032f622311166e3b5d394212ebbace", null ],
+    [ "Type", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#a6fc3b18e1a987ac2aa431c2d54988b4f", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_get_tape_failures_spectra_s3_request.html#aa595b50ded1bf2a5e1c86e8e01fd43be", null ]
+];

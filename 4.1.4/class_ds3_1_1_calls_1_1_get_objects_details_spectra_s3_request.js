@@ -1,0 +1,26 @@
+var class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request =
+[
+    [ "GetObjectsDetailsSpectraS3Request", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a5e20bbae33837664e5692152157ce5da", null ],
+    [ "WithBucketId", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#ad6636efe7439d34cf0affb45ce4304a9", null ],
+    [ "WithBucketId", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#ae5ea9fd7d445b45c2523fe78ce4341c3", null ],
+    [ "WithLastPage", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#aff55742b31b2c9573fd7a68aa69136fc", null ],
+    [ "WithLatest", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#acfdc1306c13b67193c21de9e33488cd6", null ],
+    [ "WithName", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#ae39418ce3ca9bc371a940f2edb3b80d5", null ],
+    [ "WithPageLength", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a551bb9cd28ca81cd177d80229238bab4", null ],
+    [ "WithPageOffset", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#acb18449ba80d7f11d4b32de6ad51ece6", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a17a6bb232dcd7e5ac937f55c9487e3ad", null ],
+    [ "WithPageStartMarker", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a6f966f5e00092b8d5c671f221e98e2f3", null ],
+    [ "WithType", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a5f57473d2f509388d31664df79bec10f", null ],
+    [ "WithVersion", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#aba79d7c40ce4bae5a74d56c9e0f5330d", null ],
+    [ "BucketId", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#ad72dc69307fc0e08588f6ad7d2790229", null ],
+    [ "LastPage", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a3405f11af94c763c4c6759ab2b87cf18", null ],
+    [ "Latest", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#aed6b6b72c2896578b480e7249bfdab36", null ],
+    [ "Name", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a43653e34b4ef015affb5e5a5cbcac828", null ],
+    [ "PageLength", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a182e6bb43228341c6b5b1927279850bd", null ],
+    [ "PageOffset", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#ac055fc8d2c504f4cf1d198dd9c0f3d4b", null ],
+    [ "PageStartMarker", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a15f4e7e29d8ff02f5c1ea75812308d70", null ],
+    [ "Path", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#af343d88367e96d1af64f3ad6d43396de", null ],
+    [ "Type", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a204d05614be9a442aa39665e1d339b72", null ],
+    [ "Verb", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a3831a5c1252e49c7f19650dc8a83a728", null ],
+    [ "Version", "class_ds3_1_1_calls_1_1_get_objects_details_spectra_s3_request.html#a67579a8f8b86708e1b47beb71202f9cc", null ]
+];
