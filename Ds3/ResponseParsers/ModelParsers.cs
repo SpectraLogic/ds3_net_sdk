@@ -492,7 +492,7 @@ namespace Ds3.ResponseParsers
                 Latest = ParseBool(element.Element("Latest")),
                 Name = ParseNullableString(element.Element("Name")),
                 Type = ParseS3ObjectType(element.Element("Type")),
-                Version = ParseLong(element.Element("Version"))
+                Version = ParseNullableLong(element.Element("Version"))
             };
         }
 
@@ -1523,7 +1523,7 @@ namespace Ds3.ResponseParsers
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
                 Offset = ParseLong(element.AttributeText("Offset")),
                 PhysicalPlacement = ParseNullablePhysicalPlacement(element.Element("PhysicalPlacement")),
-                Version = ParseLong(element.AttributeText("Version"))
+                Version = ParseNullableLong(element.AttributeTextOrNull("Version"))
             };
         }
 
@@ -2064,7 +2064,7 @@ namespace Ds3.ResponseParsers
                 Owner = ParseNullableString(element.Element("Owner")),
                 Size = ParseLong(element.Element("Size")),
                 Type = ParseS3ObjectType(element.Element("Type")),
-                Version = ParseLong(element.Element("Version"))
+                Version = ParseNullableLong(element.Element("Version"))
             };
         }
 
