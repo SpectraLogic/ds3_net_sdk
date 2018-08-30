@@ -31,18 +31,6 @@ namespace Ds3.Calls
 
         
         
-        public DeleteFolderRecursivelySpectraS3Request(Guid bucketId, string folder)
-        {
-            this.Folder = folder;
-            this.BucketId = bucketId.ToString();
-            
-            this.QueryParams.Add("bucket_id", bucketId.ToString());
-
-            this.QueryParams.Add("recursive", null);
-
-        }
-
-        
         public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder)
         {
             this.Folder = folder;
