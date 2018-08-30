@@ -1739,7 +1739,8 @@ namespace Ds3.ResponseParsers
             {
                 Code = ParseNullableString(element.Element("Code")),
                 Key = ParseNullableString(element.Element("Key")),
-                Message = ParseNullableString(element.Element("Message"))
+                Message = ParseNullableString(element.Element("Message")),
+                VersionId = ParseNullableGuid(element.Element("VersionId"))
             };
         }
 
@@ -2038,7 +2039,8 @@ namespace Ds3.ResponseParsers
         {
             return new S3ObjectToDelete
             {
-                Key = ParseNullableString(element.Element("Key"))
+                Key = ParseNullableString(element.Element("Key")),
+                VersionId = ParseNullableGuid(element.Element("VersionId"))
             };
         }
 
