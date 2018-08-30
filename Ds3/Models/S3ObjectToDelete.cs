@@ -23,5 +23,6 @@ namespace Ds3.Models
     public class S3ObjectToDelete
     {
         public string Key { get; set; }
+        public Guid? VersionId { get; set; }
     }
 }

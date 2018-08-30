@@ -28,42 +28,29 @@ namespace Ds3.Calls
         
         public string BucketName { get; private set; }
 
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> FullObjects { get; private set; }
+
+        public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
 
         
-        private string _storageDomainId;
-        public string StorageDomainId
+        private string _storageDomain;
+        public string StorageDomain
         {
-            get { return _storageDomainId; }
-            set { WithStorageDomainId(value); }
+            get { return _storageDomain; }
+            set { WithStorageDomain(value); }
         }
 
         
-        public VerifyPhysicalPlacementForObjectsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
+        public VerifyPhysicalPlacementForObjectsSpectraS3Request WithStorageDomain(string storageDomain)
         {
-            this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null)
+            this._storageDomain = storageDomain;
+            if (storageDomain != null)
             {
-                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+                this.QueryParams.Add("storage_domain", storageDomain);
             }
             else
             {
-                this.QueryParams.Remove("storage_domain_id");
-            }
-            return this;
-        }
-
-        
-        public VerifyPhysicalPlacementForObjectsSpectraS3Request WithStorageDomainId(string storageDomainId)
-        {
-            this._storageDomainId = storageDomainId;
-            if (storageDomainId != null)
-            {
-                this.QueryParams.Add("storage_domain_id", storageDomainId);
-            }
-            else
-            {
-                this.QueryParams.Remove("storage_domain_id");
+                this.QueryParams.Remove("storage_domain");
             }
             return this;
         }
@@ -71,12 +58,23 @@ namespace Ds3.Calls
 
         
         
-        public VerifyPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> objects)
+        public VerifyPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
         {
             this.BucketName = bucketName;
-            this.Objects = objects.ToList();
+            this.FullObjects = fullObjects.ToList();
+            this.PartialObjects = partialObjects.ToList();
             this.QueryParams.Add("operation", "verify_physical_placement");
             
+        }
+
+        public VerifyPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> ds3Objects)
+            : this(bucketName, ds3Objects, Enumerable.Empty<Ds3PartialObject>())
+        {
+        }
+
+        public VerifyPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<string> objectNames)
+            : this(bucketName, objectNames.Select(name => new Ds3Object(name, null)), Enumerable.Empty<Ds3PartialObject>())
+        {
         }
 
         internal override HttpVerb Verb
@@ -97,7 +95,7 @@ namespace Ds3.Calls
 
         internal override Stream GetContentStream()
         {
-            return RequestPayloadUtil.MarshalDs3ObjectNames(this.Objects);
+            return RequestPayloadUtil.MarshalFullAndPartialObjects(this.FullObjects, this.PartialObjects);
         }
 
         internal override long GetContentLength()

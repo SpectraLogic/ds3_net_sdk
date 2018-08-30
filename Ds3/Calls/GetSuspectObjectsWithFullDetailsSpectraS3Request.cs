@@ -31,11 +31,11 @@ namespace Ds3.Calls
             set { WithBucketId(value); }
         }
 
-        private string _storageDomainId;
-        public string StorageDomainId
+        private string _storageDomain;
+        public string StorageDomain
         {
-            get { return _storageDomainId; }
-            set { WithStorageDomainId(value); }
+            get { return _storageDomain; }
+            set { WithStorageDomain(value); }
         }
 
         
@@ -69,31 +69,16 @@ namespace Ds3.Calls
         }
 
         
-        public GetSuspectObjectsWithFullDetailsSpectraS3Request WithStorageDomainId(Guid? storageDomainId)
+        public GetSuspectObjectsWithFullDetailsSpectraS3Request WithStorageDomain(string storageDomain)
         {
-            this._storageDomainId = storageDomainId.ToString();
-            if (storageDomainId != null)
+            this._storageDomain = storageDomain;
+            if (storageDomain != null)
             {
-                this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+                this.QueryParams.Add("storage_domain", storageDomain);
             }
             else
             {
-                this.QueryParams.Remove("storage_domain_id");
-            }
-            return this;
-        }
-
-        
-        public GetSuspectObjectsWithFullDetailsSpectraS3Request WithStorageDomainId(string storageDomainId)
-        {
-            this._storageDomainId = storageDomainId;
-            if (storageDomainId != null)
-            {
-                this.QueryParams.Add("storage_domain_id", storageDomainId);
-            }
-            else
-            {
-                this.QueryParams.Remove("storage_domain_id");
+                this.QueryParams.Remove("storage_domain");
             }
             return this;
         }

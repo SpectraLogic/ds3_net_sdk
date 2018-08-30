@@ -23,7 +23,7 @@ namespace Ds3.Calls
     public class EjectStorageDomainSpectraS3Request : Ds3Request
     {
         
-        public string StorageDomainId { get; private set; }
+        public string StorageDomain { get; private set; }
 
         
         private string _bucketId;
@@ -110,22 +110,12 @@ namespace Ds3.Calls
 
         
         
-        public EjectStorageDomainSpectraS3Request(Guid storageDomainId)
+        public EjectStorageDomainSpectraS3Request(string storageDomain)
         {
-            this.StorageDomainId = storageDomainId.ToString();
+            this.StorageDomain = storageDomain;
             this.QueryParams.Add("operation", "eject");
             
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
-
-        }
-
-        
-        public EjectStorageDomainSpectraS3Request(string storageDomainId)
-        {
-            this.StorageDomainId = storageDomainId;
-            this.QueryParams.Add("operation", "eject");
-            
-            this.QueryParams.Add("storage_domain_id", storageDomainId);
+            this.QueryParams.Add("storage_domain", storageDomain);
 
         }
 

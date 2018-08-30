@@ -14,47 +14,30 @@
  */
 
 // This code is auto-generated, do not modify
+
+using Ds3.Calls;
 using Ds3.Models;
-using System;
+using Ds3.Runtime;
+using System.Linq;
 using System.Net;
+using System.Xml.Linq;
 
-namespace Ds3.Calls
+namespace Ds3.ResponseParsers
 {
-    public class DeleteFolderRecursivelySpectraS3Request : Ds3Request
+    internal class UndeleteObjectSpectraS3ResponseParser : IResponseParser<UndeleteObjectSpectraS3Request, UndeleteObjectSpectraS3Response>
     {
-        
-        public string Folder { get; private set; }
-
-        public string BucketId { get; private set; }
-
-        
-
-        
-        
-        public DeleteFolderRecursivelySpectraS3Request(string bucketId, string folder)
+        public UndeleteObjectSpectraS3Response Parse(UndeleteObjectSpectraS3Request request, IWebResponse response)
         {
-            this.Folder = folder;
-            this.BucketId = bucketId;
-            
-            this.QueryParams.Add("bucket_id", bucketId);
-
-            this.QueryParams.Add("recursive", null);
-
-        }
-
-        internal override HttpVerb Verb
-        {
-            get
+            using (response)
             {
-                return HttpVerb.DELETE;
-            }
-        }
-
-        internal override string Path
-        {
-            get
-            {
-                return "/_rest_/folder/" + Folder;
+                ResponseParseUtilities.HandleStatusCode(response, (HttpStatusCode)200);
+                using (var stream = response.GetResponseStream())
+                {
+                    return new UndeleteObjectSpectraS3Response(
+                        ModelParsers.ParseS3Object(
+                            XmlExtensions.ReadDocument(stream).ElementOrThrow("Data"))
+                    );
+                }
             }
         }
     }

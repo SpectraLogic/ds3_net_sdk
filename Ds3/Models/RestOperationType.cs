@@ -38,6 +38,7 @@ namespace Ds3.Models
         REGENERATE_SECRET_KEY,
         START_BULK_GET,
         START_BULK_PUT,
+        START_BULK_STAGE,
         START_BULK_VERIFY,
         VERIFY,
         VERIFY_SAFE_TO_START_BULK_PUT,

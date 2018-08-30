@@ -22,6 +22,7 @@ namespace Ds3.Models
 {
     public class TapePartition
     {
+        public bool AutoCompactionEnabled { get; set; }
         public TapeDriveType? DriveType { get; set; }
         public string ErrorMessage { get; set; }
         public Guid Id { get; set; }
@@ -31,7 +32,6 @@ namespace Ds3.Models
         public int MinimumWriteReservedDrives { get; set; }
         public string Name { get; set; }
         public Quiesced Quiesced { get; set; }
-        public string SerialId { get; set; }
         public string SerialNumber { get; set; }
         public TapePartitionState State { get; set; }
     }

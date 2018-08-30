@@ -30,6 +30,6 @@ namespace Ds3.Models
         public string Name { get; set; }
         public long Offset { get; set; }
         public PhysicalPlacement PhysicalPlacement { get; set; }
-        public long Version { get; set; }
+        public Guid VersionId { get; set; }
     }
 }

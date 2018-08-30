@@ -26,6 +26,109 @@ namespace Ds3.Calls
         public string TapeId { get; private set; }
 
         
+        private bool? _lastPage;
+        public bool? LastPage
+        {
+            get { return _lastPage; }
+            set { WithLastPage(value); }
+        }
+
+        private int? _pageLength;
+        public int? PageLength
+        {
+            get { return _pageLength; }
+            set { WithPageLength(value); }
+        }
+
+        private int? _pageOffset;
+        public int? PageOffset
+        {
+            get { return _pageOffset; }
+            set { WithPageOffset(value); }
+        }
+
+        private string _pageStartMarker;
+        public string PageStartMarker
+        {
+            get { return _pageStartMarker; }
+            set { WithPageStartMarker(value); }
+        }
+
+        
+        public GetBlobsOnTapeSpectraS3Request WithLastPage(bool? lastPage)
+        {
+            this._lastPage = lastPage;
+            if (lastPage != null)
+            {
+                this.QueryParams.Add("last_page", lastPage.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("last_page");
+            }
+            return this;
+        }
+
+        
+        public GetBlobsOnTapeSpectraS3Request WithPageLength(int? pageLength)
+        {
+            this._pageLength = pageLength;
+            if (pageLength != null)
+            {
+                this.QueryParams.Add("page_length", pageLength.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_length");
+            }
+            return this;
+        }
+
+        
+        public GetBlobsOnTapeSpectraS3Request WithPageOffset(int? pageOffset)
+        {
+            this._pageOffset = pageOffset;
+            if (pageOffset != null)
+            {
+                this.QueryParams.Add("page_offset", pageOffset.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_offset");
+            }
+            return this;
+        }
+
+        
+        public GetBlobsOnTapeSpectraS3Request WithPageStartMarker(Guid? pageStartMarker)
+        {
+            this._pageStartMarker = pageStartMarker.ToString();
+            if (pageStartMarker != null)
+            {
+                this.QueryParams.Add("page_start_marker", pageStartMarker.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
+        }
+
+        
+        public GetBlobsOnTapeSpectraS3Request WithPageStartMarker(string pageStartMarker)
+        {
+            this._pageStartMarker = pageStartMarker;
+            if (pageStartMarker != null)
+            {
+                this.QueryParams.Add("page_start_marker", pageStartMarker);
+            }
+            else
+            {
+                this.QueryParams.Remove("page_start_marker");
+            }
+            return this;
+        }
+
 
         
         

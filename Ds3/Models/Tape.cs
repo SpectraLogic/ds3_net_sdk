@@ -42,7 +42,7 @@ namespace Ds3.Models
         public TapeState? PreviousState { get; set; }
         public string SerialNumber { get; set; }
         public TapeState State { get; set; }
-        public Guid? StorageDomainId { get; set; }
+        public Guid? StorageDomainMemberId { get; set; }
         public bool TakeOwnershipPending { get; set; }
         public long? TotalRawCapacity { get; set; }
         public string Type { get; set; }

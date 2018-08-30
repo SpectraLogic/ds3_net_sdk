@@ -119,13 +119,7 @@ namespace IntegrationTestDS3
             {
                 return;
             }
-
-            IDs3ClientHelpers helpers = new Ds3ClientHelpers(client);
-
-            var objs = helpers.ListObjects(bucketName);
-
-            client.DeleteObjects(new DeleteObjectsRequest(bucketName, objs));
-            client.DeleteBucket(new DeleteBucketRequest(bucketName));
+            client.DeleteBucketSpectraS3(new DeleteBucketSpectraS3Request(bucketName).WithForce(true));
         }
 
         public static string ComputeSha1(string fileName)

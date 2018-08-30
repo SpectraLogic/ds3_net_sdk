@@ -30,11 +30,33 @@ namespace Ds3.Calls
         public string TapeType { get; private set; }
 
         
+        private int? _autoCompactionThreshold;
+        public int? AutoCompactionThreshold
+        {
+            get { return _autoCompactionThreshold; }
+            set { WithAutoCompactionThreshold(value); }
+        }
+
         private WritePreferenceLevel? _writePreference;
         public WritePreferenceLevel? WritePreference
         {
             get { return _writePreference; }
             set { WithWritePreference(value); }
+        }
+
+        
+        public PutTapeStorageDomainMemberSpectraS3Request WithAutoCompactionThreshold(int? autoCompactionThreshold)
+        {
+            this._autoCompactionThreshold = autoCompactionThreshold;
+            if (autoCompactionThreshold != null)
+            {
+                this.QueryParams.Add("auto_compaction_threshold", autoCompactionThreshold.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("auto_compaction_threshold");
+            }
+            return this;
         }
 
         
