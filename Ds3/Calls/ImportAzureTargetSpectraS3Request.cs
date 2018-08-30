@@ -28,13 +28,6 @@ namespace Ds3.Calls
         public string CloudBucketName { get; private set; }
 
         
-        private ImportConflictResolutionMode? _conflictResolutionMode;
-        public ImportConflictResolutionMode? ConflictResolutionMode
-        {
-            get { return _conflictResolutionMode; }
-            set { WithConflictResolutionMode(value); }
-        }
-
         private string _dataPolicyId;
         public string DataPolicyId
         {
@@ -54,21 +47,6 @@ namespace Ds3.Calls
         {
             get { return _userId; }
             set { WithUserId(value); }
-        }
-
-        
-        public ImportAzureTargetSpectraS3Request WithConflictResolutionMode(ImportConflictResolutionMode? conflictResolutionMode)
-        {
-            this._conflictResolutionMode = conflictResolutionMode;
-            if (conflictResolutionMode != null)
-            {
-                this.QueryParams.Add("conflict_resolution_mode", conflictResolutionMode.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("conflict_resolution_mode");
-            }
-            return this;
         }
 
         

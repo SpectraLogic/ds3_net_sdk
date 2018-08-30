@@ -28,9 +28,11 @@ namespace Ds3.Calls
         
         public string BucketId { get; private set; }
 
-        public string StorageDomainId { get; private set; }
+        public string StorageDomain { get; private set; }
 
-        public IEnumerable<Ds3Object> Objects { get; private set; }
+        public IEnumerable<Ds3Object> FullObjects { get; private set; }
+
+        public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
 
         
         private string _ejectLabel;
@@ -80,35 +82,47 @@ namespace Ds3.Calls
 
         
         
-        public EjectStorageDomainBlobsSpectraS3Request(Guid bucketId, IEnumerable<Ds3Object> objects, Guid storageDomainId)
+        public EjectStorageDomainBlobsSpectraS3Request(Guid bucketId, IEnumerable<Ds3Object> fullObjects, IEnumerable<Ds3PartialObject> partialObjects, string storageDomain)
         {
             this.BucketId = bucketId.ToString();
-            this.StorageDomainId = storageDomainId.ToString();
-            this.Objects = objects.ToList();
+            this.StorageDomain = storageDomain;
+            this.FullObjects = fullObjects.ToList();
+            this.PartialObjects = partialObjects.ToList();
             this.QueryParams.Add("operation", "eject");
             
             this.QueryParams.Add("blobs", null);
 
             this.QueryParams.Add("bucket_id", bucketId.ToString());
 
-            this.QueryParams.Add("storage_domain_id", storageDomainId.ToString());
+            this.QueryParams.Add("storage_domain", storageDomain);
 
         }
 
         
-        public EjectStorageDomainBlobsSpectraS3Request(string bucketId, IEnumerable<Ds3Object> objects, string storageDomainId)
+        public EjectStorageDomainBlobsSpectraS3Request(string bucketId, IEnumerable<Ds3Object> fullObjects, IEnumerable<Ds3PartialObject> partialObjects, string storageDomain)
         {
             this.BucketId = bucketId;
-            this.StorageDomainId = storageDomainId;
-            this.Objects = objects.ToList();
+            this.StorageDomain = storageDomain;
+            this.FullObjects = fullObjects.ToList();
+            this.PartialObjects = partialObjects.ToList();
             this.QueryParams.Add("operation", "eject");
             
             this.QueryParams.Add("blobs", null);
 
             this.QueryParams.Add("bucket_id", bucketId);
 
-            this.QueryParams.Add("storage_domain_id", storageDomainId);
+            this.QueryParams.Add("storage_domain", storageDomain);
 
+        }
+
+        public EjectStorageDomainBlobsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> ds3Objects, string storageDomain)
+            : this(bucketName, ds3Objects, Enumerable.Empty<Ds3PartialObject>(), storageDomain)
+        {
+        }
+
+        public EjectStorageDomainBlobsSpectraS3Request(string bucketName, IEnumerable<string> objectNames, string storageDomain)
+            : this(bucketName, objectNames.Select(name => new Ds3Object(name, null)), Enumerable.Empty<Ds3PartialObject>(), storageDomain)
+        {
         }
 
         internal override HttpVerb Verb
@@ -129,7 +143,7 @@ namespace Ds3.Calls
 
         internal override Stream GetContentStream()
         {
-            return RequestPayloadUtil.MarshalDs3ObjectNames(this.Objects);
+            return RequestPayloadUtil.MarshalFullAndPartialObjects(this.FullObjects, this.PartialObjects);
         }
 
         internal override long GetContentLength()

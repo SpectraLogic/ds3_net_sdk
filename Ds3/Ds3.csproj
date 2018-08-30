@@ -668,10 +668,14 @@
     <Compile Include="Calls\ReplicatePutJobSpectraS3Response.cs" />
     <Compile Include="Calls\ResetInstanceIdentifierSpectraS3Request.cs" />
     <Compile Include="Calls\ResetInstanceIdentifierSpectraS3Response.cs" />
+    <Compile Include="Calls\StageObjectsJobSpectraS3Request.cs" />
+    <Compile Include="Calls\StageObjectsJobSpectraS3Response.cs" />
     <Compile Include="Calls\TruncateActiveJobSpectraS3Request.cs" />
     <Compile Include="Calls\TruncateAllActiveJobsSpectraS3Request.cs" />
     <Compile Include="Calls\TruncateAllJobsSpectraS3Request.cs" />
     <Compile Include="Calls\TruncateJobSpectraS3Request.cs" />
+    <Compile Include="Calls\UndeleteObjectSpectraS3Request.cs" />
+    <Compile Include="Calls\UndeleteObjectSpectraS3Response.cs" />
     <Compile Include="Calls\Util\RequestPayloadUtil.cs" />
     <Compile Include="Calls\VerifyAllPoolsSpectraS3Request.cs" />
     <Compile Include="Calls\VerifyAllTapesSpectraS3Request.cs" />
@@ -763,6 +767,7 @@
     <Compile Include="Models\CanceledJobList.cs" />
     <Compile Include="Models\CapacitySummaryContainer.cs" />
     <Compile Include="Models\ChecksumType.cs" />
+    <Compile Include="Models\JobRestore.cs" />
     <Compile Include="Models\requestpayloads\Part.cs" />
     <Compile Include="Models\CompletedJob.cs" />
     <Compile Include="Models\CompletedJobList.cs" />
@@ -810,7 +815,6 @@
     <Compile Include="Models\GroupMemberList.cs" />
     <Compile Include="Models\HealthVerificationResult.cs" />
     <Compile Include="Models\HttpResponseFormatType.cs" />
-    <Compile Include="Models\ImportConflictResolutionMode.cs" />
     <Compile Include="Models\ImportExportConfiguration.cs" />
     <Compile Include="Models\InitiateMultipartUploadResult.cs" />
     <Compile Include="Models\Job.cs" />
@@ -1193,6 +1197,8 @@
     <Compile Include="ResponseParsers\RegisterS3TargetSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ReplicatePutJobSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ResetInstanceIdentifierSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\StageObjectsJobSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\UndeleteObjectSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyAllTapesSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyAzureTargetSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\VerifyBulkJobSpectraS3ResponseParser.cs" />

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * ******************************************************************************
  *   Copyright 2014-2017 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
@@ -13,28 +13,18 @@
  * ****************************************************************************
  */
 
-using Ds3.Helpers;
-using System;
+// This code is auto-generated, do not modify
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public sealed class Ds3PartialObject : ContextRange<string>
+    public class StageObjectsJobSpectraS3Response
     {
-        public string VersionId { get; private set; }
+        public MasterObjectList ResponsePayload { get; private set; }
 
-        public string Name
+        public StageObjectsJobSpectraS3Response(MasterObjectList responsePayload)
         {
-            get { return this.Context; }
-        }
-
-        public Ds3PartialObject(Range range, string objectName, string versionId) : base(range, objectName)
-        {
-            this.VersionId = versionId;
-        }
-
-        public Ds3PartialObject(Range range, string objectName)
-            : this(range, objectName, null)
-        {
+            this.ResponsePayload = responsePayload;
         }
     }
 }

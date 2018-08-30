@@ -526,6 +526,11 @@ namespace Ds3
             return new ReplicatePutJobSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public StageObjectsJobSpectraS3Response StageObjectsJobSpectraS3(StageObjectsJobSpectraS3Request request)
+        {
+            return new StageObjectsJobSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public GetNodeSpectraS3Response GetNodeSpectraS3(GetNodeSpectraS3Request request)
         {
             return new GetNodeSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
@@ -779,6 +784,11 @@ namespace Ds3
         public GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Response GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3(GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3Request request)
         {
             return new GetPhysicalPlacementForObjectsWithFullDetailsSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
+        public UndeleteObjectSpectraS3Response UndeleteObjectSpectraS3(UndeleteObjectSpectraS3Request request)
+        {
+            return new UndeleteObjectSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
         public VerifyPhysicalPlacementForObjectsSpectraS3Response VerifyPhysicalPlacementForObjectsSpectraS3(VerifyPhysicalPlacementForObjectsSpectraS3Request request)

@@ -205,11 +205,11 @@ namespace Ds3.ResponseParsers
                 AutoActivateTimeoutInMins = ParseNullableInt(element.Element("AutoActivateTimeoutInMins")),
                 AutoInspect = ParseAutoInspectMode(element.Element("AutoInspect")),
                 CacheAvailableRetryAfterInSeconds = ParseInt(element.Element("CacheAvailableRetryAfterInSeconds")),
-                DefaultImportConflictResolutionMode = ParseImportConflictResolutionMode(element.Element("DefaultImportConflictResolutionMode")),
                 DefaultVerifyDataAfterImport = ParseNullablePriority(element.Element("DefaultVerifyDataAfterImport")),
                 DefaultVerifyDataPriorToImport = ParseBool(element.Element("DefaultVerifyDataPriorToImport")),
                 Id = ParseGuid(element.Element("Id")),
                 InstanceId = ParseGuid(element.Element("InstanceId")),
+                IomEnabled = ParseBool(element.Element("IomEnabled")),
                 LastHeartbeat = ParseDateTime(element.Element("LastHeartbeat")),
                 PartiallyVerifyLastPercentOfTapes = ParseNullableInt(element.Element("PartiallyVerifyLastPercentOfTapes")),
                 UnavailableMediaPolicy = ParseUnavailableMediaUsagePolicy(element.Element("UnavailableMediaPolicy")),
@@ -250,7 +250,6 @@ namespace Ds3.ResponseParsers
             {
                 AlwaysForcePutJobCreation = ParseBool(element.Element("AlwaysForcePutJobCreation")),
                 AlwaysMinimizeSpanningAcrossMedia = ParseBool(element.Element("AlwaysMinimizeSpanningAcrossMedia")),
-                AlwaysReplicateDeletes = ParseBool(element.Element("AlwaysReplicateDeletes")),
                 BlobbingEnabled = ParseBool(element.Element("BlobbingEnabled")),
                 ChecksumType = ParseChecksumType(element.Element("ChecksumType")),
                 CreationDate = ParseDateTime(element.Element("CreationDate")),
@@ -261,7 +260,7 @@ namespace Ds3.ResponseParsers
                 DefaultVerifyJobPriority = ParsePriority(element.Element("DefaultVerifyJobPriority")),
                 EndToEndCrcRequired = ParseBool(element.Element("EndToEndCrcRequired")),
                 Id = ParseGuid(element.Element("Id")),
-                LtfsObjectNamingAllowed = ParseBool(element.Element("LtfsObjectNamingAllowed")),
+                MaxVersionsToKeep = ParseInt(element.Element("MaxVersionsToKeep")),
                 Name = ParseNullableString(element.Element("Name")),
                 RebuildPriority = ParsePriority(element.Element("RebuildPriority")),
                 Versioning = ParseVersioningLevel(element.Element("Versioning"))
@@ -405,6 +404,7 @@ namespace Ds3.ResponseParsers
                 Rechunked = ParseNullableDateTime(element.Element("Rechunked")),
                 Replicating = ParseBool(element.Element("Replicating")),
                 RequestType = ParseJobRequestType(element.Element("RequestType")),
+                Restore = ParseJobRestore(element.Element("Restore")),
                 Truncated = ParseBool(element.Element("Truncated")),
                 TruncatedDueToTimeout = ParseBool(element.Element("TruncatedDueToTimeout")),
                 UserId = ParseGuid(element.Element("UserId")),
@@ -494,8 +494,7 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 Latest = ParseBool(element.Element("Latest")),
                 Name = ParseNullableString(element.Element("Name")),
-                Type = ParseS3ObjectType(element.Element("Type")),
-                Version = ParseLong(element.Element("Version"))
+                Type = ParseS3ObjectType(element.Element("Type"))
             };
         }
 
@@ -570,6 +569,7 @@ namespace Ds3.ResponseParsers
         {
             return new StorageDomainMember
             {
+                AutoCompactionThreshold = ParseNullableInt(element.Element("AutoCompactionThreshold")),
                 Id = ParseGuid(element.Element("Id")),
                 PoolPartitionId = ParseNullableGuid(element.Element("PoolPartitionId")),
                 State = ParseStorageDomainMemberState(element.Element("State")),
@@ -610,6 +610,7 @@ namespace Ds3.ResponseParsers
                 AuthId = ParseNullableString(element.Element("AuthId")),
                 DefaultDataPolicyId = ParseNullableGuid(element.Element("DefaultDataPolicyId")),
                 Id = ParseGuid(element.Element("Id")),
+                MaxBuckets = ParseInt(element.Element("MaxBuckets")),
                 Name = ParseNullableString(element.Element("Name")),
                 SecretKey = ParseNullableString(element.Element("SecretKey"))
             };
@@ -1001,7 +1002,7 @@ namespace Ds3.ResponseParsers
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 ReservedCapacity = ParseLong(element.Element("ReservedCapacity")),
                 State = ParsePoolState(element.Element("State")),
-                StorageDomainId = ParseNullableGuid(element.Element("StorageDomainId")),
+                StorageDomainMemberId = ParseNullableGuid(element.Element("StorageDomainMemberId")),
                 TotalCapacity = ParseLong(element.Element("TotalCapacity")),
                 Type = ParsePoolType(element.Element("Type")),
                 UsedCapacity = ParseLong(element.Element("UsedCapacity"))
@@ -1108,7 +1109,7 @@ namespace Ds3.ResponseParsers
                 PreviousState = ParseNullableTapeState(element.Element("PreviousState")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapeState(element.Element("State")),
-                StorageDomainId = ParseNullableGuid(element.Element("StorageDomainId")),
+                StorageDomainMemberId = ParseNullableGuid(element.Element("StorageDomainMemberId")),
                 TakeOwnershipPending = ParseBool(element.Element("TakeOwnershipPending")),
                 TotalRawCapacity = ParseNullableLong(element.Element("TotalRawCapacity")),
                 Type = ParseString(element.Element("Type")),
@@ -1206,6 +1207,7 @@ namespace Ds3.ResponseParsers
         {
             return new TapePartition
             {
+                AutoCompactionEnabled = ParseBool(element.Element("AutoCompactionEnabled")),
                 DriveType = ParseNullableTapeDriveType(element.Element("DriveType")),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
                 Id = ParseGuid(element.Element("Id")),
@@ -1215,7 +1217,6 @@ namespace Ds3.ResponseParsers
                 MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
-                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State"))
             };
@@ -1408,7 +1409,7 @@ namespace Ds3.ResponseParsers
                 ProxyPort = ParseNullableInt(element.Element("ProxyPort")),
                 ProxyUsername = ParseNullableString(element.Element("ProxyUsername")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
-                Region = ParseS3Region(element.Element("Region")),
+                Region = ParseNullableS3Region(element.Element("Region")),
                 SecretKey = ParseNullableString(element.Element("SecretKey")),
                 StagedDataExpirationInDays = ParseInt(element.Element("StagedDataExpirationInDays")),
                 State = ParseTargetState(element.Element("State"))
@@ -1533,7 +1534,7 @@ namespace Ds3.ResponseParsers
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
                 Offset = ParseLong(element.AttributeText("Offset")),
                 PhysicalPlacement = ParseNullablePhysicalPlacement(element.Element("PhysicalPlacement")),
-                Version = ParseLong(element.AttributeText("Version"))
+                VersionId = ParseGuid(element.AttributeText("VersionId"))
             };
         }
 
@@ -1689,7 +1690,8 @@ namespace Ds3.ResponseParsers
                 NextMarker = ParseNullableString(element.Element("NextMarker")),
                 Objects = element.Elements("Contents").Select(ParseContents).ToList(),
                 Prefix = ParseNullableString(element.Element("Prefix")),
-                Truncated = ParseBool(element.Element("IsTruncated"))
+                Truncated = ParseBool(element.Element("IsTruncated")),
+                VersionedObjects = element.Elements("Version").Select(ParseContents).ToList()
             };
         }
 
@@ -1737,7 +1739,8 @@ namespace Ds3.ResponseParsers
             {
                 Code = ParseNullableString(element.Element("Code")),
                 Key = ParseNullableString(element.Element("Key")),
-                Message = ParseNullableString(element.Element("Message"))
+                Message = ParseNullableString(element.Element("Message")),
+                VersionId = ParseNullableGuid(element.Element("VersionId"))
             };
         }
 
@@ -1766,6 +1769,7 @@ namespace Ds3.ResponseParsers
         {
             return new DetailedTapePartition
             {
+                AutoCompactionEnabled = ParseBool(element.Element("AutoCompactionEnabled")),
                 DriveType = ParseNullableTapeDriveType(element.Element("DriveType")),
                 DriveTypes = element.Elements("DriveTypes").Select(ParseTapeDriveType).ToList(),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
@@ -1776,7 +1780,6 @@ namespace Ds3.ResponseParsers
                 MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
-                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
                 TapeTypes = element.Elements("TapeTypes").Select(ParseString).ToList()
@@ -2016,11 +2019,13 @@ namespace Ds3.ResponseParsers
             return new Contents
             {
                 ETag = ParseNullableString(element.Element("ETag")),
+                IsLatest = ParseNullableBool(element.Element("IsLatest")),
                 Key = ParseNullableString(element.Element("Key")),
                 LastModified = ParseNullableDateTime(element.Element("LastModified")),
                 Owner = ParseUser(element.Element("Owner")),
                 Size = ParseLong(element.Element("Size")),
-                StorageClass = ParseNullableString(element.Element("StorageClass"))
+                StorageClass = ParseNullableString(element.Element("StorageClass")),
+                VersionId = ParseNullableGuid(element.Element("VersionId"))
             };
         }
 
@@ -2034,7 +2039,8 @@ namespace Ds3.ResponseParsers
         {
             return new S3ObjectToDelete
             {
-                Key = ParseNullableString(element.Element("Key"))
+                Key = ParseNullableString(element.Element("Key")),
+                VersionId = ParseNullableGuid(element.Element("VersionId"))
             };
         }
 
@@ -2076,8 +2082,7 @@ namespace Ds3.ResponseParsers
                 Name = ParseNullableString(element.Element("Name")),
                 Owner = ParseNullableString(element.Element("Owner")),
                 Size = ParseLong(element.Element("Size")),
-                Type = ParseS3ObjectType(element.Element("Type")),
-                Version = ParseLong(element.Element("Version"))
+                Type = ParseS3ObjectType(element.Element("Type"))
             };
         }
 
@@ -2125,6 +2130,7 @@ namespace Ds3.ResponseParsers
         {
             return new NamedDetailedTapePartition
             {
+                AutoCompactionEnabled = ParseBool(element.Element("AutoCompactionEnabled")),
                 DriveType = ParseNullableTapeDriveType(element.Element("DriveType")),
                 DriveTypes = element.Elements("DriveTypes").Select(ParseTapeDriveType).ToList(),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
@@ -2135,7 +2141,6 @@ namespace Ds3.ResponseParsers
                 MinimumWriteReservedDrives = ParseInt(element.Element("MinimumWriteReservedDrives")),
                 Name = ParseNullableString(element.Element("Name")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
-                SerialId = ParseNullableString(element.Element("SerialId")),
                 SerialNumber = ParseNullableString(element.Element("SerialNumber")),
                 State = ParseTapePartitionState(element.Element("State")),
                 TapeTypes = element.Elements("TapeTypes").Select(ParseString).ToList()
@@ -3363,6 +3368,31 @@ namespace Ds3.ResponseParsers
         {
             return ParseJobRequestType(element.Value);
         }
+        public static JobRestore? ParseNullableJobRestore(string jobRestoreOrNull)
+        {
+            return string.IsNullOrWhiteSpace(jobRestoreOrNull)
+                ? (JobRestore?) null
+                : ParseJobRestore(jobRestoreOrNull);
+        }
+
+        public static JobRestore ParseJobRestore(string jobRestore)
+        {
+            return ParseEnumType<JobRestore>(jobRestore);
+        }
+
+        public static JobRestore? ParseNullableJobRestore(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableJobRestore(element.Value);
+        }
+
+        public static JobRestore ParseJobRestore(XElement element)
+        {
+            return ParseJobRestore(element.Value);
+        }
         public static LtfsFileNamingMode? ParseNullableLtfsFileNamingMode(string ltfsFileNamingModeOrNull)
         {
             return string.IsNullOrWhiteSpace(ltfsFileNamingModeOrNull)
@@ -3737,31 +3767,6 @@ namespace Ds3.ResponseParsers
         public static PoolType ParsePoolType(XElement element)
         {
             return ParsePoolType(element.Value);
-        }
-        public static ImportConflictResolutionMode? ParseNullableImportConflictResolutionMode(string importConflictResolutionModeOrNull)
-        {
-            return string.IsNullOrWhiteSpace(importConflictResolutionModeOrNull)
-                ? (ImportConflictResolutionMode?) null
-                : ParseImportConflictResolutionMode(importConflictResolutionModeOrNull);
-        }
-
-        public static ImportConflictResolutionMode ParseImportConflictResolutionMode(string importConflictResolutionMode)
-        {
-            return ParseEnumType<ImportConflictResolutionMode>(importConflictResolutionMode);
-        }
-
-        public static ImportConflictResolutionMode? ParseNullableImportConflictResolutionMode(XElement element)
-        {
-            if (null == element)
-            {
-                return null;
-            }
-            return ParseNullableImportConflictResolutionMode(element.Value);
-        }
-
-        public static ImportConflictResolutionMode ParseImportConflictResolutionMode(XElement element)
-        {
-            return ParseImportConflictResolutionMode(element.Value);
         }
         public static Quiesced? ParseNullableQuiesced(string quiescedOrNull)
         {

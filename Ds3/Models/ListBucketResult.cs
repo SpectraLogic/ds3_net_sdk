@@ -32,5 +32,6 @@ namespace Ds3.Models
         public IEnumerable<Contents> Objects { get; set; }
         public string Prefix { get; set; }
         public bool Truncated { get; set; }
+        public IEnumerable<Contents> VersionedObjects { get; set; }
     }
 }

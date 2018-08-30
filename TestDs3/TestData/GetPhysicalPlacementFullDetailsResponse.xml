@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Data>
-  <Object Length="20" Name="foo_object" Offset="10" Latest="true" Version="1">
+  <Object Length="20" Name="foo_object" Offset="10" Latest="true" VersionId="2af042b1-4543-4e88-a4f9-554570fcf50d">
     <Id>971c643f-678f-4854-bd40-7e99c61eef89</Id>
     <PhysicalPlacement>
       <Tapes>

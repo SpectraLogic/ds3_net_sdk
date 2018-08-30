@@ -38,7 +38,7 @@ namespace Ds3.Models
         public Quiesced Quiesced { get; set; }
         public long ReservedCapacity { get; set; }
         public PoolState State { get; set; }
-        public Guid? StorageDomainId { get; set; }
+        public Guid? StorageDomainMemberId { get; set; }
         public long TotalCapacity { get; set; }
         public PoolType Type { get; set; }
         public long UsedCapacity { get; set; }

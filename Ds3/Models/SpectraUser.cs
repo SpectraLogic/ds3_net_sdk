@@ -25,6 +25,7 @@ namespace Ds3.Models
         public string AuthId { get; set; }
         public Guid? DefaultDataPolicyId { get; set; }
         public Guid Id { get; set; }
+        public int MaxBuckets { get; set; }
         public string Name { get; set; }
         public string SecretKey { get; set; }
     }

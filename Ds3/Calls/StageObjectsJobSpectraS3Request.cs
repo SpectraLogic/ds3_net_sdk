@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace Ds3.Calls
 {
-    public class GetPhysicalPlacementForObjectsSpectraS3Request : Ds3Request
+    public class StageObjectsJobSpectraS3Request : Ds3Request
     {
         
         public string BucketName { get; private set; }
@@ -33,24 +33,46 @@ namespace Ds3.Calls
         public IEnumerable<Ds3PartialObject> PartialObjects { get; private set; }
 
         
-        private string _storageDomain;
-        public string StorageDomain
+        private string _name;
+        public string Name
         {
-            get { return _storageDomain; }
-            set { WithStorageDomain(value); }
+            get { return _name; }
+            set { WithName(value); }
+        }
+
+        private Priority? _priority;
+        public Priority? Priority
+        {
+            get { return _priority; }
+            set { WithPriority(value); }
         }
 
         
-        public GetPhysicalPlacementForObjectsSpectraS3Request WithStorageDomain(string storageDomain)
+        public StageObjectsJobSpectraS3Request WithName(string name)
         {
-            this._storageDomain = storageDomain;
-            if (storageDomain != null)
+            this._name = name;
+            if (name != null)
             {
-                this.QueryParams.Add("storage_domain", storageDomain);
+                this.QueryParams.Add("name", name);
             }
             else
             {
-                this.QueryParams.Remove("storage_domain");
+                this.QueryParams.Remove("name");
+            }
+            return this;
+        }
+
+        
+        public StageObjectsJobSpectraS3Request WithPriority(Priority? priority)
+        {
+            this._priority = priority;
+            if (priority != null)
+            {
+                this.QueryParams.Add("priority", priority.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("priority");
             }
             return this;
         }
@@ -58,21 +80,21 @@ namespace Ds3.Calls
 
         
         
-        public GetPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
+        public StageObjectsJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> fullObjects, IEnumerable<Ds3PartialObject> partialObjects)
         {
             this.BucketName = bucketName;
             this.FullObjects = fullObjects.ToList();
             this.PartialObjects = partialObjects.ToList();
-            this.QueryParams.Add("operation", "get_physical_placement");
+            this.QueryParams.Add("operation", "start_bulk_stage");
             
         }
 
-        public GetPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<Ds3Object> ds3Objects)
+        public StageObjectsJobSpectraS3Request(string bucketName, IEnumerable<Ds3Object> ds3Objects)
             : this(bucketName, ds3Objects, Enumerable.Empty<Ds3PartialObject>())
         {
         }
 
-        public GetPhysicalPlacementForObjectsSpectraS3Request(string bucketName, IEnumerable<string> objectNames)
+        public StageObjectsJobSpectraS3Request(string bucketName, IEnumerable<string> objectNames)
             : this(bucketName, objectNames.Select(name => new Ds3Object(name, null)), Enumerable.Empty<Ds3PartialObject>())
         {
         }

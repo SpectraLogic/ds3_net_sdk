@@ -96,6 +96,13 @@ namespace Ds3.Calls
             set { WithEndToEndCrcRequired(value); }
         }
 
+        private int? _maxVersionsToKeep;
+        public int? MaxVersionsToKeep
+        {
+            get { return _maxVersionsToKeep; }
+            set { WithMaxVersionsToKeep(value); }
+        }
+
         private string _name;
         public string Name
         {
@@ -263,6 +270,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("end_to_end_crc_required");
+            }
+            return this;
+        }
+
+        
+        public ModifyDataPolicySpectraS3Request WithMaxVersionsToKeep(int? maxVersionsToKeep)
+        {
+            this._maxVersionsToKeep = maxVersionsToKeep;
+            if (maxVersionsToKeep != null)
+            {
+                this.QueryParams.Add("max_versions_to_keep", maxVersionsToKeep.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_versions_to_keep");
             }
             return this;
         }

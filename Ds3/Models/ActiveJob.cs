@@ -40,6 +40,7 @@ namespace Ds3.Models
         public DateTime? Rechunked { get; set; }
         public bool Replicating { get; set; }
         public JobRequestType RequestType { get; set; }
+        public JobRestore Restore { get; set; }
         public bool Truncated { get; set; }
         public bool TruncatedDueToTimeout { get; set; }
         public Guid UserId { get; set; }

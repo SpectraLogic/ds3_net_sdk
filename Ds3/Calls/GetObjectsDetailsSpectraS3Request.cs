@@ -31,6 +31,13 @@ namespace Ds3.Calls
             set { WithBucketId(value); }
         }
 
+        private long? _endDate;
+        public long? EndDate
+        {
+            get { return _endDate; }
+            set { WithEndDate(value); }
+        }
+
         private bool? _lastPage;
         public bool? LastPage
         {
@@ -73,18 +80,18 @@ namespace Ds3.Calls
             set { WithPageStartMarker(value); }
         }
 
+        private long? _startDate;
+        public long? StartDate
+        {
+            get { return _startDate; }
+            set { WithStartDate(value); }
+        }
+
         private S3ObjectType? _type;
         public S3ObjectType? Type
         {
             get { return _type; }
             set { WithType(value); }
-        }
-
-        private long? _version;
-        public long? Version
-        {
-            get { return _version; }
-            set { WithVersion(value); }
         }
 
         
@@ -113,6 +120,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("bucket_id");
+            }
+            return this;
+        }
+
+        
+        public GetObjectsDetailsSpectraS3Request WithEndDate(long? endDate)
+        {
+            this._endDate = endDate;
+            if (endDate != null)
+            {
+                this.QueryParams.Add("end_date", endDate.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("end_date");
             }
             return this;
         }
@@ -223,6 +245,21 @@ namespace Ds3.Calls
         }
 
         
+        public GetObjectsDetailsSpectraS3Request WithStartDate(long? startDate)
+        {
+            this._startDate = startDate;
+            if (startDate != null)
+            {
+                this.QueryParams.Add("start_date", startDate.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("start_date");
+            }
+            return this;
+        }
+
+        
         public GetObjectsDetailsSpectraS3Request WithType(S3ObjectType? type)
         {
             this._type = type;
@@ -233,21 +270,6 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("type");
-            }
-            return this;
-        }
-
-        
-        public GetObjectsDetailsSpectraS3Request WithVersion(long? version)
-        {
-            this._version = version;
-            if (version != null)
-            {
-                this.QueryParams.Add("version", version.ToString());
-            }
-            else
-            {
-                this.QueryParams.Remove("version");
             }
             return this;
         }
