@@ -674,6 +674,56 @@ namespace IntegrationTestDs3
         }
 
         [Test]
+        public void TestChecksumStreamingWithMultiBlobsAndSeekableStream()
+        {
+            const string bucketName = "TestChecksumStreamingWithMultiBlobsAndSeekableStream";
+            var tempFilename = Path.GetTempFileName();
+
+            try
+            {
+                // Creates a bucket if it does not already exist.
+                Helpers.EnsureBucketExists(bucketName);
+
+                // Creates a bulk job with the server based on the files in a directory (recursively).
+                var bigFile =
+                    FileHelpers.ListObjectsForDirectory(TestDirectoryBigFolder)
+                        .First(obj => obj.Name.Equals(_bigFiles.First()));
+                var directoryObjects = new List<Ds3Object> { bigFile };
+
+                Assert.Greater(directoryObjects.Count, 0);
+
+                // Test the PUT
+                var putJob = Helpers.StartWriteJob(bucketName, directoryObjects, new Ds3WriteJobOptions { MaxUploadSize = BlobSize }, new WriteStreamHelperStrategy());
+                using (Stream fileStream = File.OpenRead(TestDirectoryBigFolder + _bigFiles.First()))
+                {
+                    putJob.Transfer(foo => fileStream);
+                }
+
+                // Test the GET
+                var getJob = Helpers.StartReadAllJob(bucketName, helperStrategy: new ReadStreamHelperStrategy());
+                using (Stream fileStream = new FileStream(tempFilename, FileMode.Truncate, FileAccess.Write))
+                {
+                    var md5 = MD5.Create();
+                    using (var md5Stream = new CryptoStream(fileStream, md5, CryptoStreamMode.Write))
+                    {
+                        getJob.Transfer(foo => md5Stream);
+                        if (!md5Stream.HasFlushedFinalBlock)
+                        {
+                            md5Stream.FlushFinalBlock();
+                        }
+
+                        Assert.AreEqual("g1YZyuEkeAU3I3UAydy6DA==", Convert.ToBase64String(md5.Hash));
+                    }
+                }
+            }
+            finally
+            {
+                File.Delete(tempFilename);
+                Ds3TestUtils.DeleteBucket(Client, bucketName);
+            }
+        }
+
+        [Test]
         public void TestCleanUp()
         {
             const string bucketName = "TestCleanUp";

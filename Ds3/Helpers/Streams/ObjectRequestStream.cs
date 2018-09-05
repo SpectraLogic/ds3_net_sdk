@@ -35,7 +35,8 @@ namespace Ds3.Helpers.Streams
         public ObjectRequestStream(Stream stream, long offset, long length)
         {
             this._stream = stream;
-            this._stream.Position = _streamStartPoint = offset;
+           _streamStartPoint = offset;
+            if (CanSeek) this._stream.Position = offset;
             this._streamLength = length;
         }
 
