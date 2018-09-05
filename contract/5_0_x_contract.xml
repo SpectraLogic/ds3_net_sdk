@@ -4420,7 +4420,7 @@
         <Request Action="DELETE" HttpVerb="DELETE" IncludeIdInPath="true" Resource="FOLDER" ResourceType="NON_SINGLETON">
           <OptionalQueryParams/>
           <RequiredQueryParams>
-            <Param Name="BucketId" Type="java.util.UUID"/>
+            <Param Name="BucketId" Type="java.lang.String"/>
             <Param Name="Recursive" Type="void"/>
           </RequiredQueryParams>
         </Request>
@@ -4438,7 +4438,7 @@
             </ResponseTypes>
           </ResponseCode>
         </ResponseCodes>
-        <Version>1.DCC71D6527639A19725050B37CB780DE</Version>
+        <Version>1.D65C68901F23BADFA697712B7F496D8B</Version>
       </RequestHandler>
       <RequestHandler Classification="spectrads3" Name="com.spectralogic.s3.server.handler.reqhandler.spectrads3.object.GetBlobPersistenceRequestHandler">
         <Request Action="LIST" HttpVerb="GET" IncludeIdInPath="false" Resource="BLOB_PERSISTENCE" ResourceType="NON_SINGLETON">
@@ -5295,6 +5295,12 @@
             <Code>201</Code>
             <ResponseTypes>
               <ResponseType Type="com.spectralogic.s3.common.dao.domain.ds3.StorageDomainMember"/>
+            </ResponseTypes>
+          </ResponseCode>
+          <ResponseCode>
+            <Code>400</Code>
+            <ResponseTypes>
+              <ResponseType Type="com.spectralogic.s3.server.domain.HttpErrorResultApiBean"/>
             </ResponseTypes>
           </ResponseCode>
         </ResponseCodes>
@@ -6623,6 +6629,7 @@
             <Param Name="MinimumReadReservedDrives" Type="int"/>
             <Param Name="MinimumWriteReservedDrives" Type="int"/>
             <Param Name="Quiesced" Type="com.spectralogic.s3.common.dao.domain.shared.Quiesced"/>
+            <Param Name="SerialNumber" Type="java.lang.String"/>
           </OptionalQueryParams>
           <RequiredQueryParams/>
         </Request>
@@ -6640,7 +6647,7 @@
             </ResponseTypes>
           </ResponseCode>
         </ResponseCodes>
-        <Version>1.78750072F5ADD3E16FA02549EED9F0AF</Version>
+        <Version>1.DCDFD61806AD8ACFAFF5EC59D7F63C8B</Version>
       </RequestHandler>
       <RequestHandler Classification="spectrads3" Name="com.spectralogic.s3.server.handler.reqhandler.spectrads3.tape.ModifyTapeRequestHandler">
         <Request Action="MODIFY" HttpVerb="PUT" IncludeIdInPath="true" Resource="TAPE" ResourceType="NON_SINGLETON">
@@ -7927,6 +7934,7 @@
         <Request Action="CREATE" HttpVerb="POST" IncludeIdInPath="false" Resource="USER" ResourceType="NON_SINGLETON">
           <OptionalQueryParams>
             <Param Name="Id" Type="java.util.UUID"/>
+            <Param Name="MaxBuckets" Type="int"/>
             <Param Name="SecretKey" Type="java.lang.String"/>
           </OptionalQueryParams>
           <RequiredQueryParams>
@@ -7953,7 +7961,7 @@
             </ResponseTypes>
           </ResponseCode>
         </ResponseCodes>
-        <Version>1.6BCFED905208FF2C3021E49E1113053C</Version>
+        <Version>1.FDB6B21613281BC2D3D643F130FF943C</Version>
       </RequestHandler>
       <RequestHandler Classification="spectrads3" Name="com.spectralogic.s3.server.handler.reqhandler.spectrads3.user.DelegateDeleteUserRequestHandler">
         <Request Action="DELETE" HttpVerb="DELETE" IncludeIdInPath="true" Resource="USER" ResourceType="NON_SINGLETON">
@@ -9028,7 +9036,7 @@
             <Annotations>
               <Annotation Name="com.spectralogic.util.bean.lang.DefaultIntegerValue">
                 <AnnotationElements>
-                  <AnnotationElement Name="Value" Value="300" ValueType="java.lang.Integer"/>
+                  <AnnotationElement Name="Value" Value="60" ValueType="java.lang.Integer"/>
                 </AnnotationElements>
               </Annotation>
             </Annotations>
@@ -9267,7 +9275,7 @@
             <Annotations>
               <Annotation Name="com.spectralogic.util.bean.lang.DefaultIntegerValue">
                 <AnnotationElements>
-                  <AnnotationElement Name="Value" Value="2147483647" ValueType="java.lang.Integer"/>
+                  <AnnotationElement Name="Value" Value="1000" ValueType="java.lang.Integer"/>
                 </AnnotationElements>
               </Annotation>
             </Annotations>
@@ -12592,23 +12600,6 @@
               </Annotation>
             </Annotations>
           </Element>
-          <Element Name="ObsoletionId" Type="java.util.UUID">
-            <Annotations>
-              <Annotation Name="com.spectralogic.util.bean.lang.Optional">
-                <AnnotationElements/>
-              </Annotation>
-              <Annotation Name="com.spectralogic.util.db.lang.CascadeDelete">
-                <AnnotationElements>
-                  <AnnotationElement Name="Value" Value="DELETE_THIS_BEAN" ValueType="com.spectralogic.util.db.lang.CascadeDelete$WhenReferenceIsDeleted"/>
-                </AnnotationElements>
-              </Annotation>
-              <Annotation Name="com.spectralogic.util.db.lang.References">
-                <AnnotationElements>
-                  <AnnotationElement Name="Value" Value="com.spectralogic.s3.common.dao.domain.ds3.Obsoletion" ValueType="java.lang.Class"/>
-                </AnnotationElements>
-              </Annotation>
-            </Annotations>
-          </Element>
           <Element Name="PoolId" Type="java.util.UUID">
             <Annotations>
               <Annotation Name="com.spectralogic.util.db.lang.References">
@@ -12679,23 +12670,6 @@
               <Annotation Name="com.spectralogic.util.db.lang.References">
                 <AnnotationElements>
                   <AnnotationElement Name="Value" Value="com.spectralogic.s3.common.dao.domain.tape.BlobTape" ValueType="java.lang.Class"/>
-                </AnnotationElements>
-              </Annotation>
-            </Annotations>
-          </Element>
-          <Element Name="ObsoletionId" Type="java.util.UUID">
-            <Annotations>
-              <Annotation Name="com.spectralogic.util.bean.lang.Optional">
-                <AnnotationElements/>
-              </Annotation>
-              <Annotation Name="com.spectralogic.util.db.lang.CascadeDelete">
-                <AnnotationElements>
-                  <AnnotationElement Name="Value" Value="DELETE_THIS_BEAN" ValueType="com.spectralogic.util.db.lang.CascadeDelete$WhenReferenceIsDeleted"/>
-                </AnnotationElements>
-              </Annotation>
-              <Annotation Name="com.spectralogic.util.db.lang.References">
-                <AnnotationElements>
-                  <AnnotationElement Name="Value" Value="com.spectralogic.s3.common.dao.domain.ds3.Obsoletion" ValueType="java.lang.Class"/>
                 </AnnotationElements>
               </Annotation>
             </Annotations>
@@ -13441,9 +13415,6 @@
               </Annotation>
             </Annotations>
           </Element>
-          <Element Name="SerialId" Type="java.lang.String">
-            <Annotations/>
-          </Element>
           <Element Name="SerialNumber" Type="java.lang.String">
             <Annotations>
               <Annotation Name="com.spectralogic.util.bean.lang.SortBy">
@@ -13911,13 +13882,7 @@
           <Element Name="DefaultAutoCompactionThreshold" Type="java.lang.Integer">
             <Annotations/>
           </Element>
-          <Element Name="DefaultAutoCompactionThresholdInBytes" Type="java.lang.Long">
-            <Annotations/>
-          </Element>
           <Element Name="MinimumAutoCompactionThreshold" Type="java.lang.Integer">
-            <Annotations/>
-          </Element>
-          <Element Name="MinimumAutoCompactionThresholdInBytes" Type="java.lang.Long">
             <Annotations/>
           </Element>
         </Elements>
@@ -13925,121 +13890,91 @@
           <EnumConstant Name="LTO5">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="LTO6">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="LTO7">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="LTOM8">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="LTO8">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="LTO_CLEANING_TAPE">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="TS_JC">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="TS_JY">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="TS_JK">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="TS_JD">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="TS_JZ">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="TS_JL">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="0" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="TS_CLEANING_TAPE">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="UNKNOWN">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
           <EnumConstant Name="FORBIDDEN">
             <Properties>
               <Property Name="DefaultAutoCompactionThreshold" Value="20" ValueType="java.lang.Integer"/>
-              <Property Name="DefaultAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
               <Property Name="MinimumAutoCompactionThreshold" Value="10" ValueType="java.lang.Integer"/>
-              <Property Name="MinimumAutoCompactionThresholdInBytes" Value="null" ValueType="java.lang.Long"/>
             </Properties>
           </EnumConstant>
         </EnumConstants>
@@ -15250,6 +15185,13 @@
       </Type>
       <Type Name="com.spectralogic.s3.common.platform.notification.domain.payload.JobCreationFailedNotificationPayload">
         <Elements>
+          <Element Name="ErrorMessage" Type="java.lang.String">
+            <Annotations>
+              <Annotation Name="com.spectralogic.util.bean.lang.Optional">
+                <AnnotationElements/>
+              </Annotation>
+            </Annotations>
+          </Element>
           <Element Name="NotificationGenerationDate" Type="java.util.Date">
             <Annotations/>
           </Element>
@@ -15835,6 +15777,18 @@
           <Element Name="Message" Type="java.lang.String">
             <Annotations/>
           </Element>
+          <Element Name="VersionId" Type="java.util.UUID">
+            <Annotations>
+              <Annotation Name="com.spectralogic.util.bean.lang.Optional">
+                <AnnotationElements/>
+              </Annotation>
+              <Annotation Name="com.spectralogic.util.marshal.ExcludeFromMarshaler">
+                <AnnotationElements>
+                  <AnnotationElement Name="Value" Value="VALUE_IS_NULL" ValueType="com.spectralogic.util.marshal.ExcludeFromMarshaler$When"/>
+                </AnnotationElements>
+              </Annotation>
+            </Annotations>
+          </Element>
         </Elements>
       </Type>
       <Type Name="com.spectralogic.s3.server.domain.DeleteResultApiBean" NameToMarshal="DeleteResult">
@@ -15947,9 +15901,6 @@
                 </AnnotationElements>
               </Annotation>
             </Annotations>
-          </Element>
-          <Element Name="SerialId" Type="java.lang.String">
-            <Annotations/>
           </Element>
           <Element Name="SerialNumber" Type="java.lang.String">
             <Annotations>
@@ -16610,6 +16561,18 @@
           <Element Name="Key" Type="java.lang.String">
             <Annotations/>
           </Element>
+          <Element Name="VersionId" Type="java.util.UUID">
+            <Annotations>
+              <Annotation Name="com.spectralogic.util.bean.lang.Optional">
+                <AnnotationElements/>
+              </Annotation>
+              <Annotation Name="com.spectralogic.util.marshal.ExcludeFromMarshaler">
+                <AnnotationElements>
+                  <AnnotationElement Name="Value" Value="VALUE_IS_NULL" ValueType="com.spectralogic.util.marshal.ExcludeFromMarshaler$When"/>
+                </AnnotationElements>
+              </Annotation>
+            </Annotations>
+          </Element>
         </Elements>
       </Type>
       <Type Name="com.spectralogic.s3.server.domain.UserApiBean">
@@ -16858,9 +16821,6 @@
                 </AnnotationElements>
               </Annotation>
             </Annotations>
-          </Element>
-          <Element Name="SerialId" Type="java.lang.String">
-            <Annotations/>
           </Element>
           <Element Name="SerialNumber" Type="java.lang.String">
             <Annotations>

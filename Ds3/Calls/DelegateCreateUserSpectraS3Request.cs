@@ -33,6 +33,13 @@ namespace Ds3.Calls
             set { WithId(value); }
         }
 
+        private int? _maxBuckets;
+        public int? MaxBuckets
+        {
+            get { return _maxBuckets; }
+            set { WithMaxBuckets(value); }
+        }
+
         private string _secretKey;
         public string SecretKey
         {
@@ -66,6 +73,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("id");
+            }
+            return this;
+        }
+
+        
+        public DelegateCreateUserSpectraS3Request WithMaxBuckets(int? maxBuckets)
+        {
+            this._maxBuckets = maxBuckets;
+            if (maxBuckets != null)
+            {
+                this.QueryParams.Add("max_buckets", maxBuckets.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_buckets");
             }
             return this;
         }
