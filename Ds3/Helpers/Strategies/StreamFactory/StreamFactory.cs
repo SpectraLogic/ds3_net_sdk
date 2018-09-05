@@ -36,14 +36,14 @@ namespace Ds3.Helpers.Strategies.StreamFactory
                 Stream stream;
                 if (this._streamStore.TryGetValue(blob.Context, out stream))
                 {
-                    return new NonDisposablePutObjectRequestStream(stream, length);
+                    return new NonDisposablePutObjectRequestStream(stream, blob.Range.Start, length);
                 }
 
                 Trace.WriteLineIf(SdkNetworkSwitch.TraceVerbose, string.Format("Creating new stream for {0}", blob.Context));
                 var innerStream = createStreamForTransferItem(blob.Context);
 
                 this._streamStore.Add(blob.Context, innerStream);
-                return new NonDisposablePutObjectRequestStream(innerStream, length);
+                return new NonDisposablePutObjectRequestStream(innerStream, blob.Range.Start, length);
             }
         }
 
