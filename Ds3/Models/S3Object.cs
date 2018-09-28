@@ -28,6 +28,6 @@ namespace Ds3.Models
         public bool Latest { get; set; }
         public string Name { get; set; }
         public S3ObjectType Type { get; set; }
-        public long? Version { get; set; }
+        public long Version { get; set; }
     }
 }

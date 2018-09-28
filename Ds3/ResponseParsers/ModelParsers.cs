@@ -492,7 +492,7 @@ namespace Ds3.ResponseParsers
                 Latest = ParseBool(element.Element("Latest")),
                 Name = ParseNullableString(element.Element("Name")),
                 Type = ParseS3ObjectType(element.Element("Type")),
-                Version = ParseNullableLong(element.Element("Version"))
+                Version = ParseLongOrDefault(element.Element("Version"))
             };
         }
 
@@ -1523,7 +1523,7 @@ namespace Ds3.ResponseParsers
                 Name = ParseNullableString(element.AttributeTextOrNull("Name")),
                 Offset = ParseLong(element.AttributeText("Offset")),
                 PhysicalPlacement = ParseNullablePhysicalPlacement(element.Element("PhysicalPlacement")),
-                Version = ParseNullableLong(element.AttributeTextOrNull("Version"))
+                Version = ParseLongOrDefault(element.AttributeTextOrNull("Version"))
             };
         }
 
@@ -2064,7 +2064,7 @@ namespace Ds3.ResponseParsers
                 Owner = ParseNullableString(element.Element("Owner")),
                 Size = ParseLong(element.Element("Size")),
                 Type = ParseS3ObjectType(element.Element("Type")),
-                Version = ParseNullableLong(element.Element("Version"))
+                Version = ParseLongOrDefault(element.Element("Version"))
             };
         }
 
@@ -4453,10 +4453,26 @@ namespace Ds3.ResponseParsers
             return ParseNullableLong(element.Value);
         }
 
+        public static long ParseLongOrDefault(XElement element)
+        {
+            if (null == element)
+            {
+                return 1;
+            }
+            return ParseLongOrDefault(element.Value);
+        }
+
         public static long? ParseNullableLong(string longStringOrNull)
         {
             return string.IsNullOrWhiteSpace(longStringOrNull)
                 ? (long?)null
+                : ParseLong(longStringOrNull);
+        }
+
+        public static long ParseLongOrDefault(string longStringOrNull)
+        {
+            return string.IsNullOrWhiteSpace(longStringOrNull)
+                ? 1
                 : ParseLong(longStringOrNull);
         }
 
