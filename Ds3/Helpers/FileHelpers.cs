@@ -57,7 +57,10 @@ namespace Ds3.Helpers
                 EnsureDirectoryForFile(fixedPath);
 
                 var fileStream = File.OpenWrite(fixedPath);
-                MarkAsSparseFile(fileStream.SafeFileHandle);
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT) // The operating system is Windows NT or later.
+                {
+                    MarkAsSparseFile(fileStream.SafeFileHandle);
+                }
 
                 return new DisposableFileStream(fileStream);
             };
@@ -77,7 +80,10 @@ namespace Ds3.Helpers
                 EnsureDirectoryForFile(fixedPath);
 
                 var fileStream = File.OpenWrite(fixedPath);
-                MarkAsSparseFile(fileStream.SafeFileHandle);
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT) // The operating system is Windows NT or later.
+                {
+                    MarkAsSparseFile(fileStream.SafeFileHandle);
+                }
 
                 return new DisposableFileStream(fileStream);
             };
