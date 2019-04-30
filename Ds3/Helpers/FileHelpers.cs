@@ -15,10 +15,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 using Ds3.Helpers.Streams;
 using Ds3.Models;
+using Microsoft.Win32.SafeHandles;
 
 namespace Ds3.Helpers
 {
@@ -51,7 +55,14 @@ namespace Ds3.Helpers
                 var fullPath = Path.Combine(root, ConvertKeyToPath(key));
                 var fixedPath = PrependPrefix(fullPath, prefix);
                 EnsureDirectoryForFile(fixedPath);
-                return new DisposableFileStream(File.OpenWrite(fixedPath));
+
+                var fileStream = File.OpenWrite(fixedPath);
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT) // The operating system is Windows NT or later.
+                {
+                    MarkAsSparseFile(fileStream.SafeFileHandle);
+                }
+
+                return new DisposableFileStream(fileStream);
             };
         }
 
@@ -160,6 +171,36 @@ namespace Ds3.Helpers
             var fixedName = fileName.Replace(prefix, string.Empty);
             var fixedPath = path.Substring(0, path.Length - fileName.Length) + fixedName;
             return fixedPath;
+        }
+
+        [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern bool DeviceIoControl(
+            SafeFileHandle hDevice,
+            int dwIoControlCode,
+            IntPtr InBuffer,
+            int nInBufferSize,
+            IntPtr OutBuffer,
+            int nOutBufferSize,
+            ref int pBytesReturned,
+            [In] ref NativeOverlapped lpOverlapped
+        );
+
+        public static void MarkAsSparseFile(SafeFileHandle fileHandle)
+        {
+            int bytesReturned = 0;
+            NativeOverlapped lpOverlapped = new NativeOverlapped();
+            bool result =
+                DeviceIoControl(
+                    fileHandle,
+                    590020, //FSCTL_SET_SPARSE,
+                    IntPtr.Zero,
+                    0,
+                    IntPtr.Zero,
+                    0,
+                    ref bytesReturned,
+                    ref lpOverlapped);
+            if (result == false)
+                throw new Win32Exception();
         }
     }
 }
