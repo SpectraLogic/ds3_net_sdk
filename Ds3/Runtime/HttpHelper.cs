@@ -32,7 +32,7 @@ namespace Ds3.Runtime
         /// <summary>
         /// Specified as "Query" by the RFC, forward slash (/) and question mark (?) without semicolon (;) and plus (+)
         /// </summary>
-        private static readonly char[] AllowedCharsQuery = Pchar.Concat("/?".ToArray()).Where(ch => ch != ';' && ch != '+').ToArray();
+        private static readonly char[] AllowedCharsQuery = Pchar.Concat("/?".ToArray()).Where(ch => ch != ';' && ch != '+' && ch != '&').ToArray();
 
         /// <summary>
         /// Specified as "Path" by the RFC, forward slash (/) without semicolon (;)
