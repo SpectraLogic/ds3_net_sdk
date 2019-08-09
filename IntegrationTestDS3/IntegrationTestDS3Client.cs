@@ -1907,7 +1907,7 @@ namespace IntegrationTestDs3
                 var contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
                 var contentBytesLength = contentBytes.Length;
 
-                var fileName = "שרון;/+";
+                var fileName = "שרון;/+&";
                 var objects = new List<Ds3Object>
                 {
                     new Ds3Object(fileName, contentBytesLength)
