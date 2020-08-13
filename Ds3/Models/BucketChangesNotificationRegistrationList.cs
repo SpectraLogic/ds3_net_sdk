@@ -15,14 +15,13 @@
 
 // This code is auto-generated, do not modify
 
+using System;
+using System.Collections.Generic;
+
 namespace Ds3.Models
 {
-    public enum S3InitialDataPlacementPolicy
+    public class BucketChangesNotificationRegistrationList
     {
-        STANDARD,
-        REDUCED_REDUNDANCY,
-        STANDARD_IA,
-        GLACIER,
-        DEEP_ARCHIVE
+        public IEnumerable<BucketChangesNotificationRegistration> BucketChangesNotificationRegistrations { get; set; }
     }
 }

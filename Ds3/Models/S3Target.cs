@@ -32,6 +32,7 @@ namespace Ds3.Models
         public Guid Id { get; set; }
         public DateTime? LastFullyVerified { get; set; }
         public string Name { get; set; }
+        public CloudNamingMode NamingMode { get; set; }
         public int OfflineDataStagingWindowInTb { get; set; }
         public bool PermitGoingOutOfSync { get; set; }
         public string ProxyDomain { get; set; }
@@ -41,6 +42,7 @@ namespace Ds3.Models
         public string ProxyUsername { get; set; }
         public Quiesced Quiesced { get; set; }
         public S3Region? Region { get; set; }
+        public bool RestrictedAccess { get; set; }
         public string SecretKey { get; set; }
         public int StagedDataExpirationInDays { get; set; }
         public TargetState State { get; set; }

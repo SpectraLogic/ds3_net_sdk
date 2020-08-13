@@ -34,11 +34,33 @@ namespace Ds3.Calls
         public long Offset { get; private set; }
 
         
+        private bool? _cachedOnly;
+        public bool? CachedOnly
+        {
+            get { return _cachedOnly; }
+            set { WithCachedOnly(value); }
+        }
+
         private string _versionId;
         public string VersionId
         {
             get { return _versionId; }
             set { WithVersionId(value); }
+        }
+
+        
+        public GetObjectRequest WithCachedOnly(bool? cachedOnly)
+        {
+            this._cachedOnly = cachedOnly;
+            if (cachedOnly != null)
+            {
+                this.QueryParams.Add("cached_only", cachedOnly.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("cached_only");
+            }
+            return this;
         }
 
         

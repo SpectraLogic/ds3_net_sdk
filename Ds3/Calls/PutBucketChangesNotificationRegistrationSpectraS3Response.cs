@@ -14,15 +14,17 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public enum S3InitialDataPlacementPolicy
+    public class PutBucketChangesNotificationRegistrationSpectraS3Response
     {
-        STANDARD,
-        REDUCED_REDUNDANCY,
-        STANDARD_IA,
-        GLACIER,
-        DEEP_ARCHIVE
+        public BucketChangesNotificationRegistration ResponsePayload { get; private set; }
+
+        public PutBucketChangesNotificationRegistrationSpectraS3Response(BucketChangesNotificationRegistration responsePayload)
+        {
+            this.ResponsePayload = responsePayload;
+        }
     }
 }

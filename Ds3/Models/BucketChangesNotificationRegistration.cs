@@ -15,14 +15,25 @@
 
 // This code is auto-generated, do not modify
 
+using System;
+using System.Collections.Generic;
+
 namespace Ds3.Models
 {
-    public enum S3InitialDataPlacementPolicy
+    public class BucketChangesNotificationRegistration
     {
-        STANDARD,
-        REDUCED_REDUNDANCY,
-        STANDARD_IA,
-        GLACIER,
-        DEEP_ARCHIVE
+        public Guid? BucketId { get; set; }
+        public DateTime CreationDate { get; set; }
+        public HttpResponseFormatType Format { get; set; }
+        public Guid Id { get; set; }
+        public string LastFailure { get; set; }
+        public int? LastHttpResponseCode { get; set; }
+        public DateTime? LastNotification { get; set; }
+        public long? LastSequenceNumber { get; set; }
+        public NamingConventionType NamingConvention { get; set; }
+        public string NotificationEndPoint { get; set; }
+        public RequestType NotificationHttpMethod { get; set; }
+        public int NumberOfFailuresSinceLastSuccess { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

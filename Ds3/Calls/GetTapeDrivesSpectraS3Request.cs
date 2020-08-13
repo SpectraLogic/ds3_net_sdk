@@ -31,6 +31,13 @@ namespace Ds3.Calls
             set { WithLastPage(value); }
         }
 
+        private Priority? _minimumTaskPriority;
+        public Priority? MinimumTaskPriority
+        {
+            get { return _minimumTaskPriority; }
+            set { WithMinimumTaskPriority(value); }
+        }
+
         private int? _pageLength;
         public int? PageLength
         {
@@ -98,6 +105,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("last_page");
+            }
+            return this;
+        }
+
+        
+        public GetTapeDrivesSpectraS3Request WithMinimumTaskPriority(Priority? minimumTaskPriority)
+        {
+            this._minimumTaskPriority = minimumTaskPriority;
+            if (minimumTaskPriority != null)
+            {
+                this.QueryParams.Add("minimum_task_priority", minimumTaskPriority.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("minimum_task_priority");
             }
             return this;
         }

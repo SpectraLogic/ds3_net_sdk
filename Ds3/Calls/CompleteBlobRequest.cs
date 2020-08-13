@@ -20,47 +20,36 @@ using System.Net;
 
 namespace Ds3.Calls
 {
-    public class HeadObjectRequest : Ds3Request
+    public class CompleteBlobRequest : Ds3Request
     {
         
         public string BucketName { get; private set; }
 
         public string ObjectName { get; private set; }
 
+        public string Blob { get; private set; }
+
+        public string Job { get; private set; }
+
         
-        private string _versionId;
-        public string VersionId
+        private long? _size;
+        public long? Size
         {
-            get { return _versionId; }
-            set { WithVersionId(value); }
+            get { return _size; }
+            set { WithSize(value); }
         }
 
         
-        public HeadObjectRequest WithVersionId(Guid? versionId)
+        public CompleteBlobRequest WithSize(long? size)
         {
-            this._versionId = versionId.ToString();
-            if (versionId != null)
+            this._size = size;
+            if (size != null)
             {
-                this.QueryParams.Add("version_id", versionId.ToString());
+                this.QueryParams.Add("size", size.ToString());
             }
             else
             {
-                this.QueryParams.Remove("version_id");
-            }
-            return this;
-        }
-
-        
-        public HeadObjectRequest WithVersionId(string versionId)
-        {
-            this._versionId = versionId;
-            if (versionId != null)
-            {
-                this.QueryParams.Add("version_id", versionId);
-            }
-            else
-            {
-                this.QueryParams.Remove("version_id");
+                this.QueryParams.Remove("size");
             }
             return this;
         }
@@ -68,18 +57,38 @@ namespace Ds3.Calls
 
         
         
-        public HeadObjectRequest(string bucketName, string objectName)
+        public CompleteBlobRequest(string bucketName, string objectName, Guid blob, Guid job)
         {
             this.BucketName = bucketName;
             this.ObjectName = objectName;
+            this.Blob = blob.ToString();
+            this.Job = job.ToString();
             
+            this.QueryParams.Add("blob", blob.ToString());
+
+            this.QueryParams.Add("job", job.ToString());
+
+        }
+
+        
+        public CompleteBlobRequest(string bucketName, string objectName, string blob, string job)
+        {
+            this.BucketName = bucketName;
+            this.ObjectName = objectName;
+            this.Blob = blob;
+            this.Job = job;
+            
+            this.QueryParams.Add("blob", blob);
+
+            this.QueryParams.Add("job", job);
+
         }
 
         internal override HttpVerb Verb
         {
             get
             {
-                return HttpVerb.HEAD;
+                return HttpVerb.POST;
             }
         }
 

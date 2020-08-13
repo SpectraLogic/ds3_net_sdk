@@ -32,6 +32,7 @@ namespace Ds3.Models
         public Guid Id { get; set; }
         public DateTime? LastFullyVerified { get; set; }
         public string Name { get; set; }
+        public CloudNamingMode NamingMode { get; set; }
         public bool PermitGoingOutOfSync { get; set; }
         public Quiesced Quiesced { get; set; }
         public TargetState State { get; set; }
