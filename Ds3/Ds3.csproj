@@ -112,6 +112,7 @@
     <Compile Include="Calls\CompactAllPoolsSpectraS3Request.cs" />
     <Compile Include="Calls\CompactPoolSpectraS3Request.cs" />
     <Compile Include="Calls\CompactPoolSpectraS3Response.cs" />
+    <Compile Include="Calls\CompleteBlobRequest.cs" />
     <Compile Include="Calls\CompleteMultiPartUploadRequest.cs" />
     <Compile Include="Calls\CompleteMultiPartUploadResponse.cs" />
     <Compile Include="Calls\ConvertStorageDomainToDs3TargetSpectraS3Request.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Calls\DeleteAzureTargetReadPreferenceSpectraS3Request.cs" />
     <Compile Include="Calls\DeleteAzureTargetSpectraS3Request.cs" />
     <Compile Include="Calls\DeleteBucketAclSpectraS3Request.cs" />
+    <Compile Include="Calls\DeleteBucketChangesNotificationRegistrationSpectraS3Request.cs" />
     <Compile Include="Calls\DeleteBucketRequest.cs" />
     <Compile Include="Calls\DeleteBucketSpectraS3Request.cs" />
     <Compile Include="Calls\DeleteDataPersistenceRuleSpectraS3Request.cs" />
@@ -233,6 +235,12 @@
     <Compile Include="Calls\GetBucketAclsSpectraS3Response.cs" />
     <Compile Include="Calls\GetBucketCapacitySummarySpectraS3Request.cs" />
     <Compile Include="Calls\GetBucketCapacitySummarySpectraS3Response.cs" />
+    <Compile Include="Calls\GetBucketChangesNotificationRegistrationSpectraS3Request.cs" />
+    <Compile Include="Calls\GetBucketChangesNotificationRegistrationSpectraS3Response.cs" />
+    <Compile Include="Calls\GetBucketChangesNotificationRegistrationsSpectraS3Request.cs" />
+    <Compile Include="Calls\GetBucketChangesNotificationRegistrationsSpectraS3Response.cs" />
+    <Compile Include="Calls\GetBucketHistorySpectraS3Request.cs" />
+    <Compile Include="Calls\GetBucketHistorySpectraS3Response.cs" />
     <Compile Include="Calls\GetBucketRequest.cs" />
     <Compile Include="Calls\GetBucketResponse.cs" />
     <Compile Include="Calls\GetBucketSpectraS3Request.cs" />
@@ -578,6 +586,8 @@
     <Compile Include="Calls\PutBucketAclForGroupSpectraS3Response.cs" />
     <Compile Include="Calls\PutBucketAclForUserSpectraS3Request.cs" />
     <Compile Include="Calls\PutBucketAclForUserSpectraS3Response.cs" />
+    <Compile Include="Calls\PutBucketChangesNotificationRegistrationSpectraS3Request.cs" />
+    <Compile Include="Calls\PutBucketChangesNotificationRegistrationSpectraS3Response.cs" />
     <Compile Include="Calls\PutBucketRequest.cs" />
     <Compile Include="Calls\PutBucketSpectraS3Request.cs" />
     <Compile Include="Calls\PutBucketSpectraS3Response.cs" />
@@ -752,7 +762,12 @@
     <Compile Include="Models\BucketAcl.cs" />
     <Compile Include="Models\BucketAclList.cs" />
     <Compile Include="Models\BucketAclPermission.cs" />
+    <Compile Include="Models\BucketChangesNotificationRegistration.cs" />
+    <Compile Include="Models\BucketChangesNotificationRegistrationList.cs" />
     <Compile Include="Models\BucketDetails.cs" />
+    <Compile Include="Models\BucketHistoryEvent.cs" />
+    <Compile Include="Models\BucketHistoryEventList.cs" />
+    <Compile Include="Models\BucketHistoryEventType.cs" />
     <Compile Include="Models\BucketList.cs" />
     <Compile Include="Models\BuildInformation.cs" />
     <Compile Include="Models\BulkObject.cs" />
@@ -767,6 +782,7 @@
     <Compile Include="Models\CanceledJobList.cs" />
     <Compile Include="Models\CapacitySummaryContainer.cs" />
     <Compile Include="Models\ChecksumType.cs" />
+    <Compile Include="Models\CloudNamingMode.cs" />
     <Compile Include="Models\JobRestore.cs" />
     <Compile Include="Models\requestpayloads\Part.cs" />
     <Compile Include="Models\CompletedJob.cs" />
@@ -990,6 +1006,9 @@
     <Compile Include="ResponseParsers\GetBucketAclSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketAclsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketCapacitySummarySpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetBucketChangesNotificationRegistrationSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetBucketChangesNotificationRegistrationsSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\GetBucketHistorySpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBucketsSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\GetBulkJobSpectraS3ResponseParser.cs" />
@@ -1154,6 +1173,7 @@
     <Compile Include="ResponseParsers\PutAzureTargetReadPreferenceSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\PutBucketAclForGroupSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\PutBucketAclForUserSpectraS3ResponseParser.cs" />
+    <Compile Include="ResponseParsers\PutBucketChangesNotificationRegistrationSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\PutBucketSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\PutBulkJobSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\PutDataPersistenceRuleSpectraS3ResponseParser.cs" />
