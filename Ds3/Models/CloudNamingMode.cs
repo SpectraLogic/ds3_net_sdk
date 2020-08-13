@@ -17,12 +17,9 @@
 
 namespace Ds3.Models
 {
-    public enum S3InitialDataPlacementPolicy
+    public enum CloudNamingMode
     {
-        STANDARD,
-        REDUCED_REDUNDANCY,
-        STANDARD_IA,
-        GLACIER,
-        DEEP_ARCHIVE
+        BLACK_PEARL,
+        AWS_S3
     }
 }

@@ -72,6 +72,13 @@ namespace Ds3.Calls
             set { WithHttps(value); }
         }
 
+        private CloudNamingMode? _namingMode;
+        public CloudNamingMode? NamingMode
+        {
+            get { return _namingMode; }
+            set { WithNamingMode(value); }
+        }
+
         private int? _offlineDataStagingWindowInTb;
         public int? OfflineDataStagingWindowInTb
         {
@@ -126,6 +133,13 @@ namespace Ds3.Calls
         {
             get { return _region; }
             set { WithRegion(value); }
+        }
+
+        private bool? _restrictedAccess;
+        public bool? RestrictedAccess
+        {
+            get { return _restrictedAccess; }
+            set { WithRestrictedAccess(value); }
         }
 
         private int? _stagedDataExpirationInDays;
@@ -221,6 +235,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("https");
+            }
+            return this;
+        }
+
+        
+        public RegisterS3TargetSpectraS3Request WithNamingMode(CloudNamingMode? namingMode)
+        {
+            this._namingMode = namingMode;
+            if (namingMode != null)
+            {
+                this.QueryParams.Add("naming_mode", namingMode.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("naming_mode");
             }
             return this;
         }
@@ -341,6 +370,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("region");
+            }
+            return this;
+        }
+
+        
+        public RegisterS3TargetSpectraS3Request WithRestrictedAccess(bool? restrictedAccess)
+        {
+            this._restrictedAccess = restrictedAccess;
+            if (restrictedAccess != null)
+            {
+                this.QueryParams.Add("restricted_access", restrictedAccess.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("restricted_access");
             }
             return this;
         }

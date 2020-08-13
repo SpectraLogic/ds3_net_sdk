@@ -17,12 +17,11 @@
 
 namespace Ds3.Models
 {
-    public enum S3InitialDataPlacementPolicy
+    public enum BucketHistoryEventType
     {
-        STANDARD,
-        REDUCED_REDUNDANCY,
-        STANDARD_IA,
-        GLACIER,
-        DEEP_ARCHIVE
+        DELETE,
+        MARK_LATEST,
+        UNMARK_LATEST,
+        CREATE
     }
 }

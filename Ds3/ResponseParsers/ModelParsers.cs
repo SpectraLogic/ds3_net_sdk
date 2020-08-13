@@ -646,6 +646,52 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseAzureTargetFailureNotificationRegistration(element);
         }
+        public static BucketChangesNotificationRegistration ParseBucketChangesNotificationRegistration(XElement element)
+        {
+            return new BucketChangesNotificationRegistration
+            {
+                BucketId = ParseNullableGuid(element.Element("BucketId")),
+                CreationDate = ParseDateTime(element.Element("CreationDate")),
+                Format = ParseHttpResponseFormatType(element.Element("Format")),
+                Id = ParseGuid(element.Element("Id")),
+                LastFailure = ParseNullableString(element.Element("LastFailure")),
+                LastHttpResponseCode = ParseNullableInt(element.Element("LastHttpResponseCode")),
+                LastNotification = ParseNullableDateTime(element.Element("LastNotification")),
+                LastSequenceNumber = ParseNullableLong(element.Element("LastSequenceNumber")),
+                NamingConvention = ParseNamingConventionType(element.Element("NamingConvention")),
+                NotificationEndPoint = ParseNullableString(element.Element("NotificationEndPoint")),
+                NotificationHttpMethod = ParseRequestType(element.Element("NotificationHttpMethod")),
+                NumberOfFailuresSinceLastSuccess = ParseInt(element.Element("NumberOfFailuresSinceLastSuccess")),
+                UserId = ParseNullableGuid(element.Element("UserId"))
+            };
+        }
+
+        public static BucketChangesNotificationRegistration ParseNullableBucketChangesNotificationRegistration(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseBucketChangesNotificationRegistration(element);
+        }
+        public static BucketHistoryEvent ParseBucketHistoryEvent(XElement element)
+        {
+            return new BucketHistoryEvent
+            {
+                BucketId = ParseGuid(element.Element("BucketId")),
+                Id = ParseGuid(element.Element("Id")),
+                ObjectCreationDate = ParseNullableDateTime(element.Element("ObjectCreationDate")),
+                ObjectName = ParseNullableString(element.Element("ObjectName")),
+                SequenceNumber = ParseNullableLong(element.Element("SequenceNumber")),
+                Type = ParseBucketHistoryEventType(element.Element("Type")),
+                VersionId = ParseGuid(element.Element("VersionId"))
+            };
+        }
+
+        public static BucketHistoryEvent ParseNullableBucketHistoryEvent(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseBucketHistoryEvent(element);
+        }
         public static Ds3TargetFailureNotificationRegistration ParseDs3TargetFailureNotificationRegistration(XElement element)
         {
             return new Ds3TargetFailureNotificationRegistration
@@ -1151,6 +1197,7 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 LastCleaned = ParseNullableDateTime(element.Element("LastCleaned")),
                 MfgSerialNumber = ParseNullableString(element.Element("MfgSerialNumber")),
+                MinimumTaskPriority = ParseNullablePriority(element.Element("MinimumTaskPriority")),
                 PartitionId = ParseGuid(element.Element("PartitionId")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 ReservedTaskType = ParseReservedTaskType(element.Element("ReservedTaskType")),
@@ -1260,6 +1307,7 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 LastFullyVerified = ParseNullableDateTime(element.Element("LastFullyVerified")),
                 Name = ParseNullableString(element.Element("Name")),
+                NamingMode = ParseCloudNamingMode(element.Element("NamingMode")),
                 PermitGoingOutOfSync = ParseBool(element.Element("PermitGoingOutOfSync")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 State = ParseTargetState(element.Element("State"))
@@ -1401,6 +1449,7 @@ namespace Ds3.ResponseParsers
                 Id = ParseGuid(element.Element("Id")),
                 LastFullyVerified = ParseNullableDateTime(element.Element("LastFullyVerified")),
                 Name = ParseNullableString(element.Element("Name")),
+                NamingMode = ParseCloudNamingMode(element.Element("NamingMode")),
                 OfflineDataStagingWindowInTb = ParseInt(element.Element("OfflineDataStagingWindowInTb")),
                 PermitGoingOutOfSync = ParseBool(element.Element("PermitGoingOutOfSync")),
                 ProxyDomain = ParseNullableString(element.Element("ProxyDomain")),
@@ -1410,6 +1459,7 @@ namespace Ds3.ResponseParsers
                 ProxyUsername = ParseNullableString(element.Element("ProxyUsername")),
                 Quiesced = ParseQuiesced(element.Element("Quiesced")),
                 Region = ParseNullableS3Region(element.Element("Region")),
+                RestrictedAccess = ParseBool(element.Element("RestrictedAccess")),
                 SecretKey = ParseNullableString(element.Element("SecretKey")),
                 StagedDataExpirationInDays = ParseInt(element.Element("StagedDataExpirationInDays")),
                 State = ParseTargetState(element.Element("State"))
@@ -2504,6 +2554,34 @@ namespace Ds3.ResponseParsers
                 ? null
                 : ParseAzureTargetFailureNotificationRegistrationList(element);
         }
+        public static BucketChangesNotificationRegistrationList ParseBucketChangesNotificationRegistrationList(XElement element)
+        {
+            return new BucketChangesNotificationRegistrationList
+            {
+                BucketChangesNotificationRegistrations = element.Elements("BucketChangesNotificationRegistration").Select(ParseBucketChangesNotificationRegistration).ToList()
+            };
+        }
+
+        public static BucketChangesNotificationRegistrationList ParseNullableBucketChangesNotificationRegistrationList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseBucketChangesNotificationRegistrationList(element);
+        }
+        public static BucketHistoryEventList ParseBucketHistoryEventList(XElement element)
+        {
+            return new BucketHistoryEventList
+            {
+                BucketHistoryEvents = element.Elements("BucketHistoryEvent").Select(ParseBucketHistoryEvent).ToList()
+            };
+        }
+
+        public static BucketHistoryEventList ParseNullableBucketHistoryEventList(XElement element)
+        {
+            return element == null || element.IsEmpty
+                ? null
+                : ParseBucketHistoryEventList(element);
+        }
         public static Ds3TargetFailureNotificationRegistrationList ParseDs3TargetFailureNotificationRegistrationList(XElement element)
         {
             return new Ds3TargetFailureNotificationRegistrationList
@@ -3168,6 +3246,31 @@ namespace Ds3.ResponseParsers
         {
             return ParseBucketAclPermission(element.Value);
         }
+        public static CloudNamingMode? ParseNullableCloudNamingMode(string cloudNamingModeOrNull)
+        {
+            return string.IsNullOrWhiteSpace(cloudNamingModeOrNull)
+                ? (CloudNamingMode?) null
+                : ParseCloudNamingMode(cloudNamingModeOrNull);
+        }
+
+        public static CloudNamingMode ParseCloudNamingMode(string cloudNamingMode)
+        {
+            return ParseEnumType<CloudNamingMode>(cloudNamingMode);
+        }
+
+        public static CloudNamingMode? ParseNullableCloudNamingMode(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableCloudNamingMode(element.Value);
+        }
+
+        public static CloudNamingMode ParseCloudNamingMode(XElement element)
+        {
+            return ParseCloudNamingMode(element.Value);
+        }
         public static DataIsolationLevel? ParseNullableDataIsolationLevel(string dataIsolationLevelOrNull)
         {
             return string.IsNullOrWhiteSpace(dataIsolationLevelOrNull)
@@ -3667,6 +3770,31 @@ namespace Ds3.ResponseParsers
         public static WritePreferenceLevel ParseWritePreferenceLevel(XElement element)
         {
             return ParseWritePreferenceLevel(element.Value);
+        }
+        public static BucketHistoryEventType? ParseNullableBucketHistoryEventType(string bucketHistoryEventTypeOrNull)
+        {
+            return string.IsNullOrWhiteSpace(bucketHistoryEventTypeOrNull)
+                ? (BucketHistoryEventType?) null
+                : ParseBucketHistoryEventType(bucketHistoryEventTypeOrNull);
+        }
+
+        public static BucketHistoryEventType ParseBucketHistoryEventType(string bucketHistoryEventType)
+        {
+            return ParseEnumType<BucketHistoryEventType>(bucketHistoryEventType);
+        }
+
+        public static BucketHistoryEventType? ParseNullableBucketHistoryEventType(XElement element)
+        {
+            if (null == element)
+            {
+                return null;
+            }
+            return ParseNullableBucketHistoryEventType(element.Value);
+        }
+
+        public static BucketHistoryEventType ParseBucketHistoryEventType(XElement element)
+        {
+            return ParseBucketHistoryEventType(element.Value);
         }
         public static PoolFailureType? ParseNullablePoolFailureType(string poolFailureTypeOrNull)
         {

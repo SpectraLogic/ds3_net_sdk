@@ -26,6 +26,13 @@ namespace Ds3.Calls
         public string Name { get; private set; }
 
         
+        private string _defaultDataPolicyId;
+        public string DefaultDataPolicyId
+        {
+            get { return _defaultDataPolicyId; }
+            set { WithDefaultDataPolicyId(value); }
+        }
+
         private string _id;
         public string Id
         {
@@ -45,6 +52,36 @@ namespace Ds3.Calls
         {
             get { return _secretKey; }
             set { WithSecretKey(value); }
+        }
+
+        
+        public DelegateCreateUserSpectraS3Request WithDefaultDataPolicyId(Guid? defaultDataPolicyId)
+        {
+            this._defaultDataPolicyId = defaultDataPolicyId.ToString();
+            if (defaultDataPolicyId != null)
+            {
+                this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("default_data_policy_id");
+            }
+            return this;
+        }
+
+        
+        public DelegateCreateUserSpectraS3Request WithDefaultDataPolicyId(string defaultDataPolicyId)
+        {
+            this._defaultDataPolicyId = defaultDataPolicyId;
+            if (defaultDataPolicyId != null)
+            {
+                this.QueryParams.Add("default_data_policy_id", defaultDataPolicyId);
+            }
+            else
+            {
+                this.QueryParams.Remove("default_data_policy_id");
+            }
+            return this;
         }
 
         

@@ -14,15 +14,21 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public enum S3InitialDataPlacementPolicy
+    public class GetBucketHistorySpectraS3Response
     {
-        STANDARD,
-        REDUCED_REDUNDANCY,
-        STANDARD_IA,
-        GLACIER,
-        DEEP_ARCHIVE
+        public BucketHistoryEventList ResponsePayload { get; private set; }
+        public int? PagingTruncated { get; private set; }
+        public int? PagingTotalResultCount { get; private set; }
+
+        public GetBucketHistorySpectraS3Response(BucketHistoryEventList responsePayload, int? pagingTruncated, int? pagingTotalResultCount)
+        {
+            this.ResponsePayload = responsePayload;
+            this.PagingTruncated = pagingTruncated;
+            this.PagingTotalResultCount = pagingTotalResultCount;
+        }
     }
 }

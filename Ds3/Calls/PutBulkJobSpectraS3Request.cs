@@ -80,6 +80,13 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private bool? _preAllocateJobSpace;
+        public bool? PreAllocateJobSpace
+        {
+            get { return _preAllocateJobSpace; }
+            set { WithPreAllocateJobSpace(value); }
+        }
+
         private Priority? _priority;
         public Priority? Priority
         {
@@ -180,6 +187,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("name");
+            }
+            return this;
+        }
+
+        
+        public PutBulkJobSpectraS3Request WithPreAllocateJobSpace(bool? preAllocateJobSpace)
+        {
+            this._preAllocateJobSpace = preAllocateJobSpace;
+            if (preAllocateJobSpace != null)
+            {
+                this.QueryParams.Add("pre_allocate_job_space", preAllocateJobSpace.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("pre_allocate_job_space");
             }
             return this;
         }

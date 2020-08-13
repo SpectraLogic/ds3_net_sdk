@@ -82,6 +82,13 @@ namespace Ds3.Calls
             set { WithName(value); }
         }
 
+        private CloudNamingMode? _namingMode;
+        public CloudNamingMode? NamingMode
+        {
+            get { return _namingMode; }
+            set { WithNamingMode(value); }
+        }
+
         private int? _offlineDataStagingWindowInTb;
         public int? OfflineDataStagingWindowInTb
         {
@@ -143,6 +150,13 @@ namespace Ds3.Calls
         {
             get { return _region; }
             set { WithRegion(value); }
+        }
+
+        private bool? _restrictedAccess;
+        public bool? RestrictedAccess
+        {
+            get { return _restrictedAccess; }
+            set { WithRestrictedAccess(value); }
         }
 
         private string _secretKey;
@@ -280,6 +294,21 @@ namespace Ds3.Calls
         }
 
         
+        public ModifyS3TargetSpectraS3Request WithNamingMode(CloudNamingMode? namingMode)
+        {
+            this._namingMode = namingMode;
+            if (namingMode != null)
+            {
+                this.QueryParams.Add("naming_mode", namingMode.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("naming_mode");
+            }
+            return this;
+        }
+
+        
         public ModifyS3TargetSpectraS3Request WithOfflineDataStagingWindowInTb(int? offlineDataStagingWindowInTb)
         {
             this._offlineDataStagingWindowInTb = offlineDataStagingWindowInTb;
@@ -410,6 +439,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("region");
+            }
+            return this;
+        }
+
+        
+        public ModifyS3TargetSpectraS3Request WithRestrictedAccess(bool? restrictedAccess)
+        {
+            this._restrictedAccess = restrictedAccess;
+            if (restrictedAccess != null)
+            {
+                this.QueryParams.Add("restricted_access", restrictedAccess.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("restricted_access");
             }
             return this;
         }

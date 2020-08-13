@@ -15,14 +15,19 @@
 
 // This code is auto-generated, do not modify
 
+using System;
+using System.Collections.Generic;
+
 namespace Ds3.Models
 {
-    public enum S3InitialDataPlacementPolicy
+    public class BucketHistoryEvent
     {
-        STANDARD,
-        REDUCED_REDUNDANCY,
-        STANDARD_IA,
-        GLACIER,
-        DEEP_ARCHIVE
+        public Guid BucketId { get; set; }
+        public Guid Id { get; set; }
+        public DateTime? ObjectCreationDate { get; set; }
+        public string ObjectName { get; set; }
+        public long? SequenceNumber { get; set; }
+        public BucketHistoryEventType Type { get; set; }
+        public Guid VersionId { get; set; }
     }
 }

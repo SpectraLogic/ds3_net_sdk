@@ -28,6 +28,7 @@ namespace Ds3.Models
         public Guid Id { get; set; }
         public DateTime? LastCleaned { get; set; }
         public string MfgSerialNumber { get; set; }
+        public Priority? MinimumTaskPriority { get; set; }
         public Guid PartitionId { get; set; }
         public Quiesced Quiesced { get; set; }
         public ReservedTaskType ReservedTaskType { get; set; }

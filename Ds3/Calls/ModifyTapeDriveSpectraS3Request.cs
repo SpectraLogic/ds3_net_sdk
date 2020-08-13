@@ -26,6 +26,13 @@ namespace Ds3.Calls
         public string TapeDriveId { get; private set; }
 
         
+        private Priority? _minimumTaskPriority;
+        public Priority? MinimumTaskPriority
+        {
+            get { return _minimumTaskPriority; }
+            set { WithMinimumTaskPriority(value); }
+        }
+
         private Quiesced? _quiesced;
         public Quiesced? Quiesced
         {
@@ -38,6 +45,21 @@ namespace Ds3.Calls
         {
             get { return _reservedTaskType; }
             set { WithReservedTaskType(value); }
+        }
+
+        
+        public ModifyTapeDriveSpectraS3Request WithMinimumTaskPriority(Priority? minimumTaskPriority)
+        {
+            this._minimumTaskPriority = minimumTaskPriority;
+            if (minimumTaskPriority != null)
+            {
+                this.QueryParams.Add("minimum_task_priority", minimumTaskPriority.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("minimum_task_priority");
+            }
+            return this;
         }
 
         

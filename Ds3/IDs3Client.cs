@@ -233,6 +233,8 @@ namespace Ds3
         
         PutAzureTargetFailureNotificationRegistrationSpectraS3Response PutAzureTargetFailureNotificationRegistrationSpectraS3(PutAzureTargetFailureNotificationRegistrationSpectraS3Request request);
         
+        PutBucketChangesNotificationRegistrationSpectraS3Response PutBucketChangesNotificationRegistrationSpectraS3(PutBucketChangesNotificationRegistrationSpectraS3Request request);
+        
         PutDs3TargetFailureNotificationRegistrationSpectraS3Response PutDs3TargetFailureNotificationRegistrationSpectraS3(PutDs3TargetFailureNotificationRegistrationSpectraS3Request request);
         
         PutJobCompletedNotificationRegistrationSpectraS3Response PutJobCompletedNotificationRegistrationSpectraS3(PutJobCompletedNotificationRegistrationSpectraS3Request request);
@@ -262,6 +264,12 @@ namespace Ds3
         GetAzureTargetFailureNotificationRegistrationSpectraS3Response GetAzureTargetFailureNotificationRegistrationSpectraS3(GetAzureTargetFailureNotificationRegistrationSpectraS3Request request);
         
         GetAzureTargetFailureNotificationRegistrationsSpectraS3Response GetAzureTargetFailureNotificationRegistrationsSpectraS3(GetAzureTargetFailureNotificationRegistrationsSpectraS3Request request);
+        
+        GetBucketChangesNotificationRegistrationSpectraS3Response GetBucketChangesNotificationRegistrationSpectraS3(GetBucketChangesNotificationRegistrationSpectraS3Request request);
+        
+        GetBucketChangesNotificationRegistrationsSpectraS3Response GetBucketChangesNotificationRegistrationsSpectraS3(GetBucketChangesNotificationRegistrationsSpectraS3Request request);
+        
+        GetBucketHistorySpectraS3Response GetBucketHistorySpectraS3(GetBucketHistorySpectraS3Request request);
         
         GetDs3TargetFailureNotificationRegistrationSpectraS3Response GetDs3TargetFailureNotificationRegistrationSpectraS3(GetDs3TargetFailureNotificationRegistrationSpectraS3Request request);
         
@@ -561,6 +569,8 @@ namespace Ds3
         
         void AbortMultiPartUpload(AbortMultiPartUploadRequest request);
         
+        void CompleteBlob(CompleteBlobRequest request);
+        
         void PutBucket(PutBucketRequest request);
         
         void PutMultiPartUploadPart(PutMultiPartUploadPartRequest request);
@@ -636,6 +646,8 @@ namespace Ds3
         void VerifySafeToCreatePutJobSpectraS3(VerifySafeToCreatePutJobSpectraS3Request request);
         
         void DeleteAzureTargetFailureNotificationRegistrationSpectraS3(DeleteAzureTargetFailureNotificationRegistrationSpectraS3Request request);
+        
+        void DeleteBucketChangesNotificationRegistrationSpectraS3(DeleteBucketChangesNotificationRegistrationSpectraS3Request request);
         
         void DeleteDs3TargetFailureNotificationRegistrationSpectraS3(DeleteDs3TargetFailureNotificationRegistrationSpectraS3Request request);
         
