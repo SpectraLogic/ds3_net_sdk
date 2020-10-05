@@ -2,4 +2,4 @@ language: csharp
 solution: ds3_net_sdk.sln
 script:
   - xbuild /p:Configuration=Release ds3_net_sdk.sln
-  - mono ./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./TestDs3/bin/Release/TestDs3.dll
+  - mono ./packages/NUnit.ConsoleRunner.3.11.1/tools/nunit3-console.exe ./TestDs3/bin/Release/TestDs3.dll
