@@ -26,6 +26,13 @@ namespace Ds3.Calls
         public string TapeDriveId { get; private set; }
 
         
+        private int? _maxFailedTapes;
+        public int? MaxFailedTapes
+        {
+            get { return _maxFailedTapes; }
+            set { WithMaxFailedTapes(value); }
+        }
+
         private Priority? _minimumTaskPriority;
         public Priority? MinimumTaskPriority
         {
@@ -45,6 +52,21 @@ namespace Ds3.Calls
         {
             get { return _reservedTaskType; }
             set { WithReservedTaskType(value); }
+        }
+
+        
+        public ModifyTapeDriveSpectraS3Request WithMaxFailedTapes(int? maxFailedTapes)
+        {
+            this._maxFailedTapes = maxFailedTapes;
+            if (maxFailedTapes != null)
+            {
+                this.QueryParams.Add("max_failed_tapes", maxFailedTapes.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_failed_tapes");
+            }
+            return this;
         }
 
         

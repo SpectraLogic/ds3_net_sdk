@@ -1146,6 +1146,11 @@ namespace Ds3
             return new InspectTapeSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
         }
 
+        public MarkTapeForCompactionSpectraS3Response MarkTapeForCompactionSpectraS3(MarkTapeForCompactionSpectraS3Request request)
+        {
+            return new MarkTapeForCompactionSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));
+        }
+
         public ModifyTapeDriveSpectraS3Response ModifyTapeDriveSpectraS3(ModifyTapeDriveSpectraS3Request request)
         {
             return new ModifyTapeDriveSpectraS3ResponseParser().Parse(request, _netLayer.Invoke(request));

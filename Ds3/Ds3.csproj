@@ -513,6 +513,8 @@
     <Compile Include="Calls\ListMultiPartUploadPartsResponse.cs" />
     <Compile Include="Calls\ListMultiPartUploadsRequest.cs" />
     <Compile Include="Calls\ListMultiPartUploadsResponse.cs" />
+    <Compile Include="Calls\MarkTapeForCompactionSpectraS3Request.cs" />
+    <Compile Include="Calls\MarkTapeForCompactionSpectraS3Response.cs" />
     <Compile Include="Calls\MarkSuspectBlobAzureTargetsAsDegradedSpectraS3Request.cs" />
     <Compile Include="Calls\MarkSuspectBlobDs3TargetsAsDegradedSpectraS3Request.cs" />
     <Compile Include="Calls\MarkSuspectBlobPoolsAsDegradedSpectraS3Request.cs" />
@@ -1141,6 +1143,7 @@
     <Compile Include="ResponseParsers\InspectTapeSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ListMultiPartUploadPartsResponseParser.cs" />
     <Compile Include="ResponseParsers\ListMultiPartUploadsResponseParser.cs" />
+    <Compile Include="ResponseParsers\MarkTapeForCompactionSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ModelParsers.cs" />
     <Compile Include="ResponseParsers\ModifyActiveJobSpectraS3ResponseParser.cs" />
     <Compile Include="ResponseParsers\ModifyAzureDataReplicationRuleSpectraS3ResponseParser.cs" />

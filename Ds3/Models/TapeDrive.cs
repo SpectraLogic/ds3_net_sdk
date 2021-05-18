@@ -27,6 +27,7 @@ namespace Ds3.Models
         public bool ForceTapeRemoval { get; set; }
         public Guid Id { get; set; }
         public DateTime? LastCleaned { get; set; }
+        public int? MaxFailedTapes { get; set; }
         public string MfgSerialNumber { get; set; }
         public Priority? MinimumTaskPriority { get; set; }
         public Guid PartitionId { get; set; }

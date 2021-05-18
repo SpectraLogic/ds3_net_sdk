@@ -14,19 +14,17 @@
  */
 
 // This code is auto-generated, do not modify
+using Ds3.Models;
 
-namespace Ds3.Models
+namespace Ds3.Calls
 {
-    public enum TargetFailureType
+    public class MarkTapeForCompactionSpectraS3Response
     {
-        IMPORT_FAILED,
-        IMPORT_INCOMPLETE,
-        NOT_ONLINE,
-        WRITE_FAILED,
-        WRITE_INITIATE_FAILED,
-        READ_FAILED,
-        READ_INITIATE_FAILED,
-        VERIFY_FAILED,
-        VERIFY_COMPLETE
+        public Tape ResponsePayload { get; private set; }
+
+        public MarkTapeForCompactionSpectraS3Response(Tape responsePayload)
+        {
+            this.ResponsePayload = responsePayload;
+        }
     }
 }
