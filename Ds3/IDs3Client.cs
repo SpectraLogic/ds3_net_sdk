@@ -471,6 +471,8 @@ namespace Ds3
         
         InspectTapeSpectraS3Response InspectTapeSpectraS3(InspectTapeSpectraS3Request request);
         
+        MarkTapeForCompactionSpectraS3Response MarkTapeForCompactionSpectraS3(MarkTapeForCompactionSpectraS3Request request);
+        
         ModifyTapeDriveSpectraS3Response ModifyTapeDriveSpectraS3(ModifyTapeDriveSpectraS3Request request);
         
         ModifyTapePartitionSpectraS3Response ModifyTapePartitionSpectraS3(ModifyTapePartitionSpectraS3Request request);

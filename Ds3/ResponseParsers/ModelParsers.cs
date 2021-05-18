@@ -1196,6 +1196,7 @@ namespace Ds3.ResponseParsers
                 ForceTapeRemoval = ParseBool(element.Element("ForceTapeRemoval")),
                 Id = ParseGuid(element.Element("Id")),
                 LastCleaned = ParseNullableDateTime(element.Element("LastCleaned")),
+                MaxFailedTapes = ParseNullableInt(element.Element("MaxFailedTapes")),
                 MfgSerialNumber = ParseNullableString(element.Element("MfgSerialNumber")),
                 MinimumTaskPriority = ParseNullablePriority(element.Element("MinimumTaskPriority")),
                 PartitionId = ParseGuid(element.Element("PartitionId")),
@@ -1255,6 +1256,8 @@ namespace Ds3.ResponseParsers
             return new TapePartition
             {
                 AutoCompactionEnabled = ParseBool(element.Element("AutoCompactionEnabled")),
+                AutoQuiesceEnabled = ParseBool(element.Element("AutoQuiesceEnabled")),
+                DriveIdleTimeoutInMinutes = ParseNullableInt(element.Element("DriveIdleTimeoutInMinutes")),
                 DriveType = ParseNullableTapeDriveType(element.Element("DriveType")),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
                 Id = ParseGuid(element.Element("Id")),
@@ -1685,6 +1688,7 @@ namespace Ds3.ResponseParsers
                 AvailableCapacityInBytes = ParseLong(element.Element("AvailableCapacityInBytes")),
                 CacheFilesystem = ParseCacheFilesystem(element.Element("CacheFilesystem")),
                 Entries = element.Elements("Entries").Select(ParseCacheEntryInformation).ToList(),
+                JobLockedCacheInBytes = ParseLong(element.Element("JobLockedCacheInBytes")),
                 Summary = ParseNullableString(element.Element("Summary")),
                 TotalCapacityInBytes = ParseLong(element.Element("TotalCapacityInBytes")),
                 UnavailableCapacityInBytes = ParseLong(element.Element("UnavailableCapacityInBytes")),
@@ -1820,6 +1824,8 @@ namespace Ds3.ResponseParsers
             return new DetailedTapePartition
             {
                 AutoCompactionEnabled = ParseBool(element.Element("AutoCompactionEnabled")),
+                AutoQuiesceEnabled = ParseBool(element.Element("AutoQuiesceEnabled")),
+                DriveIdleTimeoutInMinutes = ParseNullableInt(element.Element("DriveIdleTimeoutInMinutes")),
                 DriveType = ParseNullableTapeDriveType(element.Element("DriveType")),
                 DriveTypes = element.Elements("DriveTypes").Select(ParseTapeDriveType).ToList(),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),
@@ -2181,6 +2187,8 @@ namespace Ds3.ResponseParsers
             return new NamedDetailedTapePartition
             {
                 AutoCompactionEnabled = ParseBool(element.Element("AutoCompactionEnabled")),
+                AutoQuiesceEnabled = ParseBool(element.Element("AutoQuiesceEnabled")),
+                DriveIdleTimeoutInMinutes = ParseNullableInt(element.Element("DriveIdleTimeoutInMinutes")),
                 DriveType = ParseNullableTapeDriveType(element.Element("DriveType")),
                 DriveTypes = element.Elements("DriveTypes").Select(ParseTapeDriveType).ToList(),
                 ErrorMessage = ParseNullableString(element.Element("ErrorMessage")),

@@ -33,6 +33,20 @@ namespace Ds3.Calls
             set { WithAutoCompactionEnabled(value); }
         }
 
+        private bool? _autoQuiesceEnabled;
+        public bool? AutoQuiesceEnabled
+        {
+            get { return _autoQuiesceEnabled; }
+            set { WithAutoQuiesceEnabled(value); }
+        }
+
+        private int? _driveIdleTimeoutInMinutes;
+        public int? DriveIdleTimeoutInMinutes
+        {
+            get { return _driveIdleTimeoutInMinutes; }
+            set { WithDriveIdleTimeoutInMinutes(value); }
+        }
+
         private int? _minimumReadReservedDrives;
         public int? MinimumReadReservedDrives
         {
@@ -72,6 +86,36 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("auto_compaction_enabled");
+            }
+            return this;
+        }
+
+        
+        public ModifyTapePartitionSpectraS3Request WithAutoQuiesceEnabled(bool? autoQuiesceEnabled)
+        {
+            this._autoQuiesceEnabled = autoQuiesceEnabled;
+            if (autoQuiesceEnabled != null)
+            {
+                this.QueryParams.Add("auto_quiesce_enabled", autoQuiesceEnabled.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("auto_quiesce_enabled");
+            }
+            return this;
+        }
+
+        
+        public ModifyTapePartitionSpectraS3Request WithDriveIdleTimeoutInMinutes(int? driveIdleTimeoutInMinutes)
+        {
+            this._driveIdleTimeoutInMinutes = driveIdleTimeoutInMinutes;
+            if (driveIdleTimeoutInMinutes != null)
+            {
+                this.QueryParams.Add("drive_idle_timeout_in_minutes", driveIdleTimeoutInMinutes.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("drive_idle_timeout_in_minutes");
             }
             return this;
         }

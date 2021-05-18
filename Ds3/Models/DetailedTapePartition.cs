@@ -23,6 +23,8 @@ namespace Ds3.Models
     public class DetailedTapePartition
     {
         public bool AutoCompactionEnabled { get; set; }
+        public bool AutoQuiesceEnabled { get; set; }
+        public int? DriveIdleTimeoutInMinutes { get; set; }
         public TapeDriveType? DriveType { get; set; }
         public IEnumerable<TapeDriveType> DriveTypes { get; set; }
         public string ErrorMessage { get; set; }

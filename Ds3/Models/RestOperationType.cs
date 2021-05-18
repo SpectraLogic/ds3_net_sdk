@@ -33,6 +33,7 @@ namespace Ds3.Models
         GET_PHYSICAL_PLACEMENT,
         IMPORT,
         INSPECT,
+        MARK_FOR_COMPACTION,
         ONLINE,
         PAIR_BACK,
         REGENERATE_SECRET_KEY,

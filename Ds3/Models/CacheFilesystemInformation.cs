@@ -25,6 +25,7 @@ namespace Ds3.Models
         public long AvailableCapacityInBytes { get; set; }
         public CacheFilesystem CacheFilesystem { get; set; }
         public IEnumerable<CacheEntryInformation> Entries { get; set; }
+        public long JobLockedCacheInBytes { get; set; }
         public string Summary { get; set; }
         public long TotalCapacityInBytes { get; set; }
         public long UnavailableCapacityInBytes { get; set; }
