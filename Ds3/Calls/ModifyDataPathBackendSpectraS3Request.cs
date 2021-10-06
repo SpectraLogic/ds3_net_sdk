@@ -73,11 +73,25 @@ namespace Ds3.Calls
             set { WithDefaultVerifyDataPriorToImport(value); }
         }
 
+        private double? _iomCacheLimitationPercent;
+        public double? IomCacheLimitationPercent
+        {
+            get { return _iomCacheLimitationPercent; }
+            set { WithIomCacheLimitationPercent(value); }
+        }
+
         private bool? _iomEnabled;
         public bool? IomEnabled
         {
             get { return _iomEnabled; }
             set { WithIomEnabled(value); }
+        }
+
+        private int? _maxAggregatedBlobsPerChunk;
+        public int? MaxAggregatedBlobsPerChunk
+        {
+            get { return _maxAggregatedBlobsPerChunk; }
+            set { WithMaxAggregatedBlobsPerChunk(value); }
         }
 
         private int? _partiallyVerifyLastPercentOfTapes;
@@ -214,6 +228,21 @@ namespace Ds3.Calls
         }
 
         
+        public ModifyDataPathBackendSpectraS3Request WithIomCacheLimitationPercent(double? iomCacheLimitationPercent)
+        {
+            this._iomCacheLimitationPercent = iomCacheLimitationPercent;
+            if (iomCacheLimitationPercent != null)
+            {
+                this.QueryParams.Add("iom_cache_limitation_percent", iomCacheLimitationPercent.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("iom_cache_limitation_percent");
+            }
+            return this;
+        }
+
+        
         public ModifyDataPathBackendSpectraS3Request WithIomEnabled(bool? iomEnabled)
         {
             this._iomEnabled = iomEnabled;
@@ -224,6 +253,21 @@ namespace Ds3.Calls
             else
             {
                 this.QueryParams.Remove("iom_enabled");
+            }
+            return this;
+        }
+
+        
+        public ModifyDataPathBackendSpectraS3Request WithMaxAggregatedBlobsPerChunk(int? maxAggregatedBlobsPerChunk)
+        {
+            this._maxAggregatedBlobsPerChunk = maxAggregatedBlobsPerChunk;
+            if (maxAggregatedBlobsPerChunk != null)
+            {
+                this.QueryParams.Add("max_aggregated_blobs_per_chunk", maxAggregatedBlobsPerChunk.ToString());
+            }
+            else
+            {
+                this.QueryParams.Remove("max_aggregated_blobs_per_chunk");
             }
             return this;
         }
