@@ -145,3 +145,11 @@ namespace YourApplication
 
 API documentation resides in the gh-pages branch. See the README.md there for information on how to regenerate the API documentation.
 
+## Creating a New Release
+
+Update the version of the SDK before creating a new release. The format is `<major>.<minor>.<patch>`, where the 
+`<major>.<minor>` numbers must match the version of BP. The `<patch>` is an incrementing number that increments with 
+each SDK release for a given major/minor release.
+
+The version is located in `VersionInfo.cs`.
+

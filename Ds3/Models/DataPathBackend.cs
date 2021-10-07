@@ -31,8 +31,10 @@ namespace Ds3.Models
         public bool DefaultVerifyDataPriorToImport { get; set; }
         public Guid Id { get; set; }
         public Guid InstanceId { get; set; }
+        public double IomCacheLimitationPercent { get; set; }
         public bool IomEnabled { get; set; }
         public DateTime LastHeartbeat { get; set; }
+        public int MaxAggregatedBlobsPerChunk { get; set; }
         public int? PartiallyVerifyLastPercentOfTapes { get; set; }
         public UnavailableMediaUsagePolicy UnavailableMediaPolicy { get; set; }
         public int UnavailablePoolMaxJobRetryInMins { get; set; }
