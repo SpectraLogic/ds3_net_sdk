@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+******************************************************************************
+  Copyright 2014 Spectra Logic Corporation. All Rights Reserved.
+  Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+  this file except in compliance with the License. A copy of the License is located at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  or in the "license" file accompanying this file.
+  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+****************************************************************************
+-->
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E9315C7A-23BC-4D7D-BF63-FBB94B0F80E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestDs3</RootNamespace>
+    <AssemblyName>TestDs3</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.4.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.14.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.14.6\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\JobResponseStubs.cs" />
+    <Compile Include="Helpers\Jobs\TestJobsUtil.cs" />
+    <Compile Include="Helpers\MockHelpers.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestMappingRangeTranslator.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestObjectToPartRangeTranslator.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestPartialObjectRangeUtilities.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestRangeTranslator.cs" />
+    <Compile Include="Helpers\RangeTranslators\TestRequestToObjectRangeTranslator.cs" />
+    <Compile Include="Helpers\MockStream.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\AllocateMock.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\TestReadRandomAccessChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\TestReadStreamChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\TestWriteNoAllocateChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\TestWriteRandomAccessChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\TestWriteStreamChunkStrategy.cs" />
+    <Compile Include="Helpers\Strategies\StreamFactory\BlobsStub.cs" />
+    <Compile Include="Helpers\Strategies\StreamFactory\TestWriteRandomAccessStreamFactory.cs" />
+    <Compile Include="Helpers\Strategies\StreamFactory\TestWriteStreamStreamFactory.cs" />
+    <Compile Include="Helpers\Strategies\TestHelperStrategy.cs" />
+    <Compile Include="Helpers\Streams\TestObjectRequestStream.cs" />
+    <Compile Include="Helpers\Streams\TestPutObjectRequestStream.cs" />
+    <Compile Include="Helpers\Strategies\ChunkStrategies\TransferItemSourceHelpers.cs" />
+    <Compile Include="Helpers\TestFileSystemHelpers.cs" />
+    <Compile Include="Helpers\TransferStrategies\NonSeekableStream.cs" />
+    <Compile Include="Helpers\TransferStrategies\TestBestEffort.cs" />
+    <Compile Include="Helpers\TransferStrategies\TestPartialDataTransferrerDecorator.cs" />
+    <Compile Include="Lang\EnumerableComparer.cs" />
+    <Compile Include="Lang\CompareChain.cs" />
+    <Compile Include="Lang\LangTestHelpers.cs" />
+    <Compile Include="Lang\TestStreamsUtil.cs" />
+    <Compile Include="Lang\TestCompareChain.cs" />
+    <Compile Include="Lang\TestEnumerableComparer.cs" />
+    <Compile Include="Lang\TestParallel.cs" />
+    <Compile Include="Lang\TestThreadSafeEnumerator.cs" />
+    <Compile Include="Models\TestDs3Object.cs" />
+    <Compile Include="Models\TestDs3PartialObject.cs" />
+    <Compile Include="Models\TestRange.cs" />
+    <Compile Include="Helpers\Streams\TestStreamTranslator.cs" />
+    <EmbeddedResource Include="TestData\AllocateJobChunkResponse.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Helpers\Streams\TestResourceStore.cs" />
+    <Compile Include="ResponseParsers\TestResponseParseUtilities.cs" />
+    <Compile Include="Runtime\TestHttpHelper.cs" />
+    <Compile Include="Helpers\ProgressTrackers\TestJobItemTracker.cs" />
+    <Compile Include="HelpersForTest.cs" />
+    <Compile Include="MockNetwork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\TestMetadataUtil.cs" />
+    <Compile Include="Runtime\TestRequestHeaders.cs" />
+    <Compile Include="Runtime\TestS3Signer.cs" />
+    <Compile Include="Runtime\TestWebStream.cs" />
+    <Compile Include="TestDs3Client.cs" />
+    <Compile Include="Helpers\TestDs3ClientHelpers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ds3\Ds3.csproj">
+      <Project>{00047ea6-0178-4abd-b183-d1d73d222673}</Project>
+      <Name>Ds3</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="runCoverage.bat">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>runCoverage.tt</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="runCoverage.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>runCoverage.bat</LastGenOutput>
+    </None>
+    <None Include="runTests.bat">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>runTests.tt</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="runTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>runTests.bat</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\ResultingMasterObjectList.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\EmptyGetAvailableJobChunksResponse.xml" />
+    <EmbeddedResource Include="TestData\GetAvailableJobChunksResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\GetPhysicalPlacementFullDetailsResponse.xml" />
+    <EmbeddedResource Include="TestData\GetPhysicalPlacementResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\CompletedMasterObjectList.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

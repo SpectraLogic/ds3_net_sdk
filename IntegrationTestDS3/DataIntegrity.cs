@@ -20,6 +20,7 @@ using Ds3;
 using Ds3.Helpers;
 using Ds3.Models;
 using NUnit.Framework;
+using Range = Ds3.Models.Range;
 
 namespace IntegrationTestDS3
 {
