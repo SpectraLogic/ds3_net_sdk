@@ -3,6 +3,14 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net451</TargetFrameworks>
     <Version>5.4.1</Version>
+    <Title>DS3 .NET SDK</Title>
+    <Authors>Spectra Logic</Authors>
+    <Description>Provides a .NET interface to the DS3 Deep Storage REST API by Spectra Logic.</Description>
+    <Copyright>Copyright © Spectra Logic 2014</Copyright>
+    <PackageProjectUrl>https://github.com/SpectraLogic/ds3_net_sdk</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/SpectraLogic/ds3_net_sdk/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageIconUrl>https://avatars2.githubusercontent.com/u/7060807?v=2&amp;s=200</PackageIconUrl>
+    <PackageTags>DS3 Tape BlackPearl SpectraLogic S3 AWS</PackageTags>
     <AssemblyName>ds3_net_sdk</AssemblyName>
     <RootNamespace>Ds3</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

@@ -1,12 +1,14 @@
+DOTNET ?= dotnet
+
 test: unit integration longIntegration
 
-longIntegration: build
-	mono ./packages/NUnit.ConsoleRunner.3.11.1/tools/nunit3-console.exe ./LongRunningIntegrationTestDs3/bin/Release/LongRunningIntegrationTestDs3.dll
-integration: build
-	mono ./packages/NUnit.ConsoleRunner.3.11.1/tools/nunit3-console.exe ./IntegrationTestDS3/bin/Release/IntegrationTestDS3.dll
-unit: build
-	mono ./packages/NUnit.ConsoleRunner.3.11.1/tools/nunit3-console.exe ./TestDs3/bin/Release/TestDs3.dll
+longIntegration:
+	$(DOTNET) test LongRunningIntegrationTestDs3/LongRunningIntegrationTestDs3.csproj -c Release
+integration:
+	$(DOTNET) test IntegrationTestDS3/IntegrationTestDs3.csproj -c Release
+unit:
+	$(DOTNET) test TestDs3/TestDs3.csproj -c Release
 build:
-	xbuild /p:Configuration=Release ds3_net_sdk.sln
+	$(DOTNET) build ds3_net_sdk.sln -c Release
 clean:
-	rm -rf ./TestDs3/bin/Release ./IntegrationTestDS3/bin/Release ./LongRunningIntegrationTestDs3/bin/Release ./Ds3/bin/Release
+	$(DOTNET) clean ds3_net_sdk.sln
