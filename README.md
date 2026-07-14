@@ -1,6 +1,5 @@
 # DS3 .Net SDK
 
-[![Build Status](https://travis-ci.com/SpectraLogic/ds3_net_sdk.svg)](https://travis-ci.com/SpectraLogic/ds3_net_sdk)
 [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/SpectraLogic/ds3_net_sdk/blob/master/LICENSE.md)
 
 An [SDK](http://en.wikipedia.org/wiki/Software_development_kit) conforming to
@@ -12,7 +11,7 @@ Join us at our [Google Groups](https://groups.google.com/d/forum/spectralogicds3
 
 ## Setting up NuGet
 
-The SDK is distributed as a [NuGet](http://www.nuget.org) package. It multi-targets **.NET Standard 2.0**, **.NET 8.0/10.0+**, and **.NET Framework 4.5.1**.
+The SDK is distributed as a [NuGet](http://www.nuget.org) package. The library multi-targets **.NET Standard 2.0** and **.NET Framework 4.5.1**, so it can be consumed from .NET Framework 4.5.1+ and any .NET 5+/8+/10+ project.
 
 ### Installation
 
@@ -124,4 +123,12 @@ each SDK release for a given major/minor release.
 The version is located in:
 * `VersionInfo.cs`: Used for assembly versioning.
 * `Ds3/Ds3.csproj`: Used for NuGet package versioning (`<Version>` tag).
+
+Build the NuGet package with:
+
+```bash
+make pack
+# or
+dotnet pack Ds3/Ds3.csproj -c Release -o nupkgs
+```
 

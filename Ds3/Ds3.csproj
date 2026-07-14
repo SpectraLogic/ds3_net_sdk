@@ -1,4 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<!--
+******************************************************************************
+  Copyright 2014-2026 Spectra Logic Corporation. All Rights Reserved.
+  Licensed under the Apache License, Version 2.0 (the "License"). You may not use
+  this file except in compliance with the License. A copy of the License is located at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  or in the "license" file accompanying this file.
+  This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+****************************************************************************
+-->
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net451</TargetFrameworks>
@@ -6,11 +20,14 @@
     <Title>DS3 .NET SDK</Title>
     <Authors>Spectra Logic</Authors>
     <Description>Provides a .NET interface to the DS3 Deep Storage REST API by Spectra Logic.</Description>
-    <Copyright>Copyright © Spectra Logic 2014</Copyright>
+    <Copyright>Copyright © Spectra Logic 2014-2026</Copyright>
     <PackageProjectUrl>https://github.com/SpectraLogic/ds3_net_sdk</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/SpectraLogic/ds3_net_sdk/blob/master/LICENSE.md</PackageLicenseUrl>
-    <PackageIconUrl>https://avatars2.githubusercontent.com/u/7060807?v=2&amp;s=200</PackageIconUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageTags>DS3 Tape BlackPearl SpectraLogic S3 AWS</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/SpectraLogic/ds3_net_sdk</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AssemblyName>ds3_net_sdk</AssemblyName>
     <RootNamespace>Ds3</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -20,6 +37,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
