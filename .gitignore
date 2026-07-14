@@ -106,6 +106,7 @@ publish/
 
 # NuGet Packages Directory
 packages/
+nupkgs/
 
 # Windows Azure Build Output
 csx
