@@ -20,6 +20,7 @@ using Ds3.Helpers.TransferStrategies;
 using Ds3.Models;
 using Ds3.Runtime;
 using NUnit.Framework;
+using Range = Ds3.Models.Range;
 
 namespace TestDs3.Helpers.TransferStrategies
 {

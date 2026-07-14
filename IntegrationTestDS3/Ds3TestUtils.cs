@@ -23,6 +23,7 @@ using Ds3.Calls;
 using Ds3.Helpers;
 using Ds3.Helpers.Strategies;
 using Ds3.Models;
+using Range = Ds3.Models.Range;
 
 namespace IntegrationTestDS3
 {

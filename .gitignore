@@ -105,8 +105,8 @@ publish/
 *.Publish.xml
 
 # NuGet Packages Directory
-## TODO: If you have NuGet Package Restore enabled, uncomment the next line
-#packages/
+packages/
+nupkgs/
 
 # Windows Azure Build Output
 csx

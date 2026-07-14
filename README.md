@@ -1,6 +1,5 @@
 # DS3 .Net SDK
 
-[![Build Status](https://travis-ci.com/SpectraLogic/ds3_net_sdk.svg)](https://travis-ci.com/SpectraLogic/ds3_net_sdk)
 [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](https://github.com/SpectraLogic/ds3_net_sdk/blob/master/LICENSE.md)
 
 An [SDK](http://en.wikipedia.org/wiki/Software_development_kit) conforming to
@@ -12,57 +11,44 @@ Join us at our [Google Groups](https://groups.google.com/d/forum/spectralogicds3
 
 ## Setting up NuGet
 
-The SDK is distributed as a [NuGet](http://www.nuget.org) package for .Net 4.5.1
-and above. From the NuGet website:
+The SDK is distributed as a [NuGet](http://www.nuget.org) package. The library multi-targets **.NET Standard 2.0** and **.NET Framework 4.5.1**, so it can be consumed from .NET Framework 4.5.1+ and any .NET 5+/8+/10+ project.
 
-> *What is NuGet?*
+### Installation
 
-> NuGet is the package manager for the Microsoft development platform including
-> .NET. The NuGet client tools provide the ability to produce and consume
-> packages. The NuGet Gallery is the central package repository used by all
-> package authors and consumers.
+The easiest way to install the SDK is via the `dotnet` CLI:
 
-Create a package feed on your computer using the latest release:
+```bash
+dotnet add package Ds3
+```
 
-1. Download the .nupkg file from the [Releases](../../releases) page to a new
-   directory of your choice.
-2. Follow the NuGet instructions on [Creating Local Feeds](http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds#Creating_Local_Feeds)
-   using the directory that you've created.
+Or via the NuGet Package Manager in your IDE by searching for `Ds3`.
 
+---
 
-This makes the DS3 SDK available for installation into a Visual Studio .NET
-Project.
+## Legacy Support
+
+> **Note:** Instructions for versions **v5.4.0 and below** (legacy .NET Framework 4.5.1 only) have been moved to the [Legacy Documentation](../../wiki/Legacy-Home).
+
+---
 
 ## Using the Examples Project
 
 The [Releases](../../releases) page has an examples project that references the
 DS3 SDK package.
 
-1. Unzip `DS3Examples.zip` and open the `DS3Examples.sln` file in Visual
-   Studio.
-2. Edit the `App.config` file to use the endpoint, access key, and secret key
-   for your DS3 applicance.
-3. Right-click the DS3Examples project in the Solution Explorer and click
-   "Properties".
-4. Choose which of the four examples you'd like to run from the "Startup
-   Object" dropdown box.
-5. Press the F5 key to run the program within Visual Studio.
-
-Each of the example programs in the project contains a description at the top
-explaining what the program does.
+1. Unzip `DS3Examples.zip` and open the `DS3Examples.sln` file in Rider, Visual Studio, or use the `dotnet` CLI.
+2. Edit the `App.config` file to use your DS3 appliance credentials.
+3. Run the examples using your IDE's run configuration or `dotnet run --project Ds3Examples`.
 
 ## Installing the DS3 SDK Into Your Own Project
 
-You can also install the SDK into your own project.
+You can install the SDK into your own project using the `dotnet` CLI:
 
-1. Open your existing .NET project or create a new one.
-2. Right-click the project and click "Manage NuGet Packages..."
-3. Click "Online" on the left panel.
-4. In the search box on the upper right, type "DS3".
-5. Click the "Install" button next to the "DS3 .NET SDK" package and close the
-   package manager dialog.
+```bash
+dotnet add package Ds3
+```
 
-Your project should now reference the SDK and be able to use its API.
+Or via the NuGet Package Manager in your IDE.
 
 ## About the API
 
@@ -128,13 +114,21 @@ namespace YourApplication
 
 [Building the DS3 SDK NuGet Package](../../wiki/Building-the-DS3-SDK-NuGet-package)
 
-API documentation resides in the gh-pages branch. See the README.md there for information on how to regenerate the API documentation.
-
 ## Creating a New Release
 
 Update the version of the SDK before creating a new release. The format is `<major>.<minor>.<patch>`, where the 
 `<major>.<minor>` numbers must match the version of BP. The `<patch>` is an incrementing number that increments with 
 each SDK release for a given major/minor release.
 
-The version is located in `VersionInfo.cs`.
+The version is located in:
+* `VersionInfo.cs`: Used for assembly versioning.
+* `Ds3/Ds3.csproj`: Used for NuGet package versioning (`<Version>` tag).
+
+Build the NuGet package with:
+
+```bash
+make pack
+# or
+dotnet pack Ds3/Ds3.csproj -c Release -o nupkgs
+```
 
